@@ -1,0 +1,414 @@
+//
+//  IRProject.cpp
+//  NodeComponentObject_Study - App
+//
+//  Created by Keitaro on 06/11/2018.
+//
+
+#include "IRProject.hpp"
+//==================================================
+IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
+                     PreferenceWindow* preferenceWindow,
+                     DocumentWindow* parentWindow,
+                     ChangeListener* listener)
+{
+    
+    this->projectName = projectName;
+    this->preferenceWindow = preferenceWindow;
+    this->parentWindow = parentWindow;
+    this->listener = listener;
+    this->frameRect = frameRect;
+    
+    setSize (frameRect.getWidth(), frameRect.getHeight());
+    
+    //create menu
+    this->menuBar.reset(new MenuBarComponent(this));
+    
+    
+    // for mac only. Windows takes window menu
+#if JUCE_MAC
+    //setMenuBarPosition(MenuBarPosition::global);
+#endif
+    
+    addAndMakeVisible(this->menuBar.get());
+    setApplicationCommandManagerToWatch (&this->commandManager);
+    
+    
+    this->commandManager.registerAllCommandsForTarget (this);
+    
+    addKeyListener(this->commandManager.getKeyMappings());
+    this->editCommandTarget = new EditCommandTarget( commandManager );
+    this->editCommandTarget->addListener(this);
+    
+    addAndMakeVisible(this->editCommandTarget);
+
+    // setup
+    setAudioChannels(0, 2);
+}
+//==================================================
+IRProject::~IRProject()
+{
+    shutdownAudio();
+}
+// ========================================
+
+void IRProject::resized()
+{
+    
+    for(auto space : this->workspaces)
+    {
+        Rectangle<int> frameSize(this->workspaceListWidth, 0,
+                                 getWidth()-this->workspaceListWidth, getHeight());
+        space->setBounds(frameSize);
+    }
+    
+    if(this->workspaceList != nullptr)
+    {
+        std::cout << "resize workspacelist to "<< this->workspaceListWidth << " / " << getHeight() << std::endl;
+        this->workspaceList->setBounds(Rectangle<int>(0,0,this->workspaceListWidth,getHeight()));
+        
+    }
+}
+//==================================================
+void IRProject::createNewWorkspace()
+{
+    std::string title = this->projectName + "_" + std::to_string(this->workspaces.size()+1);
+    
+    Rectangle<int> frameSize(this->workspaceListWidth, 0,
+                             getWidth()-this->workspaceListWidth, getHeight());
+    IRWorkSpace* space = new IRWorkSpace(title, frameSize, this->preferenceWindow);
+    space->requestWorkspaceListUpdate = [this] { updateWorkspaceList(); };
+    space->requestSaveProject = [this] { callSaveProjectAction(); };
+    
+    space->addChangeListener(this->listener);
+    this->mixer.addAudioSource(&space->getMixer());
+    
+    addAndMakeVisible(space);
+    this->workspaces.push_back(space);
+    if(this->workspaceList != nullptr)
+    {
+        // if there is already a topSpace, then treat heavy components
+        if(this->topSpace != nullptr)
+        {
+            // hide heavey components on the previous topSpace.
+            this->topSpace->manageHeavyWeightComponents(false);
+        }
+        
+        this->topSpace = space;
+        // bring the new workspace on top.
+        this->topSpace->toFront(true);
+        // show heavey components on the current topSpace
+        this->topSpace->manageHeavyWeightComponents(true);
+        
+        this->workspaceList->addWorkspace(space);
+        
+    }else{ printf("Error : createNewWorkspace() : could not add new workspace, workspaceList null.\n");}
+}
+//==================================================
+
+void IRProject::performEditModeChange()
+{
+    this->EditModeFlag = this->topSpace->isEditMode();
+    
+    if(this->EditModeFlag == false) this->EditModeFlag = true;
+    else this->EditModeFlag = false;
+    //apply for all workspaces
+    for(auto space : this->workspaces)
+    {
+        space->setEditMode(this->EditModeFlag);
+    }
+    
+    // notify IRProjectWindow change of the edit mode
+    if(this->notifyEditModeChanged != nullptr)
+    {
+        this->notifyEditModeChanged();
+    }
+}
+//==================================================
+
+json11::Json IRProject::saveAction(std::string filePath)
+{
+    
+    this->projectPath = filePath;
+
+    // the project path is not yet given.
+    if(filePath.size() == 0) { printf("projectPath 0\n"); return false; }
+    
+    // if no contents in this project
+    if(this->workspaces.size() == 0) { printf("workspace size 0\n"); return false; }
+    
+    // try to make project directories
+    if(!this->saveLoadClass.createProjectDirectory(filePath)) {printf("could not make project directory.\n"); return false; }
+    
+    Rectangle<int> b = getBounds();
+    
+    t_json header = json11::Json::object({
+        {"Project", json11::Json::object({
+            {"projectName",     this->projectName},
+            {"author",          "Keitaro Takahashi"},
+            {"date",            "20.04.1986"},
+            {"osType",          "macOS"},
+            {"osVersion",       "10.13.6"},
+            {"IRVersion",       "0.0.1"},
+            {"bounds",          json11::Json::array({b.getX(), b.getY(), b.getWidth(), b.getHeight()})},
+        })},
+    });
+    
+
+    
+    this->saveLoadClass.setHeader(header);
+    
+    
+    std::vector<json11::Json> saveBuffer;
+    
+    std::map<std::string, std::string> buf;
+    
+    json11::Json::object buffer;
+    
+    int index = 1;
+    
+    
+    for(auto workspace : this->workspaces)
+    {
+        
+        json11::Json object = json11::Json::object({
+            {"workspace-" + std::to_string(index), workspace->makeSaveDataOfThis()}
+        });
+        
+        buffer["workspace-" + std::to_string(index)] = workspace->makeSaveDataOfThis();
+        
+        saveBuffer.push_back(object);
+        
+        buf["workspace-"+std::to_string(index)] = workspace->makeSaveDataOfThis().dump();
+        
+        
+        
+        index++;
+    }
+    
+    //saveData = json11::Json { saveBuffer };
+    //json11::Json::object jo(buf.begin(), buf.end());
+    json11::Json::object jo(buffer.begin(), buffer.end());
+    
+    saveData = jo;
+    
+    std::cout << "========== save data ========== \n" << std::endl;
+    std::cout << saveData.dump() << std::endl;
+    std::cout << "========== end ========== \n" << std::endl;
+    
+    this->saveLoadClass.createWorkspaces(saveData);
+    
+    auto sb = KLib().StringSplit(filePath, '/');
+    std::string filename = sb[sb.size()-1] + ".irimas"; // same to the project name
+    filename = filePath + "/" + filename;
+    std::cout << "save file name = " << filename << std::endl;
+    this->saveLoadClass.writeSaveData(filename);
+    
+    return saveData;
+}
+
+//==================================================
+
+void IRProject::callCreateNewProjectAction()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.createNewProjectAction(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->createNewProjectActionCompleted != nullptr) this->createNewProjectActionCompleted();
+}
+void IRProject::callOpenProjectAction()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.openProjectAction(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->openProjectActionCompleted != nullptr) this->openProjectActionCompleted();
+}
+
+void IRProject::callCloseProjectAction()
+{
+    
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.closeProjectAction(this->parentWindow); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->closeProjectActionCompleted != nullptr) this->closeProjectActionCompleted();
+}
+
+void IRProject::callSaveProjectAction()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.saveProjectAction(this); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->saveProjectActionCompleted != nullptr) this->saveProjectActionCompleted();
+}
+
+void IRProject::callSaveAsProjectAction()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.saveAsProjectAction(this); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->saveAsProjectActionCompleted != nullptr) this->saveAsProjectActionCompleted();
+}
+//==================================================
+// menu bar methods
+
+PopupMenu IRProject::getMenuForIndex(int menuIndex, const String& menuName)
+{
+    PopupMenu menu;
+    
+    if(menuIndex == 0)
+    {
+        menu.addCommandItem(&commandManager, CommandIDs::NewProject);
+        menu.addCommandItem(&commandManager, CommandIDs::OpenProject);
+        menu.addSeparator();
+        menu.addCommandItem(&commandManager, CommandIDs::CloseProject);
+        menu.addCommandItem(&commandManager, CommandIDs::SaveProject);
+        menu.addCommandItem(&commandManager, CommandIDs::RenameProject);
+        menu.addSeparator();
+        menu.addCommandItem(&commandManager, CommandIDs::NewWorkspace);
+        
+    }else if(menuIndex == 1)
+    {
+        menu.addCommandItem(&commandManager, CommandIDs::EditMode);
+        menu.addSeparator();
+        menu.addCommandItem(&commandManager, CommandIDs::Undo);
+        menu.addCommandItem(&commandManager, CommandIDs::Redo);
+        menu.addSeparator();
+        menu.addCommandItem(&commandManager, CommandIDs::Cut);
+        menu.addCommandItem(&commandManager, CommandIDs::Copy);
+        menu.addCommandItem(&commandManager, CommandIDs::Paste);
+        menu.addCommandItem(&commandManager, CommandIDs::Duplicate);
+        
+    }else if(menuIndex == 2)
+    {
+        menu.addCommandItem(&commandManager, CommandIDs::menuPreferenceWindow);
+        
+    }else if(menuIndex == 3)
+    {
+        
+    }
+    
+    return menu;
+}
+
+
+void IRProject::setMenuBarPosition ( MenuBarPosition newPosition )
+{
+    if(menuBarPosition != newPosition)
+    {
+        menuBarPosition = newPosition;
+        if(menuBarPosition != MenuBarPosition::burger)
+            sidePanel.showOrHide(false);
+        
+#if JUCE_MAC
+        MenuBarModel::setMacMainMenu (menuBarPosition == MenuBarPosition::global ? this : nullptr);
+#endif
+        menuBar->setVisible   (menuBarPosition == MenuBarPosition::window);
+        menuItemsChanged();
+        resized();
+    }
+}
+
+ApplicationCommandTarget* IRProject::getNextCommandTarget()
+{
+    return editCommandTarget;
+}
+
+void IRProject::getAllCommands(Array<CommandID>&c)
+{
+    Array<CommandID> commands { CommandIDs::NewProject,
+        CommandIDs::OpenProject,
+        CommandIDs::CloseProject,
+        CommandIDs::SaveProject,
+        CommandIDs::RenameProject,
+        CommandIDs::NewWorkspace };
+    c.addArray (commands);
+}
+void IRProject::getCommandInfo(CommandID commandID, ApplicationCommandInfo& result)
+{
+    switch (commandID)
+    {
+        case CommandIDs::NewProject:
+            result.setInfo ("New Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress ('n', ModifierKeys::shiftModifier);
+            break;
+        case CommandIDs::OpenProject:
+            result.setInfo ("Open Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress ('o', ModifierKeys::commandModifier);
+            break;
+        case CommandIDs::CloseProject:
+            result.setInfo ("Close Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress ('w', ModifierKeys::commandModifier);
+            break;
+        case CommandIDs::SaveProject:
+            result.setInfo ("Save Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress ('s', ModifierKeys::commandModifier);
+            break;
+        case CommandIDs::RenameProject:
+            result.setInfo ("Rename Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress ('r', ModifierKeys::commandModifier);
+            result.setActive(true);
+            break;
+            
+        case CommandIDs::NewWorkspace:
+            result.setInfo ("New Workspace", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress ('n', ModifierKeys::commandModifier);
+            break;
+            
+        default:
+            break;
+    }
+}
+
+bool IRProject::perform(const InvocationInfo& info)
+{
+    switch(info.commandID)
+    {
+        case CommandIDs::NewProject:
+            createNewProject();
+            break;
+        case CommandIDs::OpenProject:
+            openProject();
+            break;
+        case CommandIDs::CloseProject:
+            closeProject();
+            break;
+        case CommandIDs::SaveProject:
+            saveProject();
+            break;
+        case CommandIDs::RenameProject:
+            saveAsProject();
+            break;
+        case CommandIDs::NewWorkspace:
+            createNewWorkspace();
+            break;
+        default:
+            return false;
+    }
+    repaint();
+    return true;
+}
