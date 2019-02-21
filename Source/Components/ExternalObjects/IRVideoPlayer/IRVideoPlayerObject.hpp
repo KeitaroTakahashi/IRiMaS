@@ -19,6 +19,7 @@ public:
     {
         this->videoPlayer = new IRVideoPlayer();
         this->videoPlayer->setBounds(getLocalBounds().reduced(5));
+        this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
         addAndMakeVisible(this->videoPlayer);
     }
     ~IRVideoPlayerObject()
@@ -27,114 +28,50 @@ public:
     }
     
     // --------------------------------------------------
+    // copy related methods
     
-    IRNodeObject* copyThis() override
-    {
-        return new IRVideoPlayerObject(this->parent);
-    }
+    IRNodeObject* copyThis() override;
     
-    IRNodeObject* copyThisWithContents() override
-    {
-        IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent);
-        obj->setBounds(getLocalBounds());
-        File movieFile = obj->getVideoPlayer()->getMovieFile();
-        obj->getVideoPlayer()->openFile(movieFile);
-        
-        return obj;
-    }
+    IRNodeObject* copyThisWithContents() override;
     
-    IRNodeObject* copySelectedContents() override
-    {
-        IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent);
-
-        return obj;
-    }
+    IRNodeObject* copySelectedContents() override;
+    
     // --------------------------------------------------
-    t_json saveThisToSaveData() override
-    {
-        
-        t_json saveData = t_json::object({
-            {"filePath", this->videoPlayer->getPath()}
-        });
-        
-        
-        t_json save = t_json::object({
-            {"videoPlayer", saveData}
-        });
-        
-        return save;
-        
-    }
+    
+    t_json saveThisToSaveData() override;
+    
     // --------------------------------------------------
-    void loadThisFromSaveData(t_json data) override
-    {
-        t_json w = data["videoPlayer"];
-        
-        File file(w["filePath"].string_value());
-        this->videoPlayer->openFile(file);
-    }
+    
+    void loadThisFromSaveData(t_json data) override;
+    
+    // --------------------------------------------------
+    // resize reated methods
+    void resized() override;
+    
+    void resizeThisComponentEvent(const MouseEvent& e) override;
+    
+    // --------------------------------------------------
+    
+    void mouseUpEvent(const MouseEvent& e) override;
     
     // --------------------------------------------------
 
-    void resized() override
-    {
-        this->videoPlayer->setBounds(getLocalBounds().reduced(5));
-    }
+    void paint(Graphics& g) override;
     
-    void resizeThisComponentEvent(const MouseEvent& e) override
-    {
-        
-        // off controller, otherwise mouse event will be stolen by the controller,
-        // and this event can not be acomplished properly.
-        if(this->videoPlayer->isNeedController() && this->videoPlayer->isVideoOpened())
-            this->videoPlayer->setNeedController(false);
-
-        
-        double ratio = this->videoPlayer->getAspectRatio();
-        std::cout <<"ratio = "<< ratio << std::endl;
-        if(ratio != 0){
-        
-            float deltaX = e.getScreenX() - e.getMouseDownScreenX();
-            float deltaY = e.getScreenY() - e.getMouseDownScreenY();
-            
-            float newWidth = getPreviousWidth();
-            float newHeight = getPreviousHeight();
-            
-            if(deltaX > deltaY)
-            {
-                newWidth += deltaX;
-                newHeight = (double) newWidth / this->videoPlayer->getAspectRatio();
-            }else{
-                newHeight += deltaY;
-                newWidth = (double) newHeight * this->videoPlayer->getAspectRatio();
-            }
-            setSize(newWidth, newHeight);
-        }else{
-            IRNodeComponent::resizeThisComponentEvent(e);
-        }
-    }
     // --------------------------------------------------
-    void mouseUpEvent(const MouseEvent& e) override
-    {
-        //recover event
-       if(!this->videoPlayer->isNeedController() && this->videoPlayer->isVideoOpened())
-           this->videoPlayer->setNeedController(true);
-    }
-
-    void paint(Graphics& g) override
-    {
-        IRNodeObject::paint(g);
-    }
-    // --------------------------------------------------
+    // call back function by IRVideoPlayer
+    void videoLoadCompletedAction();
     
+    // --------------------------------------------------
+
     IRVideoPlayer* getVideoPlayer() { return this->videoPlayer; }
+
+    // --------------------------------------------------
 
 private:
     IRVideoPlayer *videoPlayer;
     
-    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayerObject)
-    
 };
 
 #endif /* IRVideoPlayerObject_hpp */

@@ -8,6 +8,11 @@
 #ifndef IRVideoPlayer_hpp
 #define IRVideoPlayer_hpp
 
+// opencv for getting a video frame
+#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
+#include <highgui.hpp>
+
 #include "IRFoundation.h"
 #include "IRCVVideoPlayer.hpp"
 
@@ -42,7 +47,9 @@ public:
         this->player_with_controller.setBounds(getLocalBounds());
         this->openButton.setBounds(getLocalBounds());
     }
-    void paint(Graphics &g) override {}
+    void paint(Graphics &g) override
+    {
+    }
     
     // --------------------------------------------------
     void openFile()
@@ -91,11 +98,30 @@ public:
             KLib().showRectangle<int>(this->videoSize);
             this->aspectRatio = (float)this->videoSize.getWidth() / (float)this->videoSize.getHeight();
             setNeedController(true);
+            
+            int w,h;
+            if(this->videoSize.getWidth() > 320)
+            {
+                w = 320;
+                h = (int)((float)w / this->aspectRatio);
+            }else{
+                w = this->videoSize.getWidth();
+                h = this->videoSize.getHeight();
 
+            }
+            this->player.setBounds(0,0,w,h);
+            this->player_with_controller.setBounds(0,0,w,h);
             addAndMakeVisible(this->player_with_controller);
             removeChildComponent(&this->openButton);
             
+            setSize(w,h);
+            
             this->isVideoOpenedFlag = true;
+            
+            if(videoLoadCompleted != nullptr)
+            {
+                videoLoadCompleted();
+            }
         }else{
             this->isVideoOpenedFlag = false;
             removeChildComponent(&this->player);
@@ -128,6 +154,8 @@ public:
     // --------------------------------------------------
     std::string getPath() const { return this->path.toStdString(); } 
     // --------------------------------------------------
+    
+    std::function<void()> videoLoadCompleted;
     
 private:
     VideoComponent player;
