@@ -158,9 +158,7 @@ public:
             FileChooser chooser("Save project...",
                                 File::nonexistent,
                                 "");
-            
-            printf("HELLOLOLOLO\n");
-            
+                        
             if(chooser.browseForFileToSave(true))
             {
                 auto file = chooser.getResult();
