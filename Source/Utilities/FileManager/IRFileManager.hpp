@@ -12,6 +12,7 @@
 
 #include "JuceHeader.h"
 #include "DataType.h"
+#include "KLib.h"
 
 /*
  
@@ -32,7 +33,7 @@ class IRFileManager
 public:
     IRFileManager()
     {
-        
+        clear();
     }
     
     ~IRFileManager()
@@ -42,13 +43,14 @@ public:
     //==================================================
 
     // check if the new file is already imported or not
-    bool isFileAlreadyHeld(FILE* newFile);
-    bool isObjectAlreadyExist(IRObjectPtr p);
+    bool isFileAlreadyRegistered(File* newFile);
+    bool isObjectAlreadyRegistered(IRObjectPtr p);
     // -------------------------------------------------
-    IRObjectPtr retrieveAlreadyHeldFile(FILE* file);
-    FILE* retrieveAlreadyHeldFILE(IRObjectPtr p);
+    // return nullptr if object does not exist
+    IRObjectPtr retrievePtrByFile(File* file);
+    File* retrieveFileByPtr(IRObjectPtr p);
     // -------------------------------------------------
-    void registerNewFile(FILE file, IRObjectPtr obj);
+    void registerNewFile(File* file, IRObjectPtr obj);
     // -------------------------------------------------
 
     //==================================================
@@ -61,7 +63,7 @@ private:
     class FILEMAP
     {
     private:
-        Array<FILE*> fileList;
+        Array<File*> fileList;
         Array<IRObjectPtr> pList;
     public:
         void clear()
@@ -70,23 +72,63 @@ private:
             this->pList.clear();
         }
         
-        void add(FILE* f, IRObjectPtr p)
+        bool add(File* f, IRObjectPtr p)
         {
             this->fileList.add(f);
             this->pList.add(p);
+            return true;
+            
+            // if any confliction occurs
+            if(this->fileList.size() != this->pList.size()) return false;
         }
         
-        FILE* find(FILE* f)
+        bool remove(File* f)
+        {
+            int index = this->fileList.indexOf(f);
+            this->fileList.remove(index);
+            this->pList.remove(index);
+            return true;
+            
+            // if any confliction occurs
+            if(this->fileList.size() != this->pList.size()) return false;
+        }
+        
+        bool remove(IRObjectPtr p)
+        {
+            int index = this->pList.indexOf(p);
+            this->fileList.remove(index);
+            this->pList.remove(index);
+            return true;
+            
+            // if any confliction occurs
+            if(this->fileList.size() != this->pList.size()) return false;
+        }
+        
+        File* findFile(File* f)
         {
             int index = this->fileList.indexOf(f);
             if (index > -1) return this->fileList[index];
             else return nullptr;
         }
         
-        IRObjectPtr find(IRObjectPtr p)
+        IRObjectPtr findPtr(IRObjectPtr p)
         {
             int index = this->pList.indexOf(p);
-            if(index > -1) return this->pList[index];
+            if (index > -1) return this->pList[index];
+            else return nullptr;
+        }
+        
+        IRObjectPtr findPtrByFile(File* f)
+        {
+            int index = this->pList.indexOf(f);
+            if (index > -1) return this->pList[index];
+            else return nullptr;
+        }
+        
+        File* findFileByPtr(IRObjectPtr p)
+        {
+            int index = this->pList.indexOf(p);
+            if(index > -1) return this->fileList[index];
             else return nullptr;
         }
   
