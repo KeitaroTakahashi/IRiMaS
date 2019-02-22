@@ -19,13 +19,12 @@
     IRFileManager should be constructed as singleton.
     This class manages all files imported on the software and avoid import the same file more than twice unless the files are modified by the program.
  
- 
  juce::Image
  audioDataClass
  juce::VideoComponent
  TextDataClass : .txt, .csv, .cpp, .c
 
- 
+
  */
 
 class IRFileManager

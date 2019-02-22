@@ -48,6 +48,9 @@ public:
         // initialize object factory of IRObjectFactory
         // IRObjectFactory is created as a singleton manner
         init_factory f;
+        
+
+
     }
     
     ~IRMAIN()

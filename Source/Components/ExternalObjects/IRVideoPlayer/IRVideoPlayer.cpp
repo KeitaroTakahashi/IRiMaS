@@ -6,3 +6,9 @@
 //
 
 #include "IRVideoPlayer.hpp"
+
+
+void IRVideoPlayer::registerFileToManager()
+{
+    //FILEMANAGER.registerNewFile(&this->movieFile, <#IRObjectPtr obj#>)
+}

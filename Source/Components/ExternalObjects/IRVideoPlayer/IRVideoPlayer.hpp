@@ -16,6 +16,7 @@
 #include "IRFoundation.h"
 #include "IRCVVideoPlayer.hpp"
 
+
 class IRVideoPlayer : public Component,
                       public DragAndDropContainer
 {
@@ -71,6 +72,9 @@ public:
             this->path.swapWith(path);
             
             loadVideo(url);
+            
+            // register file
+            
         }
     }
     
@@ -87,6 +91,10 @@ public:
         this->player.load(url);
         this->player_with_controller.loadAsync(url, [this] (const URL& u, Result r) { videoLoadingFinished (u, r); });
     }
+    
+    // just for test
+    void registerFileToManager();
+    
     // --------------------------------------------------
     // call back function for video loader
     void videoLoadingFinished (const URL& url, Result result)
@@ -177,6 +185,10 @@ private:
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
+    //File Manager
+    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
+
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
     
 };

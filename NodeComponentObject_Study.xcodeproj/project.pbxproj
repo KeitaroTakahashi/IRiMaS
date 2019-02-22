@@ -232,6 +232,7 @@
 		8293FBCF220C6EAC00C09BD5 /* IRCVVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8293FBCD220C6EAC00C09BD5 /* IRCVVideoPlayer.cpp */; };
 		8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8293FBD1221451EA00C09BD5 /* KPixelDataConvertor.cpp */; };
 		82A98B2A2199B84B0077EAE6 /* IRWorkspaceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */; };
+		82AB427E22208B3200F9184C /* DataAllocationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB427C22208B3200F9184C /* DataAllocationManager.cpp */; };
 		82B0DF34214268FB0000516C /* IRSpectrogramUIEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82B0DF33214268FB0000516C /* IRSpectrogramUIEvents.cpp */; };
 		82FA8F0A22089C7D0032983F /* IRVideoThumbnail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82FA8F0822089C7D0032983F /* IRVideoThumbnail.cpp */; };
 		82FA8F16220B33170032983F /* NSNodeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82FA8F14220B33170032983F /* NSNodeComponent.cpp */; };
@@ -591,6 +592,8 @@
 		8293FBD1221451EA00C09BD5 /* KPixelDataConvertor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KPixelDataConvertor.cpp; sourceTree = "<group>"; };
 		82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceList.cpp; sourceTree = "<group>"; };
 		82A98B292199B84B0077EAE6 /* IRWorkspaceList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkspaceList.hpp; sourceTree = "<group>"; };
+		82AB427C22208B3200F9184C /* DataAllocationManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DataAllocationManager.cpp; sourceTree = "<group>"; };
+		82AB427D22208B3200F9184C /* DataAllocationManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DataAllocationManager.hpp; sourceTree = "<group>"; };
 		82B0DF33214268FB0000516C /* IRSpectrogramUIEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramUIEvents.cpp; sourceTree = "<group>"; };
 		82B658F82137F8B900F6F506 /* IRWorkspaceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRWorkspaceDelegate.h; sourceTree = "<group>"; };
 		82D9030E21A8486300E57471 /* KDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDictionary.h; sourceTree = "<group>"; };
@@ -1502,6 +1505,15 @@
 			path = IRWorkspaceList;
 			sourceTree = "<group>";
 		};
+		82AB427B22208B0300F9184C /* DataAllocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				82AB427C22208B3200F9184C /* DataAllocationManager.cpp */,
+				82AB427D22208B3200F9184C /* DataAllocationManager.hpp */,
+			);
+			path = DataAllocationManager;
+			sourceTree = "<group>";
+		};
 		82D9030D21A8484300E57471 /* KeLib */ = {
 			isa = PBXGroup;
 			children = (
@@ -1520,6 +1532,7 @@
 			children = (
 				10405816221AC96900E82FED /* IRFileManager.cpp */,
 				82FA8F11220A58AC0032983F /* IRFileManager.hpp */,
+				82AB427B22208B0300F9184C /* DataAllocationManager */,
 			);
 			path = FileManager;
 			sourceTree = "<group>";
@@ -1684,6 +1697,7 @@
 				821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */,
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
 				821A5E76212B6A4D00BF593D /* selectComponents.cpp in Sources */,
+				82AB427E22208B3200F9184C /* DataAllocationManager.cpp in Sources */,
 				821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */,
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
 				82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */,

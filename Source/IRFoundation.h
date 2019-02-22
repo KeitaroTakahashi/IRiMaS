@@ -11,6 +11,8 @@
 #include "Preferences.h"
 #include "DataType.h"
 
+#include "IRFileManager.hpp"
+
 #include "PreferenceWindow.h"
 #include "IRSaveLoadSystem.hpp"
 
