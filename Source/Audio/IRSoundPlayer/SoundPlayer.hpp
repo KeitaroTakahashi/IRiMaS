@@ -119,7 +119,7 @@ private:
 class AudioPlayer_threadSafe
 : public    AudioAppComponent,
 private   ChangeListener,
-IRAudioReader::Listener
+IRAudio::Listener
 {
 public:
     AudioPlayer_threadSafe();
@@ -245,7 +245,7 @@ public:
     
     
     // this method is called when the file import completed.
-    virtual void fileImportCompleted(IRAudioReader *obj) override
+    virtual void fileImportCompleted(IRAudio *obj) override
     {
         //set audioBuffer to player
         std::vector<int>v = {0,1};
@@ -255,7 +255,7 @@ public:
     }
     
     //this method is called when file status changed
-    virtual void fileStatusChanged(IRAudioReader *obj) override
+    virtual void fileStatusChanged(IRAudio *obj) override
     {
         
     }
@@ -316,7 +316,7 @@ private:
     }
     //==========================================================================
     
-    IRAudioReader audioFile;
+    IRAudio audioFile;
     SoundPlayerClass player;
     
     TransportState state;

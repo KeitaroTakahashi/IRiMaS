@@ -17,7 +17,7 @@
 class IRSpectrogram : public AudioAppComponent,
                       public ChangeBroadcaster,
                       private ChangeListener,
-                      private IRAudioReader::Listener
+                      private IRAudio::Listener
 {
 public:
     IRSpectrogram()
@@ -167,7 +167,7 @@ public:
     // # IRAudioReader::Listener
     //  ------------------------------------------------------------
     // this method is called when the file import completed.
-    void fileImportCompleted(IRAudioReader *obj) override
+    void fileImportCompleted(IRAudio *obj) override
     {
         std::cout << "fileImportCompleted." << std::endl;
         //set audioBuffer to player
@@ -190,7 +190,7 @@ public:
     }
     //  ------------------------------------------------------------
     //this method is called when file status changed
-    void fileStatusChanged(IRAudioReader *obj) override
+    void fileStatusChanged(IRAudio *obj) override
     {
         
     }
@@ -442,7 +442,7 @@ public:
     SoundPlayerClass* getPlayer() const { return this->player; }
     //==========================================================================
 
-    IRAudioReader audioFile;
+    IRAudio audioFile;
     SoundPlayerClass *player;
     
 private:

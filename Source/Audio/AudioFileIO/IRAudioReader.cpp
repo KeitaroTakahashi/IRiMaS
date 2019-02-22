@@ -1,5 +1,5 @@
 //
-//  IRAudioReader.cpp
+//  IRAudio.cpp
 //  Thread safe audio file reader
 //
 //  Created by Keitaro on 17/08/2018.
@@ -7,29 +7,29 @@
 
 #include "IRAudioReader.hpp"
 // ------------------------------------------------------------------
-IRAudioReader::IRAudioReader():
+IRAudio::IRAudio():
 Thread("ImportAudioFile Background thread")
 {
     this->formatManager.registerBasicFormats();
     startThread();
 }
 // ------------------------------------------------------------------
-IRAudioReader::~IRAudioReader()
+IRAudio::~IRAudio()
 {
     stopThread(4000);
 }
 // ------------------------------------------------------------------
-void IRAudioReader::clear(ReferenceCountedBuffer::Ptr currentBuffer)
+void IRAudio::clear(ReferenceCountedBuffer::Ptr currentBuffer)
 {
     currentBuffer = nullptr;
 }
 // ------------------------------------------------------------------
-AudioThumbnail* IRAudioReader::getThumbnail()
+AudioThumbnail* IRAudio::getThumbnail()
 {
     return this->thumbnail;
 }
 // ------------------------------------------------------------------
-bool IRAudioReader::openFile()
+bool IRAudio::openFile()
 {
     FileChooser chooser("Select an audio file to play...",
                         File::nonexistent,
@@ -45,7 +45,7 @@ bool IRAudioReader::openFile()
     return false;
 }
 // ------------------------------------------------------------------
-bool IRAudioReader::openFileFromPath(String path)
+bool IRAudio::openFileFromPath(String path)
 {
     this->path.swapWith(path);
     notify();
@@ -53,7 +53,7 @@ bool IRAudioReader::openFileFromPath(String path)
 }
 // ------------------------------------------------------------------
 
-std::vector<float> IRAudioReader::getAudioBufferInVector()
+std::vector<float> IRAudio::getAudioBufferInVector()
 {
     AudioSampleBuffer* sampleBuffer = this->buffer->getAudioSampleBuffer();
     float* startPtr = sampleBuffer->getWritePointer(0);
@@ -63,7 +63,7 @@ std::vector<float> IRAudioReader::getAudioBufferInVector()
 }
 
 // ------------------------------------------------------------------
-void IRAudioReader::run()
+void IRAudio::run()
 {
     while(! threadShouldExit())
     {
@@ -74,7 +74,7 @@ void IRAudioReader::run()
 }
 // ------------------------------------------------------------------
 
-void IRAudioReader::checkForBuffersToFree()
+void IRAudio::checkForBuffersToFree()
 {
     for(auto i = this->buffers.size(); --i >= 0;)
     {
@@ -86,7 +86,7 @@ void IRAudioReader::checkForBuffersToFree()
     }
 }
 
-void IRAudioReader::checkForPathToOpen()
+void IRAudio::checkForPathToOpen()
 {
     String pathToOpen;
     pathToOpen.swapWith(this->path);
@@ -150,4 +150,4 @@ void IRAudioReader::checkForPathToOpen()
         this->isFileLoadCompleted = false;
         sendChangeMessage();
     }
-    }
+}

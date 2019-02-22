@@ -92,16 +92,16 @@ private:
 // import audio file
 // ===========================================================================
 
-class IRAudioReader : public Component,
+class IRAudio : public Component,
                       public ChangeBroadcaster,
                       private Thread
 {
 public:
-    // Constructing IRAudioReader and Thread class
-    IRAudioReader();
+    // Constructing IRAudio and Thread class
+    IRAudio();
     
     // stop thread processing...
-    ~IRAudioReader();
+    ~IRAudio();
     
     // clear ReferenceCountedBuffer::Ptr here
     void clear(ReferenceCountedBuffer::Ptr currentBuffer);
@@ -149,9 +149,9 @@ public:
         virtual ~Listener() {}
         
         // called when audio file has been loaded
-        virtual void fileImportCompleted(IRAudioReader *obj) = 0;
+        virtual void fileImportCompleted(IRAudio *obj) = 0;
         // called when file status changed (will be loaded, completed, deleted etc.)
-        virtual void fileStatusChanged(IRAudioReader *obj) = 0;
+        virtual void fileStatusChanged(IRAudio *obj) = 0;
     };
     
     void addListener(Listener* newListener) { this->ImportAudioListeners.add(newListener); }
@@ -207,7 +207,7 @@ private:
     //thumbnail
     AudioThumbnail* thumbnail = nullptr;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRAudioReader)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRAudio)
     
 };
 

@@ -16,7 +16,7 @@
 class IRWaveform : public AudioAppComponent,
                    private ChangeListener,
                    public ChangeBroadcaster,
-IRAudioReader::Listener
+IRAudio::Listener
 {
 public:
     IRWaveform()
@@ -112,7 +112,7 @@ public:
     // # IRAudioReader::Listener
     //  ------------------------------------------------------------
     // this method is called when the file import completed.
-    void fileImportCompleted(IRAudioReader *obj) override
+    void fileImportCompleted(IRAudio *obj) override
     {
         //set audioBuffer to player
         std::vector<int>v = {0,1};
@@ -122,7 +122,7 @@ public:
     }
     //  ------------------------------------------------------------
     //this method is called when file status changed
-    void fileStatusChanged(IRAudioReader *obj) override
+    void fileStatusChanged(IRAudio *obj) override
     {
         
     }
@@ -220,7 +220,7 @@ public:
 
     //==========================================================================
 
-    IRAudioReader audioFile;
+    IRAudio audioFile;
     SoundPlayerClass *player;
 
     

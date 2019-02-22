@@ -54,7 +54,7 @@ public:
         
         // add object to a global space in Workspace
         virtual void addObjectGlobal(IRObjectPtr obj, String id) {};
-        virtual IRObjectPtr getObjectGlobal(String id) {};
+        virtual IRObjectPtr getObjectGlobal(String id) { return nullptr; };
     };
     
     virtual void addListener(Listener* newListener) { this->listeners.add(newListener); }
