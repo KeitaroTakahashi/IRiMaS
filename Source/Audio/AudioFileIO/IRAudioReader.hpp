@@ -10,7 +10,11 @@
 
 
 #include "JuceHeader.h"
-// #include "juce_audio_utils/juce_audio_utils.h"
+
+
+// ===========================================================================
+// Thread Safe Reference Buffer class for Audio Reader : Do NOT REMOVE IT FROM HERE!
+// ===========================================================================
 
 class ReferenceCountedBuffer: public ReferenceCountedObject
 {
@@ -44,6 +48,10 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ReferenceCountedBuffer)
     
 };
+
+// ===========================================================================
+// Thread Safe Reference Buffer class for Thumbnail Reader : Do NOT REMOVE IT FROM HERE!
+// ===========================================================================
 
 class ReferenceCountedThumbnail: public ReferenceCountedObject
 {
@@ -79,83 +87,60 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ReferenceCountedThumbnail)
     
 };
+
 // ===========================================================================
 // import audio file
 // ===========================================================================
-
 
 class IRAudioReader : public Component,
                       public ChangeBroadcaster,
                       private Thread
 {
 public:
-    IRAudioReader()
-    :   Thread("ImportAudioFile Background thread")
-    {
-        this->formatManager.registerBasicFormats();
-        startThread();
-    }
-    ~IRAudioReader()
-    {
-        stopThread(4000);
-    }
+    // Constructing IRAudioReader and Thread class
+    IRAudioReader();
     
-    void clear(ReferenceCountedBuffer::Ptr currentBuffer)
-    {
-        currentBuffer = nullptr;
-    }
+    // stop thread processing...
+    ~IRAudioReader();
     
-    AudioThumbnail* getThumbnail()
-    {
-        return this->thumbnail;
-    }
+    // clear ReferenceCountedBuffer::Ptr here
+    void clear(ReferenceCountedBuffer::Ptr currentBuffer);
     
-    bool openFile()
-    {
-        FileChooser chooser("Select an audio file to play...",
-                            File::nonexistent,
-                            "*.wav, *.aif, *.aiff");
-        if(chooser.browseForFileToOpen())
-        {
-            auto file = chooser.getResult();
-            auto path = file.getFullPathName();
-            this->path.swapWith(path);
-            notify();
-            return true;
-        }
-        return false;
-    }
+    // get Thumbnail of audio data, return nullptr if not exists
+    AudioThumbnail* getThumbnail();
     
-    bool openFileFromPath(String path)
-    {
-        this->path.swapWith(path);
-        notify();
-        return true;
-    }
-    
+    // ===========================================================================
+    // audio file reader
     // ------------------------------------------------------------------
-    // audio file info
+    // open dialog to select a file
+    bool openFile();
+    // open audio file by path
+    bool openFileFromPath(String path);
+    // ------------------------------------------------------------------
+    // getter of the audio file info
     // ------------------------------------------------------------------
     double getSampleRate() const { return this->sampleRate; }
+    
     int getNumChannels() const { return this->numChannels; }
+    
     int64 getNumSamples() const { return this->numSamples; }
+    
     unsigned int getBitsPerSample() const { return this->bitsPerSample; }
+    
     String getPath() const { return this->filePath; }
+    
     String getFileName() const { return this->fileName; }
 
+    // print audio file info for debug
     void showAudioFileInfo();
+    // ------------------------------------------------------------------
+    // getter of the audio file buffer
     // ------------------------------------------------------------------
     AudioSampleBuffer* getAudioBuffer(){ return this->buffer->getAudioSampleBuffer(); }
     
-    std::vector<float> getAudioBufferInVector()
-    {
-        AudioSampleBuffer* sampleBuffer = this->buffer->getAudioSampleBuffer();
-        float* startPtr = sampleBuffer->getWritePointer(0);
-        int size = sampleBuffer->getNumSamples();
-        std::vector<float> vec (startPtr, startPtr + size);
-        return vec;
-    }
-
+    // return audio buffer in vector<float> data type
+    std::vector<float> getAudioBufferInVector();
+    
     // ===========================================================================
     // Listener
     class Listener
@@ -178,103 +163,23 @@ public:
     std::function<void()> onFileStatusChanged;
     
     // ===========================================================================
-    
-    
-private:
-    //thread
-        void run() override
-        {
-            while(! threadShouldExit())
-            {
-                checkForPathToOpen();
-                checkForBuffersToFree();
-                wait(500);
-            }
-        }
-    
-    void checkForBuffersToFree()
-    {
-        for(auto i = this->buffers.size(); --i >= 0;)
-        {
-            ReferenceCountedBuffer::Ptr buffer (this->buffers.getUnchecked(i));
-            if(this->buffer->getReferenceCount() == 2)
-            {
-                this->buffers.remove(i);
-            }
-        }
-    }
-    
-    void checkForPathToOpen()
-    {
-        String pathToOpen;
-        pathToOpen.swapWith(this->path);
-
-        if(pathToOpen.isNotEmpty())
-        {
-            this->isFileOpened = true;
-            
-            Component::BailOutChecker checker(this);
-            
-            File file (pathToOpen);
-            if((this->reader = this->formatManager.createReaderFor(file)))
-            {
-                
-                ReferenceCountedBuffer::Ptr newBuffer = new ReferenceCountedBuffer(file.getFileName(),
-                                                                                   this->reader->numChannels,
-                                                                                   (int) reader->lengthInSamples);
-                
-                this->reader->read(newBuffer->getAudioSampleBuffer(),
-                                   0,
-                                   (int) reader->lengthInSamples,
-                                   0,
-                                   true,
-                                   true);
-                this->buffer = newBuffer;
-                this->buffers.add (newBuffer);
-                
-                // thumbail thread safe
-                //ReferenceCountedThumbnail::Ptr newThumbnail = new ReferenceCountedThumbnail(file.getFileName());
-                
-                //newThumbnail->getThumbnail()->setSource(new FileInputSource(file));
-                
-                this->sampleRate = this->reader->sampleRate;
-                this->numChannels = this->reader->numChannels;
-                this->numSamples = this->reader->lengthInSamples;
-                this->bitsPerSample = this->reader->bitsPerSample;
-                
-                std::cout << "reading samples of "<<(int) reader->lengthInSamples<<std::endl;
-                //==========
-                // check if the objects are not deleted, if deleted, return
-                if(checker.shouldBailOut()) return;
-                
-                // fire call back signal here!
-                this->ImportAudioListeners.callChecked(checker, [this] (Listener& l) {l.fileImportCompleted(this);});
-                //check again
-                if(checker.shouldBailOut()) return;
-                //std::function
-                if(this->onImportCompleted != nullptr) this->onImportCompleted();
-                
-                this->isFileLoadCompleted = true;
-                this->fileName = file.getFileName();
-                this->filePath = file.getFullPathName();
-                sendChangeMessage();
-                
-            }else{
-                std::cout << "read failed\n";
-                
-            }
-        }else{
-            this->isFileOpened = false;
-            this->isFileLoadCompleted = false;
-            sendChangeMessage();
-        }
-    }
-    
-public:
+    // public members
     bool isFileOpened = false;
     bool isFileLoadCompleted = false;
-
+    
 private:
+    // ===========================================================================
+    //thread related methods
+    // ---------------------------------------------------------------------------
+    // check
+    void run() override;
+    
+    void checkForBuffersToFree();
+    
+    // impoart audio file and read the data
+    void checkForPathToOpen();
+    
+    // ---------------------------------------------------------------------------
     
     String path;
     String filePath;
@@ -284,16 +189,15 @@ private:
     int64 numSamples = 0;
     unsigned int bitsPerSample = 0;
     
-    
-    // --------------------------------------------------------
-    
+    // ===========================================================================
     // listner
     ListenerList<Listener> ImportAudioListeners;
     
-    // --------------------------------------------------------
-    
+    // ===========================================================================
+    // thread safe reference pointer
+
     std::unique_ptr<AudioFormatReaderSource> readerSource;
-    AudioFormatReader *reader;
+    AudioFormatReader *reader = nullptr;
     
     ReferenceCountedArray<ReferenceCountedBuffer> buffers;
     ReferenceCountedBuffer::Ptr buffer; // AudioBuffer<float>
@@ -301,7 +205,7 @@ private:
     AudioFormatManager formatManager;
     
     //thumbnail
-    AudioThumbnail* thumbnail;
+    AudioThumbnail* thumbnail = nullptr;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRAudioReader)
     

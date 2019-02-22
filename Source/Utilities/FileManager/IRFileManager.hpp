@@ -18,6 +18,14 @@
     IRFileManager should be constructed as singleton.
     This class manages all files imported on the software and avoid import the same file more than twice unless the files are modified by the program.
  
+ 
+ juce::Image
+ audioDataClass
+ IRVideoPlayer or juce::VideoComponent
+ TextDataClass : .txt, .csv, .cpp, .c
+ 
+ 
+ 
  */
 
 class IRFileManager
@@ -72,17 +80,15 @@ private:
         FILE* find(FILE* f)
         {
             int index = this->fileList.indexOf(f);
-            if(index > -1){
-                return this->fileList[index];
-            }else return nullptr;
+            if (index > -1) return this->fileList[index];
+            else return nullptr;
         }
         
         IRObjectPtr find(IRObjectPtr p)
         {
             int index = this->pList.indexOf(p);
-            if(index > -1){
-                return this->pList[index];
-            }else return nullptr;
+            if(index > -1) return this->pList[index];
+            else return nullptr;
         }
   
     };
