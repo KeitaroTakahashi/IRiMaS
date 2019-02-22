@@ -85,6 +85,7 @@ void IRAudio::checkForBuffersToFree()
         }
     }
 }
+// ------------------------------------------------------------------
 
 void IRAudio::checkForPathToOpen()
 {

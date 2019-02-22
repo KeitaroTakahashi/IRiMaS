@@ -21,10 +21,9 @@
  
  juce::Image
  audioDataClass
- IRVideoPlayer or juce::VideoComponent
+ juce::VideoComponent
  TextDataClass : .txt, .csv, .cpp, .c
- 
- 
+
  
  */
 
