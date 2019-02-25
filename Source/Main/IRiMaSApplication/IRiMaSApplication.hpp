@@ -1,83 +1,35 @@
-/*
- ==============================================================================
- 
- This file was auto-generated!
- 
- It contains the basic startup code for a JUCE application.
- 
- ==============================================================================
- */
 
 #include "JuceHeader.h"
-#include "MainComponent.h"
-#include "IRWorkSpace.hpp"
-#include "IRFoundation.h"
 
 #include "IRiMaSMain.hpp"
+#include "PreferenceWindow.h"
 
-//==============================================================================
-class NodeComponentObject_StudyApplication  : public JUCEApplication
+
+class IRiMaSApplication  : public JUCEApplication
 {
 public:
-    //==============================================================================
-    NodeComponentObject_StudyApplication() {}
     
-    const String getApplicationName() override       { return ProjectInfo::projectName; }
-    const String getApplicationVersion() override    { return ProjectInfo::versionString; }
-    bool moreThanOneInstanceAllowed() override       { return true; }
+    IRiMaSApplication();
     
-    //==============================================================================
-    void initialise (const String& commandLine) override
-    {
-        // This method is where you should put your application's initialisation code..
-        
-        //this->preferenceWindow = new PreferenceWindow (getApplicationName());
-        
-        this->mainWindow.reset(new IRMAIN(getApplicationName()));
-        this->mainWindow->initialize();
-        
-        //this->projectLib.push_back(new IRProjectWindow(getApplicationName(),this->preferenceWindow));
-        
-    }
+    const String getApplicationName() override;
+    const String getApplicationVersion() override;
+    bool moreThanOneInstanceAllowed() override;
     
-    void shutdown() override
-    {
-        // Add your application's shutdown code here..
-        
-        delete this->preferenceWindow;
-        this->mainWindow = nullptr;
-    }
+    void initialise (const String& commandLine) override;
+    void shutdown() override;
     
-    //==============================================================================
-    void systemRequestedQuit() override
-    {
-        // This is called when the app is being asked to quit: you can ignore this
-        // request and let the app carry on running, or call quit() to allow the app to close.
-        quit();
-    }
+    void systemRequestedQuit() override;
     
-    void anotherInstanceStarted (const String& commandLine) override
-    {
-        // When another instance of the app is launched while this one is running,
-        // this method is invoked, and the commandLine parameter tells you what
-        // the other instance's command-line arguments were.
-    }
+    void anotherInstanceStarted (const String& commandLine) override;
     
-    //==============================================================================
-    
-    void createNewProject()
-    {
-        
-    }
-    
-    
-    //==============================================================================
-    
+    // void createNewProject();
     
 private:
-    std::unique_ptr<IRMAIN> mainWindow;
     
+    std::unique_ptr<IRMAIN> mainWindow;
     PreferenceWindow* preferenceWindow;
     
 };
+
+
 
