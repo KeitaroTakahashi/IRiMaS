@@ -8,6 +8,26 @@
 #ifndef DataAllocationManager_hpp
 #define DataAllocationManager_hpp
 
-#include <stdio.h>
+enum IRFileType
+{
+    JUCEIMAGE,
+    JUCEVIDEOCOMPONENT,
+    IRAUDIO,
+    TXT,
+    CSV
+};
 
+
+class DataAllocationManager
+{
+public:
+    
+    DataAllocationManager();
+    
+    ~DataAllocationManager();
+    
+    
+private:
+    
+};
 #endif /* DataAllocationManager_hpp */

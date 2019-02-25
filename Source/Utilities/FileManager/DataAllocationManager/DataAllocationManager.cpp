@@ -6,3 +6,13 @@
 //
 
 #include "DataAllocationManager.hpp"
+
+DataAllocationManager::DataAllocationManager()
+{
+    
+}
+
+DataAllocationManager::~DataAllocationManager()
+{
+    
+}

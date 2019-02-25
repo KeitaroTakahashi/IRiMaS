@@ -11,6 +11,7 @@
 #include <map>
 
 #include "JuceHeader.h"
+#include "DataAllocationManager.hpp"
 #include "DataType.h"
 #include "KLib.h"
 
@@ -22,7 +23,7 @@
  juce::Image
  audioDataClass
  juce::VideoComponent
- TextDataClass : .txt, .csv, .cpp, .c
+ TextDataClass : .txt, .csv
 
 
  */
@@ -30,6 +31,11 @@
 class IRFileManager
 {
 public:
+    
+    
+    
+    
+    
     IRFileManager()
     {
         clear();
