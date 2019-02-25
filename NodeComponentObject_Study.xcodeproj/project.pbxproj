@@ -853,7 +853,7 @@
 				823E7BCC21305AD60046512B /* IRFoundation.h */,
 				10405842221AD9EF00E82FED /* MainComponent.h */,
 				10405843221AD9EF00E82FED /* MainComponent.cpp */,
-				10405841221AD9EE00E82FED /* Main.cpp */,
+				82AB427F2224284000F9184C /* Main */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -1512,6 +1512,14 @@
 				82AB427D22208B3200F9184C /* DataAllocationManager.hpp */,
 			);
 			path = DataAllocationManager;
+			sourceTree = "<group>";
+		};
+		82AB427F2224284000F9184C /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				10405841221AD9EE00E82FED /* Main.cpp */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		82D9030D21A8484300E57471 /* KeLib */ = {
