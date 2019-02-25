@@ -861,6 +861,13 @@
 			path = Source;
 			sourceTree = "<group>";
 		};
+		106DE3DA22242A7200237EE1 /* IRiMaSApplication */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRiMaSApplication;
+			sourceTree = "<group>";
+		};
 		2D1F25B34F10551155A3CC5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1520,6 +1527,7 @@
 		82AB427F2224284000F9184C /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				106DE3DA22242A7200237EE1 /* IRiMaSApplication */,
 				10405841221AD9EE00E82FED /* Main.cpp */,
 				82AB42802224291C00F9184C /* IRiMaSApplication.cpp */,
 				82AB42812224291C00F9184C /* IRiMaSApplication.hpp */,
