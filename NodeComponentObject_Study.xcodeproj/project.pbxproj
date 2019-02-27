@@ -913,6 +913,98 @@
 			path = ExternalObjects;
 			sourceTree = "<group>";
 		};
+		10F647452226C8D900A26D7D /* IRObjectSelection */ = {
+			isa = PBXGroup;
+			children = (
+				821A5E80212D799D00BF593D /* IRObjectSelection.hpp */,
+				821A5E7F212D799D00BF593D /* IRObjectSelection.cpp */,
+			);
+			path = IRObjectSelection;
+			sourceTree = "<group>";
+		};
+		10F647462226C8E400A26D7D /* IRNodeObjectSelector */ = {
+			isa = PBXGroup;
+			children = (
+				821A5E86212DAECE00BF593D /* IRNodeObjectSelector.hpp */,
+				821A5E85212DAECE00BF593D /* IRNodeObjectSelector.cpp */,
+			);
+			path = IRNodeObjectSelector;
+			sourceTree = "<group>";
+		};
+		10F647472226C8EF00A26D7D /* IRGraphSelector */ = {
+			isa = PBXGroup;
+			children = (
+				821C5EAB2134814B00187902 /* IRGraphSelector.hpp */,
+				821C5EAA2134814B00187902 /* IRGraphSelector.cpp */,
+			);
+			path = IRGraphSelector;
+			sourceTree = "<group>";
+		};
+		10F6474A2226C9B700A26D7D /* SelectNodeObjects */ = {
+			isa = PBXGroup;
+			children = (
+				821A5E75212B6A4D00BF593D /* selectComponents.hpp */,
+				821A5E74212B6A4D00BF593D /* selectComponents.cpp */,
+			);
+			path = SelectNodeObjects;
+			sourceTree = "<group>";
+		};
+		10F6474B2226C9F800A26D7D /* NodeObjectControlManager */ = {
+			isa = PBXGroup;
+			children = (
+				821A5E7B212C4FEB00BF593D /* NodeObjectControllManager.hpp */,
+				821A5E7A212C4FEB00BF593D /* NodeObjectControllManager.cpp */,
+			);
+			path = NodeObjectControlManager;
+			sourceTree = "<group>";
+		};
+		10F6474C2226CA2700A26D7D /* IRWorkspaceDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				82B658F82137F8B900F6F506 /* IRWorkspaceDelegate.h */,
+			);
+			path = IRWorkspaceDelegate;
+			sourceTree = "<group>";
+		};
+		10F6474D2226CA4300A26D7D /* IRWorkspaceBroadcaster */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRWorkspaceBroadcaster;
+			sourceTree = "<group>";
+		};
+		10F6474E2226CA5B00A26D7D /* ObjectMenu */ = {
+			isa = PBXGroup;
+			children = (
+				82657D0221EFD5CB003FA700 /* CreateObjectMenu.h */,
+				10F6474F2226CA9600A26D7D /* ObjectListMenuObject */,
+				10F647502226CAA400A26D7D /* ObjectListMenu */,
+				10F647512226CAB500A26D7D /* ObjectMenuWindow */,
+			);
+			path = ObjectMenu;
+			sourceTree = "<group>";
+		};
+		10F6474F2226CA9600A26D7D /* ObjectListMenuObject */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ObjectListMenuObject;
+			sourceTree = "<group>";
+		};
+		10F647502226CAA400A26D7D /* ObjectListMenu */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ObjectListMenu;
+			sourceTree = "<group>";
+		};
+		10F647512226CAB500A26D7D /* ObjectMenuWindow */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ObjectMenuWindow;
+			sourceTree = "<group>";
+		};
 		2D1F25B34F10551155A3CC5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1210,18 +1302,17 @@
 		821A5E68212AF8A600BF593D /* IRWorkSpace */ = {
 			isa = PBXGroup;
 			children = (
-				821A5E7E212D796E00BF593D /* ObjectSelection */,
-				82A98B272199B8070077EAE6 /* IRWorksplaceList */,
-				821A5E69212AF8B800BF593D /* IRWorkSpace.cpp */,
 				821A5E6A212AF8B800BF593D /* IRWorkSpace.hpp */,
+				821A5E69212AF8B800BF593D /* IRWorkSpace.cpp */,
 				821A5E88212E2B9800BF593D /* IRWorkSpaceObjectManagement.cpp */,
 				821A5EA3212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp */,
-				821A5E74212B6A4D00BF593D /* selectComponents.cpp */,
-				821A5E75212B6A4D00BF593D /* selectComponents.hpp */,
-				821A5E7A212C4FEB00BF593D /* NodeObjectControllManager.cpp */,
-				821A5E7B212C4FEB00BF593D /* NodeObjectControllManager.hpp */,
-				82B658F82137F8B900F6F506 /* IRWorkspaceDelegate.h */,
-				82657D0221EFD5CB003FA700 /* CreateObjectMenu.h */,
+				821A5E7E212D796E00BF593D /* ObjectSelection */,
+				82A98B272199B8070077EAE6 /* IRWorksplaceList */,
+				10F6474A2226C9B700A26D7D /* SelectNodeObjects */,
+				10F6474B2226C9F800A26D7D /* NodeObjectControlManager */,
+				10F6474C2226CA2700A26D7D /* IRWorkspaceDelegate */,
+				10F6474D2226CA4300A26D7D /* IRWorkspaceBroadcaster */,
+				10F6474E2226CA5B00A26D7D /* ObjectMenu */,
 			);
 			path = IRWorkSpace;
 			sourceTree = "<group>";
@@ -1248,12 +1339,9 @@
 		821A5E7E212D796E00BF593D /* ObjectSelection */ = {
 			isa = PBXGroup;
 			children = (
-				821A5E7F212D799D00BF593D /* IRObjectSelection.cpp */,
-				821A5E80212D799D00BF593D /* IRObjectSelection.hpp */,
-				821A5E85212DAECE00BF593D /* IRNodeObjectSelector.cpp */,
-				821A5E86212DAECE00BF593D /* IRNodeObjectSelector.hpp */,
-				821C5EAA2134814B00187902 /* IRGraphSelector.cpp */,
-				821C5EAB2134814B00187902 /* IRGraphSelector.hpp */,
+				10F647452226C8D900A26D7D /* IRObjectSelection */,
+				10F647462226C8E400A26D7D /* IRNodeObjectSelector */,
+				10F647472226C8EF00A26D7D /* IRGraphSelector */,
 			);
 			path = ObjectSelection;
 			sourceTree = "<group>";
@@ -1528,8 +1616,8 @@
 		82A98B272199B8070077EAE6 /* IRWorksplaceList */ = {
 			isa = PBXGroup;
 			children = (
-				82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */,
 				82A98B292199B84B0077EAE6 /* IRWorkspaceList.hpp */,
+				82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */,
 			);
 			name = IRWorksplaceList;
 			path = IRWorkspaceList;
