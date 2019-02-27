@@ -11,7 +11,7 @@
 #include <map>
 #include "JuceHeader.h"
 // #include "juce_audio_utils/juce_audio_utils.h"
-#include "PreferenceWindow.h"
+#include "PreferenceWindow.hpp"
 
 #include "IRNodeObject.hpp"
 #include "AudioEngine.h"

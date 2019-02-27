@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include "JuceHeader.h"
-#include "PreferenceWindow.h"
+#include "PreferenceWindow.hpp"
 #include "IRWorkSpace.hpp"
 #include "IRWorkspaceList.hpp"
 #include "IRFoundation.h"

@@ -13,7 +13,7 @@
 
 #include "IRFileManager.hpp"
 
-#include "PreferenceWindow.h"
+#include "PreferenceWindow.hpp"
 #include "IRSaveLoadSystem.hpp"
 
 // ===========================================================================
