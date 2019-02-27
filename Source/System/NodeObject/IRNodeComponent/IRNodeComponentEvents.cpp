@@ -1,25 +1,24 @@
-//
-//  IRNodeComponent_Interaction.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 20/08/2018.
-//
 
 #include "IRNodeComponent.hpp"
-// --------------------------------------------------
+
+
+
+
 void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
 {
     //fire message
     sendChangeMessage();
     
     std::cout << this->name << " : mouseDown\n";
-    if(e.mods.isCtrlDown())
+    if (e.mods.isCtrlDown())
     { // show popup menu
         defaultPopupMenuEvents();
 
-    }else{
+    }
+    else
+    {
         //check if a mouse position is the area of resize trigger
-        if(e.getMouseDownX() > (getWidth() - this->resizingArea.x) &&
+        if (e.getMouseDownX() > (getWidth() - this->resizingArea.x) &&
            e.getMouseDownY() > (getHeight() - this->resizingArea.y) &&
            this->isResizable() && this->isEditMode())
         {
@@ -32,7 +31,9 @@ void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
             
             sendChangeMessage();
             
-        }else if(this->isMovable()){
+        }
+        else if (this->isMovable())
+        {
             // Move this Node Object
             //prepares our dragger to drag this component
             this->dragger.startDraggingComponent(this, e);
@@ -41,44 +42,50 @@ void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
     }
     //toFront(true);
 }
-// --------------------------------------------------
+
+
 void IRNodeComponent::mouseMoveNodeEvent(const MouseEvent& e)
 {
     
     //std::cout << "mouse moving : position = " << e.getPosition().x << ", " << e.getPosition().y << std::endl;
     //std::cout << "mouse moving : down position = " << e.getMouseDownX() << ", " << e.getMouseDownY() << std::endl;
 }
+
+
 void IRNodeComponent::mouseDoubleClickNodeEvent(const MouseEvent& e)
 {
     
 }
-// --------------------------------------------------
+
+
 void IRNodeComponent::mouseDragNodeEvent(const MouseEvent& e)
 {
-    if(this->isMovable())
+    if (this->isMovable())
     {
         moveThisComponentEvent(e);
         
-    }else if(this->isResizable())
+    }
+    else if (this->isResizable())
     {
         resizeThisComponentEvent(e);
     }
 }
-// --------------------------------------------------
+
+
 void IRNodeComponent::mouseUpNodeEvent(const MouseEvent& e)
 {
     recoverEventStatus();
     
 }
-// --------------------------------------------------
+
+
 void IRNodeComponent::moveThisComponentEvent(const MouseEvent& e)
 {
-    if(isSelected())
+    if (isSelected())
         this->dragger.dragComponent(this, e, &constrainer);
 }
-// --------------------------------------------------
 
-// --------------------------------------------------
+
 void IRNodeComponent::resizeThisComponentEvent(const MouseEvent& e)
 {
     float deltaX = e.getScreenX() - e.getMouseDownScreenX();
@@ -91,7 +98,7 @@ void IRNodeComponent::resizeThisComponentEvent(const MouseEvent& e)
     
 }
 
-// --------------------------------------------------
+
 void IRNodeComponent::recoverEventStatus()
 {
     
@@ -102,7 +109,8 @@ void IRNodeComponent::recoverEventStatus()
     }
     if(this->isMoving()) this->movingFlag = false;
 }
-// --------------------------------------------------
+
+
 void IRNodeComponent::copyThisComponentEvent(const MouseEvent& e)
 {
     if(this->isCopiable())
@@ -110,23 +118,26 @@ void IRNodeComponent::copyThisComponentEvent(const MouseEvent& e)
         
     }
 }
-// --------------------------------------------------
+
+
 void IRNodeComponent::pasteThisComponentEvent(const MouseEvent& e)
 {
   
 }
-// --------------------------------------------------
+
+
 void IRNodeComponent::deleteThisComponentEvent(const MouseEvent& e)
 {
     
 }
-// --------------------------------------------------
+
+
 void IRNodeComponent::setSelected(bool flag)
 {
     this->selectedFlag = flag;
-    statusChangedCallback(IRNodeComponentStatus::SelectableStatus);  //call back
+    statusChangedCallback(IRNodeComponentStatus::SelectableStatus); // call back
 }
-// --------------------------------------------------
+
 
 void IRNodeComponent::defaultPopupMenuEvents()
 {
@@ -153,5 +164,8 @@ void IRNodeComponent::defaultPopupMenuEvents()
     // user defined events
     popupMenuEvents();
 }
-// --------------------------------------------------
+
+
+
+
 
