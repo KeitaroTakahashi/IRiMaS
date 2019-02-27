@@ -30,7 +30,7 @@
 		821A5E65212ACD9400BF593D /* IRNodeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E63212ACD9400BF593D /* IRNodeComponent.cpp */; };
 		821A5E67212AD6FE00BF593D /* IRNodeComponentEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E66212AD6FE00BF593D /* IRNodeComponentEvents.cpp */; };
 		821A5E6B212AF8B800BF593D /* IRWorkSpace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E69212AF8B800BF593D /* IRWorkSpace.cpp */; };
-		821A5E76212B6A4D00BF593D /* selectComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E74212B6A4D00BF593D /* selectComponents.cpp */; };
+		821A5E76212B6A4D00BF593D /* SelectNodeObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E74212B6A4D00BF593D /* SelectNodeObjects.cpp */; };
 		821A5E7C212C4FEB00BF593D /* NodeObjectControllManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E7A212C4FEB00BF593D /* NodeObjectControllManager.cpp */; };
 		821A5E81212D799D00BF593D /* IRObjectSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E7F212D799D00BF593D /* IRObjectSelection.cpp */; };
 		821A5E87212DAECE00BF593D /* IRNodeObjectSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E85212DAECE00BF593D /* IRNodeObjectSelector.cpp */; };
@@ -299,8 +299,8 @@
 		821A5E66212AD6FE00BF593D /* IRNodeComponentEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRNodeComponentEvents.cpp; sourceTree = "<group>"; };
 		821A5E69212AF8B800BF593D /* IRWorkSpace.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkSpace.cpp; sourceTree = "<group>"; };
 		821A5E6A212AF8B800BF593D /* IRWorkSpace.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkSpace.hpp; sourceTree = "<group>"; };
-		821A5E74212B6A4D00BF593D /* selectComponents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = selectComponents.cpp; sourceTree = "<group>"; };
-		821A5E75212B6A4D00BF593D /* selectComponents.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = selectComponents.hpp; sourceTree = "<group>"; };
+		821A5E74212B6A4D00BF593D /* SelectNodeObjects.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SelectNodeObjects.cpp; sourceTree = "<group>"; };
+		821A5E75212B6A4D00BF593D /* SelectNodeObjects.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SelectNodeObjects.hpp; sourceTree = "<group>"; };
 		821A5E7A212C4FEB00BF593D /* NodeObjectControllManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NodeObjectControllManager.cpp; sourceTree = "<group>"; };
 		821A5E7B212C4FEB00BF593D /* NodeObjectControllManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NodeObjectControllManager.hpp; sourceTree = "<group>"; };
 		821A5E7F212D799D00BF593D /* IRObjectSelection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRObjectSelection.cpp; sourceTree = "<group>"; };
@@ -943,8 +943,8 @@
 		10F6474A2226C9B700A26D7D /* SelectNodeObjects */ = {
 			isa = PBXGroup;
 			children = (
-				821A5E75212B6A4D00BF593D /* selectComponents.hpp */,
-				821A5E74212B6A4D00BF593D /* selectComponents.cpp */,
+				821A5E75212B6A4D00BF593D /* SelectNodeObjects.hpp */,
+				821A5E74212B6A4D00BF593D /* SelectNodeObjects.cpp */,
 			);
 			path = SelectNodeObjects;
 			sourceTree = "<group>";
@@ -1826,7 +1826,7 @@
 				82B0DF34214268FB0000516C /* IRSpectrogramUIEvents.cpp in Sources */,
 				821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */,
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
-				821A5E76212B6A4D00BF593D /* selectComponents.cpp in Sources */,
+				821A5E76212B6A4D00BF593D /* SelectNodeObjects.cpp in Sources */,
 				82AB427E22208B3200F9184C /* DataAllocationManager.cpp in Sources */,
 				821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */,
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
