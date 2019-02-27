@@ -24,20 +24,22 @@ DataAllocationManager<T>::~DataAllocationManager()
 }
 // --------------------------------------------------
 template<class T>
-T* DataAllocationManager<T>::allocate()
+void DataAllocationManager<T>::allocate()
 {
     this->data = new T();
 }
 // --------------------------------------------------
 template<class T>
-T* DataAllocationManager<T>::deallocate()
+void DataAllocationManager<T>::deallocate()
 {
     delete this->data;
     this->owners.clear();
+    
+    this->data = nullptr;
 }
 // --------------------------------------------------
 template<class T>
-T* DataAllocationManager<T>::ptr()
+T* DataAllocationManager<T>::getData()
 {
     return this->data;
 }

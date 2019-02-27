@@ -29,9 +29,9 @@ public:
     
     // ==================================================
     // getter
-    T* allocate();
+    void allocate();
     // getter nullptr
-    T* deallocate();
+    void deallocate();
     // --------------------------------------------------
     
     void addReferencingObject(IRObjectPtr owner);
@@ -40,7 +40,7 @@ public:
     
     // --------------------------------------------------
     // get pointer of the object
-    T* ptr();
+    T* getData();
     
     // get a number of the owners
     int getOwnerCount() const;
