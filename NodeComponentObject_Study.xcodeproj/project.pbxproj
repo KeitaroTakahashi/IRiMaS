@@ -830,29 +830,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1040583E221AD43300E82FED /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				821ED1A7217FABE10019CF54 /* AutomationUI */,
-				821ED1A0217F36EA0019CF54 /* FFTPreferenceUI */,
-				821ED19B217DF1080019CF54 /* FontUI */,
-			);
-			path = UI;
-			sourceTree = "<group>";
-		};
 		104E2AB5221ADD2A008F5C7A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				10F6473F2226B49900A26D7D /* System */,
+				10F647402226B4A200A26D7D /* ExternalObjects */,
 				823E7BD82134073A0046512B /* Utilities */,
-				821A5E7D212D791900BF593D /* Components */,
-				8210D9D7213D4B560042F646 /* DSP */,
 				821A5E6F212B006400BF593D /* Audio */,
-				82657CFB21EFC8A8003FA700 /* ListBoxObject */,
-				823C181B2191B4DB00AC9FC9 /* Project */,
-				821A5E68212AF8A600BF593D /* IRWorkSpace */,
-				821A5E5C212ACCF200BF593D /* NodeObject */,
-				823E7BCC21305AD60046512B /* IRFoundation.h */,
-				82AB427F2224284000F9184C /* Main */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -889,6 +873,38 @@
 				10AD5604222489AD0046686E /* IRStartWindow.cpp */,
 			);
 			path = IRStartWindow;
+			sourceTree = "<group>";
+		};
+		10F6473F2226B49900A26D7D /* System */ = {
+			isa = PBXGroup;
+			children = (
+				10405841221AD9EE00E82FED /* Main.cpp */,
+				82AB427F2224284000F9184C /* Main */,
+				821A5E68212AF8A600BF593D /* IRWorkSpace */,
+				821A5E5C212ACCF200BF593D /* NodeObject */,
+				823C181B2191B4DB00AC9FC9 /* Project */,
+				823E7BCC21305AD60046512B /* IRFoundation.h */,
+			);
+			path = System;
+			sourceTree = "<group>";
+		};
+		10F647402226B4A200A26D7D /* ExternalObjects */ = {
+			isa = PBXGroup;
+			children = (
+				821C5EAD21348E4100187902 /* multiPurposeObject */,
+				825DC9C921FF405000555CB8 /* IRVideoPlayer */,
+				821ED1A2217FA9230019CF54 /* IRAutomation */,
+				8286CBF621431BE900AAD437 /* ObjectGlobalTestObject */,
+				8210D9CC213D3D3F0042F646 /* FFTRelated */,
+				823E7BCF213301140046512B /* IRWaveform */,
+				823E7BCD2132E1980046512B /* IRTextEditor */,
+				823E7BC62130472B0046512B /* IRImageViewerObject */,
+				823E7BBD212F56590046512B /* IRAudioPlayerObject */,
+				821A5EA1212ECE5300BF593D /* IRTestObject */,
+				823E7BC1212F57750046512B /* ExternalObjectHeader.h */,
+				8210422721F625760091CEEF /* ObjectFactory.h */,
+			);
+			path = ExternalObjects;
 			sourceTree = "<group>";
 		};
 		2D1F25B34F10551155A3CC5E /* Frameworks */ = {
@@ -1134,6 +1150,7 @@
 			isa = PBXGroup;
 			children = (
 				8210D9CD213D3D4D0042F646 /* IRSpectrum */,
+				821ED1A0217F36EA0019CF54 /* FFTPreferenceUI */,
 			);
 			path = FFTRelated;
 			sourceTree = "<group>";
@@ -1187,6 +1204,7 @@
 		821A5E68212AF8A600BF593D /* IRWorkSpace */ = {
 			isa = PBXGroup;
 			children = (
+				821A5E7E212D796E00BF593D /* ObjectSelection */,
 				82A98B272199B8070077EAE6 /* IRWorksplaceList */,
 				821A5E69212AF8B800BF593D /* IRWorkSpace.cpp */,
 				821A5E6A212AF8B800BF593D /* IRWorkSpace.hpp */,
@@ -1205,6 +1223,7 @@
 		821A5E6F212B006400BF593D /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				8210D9D7213D4B560042F646 /* DSP */,
 				821A5E8F212EBDDA00BF593D /* IRSoundPlayer */,
 				821A5E8B212EBDB700BF593D /* AudioFileIO */,
 				821A5E70212B006F00BF593D /* Mixer */,
@@ -1220,18 +1239,6 @@
 			path = Mixer;
 			sourceTree = "<group>";
 		};
-		821A5E7D212D791900BF593D /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				1040583E221AD43300E82FED /* UI */,
-				821C5EAD21348E4100187902 /* multiPurposeObject */,
-				823E7BC221302BEA0046512B /* Images */,
-				821A5E8A212EBDAB00BF593D /* ExternalObjects */,
-				821A5E7E212D796E00BF593D /* ObjectSelection */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		821A5E7E212D796E00BF593D /* ObjectSelection */ = {
 			isa = PBXGroup;
 			children = (
@@ -1243,24 +1250,6 @@
 				821C5EAB2134814B00187902 /* IRGraphSelector.hpp */,
 			);
 			path = ObjectSelection;
-			sourceTree = "<group>";
-		};
-		821A5E8A212EBDAB00BF593D /* ExternalObjects */ = {
-			isa = PBXGroup;
-			children = (
-				825DC9C921FF405000555CB8 /* IRVideoPlayer */,
-				821ED1A2217FA9230019CF54 /* IRAutomation */,
-				8286CBF621431BE900AAD437 /* ObjectGlobalTestObject */,
-				8210D9CC213D3D3F0042F646 /* FFTRelated */,
-				823E7BCF213301140046512B /* IRWaveform */,
-				823E7BCD2132E1980046512B /* IRTextEditor */,
-				823E7BC62130472B0046512B /* IRImageViewerObject */,
-				823E7BBD212F56590046512B /* IRAudioPlayerObject */,
-				821A5EA1212ECE5300BF593D /* IRTestObject */,
-				823E7BC1212F57750046512B /* ExternalObjectHeader.h */,
-				8210422721F625760091CEEF /* ObjectFactory.h */,
-			);
-			path = ExternalObjects;
 			sourceTree = "<group>";
 		};
 		821A5E8B212EBDB700BF593D /* AudioFileIO */ = {
@@ -1335,6 +1324,7 @@
 		821ED1A2217FA9230019CF54 /* IRAutomation */ = {
 			isa = PBXGroup;
 			children = (
+				821ED1A7217FABE10019CF54 /* AutomationUI */,
 				821ED1A3217FA93D0019CF54 /* IRAutomationObject.cpp */,
 				821ED1A4217FA93D0019CF54 /* IRAutomationObject.hpp */,
 				821ED1A6217FA9510019CF54 /* IRAutomationObjectPreference.h */,
@@ -1403,6 +1393,7 @@
 		823E7BC62130472B0046512B /* IRImageViewerObject */ = {
 			isa = PBXGroup;
 			children = (
+				823E7BC221302BEA0046512B /* Images */,
 				823E7BC72130476A0046512B /* IRImageViewerObject.h */,
 			);
 			path = IRImageViewerObject;
@@ -1427,6 +1418,7 @@
 		823E7BCD2132E1980046512B /* IRTextEditor */ = {
 			isa = PBXGroup;
 			children = (
+				821ED19B217DF1080019CF54 /* FontUI */,
 				823E7BCE2132E1A90046512B /* IRLabelObject.h */,
 				821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.h */,
 				821ED19D217E6F420019CF54 /* IRTextEditorObject.h */,
@@ -1451,6 +1443,7 @@
 		823E7BD82134073A0046512B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				82657CFB21EFC8A8003FA700 /* ListBoxObject */,
 				82FA8F0F220A58950032983F /* FileManager */,
 				82D9030D21A8484300E57471 /* KeLib */,
 				823C18142191B3AD00AC9FC9 /* SaveLoadSystem */,
@@ -1554,7 +1547,6 @@
 				10AD5603222489340046686E /* IRStartWindow */,
 				82657CEC21EE7DCF003FA700 /* IRiMaSMain */,
 				106DE3DA22242A7200237EE1 /* IRiMaSApplication */,
-				10405841221AD9EE00E82FED /* Main.cpp */,
 			);
 			path = Main;
 			sourceTree = "<group>";
