@@ -8,16 +8,17 @@
 #ifndef DataAllocationManager_hpp
 #define DataAllocationManager_hpp
 
+#include "DataType.h"
+
 enum IRFileType
 {
     JUCEIMAGE,
     JUCEVIDEOCOMPONENT,
-    IRAUDIO,
-    TXT,
-    CSV
+    IRAUDIO
 };
 
 
+template<class T>
 class DataAllocationManager
 {
 public:
@@ -26,8 +27,29 @@ public:
     
     ~DataAllocationManager();
     
+    // ==================================================
+    // getter
+    T* allocate();
+    // getter nullptr
+    T* deallocate();
+    // --------------------------------------------------
     
+    void addReferencingObject();
+    
+    void removeReferencingObject();
+    
+    // --------------------------------------------------
+
+    T* ptr();
+    
+    // ==================================================
 private:
+    
+    T* data;
+    
+    // count a number of referencing objects of this pointer
+    unsigned int referencedCount;
+    
     
 };
 #endif /* DataAllocationManager_hpp */
