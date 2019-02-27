@@ -1504,8 +1504,8 @@
 		82657CFB21EFC8A8003FA700 /* ListBoxObject */ = {
 			isa = PBXGroup;
 			children = (
-				82657CFC21EFC8D8003FA700 /* IRListBoxObject.cpp */,
 				82657CFD21EFC8D8003FA700 /* IRListBoxObject.hpp */,
+				82657CFC21EFC8D8003FA700 /* IRListBoxObject.cpp */,
 			);
 			path = ListBoxObject;
 			sourceTree = "<group>";
