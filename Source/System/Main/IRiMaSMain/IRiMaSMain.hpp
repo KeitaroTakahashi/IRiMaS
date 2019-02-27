@@ -5,10 +5,11 @@
 #include "JuceHeader.h"
 
 //#include "IRWorkSpace.hpp"
-//#include "ObjectFactory.h"
+#include "ObjectFactory.h"
 //#include "IRFoundation.h"
 #include "IRProjectWindow.h"
-#include "IRStarter.h"
+#include "IRStarter.hpp"
+#include "IRStartWindow.hpp"
 //#include "Menus.h"
 //#include "IRObjectCreater.hpp"
 

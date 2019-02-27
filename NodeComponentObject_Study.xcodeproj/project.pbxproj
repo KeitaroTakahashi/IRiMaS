@@ -11,6 +11,7 @@
 		10405817221AC96900E82FED /* IRFileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10405816221AC96900E82FED /* IRFileManager.cpp */; };
 		10405845221ADAF200E82FED /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10405841221AD9EE00E82FED /* Main.cpp */; };
 		10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10AD5604222489AD0046686E /* IRStartWindow.cpp */; };
+		10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647412226C06B00A26D7D /* IRStarter.cpp */; };
 		26E01DBC708CB7E21971FAEF /* include_juce_dsp.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE847FFD71453B8BAAC88E4B /* include_juce_dsp.mm */; };
 		2DA77FA88E511A7404C673DF /* include_juce_audio_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0183A45967EBDB3B8E8362AA /* include_juce_audio_utils.mm */; };
 		2E1EF2C4A310C35FE2553764 /* include_juce_opengl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 44379CF53C741526095CA311 /* include_juce_opengl.mm */; };
@@ -266,6 +267,7 @@
 		10405841221AD9EE00E82FED /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		10AD5604222489AD0046686E /* IRStartWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStartWindow.cpp; sourceTree = "<group>"; };
 		10AD5605222489AD0046686E /* IRStartWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRStartWindow.hpp; sourceTree = "<group>"; };
+		10F647412226C06B00A26D7D /* IRStarter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStarter.cpp; sourceTree = "<group>"; };
 		12B1A8ABE5BA458257682841 /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
 		1308CC6C3869E34E36491167 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		19139157DDFD51D7395A3B2F /* include_juce_cryptography.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_cryptography.mm; path = JuceLibraryCode/include_juce_cryptography.mm; sourceTree = SOURCE_ROOT; };
@@ -567,7 +569,7 @@
 		82657CEB21EE542A003FA700 /* IRProjectWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRProjectWindow.h; sourceTree = "<group>"; };
 		82657CED21EE7DE5003FA700 /* IRiMaSMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRiMaSMain.cpp; sourceTree = "<group>"; };
 		82657CEE21EE7DE5003FA700 /* IRiMaSMain.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRiMaSMain.hpp; sourceTree = "<group>"; };
-		82657CF021EF4FC5003FA700 /* IRStarter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRStarter.h; sourceTree = "<group>"; };
+		82657CF021EF4FC5003FA700 /* IRStarter.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRStarter.hpp; sourceTree = "<group>"; };
 		82657CFC21EFC8D8003FA700 /* IRListBoxObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRListBoxObject.cpp; sourceTree = "<group>"; };
 		82657CFD21EFC8D8003FA700 /* IRListBoxObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRListBoxObject.hpp; sourceTree = "<group>"; };
 		82657D0121EFD1A4003FA700 /* MenusListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenusListBox.h; sourceTree = "<group>"; };
@@ -853,7 +855,8 @@
 		10AD5601222488860046686E /* IRStarter */ = {
 			isa = PBXGroup;
 			children = (
-				82657CF021EF4FC5003FA700 /* IRStarter.h */,
+				82657CF021EF4FC5003FA700 /* IRStarter.hpp */,
+				10F647412226C06B00A26D7D /* IRStarter.cpp */,
 			);
 			path = IRStarter;
 			sourceTree = "<group>";
@@ -1737,6 +1740,7 @@
 				821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */,
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
 				82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */,
+				10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */,
 				32360B59740CCC174CF75F0B /* include_juce_audio_basics.mm in Sources */,
 				825DC9CC21FF407000555CB8 /* IRVideoPlayerObject.cpp in Sources */,
 				A9D5694184653919C1A1BBB4 /* include_juce_audio_devices.mm in Sources */,
