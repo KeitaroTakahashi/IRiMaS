@@ -584,7 +584,6 @@
 		82657CFC21EFC8D8003FA700 /* IRListBoxObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRListBoxObject.cpp; sourceTree = "<group>"; };
 		82657CFD21EFC8D8003FA700 /* IRListBoxObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRListBoxObject.hpp; sourceTree = "<group>"; };
 		82657D0121EFD1A4003FA700 /* MenusListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenusListBox.h; sourceTree = "<group>"; };
-		82657D0221EFD5CB003FA700 /* CreateObjectMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreateObjectMenu.h; sourceTree = "<group>"; };
 		82657D0321F01367003FA700 /* KeAnimationComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeAnimationComponent.h; sourceTree = "<group>"; };
 		828612152140020700D64F75 /* IRFFTSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFFTSequence.h; sourceTree = "<group>"; };
 		82861216214002E600D64F75 /* IRSignalWindowLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSignalWindowLib.h; sourceTree = "<group>"; };
@@ -969,7 +968,6 @@
 		10F6474E2226CA5B00A26D7D /* ObjectMenu */ = {
 			isa = PBXGroup;
 			children = (
-				82657D0221EFD5CB003FA700 /* CreateObjectMenu.h */,
 				10F6474F2226CA9600A26D7D /* ObjectListMenuObject */,
 				10F647502226CAA400A26D7D /* ObjectListMenu */,
 				10F647512226CAB500A26D7D /* ObjectMenuWindow */,
