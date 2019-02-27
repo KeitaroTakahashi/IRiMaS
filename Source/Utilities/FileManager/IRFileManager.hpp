@@ -31,11 +31,7 @@
 class IRFileManager
 {
 public:
-    
-    
-    
-    
-    
+
     IRFileManager()
     {
         clear();
