@@ -13,6 +13,9 @@
 		10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10AD5604222489AD0046686E /* IRStartWindow.cpp */; };
 		10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647412226C06B00A26D7D /* IRStarter.cpp */; };
 		10F647442226C4E700A26D7D /* PreferenceWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647432226C4E700A26D7D /* PreferenceWindow.cpp */; };
+		10F647542226DE6800A26D7D /* ObjectListMenuObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647522226DE6800A26D7D /* ObjectListMenuObject.cpp */; };
+		10F647572226DE7700A26D7D /* ObjectListMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647552226DE7700A26D7D /* ObjectListMenu.cpp */; };
+		10F6475A2226DE8900A26D7D /* ObjectMenuWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647582226DE8900A26D7D /* ObjectMenuWindow.cpp */; };
 		26E01DBC708CB7E21971FAEF /* include_juce_dsp.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE847FFD71453B8BAAC88E4B /* include_juce_dsp.mm */; };
 		2DA77FA88E511A7404C673DF /* include_juce_audio_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0183A45967EBDB3B8E8362AA /* include_juce_audio_utils.mm */; };
 		2E1EF2C4A310C35FE2553764 /* include_juce_opengl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 44379CF53C741526095CA311 /* include_juce_opengl.mm */; };
@@ -270,6 +273,12 @@
 		10AD5605222489AD0046686E /* IRStartWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRStartWindow.hpp; sourceTree = "<group>"; };
 		10F647412226C06B00A26D7D /* IRStarter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStarter.cpp; sourceTree = "<group>"; };
 		10F647432226C4E700A26D7D /* PreferenceWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PreferenceWindow.cpp; sourceTree = "<group>"; };
+		10F647522226DE6800A26D7D /* ObjectListMenuObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectListMenuObject.cpp; sourceTree = "<group>"; };
+		10F647532226DE6800A26D7D /* ObjectListMenuObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectListMenuObject.hpp; sourceTree = "<group>"; };
+		10F647552226DE7700A26D7D /* ObjectListMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectListMenu.cpp; sourceTree = "<group>"; };
+		10F647562226DE7700A26D7D /* ObjectListMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectListMenu.hpp; sourceTree = "<group>"; };
+		10F647582226DE8900A26D7D /* ObjectMenuWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectMenuWindow.cpp; sourceTree = "<group>"; };
+		10F647592226DE8900A26D7D /* ObjectMenuWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectMenuWindow.hpp; sourceTree = "<group>"; };
 		12B1A8ABE5BA458257682841 /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
 		1308CC6C3869E34E36491167 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		19139157DDFD51D7395A3B2F /* include_juce_cryptography.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_cryptography.mm; path = JuceLibraryCode/include_juce_cryptography.mm; sourceTree = SOURCE_ROOT; };
@@ -971,6 +980,8 @@
 		10F6474F2226CA9600A26D7D /* ObjectListMenuObject */ = {
 			isa = PBXGroup;
 			children = (
+				10F647532226DE6800A26D7D /* ObjectListMenuObject.hpp */,
+				10F647522226DE6800A26D7D /* ObjectListMenuObject.cpp */,
 			);
 			path = ObjectListMenuObject;
 			sourceTree = "<group>";
@@ -978,6 +989,8 @@
 		10F647502226CAA400A26D7D /* ObjectListMenu */ = {
 			isa = PBXGroup;
 			children = (
+				10F647562226DE7700A26D7D /* ObjectListMenu.hpp */,
+				10F647552226DE7700A26D7D /* ObjectListMenu.cpp */,
 			);
 			path = ObjectListMenu;
 			sourceTree = "<group>";
@@ -985,6 +998,8 @@
 		10F647512226CAB500A26D7D /* ObjectMenuWindow */ = {
 			isa = PBXGroup;
 			children = (
+				10F647592226DE8900A26D7D /* ObjectMenuWindow.hpp */,
+				10F647582226DE8900A26D7D /* ObjectMenuWindow.cpp */,
 			);
 			path = ObjectMenuWindow;
 			sourceTree = "<group>";
@@ -1810,6 +1825,7 @@
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
 				821A5E76212B6A4D00BF593D /* SelectNodeObjects.cpp in Sources */,
 				82AB427E22208B3200F9184C /* DataAllocationManager.cpp in Sources */,
+				10F647572226DE7700A26D7D /* ObjectListMenu.cpp in Sources */,
 				821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */,
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
 				82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */,
@@ -1835,6 +1851,7 @@
 				8222D497220858A500E7FE63 /* IRVideoThumbnailObject.cpp in Sources */,
 				872DA0FC68776E50719C9761 /* include_juce_graphics.mm in Sources */,
 				823C18172191B3C100AC9FC9 /* IRSaveLoadSystem.cpp in Sources */,
+				10F647542226DE6800A26D7D /* ObjectListMenuObject.cpp in Sources */,
 				821A5E67212AD6FE00BF593D /* IRNodeComponentEvents.cpp in Sources */,
 				823C181A2191B3F800AC9FC9 /* json11.cpp in Sources */,
 				825DC9CF21FF408400555CB8 /* IRVideoPlayer.cpp in Sources */,
@@ -1849,6 +1866,7 @@
 				B70BC5F4871D589D8480ED6E /* include_juce_gui_basics.mm in Sources */,
 				82657CEF21EE7DE5003FA700 /* IRiMaSMain.cpp in Sources */,
 				8210D9D0213D3E050042F646 /* IRSpectrogramObject.cpp in Sources */,
+				10F6475A2226DE8900A26D7D /* ObjectMenuWindow.cpp in Sources */,
 				821ED19421776A3E0019CF54 /* IRPreferenceSpace.cpp in Sources */,
 				823E7BDB2134075C0046512B /* singletonClass.cpp in Sources */,
 				82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */,
