@@ -2,7 +2,7 @@
 #include "JuceHeader.h"
 
 #include "IRiMaSMain.hpp"
-#include "PreferenceWindow.h"
+#include "PreferenceWindow.hpp"
 
 
 class IRiMaSApplication  : public JUCEApplication
