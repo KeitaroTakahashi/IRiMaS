@@ -31,6 +31,21 @@
 class IRFileManager
 {
 public:
+    
+    template<class T>
+    struct FileManagerStr
+    {
+        DataAllocationManager<T> dataManager;
+        File file;
+        
+        FileManagerStr(File file,
+                       DataAllocationManager<T> dataManager)
+        {
+            this->file = file;
+            this->dataManager = dataManager;
+        }
+        
+    };
 
     IRFileManager()
     {
@@ -66,11 +81,20 @@ private:
     private:
         Array<File*> fileList;
         Array<IRObjectPtr> pList;
+        
+        Array<IRObjectPtr> list;
     public:
         void clear()
         {
             this->fileList.clear();
             this->pList.clear();
+            this->list.clear();
+        }
+        
+        template<class T>
+        bool add(File& f, T& p)
+        {
+            this->list.add(FileManagerStr<T>(f, DataAllocationManager<T>()));
         }
         
         bool add(File* f, IRObjectPtr p)
