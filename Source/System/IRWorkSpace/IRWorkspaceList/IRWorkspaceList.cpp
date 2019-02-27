@@ -1,13 +1,231 @@
-//
-//  IRWorkspaceList.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 12/11/2018.
-//
 
 #include "IRWorkspaceList.hpp"
 
 
+
+
+IRWorkspaceList::IRWorkspaceList(Rectangle<int> frameRect)
+{
+    this->frameRect = frameRect;
+    
+    addKeyListener(this);
+    
+    setBounds(frameRect);
+}
+
+
+IRWorkspaceList::~IRWorkspaceList()
+{
+    
+}
+
+
+void IRWorkspaceList::resized()
+{
+    
+}
+
+
+void IRWorkspaceList::paint(Graphics& g)
+{
+    g.fillAll(SYSTEMCOLOUR.contents.brighter());
+}
+
+
+void IRWorkspaceList::updateAnimationFrame()
+{
+    updateList();
+}
+
+
+void IRWorkspaceList::updateList()
+{
+    // get index of the selected workspace
+    int selectedIndex = -1;
+    if(this->currentlySelectedSnap != nullptr)
+    {
+        selectedIndex = this->currentlySelectedSnap->getIndex() - 1;
+    }
+    
+    removeAllChildren();
+    this->snapComponents.clear();
+    
+    int index = 1;
+    int doubleX = this->marginX_left + this->marginX_right;
+    
+    int w = getWidth() - doubleX;
+    int h = w * 4 / 6 + this->marginY*2; // 6:4
+    for(auto space : this->workspaces)
+    {
+        
+        int ht = (index-1)*h;
+        
+        Rectangle<int> rect(0,
+                            ht,
+                            getWidth(),       h);
+        
+        showSnap *s = new showSnap(rect, index, space);
+        s->updateImage();
+        s->addChangeListener(this);
+        this->snapComponents.add(s);
+        addAndMakeVisible(s);
+        
+        index++;
+    }
+    
+    if(selectedIndex >= 0)
+    {
+        this->snapComponents[selectedIndex]->listEventSelectedAction();
+    }
+    
+    // IMPORTANT!!
+    // give back keyboard focus on this object.
+    workspaceListFocused();
+    
+    repaint();
+}
+
+
+void IRWorkspaceList::mouseDown(const MouseEvent& e)
+{
+    std::cout << "WorkspaceList mouse down\n";
+    
+    workspaceListFocused();
+}
+
+    
+// this method is called when this object is focused by mouse down or other behaviors.
+// it is importnat to give Keyboard focus only on this obejct otherwise the keyboard event will be confused.
+void IRWorkspaceList::workspaceListFocused()
+{
+    setWantsKeyboardFocus(true);
+    grabKeyboardFocus();
+}
+
+
+void IRWorkspaceList::changeListenerCallback(ChangeBroadcaster* source)
+{
+    for (auto snap : this->snapComponents)
+    {
+        if(source == snap){
+            
+            switch (snap->getEventStatus())
+            {
+                case listEventSelected:
+                    std::cout << "IRWorkspaceList : listEventSelected ChangeCallba\n";
+                    
+                    snapSelectionChange(snap);
+                    
+                    
+                    
+                    break;
+                case listEventDeleted:
+                    break;
+                default:
+                    break;
+            }
+            
+            
+        }
+    }
+}
+
+
+// return selected workspace component otherwise return nullptr
+Component* IRWorkspaceList::getSelectedComponent()
+{
+    return this->selectedComponent;
+}
+
+
+void IRWorkspaceList::setSelectedComponentIndex(int index)
+{
+    if(index < this->snapComponents.size())
+    {
+        snapSelectionChange(this->snapComponents[index]);
+    }
+    else
+    {
+        std::cout << "Error : setSelectedComponentIndex() could not set index of " << index << "to snapComponents. Out of range.\n";
+    }
+}
+
+
+void IRWorkspaceList::callRemoveWorkspaceAction(IRWorkSpace* workspace)
+{
+
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if (checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [workspace](Listener& l){ l.removeWorkspace(workspace); });
+    //check again
+    if (checker.shouldBailOut()) return;
+    //std::function
+    if (this->removeWorkspaceCompleted != nullptr) this->removeWorkspaceCompleted();
+    
+}
+
+
+void IRWorkspaceList::addWorkspace(IRWorkSpace* space)
+{
+    this->workspaces.add(space);
+    updateList();
+}
+
+
+Array<IRWorkSpace*> IRWorkspaceList::getWorkspaceList()
+{
+    return this->workspaces;
+}
+
+
+void IRWorkspaceList::removeWorkspace(showSnap* snap)
+{
+    if (snap == nullptr) return;
+    
+    int removeIndex = snap->getIndex() - 1;
+    
+    if (removeIndex >= 0)
+    {
+        callRemoveWorkspaceAction(this->workspaces[removeIndex]);
+        this->workspaces.remove(removeIndex);
+    }
+    
+    delete snap;
+    
+    updateList();
+}
+
+
+void IRWorkspaceList::snapSelectionChange(showSnap* snap)
+{
+    if (this->currentlySelectedSnap != nullptr)
+    {
+        this->previouslySelectedSnap = this->currentlySelectedSnap;
+        this->previouslySelectedSnap->updateImage();
+        this->previouslySelectedSnap->setSelected(false);
+    }
+    
+    this->currentlySelectedSnap = snap;
+    this->currentlySelectedSnap->setSelected(true);
+    
+    this->selectedComponent = snap->getParent();
+    
+    this->eventStatus = listEventSelected;
+    
+    sendChangeMessage();
+}
+
+
+IRWorkspaceList::listEventStatus IRWorkspaceList::getEventStatus() const
+{
+    return this->eventStatus;
+}
+
+
+
+// **** **** PRIVATE METHODS **** **** //
 
 bool IRWorkspaceList::keyPressed (const KeyPress& key,
                  Component* originatingComponent)
@@ -24,13 +242,19 @@ bool IRWorkspaceList::keyPressed (const KeyPress& key,
             int removeIndex = removeSnap->getIndex();
             
             // set new selectedSnap
-            if(this->workspaces.size() == 1){
+            if (this->workspaces.size() == 1)
+            {
                 this->currentlySelectedSnap = nullptr;
-            }else{
-                if(removeIndex == 1){
+            }
+            else
+            {
+                if (removeIndex == 1)
+                {
                     // set one higher index
                     this->currentlySelectedSnap = this->snapComponents[removeIndex];
-                }else{
+                }
+                else
+                {
                     // set one lower index
                     this->currentlySelectedSnap = this->snapComponents[removeIndex-2];
                 }
@@ -38,25 +262,24 @@ bool IRWorkspaceList::keyPressed (const KeyPress& key,
             
             removeWorkspace(removeSnap);
             
-            
-            
         }
         
         return true;
     }
-    
     // select neighbor slides
-   else if(key.getKeyCode() == key.upKey)
-   {
-       showSnap* snap = this->currentlySelectedSnap;
-       int snapIndex = snap->getIndex() - 1;
-       // if selected snap is not the first one, then move to the forward
-       if(snapIndex > 0){
-           snapSelectionChange(this->snapComponents[snapIndex-1]);
-       }
-       return true;
-    }else if(key.getKeyCode() == key.downKey){
-
+    else if(key.getKeyCode() == key.upKey)
+    {
+        showSnap* snap = this->currentlySelectedSnap;
+        int snapIndex = snap->getIndex() - 1;
+        // if selected snap is not the first one, then move to the forward
+        if (snapIndex > 0)
+        {
+            snapSelectionChange(this->snapComponents[snapIndex-1]);
+        }
+        return true;
+    }
+    else if (key.getKeyCode() == key.downKey)
+    {
         showSnap* snap = this->currentlySelectedSnap;
         int snapIndex = snap->getIndex();
 
@@ -67,12 +290,14 @@ bool IRWorkspaceList::keyPressed (const KeyPress& key,
         return true;
     }
     
-   
-    
-    if(key.getTextDescription() == "command + E")
+    if (key.getTextDescription() == "command + E")
     {
         
-        
     }
+    
     return false;
 }
+
+
+
+
