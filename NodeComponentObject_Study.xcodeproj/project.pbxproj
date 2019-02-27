@@ -31,7 +31,7 @@
 		821A5E67212AD6FE00BF593D /* IRNodeComponentEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E66212AD6FE00BF593D /* IRNodeComponentEvents.cpp */; };
 		821A5E6B212AF8B800BF593D /* IRWorkSpace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E69212AF8B800BF593D /* IRWorkSpace.cpp */; };
 		821A5E76212B6A4D00BF593D /* SelectNodeObjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E74212B6A4D00BF593D /* SelectNodeObjects.cpp */; };
-		821A5E7C212C4FEB00BF593D /* NodeObjectControllManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E7A212C4FEB00BF593D /* NodeObjectControllManager.cpp */; };
+		821A5E7C212C4FEB00BF593D /* NodeObjectControlManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E7A212C4FEB00BF593D /* NodeObjectControlManager.cpp */; };
 		821A5E81212D799D00BF593D /* IRObjectSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E7F212D799D00BF593D /* IRObjectSelection.cpp */; };
 		821A5E87212DAECE00BF593D /* IRNodeObjectSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E85212DAECE00BF593D /* IRNodeObjectSelector.cpp */; };
 		821A5E89212E2B9800BF593D /* IRWorkSpaceObjectManagement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E88212E2B9800BF593D /* IRWorkSpaceObjectManagement.cpp */; };
@@ -301,8 +301,8 @@
 		821A5E6A212AF8B800BF593D /* IRWorkSpace.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkSpace.hpp; sourceTree = "<group>"; };
 		821A5E74212B6A4D00BF593D /* SelectNodeObjects.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SelectNodeObjects.cpp; sourceTree = "<group>"; };
 		821A5E75212B6A4D00BF593D /* SelectNodeObjects.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SelectNodeObjects.hpp; sourceTree = "<group>"; };
-		821A5E7A212C4FEB00BF593D /* NodeObjectControllManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NodeObjectControllManager.cpp; sourceTree = "<group>"; };
-		821A5E7B212C4FEB00BF593D /* NodeObjectControllManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NodeObjectControllManager.hpp; sourceTree = "<group>"; };
+		821A5E7A212C4FEB00BF593D /* NodeObjectControlManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NodeObjectControlManager.cpp; sourceTree = "<group>"; };
+		821A5E7B212C4FEB00BF593D /* NodeObjectControlManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NodeObjectControlManager.hpp; sourceTree = "<group>"; };
 		821A5E7F212D799D00BF593D /* IRObjectSelection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRObjectSelection.cpp; sourceTree = "<group>"; };
 		821A5E80212D799D00BF593D /* IRObjectSelection.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRObjectSelection.hpp; sourceTree = "<group>"; };
 		821A5E85212DAECE00BF593D /* IRNodeObjectSelector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRNodeObjectSelector.cpp; sourceTree = "<group>"; };
@@ -602,7 +602,6 @@
 		82AB42802224291C00F9184C /* IRiMaSApplication.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRiMaSApplication.cpp; sourceTree = "<group>"; };
 		82AB42812224291C00F9184C /* IRiMaSApplication.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRiMaSApplication.hpp; sourceTree = "<group>"; };
 		82B0DF33214268FB0000516C /* IRSpectrogramUIEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramUIEvents.cpp; sourceTree = "<group>"; };
-		82B658F82137F8B900F6F506 /* IRWorkspaceDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRWorkspaceDelegate.h; sourceTree = "<group>"; };
 		82D9030E21A8486300E57471 /* KDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDictionary.h; sourceTree = "<group>"; };
 		82D9030F21A84B3300E57471 /* KLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLib.h; sourceTree = "<group>"; };
 		82D9031021A84FF500E57471 /* KRandomStringGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KRandomStringGenerator.h; sourceTree = "<group>"; };
@@ -952,25 +951,10 @@
 		10F6474B2226C9F800A26D7D /* NodeObjectControlManager */ = {
 			isa = PBXGroup;
 			children = (
-				821A5E7B212C4FEB00BF593D /* NodeObjectControllManager.hpp */,
-				821A5E7A212C4FEB00BF593D /* NodeObjectControllManager.cpp */,
+				821A5E7B212C4FEB00BF593D /* NodeObjectControlManager.hpp */,
+				821A5E7A212C4FEB00BF593D /* NodeObjectControlManager.cpp */,
 			);
 			path = NodeObjectControlManager;
-			sourceTree = "<group>";
-		};
-		10F6474C2226CA2700A26D7D /* IRWorkspaceDelegate */ = {
-			isa = PBXGroup;
-			children = (
-				82B658F82137F8B900F6F506 /* IRWorkspaceDelegate.h */,
-			);
-			path = IRWorkspaceDelegate;
-			sourceTree = "<group>";
-		};
-		10F6474D2226CA4300A26D7D /* IRWorkspaceBroadcaster */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = IRWorkspaceBroadcaster;
 			sourceTree = "<group>";
 		};
 		10F6474E2226CA5B00A26D7D /* ObjectMenu */ = {
@@ -1310,8 +1294,6 @@
 				82A98B272199B8070077EAE6 /* IRWorksplaceList */,
 				10F6474A2226C9B700A26D7D /* SelectNodeObjects */,
 				10F6474B2226C9F800A26D7D /* NodeObjectControlManager */,
-				10F6474C2226CA2700A26D7D /* IRWorkspaceDelegate */,
-				10F6474D2226CA4300A26D7D /* IRWorkspaceBroadcaster */,
 				10F6474E2226CA5B00A26D7D /* ObjectMenu */,
 			);
 			path = IRWorkSpace;
@@ -1873,7 +1855,7 @@
 				BAC07B81710E9DE23503547C /* include_juce_gui_extra.mm in Sources */,
 				2E1EF2C4A310C35FE2553764 /* include_juce_opengl.mm in Sources */,
 				10405845221ADAF200E82FED /* Main.cpp in Sources */,
-				821A5E7C212C4FEB00BF593D /* NodeObjectControllManager.cpp in Sources */,
+				821A5E7C212C4FEB00BF593D /* NodeObjectControlManager.cpp in Sources */,
 				823E7BD22133012B0046512B /* IRWaveformObject.cpp in Sources */,
 				10F647442226C4E700A26D7D /* PreferenceWindow.cpp in Sources */,
 				821C5EAC2134814B00187902 /* IRGraphSelector.cpp in Sources */,

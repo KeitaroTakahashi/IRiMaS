@@ -1,49 +1,43 @@
 //
-//  selectComponents.hpp
+//  NodeObjectControllManager.hpp
 //  NodeComponentObject_Study - App
 //
 //  Created by Keitaro on 20/08/2018.
 //  source codes referring Jim Credland
 //
 
-
 // FD NOTE: THIS WHOLE CLASS IS IN FACT UNUSED AND PROBABLY OBSOLETE - SEE NOW WITH OBJECTSELECTION CLASSES
 
 
-
-#ifndef SelectNodeObjects_hpp
-#define SelectNodeObjects_hpp
+#ifndef NodeObjectControlManager_hpp
+#define NodeObjectControlManager_hpp
 
 #include "JuceHeader.h"
 #include "IRNodeObject.hpp"
 
 
-
-
-class SelectNodeObjects
+class NodeObjectControlManager
 {
     
 public:
-    
-    SelectNodeObjects();
-    ~SelectNodeObjects();
+    NodeObjectControlManager();
+    ~NodeObjectControlManager();
     
     void setSelected(IRNodeObject *obj, bool flag);
     void toggleSelection(IRNodeObject* obj);
     
     // this is called when the user clicks on the backgroun of the parent component
     void deSelectedAll();
-
+    
     bool isSelected(IRNodeObject* obj) const;
     void removeSelectedObj(IRNodeObject* obj);
-    void setConstrainBoundsToParent(bool constrainToParentSize,
-                                    BorderSize<int> amountPermittedOffscreen);
+    
+    void setConstrainBoundsToParent(bool constrainToParentSize, BorderSize<int> amountPermittedOffscreen);
     void setShiftConstrainsDirection(bool constrainDirection);
     
     void handleMouseDown(IRNodeObject* obj, const MouseEvent& e);
     void handleMouseUp(IRNodeObject* obj, const MouseEvent& e);
     void handleMouseDrag(const MouseEvent& e);
-    
     
 private:
     
@@ -59,6 +53,7 @@ private:
     } constrainedDirection;
     
     const int minimumMovementToStartDrag = 10;
+    
     
     std::vector<IRNodeObject*> selectedObj;
     
@@ -76,7 +71,7 @@ private:
     BorderSize<int> amountPermittedOffscreen;
 };
 
-#endif /* SelectNodeObjects_hpp */
+#endif /* NodeObjectControlManager_hpp */
 
 
 
