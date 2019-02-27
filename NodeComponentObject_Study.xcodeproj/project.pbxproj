@@ -18,6 +18,7 @@
 		10F6475A2226DE8900A26D7D /* ObjectMenuWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647582226DE8900A26D7D /* ObjectMenuWindow.cpp */; };
 		10F647632226F13F00A26D7D /* IRObjectCreaterBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647612226F13F00A26D7D /* IRObjectCreaterBase.cpp */; };
 		10F647672226F17C00A26D7D /* IRObjectFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647652226F17C00A26D7D /* IRObjectFactory.cpp */; };
+		10F64769222703F600A26D7D /* IRObjectCreater.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F64768222703F600A26D7D /* IRObjectCreater.cpp */; };
 		26E01DBC708CB7E21971FAEF /* include_juce_dsp.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE847FFD71453B8BAAC88E4B /* include_juce_dsp.mm */; };
 		2DA77FA88E511A7404C673DF /* include_juce_audio_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0183A45967EBDB3B8E8362AA /* include_juce_audio_utils.mm */; };
 		2E1EF2C4A310C35FE2553764 /* include_juce_opengl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 44379CF53C741526095CA311 /* include_juce_opengl.mm */; };
@@ -285,6 +286,7 @@
 		10F647622226F13F00A26D7D /* IRObjectCreaterBase.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRObjectCreaterBase.hpp; sourceTree = "<group>"; };
 		10F647652226F17C00A26D7D /* IRObjectFactory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRObjectFactory.cpp; sourceTree = "<group>"; };
 		10F647662226F17C00A26D7D /* IRObjectFactory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRObjectFactory.hpp; sourceTree = "<group>"; };
+		10F64768222703F600A26D7D /* IRObjectCreater.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRObjectCreater.cpp; sourceTree = "<group>"; };
 		12B1A8ABE5BA458257682841 /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
 		1308CC6C3869E34E36491167 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		19139157DDFD51D7395A3B2F /* include_juce_cryptography.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_cryptography.mm; path = JuceLibraryCode/include_juce_cryptography.mm; sourceTree = SOURCE_ROOT; };
@@ -1063,6 +1065,7 @@
 			isa = PBXGroup;
 			children = (
 				82657CE921EBFA6D003FA700 /* IRObjectCreater.hpp */,
+				10F64768222703F600A26D7D /* IRObjectCreater.cpp */,
 			);
 			path = IRObjectCreater;
 			sourceTree = "<group>";
@@ -1906,6 +1909,7 @@
 				10405817221AC96900E82FED /* IRFileManager.cpp in Sources */,
 				2DA77FA88E511A7404C673DF /* include_juce_audio_utils.mm in Sources */,
 				61F9D2348AEE783393DFAD35 /* include_juce_core.mm in Sources */,
+				10F64769222703F600A26D7D /* IRObjectCreater.cpp in Sources */,
 				B130D4EB3FBB582FE9656C93 /* include_juce_cryptography.mm in Sources */,
 				823C181E2191B4EE00AC9FC9 /* IRProject.cpp in Sources */,
 				5FBBE001D0CECE98C23C4ECF /* include_juce_data_structures.mm in Sources */,
