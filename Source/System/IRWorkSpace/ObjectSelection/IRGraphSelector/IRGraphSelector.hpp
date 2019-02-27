@@ -1,9 +1,3 @@
-//
-//  IRGraphSelector.hpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 27/08/2018.
-//
 
 #ifndef IRGraphSelector_hpp
 #define IRGraphSelector_hpp
@@ -12,46 +6,26 @@
 #include "IRMultiPurposeObject.hpp"
 
 
+
+
+
 class IRGraphSelector : public IRObjectSelection<Component *>
 {
-    // ============================================================
 
 public:
-    IRGraphSelector()
-    {
-        
-    }
-    // ------------------------------------------------------------
-    ~IRGraphSelector() {}
-    // ------------------------------------------------------------
-    void mouseDownHandler(const MouseEvent& e) override
-    {
-        beginSelection(e);
-        this->multiSelectionFlag = true;
-    }
-    // ------------------------------------------------------------
-    void mouseDragHandler(const MouseEvent& e) override
-    {
-        if(this->multiSelectionFlag)
-        {
-            dragSelection(e);
-        }
-    }
-    // ------------------------------------------------------------
-    void mouseUpHandler(const MouseEvent& e) override
-    {
-        if(this->multiSelectionFlag){
-            endSelection(e);
-            this->multiSelectionFlag = false;
-        }
-    }
     
-    // ------------------------------------------------------------
-    void setMakeSquareObjectAfterSelection(bool flag) { this->makeSquareObjectAfterSelection = flag; }
-    bool isMakeSquareObjectAfterSelection() const { return this->makeSquareObjectAfterSelection; }
-    // ------------------------------------------------------------
+    IRGraphSelector();
+    ~IRGraphSelector();
+    
+    void mouseDownHandler(const MouseEvent& e) override;
+    void mouseDragHandler(const MouseEvent& e) override;
+    void mouseUpHandler(const MouseEvent& e) override;
+    
+    void setMakeSquareObjectAfterSelection(bool flag);
+    bool isMakeSquareObjectAfterSelection() const;
 
 private:
+    
     bool multiSelectionFlag = false;
     
     // make Component object at exactly the same place selection square is made.
@@ -60,3 +34,7 @@ private:
 };
 
 #endif /* IRGraphSelector_hpp */
+
+
+
+
