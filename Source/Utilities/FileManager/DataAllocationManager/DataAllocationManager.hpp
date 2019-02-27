@@ -7,7 +7,7 @@
 
 #ifndef DataAllocationManager_hpp
 #define DataAllocationManager_hpp
-
+#include <vector>
 #include "DataType.h"
 
 enum IRFileType
@@ -49,6 +49,8 @@ private:
     
     // count a number of referencing objects of this pointer
     unsigned int referencedCount;
+    
+    std::vector<IRObjectPtr> list;
     
     
 };
