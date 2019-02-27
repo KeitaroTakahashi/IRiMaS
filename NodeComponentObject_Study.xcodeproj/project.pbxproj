@@ -11,6 +11,7 @@
 		10405817221AC96900E82FED /* IRFileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10405816221AC96900E82FED /* IRFileManager.cpp */; };
 		10405844221ADAF000E82FED /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10405843221AD9EF00E82FED /* MainComponent.cpp */; };
 		10405845221ADAF200E82FED /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10405841221AD9EE00E82FED /* Main.cpp */; };
+		106A7DF622244E6C00462B6D /* TestFolderClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106A7DF422244E6C00462B6D /* TestFolderClass.cpp */; };
 		26E01DBC708CB7E21971FAEF /* include_juce_dsp.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE847FFD71453B8BAAC88E4B /* include_juce_dsp.mm */; };
 		2DA77FA88E511A7404C673DF /* include_juce_audio_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0183A45967EBDB3B8E8362AA /* include_juce_audio_utils.mm */; };
 		2E1EF2C4A310C35FE2553764 /* include_juce_opengl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 44379CF53C741526095CA311 /* include_juce_opengl.mm */; };
@@ -266,6 +267,8 @@
 		10405841221AD9EE00E82FED /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		10405842221AD9EF00E82FED /* MainComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainComponent.h; sourceTree = "<group>"; };
 		10405843221AD9EF00E82FED /* MainComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainComponent.cpp; sourceTree = "<group>"; };
+		106A7DF422244E6C00462B6D /* TestFolderClass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestFolderClass.cpp; sourceTree = "<group>"; };
+		106A7DF522244E6C00462B6D /* TestFolderClass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TestFolderClass.hpp; sourceTree = "<group>"; };
 		12B1A8ABE5BA458257682841 /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
 		1308CC6C3869E34E36491167 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		19139157DDFD51D7395A3B2F /* include_juce_cryptography.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_cryptography.mm; path = JuceLibraryCode/include_juce_cryptography.mm; sourceTree = SOURCE_ROOT; };
@@ -859,6 +862,24 @@
 				82AB427F2224284000F9184C /* Main */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		106A7DF322244E4B00462B6D /* TestFolder */ = {
+			isa = PBXGroup;
+			children = (
+				106A7DF422244E6C00462B6D /* TestFolderClass.cpp */,
+				106A7DF522244E6C00462B6D /* TestFolderClass.hpp */,
+			);
+			path = TestFolder;
+			sourceTree = "<group>";
+		};
+		106DE3DA22242A7200237EE1 /* IRiMaSApplication */ = {
+			isa = PBXGroup;
+			children = (
+				82AB42812224291C00F9184C /* IRiMaSApplication.hpp */,
+				82AB42802224291C00F9184C /* IRiMaSApplication.cpp */,
+			);
+			path = IRiMaSApplication;
 			sourceTree = "<group>";
 		};
 		2D1F25B34F10551155A3CC5E /* Frameworks */ = {
@@ -1520,9 +1541,9 @@
 		82AB427F2224284000F9184C /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				106A7DF322244E4B00462B6D /* TestFolder */,
+				106DE3DA22242A7200237EE1 /* IRiMaSApplication */,
 				10405841221AD9EE00E82FED /* Main.cpp */,
-				82AB42802224291C00F9184C /* IRiMaSApplication.cpp */,
-				82AB42812224291C00F9184C /* IRiMaSApplication.hpp */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1746,6 +1767,7 @@
 				821A5E81212D799D00BF593D /* IRObjectSelection.cpp in Sources */,
 				821A5E9D212EBF7300BF593D /* IRAudioReader.cpp in Sources */,
 				B70BC5F4871D589D8480ED6E /* include_juce_gui_basics.mm in Sources */,
+				106A7DF622244E6C00462B6D /* TestFolderClass.cpp in Sources */,
 				82657CEF21EE7DE5003FA700 /* IRiMaSMain.cpp in Sources */,
 				8210D9D0213D3E050042F646 /* IRSpectrogramObject.cpp in Sources */,
 				821ED19421776A3E0019CF54 /* IRPreferenceSpace.cpp in Sources */,
