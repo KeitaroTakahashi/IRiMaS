@@ -1,15 +1,11 @@
-//
-//  IRWorkSpace.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 20/08/2018.
-//
 
 #include "IRWorkSpace.hpp"
 
+
+
+
 IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindow* preferenceWindow)
 {
-    
     this->name = title;
     this->title = this->name + " (EDIT MODE)";
     setBounds(frameRect);
@@ -29,13 +25,15 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     
     this->selector->setShiftConstrainsDirection(true);
     this->selector->setConstrainBoundsToParent(true, {0,0,10,10});
-    
-    
+}
+
+
+IRWorkSpace::~IRWorkSpace()
+{
     
 }
 
 
-//==============================================================================
 void IRWorkSpace::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
@@ -47,7 +45,7 @@ void IRWorkSpace::paint (Graphics& g)
     //drawShadows(g);
     
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::drawShadows(Graphics& g)
 {
@@ -66,19 +64,13 @@ void IRWorkSpace::drawShadows(Graphics& g)
                                 bounds);
     }
 }
-// ------------------------------------------------------------
+
+
 void IRWorkSpace::resized()
 {
-    // This is called when the MainComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
-    
-    
     
 }
 
-
-//==============================================================================
 
 void IRWorkSpace::mouseDown(const MouseEvent& e)
 {
@@ -93,7 +85,7 @@ void IRWorkSpace::mouseDown(const MouseEvent& e)
     }
     
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::mouseMove(const MouseEvent& e)
 {
@@ -101,22 +93,21 @@ void IRWorkSpace::mouseMove(const MouseEvent& e)
     
     //std::cout << currentMousePosition.getX() << " , " << currentMousePosition.getY() << std::endl;
     
-    
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::mouseUp(const MouseEvent& e)
 {
     this->selector->mouseUpHandler(e);
-    if(this->isMultiSelectMode)
+    if (this->isMultiSelectMode)
     {
         removeChildComponent(this->selector);
         this->isMultiSelectMode = false;
     }
     
-    if(this->dummy.size() > 0)
+    if (this->dummy.size() > 0)
     {
-        for(auto obj : this->dummy)
+        for (auto obj : this->dummy)
         {
             IRNodeObject* o = obj->copySelectedContents();
             Rectangle<int> bounds = o->getBounds();
@@ -132,12 +123,11 @@ void IRWorkSpace::mouseUp(const MouseEvent& e)
             this->selector->addSelectedObjects();
             o->repaint();
         }
-        
         this->dummy.clear();
     }
     
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::mouseDrag(const MouseEvent& e)
 {
@@ -147,7 +137,7 @@ void IRWorkSpace::mouseDrag(const MouseEvent& e)
     this->selector->mouseDragHandler(e);
     
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::mouseDoubleClick(const MouseEvent& e)
 {
@@ -162,7 +152,23 @@ void IRWorkSpace::mouseDoubleClick(const MouseEvent& e)
     }
 }
 
-//==============================================================================
+
+void IRWorkSpace::modifierKeysChanged(const ModifierKeys &mod)
+{
+    this->isShiftPressed = false;
+    this->isCommandPressed = false;
+    this->isControlPressed = false;
+    this->isAltPressed = false;
+    this->isOptionPressed = false;
+    
+    if(mod.isShiftDown()) this->isShiftPressed = true;
+    if(mod.isCommandDown()) this->isCommandPressed = true;
+    if(mod.isCtrlDown()) this->isControlPressed = true;
+    if(mod.isAltDown()) this->isAltPressed = true;
+    
+}
+
+
 void IRWorkSpace::changeListenerCallback (ChangeBroadcaster* source)
 {
     IRNodeObject* obj = dynamic_cast<IRNodeObject* >(source);
@@ -183,23 +189,41 @@ void IRWorkSpace::changeListenerCallback (ChangeBroadcaster* source)
     }
 }
 
-//==============================================================================
-void IRWorkSpace::modifierKeysChanged(const ModifierKeys &mod)
+
+void IRWorkSpace::AudioSetup()
 {
-    this->isShiftPressed = false;
-    this->isCommandPressed = false;
-    this->isControlPressed = false;
-    this->isAltPressed = false;
-    this->isOptionPressed = false;
-    
-    if(mod.isShiftDown()) this->isShiftPressed = true;
-    if(mod.isCommandDown()) this->isCommandPressed = true;
-    if(mod.isCtrlDown()) this->isControlPressed = true;
-    if(mod.isAltDown()) this->isAltPressed = true;
-    
+    setAudioChannels(0, 2);
 }
 
-//==============================================================================
+
+void IRWorkSpace::closeAudioSetup()
+{
+    shutdownAudio();
+}
+
+
+void IRWorkSpace::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
+{
+    this->mixer.getAudioSource().prepareToPlay(samplesPerBlockExpected, sampleRate);
+}
+
+
+void IRWorkSpace::getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill)
+{
+    this->mixer.getAudioSource().getNextAudioBlock(bufferToFill);
+}
+
+
+void IRWorkSpace::releaseResources()
+{
+    this->mixer.getAudioSource().releaseResources();
+}
+
+
+AudioSource& IRWorkSpace::getMixer()
+{
+    return this->mixer.getAudioSource();
+}
 
 
 json11::Json IRWorkSpace::makeSaveDataOfThis()
@@ -247,4 +271,64 @@ json11::Json IRWorkSpace::makeSaveDataOfThis()
     
     return obj;
 }
-//==============================================================================
+
+
+bool IRWorkSpace::isEditMode() const
+{
+    return this->editModeFlag;
+}
+
+
+void IRWorkSpace::setEditMode(bool flag)
+{
+    this->editModeFlag = flag;
+    
+    if (flag)
+    {
+        this->title = this->name + " (EDIT MODE)";
+        this->setInterceptsMouseClicks(true, true);
+        setWantsKeyboardFocus(true);
+    }
+    else
+    {
+        this->title = this->name;
+        this->setInterceptsMouseClicks(true, false);
+    }
+    
+    //std::cout << "edit mode changed " << flag << " : " << this->title << std::endl;
+    
+    for (auto obj : this->objects)
+    {
+        obj->setEditMode(flag);
+    }
+    // send change message to IRProject
+    sendChangeMessage();
+}
+
+
+Array<IRNodeObject*> IRWorkSpace::getObjectList()
+{
+    return this->objects;
+}
+
+Image IRWorkSpace::getSnap()
+{
+    this->snap = createComponentSnapshot(Rectangle<int>(0, 0, this->getWidth(), this->getHeight()),
+                                         false, 0.4);
+    return this->snap;
+}
+
+
+void IRWorkSpace::addListener(Listener* newListener)
+{
+    this->listeners.add(newListener);
+}
+
+
+void IRWorkSpace::removeListener(Listener* listener)
+{
+    this->listeners.remove(listener);
+}
+
+
+

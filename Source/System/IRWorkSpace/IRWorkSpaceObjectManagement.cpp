@@ -1,13 +1,10 @@
-//
-//  IRWorkSpaceObjectManagement.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 23/08/2018.
-//
 
 #include "IRWorkSpace.hpp"
 
-// ------------------------------------------------------------
+
+
+
+
 void IRWorkSpace::copySelectedObjects()
 {
     std::cout << "copied\n";
@@ -50,7 +47,7 @@ void IRWorkSpace::duplicateSelectedObjects()
     copySelectedObjects();
     pasteSelectedObjects();
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::createObject(IRNodeObject *obj)
 {

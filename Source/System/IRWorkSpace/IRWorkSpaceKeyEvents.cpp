@@ -1,11 +1,8 @@
-//
-//  IRWorkSpaceKeyEvents.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 23/08/2018.
-//
 
 #include "IRWorkSpace.hpp"
+
+
+
 
 //bool IRWorkSpace::keyPressed (const KeyPress& key)
 bool IRWorkSpace::keyPressed (const KeyPress& key, Component* originatingComponent)
@@ -69,3 +66,6 @@ bool IRWorkSpace::keyPressed (const KeyPress& key, Component* originatingCompone
     
     return false;
 }
+
+
+
