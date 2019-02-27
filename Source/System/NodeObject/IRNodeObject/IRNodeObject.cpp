@@ -1,23 +1,109 @@
-//
-//  NodeObject.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 20/08/2018.
-//
 
 #include "IRNodeObject.hpp"
 
 IRNodeObject::IRNodeObject(Component* parent, String name, NodeObjectType objectType)
 : IRNodeComponent(parent,name, objectType)
-
 {
     this->parent = parent;
 }
+
 
 IRNodeObject::~IRNodeObject()
 {
     
 }
+
+
+//copy constructor
+IRNodeObject* IRNodeObject::copyThis()
+{
+    return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
+}
+
+
+// copy constructor with contents
+IRNodeObject* IRNodeObject::copyThisWithContents()
+{
+    return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
+}
+
+
+// copy constructor with irregular contents
+IRNodeObject* IRNodeObject::copySelectedContents()
+{
+    return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
+}
+
+
+t_json IRNodeObject::saveThisToSaveData()
+{
+    t_json a;
+    return a;
+}
+
+
+// load data contents from save data
+void IRNodeObject::loadThisFromSaveData(t_json saveData)
+{
+    
+}
+
+
+void IRNodeObject::mouseDownEvent(const MouseEvent& e)
+{
+    
+}
+
+
+void IRNodeObject::mouseUpEvent(const MouseEvent& e)
+{
+    
+}
+
+
+void IRNodeObject::mouseMoveEvent(const MouseEvent& e)
+{
+    
+}
+
+
+void IRNodeObject::mouseDoubleClickEvent(const MouseEvent& e)
+{
+    
+}
+
+
+void IRNodeObject::mouseDragEvent(const MouseEvent& e)
+{
+    
+}
+
+
+/*
+ 
+ FD: FOR THOSE THREE METHODS NEED TO CHECK SCOPE RESOLUTION BEFORE REFACTORING - LEAVING IMPLEMENTATION IN .hpp FOR NOW
+ 
+void IRNodeObject::addListener(IRNodeObject::Listener* newListener)
+{
+    this->listeners.add(newListener);
+}
+
+
+void IRNodeObject::removeListener(IRNodeObject::Listener* listener)
+{
+    this->listeners.remove(listener);
+}
+
+
+ListenerList<IRNodeObject::Listener>& IRNodeObject::getListenerList()
+{
+    return this->listeners;
+}
+ */
+
+
+
+// BELOW DONE BY KEITARO ALREADY
 
 void IRNodeObject::callDragOutNodeObjectFromParent()
 {
@@ -107,3 +193,24 @@ void IRNodeObject::callSaveProject()
     if(this->saveProjectCompleted != nullptr) this->saveProjectCompleted();
 
 }
+
+
+void IRNodeObject::saveObjectContents()
+{
+    
+}
+
+
+void IRNodeObject::loadObjectContents()
+{
+    
+}
+
+
+bool IRNodeObject::keyPressed(const KeyPress& key, Component* originatingComponent)
+{
+    std::cout << "key pressed\n";
+    return true;
+}
+
+
