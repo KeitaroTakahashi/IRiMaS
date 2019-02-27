@@ -7,7 +7,7 @@
 
 #ifndef DataAllocationManager_hpp
 #define DataAllocationManager_hpp
-#include <vector>
+#include "JuceHeader.h"
 #include "DataType.h"
 
 enum IRFileType
@@ -34,23 +34,25 @@ public:
     T* deallocate();
     // --------------------------------------------------
     
-    void addReferencingObject();
+    void addReferencingObject(IRObjectPtr owner);
     
-    void removeReferencingObject();
+    void removeReferencingObject(IRObjectPtr owner);
     
     // --------------------------------------------------
-
+    // get pointer of the object
     T* ptr();
+    
+    // get a number of the owners
+    int getOwnerCount() const;
+    // get a list of the owners
+    Array<IRObjectPtr> getOwnerList() const;
     
     // ==================================================
 private:
     
     T* data;
     
-    // count a number of referencing objects of this pointer
-    unsigned int referencedCount;
-    
-    std::vector<IRObjectPtr> list;
+    Array<IRObjectPtr> owners;
     
     
 };
