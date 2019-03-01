@@ -13,6 +13,8 @@
 #include "JuceHeader.h"
 #include "DataAllocationManager.hpp"
 #include "DataType.h"
+#include "IRImage.hpp"
+#include "IRVideo.hpp"
 #include "KLib.h"
 
 /*

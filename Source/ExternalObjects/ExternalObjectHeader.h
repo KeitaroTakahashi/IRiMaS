@@ -30,7 +30,6 @@
 // video related object
 #include "IRVideoPlayerObject.hpp"
 #include "IRVideoThumbnailObject.hpp"
-#include "NSVideoPlayerObject.h"
 #include "IRFfomegVideoPlayer.hpp"
 #include "IRCVVideoPlayer.hpp"
 // ------------------------------------------------------------

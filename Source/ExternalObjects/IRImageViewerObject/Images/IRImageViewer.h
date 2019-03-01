@@ -57,6 +57,10 @@ public:
         std::cout << "open\n";
         this->imgLoader.open();
         this->img = this->imgLoader.getData();
+        
+        
+        
+        
     }
     
     void openFile(String filePath)

@@ -29,11 +29,8 @@ IRObjectPtr IRFileManager::createFileData(IRFileType type, File file)
 
 IRObjectPtr IRFileManager::createImageFileData(File file)
 {
-    Image* img = new Image();
-    
-    
-    
-    return nullptr;
+    IRImage* img = new IRImage(file);
+    return static_cast<IRObjectPtr>(img);
 }
 // -------------------------------------------------
 
