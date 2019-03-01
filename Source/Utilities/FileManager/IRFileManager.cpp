@@ -7,9 +7,35 @@
 
 #include "IRFileManager.hpp"
 
+// -------------------------------------------------
 
-// *** MODIFICATION BY FREDERIC *** //
+IRObjectPtr IRFileManager::createFileData(IRFileType type, File file)
+{
+    
+    switch(type)
+    {
+        case JUCEIMAGE:
+            return createImageFileData(file);
+            break;
+        case JUCEVIDEOCOMPONENT:
+            break;
+        case IRAUDIO:
+            break;
+        default:
+            break;
+    }
+    return nullptr;
+}
 
+IRObjectPtr IRFileManager::createImageFileData(File file)
+{
+    Image* img = new Image();
+    
+    
+    
+    return nullptr;
+}
+// -------------------------------------------------
 
 bool IRFileManager::isFileAlreadyRegistered(File* newFile)
 {
@@ -17,6 +43,7 @@ bool IRFileManager::isFileAlreadyRegistered(File* newFile)
     if(f != nullptr) return true;
     else return false;
 }
+// -------------------------------------------------
 
 bool IRFileManager::isObjectAlreadyRegistered(IRObjectPtr obj)
 {
@@ -24,6 +51,7 @@ bool IRFileManager::isObjectAlreadyRegistered(IRObjectPtr obj)
     if(p != nullptr) return true;
     else return false;
 }
+// -------------------------------------------------
 
 IRObjectPtr IRFileManager::retrievePtrByFile(File* file)
 {
@@ -31,6 +59,7 @@ IRObjectPtr IRFileManager::retrievePtrByFile(File* file)
     if(p != nullptr) return p;
     else return nullptr;
 }
+// -------------------------------------------------
 
 File* IRFileManager::retrieveFileByPtr(IRObjectPtr obj)
 {
@@ -38,6 +67,7 @@ File* IRFileManager::retrieveFileByPtr(IRObjectPtr obj)
     if(f != nullptr) return f;
     else return nullptr;
 }
+// -------------------------------------------------
 
 void IRFileManager::registerNewFile(File* file, IRObjectPtr obj)
 {
@@ -57,3 +87,4 @@ void IRFileManager::registerNewFile(File* file, IRObjectPtr obj)
         KLib().showConnectionErrorMessage("Error : FileManager List size conflicts!! for " + file->getFullPathName() + "\n");
     }
 }
+// -------------------------------------------------

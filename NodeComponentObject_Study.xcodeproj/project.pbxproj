@@ -854,6 +854,7 @@
 				10F647402226B4A200A26D7D /* ExternalObjects */,
 				823E7BD82134073A0046512B /* Utilities */,
 				821A5E6F212B006400BF593D /* Audio */,
+				829D036C22297641001FDE1D /* Image */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -1672,6 +1673,13 @@
 				8286CBF721431C1200AAD437 /* ObjectGlobalTestObject.h */,
 			);
 			path = ObjectGlobalTestObject;
+			sourceTree = "<group>";
+		};
+		829D036C22297641001FDE1D /* Image */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		82A98B272199B8070077EAE6 /* IRWorksplaceList */ = {

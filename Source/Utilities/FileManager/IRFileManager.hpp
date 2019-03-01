@@ -56,8 +56,25 @@ public:
     {
         
     }
+
+    //==================================================
+    // get a file pointer from IRFileManager
+    // if file has not yet been loaded, then this method loads the file first and returns its pointer
+    IRObjectPtr getFilePtr(IRFileType type, File file);
+    //
+    IRObjectPtr discardFilePtr(IRObjectPtr owner, File file);
+    
+    
     //==================================================
 
+private:
+    
+    //==================================================
+    // allocate data by a given FileType
+    IRObjectPtr createFileData(IRFileType type, File file);
+    IRObjectPtr createImageFileData(File file);
+    
+    
     // check if the new file is already imported or not
     bool isFileAlreadyRegistered(File* newFile);
     bool isObjectAlreadyRegistered(IRObjectPtr p);
@@ -68,13 +85,9 @@ public:
     // -------------------------------------------------
     void registerNewFile(File* file, IRObjectPtr obj);
     // -------------------------------------------------
-
+    
     //==================================================
     void clear() { this->list.clear(); }
-    //==================================================
-    
-    
-private:
     
     class FILEMAP
     {
