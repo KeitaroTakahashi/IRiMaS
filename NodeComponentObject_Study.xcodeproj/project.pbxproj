@@ -1589,10 +1589,10 @@
 		823E7BCF213301140046512B /* IRWaveform */ = {
 			isa = PBXGroup;
 			children = (
-				823E7BD02133012B0046512B /* IRWaveformObject.cpp */,
 				823E7BD12133012B0046512B /* IRWaveformObject.hpp */,
-				823E7BD3213303260046512B /* IRWaveform.cpp */,
+				823E7BD02133012B0046512B /* IRWaveformObject.cpp */,
 				823E7BD4213303260046512B /* IRWaveform.hpp */,
+				823E7BD3213303260046512B /* IRWaveform.cpp */,
 				823E7BDC2134193E0046512B /* IRWaveformUI.h */,
 				821C5EB121357EDA00187902 /* IRWaveformUIEvents.cpp */,
 			);
