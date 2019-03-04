@@ -1441,8 +1441,8 @@
 		821C5EAD21348E4100187902 /* multiPurposeObject */ = {
 			isa = PBXGroup;
 			children = (
-				821C5EAE21348E6900187902 /* IRMultiPurposeObject.cpp */,
 				821C5EAF21348E6900187902 /* IRMultiPurposeObject.hpp */,
+				821C5EAE21348E6900187902 /* IRMultiPurposeObject.cpp */,
 			);
 			path = multiPurposeObject;
 			sourceTree = "<group>";
