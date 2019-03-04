@@ -12,13 +12,10 @@
 // #include "juce_audio_utils/juce_audio_utils.h"
 
 #include "NSNodeObject.hpp"
-#include "IRNodeComponent.hpp"
-#include "NSNodeComponent.hpp"
 
 #include "IRFileManager.hpp"
 
-class IRNodeObject : public IRNodeComponent,
-public KeyListener
+class IRNodeObject : public IRNodeComponent
 {
 public:
     IRNodeObject(Component* parent, String name, NodeObjectType objectType = NodeObjectType());
@@ -101,13 +98,15 @@ public:
     virtual void loadObjectContents() {}
     
     // ============================================================
+    
+    /*
     virtual bool keyPressed (const KeyPress& key,
                      Component* originatingComponent) override
     {
         std::cout << "key pressed\n";
         
         return true;
-    }
+    }*/
     
     // ============================================================
 

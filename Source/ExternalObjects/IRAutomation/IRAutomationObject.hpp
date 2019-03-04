@@ -96,13 +96,13 @@ public:
     
 private:
     
-    
+    /*
     bool keyPressed (const KeyPress& key,
                      Component* originatingComponent) override
     {
         
         return true;
-    }
+    }*/
     
     
     // ------------------------------------------------------------
@@ -116,10 +116,10 @@ private:
                 if(isEditMode())
                 {
                     setWantsKeyboardFocus(false);
-                    removeKeyListener(this);
+                    //removeKeyListener(this);
                 }else{
                     setWantsKeyboardFocus(true);
-                    addKeyListener(this);
+                    //addKeyListener(this);
                     
                 }
                 

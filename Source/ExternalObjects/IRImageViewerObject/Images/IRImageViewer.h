@@ -39,14 +39,24 @@ public:
 
     void paint(Graphics& g) override
     {
-        g.drawImageAt(this->img, 0,0);
+        
+        if(!this->img.isNull())
+        {
+            g.drawImageTransformed (*this->imgRef,
+                                    AffineTransform::scale (getWidth()  / (float) this->imgRef->getWidth(),
+                                                            getHeight() / (float) this->imgRef->getHeight()), false);
+           // g.drawImageAt(this->img, 0,0);
+            
+        }
         
     }
     // ------------------------------------------------------------
     void resized() override
     {        
-        if(!this->img.isNull())
-            this->img = this->imgLoader.getData().rescaled(getWidth(), getHeight());
+        
+        if(this->imgRef != nullptr)
+            this->img = this->imgLoader.getData()->rescaled(getWidth(), getHeight());
+
         this->openButton.setBounds(0,0,getWidth(),getHeight());
 
     }
@@ -54,20 +64,17 @@ public:
     // ------------------------------------------------------------
     void openFile()
     {
-        std::cout << "open\n";
         this->imgLoader.open();
-        this->img = this->imgLoader.getData();
-        
-        
-        
-        
+        // receive pointer of the image file from FileManager
+        this->imgRef = this->imgLoader.getData();
+
     }
     
     void openFile(String filePath)
     {
-        std::cout << "open\n";
         this->imgLoader.open(filePath);
-        this->img = this->imgLoader.getData();
+        // receive pointer of the image file from FileManager
+        this->imgRef = this->imgLoader.getData();
     }
     // ------------------------------------------------------------
     void changeListenerCallback (ChangeBroadcaster* source)override
@@ -92,6 +99,11 @@ public:
 private:
     
     IRImageLoader imgLoader;
+    
+    // this member contains a reference from FileManager and should not be modified!
+    Image* imgRef = nullptr;
+    
+    // When you draw Image with or withour modification (such as rescaling the size), use this pointer
     Image img;
     
     TextButton openButton;

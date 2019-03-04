@@ -14,10 +14,10 @@ IRObjectPtr IRFileManager::createFileData(IRFileType type, File file)
     
     switch(type)
     {
-        case JUCEIMAGE:
+        case IRIMAGE:
             return createImageFileData(file);
             break;
-        case JUCEVIDEOCOMPONENT:
+        case IRVIDEO:
             break;
         case IRAUDIO:
             break;
@@ -34,11 +34,9 @@ IRObjectPtr IRFileManager::createImageFileData(File file)
 }
 // -------------------------------------------------
 
-bool IRFileManager::isFileAlreadyRegistered(File* newFile)
+bool IRFileManager::isFileAlreadyRegistered(File newFile)
 {
-    File* f = this->list.findFile(newFile);
-    if(f != nullptr) return true;
-    else return false;
+    return this->list.isFile(newFile);
 }
 // -------------------------------------------------
 
@@ -50,7 +48,7 @@ bool IRFileManager::isObjectAlreadyRegistered(IRObjectPtr obj)
 }
 // -------------------------------------------------
 
-IRObjectPtr IRFileManager::retrievePtrByFile(File* file)
+IRObjectPtr IRFileManager::retrievePtrByFile(File file)
 {
     IRObjectPtr p = this->list.findPtrByFile(file);
     if(p != nullptr) return p;
@@ -58,30 +56,54 @@ IRObjectPtr IRFileManager::retrievePtrByFile(File* file)
 }
 // -------------------------------------------------
 
-File* IRFileManager::retrieveFileByPtr(IRObjectPtr obj)
+File IRFileManager::retrieveFileByPtr(IRObjectPtr obj)
 {
-    File* f  = this->list.findFileByPtr(obj);
-    if(f != nullptr) return f;
-    else return nullptr;
+    return this->list.findFileByPtr(obj);
 }
 // -------------------------------------------------
 
-void IRFileManager::registerNewFile(File* file, IRObjectPtr obj)
+void IRFileManager::registerNewFile(File file, IRObjectPtr obj)
 {
     if(isFileAlreadyRegistered(file))
     {
-        std::cout << "Error : IRFileManager::registerNewFile() : file already registered!" << file->getFullPathName() << " has been registered with obj " << this->list.findPtrByFile(file) << std::endl;
+        std::cout << "Error : IRFileManager::registerNewFile() : file already registered!" << file.getFullPathName() << " has been registered with obj " << this->list.findPtrByFile(file) << std::endl;
         return;
     }
     if(isObjectAlreadyRegistered(obj))
     {
-        std::cout << "Error : IRFileManager::registerNewFile() : obj already registered!" << obj << " has been registered with File path "<< this->list.findFileByPtr(obj)->getFullPathName() << std::endl;
+        std::cout << "Error : IRFileManager::registerNewFile() : obj already registered!" << obj << " has been registered with File path "<< this->list.findFileByPtr(obj).getFullPathName() << std::endl;
         return;
     }
     
+    std::cout << "register new file of " << file.getFullPathName() << " within " << obj << std::endl;
     if(!this->list.add(file, obj))
     {
-        KLib().showConnectionErrorMessage("Error : FileManager List size conflicts!! for " + file->getFullPathName() + "\n");
+        KLib().showConnectionErrorMessage("Error : FileManager List size conflicts!! for " + file.getFullPathName() + "\n");
     }
 }
 // -------------------------------------------------
+//==================================================
+IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file)
+{
+    
+    std::cout << "IRFileManager ptr = " << this << std::endl;
+    
+    if(isFileAlreadyRegistered(file))
+    {
+        printf("file already imported to the project!\n");
+        return retrievePtrByFile(file);
+    }
+    else
+    {
+        printf("create new object in getFilePtr()\n");
+        IRObjectPtr newObj = createFileData(type, file);
+        registerNewFile(file, newObj);
+        return newObj;
+    }
+}
+// -------------------------------------------------
+IRObjectPtr IRFileManager::discardFilePtr(IRObjectPtr owner, File file)
+{
+    return nullptr;
+}
+//==================================================

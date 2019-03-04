@@ -12,8 +12,8 @@
 
 enum IRFileType
 {
-    JUCEIMAGE,
-    JUCEVIDEOCOMPONENT,
+    IRIMAGE,
+    IRVIDEO,
     IRAUDIO
 };
 

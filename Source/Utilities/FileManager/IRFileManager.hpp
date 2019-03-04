@@ -11,6 +11,7 @@
 #include <map>
 
 #include "JuceHeader.h"
+#include "singletonClass.hpp"
 #include "DataAllocationManager.hpp"
 #include "DataType.h"
 #include "IRImage.hpp"
@@ -66,7 +67,6 @@ public:
     //
     IRObjectPtr discardFilePtr(IRObjectPtr owner, File file);
     
-    
     //==================================================
 
 private:
@@ -78,14 +78,14 @@ private:
     
     
     // check if the new file is already imported or not
-    bool isFileAlreadyRegistered(File* newFile);
+    bool isFileAlreadyRegistered(File newFile);
     bool isObjectAlreadyRegistered(IRObjectPtr p);
     // -------------------------------------------------
     // return nullptr if object does not exist
-    IRObjectPtr retrievePtrByFile(File* file);
-    File* retrieveFileByPtr(IRObjectPtr p);
+    IRObjectPtr retrievePtrByFile(File file);
+    File retrieveFileByPtr(IRObjectPtr p);
     // -------------------------------------------------
-    void registerNewFile(File* file, IRObjectPtr obj);
+    void registerNewFile(File file, IRObjectPtr obj);
     // -------------------------------------------------
     
     //==================================================
@@ -94,39 +94,32 @@ private:
     class FILEMAP
     {
     private:
-        Array<File*> fileList;
-        Array<IRObjectPtr> pList;
+        std::vector<File> fileList;
+        std::vector<IRObjectPtr> pList;
         
-        Array<IRObjectPtr> list;
     public:
         void clear()
         {
             this->fileList.clear();
             this->pList.clear();
-            this->list.clear();
         }
         
-        template<class T>
-        bool add(File& f, T& p)
+        bool add(File f, IRObjectPtr p)
         {
-            this->list.add(FileManagerStr<T>(f, DataAllocationManager<T>()));
-        }
-        
-        bool add(File* f, IRObjectPtr p)
-        {
-            this->fileList.add(f);
-            this->pList.add(p);
-            return true;
-            
+            this->fileList.push_back(f);
+            this->pList.push_back(p);
+            std::cout << "adding to list  "<< this->fileList.size() << std::endl;
             // if any confliction occurs
             if(this->fileList.size() != this->pList.size()) return false;
+            
+            return true;
         }
         
-        bool remove(File* f)
+        bool remove(File f)
         {
-            int index = this->fileList.indexOf(f);
-            this->fileList.remove(index);
-            this->pList.remove(index);
+            int index = findIndexOf(f);
+            this->fileList.erase(this->fileList.begin() + index);
+            this->pList.erase(this->pList.begin() + index);
             return true;
             
             // if any confliction occurs
@@ -135,41 +128,93 @@ private:
         
         bool remove(IRObjectPtr p)
         {
-            int index = this->pList.indexOf(p);
-            this->fileList.remove(index);
-            this->pList.remove(index);
-            return true;
+            int index = findIndexOf(p);
+            
+            this->fileList.erase(this->fileList.begin() + index);
+            this->pList.erase(this->pList.begin() + index);
             
             // if any confliction occurs
-            if(this->fileList.size() != this->pList.size()) return false;
+            if(this->fileList.size() != this->pList.size())
+                return false;
+            else return true;
         }
         
-        File* findFile(File* f)
+        bool isFile(File f)
         {
-            int index = this->fileList.indexOf(f);
-            if (index > -1) return this->fileList[index];
-            else return nullptr;
+            for(auto _f : this->fileList)
+            {
+                // if the same File found in the list
+                if(_f == f)
+                    return true;
+            }
+            return false;
+        }
+        
+        
+        File findFile(File f)
+        {
+            for(auto _f : this->fileList)
+            {
+                // if the same File found in the list
+                if(_f == f)
+                    return _f;
+            }
+            //if nothing found
+            return File();
         }
         
         IRObjectPtr findPtr(IRObjectPtr p)
         {
-            int index = this->pList.indexOf(p);
+            int index = findIndexOf(p);
             if (index > -1) return this->pList[index];
             else return nullptr;
         }
         
-        IRObjectPtr findPtrByFile(File* f)
+        IRObjectPtr findPtrByFile(File f)
         {
-            int index = this->pList.indexOf(f);
+            int index = findIndexOf(f);
             if (index > -1) return this->pList[index];
             else return nullptr;
         }
         
-        File* findFileByPtr(IRObjectPtr p)
+        File findFileByPtr(IRObjectPtr p)
         {
-            int index = this->pList.indexOf(p);
+            int index = findIndexOf(p);
             if(index > -1) return this->fileList[index];
-            else return nullptr;
+            else return File();
+        }
+        
+        int findIndexOf(File f)
+        {
+            int i = 0;
+            int index = -1;
+            for(auto _f : this->fileList)
+            {
+                if(_f == f)
+                {
+                    index = i;
+                    break;
+                }
+                i++;
+            }
+            
+            return index;
+        }
+        
+        int findIndexOf(IRObjectPtr p)
+        {
+            int i = 0;
+            int index = -1;
+            for(auto _p : this->pList)
+            {
+                if(_p == p)
+                {
+                    index = i;
+                    break;
+                }
+                i++;
+            }
+            return index;
         }
   
     };

@@ -240,6 +240,7 @@
 		8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8293FBD1221451EA00C09BD5 /* KPixelDataConvertor.cpp */; };
 		829D0373222976B9001FDE1D /* IRImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D0371222976B9001FDE1D /* IRImage.cpp */; };
 		829D03762229798D001FDE1D /* IRVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D03742229798D001FDE1D /* IRVideo.cpp */; };
+		829D037A222D7F20001FDE1D /* IRUIFoundation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D0378222D7F20001FDE1D /* IRUIFoundation.cpp */; };
 		82A98B2A2199B84B0077EAE6 /* IRWorkspaceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */; };
 		82AB427E22208B3200F9184C /* DataAllocationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB427C22208B3200F9184C /* DataAllocationManager.cpp */; };
 		82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB42802224291C00F9184C /* IRiMaSApplication.cpp */; };
@@ -615,6 +616,8 @@
 		829D0372222976B9001FDE1D /* IRImage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRImage.hpp; sourceTree = "<group>"; };
 		829D03742229798D001FDE1D /* IRVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideo.cpp; sourceTree = "<group>"; };
 		829D03752229798D001FDE1D /* IRVideo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideo.hpp; sourceTree = "<group>"; };
+		829D0378222D7F20001FDE1D /* IRUIFoundation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRUIFoundation.cpp; sourceTree = "<group>"; };
+		829D0379222D7F20001FDE1D /* IRUIFoundation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRUIFoundation.hpp; sourceTree = "<group>"; };
 		82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceList.cpp; sourceTree = "<group>"; };
 		82A98B292199B84B0077EAE6 /* IRWorkspaceList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkspaceList.hpp; sourceTree = "<group>"; };
 		82AB427C22208B3200F9184C /* DataAllocationManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DataAllocationManager.cpp; sourceTree = "<group>"; };
@@ -1355,6 +1358,7 @@
 		821A5E5C212ACCF200BF593D /* NodeObject */ = {
 			isa = PBXGroup;
 			children = (
+				829D037B222D7F27001FDE1D /* UIFoundation */,
 				10F6475D2226EBD300A26D7D /* IRNodeObject */,
 				10F6475E2226EBDC00A26D7D /* IRNodeComponent */,
 				82657CE721EBFA56003FA700 /* ObjectCreater */,
@@ -1722,6 +1726,23 @@
 			path = IRVideo;
 			sourceTree = "<group>";
 		};
+		829D0377222D7EEA001FDE1D /* IRUIFoundation */ = {
+			isa = PBXGroup;
+			children = (
+				829D0378222D7F20001FDE1D /* IRUIFoundation.cpp */,
+				829D0379222D7F20001FDE1D /* IRUIFoundation.hpp */,
+			);
+			path = IRUIFoundation;
+			sourceTree = "<group>";
+		};
+		829D037B222D7F27001FDE1D /* UIFoundation */ = {
+			isa = PBXGroup;
+			children = (
+				829D0377222D7EEA001FDE1D /* IRUIFoundation */,
+			);
+			path = UIFoundation;
+			sourceTree = "<group>";
+		};
 		82A98B272199B8070077EAE6 /* IRWorksplaceList */ = {
 			isa = PBXGroup;
 			children = (
@@ -1985,6 +2006,7 @@
 				823E7BDB2134075C0046512B /* singletonClass.cpp in Sources */,
 				82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */,
 				829D03762229798D001FDE1D /* IRVideo.cpp in Sources */,
+				829D037A222D7F20001FDE1D /* IRUIFoundation.cpp in Sources */,
 				BAC07B81710E9DE23503547C /* include_juce_gui_extra.mm in Sources */,
 				2E1EF2C4A310C35FE2553764 /* include_juce_opengl.mm in Sources */,
 				10405845221ADAF200E82FED /* Main.cpp in Sources */,

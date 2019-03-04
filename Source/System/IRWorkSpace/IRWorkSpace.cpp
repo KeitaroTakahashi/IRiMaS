@@ -11,7 +11,7 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     setBounds(frameRect);
     //setSize (frameRect.getWidth(), frameRect.getHeight());
     setWantsKeyboardFocus(true);
-    //addKeyListener(this);
+    addKeyListener(this);
     
     //object menu
     this->ObjectMenuComponent = new ObjectListMenu(this, Rectangle<int>(300,400));

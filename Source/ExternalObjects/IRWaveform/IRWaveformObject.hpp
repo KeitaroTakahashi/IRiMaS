@@ -23,7 +23,7 @@ public:
         
         this->waveform = new IRWaveformUI();
         this->waveform->addChangeListener(this);
-        //this->waveform->addKeyListener(this);
+        //this->waveform->addKeyListener(parent);
         this->waveform->setBounds(this->xMargin,
                                   this->yMargin,
                                   getWidth()-(this->xMargin*2),
@@ -243,13 +243,14 @@ public:
     int getYMargin() const { return this->yMargin; }
     //==========================================================================
 
+    /*
     bool keyPressed (const KeyPress& key,
                              Component* originatingComponent) override
     {
         
         IRNodeObject::keyPressed(key, originatingComponent);
         return true;
-    }
+    }*/
 
     
     IRWaveformUI* waveform;
