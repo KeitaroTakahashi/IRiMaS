@@ -1738,9 +1738,17 @@
 		829D037B222D7F27001FDE1D /* UIFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				829D037C222D7FAD001FDE1D /* IRAudioUIFoundation */,
 				829D0377222D7EEA001FDE1D /* IRUIFoundation */,
 			);
 			path = UIFoundation;
+			sourceTree = "<group>";
+		};
+		829D037C222D7FAD001FDE1D /* IRAudioUIFoundation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRAudioUIFoundation;
 			sourceTree = "<group>";
 		};
 		82A98B272199B8070077EAE6 /* IRWorksplaceList */ = {

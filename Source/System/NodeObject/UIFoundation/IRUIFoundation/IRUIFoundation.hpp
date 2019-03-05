@@ -8,6 +8,15 @@
 #ifndef IRUIFoundation_hpp
 #define IRUIFoundation_hpp
 
-#include <stdio.h>
+#include "JuceHeader.h"
+#include "IRNodeObject.hpp"
+
+class IRUIFoundation : public Component,
+public IRNodeObject::Listener,
+public KeyListener
+{
+    IRUIFoundation();
+    ~IRUIFoundation();
+};
 
 #endif /* IRUIFoundation_hpp */

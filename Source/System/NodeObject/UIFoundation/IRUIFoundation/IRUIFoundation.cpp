@@ -6,3 +6,13 @@
 //
 
 #include "IRUIFoundation.hpp"
+
+IRUIFoundation::IRUIFoundation()
+{
+    
+}
+
+IRUIFoundation::~IRUIFoundation()
+{
+    
+}
