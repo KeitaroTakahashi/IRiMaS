@@ -59,8 +59,15 @@ bool IRWorkSpace::keyPressed (const KeyPress& key, Component* originatingCompone
     
     if(key.getTextDescription() == "command + E")
     {
-        // switch edit mode
-        setEditMode(! this->editModeFlag);
+        // DO NOT change edit mode here, but IRProject must change the status of this object
+        //setEditMode(!this->editModeFlag); <- therefore it is commented out.
+        
+        // notify it to IRProject
+        if(this->notifyEditModeChanged != nullptr)
+        {
+            this->notifyEditModeChanged();
+        }
+        
         return true;
     }
     

@@ -27,9 +27,29 @@ public:
     {
         g.fillAll(Colours::blue);
     }
-    
+    // --------------------------------------------------
+    void setEditMode(bool flag)
+    {
+        this->editModeFlag = flag;
+
+        
+        // if not editMode, get keyboardFocus
+        if(! flag){
+            setWantsKeyboardFocus(true);
+            addKeyListener(this);
+            
+        }
+        else
+        {
+            setWantsKeyboardFocus(false);
+            removeKeyListener(this);
+        }
+    }
+    // --------------------------------------------------
+
 private:
-    
+    bool editModeFlag = true;
+
 };
 
 #endif /* IRTestUI_h */

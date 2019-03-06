@@ -72,7 +72,7 @@ void IRProjectWindow::closeWindow()
 
 void IRProjectWindow::eidtModeChangedAction()
 {
-    std::cout << "eidtModeChangedAction\n";
+    std::cout << "IRProjectWindow : eidtModeChangedAction : editmode = " << this->project->isEditMode() << std::endl;
     // check edit mode
     std::string name = this->project->getProjectName();
     if (this->project->isEditMode())

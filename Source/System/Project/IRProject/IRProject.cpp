@@ -119,6 +119,7 @@ void IRProject::createNewWorkspace()
     IRWorkSpace* space = new IRWorkSpace(title, frameSize, this->preferenceWindow);
     space->requestWorkspaceListUpdate = [this] { updateWorkspaceList(); };
     space->requestSaveProject = [this] { callSaveProjectAction(); };
+    space->notifyEditModeChanged = [this] { performEditModeChange(); };
     
     space->addChangeListener(this->listener);
     this->mixer.addAudioSource(&space->getMixer());
@@ -185,9 +186,14 @@ void IRProject::performEditModeChange()
     }
     
     // notify IRProjectWindow change of the edit mode
+    printf("IRProject :: notifying...\n");
+
     if(this->notifyEditModeChanged != nullptr)
     {
         this->notifyEditModeChanged();
+        
+        printf("IRProject :: notified...\n");
+
     }
 }
 

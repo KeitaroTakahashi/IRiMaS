@@ -20,7 +20,8 @@ public:
     {
         setSize(100, 20);
         
-        //addAndMakeVisible(&this->playButton);
+        /*
+        addAndMakeVisible(&this->playButton);
         this->playButton.setButtonText("button");
         this->playButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.contents);
         this->playButton.onClick = [this] {buttonClicked();};
@@ -29,9 +30,12 @@ public:
         else this->playButton.setEnabled(true);
         
         childComponentManager(&this->playButton);
+         
+         */
         
         addAndMakeVisible(&this->ui);
         childComponentManager(&this->ui);
+        this->ui.setEditMode(isEditMode());
 
         
        // this->playButton.addMouseListener(this, true);
@@ -65,7 +69,7 @@ public:
 
     void resized() override
     {
-        this->playButton.setBounds(5,5, getWidth()-10, getHeight()-10);
+       // this->playButton.setBounds(5,5, getWidth()-10, getHeight()-10);
         this->ui.setBounds(getLocalBounds());
     }
     // ------------------------------------------------------------
@@ -93,6 +97,9 @@ public:
             case EditModeStatus:
                 if(isEditMode()) this->playButton.setEnabled(false);
                 else this->playButton.setEnabled(true);
+                
+                this->ui.setEditMode(isEditMode());
+
                 break;
             case SelectableStatus:
                 

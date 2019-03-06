@@ -21,8 +21,8 @@ public:
     
     
     // --------------------------------------------------
-    virtual void IRKeyPressed();
-    virtual void IRKeyReleased();
+    virtual void IRKeyPressed(int keyCode);
+    virtual void IRKeyReleased(int keyCode);
     bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override;
     
     bool keyPressed(const KeyPress &key,
@@ -31,6 +31,8 @@ public:
     // --------------------------------------------------
 private:
     
+    //key event
+    int pressedKeyCode;
     
 };
 
