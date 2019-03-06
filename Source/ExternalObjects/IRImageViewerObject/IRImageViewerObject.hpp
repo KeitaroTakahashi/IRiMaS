@@ -38,7 +38,7 @@ private:
     void statusChangedCallback(IRNodeComponentStatus status) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
 
-    IRImageViwer imageViewer;
+    IRImageViewer imageViewer;
 };
 
 #endif /* IRImageViwerObject_h */

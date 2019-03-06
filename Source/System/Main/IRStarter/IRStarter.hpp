@@ -77,7 +77,7 @@ private:
     Rectangle<float> logoPos;
     Image title;
     
-    IRImageViwer imageViewer;
+    IRImageViewer imageViewer;
     
     // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
