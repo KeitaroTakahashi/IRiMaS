@@ -15,6 +15,10 @@
 		106588E1222FFAB1005D6B38 /* WindowCommandTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588DF222FFAB1005D6B38 /* WindowCommandTarget.cpp */; };
 		106588E32230196D005D6B38 /* IRWaveformObjectUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588E22230196D005D6B38 /* IRWaveformObjectUI.cpp */; };
 		106588E722301D8F005D6B38 /* FontGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588E622301D8F005D6B38 /* FontGUI.cpp */; };
+		106588EF2230248D005D6B38 /* IRLabelObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588EE2230248D005D6B38 /* IRLabelObject.cpp */; };
+		106588F1223024A2005D6B38 /* IRLabelObjectPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588F0223024A2005D6B38 /* IRLabelObjectPreference.cpp */; };
+		106588F3223024B5005D6B38 /* IRTextEditorObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588F2223024B5005D6B38 /* IRTextEditorObject.cpp */; };
+		106588F5223024CF005D6B38 /* IRTextEditorObjectPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588F4223024CF005D6B38 /* IRTextEditorObjectPreference.cpp */; };
 		10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10AD5604222489AD0046686E /* IRStartWindow.cpp */; };
 		10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647412226C06B00A26D7D /* IRStarter.cpp */; };
 		10F647442226C4E700A26D7D /* PreferenceWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647432226C4E700A26D7D /* PreferenceWindow.cpp */; };
@@ -284,6 +288,10 @@
 		106588E0222FFAB1005D6B38 /* WindowCommandTarget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WindowCommandTarget.hpp; sourceTree = "<group>"; };
 		106588E22230196D005D6B38 /* IRWaveformObjectUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformObjectUI.cpp; sourceTree = "<group>"; };
 		106588E622301D8F005D6B38 /* FontGUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FontGUI.cpp; sourceTree = "<group>"; };
+		106588EE2230248D005D6B38 /* IRLabelObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRLabelObject.cpp; sourceTree = "<group>"; };
+		106588F0223024A2005D6B38 /* IRLabelObjectPreference.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRLabelObjectPreference.cpp; sourceTree = "<group>"; };
+		106588F2223024B5005D6B38 /* IRTextEditorObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRTextEditorObject.cpp; sourceTree = "<group>"; };
+		106588F4223024CF005D6B38 /* IRTextEditorObjectPreference.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRTextEditorObjectPreference.cpp; sourceTree = "<group>"; };
 		10AD5604222489AD0046686E /* IRStartWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStartWindow.cpp; sourceTree = "<group>"; };
 		10AD5605222489AD0046686E /* IRStartWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRStartWindow.hpp; sourceTree = "<group>"; };
 		10F647412226C06B00A26D7D /* IRStarter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStarter.cpp; sourceTree = "<group>"; };
@@ -921,6 +929,7 @@
 			isa = PBXGroup;
 			children = (
 				823E7BCE2132E1A90046512B /* IRLabelObject.hpp */,
+				106588EE2230248D005D6B38 /* IRLabelObject.cpp */,
 				106588EB22302389005D6B38 /* IRLabelObjectUI */,
 				106588E922302350005D6B38 /* IRLabelObjectPreference */,
 			);
@@ -931,6 +940,7 @@
 			isa = PBXGroup;
 			children = (
 				821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.hpp */,
+				106588F0223024A2005D6B38 /* IRLabelObjectPreference.cpp */,
 			);
 			path = IRLabelObjectPreference;
 			sourceTree = "<group>";
@@ -960,6 +970,7 @@
 			isa = PBXGroup;
 			children = (
 				821ED19E217E6F580019CF54 /* IRTextEditorObjectPreference.hpp */,
+				106588F4223024CF005D6B38 /* IRTextEditorObjectPreference.cpp */,
 			);
 			path = IRTextEditorObjectPreference;
 			sourceTree = "<group>";
@@ -1666,6 +1677,7 @@
 			isa = PBXGroup;
 			children = (
 				821ED19D217E6F420019CF54 /* IRTextEditorObject.hpp */,
+				106588F2223024B5005D6B38 /* IRTextEditorObject.cpp */,
 				106588EC2230239A005D6B38 /* IRTextEditorObjectUI */,
 				106588ED223023AB005D6B38 /* IRTextEditorObjectPreference */,
 			);
@@ -2061,6 +2073,7 @@
 				5FBBE001D0CECE98C23C4ECF /* include_juce_data_structures.mm in Sources */,
 				26E01DBC708CB7E21971FAEF /* include_juce_dsp.mm in Sources */,
 				8293FBC3220C3E5B00C09BD5 /* IRFfomegVideoPlayer.cpp in Sources */,
+				106588F5223024CF005D6B38 /* IRTextEditorObjectPreference.cpp in Sources */,
 				5CDB2035E2FA675900C3C329 /* include_juce_events.mm in Sources */,
 				82FA8F0A22089C7D0032983F /* IRVideoThumbnail.cpp in Sources */,
 				8222D497220858A500E7FE63 /* IRVideoThumbnailObject.cpp in Sources */,
@@ -2071,8 +2084,10 @@
 				821A5E67212AD6FE00BF593D /* IRNodeComponentEvents.cpp in Sources */,
 				823C181A2191B3F800AC9FC9 /* json11.cpp in Sources */,
 				825DC9CF21FF408400555CB8 /* IRVideoPlayer.cpp in Sources */,
+				106588F3223024B5005D6B38 /* IRTextEditorObject.cpp in Sources */,
 				821C5EB221357EDA00187902 /* IRWaveformObjectUIEvents.cpp in Sources */,
 				10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */,
+				106588EF2230248D005D6B38 /* IRLabelObject.cpp in Sources */,
 				823E7BC521302C110046512B /* IRImageLoader.cpp in Sources */,
 				823E7BD5213303260046512B /* IRWaveform.cpp in Sources */,
 				821A5E6B212AF8B800BF593D /* IRWorkSpace.cpp in Sources */,
@@ -2081,6 +2096,7 @@
 				B70BC5F4871D589D8480ED6E /* include_juce_gui_basics.mm in Sources */,
 				82657CEF21EE7DE5003FA700 /* IRiMaSMain.cpp in Sources */,
 				8210D9D0213D3E050042F646 /* IRSpectrogramObject.cpp in Sources */,
+				106588F1223024A2005D6B38 /* IRLabelObjectPreference.cpp in Sources */,
 				10F6475A2226DE8900A26D7D /* ObjectMenuWindow.cpp in Sources */,
 				821ED19421776A3E0019CF54 /* IRPreferenceSpace.cpp in Sources */,
 				106588DB222FFA8D005D6B38 /* MenuObject.cpp in Sources */,
