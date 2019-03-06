@@ -1,9 +1,3 @@
-//
-//  IRWaveformObject.hpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 26/08/2018.
-//
 
 #ifndef IRWaveformObject_hpp
 #define IRWaveformObject_hpp

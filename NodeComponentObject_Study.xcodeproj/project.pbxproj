@@ -951,7 +951,7 @@
 				821ED1A2217FA9230019CF54 /* IRAutomation */,
 				8286CBF621431BE900AAD437 /* ObjectGlobalTestObject */,
 				8210D9CC213D3D3F0042F646 /* FFTRelated */,
-				823E7BCF213301140046512B /* IRWaveform */,
+				823E7BCF213301140046512B /* IRWaveformObject */,
 				823E7BCD2132E1980046512B /* IRTextEditor */,
 				823E7BC62130472B0046512B /* IRImageViewerObject */,
 				823E7BBD212F56590046512B /* IRAudioPlayerObject */,
@@ -1602,7 +1602,7 @@
 			path = IRTextEditor;
 			sourceTree = "<group>";
 		};
-		823E7BCF213301140046512B /* IRWaveform */ = {
+		823E7BCF213301140046512B /* IRWaveformObject */ = {
 			isa = PBXGroup;
 			children = (
 				823E7BD12133012B0046512B /* IRWaveformObject.hpp */,
@@ -1612,7 +1612,7 @@
 				823E7BDC2134193E0046512B /* IRWaveformUI.h */,
 				821C5EB121357EDA00187902 /* IRWaveformUIEvents.cpp */,
 			);
-			path = IRWaveform;
+			path = IRWaveformObject;
 			sourceTree = "<group>";
 		};
 		823E7BD82134073A0046512B /* Utilities */ = {
