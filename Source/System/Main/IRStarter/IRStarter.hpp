@@ -6,7 +6,7 @@
 
 #include "Menus.h"
 #include "EditCommandTarget.hpp"
-#include "IRImageViewer.h"
+#include "IRImageViewer.hpp"
 
 #include <random>
 

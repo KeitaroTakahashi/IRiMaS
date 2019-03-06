@@ -1,9 +1,3 @@
-//
-//  IRImageViewer.h
-//  NodeComponentObject_Study
-//
-//  Created by Keitaro on 24/08/2018.
-//
 
 #ifndef IRImageViewer_h
 #define IRImageViewer_h
@@ -12,9 +6,15 @@
 #include "IRFoundation.h"
 #include "IRImageLoader.hpp"
 
+
+
+
+
 class IRImageViwer : public Component, private ChangeListener, public ChangeBroadcaster
 {
+    
 public:
+    
     IRImageViwer()
     {
         setSize(100,100);
@@ -31,6 +31,7 @@ public:
         this->imgLoader.addChangeListener(this);
         
     }
+    
     ~IRImageViwer()
     {
         
@@ -112,4 +113,11 @@ private:
     
 };
 
+
+
+
 #endif /* IRImageViewer_h */
+
+
+
+
