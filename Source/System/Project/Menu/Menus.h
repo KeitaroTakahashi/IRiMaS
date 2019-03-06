@@ -1,9 +1,3 @@
-//
-//  Menus.h
-//  NodeComponentObject_Study
-//
-//  Created by Keitaro on 07/11/2018.
-//
 
 #ifndef Menus_h
 #define Menus_h
