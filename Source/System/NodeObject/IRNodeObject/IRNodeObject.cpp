@@ -13,7 +13,7 @@ IRNodeObject::~IRNodeObject()
     
 }
 
-
+/*
 //copy constructor
 IRNodeObject* IRNodeObject::copyThis()
 {
@@ -33,7 +33,6 @@ IRNodeObject* IRNodeObject::copySelectedContents()
 {
     return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
 }
-
 
 t_json IRNodeObject::saveThisToSaveData()
 {
@@ -78,6 +77,7 @@ void IRNodeObject::mouseDragEvent(const MouseEvent& e)
     
 }
 
+ */
 
 /*
  
@@ -193,7 +193,7 @@ void IRNodeObject::callSaveProject()
     if(this->saveProjectCompleted != nullptr) this->saveProjectCompleted();
 
 }
-
+/*
 
 void IRNodeObject::saveObjectContents()
 {
@@ -214,3 +214,4 @@ bool IRNodeObject::keyPressed(const KeyPress& key, Component* originatingCompone
 }
 
 
+*/

@@ -3,7 +3,7 @@
 
 
 
-
+/*
 IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IRWaveform")
 {
     
@@ -87,9 +87,8 @@ IRNodeObject* IRWaveformObject::copySelectedContents()
 
 t_json IRWaveformObject::saveThisToSaveData()
 {
-    /*
-     start making Json for Selections
-     */
+     //start making Json for Selections
+ 
     std::vector<t_json> selectionData;
     int index = 0;
     for(auto o : this->waveform->selectionSquareObjects)
@@ -102,9 +101,7 @@ t_json IRWaveformObject::saveThisToSaveData()
         index++;
     }
     
-    /*
-     waveform
-     */
+     //waveform
     Rectangle<int> wb = this->waveform->getBounds();
     t_json save_waveform = t_json::object({
         {"bounds", t_json::array({wb.getX(), wb.getY(), wb.getWidth(), wb.getHeight()})},
@@ -253,4 +250,4 @@ bool IRWaveformObject::keyPressed(const KeyPress& key, Component* originatingCom
 }
 
 
-
+*/
