@@ -14,6 +14,7 @@
 		106588DE222FFAA2005D6B38 /* EditCommandTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588DC222FFAA2005D6B38 /* EditCommandTarget.cpp */; };
 		106588E1222FFAB1005D6B38 /* WindowCommandTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588DF222FFAB1005D6B38 /* WindowCommandTarget.cpp */; };
 		106588E32230196D005D6B38 /* IRWaveformUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588E22230196D005D6B38 /* IRWaveformUI.cpp */; };
+		106588E722301D8F005D6B38 /* FontGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588E622301D8F005D6B38 /* FontGUI.cpp */; };
 		10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10AD5604222489AD0046686E /* IRStartWindow.cpp */; };
 		10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647412226C06B00A26D7D /* IRStarter.cpp */; };
 		10F647442226C4E700A26D7D /* PreferenceWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647432226C4E700A26D7D /* PreferenceWindow.cpp */; };
@@ -282,6 +283,7 @@
 		106588DF222FFAB1005D6B38 /* WindowCommandTarget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WindowCommandTarget.cpp; sourceTree = "<group>"; };
 		106588E0222FFAB1005D6B38 /* WindowCommandTarget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WindowCommandTarget.hpp; sourceTree = "<group>"; };
 		106588E22230196D005D6B38 /* IRWaveformUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformUI.cpp; sourceTree = "<group>"; };
+		106588E622301D8F005D6B38 /* FontGUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FontGUI.cpp; sourceTree = "<group>"; };
 		10AD5604222489AD0046686E /* IRStartWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStartWindow.cpp; sourceTree = "<group>"; };
 		10AD5605222489AD0046686E /* IRStartWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRStartWindow.hpp; sourceTree = "<group>"; };
 		10F647412226C06B00A26D7D /* IRStarter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStarter.cpp; sourceTree = "<group>"; };
@@ -1503,6 +1505,7 @@
 			isa = PBXGroup;
 			children = (
 				821ED19C217DF1380019CF54 /* FontGUI.hpp */,
+				106588E622301D8F005D6B38 /* FontGUI.cpp */,
 			);
 			path = FontGUI;
 			sourceTree = "<group>";
@@ -2006,6 +2009,7 @@
 				10F64769222703F600A26D7D /* IRObjectCreater.cpp in Sources */,
 				B130D4EB3FBB582FE9656C93 /* include_juce_cryptography.mm in Sources */,
 				823C181E2191B4EE00AC9FC9 /* IRProject.cpp in Sources */,
+				106588E722301D8F005D6B38 /* FontGUI.cpp in Sources */,
 				5FBBE001D0CECE98C23C4ECF /* include_juce_data_structures.mm in Sources */,
 				26E01DBC708CB7E21971FAEF /* include_juce_dsp.mm in Sources */,
 				8293FBC3220C3E5B00C09BD5 /* IRFfomegVideoPlayer.cpp in Sources */,
