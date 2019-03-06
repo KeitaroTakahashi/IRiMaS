@@ -7,61 +7,19 @@
 
 class IRTextEditorObjectPreference : public IRPreferenceObject
 {
+    
 public:
-    IRTextEditorObjectPreference(String title, Rectangle<int> frameRect) :
-    IRPreferenceObject(title,frameRect)
-
-    {
-        this->fontGUI = new FontGUI(title);
-        addAndMakeVisible(this->fontGUI);
-        this->fontGUI->addChangeListener(this);
-    }
     
-    ~IRTextEditorObjectPreference()
-    {
-        
-    }
-    //===============================================================
-    // --------------------------------------------------------------
+    IRTextEditorObjectPreference(String title, Rectangle<int> frameRect);
+    ~IRTextEditorObjectPreference();
     
-    void resized() override
-    {
-        IRPreferenceObject::resized();
-        
-        this->fontGUI->setBounds(0,0,getWidth(), getHeight());
-    }
-    //===============================================================
-    void initialize()
-    {
-        
-    }
-    //===============================================================
-    //Listener
-    void changeListenerCallback (ChangeBroadcaster* source) override
-    {
-        if(source == this->fontGUI)
-        {
-            switch (this->fontGUI->getChangeStatus()) {
-                case FontChanged:
-                    break;
-                case FontStyleChanged:
-                    break;
-                case FontSizeChanged:
-                    break;
-                case FontAlignChanged:
-                    break;
-                case FontColourChanged:
-                    break;
-                default:
-                    break;
-            }
-            
-        }
-    }
+    void resized() override;
     
-    //===============================================================
+    void initialize();
     
-    FontGUI* getFontGUI() { return this->fontGUI; }
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+    
+    FontGUI* getFontGUI();
     
 private:
     
@@ -72,4 +30,13 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRTextEditorObjectPreference)
     
 };
+
+
+
+
 #endif /* IRTextEditorObjectPreference_h */
+
+
+
+
+
