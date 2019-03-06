@@ -1,12 +1,9 @@
-//
-//  IRProject.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 06/11/2018.
-//
 
 #include "IRProject.hpp"
-//==================================================
+
+
+
+
 IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
                      PreferenceWindow* preferenceWindow,
                      DocumentWindow* parentWindow,
@@ -45,12 +42,13 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
     // setup
     setAudioChannels(0, 2);
 }
-//==================================================
+
+
 IRProject::~IRProject()
 {
     shutdownAudio();
 }
-// ========================================
+
 
 void IRProject::resized()
 {
@@ -69,7 +67,8 @@ void IRProject::resized()
         
     }
 }
-//==================================================
+
+
 void IRProject::createNewWorkspace()
 {
     std::string title = this->projectName + "_" + std::to_string(this->workspaces.size()+1);
@@ -104,7 +103,7 @@ void IRProject::createNewWorkspace()
         
     }else{ printf("Error : createNewWorkspace() : could not add new workspace, workspaceList null.\n");}
 }
-//==================================================
+
 
 void IRProject::performEditModeChange()
 {
@@ -124,7 +123,7 @@ void IRProject::performEditModeChange()
         this->notifyEditModeChanged();
     }
 }
-//==================================================
+
 
 json11::Json IRProject::saveAction(std::string filePath)
 {
@@ -207,7 +206,6 @@ json11::Json IRProject::saveAction(std::string filePath)
     return saveData;
 }
 
-//==================================================
 
 void IRProject::callCreateNewProjectAction()
 {
@@ -221,6 +219,8 @@ void IRProject::callCreateNewProjectAction()
     //std::function
     if(this->createNewProjectActionCompleted != nullptr) this->createNewProjectActionCompleted();
 }
+
+
 void IRProject::callOpenProjectAction()
 {
     Component::BailOutChecker checker(this);
@@ -233,6 +233,7 @@ void IRProject::callOpenProjectAction()
     //std::function
     if(this->openProjectActionCompleted != nullptr) this->openProjectActionCompleted();
 }
+
 
 void IRProject::callCloseProjectAction()
 {
@@ -248,6 +249,7 @@ void IRProject::callCloseProjectAction()
     if(this->closeProjectActionCompleted != nullptr) this->closeProjectActionCompleted();
 }
 
+
 void IRProject::callSaveProjectAction()
 {
     Component::BailOutChecker checker(this);
@@ -261,6 +263,7 @@ void IRProject::callSaveProjectAction()
     if(this->saveProjectActionCompleted != nullptr) this->saveProjectActionCompleted();
 }
 
+
 void IRProject::callSaveAsProjectAction()
 {
     Component::BailOutChecker checker(this);
@@ -273,9 +276,9 @@ void IRProject::callSaveAsProjectAction()
     //std::function
     if(this->saveAsProjectActionCompleted != nullptr) this->saveAsProjectActionCompleted();
 }
-//==================================================
-// menu bar methods
 
+
+// menu bar methods
 PopupMenu IRProject::getMenuForIndex(int menuIndex, const String& menuName)
 {
     PopupMenu menu;
@@ -333,10 +336,12 @@ void IRProject::setMenuBarPosition ( MenuBarPosition newPosition )
     }
 }
 
+
 ApplicationCommandTarget* IRProject::getNextCommandTarget()
 {
     return editCommandTarget;
 }
+
 
 void IRProject::getAllCommands(Array<CommandID>&c)
 {
@@ -348,6 +353,8 @@ void IRProject::getAllCommands(Array<CommandID>&c)
         CommandIDs::NewWorkspace };
     c.addArray (commands);
 }
+
+
 void IRProject::getCommandInfo(CommandID commandID, ApplicationCommandInfo& result)
 {
     switch (commandID)
@@ -384,6 +391,7 @@ void IRProject::getCommandInfo(CommandID commandID, ApplicationCommandInfo& resu
     }
 }
 
+
 bool IRProject::perform(const InvocationInfo& info)
 {
     switch(info.commandID)
@@ -412,3 +420,7 @@ bool IRProject::perform(const InvocationInfo& info)
     repaint();
     return true;
 }
+
+
+
+
