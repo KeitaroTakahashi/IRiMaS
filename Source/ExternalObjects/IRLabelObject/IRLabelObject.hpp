@@ -9,7 +9,7 @@
 #define IRTextEditor_h
 
 #include "IRNodeObject.hpp"
-#include "IRLabelObjectPreference.h"
+#include "IRLabelObjectPreference.hpp"
 
 class IRLabelObject : public IRNodeObject,
 public ChangeListener

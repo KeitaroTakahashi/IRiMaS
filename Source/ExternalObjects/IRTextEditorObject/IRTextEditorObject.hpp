@@ -17,7 +17,7 @@
 #define IRTextEditorObject_h
 
 #include "IRNodeObject.hpp"
-#include "IRTextEditorObjectPreference.h"
+#include "IRTextEditorObjectPreference.hpp"
 
 class IRTextEditorObject : public IRNodeObject,
 public ChangeListener

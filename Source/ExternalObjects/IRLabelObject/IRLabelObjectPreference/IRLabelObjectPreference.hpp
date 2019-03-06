@@ -8,7 +8,7 @@
 #ifndef IRLabelObjectPreference_h
 #define IRLabelObjectPreference_h
 
-#include "IRLabelObject.h"
+#include "IRLabelObject.hpp"
 #include "IRPreferenceObject.hpp"
 #include "FontGUI.hpp"
 

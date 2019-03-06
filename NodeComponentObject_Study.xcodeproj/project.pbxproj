@@ -349,12 +349,12 @@
 		821ED19221776A3E0019CF54 /* IRPreferenceSpace.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRPreferenceSpace.cpp; sourceTree = "<group>"; };
 		821ED19321776A3E0019CF54 /* IRPreferenceSpace.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRPreferenceSpace.hpp; sourceTree = "<group>"; };
 		821ED19521776BF60019CF54 /* PreferenceWindow.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = PreferenceWindow.hpp; sourceTree = "<group>"; };
-		821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRLabelObjectPreference.h; sourceTree = "<group>"; };
+		821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRLabelObjectPreference.hpp; sourceTree = "<group>"; };
 		821ED198217DCD800019CF54 /* IRPreferenceObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRPreferenceObject.cpp; sourceTree = "<group>"; };
 		821ED199217DCD800019CF54 /* IRPreferenceObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRPreferenceObject.hpp; sourceTree = "<group>"; };
 		821ED19C217DF1380019CF54 /* FontGUI.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = FontGUI.hpp; sourceTree = "<group>"; };
-		821ED19D217E6F420019CF54 /* IRTextEditorObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTextEditorObject.h; sourceTree = "<group>"; };
-		821ED19E217E6F580019CF54 /* IRTextEditorObjectPreference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTextEditorObjectPreference.h; sourceTree = "<group>"; };
+		821ED19D217E6F420019CF54 /* IRTextEditorObject.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRTextEditorObject.hpp; sourceTree = "<group>"; };
+		821ED19E217E6F580019CF54 /* IRTextEditorObjectPreference.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRTextEditorObjectPreference.hpp; sourceTree = "<group>"; };
 		821ED19F217F33090019CF54 /* IRSpectrogramObjectPreference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSpectrogramObjectPreference.h; sourceTree = "<group>"; };
 		821ED1A1217F370A0019CF54 /* FFTPreferenceUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPreferenceUI.h; sourceTree = "<group>"; };
 		821ED1A3217FA93D0019CF54 /* IRAutomationObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRAutomationObject.cpp; sourceTree = "<group>"; };
@@ -579,7 +579,7 @@
 		823E7BC8213053330046512B /* IRImageViewer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRImageViewer.h; sourceTree = "<group>"; };
 		823E7BCB213059FA0046512B /* ColourLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColourLib.h; sourceTree = "<group>"; };
 		823E7BCC21305AD60046512B /* IRFoundation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFoundation.h; sourceTree = "<group>"; };
-		823E7BCE2132E1A90046512B /* IRLabelObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRLabelObject.h; sourceTree = "<group>"; };
+		823E7BCE2132E1A90046512B /* IRLabelObject.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRLabelObject.hpp; sourceTree = "<group>"; };
 		823E7BD02133012B0046512B /* IRWaveformObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformObject.cpp; sourceTree = "<group>"; };
 		823E7BD12133012B0046512B /* IRWaveformObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWaveformObject.hpp; sourceTree = "<group>"; };
 		823E7BD3213303260046512B /* IRWaveform.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveform.cpp; sourceTree = "<group>"; };
@@ -920,10 +920,48 @@
 		106588E8223021B3005D6B38 /* IRLabelObject */ = {
 			isa = PBXGroup;
 			children = (
-				823E7BCE2132E1A90046512B /* IRLabelObject.h */,
-				821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.h */,
+				823E7BCE2132E1A90046512B /* IRLabelObject.hpp */,
+				106588EB22302389005D6B38 /* IRLabelObjectUI */,
+				106588E922302350005D6B38 /* IRLabelObjectPreference */,
 			);
 			path = IRLabelObject;
+			sourceTree = "<group>";
+		};
+		106588E922302350005D6B38 /* IRLabelObjectPreference */ = {
+			isa = PBXGroup;
+			children = (
+				821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.hpp */,
+			);
+			path = IRLabelObjectPreference;
+			sourceTree = "<group>";
+		};
+		106588EA2230235F005D6B38 /* IRWaveformObjectPreference */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRWaveformObjectPreference;
+			sourceTree = "<group>";
+		};
+		106588EB22302389005D6B38 /* IRLabelObjectUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRLabelObjectUI;
+			sourceTree = "<group>";
+		};
+		106588EC2230239A005D6B38 /* IRTextEditorObjectUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRTextEditorObjectUI;
+			sourceTree = "<group>";
+		};
+		106588ED223023AB005D6B38 /* IRTextEditorObjectPreference */ = {
+			isa = PBXGroup;
+			children = (
+				821ED19E217E6F580019CF54 /* IRTextEditorObjectPreference.hpp */,
+			);
+			path = IRTextEditorObjectPreference;
 			sourceTree = "<group>";
 		};
 		106DE3DA22242A7200237EE1 /* IRiMaSApplication */ = {
@@ -985,7 +1023,7 @@
 				8210D9CC213D3D3F0042F646 /* FFTRelated */,
 				823E7BCF213301140046512B /* IRWaveformObject */,
 				106588E8223021B3005D6B38 /* IRLabelObject */,
-				823E7BCD2132E1980046512B /* IRTextEditor */,
+				823E7BCD2132E1980046512B /* IRTextEditorObject */,
 				823E7BC62130472B0046512B /* IRImageViewerObject */,
 				823E7BBD212F56590046512B /* IRAudioPlayerObject */,
 				821A5EA1212ECE5300BF593D /* IRTestObject */,
@@ -1624,13 +1662,14 @@
 			path = Colour;
 			sourceTree = "<group>";
 		};
-		823E7BCD2132E1980046512B /* IRTextEditor */ = {
+		823E7BCD2132E1980046512B /* IRTextEditorObject */ = {
 			isa = PBXGroup;
 			children = (
-				821ED19D217E6F420019CF54 /* IRTextEditorObject.h */,
-				821ED19E217E6F580019CF54 /* IRTextEditorObjectPreference.h */,
+				821ED19D217E6F420019CF54 /* IRTextEditorObject.hpp */,
+				106588EC2230239A005D6B38 /* IRTextEditorObjectUI */,
+				106588ED223023AB005D6B38 /* IRTextEditorObjectPreference */,
 			);
-			path = IRTextEditor;
+			path = IRTextEditorObject;
 			sourceTree = "<group>";
 		};
 		823E7BCF213301140046512B /* IRWaveformObject */ = {
@@ -1640,6 +1679,7 @@
 				823E7BD12133012B0046512B /* IRWaveformObject.hpp */,
 				823E7BD02133012B0046512B /* IRWaveformObject.cpp */,
 				106588E422301BFA005D6B38 /* IRWaveformObjectUI */,
+				106588EA2230235F005D6B38 /* IRWaveformObjectPreference */,
 			);
 			path = IRWaveformObject;
 			sourceTree = "<group>";
