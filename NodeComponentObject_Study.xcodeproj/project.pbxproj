@@ -13,6 +13,7 @@
 		106588DB222FFA8D005D6B38 /* MenuObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588D9222FFA8D005D6B38 /* MenuObject.cpp */; };
 		106588DE222FFAA2005D6B38 /* EditCommandTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588DC222FFAA2005D6B38 /* EditCommandTarget.cpp */; };
 		106588E1222FFAB1005D6B38 /* WindowCommandTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588DF222FFAB1005D6B38 /* WindowCommandTarget.cpp */; };
+		106588E32230196D005D6B38 /* IRWaveformUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588E22230196D005D6B38 /* IRWaveformUI.cpp */; };
 		10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10AD5604222489AD0046686E /* IRStartWindow.cpp */; };
 		10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647412226C06B00A26D7D /* IRStarter.cpp */; };
 		10F647442226C4E700A26D7D /* PreferenceWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647432226C4E700A26D7D /* PreferenceWindow.cpp */; };
@@ -280,6 +281,7 @@
 		106588DD222FFAA2005D6B38 /* EditCommandTarget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditCommandTarget.hpp; sourceTree = "<group>"; };
 		106588DF222FFAB1005D6B38 /* WindowCommandTarget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WindowCommandTarget.cpp; sourceTree = "<group>"; };
 		106588E0222FFAB1005D6B38 /* WindowCommandTarget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WindowCommandTarget.hpp; sourceTree = "<group>"; };
+		106588E22230196D005D6B38 /* IRWaveformUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformUI.cpp; sourceTree = "<group>"; };
 		10AD5604222489AD0046686E /* IRStartWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStartWindow.cpp; sourceTree = "<group>"; };
 		10AD5605222489AD0046686E /* IRStartWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRStartWindow.hpp; sourceTree = "<group>"; };
 		10F647412226C06B00A26D7D /* IRStarter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStarter.cpp; sourceTree = "<group>"; };
@@ -583,7 +585,7 @@
 		823E7BD62134064C0046512B /* Preferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
 		823E7BD92134075C0046512B /* singletonClass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = singletonClass.cpp; sourceTree = "<group>"; };
 		823E7BDA2134075C0046512B /* singletonClass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = singletonClass.hpp; sourceTree = "<group>"; };
-		823E7BDC2134193E0046512B /* IRWaveformUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRWaveformUI.h; sourceTree = "<group>"; };
+		823E7BDC2134193E0046512B /* IRWaveformUI.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRWaveformUI.hpp; sourceTree = "<group>"; };
 		8258AC30221C6B9300557661 /* materials */ = {isa = PBXFileReference; lastKnownFileType = folder; path = materials; sourceTree = "<group>"; };
 		825DC9CA21FF407000555CB8 /* IRVideoPlayerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoPlayerObject.cpp; sourceTree = "<group>"; };
 		825DC9CB21FF407000555CB8 /* IRVideoPlayerObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoPlayerObject.hpp; sourceTree = "<group>"; };
@@ -1609,7 +1611,8 @@
 				823E7BD02133012B0046512B /* IRWaveformObject.cpp */,
 				823E7BD4213303260046512B /* IRWaveform.hpp */,
 				823E7BD3213303260046512B /* IRWaveform.cpp */,
-				823E7BDC2134193E0046512B /* IRWaveformUI.h */,
+				823E7BDC2134193E0046512B /* IRWaveformUI.hpp */,
+				106588E22230196D005D6B38 /* IRWaveformUI.cpp */,
 				821C5EB121357EDA00187902 /* IRWaveformUIEvents.cpp */,
 			);
 			path = IRWaveformObject;
@@ -1972,6 +1975,7 @@
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
 				82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */,
 				10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */,
+				106588E32230196D005D6B38 /* IRWaveformUI.cpp in Sources */,
 				32360B59740CCC174CF75F0B /* include_juce_audio_basics.mm in Sources */,
 				825DC9CC21FF407000555CB8 /* IRVideoPlayerObject.cpp in Sources */,
 				A9D5694184653919C1A1BBB4 /* include_juce_audio_devices.mm in Sources */,

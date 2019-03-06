@@ -1,0 +1,108 @@
+//
+//  IRWaveformUI.h
+//  NodeComponentObject_Study
+//
+//  Created by Keitaro on 27/08/2018.
+//
+
+#ifndef IRWaveformUI_h
+#define IRWaveformUI_h
+
+#include "IRWaveform.hpp"
+#include "IRNodeObjectSelector.hpp"
+#include "IRGraphSelector.hpp"
+
+class IRWaveformUI : public IRWaveform,
+                     public IRNodeObject::Listener,
+                     public KeyListener
+{
+
+public:
+    
+    IRWaveformUI();
+    ~IRWaveformUI();
+    
+    void resized() override;
+    bool isSelectMode() const;
+    
+    void setEditMode(bool flag);
+    
+    bool isEditMode() const;
+    
+    void setLooping(bool flag);
+    bool isLooping() const;
+    
+    void setPlayOffset(int offset);
+    int getPlayOffset() const;
+    
+    void mouseDown(const MouseEvent& e) override;
+    void mouseDownHandler(const MouseEvent& e);
+    
+    void mouseUp(const MouseEvent& e) override;
+    void mouseUpHandler(const MouseEvent& e);
+    
+    void mouseDrag(const MouseEvent& e) override;
+    void mouseDragHandler(const MouseEvent& e);
+    
+    void createSquareObject(Rectangle<int> rect);
+    void addSquareObject(IRMultiPurposeObject* obj);
+    void deleteSquareObject();
+    void deselectAllSquareObject();
+    void addSelectedObjects();
+    
+    void playSelectedArea();
+    void stopPlaying();
+    
+    // listener IRNodeObject
+    // This object takes an exclusive listener which is expected to be Workspace.
+    void setListener(IRNodeObject::Listener* newListener);
+    
+    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
+    
+    enum UISTATUS
+    {
+        DRAGOUT,
+        DROPOUT,
+        EDITMODECHANGE,
+        PROJECTSAVE
+    };
+    
+    UISTATUS status;
+    
+    Array<IRMultiPurposeObject* > selectionSquareObjects;
+    Array<IRMultiPurposeObject* > selectedSquareObjectList;
+
+    
+private:
+    
+    IRGraphSelector* selector;
+
+    IRNodeObject::Listener* parentListener;
+
+    bool selectFlag = true;
+    bool selectModeFlag = false;
+    
+    bool editModeFlag = true;
+    
+    bool looping = false;
+    int playOffset = 0; // delay
+    
+    // drag drop action
+    bool dragdropCalled = false;
+    
+    int previousWidth = 0;
+    int previousHeight = 0;
+
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWaveformUI)
+
+};
+
+
+
+
+#endif /* IRWaveformUI_h */
+
+
+
+

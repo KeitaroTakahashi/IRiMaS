@@ -1,12 +1,21 @@
-//
-//  IRWaveformUIEvents.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 28/08/2018.
-//
 
-#include "IRWaveformUI.h"
-// ------------------------------------------------------------
+#include "IRWaveformUI.hpp"
+
+
+
+
+void IRWaveformUI::mouseDown(const MouseEvent& e)
+{
+    this->previousWidth = getWidth();
+    this->previousHeight = getHeight();
+    
+    std::cout << "waveformUI mouseDown\n";
+    mouseDownHandler(e);
+    
+    // play selected area
+    playSelectedArea();
+}
+
 
 void IRWaveformUI::mouseDownHandler(const MouseEvent& e)
 {
@@ -29,8 +38,10 @@ void IRWaveformUI::mouseDownHandler(const MouseEvent& e)
         addSelectedObjects();
         
         
-    }else{
-        if(! e.mods.isShiftDown() && ! e.mods.isCommandDown())
+    }
+    else
+    {
+        if (! e.mods.isShiftDown() && ! e.mods.isCommandDown())
         {
             //if background clicked, clear all selected status
             deselectAllSquareObject();
@@ -38,7 +49,7 @@ void IRWaveformUI::mouseDownHandler(const MouseEvent& e)
             addSelectedObjects();
         }
         // make selection square
-        if(this->selectFlag && ! isEditMode())
+        if (this->selectFlag && ! isEditMode())
         {
             this->selector->mouseDownHandler(e);
             addAndMakeVisible(this->selector);
@@ -47,7 +58,20 @@ void IRWaveformUI::mouseDownHandler(const MouseEvent& e)
     }
  
 }
-// ------------------------------------------------------------
+
+
+void IRWaveformUI::mouseUp(const MouseEvent& e)
+{
+    if(this->selectModeFlag && isSelectMode())
+    {
+        createSquareObject(this->selector->getBounds());
+        this->selector->mouseUpHandler(e);
+        this->selectModeFlag = false;
+    }
+    
+    mouseUpHandler(e);
+}
+
 
 void IRWaveformUI::mouseUpHandler(const MouseEvent& e)
 {
@@ -64,7 +88,17 @@ void IRWaveformUI::mouseUpHandler(const MouseEvent& e)
         this->dragdropCalled = false;
     }
 }
-// ------------------------------------------------------------
+
+
+void IRWaveformUI::mouseDrag(const MouseEvent& e)
+{
+    if (this->selectModeFlag && isSelectMode())
+    {
+        this->selector->mouseDragHandler(e);
+    }
+    mouseDragHandler(e);
+}
+
 
 void IRWaveformUI::mouseDragHandler(const MouseEvent& e)
 {
@@ -91,7 +125,7 @@ void IRWaveformUI::mouseDragHandler(const MouseEvent& e)
         }
     }
 }
-// ------------------------------------------------------------
+
 
 void IRWaveformUI::playSelectedArea()
 {
@@ -112,12 +146,14 @@ void IRWaveformUI::playSelectedArea()
         //std::cout << "play data from " << startSample << " for " << durationSample << " : displayedSampleLength = " << displaySampleLength << " : width ratio = " << bounds.getWidth() << std::endl;
     }
 }
-// ------------------------------------------------------------
+
+
 void IRWaveformUI::stopPlaying()
 {
-   if(this->player->isPlaying())
+   if (this->player->isPlaying())
    {
        this->player->stop();
    }
 }
-// ------------------------------------------------------------
+
+

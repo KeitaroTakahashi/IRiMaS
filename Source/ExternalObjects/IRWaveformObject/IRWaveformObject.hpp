@@ -3,7 +3,7 @@
 #define IRWaveformObject_hpp
 
 #include "IRNodeObject.hpp"
-#include "IRWaveformUI.h"
+#include "IRWaveformUI.hpp"
 #include "IRObjectSelection.hpp"
 
 class IRWaveformObject : public IRNodeObject,
