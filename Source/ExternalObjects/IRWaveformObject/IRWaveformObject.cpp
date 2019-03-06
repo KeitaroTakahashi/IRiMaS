@@ -7,7 +7,7 @@
 IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IRWaveform")
 {
     
-    this->waveform = new IRWaveformUI();
+    this->waveform = new IRWaveformObjectUI();
     this->waveform->addChangeListener(this);
     //this->waveform->addKeyListener(this);
     this->waveform->setBounds(this->xMargin,
@@ -206,20 +206,20 @@ void IRWaveformObject::changeListenerCallback(ChangeBroadcaster* source)
     {
         switch(this->waveform->status)
         {
-            case IRWaveformUI::DRAGOUT:
+            case IRWaveformObjectUI::DRAGOUT:
                 this->callDragOutNodeObjectFromParent();
                 break;
-            case IRWaveformUI::DROPOUT:
+            case IRWaveformObjectUI::DROPOUT:
                 this->callDropOutNodeObjectFromParent();
                 break;
-            case IRWaveformUI::EDITMODECHANGE:
+            case IRWaveformObjectUI::EDITMODECHANGE:
                 // first change its EditMode status
                 setEditMode(! isEditMode());
                 // then inform the new edit mode status by calling this
                 this->callEditModeChangedInNodeObject();
                 break;
                 
-            case IRWaveformUI::PROJECTSAVE:
+            case IRWaveformObjectUI::PROJECTSAVE:
                 // request IRMAIN to save this project.
                 // IRNodeObject -> IRWorkspace -> IRProject -> IRMAIN
                 this->callSaveProject();

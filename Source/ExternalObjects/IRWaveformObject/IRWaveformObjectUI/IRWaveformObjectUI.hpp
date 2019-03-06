@@ -1,26 +1,26 @@
 //
-//  IRWaveformUI.h
+//  IRWaveformObjectUI.h
 //  NodeComponentObject_Study
 //
 //  Created by Keitaro on 27/08/2018.
 //
 
-#ifndef IRWaveformUI_h
-#define IRWaveformUI_h
+#ifndef IRWaveformObjectUI_h
+#define IRWaveformObjectUI_h
 
 #include "IRWaveform.hpp"
 #include "IRNodeObjectSelector.hpp"
 #include "IRGraphSelector.hpp"
 
-class IRWaveformUI : public IRWaveform,
+class IRWaveformObjectUI : public IRWaveform,
                      public IRNodeObject::Listener,
                      public KeyListener
 {
 
 public:
     
-    IRWaveformUI();
-    ~IRWaveformUI();
+    IRWaveformObjectUI();
+    ~IRWaveformObjectUI();
     
     void resized() override;
     bool isSelectMode() const;
@@ -94,14 +94,14 @@ private:
     int previousHeight = 0;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWaveformUI)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWaveformObjectUI)
 
 };
 
 
 
 
-#endif /* IRWaveformUI_h */
+#endif /* IRWaveformObjectUI_h */
 
 
 

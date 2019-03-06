@@ -1,10 +1,10 @@
 
-#include "IRWaveformUI.hpp"
+#include "IRWaveformObjectUI.hpp"
 
 
 
 
-IRWaveformUI::IRWaveformUI() : IRWaveform()
+IRWaveformObjectUI::IRWaveformObjectUI() : IRWaveform()
 {
     this->selector = new IRGraphSelector();
     // only horizontal axis is movable and height follows the object height.
@@ -15,13 +15,13 @@ IRWaveformUI::IRWaveformUI() : IRWaveform()
 }
 
 
-IRWaveformUI::~IRWaveformUI()
+IRWaveformObjectUI::~IRWaveformObjectUI()
 {
     
 }
 
 
-void IRWaveformUI::resized()
+void IRWaveformObjectUI::resized()
 {
     IRWaveform::resized();
     this->selector->setParentSize(getWidth(), getHeight());
@@ -37,13 +37,13 @@ void IRWaveformUI::resized()
 }
 
 
-bool IRWaveformUI::isSelectMode() const
+bool IRWaveformObjectUI::isSelectMode() const
 {
     return this->selectModeFlag;
 }
 
 
-void IRWaveformUI::setEditMode(bool flag)
+void IRWaveformObjectUI::setEditMode(bool flag)
 {
     this->editModeFlag = flag;
     
@@ -69,37 +69,37 @@ void IRWaveformUI::setEditMode(bool flag)
 }
 
 
-bool IRWaveformUI::isEditMode() const
+bool IRWaveformObjectUI::isEditMode() const
 {
     return this->editModeFlag;
 }
 
 
-void IRWaveformUI::setLooping(bool flag)
+void IRWaveformObjectUI::setLooping(bool flag)
 {
     this->looping = flag;
 }
 
 
-bool IRWaveformUI::isLooping() const
+bool IRWaveformObjectUI::isLooping() const
 {
     return this->looping;
 }
 
 
-void IRWaveformUI::setPlayOffset(int offset)
+void IRWaveformObjectUI::setPlayOffset(int offset)
 {
     this->playOffset = offset;
 }
 
 
-int IRWaveformUI::getPlayOffset() const
+int IRWaveformObjectUI::getPlayOffset() const
 {
     return this->playOffset;
 }
 
 
-void IRWaveformUI::createSquareObject(Rectangle<int> rect)
+void IRWaveformObjectUI::createSquareObject(Rectangle<int> rect)
 {
     if(rect.getWidth() > 1)
     {
@@ -129,7 +129,7 @@ void IRWaveformUI::createSquareObject(Rectangle<int> rect)
 }
 
 
-void IRWaveformUI::addSquareObject(IRMultiPurposeObject* obj)
+void IRWaveformObjectUI::addSquareObject(IRMultiPurposeObject* obj)
 {
     obj->setEditMode(isEditMode());
     obj->setBoundsRatio(true);
@@ -139,7 +139,7 @@ void IRWaveformUI::addSquareObject(IRMultiPurposeObject* obj)
 }
 
 
-void IRWaveformUI::deleteSquareObject()
+void IRWaveformObjectUI::deleteSquareObject()
 {
     std::cout << "delete\n";
     for(auto obj : this->selectedSquareObjectList)
@@ -157,7 +157,7 @@ void IRWaveformUI::deleteSquareObject()
 }
 
 
-void IRWaveformUI::deselectAllSquareObject()
+void IRWaveformObjectUI::deselectAllSquareObject()
 {
     std::cout << "deselected all square object\n";
     for(auto obj : this->selectionSquareObjects)
@@ -170,7 +170,7 @@ void IRWaveformUI::deselectAllSquareObject()
 }
 
 
-void IRWaveformUI::addSelectedObjects()
+void IRWaveformObjectUI::addSelectedObjects()
 {
     //std::cout << "addSelectedObjects() :: " << std::endl;
     
@@ -186,7 +186,7 @@ void IRWaveformUI::addSelectedObjects()
 }
 
 
-void IRWaveformUI::setListener(IRNodeObject::Listener* newListener)
+void IRWaveformObjectUI::setListener(IRNodeObject::Listener* newListener)
 {
     this->parentListener = newListener;
     
@@ -199,9 +199,9 @@ void IRWaveformUI::setListener(IRNodeObject::Listener* newListener)
 }
 
 
-bool IRWaveformUI::keyPressed(const KeyPress& key, Component* originatingComponent)
+bool IRWaveformObjectUI::keyPressed(const KeyPress& key, Component* originatingComponent)
 {
-    std::cout << "IRWaveformUI keyPressed : " << key.getKeyCode() << std::endl;
+    std::cout << "IRWaveformObjectUI keyPressed : " << key.getKeyCode() << std::endl;
     if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
     {
         if(! isEditMode())

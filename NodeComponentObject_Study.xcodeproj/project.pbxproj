@@ -13,7 +13,7 @@
 		106588DB222FFA8D005D6B38 /* MenuObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588D9222FFA8D005D6B38 /* MenuObject.cpp */; };
 		106588DE222FFAA2005D6B38 /* EditCommandTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588DC222FFAA2005D6B38 /* EditCommandTarget.cpp */; };
 		106588E1222FFAB1005D6B38 /* WindowCommandTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588DF222FFAB1005D6B38 /* WindowCommandTarget.cpp */; };
-		106588E32230196D005D6B38 /* IRWaveformUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588E22230196D005D6B38 /* IRWaveformUI.cpp */; };
+		106588E32230196D005D6B38 /* IRWaveformObjectUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588E22230196D005D6B38 /* IRWaveformObjectUI.cpp */; };
 		106588E722301D8F005D6B38 /* FontGUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588E622301D8F005D6B38 /* FontGUI.cpp */; };
 		10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10AD5604222489AD0046686E /* IRStartWindow.cpp */; };
 		10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647412226C06B00A26D7D /* IRStarter.cpp */; };
@@ -50,7 +50,7 @@
 		821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5EA3212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp */; };
 		821C5EAC2134814B00187902 /* IRGraphSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821C5EAA2134814B00187902 /* IRGraphSelector.cpp */; };
 		821C5EB021348E6900187902 /* IRMultiPurposeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821C5EAE21348E6900187902 /* IRMultiPurposeObject.cpp */; };
-		821C5EB221357EDA00187902 /* IRWaveformUIEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821C5EB121357EDA00187902 /* IRWaveformUIEvents.cpp */; };
+		821C5EB221357EDA00187902 /* IRWaveformObjectUIEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821C5EB121357EDA00187902 /* IRWaveformObjectUIEvents.cpp */; };
 		821ED19421776A3E0019CF54 /* IRPreferenceSpace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821ED19221776A3E0019CF54 /* IRPreferenceSpace.cpp */; };
 		821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821ED198217DCD800019CF54 /* IRPreferenceObject.cpp */; };
 		821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821ED1A3217FA93D0019CF54 /* IRAutomationObject.cpp */; };
@@ -282,7 +282,7 @@
 		106588DD222FFAA2005D6B38 /* EditCommandTarget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EditCommandTarget.hpp; sourceTree = "<group>"; };
 		106588DF222FFAB1005D6B38 /* WindowCommandTarget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WindowCommandTarget.cpp; sourceTree = "<group>"; };
 		106588E0222FFAB1005D6B38 /* WindowCommandTarget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WindowCommandTarget.hpp; sourceTree = "<group>"; };
-		106588E22230196D005D6B38 /* IRWaveformUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformUI.cpp; sourceTree = "<group>"; };
+		106588E22230196D005D6B38 /* IRWaveformObjectUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformObjectUI.cpp; sourceTree = "<group>"; };
 		106588E622301D8F005D6B38 /* FontGUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FontGUI.cpp; sourceTree = "<group>"; };
 		10AD5604222489AD0046686E /* IRStartWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStartWindow.cpp; sourceTree = "<group>"; };
 		10AD5605222489AD0046686E /* IRStartWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRStartWindow.hpp; sourceTree = "<group>"; };
@@ -345,7 +345,7 @@
 		821C5EAB2134814B00187902 /* IRGraphSelector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRGraphSelector.hpp; sourceTree = "<group>"; };
 		821C5EAE21348E6900187902 /* IRMultiPurposeObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRMultiPurposeObject.cpp; sourceTree = "<group>"; };
 		821C5EAF21348E6900187902 /* IRMultiPurposeObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRMultiPurposeObject.hpp; sourceTree = "<group>"; };
-		821C5EB121357EDA00187902 /* IRWaveformUIEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformUIEvents.cpp; sourceTree = "<group>"; };
+		821C5EB121357EDA00187902 /* IRWaveformObjectUIEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformObjectUIEvents.cpp; sourceTree = "<group>"; };
 		821ED19221776A3E0019CF54 /* IRPreferenceSpace.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRPreferenceSpace.cpp; sourceTree = "<group>"; };
 		821ED19321776A3E0019CF54 /* IRPreferenceSpace.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRPreferenceSpace.hpp; sourceTree = "<group>"; };
 		821ED19521776BF60019CF54 /* PreferenceWindow.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = PreferenceWindow.hpp; sourceTree = "<group>"; };
@@ -587,7 +587,7 @@
 		823E7BD62134064C0046512B /* Preferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
 		823E7BD92134075C0046512B /* singletonClass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = singletonClass.cpp; sourceTree = "<group>"; };
 		823E7BDA2134075C0046512B /* singletonClass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = singletonClass.hpp; sourceTree = "<group>"; };
-		823E7BDC2134193E0046512B /* IRWaveformUI.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRWaveformUI.hpp; sourceTree = "<group>"; };
+		823E7BDC2134193E0046512B /* IRWaveformObjectUI.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRWaveformObjectUI.hpp; sourceTree = "<group>"; };
 		8258AC30221C6B9300557661 /* materials */ = {isa = PBXFileReference; lastKnownFileType = folder; path = materials; sourceTree = "<group>"; };
 		825DC9CA21FF407000555CB8 /* IRVideoPlayerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoPlayerObject.cpp; sourceTree = "<group>"; };
 		825DC9CB21FF407000555CB8 /* IRVideoPlayerObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoPlayerObject.hpp; sourceTree = "<group>"; };
@@ -898,14 +898,14 @@
 			path = MenuObject;
 			sourceTree = "<group>";
 		};
-		106588E422301BFA005D6B38 /* IRWaveformUI */ = {
+		106588E422301BFA005D6B38 /* IRWaveformObjectUI */ = {
 			isa = PBXGroup;
 			children = (
-				823E7BDC2134193E0046512B /* IRWaveformUI.hpp */,
-				106588E22230196D005D6B38 /* IRWaveformUI.cpp */,
-				821C5EB121357EDA00187902 /* IRWaveformUIEvents.cpp */,
+				823E7BDC2134193E0046512B /* IRWaveformObjectUI.hpp */,
+				106588E22230196D005D6B38 /* IRWaveformObjectUI.cpp */,
+				821C5EB121357EDA00187902 /* IRWaveformObjectUIEvents.cpp */,
 			);
-			path = IRWaveformUI;
+			path = IRWaveformObjectUI;
 			sourceTree = "<group>";
 		};
 		106588E522301C08005D6B38 /* IRWaveform */ = {
@@ -915,6 +915,15 @@
 				823E7BD3213303260046512B /* IRWaveform.cpp */,
 			);
 			path = IRWaveform;
+			sourceTree = "<group>";
+		};
+		106588E8223021B3005D6B38 /* IRLabelObject */ = {
+			isa = PBXGroup;
+			children = (
+				823E7BCE2132E1A90046512B /* IRLabelObject.h */,
+				821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.h */,
+			);
+			path = IRLabelObject;
 			sourceTree = "<group>";
 		};
 		106DE3DA22242A7200237EE1 /* IRiMaSApplication */ = {
@@ -975,6 +984,7 @@
 				8286CBF621431BE900AAD437 /* ObjectGlobalTestObject */,
 				8210D9CC213D3D3F0042F646 /* FFTRelated */,
 				823E7BCF213301140046512B /* IRWaveformObject */,
+				106588E8223021B3005D6B38 /* IRLabelObject */,
 				823E7BCD2132E1980046512B /* IRTextEditor */,
 				823E7BC62130472B0046512B /* IRImageViewerObject */,
 				823E7BBD212F56590046512B /* IRAudioPlayerObject */,
@@ -1617,8 +1627,6 @@
 		823E7BCD2132E1980046512B /* IRTextEditor */ = {
 			isa = PBXGroup;
 			children = (
-				823E7BCE2132E1A90046512B /* IRLabelObject.h */,
-				821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.h */,
 				821ED19D217E6F420019CF54 /* IRTextEditorObject.h */,
 				821ED19E217E6F580019CF54 /* IRTextEditorObjectPreference.h */,
 			);
@@ -1628,10 +1636,10 @@
 		823E7BCF213301140046512B /* IRWaveformObject */ = {
 			isa = PBXGroup;
 			children = (
+				106588E522301C08005D6B38 /* IRWaveform */,
 				823E7BD12133012B0046512B /* IRWaveformObject.hpp */,
 				823E7BD02133012B0046512B /* IRWaveformObject.cpp */,
-				106588E522301C08005D6B38 /* IRWaveform */,
-				106588E422301BFA005D6B38 /* IRWaveformUI */,
+				106588E422301BFA005D6B38 /* IRWaveformObjectUI */,
 			);
 			path = IRWaveformObject;
 			sourceTree = "<group>";
@@ -1994,7 +2002,7 @@
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
 				82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */,
 				10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */,
-				106588E32230196D005D6B38 /* IRWaveformUI.cpp in Sources */,
+				106588E32230196D005D6B38 /* IRWaveformObjectUI.cpp in Sources */,
 				32360B59740CCC174CF75F0B /* include_juce_audio_basics.mm in Sources */,
 				825DC9CC21FF407000555CB8 /* IRVideoPlayerObject.cpp in Sources */,
 				A9D5694184653919C1A1BBB4 /* include_juce_audio_devices.mm in Sources */,
@@ -2023,7 +2031,7 @@
 				821A5E67212AD6FE00BF593D /* IRNodeComponentEvents.cpp in Sources */,
 				823C181A2191B3F800AC9FC9 /* json11.cpp in Sources */,
 				825DC9CF21FF408400555CB8 /* IRVideoPlayer.cpp in Sources */,
-				821C5EB221357EDA00187902 /* IRWaveformUIEvents.cpp in Sources */,
+				821C5EB221357EDA00187902 /* IRWaveformObjectUIEvents.cpp in Sources */,
 				10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */,
 				823E7BC521302C110046512B /* IRImageLoader.cpp in Sources */,
 				823E7BD5213303260046512B /* IRWaveform.cpp in Sources */,

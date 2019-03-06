@@ -1,10 +1,10 @@
 
-#include "IRWaveformUI.hpp"
+#include "IRWaveformObjectUI.hpp"
 
 
 
 
-void IRWaveformUI::mouseDown(const MouseEvent& e)
+void IRWaveformObjectUI::mouseDown(const MouseEvent& e)
 {
     this->previousWidth = getWidth();
     this->previousHeight = getHeight();
@@ -17,7 +17,7 @@ void IRWaveformUI::mouseDown(const MouseEvent& e)
 }
 
 
-void IRWaveformUI::mouseDownHandler(const MouseEvent& e)
+void IRWaveformObjectUI::mouseDownHandler(const MouseEvent& e)
 {
     IRMultiPurposeObject* nodeObj = dynamic_cast<IRMultiPurposeObject* >(e.originalComponent);
 
@@ -60,7 +60,7 @@ void IRWaveformUI::mouseDownHandler(const MouseEvent& e)
 }
 
 
-void IRWaveformUI::mouseUp(const MouseEvent& e)
+void IRWaveformObjectUI::mouseUp(const MouseEvent& e)
 {
     if(this->selectModeFlag && isSelectMode())
     {
@@ -73,7 +73,7 @@ void IRWaveformUI::mouseUp(const MouseEvent& e)
 }
 
 
-void IRWaveformUI::mouseUpHandler(const MouseEvent& e)
+void IRWaveformObjectUI::mouseUpHandler(const MouseEvent& e)
 {
     if(this->dragdropCalled)
     {
@@ -90,7 +90,7 @@ void IRWaveformUI::mouseUpHandler(const MouseEvent& e)
 }
 
 
-void IRWaveformUI::mouseDrag(const MouseEvent& e)
+void IRWaveformObjectUI::mouseDrag(const MouseEvent& e)
 {
     if (this->selectModeFlag && isSelectMode())
     {
@@ -100,7 +100,7 @@ void IRWaveformUI::mouseDrag(const MouseEvent& e)
 }
 
 
-void IRWaveformUI::mouseDragHandler(const MouseEvent& e)
+void IRWaveformObjectUI::mouseDragHandler(const MouseEvent& e)
 {
     
     // get position relative to the parent
@@ -127,7 +127,7 @@ void IRWaveformUI::mouseDragHandler(const MouseEvent& e)
 }
 
 
-void IRWaveformUI::playSelectedArea()
+void IRWaveformObjectUI::playSelectedArea()
 {
     for(auto obj : this->selectedSquareObjectList)
     {
@@ -148,7 +148,7 @@ void IRWaveformUI::playSelectedArea()
 }
 
 
-void IRWaveformUI::stopPlaying()
+void IRWaveformObjectUI::stopPlaying()
 {
    if (this->player->isPlaying())
    {
