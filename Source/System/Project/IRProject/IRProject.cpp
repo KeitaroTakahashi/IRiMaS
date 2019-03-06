@@ -69,6 +69,47 @@ void IRProject::resized()
 }
 
 
+void IRProject::createProject()
+{
+    createWorkspaceList();
+}
+
+
+// call listener object to fire signal to IRMAIN
+void IRProject::createNewProject()
+{
+    callCreateNewProjectAction();
+}
+
+
+// call listener object to fire signal to IRMAIN
+void IRProject::saveProject()
+{
+    callSaveProjectAction();
+}
+
+
+void IRProject::saveAsProject()
+{
+    callSaveAsProjectAction();
+}
+
+
+// call listener object to fire signal to IRMAIN
+void IRProject::openProject()
+{
+    callOpenProjectAction();
+}
+
+
+void IRProject::closeProject()
+{
+    this->menu_action_status = MenuActionStatus::CloseProjectAction;
+    sendChangeMessage();
+    callCloseProjectAction();
+}
+
+
 void IRProject::createNewWorkspace()
 {
     std::string title = this->projectName + "_" + std::to_string(this->workspaces.size()+1);
@@ -105,6 +146,32 @@ void IRProject::createNewWorkspace()
 }
 
 
+void IRProject::createWorkspaceList()
+{
+    this->workspaceList = new IRWorkspaceList(Rectangle<int>(0,0,this->workspaceListWidth,getHeight()));
+    this->workspaceList->addListener(this);
+    this->workspaceList->addChangeListener(this);
+    addAndMakeVisible(this->workspaceList);
+}
+
+
+// IRWorkspaceList Listener callback
+void IRProject::removeWorkspace(IRWorkSpace* workspace)
+{
+    auto it = std::find(this->workspaces.begin(), this->workspaces.end(), workspace);
+    if (it != this->workspaces.end()) {
+        this->workspaces.erase(it);
+    }
+}
+
+
+// update workspace list. warning. this may be a little bit expensive task
+void IRProject::updateWorkspaceList()
+{
+    this->workspaceList->updateList();
+}
+
+
 void IRProject::performEditModeChange()
 {
     this->EditModeFlag = this->topSpace->isEditMode();
@@ -122,6 +189,12 @@ void IRProject::performEditModeChange()
     {
         this->notifyEditModeChanged();
     }
+}
+
+
+IRWorkSpace* IRProject::getTopWorkspace()
+{
+    return this->topSpace;
 }
 
 
@@ -279,6 +352,12 @@ void IRProject::callSaveAsProjectAction()
 
 
 // menu bar methods
+StringArray IRProject::getMenuBarNames()
+{
+    return { "File", "Edit" , "Window", "Help" };
+}
+
+
 PopupMenu IRProject::getMenuForIndex(int menuIndex, const String& menuName)
 {
     PopupMenu menu;
@@ -316,6 +395,113 @@ PopupMenu IRProject::getMenuForIndex(int menuIndex, const String& menuName)
     }
     
     return menu;
+}
+
+
+void IRProject::menuItemSelected (int menuItemID, int topLevelMenuIndex)
+{
+    
+}
+
+
+IRProject::MenuActionStatus IRProject::getMenuActionStatus() const
+{
+    return this->menu_action_status;
+}
+
+
+IRWorkspaceList* IRProject::getWorkspaceList()
+{
+    return this->workspaceList;
+}
+
+
+void IRProject::setProjectPath(std::string path)
+{
+    this->projectPath = path;
+}
+
+
+std::string IRProject::getProjectPath() const
+{
+    return this->projectPath;
+}
+
+
+void IRProject::setProjectName(std::string name)
+{
+    this->projectName = name;
+}
+
+
+std::string IRProject::getProjectName() const
+{
+    return this->projectName;
+}
+
+
+// get parent ProjectWindow
+DocumentWindow* IRProject::getParentWindow()
+{
+    return this->parentWindow;
+}
+
+
+// initialize projects. This method is called after loading action to set up workspaces
+void IRProject::initProjectAfterLoading()
+{
+    for (auto space : this->workspaces)
+    {
+        space->setEditMode(false);
+    }
+    
+    this->topSpace = this->workspaces[0];
+    this->topSpace->toFront(true);
+    getWorkspaceList()->setSelectedComponentIndex(0);
+    
+    getWorkspaceList()->updateList();
+}
+
+
+bool IRProject::isEditMode() const
+{
+    return this->EditModeFlag;
+}
+
+
+
+
+
+// **** **** PRIVATE METHODS **** **** //
+
+
+
+
+
+void IRProject::changeListenerCallback(ChangeBroadcaster* source)
+{
+    if(source == this->workspaceList)
+    {
+        // if workspace item is selected
+        if(this->workspaceList->getEventStatus() == IRWorkspaceList::listEventStatus::listEventSelected){
+            IRWorkSpace* space = static_cast<IRWorkSpace* >(this->workspaceList->getSelectedComponent());
+            
+            if(space != this->topSpace){
+                
+                // first hide all heavy weight component
+                this->topSpace->manageHeavyWeightComponents(false);
+                this->topSpace = space;
+                // show all heavy weight component
+                this->topSpace->manageHeavyWeightComponents(true);
+                // bring the selected workspace on the top of all
+                space->toFront(true);
+                repaint();
+                
+                // refocus keyboard to workspacelist
+                this->workspaceList->workspaceListFocused();
+            }
+        }
+    }
 }
 
 
@@ -419,6 +605,37 @@ bool IRProject::perform(const InvocationInfo& info)
     }
     repaint();
     return true;
+}
+
+
+// AudioAppComponent
+void IRProject::AudioSetup()
+{
+    setAudioChannels(0, 2);
+}
+
+
+void IRProject::closeAudioSetup()
+{
+    shutdownAudio();
+}
+
+
+void IRProject::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
+{
+    this->mixer.getAudioSource().prepareToPlay(samplesPerBlockExpected, sampleRate);
+}
+
+
+void IRProject::getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill)
+{
+    this->mixer.getAudioSource().getNextAudioBlock(bufferToFill);
+}
+
+
+void IRProject::releaseResources()
+{
+    this->mixer.getAudioSource().releaseResources();
 }
 
 
