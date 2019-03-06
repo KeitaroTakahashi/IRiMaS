@@ -1,6 +1,6 @@
 
-#ifndef IRTextEditor_h
-#define IRTextEditor_h
+#ifndef IRLabelObject_h
+#define IRLabelObject_h
 
 #include "IRNodeObject.hpp"
 #include "IRLabelObjectPreference.hpp"
@@ -53,7 +53,7 @@ private:
 
 
 
-#endif /* IRTextEditor_h */
+#endif /* IRLabelObject_h */
 
 
 
