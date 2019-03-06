@@ -3,7 +3,7 @@
 
 
 
-/*
+
 IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IRWaveform")
 {
     
@@ -242,12 +242,13 @@ int IRWaveformObject::getYMargin() const
 }
 
 
+/*
 bool IRWaveformObject::keyPressed(const KeyPress& key, Component* originatingComponent)
 {
     
     IRNodeObject::keyPressed(key, originatingComponent);
     return true;
 }
-
-
 */
+
+
