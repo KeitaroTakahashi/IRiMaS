@@ -11,7 +11,8 @@
 #include "JuceHeader.h"
 // #include "juce_audio_utils/juce_audio_utils.h"
 
-#include "NSNodeObject.hpp"
+// #include "NSNodeObject.hpp"
+#include "IRNodeComponent.hpp"
 
 #include "IRFileManager.hpp"
 

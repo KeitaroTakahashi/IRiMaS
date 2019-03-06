@@ -16,7 +16,7 @@
 #include "IRNodeObject.hpp"
 #include "AudioEngine.h"
 #include "IRNodeObjectSelector.hpp"
-#include "SelectNodeObjects.hpp"
+// #include "SelectNodeObjects.hpp"
 // #include "CreateObjectMenu.h"
 #include "ObjectMenuWindow.hpp"
 
