@@ -1,9 +1,3 @@
-//
-//  IRTextEditorObjectPreference.h
-//  NodeComponentObject_Study
-//
-//  Created by Keitaro on 22/10/2018.
-//
 
 #ifndef IRTextEditorObjectPreference_h
 #define IRTextEditorObjectPreference_h
