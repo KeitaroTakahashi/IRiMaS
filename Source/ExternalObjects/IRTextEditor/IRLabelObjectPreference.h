@@ -10,7 +10,7 @@
 
 #include "IRLabelObject.h"
 #include "IRPreferenceObject.hpp"
-#include "FontGUI.h"
+#include "FontGUI.hpp"
 
 class IRLabelObjectPreference : public IRPreferenceObject
 {

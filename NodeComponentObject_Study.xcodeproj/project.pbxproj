@@ -350,7 +350,7 @@
 		821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRLabelObjectPreference.h; sourceTree = "<group>"; };
 		821ED198217DCD800019CF54 /* IRPreferenceObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRPreferenceObject.cpp; sourceTree = "<group>"; };
 		821ED199217DCD800019CF54 /* IRPreferenceObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRPreferenceObject.hpp; sourceTree = "<group>"; };
-		821ED19C217DF1380019CF54 /* FontGUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontGUI.h; sourceTree = "<group>"; };
+		821ED19C217DF1380019CF54 /* FontGUI.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = FontGUI.hpp; sourceTree = "<group>"; };
 		821ED19D217E6F420019CF54 /* IRTextEditorObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTextEditorObject.h; sourceTree = "<group>"; };
 		821ED19E217E6F580019CF54 /* IRTextEditorObjectPreference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTextEditorObjectPreference.h; sourceTree = "<group>"; };
 		821ED19F217F33090019CF54 /* IRSpectrogramObjectPreference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSpectrogramObjectPreference.h; sourceTree = "<group>"; };
@@ -1499,12 +1499,12 @@
 			path = PreferenceObject;
 			sourceTree = "<group>";
 		};
-		821ED19B217DF1080019CF54 /* FontUI */ = {
+		821ED19B217DF1080019CF54 /* FontGUI */ = {
 			isa = PBXGroup;
 			children = (
-				821ED19C217DF1380019CF54 /* FontGUI.h */,
+				821ED19C217DF1380019CF54 /* FontGUI.hpp */,
 			);
-			path = FontUI;
+			path = FontGUI;
 			sourceTree = "<group>";
 		};
 		821ED1A0217F36EA0019CF54 /* FFTPreferenceUI */ = {
@@ -1614,7 +1614,6 @@
 		823E7BCD2132E1980046512B /* IRTextEditor */ = {
 			isa = PBXGroup;
 			children = (
-				821ED19B217DF1080019CF54 /* FontUI */,
 				823E7BCE2132E1A90046512B /* IRLabelObject.h */,
 				821ED196217DCA9C0019CF54 /* IRLabelObjectPreference.h */,
 				821ED19D217E6F420019CF54 /* IRTextEditorObject.h */,
@@ -1637,6 +1636,7 @@
 		823E7BD82134073A0046512B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				821ED19B217DF1080019CF54 /* FontGUI */,
 				82657CFB21EFC8A8003FA700 /* ListBoxObject */,
 				82FA8F0F220A58950032983F /* FileManager */,
 				82D9030D21A8484300E57471 /* KeLib */,

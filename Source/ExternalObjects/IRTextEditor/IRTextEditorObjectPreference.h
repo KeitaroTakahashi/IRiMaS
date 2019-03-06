@@ -9,7 +9,7 @@
 #define IRTextEditorObjectPreference_h
 
 #include "IRPreferenceObject.hpp"
-#include "FontGUI.h"
+#include "FontGUI.hpp"
 
 class IRTextEditorObjectPreference : public IRPreferenceObject
 {
