@@ -9,6 +9,7 @@
 #define IRTestObject_h
 
 #include "IRNodeObject.hpp"
+#include "IRTestUI.h"
 
 class IRTestObject : public IRNodeObject
 {
@@ -19,7 +20,7 @@ public:
     {
         setSize(100, 20);
         
-        addAndMakeVisible(&this->playButton);
+        //addAndMakeVisible(&this->playButton);
         this->playButton.setButtonText("button");
         this->playButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.contents);
         this->playButton.onClick = [this] {buttonClicked();};
@@ -29,6 +30,9 @@ public:
         
         childComponentManager(&this->playButton);
         
+        addAndMakeVisible(&this->ui);
+        childComponentManager(&this->ui);
+
         
        // this->playButton.addMouseListener(this, true);
         //allowClicks
@@ -62,6 +66,7 @@ public:
     void resized() override
     {
         this->playButton.setBounds(5,5, getWidth()-10, getHeight()-10);
+        this->ui.setBounds(getLocalBounds());
     }
     // ------------------------------------------------------------
 
@@ -103,6 +108,8 @@ public:
 
 private:
     TextButton playButton;
+    
+    IRTestUI ui;
 
 };
 
