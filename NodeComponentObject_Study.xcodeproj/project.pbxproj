@@ -896,6 +896,25 @@
 			path = MenuObject;
 			sourceTree = "<group>";
 		};
+		106588E422301BFA005D6B38 /* IRWaveformUI */ = {
+			isa = PBXGroup;
+			children = (
+				823E7BDC2134193E0046512B /* IRWaveformUI.hpp */,
+				106588E22230196D005D6B38 /* IRWaveformUI.cpp */,
+				821C5EB121357EDA00187902 /* IRWaveformUIEvents.cpp */,
+			);
+			path = IRWaveformUI;
+			sourceTree = "<group>";
+		};
+		106588E522301C08005D6B38 /* IRWaveform */ = {
+			isa = PBXGroup;
+			children = (
+				823E7BD4213303260046512B /* IRWaveform.hpp */,
+				823E7BD3213303260046512B /* IRWaveform.cpp */,
+			);
+			path = IRWaveform;
+			sourceTree = "<group>";
+		};
 		106DE3DA22242A7200237EE1 /* IRiMaSApplication */ = {
 			isa = PBXGroup;
 			children = (
@@ -1609,11 +1628,8 @@
 			children = (
 				823E7BD12133012B0046512B /* IRWaveformObject.hpp */,
 				823E7BD02133012B0046512B /* IRWaveformObject.cpp */,
-				823E7BD4213303260046512B /* IRWaveform.hpp */,
-				823E7BD3213303260046512B /* IRWaveform.cpp */,
-				823E7BDC2134193E0046512B /* IRWaveformUI.hpp */,
-				106588E22230196D005D6B38 /* IRWaveformUI.cpp */,
-				821C5EB121357EDA00187902 /* IRWaveformUIEvents.cpp */,
+				106588E522301C08005D6B38 /* IRWaveform */,
+				106588E422301BFA005D6B38 /* IRWaveformUI */,
 			);
 			path = IRWaveformObject;
 			sourceTree = "<group>";
