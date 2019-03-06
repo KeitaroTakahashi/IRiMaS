@@ -1,9 +1,3 @@
-//
-//  IRStarter.h
-//  NodeComponentObject_Study
-//
-//  Created by Keitaro on 16/01/2019.
-//
 
 #ifndef IRStarter_h
 #define IRStarter_h

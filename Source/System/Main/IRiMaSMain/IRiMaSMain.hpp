@@ -4,14 +4,11 @@
 
 #include "JuceHeader.h"
 
-//#include "IRWorkSpace.hpp"
+
 #include "ObjectFactory.h"
-//#include "IRFoundation.h"
 #include "IRProjectWindow.hpp"
 #include "IRStarter.hpp"
 #include "IRStartWindow.hpp"
-//#include "Menus.h"
-//#include "IRObjectCreater.hpp"
 
 /*
  IRMAIN

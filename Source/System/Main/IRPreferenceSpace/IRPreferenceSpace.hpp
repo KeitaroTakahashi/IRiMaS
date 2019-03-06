@@ -1,9 +1,3 @@
-//
-//  IRPreferenceSpace.hpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 17/10/2018.
-//
 
 #ifndef IRPreferenceSpace_hpp
 #define IRPreferenceSpace_hpp

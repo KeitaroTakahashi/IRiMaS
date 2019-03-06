@@ -1,9 +1,3 @@
-//
-//  PreferenceWindow.h
-//  NodeComponentObject_Study
-//
-//  Created by Keitaro on 17/10/2018.
-//
 
 #ifndef PreferenceWindow_h
 #define PreferenceWindow_h

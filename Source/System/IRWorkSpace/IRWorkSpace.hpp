@@ -10,14 +10,12 @@
 
 #include <map>
 #include "JuceHeader.h"
-// #include "juce_audio_utils/juce_audio_utils.h"
+
 #include "PreferenceWindow.hpp"
 
 #include "IRNodeObject.hpp"
 #include "AudioEngine.h"
 #include "IRNodeObjectSelector.hpp"
-// #include "SelectNodeObjects.hpp"
-// #include "CreateObjectMenu.h"
 #include "ObjectMenuWindow.hpp"
 
 #include "ExternalObjectHeader.h"

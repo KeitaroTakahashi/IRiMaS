@@ -1,47 +1,39 @@
-//
-//  NodeObject.hpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 20/08/2018.
-//
 
 #ifndef NodeObject_hpp
 #define NodeObject_hpp
 
 #include "JuceHeader.h"
-// #include "juce_audio_utils/juce_audio_utils.h"
 
-// #include "NSNodeObject.hpp"
 #include "IRNodeComponent.hpp"
-
 #include "IRFileManager.hpp"
+
+
+
+
 
 class IRNodeObject : public IRNodeComponent
 {
+    
 public:
+    
     IRNodeObject(Component* parent, String name, NodeObjectType objectType = NodeObjectType());
     ~IRNodeObject();
     
-    //copy constructor
-    virtual IRNodeObject* copyThis() { return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType()); }
-    // copy constructor with contents
-    virtual IRNodeObject* copyThisWithContents() { return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType()); }
-    // copy constructor with irregular contents
-    virtual IRNodeObject* copySelectedContents() { return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType()); }
     
-    virtual t_json saveThisToSaveData() { t_json a; return a; }
-    // load data contents from save data
-    virtual void loadThisFromSaveData(t_json saveData) {}
-    // ============================================================
+    virtual IRNodeObject* copyThis(); //copy constructor
+    virtual IRNodeObject* copyThisWithContents(); // copy constructor with contents
+    virtual IRNodeObject* copySelectedContents(); // copy constructor with irregular contents
+    
+    virtual t_json saveThisToSaveData();
+    virtual void loadThisFromSaveData(t_json saveData);
+    
     // mouse events for its child class
-    virtual void mouseDownEvent(const MouseEvent& e) override {}
-    virtual void mouseUpEvent(const MouseEvent& e) override {}
-    virtual void mouseMoveEvent(const MouseEvent& e) override {}
-    virtual void mouseDoubleClickEvent(const MouseEvent& e) override {}
-    virtual void mouseDragEvent(const MouseEvent& e) override {}
+    virtual void mouseDownEvent(const MouseEvent& e) override;
+    virtual void mouseUpEvent(const MouseEvent& e) override;
+    virtual void mouseMoveEvent(const MouseEvent& e) override;
+    virtual void mouseDoubleClickEvent(const MouseEvent& e) override;
+    virtual void mouseDragEvent(const MouseEvent& e) override;
 
-    // ===========================================================================
-    // Listener
     class Listener
     {
     public:
@@ -94,9 +86,9 @@ public:
     // otherwise, save data does not contain any information about the object setting but only the objectType and its bounds.
     // The save method must follow the syntax of Json using json11 library.
     
-    virtual void saveObjectContents() {}
+    virtual void saveObjectContents();
     
-    virtual void loadObjectContents() {}
+    virtual void loadObjectContents();
     
     // ============================================================
     
@@ -110,9 +102,11 @@ public:
     // ============================================================
 
 protected:
+    
     Component* parent;
 
 private:
+    
     ListenerList<Listener> listeners;
     
     IRObjectPtr p_obj;
@@ -123,3 +117,7 @@ private:
 
 
 #endif /* NodeObject_hpp */
+
+
+
+
