@@ -41,6 +41,9 @@ public:
         
         IRFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
         
+        IRFactory.registerObject<IRTestObject>("IRTestObject", "test", img);
+
+        
 //IRFactory.registerObject<IRCVVideoPlayer>("IRCVVideoPlayer", "CV Video Player", img);
 
 
