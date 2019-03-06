@@ -46,7 +46,8 @@
 #include "ObjectGlobalTestObject.h"
 
 // ------------------------------------------------------------
-#include "IRObjectCreater.hpp"
+//#include "IRObjectCreater.hpp"
+#include "IRObjectFactory.hpp"
 
 
 

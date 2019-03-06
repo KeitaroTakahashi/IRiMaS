@@ -1,8 +1,39 @@
-//
-//  IRPreferenceObject.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 22/10/2018.
-//
 
 #include "IRPreferenceObject.hpp"
+
+
+
+
+
+IRPreferenceObject::IRPreferenceObject(String title, Rectangle<int> frameRect)
+{
+    this->frameRect = frameRect;
+    setBounds(frameRect.getX(), frameRect.getY(), frameRect.getWidth(), frameRect.getHeight());
+}
+
+
+IRPreferenceObject::~IRPreferenceObject()
+{
+    
+}
+
+
+void IRPreferenceObject::resized()
+{
+    setBounds(frameRect.getX(), frameRect.getY(), frameRect.getWidth(), frameRect.getHeight());
+}
+
+
+void IRPreferenceObject::paint(Graphics& g)
+{
+    g.fillAll(Colours::white);
+}
+
+
+void IRPreferenceObject::changeListenerCallback(ChangeBroadcaster* source)
+{
+    
+}
+
+
+

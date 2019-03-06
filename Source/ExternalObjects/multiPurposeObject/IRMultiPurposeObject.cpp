@@ -1,8 +1,143 @@
-//
-//  IRMultiPurposeObject.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 27/08/2018.
-//
 
 #include "IRMultiPurposeObject.hpp"
+
+
+
+
+
+IRMultiPurposeObject::IRMultiPurposeObject(Component* parent)
+: IRNodeObject(parent, "IRMultiPurposeObject")
+{
+    setSize(100, 20);
+}
+
+
+IRMultiPurposeObject::~IRMultiPurposeObject()
+{
+    
+}
+
+
+IRNodeObject* IRMultiPurposeObject::copyThisWithContents()
+{
+    IRMultiPurposeObject* obj = new IRMultiPurposeObject(this->parent);
+    obj->setBoundsInRatio(this->xRatio, this->yRatio, this->wRatio, this->hRatio);
+    obj->setSelected(this->isSelected());
+    obj->setBoundsRatio(this->isBoundsRatio());
+    
+    return obj;
+}
+
+
+void IRMultiPurposeObject::resized()
+{
+    if (isBoundsRatio()) renewBounds();
+}
+
+
+void IRMultiPurposeObject::paint(Graphics& g)
+{
+    if (isSelected()) g.setColour(Colours::lightgreen);
+    else g.setColour(Colours::lightgrey);
+    g.setOpacity(0.3);
+    g.fillAll();
+    
+}
+
+
+void IRMultiPurposeObject::setBoundsInRatio(float x, float y, float w, float h)
+{
+    this->xRatio = x;
+    this->yRatio = y;
+    this->wRatio = w;
+    this->hRatio = h;
+}
+
+
+Rectangle<float> IRMultiPurposeObject::getBoundsInRatio() const
+{
+    return Rectangle<float> (this->xRatio, this->yRatio, this->wRatio, this->hRatio);
+}
+
+
+void IRMultiPurposeObject::renewBounds()
+{
+    setBoundsRelative(this->xRatio,
+                      this->yRatio,
+                      this->wRatio,
+                      this->hRatio);
+}
+
+
+bool IRMultiPurposeObject::isBoundsRatio() const
+{
+    return this->boundsRatioFlag;
+}
+
+
+void IRMultiPurposeObject::setBoundsRatio(bool flag)
+{
+    this->boundsRatioFlag = flag;
+}
+
+
+void IRMultiPurposeObject::mouseDownEvent(const MouseEvent& e)
+{
+    
+}
+
+
+void IRMultiPurposeObject::mouseUpEvent(const MouseEvent& e)
+{
+    
+}
+
+
+// call back function automatically called when the status of this object changed by others.
+// write some tasks here
+//# MultiPurpose Object needs the opposite mouseListener structure to the IRNodeComponent
+// # because MultiPurpose Object is added to the IRNodeObject.
+void IRMultiPurposeObject::statusChangedWrapper(IRNodeComponentStatus status)
+{
+    switch (status)
+    {
+        case EditModeStatus:
+            setMovable(false, false, false);
+            
+            //  ---- here we do not deselect objects ---- setSelected(false);
+            
+            if(isEditMode())
+            {
+                if(isMouseListenerFlag())
+                {
+                    removeMouseListener(this->parent);
+                    setMouseListenerFlag(false);
+                }
+                for(auto comp : getChildren())
+                {
+                    comp->setInterceptsMouseClicks(true, true);
+                }
+            }else{
+                if(! isMouseListenerFlag())
+                {
+                    addMouseListener(this->parent, true);
+                    setMouseListenerFlag(true);
+                }
+                for(auto comp : getChildren())
+                {
+                    comp->setInterceptsMouseClicks(false, false);
+                }
+            }
+            break;
+        case SelectableStatus:
+            break;
+        case HasResizedStatus:
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+

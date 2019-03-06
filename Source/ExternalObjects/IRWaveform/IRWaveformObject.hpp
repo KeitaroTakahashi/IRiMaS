@@ -177,22 +177,8 @@ public:
     // ------------------------------------------------------------
     // call back function automatically called when the status of this object changed by others.
     // write some tasks here
-    void statusChangedCallback(IRNodeComponentStatus status) override
-    {
-        switch (status)
-        {
-            case EditModeStatus:
-                this->waveform->setEditMode(isEditMode());
-                break;
-            case SelectableStatus:
-                break;
-            case HasResizedStatus:
-                break;
-            default:
-                break;
-        }
-    }
-    // ------------------------------------------------------------
+    void statusChangedCallback(IRNodeComponentStatus status) override;
+    
     // events
     void mouseDownEvent(const MouseEvent& e) override
     {
@@ -247,7 +233,7 @@ public:
     bool keyPressed (const KeyPress& key,
                              Component* originatingComponent) override
     {
-        
+     
         IRNodeObject::keyPressed(key, originatingComponent);
         return true;
     }*/

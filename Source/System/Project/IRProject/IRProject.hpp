@@ -1,9 +1,3 @@
-//
-//  IRProject.hpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 06/11/2018.
-//
 
 #ifndef IRProject_hpp
 #define IRProject_hpp
@@ -15,6 +9,10 @@
 #include "IRWorkspaceList.hpp"
 #include "IRFoundation.h"
 #include "Menus.h"
+
+
+
+
 
 class IRProject : public AudioAppComponent,
 public ApplicationCommandTarget,
