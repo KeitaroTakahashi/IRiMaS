@@ -9,6 +9,7 @@
 #include "IRWorkspaceList.hpp"
 #include "IRFoundation.h"
 #include "Menus.h"
+#include "EditCommandTarget.hpp"
 
 
 

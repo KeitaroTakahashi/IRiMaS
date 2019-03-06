@@ -5,6 +5,7 @@
 #include "JuceHeader.h"
 
 #include "Menus.h"
+#include "EditCommandTarget.hpp"
 #include "IRImageViewer.h"
 
 #include <random>
