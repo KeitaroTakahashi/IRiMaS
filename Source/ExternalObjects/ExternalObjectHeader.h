@@ -24,7 +24,7 @@
 
 // ------------------------------------------------------------
 // image related object
-#include "IRImageViewerObject.h"
+#include "IRImageViewerObject.hpp"
 
 // ------------------------------------------------------------
 // video related object

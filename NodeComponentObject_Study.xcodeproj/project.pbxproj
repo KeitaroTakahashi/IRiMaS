@@ -20,6 +20,7 @@
 		106588F3223024B5005D6B38 /* IRTextEditorObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588F2223024B5005D6B38 /* IRTextEditorObject.cpp */; };
 		106588F5223024CF005D6B38 /* IRTextEditorObjectPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588F4223024CF005D6B38 /* IRTextEditorObjectPreference.cpp */; };
 		106588F922303042005D6B38 /* IRImageViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588F822303042005D6B38 /* IRImageViewer.cpp */; };
+		106588FD223031C8005D6B38 /* IRImageViewerObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106588FC223031C8005D6B38 /* IRImageViewerObject.cpp */; };
 		10AD5606222489AD0046686E /* IRStartWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10AD5604222489AD0046686E /* IRStartWindow.cpp */; };
 		10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647412226C06B00A26D7D /* IRStarter.cpp */; };
 		10F647442226C4E700A26D7D /* PreferenceWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F647432226C4E700A26D7D /* PreferenceWindow.cpp */; };
@@ -294,6 +295,7 @@
 		106588F2223024B5005D6B38 /* IRTextEditorObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRTextEditorObject.cpp; sourceTree = "<group>"; };
 		106588F4223024CF005D6B38 /* IRTextEditorObjectPreference.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRTextEditorObjectPreference.cpp; sourceTree = "<group>"; };
 		106588F822303042005D6B38 /* IRImageViewer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageViewer.cpp; sourceTree = "<group>"; };
+		106588FC223031C8005D6B38 /* IRImageViewerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageViewerObject.cpp; sourceTree = "<group>"; };
 		10AD5604222489AD0046686E /* IRStartWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStartWindow.cpp; sourceTree = "<group>"; };
 		10AD5605222489AD0046686E /* IRStartWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRStartWindow.hpp; sourceTree = "<group>"; };
 		10F647412226C06B00A26D7D /* IRStarter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStarter.cpp; sourceTree = "<group>"; };
@@ -585,7 +587,7 @@
 		823E7BC1212F57750046512B /* ExternalObjectHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalObjectHeader.h; sourceTree = "<group>"; };
 		823E7BC321302C110046512B /* IRImageLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageLoader.cpp; sourceTree = "<group>"; };
 		823E7BC421302C110046512B /* IRImageLoader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRImageLoader.hpp; sourceTree = "<group>"; };
-		823E7BC72130476A0046512B /* IRImageViewerObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRImageViewerObject.h; sourceTree = "<group>"; };
+		823E7BC72130476A0046512B /* IRImageViewerObject.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRImageViewerObject.hpp; sourceTree = "<group>"; };
 		823E7BC8213053330046512B /* IRImageViewer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRImageViewer.hpp; sourceTree = "<group>"; };
 		823E7BCB213059FA0046512B /* ColourLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColourLib.h; sourceTree = "<group>"; };
 		823E7BCC21305AD60046512B /* IRFoundation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFoundation.h; sourceTree = "<group>"; };
@@ -993,6 +995,20 @@
 				106588F822303042005D6B38 /* IRImageViewer.cpp */,
 			);
 			path = IRImageViewer;
+			sourceTree = "<group>";
+		};
+		106588FA22303151005D6B38 /* IRImageViewerObjectUI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRImageViewerObjectUI;
+			sourceTree = "<group>";
+		};
+		106588FB2230315E005D6B38 /* IRImageViewerObjectPreference */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRImageViewerObjectPreference;
 			sourceTree = "<group>";
 		};
 		106DE3DA22242A7200237EE1 /* IRiMaSApplication */ = {
@@ -1670,7 +1686,10 @@
 		823E7BC62130472B0046512B /* IRImageViewerObject */ = {
 			isa = PBXGroup;
 			children = (
-				823E7BC72130476A0046512B /* IRImageViewerObject.h */,
+				823E7BC72130476A0046512B /* IRImageViewerObject.hpp */,
+				106588FC223031C8005D6B38 /* IRImageViewerObject.cpp */,
+				106588FA22303151005D6B38 /* IRImageViewerObjectUI */,
+				106588FB2230315E005D6B38 /* IRImageViewerObjectPreference */,
 			);
 			path = IRImageViewerObject;
 			sourceTree = "<group>";
@@ -2071,6 +2090,7 @@
 				10F647572226DE7700A26D7D /* ObjectListMenu.cpp in Sources */,
 				821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */,
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
+				106588FD223031C8005D6B38 /* IRImageViewerObject.cpp in Sources */,
 				82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */,
 				10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */,
 				106588E32230196D005D6B38 /* IRWaveformObjectUI.cpp in Sources */,
