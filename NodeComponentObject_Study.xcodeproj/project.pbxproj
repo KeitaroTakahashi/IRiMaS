@@ -975,6 +975,22 @@
 			path = IRTextEditorObjectPreference;
 			sourceTree = "<group>";
 		};
+		106588F622302E72005D6B38 /* IRImageLoader */ = {
+			isa = PBXGroup;
+			children = (
+				823E7BC421302C110046512B /* IRImageLoader.hpp */,
+				823E7BC321302C110046512B /* IRImageLoader.cpp */,
+			);
+			path = IRImageLoader;
+			sourceTree = "<group>";
+		};
+		106588F722302E8E005D6B38 /* IRImageViewer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRImageViewer;
+			sourceTree = "<group>";
+		};
 		106DE3DA22242A7200237EE1 /* IRiMaSApplication */ = {
 			isa = PBXGroup;
 			children = (
@@ -1641,8 +1657,8 @@
 		823E7BC221302BEA0046512B /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				823E7BC321302C110046512B /* IRImageLoader.cpp */,
-				823E7BC421302C110046512B /* IRImageLoader.hpp */,
+				106588F722302E8E005D6B38 /* IRImageViewer */,
+				106588F622302E72005D6B38 /* IRImageLoader */,
 				823E7BC8213053330046512B /* IRImageViewer.h */,
 			);
 			path = Images;

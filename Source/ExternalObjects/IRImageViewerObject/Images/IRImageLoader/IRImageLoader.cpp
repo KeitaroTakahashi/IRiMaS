@@ -1,26 +1,28 @@
-//
-//  IRImageLoader.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 24/08/2018.
-//
 
 #include "IRImageLoader.hpp"
+
+
+
+
+
+IRImageLoader::IRImageLoader()
+{
+    
+}
+
 
 IRImageLoader::IRImageLoader(String path)
 {
     this->path = path;
 }
 
-IRImageLoader::IRImageLoader()
-{
-}
 
 IRImageLoader::~IRImageLoader()
 {
     if(this->file.getFullPathName().length() > 0)
         FILEMANAGER.discardFilePtr(this, this->file);
 }
+
 
 void IRImageLoader::open()
 {
@@ -29,7 +31,7 @@ void IRImageLoader::open()
     FileChooser chooser("Select an image file...",
                         File::nonexistent,
                         "*.png, *.jpg, *.jpeg");
-    if(chooser.browseForFileToOpen())
+    if (chooser.browseForFileToOpen())
     {
         auto file = chooser.getResult();
         this->file = file;
@@ -62,6 +64,7 @@ void IRImageLoader::open()
     }
 }
 
+
 void IRImageLoader::open(String pathToOpen)
 {
     this->isFileLoadCompleted = false;
@@ -84,5 +87,53 @@ void IRImageLoader::open(String pathToOpen)
     }
     
     sendChangeMessage();
+}
+
+
+void IRImageLoader::resized(int w, int h)
+{
+    this->bindImage = this->imgData->rescaled(w, h);
+}
+
+
+void IRImageLoader::sizeFix()
+{
+    // image size
+    int img_w = this->imgData->getWidth();
+    int img_h = this->imgData->getHeight();
     
+    this->aspectRatio = (double) img_w / (double) img_h;
+    
+    if (img_w > this->maxWidth)
+    {
+        img_w = this->maxWidth;
+        img_h = (double)this->maxWidth / this->aspectRatio;
     }
+    else if (img_h > this->maxHeight)
+    {
+        img_w = (double)this->maxHeight * this->aspectRatio;
+        img_h = this->maxHeight;
+    }
+}
+
+
+double IRImageLoader::getAspectRatio() const
+{
+    return this->aspectRatio;
+}
+
+
+Image* IRImageLoader::getData()
+{
+    return this->imgData;
+}
+
+
+String IRImageLoader::getPath() const
+{
+    return this->path;
+}
+
+
+
+
