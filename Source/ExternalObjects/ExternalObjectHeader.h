@@ -24,7 +24,7 @@
 
 // ------------------------------------------------------------
 // image related object
-#include "IRImageViewerObject.h"
+#include "IRImageViewerObject.hpp"
 
 // ------------------------------------------------------------
 // video related object
@@ -34,8 +34,8 @@
 #include "IRCVVideoPlayer.hpp"
 // ------------------------------------------------------------
 // Text related object
-#include "IRLabelObject.h"
-#include "IRTextEditorObject.h"
+#include "IRLabelObject.hpp"
+#include "IRTextEditorObject.hpp"
 
 // ------------------------------------------------------------
 // UIs

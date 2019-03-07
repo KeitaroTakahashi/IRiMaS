@@ -32,7 +32,7 @@ public:
         Image img; // dummy
         IRFactory.registerObject<IRLabelObject>("IRLabel", "Label", img);
         IRFactory.registerObject<IRTextEditorObject>("IRTextEditor", "Text Editor", img);
-        IRFactory.registerObject<IRImageViewerObject>("IRImageViwer", "Image Viwer", img);
+        IRFactory.registerObject<IRImageViewerObject>("IRImageViewer", "Image Viewer", img);
         IRFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img);
         IRFactory.registerObject<IRWaveformObject>("IRWaveform", "Waveform", img);
         IRFactory.registerObject<IRSpectrogramObject>("IRSpectrogram", "Spectrogram", img);
@@ -49,6 +49,8 @@ public:
 
 
     }
+    
+    
     
 private:
     

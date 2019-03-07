@@ -39,7 +39,6 @@ PreferenceWindow::PreferenceWindow(String name) : DocumentWindow(name,
 PreferenceWindow::~PreferenceWindow()
 {
     delete preferenceSpace;
-    
 }
 
 

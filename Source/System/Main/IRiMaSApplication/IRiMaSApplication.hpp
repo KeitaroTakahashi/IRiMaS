@@ -2,7 +2,7 @@
 #include "JuceHeader.h"
 
 #include "IRiMaSMain.hpp"
-#include "PreferenceWindow.hpp"
+//#include "PreferenceWindow.hpp"
 
 
 class IRiMaSApplication  : public JUCEApplication
@@ -27,7 +27,7 @@ public:
 private:
     
     std::unique_ptr<IRMAIN> mainWindow;
-    PreferenceWindow* preferenceWindow;
+    //PreferenceWindow* preferenceWindow;
     
 };
 
