@@ -225,10 +225,8 @@ void IRWorkSpace::dropoutNodeObjectFromParent(IRNodeObject* obj)
 // ------------------------------------------------------------
 void IRWorkSpace::editModeChangedInNodeObject(bool editMode)
 {
-    //setEditMode(editMode);
+    setEditMode(editMode);
     
-    // DO NOT change edit mode here, but IRProject must change the status of this object
-
     // notify it to IRProject
     if(this->notifyEditModeChanged != nullptr)
     {

@@ -16,7 +16,8 @@ class IRTestObject : public IRNodeObject
 public:
     // ------------------------------------------------------------
 
-    IRTestObject(Component* parent) : IRNodeObject(parent, "IRTest")
+    IRTestObject(Component* parent) : IRNodeObject(parent, "IRTest"),
+    ui(this)
     {
         setSize(100, 20);
         
@@ -98,7 +99,7 @@ public:
                 if(isEditMode()) this->playButton.setEnabled(false);
                 else this->playButton.setEnabled(true);
                 
-                this->ui.setEditMode(isEditMode());
+               //this->ui.setEditMode(isEditMode());
 
                 break;
             case SelectableStatus:

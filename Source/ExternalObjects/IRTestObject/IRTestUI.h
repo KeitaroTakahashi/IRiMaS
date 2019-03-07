@@ -13,7 +13,7 @@
 class IRTestUI : public IRUIFoundation
 {
 public:
-    IRTestUI()
+    IRTestUI(IRNodeObject* parent) : IRUIFoundation(parent)
     {
         
     }

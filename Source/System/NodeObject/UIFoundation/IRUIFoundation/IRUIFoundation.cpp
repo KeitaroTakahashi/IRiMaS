@@ -7,8 +7,10 @@
 
 #include "IRUIFoundation.hpp"
 
-IRUIFoundation::IRUIFoundation()
+IRUIFoundation::IRUIFoundation(IRNodeObject* parent)
 {
+    this->parent = parent;
+    this->parent->statusChangeCompleted = [this](IRNodeComponentStatus status){ NodeObjectStatusChanged(status); };
     
 }
 // --------------------------------------------------
@@ -45,10 +47,58 @@ bool IRUIFoundation::keyStateChanged(bool isKeyDown, Component* originatingCompo
 bool IRUIFoundation::keyPressed(const KeyPress &key,
                                 Component* originatingComponent)
 {
+    // reserved key commands
+    if(key.getTextDescription() == "command + E")
+    {
+        // inform parent the change of editMode
+        parent->setEditMode(!parent->isEditMode());
+        parent->callEditModeChangedInNodeObject();
+        
+        return true;
+    }
+    // save project key command
+    else if(key.getTextDescription() == "command + S")
+    {
+        //parent->callSaveProject();
+        return true;
+    }
+    // close project key command
+    else if(key.getTextDescription() == "command + W")
+    {
+        
+        return true;
+    }
+    // open project key command
+    else if(key.getTextDescription() == "command + O")
+    {
+        
+        return true;
+    }
     
+    // user defined key commands
     this->pressedKeyCode = key.getKeyCode();
     IRKeyPressed(this->pressedKeyCode);
     //std::cout << "IRUIFoundation keyPressed = " << key.getKeyCode() << std::endl;
 
     return true;
+}
+
+void IRUIFoundation::NodeObjectStatusChanged(IRNodeComponentStatus status)
+{
+    std::cout << "NodeObjectStatusChanged : status = " << status << std::endl;
+    
+    switch (status)
+    {
+        case IRNodeComponentStatus::EditModeStatus:
+            
+            // inform parent the change of editMode
+            //parent->setEditMode(!parent->isEditMode());
+            //parent->callEditModeChangedInNodeObject();
+            
+            break;
+            
+        default:
+            break;
+    }
+    
 }

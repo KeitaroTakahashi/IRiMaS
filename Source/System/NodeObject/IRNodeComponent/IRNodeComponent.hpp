@@ -182,6 +182,9 @@ public:
     virtual void statusChangedWrapper(IRNodeComponentStatus status);
     // this method is used as a override function
     virtual void statusChangedCallback(IRNodeComponentStatus status);
+    // callback informing
+    std::function<void(IRNodeComponentStatus)> statusChangeCompleted;
+
     
     // change status
     // return a flag shows whether this Component is movable or not. Default is true.

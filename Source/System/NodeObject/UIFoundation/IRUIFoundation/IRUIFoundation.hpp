@@ -12,14 +12,14 @@
 #include "IRNodeObject.hpp"
 
 class IRUIFoundation : public Component,
-public IRNodeObject::Listener,
 public KeyListener
 {
 public:
-    IRUIFoundation();
+    IRUIFoundation(IRNodeObject* parent);
     ~IRUIFoundation();
     
-    
+    // --------------------------------------------------
+
     // --------------------------------------------------
     virtual void IRKeyPressed(int keyCode);
     virtual void IRKeyReleased(int keyCode);
@@ -29,10 +29,16 @@ public:
                     Component* originatingComponent) override;
     
     // --------------------------------------------------
+    void NodeObjectStatusChanged(IRNodeComponentStatus status);
+    
+    // --------------------------------------------------
+
 private:
     
     //key event
     int pressedKeyCode;
+    
+    IRNodeObject* parent;
     
 };
 

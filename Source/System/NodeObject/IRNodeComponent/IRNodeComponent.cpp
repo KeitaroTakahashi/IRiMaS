@@ -434,6 +434,9 @@ void IRNodeComponent::statusChangedWrapper(IRNodeComponentStatus status)
             break;
     }
     
+    if(this->statusChangeCompleted != nullptr)
+        statusChangeCompleted(status);
+    
     // call statusChangeCallback
     statusChangedCallback(status);
 }

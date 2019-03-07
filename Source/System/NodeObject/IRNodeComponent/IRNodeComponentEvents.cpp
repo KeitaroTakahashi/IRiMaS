@@ -9,7 +9,7 @@ void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
     //fire message
     sendChangeMessage();
     
-    std::cout << this->name << " : mouseDown\n";
+    //std::cout << this->name << " : mouseDown\n";
     if (e.mods.isCtrlDown())
     { // show popup menu
         defaultPopupMenuEvents();

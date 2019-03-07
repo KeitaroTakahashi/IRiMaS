@@ -176,24 +176,18 @@ void IRProject::updateWorkspaceList()
 void IRProject::performEditModeChange()
 {
     this->EditModeFlag = this->topSpace->isEditMode();
-    
-    if(this->EditModeFlag == false) this->EditModeFlag = true;
-    else this->EditModeFlag = false;
-    //apply for all workspaces
+
+    //apply the editMode status to all workspaces
     for(auto space : this->workspaces)
     {
-        space->setEditMode(this->EditModeFlag);
+        if(space != this->topSpace)
+            space->setEditMode(this->EditModeFlag);
     }
     
     // notify IRProjectWindow change of the edit mode
-    printf("IRProject :: notifying...\n");
-
     if(this->notifyEditModeChanged != nullptr)
     {
         this->notifyEditModeChanged();
-        
-        printf("IRProject :: notified...\n");
-
     }
 }
 
