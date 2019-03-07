@@ -43,7 +43,7 @@ public:
         setSize(300,100);
 
     }
-    ~IRSpectrogramObject() {}
+    ~IRSpectrogramObject() { /* delete this->selector; // FD ATTEMPT */ }
     
     //==========================================================================
     // copy constructor

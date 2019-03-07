@@ -32,7 +32,7 @@ IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IR
 
 IRWaveformObject::~IRWaveformObject()
 {
-    
+    // delete this->selector; // FD ATTEMPT
 }
 
 

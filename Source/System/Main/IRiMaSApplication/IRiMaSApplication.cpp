@@ -43,7 +43,7 @@ void IRiMaSApplication::initialise (const String& commandLine)
 
 void IRiMaSApplication::shutdown()
 {
-    delete this->preferenceWindow;
+    // delete this->preferenceWindow;
     this->mainWindow = nullptr;
 }
 
