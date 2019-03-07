@@ -119,7 +119,7 @@ void IRProject::createNewWorkspace()
     IRWorkSpace* space = new IRWorkSpace(title, frameSize, this->preferenceWindow);
     space->requestWorkspaceListUpdate = [this] { updateWorkspaceList(); };
     space->requestSaveProject = [this] { callSaveProjectAction(); };
-    space->notifyEditModeChanged = [this] { performEditModeChange(); };
+    space->notifyEditModeChanged = [this] { notifyEditModeChange(); };
     
     space->addChangeListener(this->listener);
     this->mixer.addAudioSource(&space->getMixer());
@@ -175,8 +175,27 @@ void IRProject::updateWorkspaceList()
 
 void IRProject::performEditModeChange()
 {
-    this->EditModeFlag = this->topSpace->isEditMode();
+    // change the status
+    this->EditModeFlag = !this->topSpace->isEditMode();
 
+    //apply the editMode status to all workspaces
+    for(auto space : this->workspaces)
+    {
+        space->setEditMode(this->EditModeFlag);
+    }
+    
+    // notify IRProjectWindow change of the edit mode
+    if(this->notifyEditModeChanged != nullptr)
+    {
+        this->notifyEditModeChanged();
+    }
+}
+
+void IRProject::notifyEditModeChange()
+{
+    // DO NOT change the status
+    this->EditModeFlag = this->topSpace->isEditMode();
+    
     //apply the editMode status to all workspaces
     for(auto space : this->workspaces)
     {

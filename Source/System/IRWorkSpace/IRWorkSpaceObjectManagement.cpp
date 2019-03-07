@@ -215,6 +215,11 @@ void IRWorkSpace::dragoutNodeObjectFromParent(IRNodeObject* obj)
 {
     std::cout << "workspace : dragoutNodeObject\n";
     setEditMode(true);
+    // notify the change of editMode to IRProject
+    if(this->notifyEditModeChanged != nullptr)
+    {
+        this->notifyEditModeChanged();
+    }
     this->dummy.add(obj);
 }
 // ------------------------------------------------------------

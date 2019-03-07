@@ -67,6 +67,11 @@ public:
     // otherwise it doesn't work.
     void performEditModeChange() override;
     
+    // notify the status change of edit mode.
+    // this is called when IRUIFoundation, IRNodeObject, IRWorkspace or any other object
+    // has changed the edit mode
+    void notifyEditModeChange();
+    
     // return top workspace which is currently displayed space
     IRWorkSpace* getTopWorkspace();
     
@@ -147,8 +152,6 @@ private:
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
     virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
     virtual void releaseResources() override;
-    
-    
     
     std::string projectPath;
     std::string projectName;

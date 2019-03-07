@@ -422,7 +422,6 @@ void IRNodeComponent::statusChangedWrapper(IRNodeComponentStatus status)
                     this->mouseListenerFlag = false;
                 }
                 
-                
                 for(auto comp : getChildren())
                 {
                     comp->setInterceptsMouseClicks(true, true);
@@ -434,6 +433,7 @@ void IRNodeComponent::statusChangedWrapper(IRNodeComponentStatus status)
             break;
     }
     
+    // callback function :: used in IRUIFoundation to inform any of IRNodeObject's status change
     if(this->statusChangeCompleted != nullptr)
         statusChangeCompleted(status);
     

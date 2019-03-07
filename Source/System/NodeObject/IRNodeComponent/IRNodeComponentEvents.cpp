@@ -147,7 +147,6 @@ void IRNodeComponent::defaultPopupMenuEvents()
     switch (result)
     {
         case 1:
-            std::cout << "send to front called\n";
             toFront(true);
             break;
         case 2:

@@ -82,6 +82,7 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
 
     return true;
 }
+// --------------------------------------------------
 
 void IRUIFoundation::NodeObjectStatusChanged(IRNodeComponentStatus status)
 {
@@ -91,9 +92,7 @@ void IRUIFoundation::NodeObjectStatusChanged(IRNodeComponentStatus status)
     {
         case IRNodeComponentStatus::EditModeStatus:
             
-            // inform parent the change of editMode
-            //parent->setEditMode(!parent->isEditMode());
-            //parent->callEditModeChangedInNodeObject();
+            setEditModeBase(this->parent->isEditMode());
             
             break;
             
@@ -102,3 +101,25 @@ void IRUIFoundation::NodeObjectStatusChanged(IRNodeComponentStatus status)
     }
     
 }
+// --------------------------------------------------
+
+void IRUIFoundation::setEditModeBase(bool newEditMode)
+{
+    this->editModeFlag = newEditMode;
+    
+    // if not editMode, get keyboardFocus
+    if (! this->editModeFlag)
+    {
+        setWantsKeyboardFocus(true);
+        addKeyListener(this);
+    }
+    else
+    {
+        // otherwise out of keyboard Focus
+        setWantsKeyboardFocus(false);
+        removeKeyListener(this);
+    }
+    // call it for child class
+    setEditMode(newEditMode);
+}
+// --------------------------------------------------

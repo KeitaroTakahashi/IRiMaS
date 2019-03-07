@@ -8,19 +8,6 @@
 bool IRWorkSpace::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
     std::cout << "IRWorkSpace keyPressed() : " << key.getKeyCode() << " : " << key.getTextDescription() << ", " << key.getTextCharacter() <<   std::endl;
-    /*
-     switch (key.getTextCharacter())
-     {
-     case 'command + C':
-     if(this->isCommandPressed) copySelectedObjects();
-     case 'command + V':
-     if(this->isCommandPressed) pasteSelectedObjects();
-     case 'command + D':
-     if(this->isCommandPressed) duplicateSelectedObjects();
-     default:
-     break;
-     }
-     */
     
     
     if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
@@ -68,6 +55,15 @@ bool IRWorkSpace::keyPressed (const KeyPress& key, Component* originatingCompone
         }
         
         return true;
+    }
+    
+    // in case no key
+    if(! this->isEditMode())
+    {
+        printf("IRWworkspace : The workspace can not receive any key event because it is in Control Mode, if you want to control Object interface, please click an object you want to control and give a KeyEventFocus on it.\n");
+    }
+    else {
+        printf("IRWorkspace : Unknown KeyEvent received.\n");
     }
     
     return false;
