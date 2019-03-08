@@ -487,8 +487,15 @@ bool IRProject::isEditMode() const
     return this->EditModeFlag;
 }
 
+bool IRProject::isNonSavedChange() const
+{
+    return this->nonSavedChanges;
+}
 
-
+void setNonSavedChange(bool newStatus)
+{
+    this->nonSavedChanges = newStatus;
+}
 
 
 // **** **** PRIVATE METHODS **** **** //

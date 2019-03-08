@@ -72,12 +72,11 @@ public:
     // has changed the edit mode
     void notifyEditModeChange();
     
-    // return top workspace which is currently displayed space
+    // return top workspace which is currently displayed
     IRWorkSpace* getTopWorkspace();
     
     // return true if success!
     json11::Json saveAction(std::string filePath);
-    //json11::Json loadAction(std::string filePath);
     
     // Menu bar methods
     StringArray getMenuBarNames() override;
@@ -133,6 +132,8 @@ public:
     void callSaveAsProjectAction(); // fire saveAsProjectAction() method in the Listener
     
     bool isEditMode() const;
+    bool isNonSavedChange() const;
+    void setNonSavedChange(bool newStatus);
     
 private:
     
@@ -178,6 +179,9 @@ private:
     
     // Edit Mode flag
     bool EditModeFlag = true;
+    
+    // is there any changes which have not been saved yet?
+    bool nonSavedChanges = false;
     
     ApplicationCommandManager commandManager;
     
