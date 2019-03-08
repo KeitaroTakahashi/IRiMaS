@@ -494,7 +494,7 @@ bool IRProject::isNonSavedChange() const
 
 void setNonSavedChange(bool newStatus)
 {
-    this->nonSavedChanges = newStatus;
+    IRProject::this->nonSavedChanges = newStatus;
 }
 
 
