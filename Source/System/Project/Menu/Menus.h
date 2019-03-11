@@ -22,7 +22,9 @@ enum CommandIDs
     Duplicate,
     
     //Window
+    fileInspecterWindow,
     menuPreferenceWindow
+    
 };
 
 

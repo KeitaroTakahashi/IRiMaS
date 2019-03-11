@@ -6,3 +6,13 @@
 //
 
 #include "IRFileInspecter.hpp"
+
+IRFileInspecter::IRFileInspecter()
+{
+    
+}
+
+IRFileInspecter::~IRFileInspecter()
+{
+    
+}

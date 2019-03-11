@@ -264,6 +264,7 @@
 		82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB42802224291C00F9184C /* IRiMaSApplication.cpp */; };
 		82B0DF34214268FB0000516C /* IRSpectrogramUIEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82B0DF33214268FB0000516C /* IRSpectrogramUIEvents.cpp */; };
 		82C909C72236CA9E001E058C /* IRFileInspecter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C909C52236CA9E001E058C /* IRFileInspecter.cpp */; };
+		82C909CB2236CB9B001E058C /* IRFileInspecterWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C909C92236CB9B001E058C /* IRFileInspecterWindow.cpp */; };
 		82FA8F0A22089C7D0032983F /* IRVideoThumbnail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82FA8F0822089C7D0032983F /* IRVideoThumbnail.cpp */; };
 		872DA0FC68776E50719C9761 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C0D8131D026927065E2A4B /* include_juce_graphics.mm */; };
 		9B05781095D6ABBC6BC99A44 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F79F409BCB5CFA692A5A7AAB /* CoreMIDI.framework */; };
@@ -670,6 +671,8 @@
 		82B2938A222FFF3A008E18B2 /* IRTestUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTestUI.h; sourceTree = "<group>"; };
 		82C909C52236CA9E001E058C /* IRFileInspecter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRFileInspecter.cpp; sourceTree = "<group>"; };
 		82C909C62236CA9E001E058C /* IRFileInspecter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRFileInspecter.hpp; sourceTree = "<group>"; };
+		82C909C92236CB9B001E058C /* IRFileInspecterWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRFileInspecterWindow.cpp; sourceTree = "<group>"; };
+		82C909CA2236CB9B001E058C /* IRFileInspecterWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRFileInspecterWindow.hpp; sourceTree = "<group>"; };
 		82D9030E21A8486300E57471 /* KDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDictionary.h; sourceTree = "<group>"; };
 		82D9030F21A84B3300E57471 /* KLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLib.h; sourceTree = "<group>"; };
 		82D9031021A84FF500E57471 /* KRandomStringGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KRandomStringGenerator.h; sourceTree = "<group>"; };
@@ -1973,10 +1976,20 @@
 		82C909C42236CA28001E058C /* IRFileInspector */ = {
 			isa = PBXGroup;
 			children = (
+				82C909C82236CB8A001E058C /* IRFileInspecterWindow */,
 				82C909C52236CA9E001E058C /* IRFileInspecter.cpp */,
 				82C909C62236CA9E001E058C /* IRFileInspecter.hpp */,
 			);
 			path = IRFileInspector;
+			sourceTree = "<group>";
+		};
+		82C909C82236CB8A001E058C /* IRFileInspecterWindow */ = {
+			isa = PBXGroup;
+			children = (
+				82C909C92236CB9B001E058C /* IRFileInspecterWindow.cpp */,
+				82C909CA2236CB9B001E058C /* IRFileInspecterWindow.hpp */,
+			);
+			path = IRFileInspecterWindow;
 			sourceTree = "<group>";
 		};
 		82D9030D21A8484300E57471 /* KeLib */ = {
@@ -2214,6 +2227,7 @@
 				106588E1222FFAB1005D6B38 /* WindowCommandTarget.cpp in Sources */,
 				82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */,
 				829D03762229798D001FDE1D /* IRVideo.cpp in Sources */,
+				82C909CB2236CB9B001E058C /* IRFileInspecterWindow.cpp in Sources */,
 				829D037A222D7F20001FDE1D /* IRUIFoundation.cpp in Sources */,
 				BAC07B81710E9DE23503547C /* include_juce_gui_extra.mm in Sources */,
 				2E1EF2C4A310C35FE2553764 /* include_juce_opengl.mm in Sources */,

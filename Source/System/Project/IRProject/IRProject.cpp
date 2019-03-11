@@ -412,6 +412,8 @@ PopupMenu IRProject::getMenuForIndex(int menuIndex, const String& menuName)
     }else if(menuIndex == 2)
     {
         menu.addCommandItem(&commandManager, CommandIDs::menuPreferenceWindow);
+        menu.addCommandItem(&commandManager, CommandIDs::fileInspecterWindow);
+
         
     }else if(menuIndex == 3)
     {

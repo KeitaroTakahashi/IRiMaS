@@ -30,7 +30,9 @@ ApplicationCommandTarget* WindowCommandTarget::getNextCommandTarget()
 
 void WindowCommandTarget::getAllCommands(Array<CommandID>& c)
 {
-    Array<CommandID> commands { CommandIDs::menuPreferenceWindow};
+    Array<CommandID> commands { CommandIDs::fileInspecterWindow,
+                                CommandIDs::menuPreferenceWindow
+                                };
     c.addArray (commands);
 }
 
@@ -39,11 +41,16 @@ void WindowCommandTarget::getCommandInfo(CommandID commandID, ApplicationCommand
 {
     switch (commandID)
     {
-        case CommandIDs::menuPreferenceWindow:
-            result.setInfo ("Preference Window", "Sets the outer colour to red", "Window", 0);
-            result.addDefaultKeypress ('p', ModifierKeys::shiftModifier);
+        case CommandIDs::fileInspecterWindow:
+            result.setInfo ("fileInspecter Window", "Sets the outer colour to red", "Window", 0);
+            result.addDefaultKeypress ('8', ModifierKeys::commandModifier);
             break;
             
+        case CommandIDs::menuPreferenceWindow:
+            result.setInfo ("Preference Window", "Sets the outer colour to red", "Window", 0);
+            result.addDefaultKeypress ('9', ModifierKeys::commandModifier);
+            break;
+
         default:
             break;
     }
@@ -54,9 +61,12 @@ bool WindowCommandTarget::perform(const InvocationInfo& info)
 {
     switch(info.commandID)
     {
+        
+        case CommandIDs::fileInspecterWindow:
+            
+            break;
         case CommandIDs::menuPreferenceWindow:
             break;
-            
         default:
             return false;
     }
