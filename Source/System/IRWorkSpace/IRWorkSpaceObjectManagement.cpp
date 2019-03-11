@@ -66,9 +66,7 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     obj->addKeyListener(this); // key listener
     obj->setPreferenceWindow(this->preferenceWindow); // set preference window
     this->objects.add(obj);
-    
-    std::cout << "object created count = " << this->objects.size() << std::endl;
-    
+
     //audiosource
     if(obj->isContainAudioSource())
         this->mixer.addAudioSource(obj->getAudioSource());
@@ -111,8 +109,10 @@ void IRWorkSpace::deleteObject(IRNodeObject *obj)
         removeChildComponent(obj);
         
         int index = this->objects.indexOf(obj);
-        if(index >= 0)
+        if(index >= 0){
             this->objects.remove(index);
+            delete obj;
+        }
     }
     
     //request updating the workspaceList
@@ -242,6 +242,22 @@ void IRWorkSpace::editModeChangedInNodeObject(bool editMode)
 void IRWorkSpace::saveProject()
 {
     if(this->requestSaveProject != nullptr) requestSaveProject();
+}
+void IRWorkSpace::saveAsProject()
+{
+    if(this->requestSaveAsProject != nullptr) requestSaveAsProject();
+}
+void IRWorkSpace::closeProject()
+{
+    if(this->requestCloseProject != nullptr) requestCloseProject();
+}
+void IRWorkSpace::openProject()
+{
+    if(this->requestOpenProject != nullptr) requestOpenProject();
+}
+void IRWorkSpace::createNewProject()
+{
+    if(this->requestNewProject != nullptr) requestNewProject();
 }
 // ============================================================
 void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)

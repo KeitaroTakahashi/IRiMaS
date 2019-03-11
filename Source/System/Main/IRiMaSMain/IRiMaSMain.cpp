@@ -210,6 +210,7 @@ void IRMAIN::closeProject(DocumentWindow* closingWindow)
 {
     auto it = std::find(this->projectLib.begin(), this->projectLib.end(), closingWindow);
     if (it != this->projectLib.end()) { this->projectLib.erase(it); }
+    else std::cout << "IRMAIN : closeProject : Could not find window of " << closingWindow << std::endl;
     
     
     if(this->projectLib.size() == 0)
@@ -234,6 +235,8 @@ void IRMAIN::openProjectAction()
 
 void IRMAIN::closeProjectAction(DocumentWindow* closingWindow)
 {
+    std::cout<<"IRMAIN closeProjectAction : " << closingWindow << std::endl;
+
     closeProject(closingWindow);
 }
 

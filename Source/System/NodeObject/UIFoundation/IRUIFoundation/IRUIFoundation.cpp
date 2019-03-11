@@ -59,19 +59,22 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
     // save project key command
     else if(key.getTextDescription() == "command + S")
     {
-        //parent->callSaveProject();
+        parent->callSaveProject();
         return true;
     }
     // close project key command
     else if(key.getTextDescription() == "command + W")
     {
         
-        return true;
+        // ignore this at this moment, as it does not work properly...
+        // window does not close
+        //parent->callCloseProject();
+        return false; // return false at thie moment.
     }
     // open project key command
     else if(key.getTextDescription() == "command + O")
     {
-        
+        parent->callOpenProject();
         return true;
     }
     
@@ -86,12 +89,15 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
 
 void IRUIFoundation::NodeObjectStatusChanged(IRNodeComponentStatus status)
 {
-    std::cout << "NodeObjectStatusChanged : status = " << status << std::endl;
+    //std::cout << "NodeObjectStatusChanged : status = " << status << std::endl;
     
     switch (status)
     {
         case IRNodeComponentStatus::EditModeStatus:
             
+            // control KeyEvent
+            // editmode = does not receive any KeyEvent,
+            // controlmode = receive keyEvent
             setEditModeBase(this->parent->isEditMode());
             
             break;

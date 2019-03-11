@@ -261,9 +261,9 @@
 		829D03762229798D001FDE1D /* IRVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D03742229798D001FDE1D /* IRVideo.cpp */; };
 		829D037A222D7F20001FDE1D /* IRUIFoundation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D0378222D7F20001FDE1D /* IRUIFoundation.cpp */; };
 		82A98B2A2199B84B0077EAE6 /* IRWorkspaceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */; };
-		82AB427E22208B3200F9184C /* DataAllocationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB427C22208B3200F9184C /* DataAllocationManager.cpp */; };
 		82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB42802224291C00F9184C /* IRiMaSApplication.cpp */; };
 		82B0DF34214268FB0000516C /* IRSpectrogramUIEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82B0DF33214268FB0000516C /* IRSpectrogramUIEvents.cpp */; };
+		82C909C72236CA9E001E058C /* IRFileInspecter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C909C52236CA9E001E058C /* IRFileInspecter.cpp */; };
 		82FA8F0A22089C7D0032983F /* IRVideoThumbnail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82FA8F0822089C7D0032983F /* IRVideoThumbnail.cpp */; };
 		872DA0FC68776E50719C9761 /* include_juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28C0D8131D026927065E2A4B /* include_juce_graphics.mm */; };
 		9B05781095D6ABBC6BC99A44 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F79F409BCB5CFA692A5A7AAB /* CoreMIDI.framework */; };
@@ -663,12 +663,13 @@
 		829D0379222D7F20001FDE1D /* IRUIFoundation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRUIFoundation.hpp; sourceTree = "<group>"; };
 		82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceList.cpp; sourceTree = "<group>"; };
 		82A98B292199B84B0077EAE6 /* IRWorkspaceList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkspaceList.hpp; sourceTree = "<group>"; };
-		82AB427C22208B3200F9184C /* DataAllocationManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DataAllocationManager.cpp; sourceTree = "<group>"; };
-		82AB427D22208B3200F9184C /* DataAllocationManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DataAllocationManager.hpp; sourceTree = "<group>"; };
+		82AB427D22208B3200F9184C /* DataAllocationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataAllocationManager.h; sourceTree = "<group>"; };
 		82AB42802224291C00F9184C /* IRiMaSApplication.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRiMaSApplication.cpp; sourceTree = "<group>"; };
 		82AB42812224291C00F9184C /* IRiMaSApplication.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRiMaSApplication.hpp; sourceTree = "<group>"; };
 		82B0DF33214268FB0000516C /* IRSpectrogramUIEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramUIEvents.cpp; sourceTree = "<group>"; };
 		82B2938A222FFF3A008E18B2 /* IRTestUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTestUI.h; sourceTree = "<group>"; };
+		82C909C52236CA9E001E058C /* IRFileInspecter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRFileInspecter.cpp; sourceTree = "<group>"; };
+		82C909C62236CA9E001E058C /* IRFileInspecter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRFileInspecter.hpp; sourceTree = "<group>"; };
 		82D9030E21A8486300E57471 /* KDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDictionary.h; sourceTree = "<group>"; };
 		82D9030F21A84B3300E57471 /* KLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLib.h; sourceTree = "<group>"; };
 		82D9031021A84FF500E57471 /* KRandomStringGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KRandomStringGenerator.h; sourceTree = "<group>"; };
@@ -1698,6 +1699,7 @@
 		823C181B2191B4DB00AC9FC9 /* Project */ = {
 			isa = PBXGroup;
 			children = (
+				82C909C42236CA28001E058C /* IRFileInspector */,
 				10F6475F2226EBF900A26D7D /* IRProject */,
 				10F647602226EC0000A26D7D /* IRProjectWindow */,
 				823C18202193138B00AC9FC9 /* Menu */,
@@ -1950,8 +1952,7 @@
 		82AB427B22208B0300F9184C /* DataAllocationManager */ = {
 			isa = PBXGroup;
 			children = (
-				82AB427C22208B3200F9184C /* DataAllocationManager.cpp */,
-				82AB427D22208B3200F9184C /* DataAllocationManager.hpp */,
+				82AB427D22208B3200F9184C /* DataAllocationManager.h */,
 			);
 			path = DataAllocationManager;
 			sourceTree = "<group>";
@@ -1967,6 +1968,15 @@
 				106DE3DA22242A7200237EE1 /* IRiMaSApplication */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		82C909C42236CA28001E058C /* IRFileInspector */ = {
+			isa = PBXGroup;
+			children = (
+				82C909C52236CA9E001E058C /* IRFileInspecter.cpp */,
+				82C909C62236CA9E001E058C /* IRFileInspecter.hpp */,
+			);
+			path = IRFileInspector;
 			sourceTree = "<group>";
 		};
 		82D9030D21A8484300E57471 /* KeLib */ = {
@@ -2141,11 +2151,11 @@
 				10F6476B22273FBD00A26D7D /* IRProjectWindow.cpp in Sources */,
 				821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */,
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
-				82AB427E22208B3200F9184C /* DataAllocationManager.cpp in Sources */,
 				10F647572226DE7700A26D7D /* ObjectListMenu.cpp in Sources */,
 				821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */,
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
 				106588FD223031C8005D6B38 /* IRImageViewerObject.cpp in Sources */,
+				82C909C72236CA9E001E058C /* IRFileInspecter.cpp in Sources */,
 				1065891322303820005D6B38 /* IRAudioPlayerObjectUI.cpp in Sources */,
 				82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */,
 				1065890D2230379D005D6B38 /* IRImageViewerObjectUI.cpp in Sources */,

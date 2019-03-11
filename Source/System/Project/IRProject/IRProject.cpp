@@ -117,8 +117,13 @@ void IRProject::createNewWorkspace()
     Rectangle<int> frameSize(this->workspaceListWidth, 0,
                              getWidth()-this->workspaceListWidth, getHeight());
     IRWorkSpace* space = new IRWorkSpace(title, frameSize, this->preferenceWindow);
+    
     space->requestWorkspaceListUpdate = [this] { updateWorkspaceList(); };
+    space->requestNewProject = [this] { callCreateNewProjectAction(); };
     space->requestSaveProject = [this] { callSaveProjectAction(); };
+    space->requestSaveAsProject = [this] { callSaveAsProjectAction(); };
+    space->requestOpenProject = [this] { callOpenProjectAction(); };
+    space->requestCloseProject = [this] { callCloseProjectAction(); };
     space->notifyEditModeChanged = [this] { notifyEditModeChange(); };
     
     space->addChangeListener(this->listener);
@@ -497,12 +502,7 @@ void IRProject::setNonSavedChange(bool newStatus)
     this->nonSavedChanges = newStatus;
 }
 
-
 // **** **** PRIVATE METHODS **** **** //
-
-
-
-
 
 void IRProject::changeListenerCallback(ChangeBroadcaster* source)
 {

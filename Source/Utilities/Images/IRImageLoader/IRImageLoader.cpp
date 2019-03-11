@@ -1,10 +1,6 @@
 
 #include "IRImageLoader.hpp"
 
-
-
-
-
 IRImageLoader::IRImageLoader()
 {
     
@@ -19,8 +15,9 @@ IRImageLoader::IRImageLoader(String path)
 
 IRImageLoader::~IRImageLoader()
 {
-    if(this->file.getFullPathName().length() > 0)
-        FILEMANAGER.discardFilePtr(this, this->file);
+    // remove pointer
+    if(this->imgData != nullptr)
+        FILEMANAGER.discardFilePtr(IRFileType::IRIMAGE, this->imgData, this, this->file);
 }
 
 
@@ -46,12 +43,7 @@ void IRImageLoader::open()
             this->isFileOpened = true;
             //loadImage(pathToOpen);
             
-            
-            this->imgData = static_cast<Image*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file));
-            //test
-            //std::cout << "IRFileManager create data pointer = " << FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file) << std::endl;
-            
-            
+            this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file, this));
             this->isFileLoadCompleted = true;
         }else{
             
@@ -77,8 +69,8 @@ void IRImageLoader::open(String pathToOpen)
         
         File file(this->path);
         
+        this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file, this));
         //loadImage(pathToOpen);
-        this->imgData = static_cast<Image*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file));
 
         this->isFileLoadCompleted = true;
     }else{
@@ -92,28 +84,30 @@ void IRImageLoader::open(String pathToOpen)
 
 void IRImageLoader::resized(int w, int h)
 {
-    this->bindImage = this->imgData->rescaled(w, h);
+
 }
 
-
-void IRImageLoader::sizeFix()
+Point<int> IRImageLoader::sizeFix()
 {
     // image size
-    int img_w = this->imgData->getWidth();
-    int img_h = this->imgData->getHeight();
+    int img_w = getData()->getImageData().getWidth();
+    int img_h = getData()->getImageData().getHeight();
     
     this->aspectRatio = (double) img_w / (double) img_h;
-    
+    std::cout << "aspectRatio = " <<this->aspectRatio << " : w = " << img_w << std::endl;
     if (img_w > this->maxWidth)
     {
         img_w = this->maxWidth;
         img_h = (double)this->maxWidth / this->aspectRatio;
     }
-    else if (img_h > this->maxHeight)
+    
+    if (img_h > this->maxHeight)
     {
         img_w = (double)this->maxHeight * this->aspectRatio;
         img_h = this->maxHeight;
     }
+    
+    return Point<int> (img_w, img_h);
 }
 
 
@@ -123,9 +117,9 @@ double IRImageLoader::getAspectRatio() const
 }
 
 
-Image* IRImageLoader::getData()
+IRImage* IRImageLoader::getData()
 {
-    return this->imgData;
+    return this->imgData->getData();
 }
 
 

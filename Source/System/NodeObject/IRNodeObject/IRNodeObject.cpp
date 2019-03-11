@@ -196,6 +196,62 @@ void IRNodeObject::callSaveProject()
 
 }
 
+void IRNodeObject::callSaveAsProject()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.saveAsProject(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->saveAsProjectCompleted != nullptr) this->saveAsProjectCompleted();
+    
+}
+
+void IRNodeObject::callCloseProject()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.closeProject(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    if(this->closeProjectCompleted != nullptr) this->closeProjectCompleted();
+
+}
+
+void IRNodeObject::callOpenProject()
+{
+    
+    printf("IRNodeObject : openProject\n");
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.openProject(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    if(this->openProjectCompleted != nullptr) this->openProjectCompleted();
+    
+}
+
+void IRNodeObject::callCreateNewProject()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.createNewProject(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    if(this->createNewProjectCompleted != nullptr) this->createNewProjectCompleted();
+    
+}
+
+
 
 void IRNodeObject::saveObjectContents()
 {

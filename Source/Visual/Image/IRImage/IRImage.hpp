@@ -20,6 +20,7 @@ class IRImage
     // --------------------------------------------------
 public:
     IRImage(File file);
+    IRImage();
     ~IRImage();
     
     // --------------------------------------------------
@@ -32,9 +33,11 @@ public:
     // getter
     int getHeight();
     int getWidth();
-    
+
 private:
     Image img;
+    
+
 };
 
 

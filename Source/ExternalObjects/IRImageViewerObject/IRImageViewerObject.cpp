@@ -20,7 +20,7 @@ IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(paren
 
 IRImageViewerObject::~IRImageViewerObject()
 {
-    
+
 }
 
 
@@ -95,6 +95,10 @@ void IRImageViewerObject::paint(Graphics& g)
 void IRImageViewerObject::resizeThisComponentEvent(const MouseEvent& e)
 {
     double ratio = this->imageViewer.getAspectRatio();
+    
+    
+    std::cout << "resizeThisComponentEvent isShiftDown = " << e.mods.isShiftDown() << " : ratio = " << ratio << std::endl;
+    
     if (e.mods.isShiftDown() && ratio != 0)
     {
         float deltaX = e.getScreenX() - e.getMouseDownScreenX();

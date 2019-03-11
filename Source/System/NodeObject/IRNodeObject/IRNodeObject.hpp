@@ -47,6 +47,15 @@ public:
         // save action from IRNodeObject
         virtual void saveProject(){};
         
+        virtual void saveAsProject() {};
+        
+        // close Project
+        virtual void closeProject() {};
+        
+        virtual void openProject() {};
+        
+        virtual void createNewProject() {};
+        
         //inform its parent that edit mode status changed
         virtual void editModeChangedInNodeObject(bool editMode) {};
         
@@ -65,7 +74,14 @@ public:
     std::function<void()> dropoutNodeObjectCompleted;
     std::function<void()> editModeChangedCompleted;
     std::function<void()> addOBjectGlobalCompleted;
+    
+    // requests to IRProject
     std::function<void()> saveProjectCompleted;
+    std::function<void()> saveAsProjectCompleted;
+    std::function<void()> closeProjectCompleted;
+    std::function<void()> openProjectCompleted;
+    std::function<void()> createNewProjectCompleted;
+
     std::function<void()> getObjectGlobalCompleted;
     
 
@@ -81,6 +97,11 @@ public:
     IRObjectPtr callGetObjectGlobal(String id);
     // fire saveProject() method in Listener
     void callSaveProject();
+    void callSaveAsProject();
+    // fire CloseProject() method in Listener
+    void callCloseProject();
+    void callCreateNewProject();
+    void callOpenProject();
     // ===========================================================================
     
     // methods for save and load functions. Developers need to define the behavior of objects when save or load project files.

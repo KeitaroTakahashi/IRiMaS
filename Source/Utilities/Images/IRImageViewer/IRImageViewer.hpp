@@ -37,7 +37,7 @@ private:
     IRImageLoader imgLoader;
     
     // this member contains a reference from FileManager and should not be modified!
-    Image* imgRef = nullptr;
+    IRImage* imgRef = nullptr;
     
     // When you draw Image with or withour modification (such as rescaling the size), use this pointer
     Image img;

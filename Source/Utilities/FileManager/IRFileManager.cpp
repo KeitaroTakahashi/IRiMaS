@@ -9,13 +9,12 @@
 
 // -------------------------------------------------
 
-IRObjectPtr IRFileManager::createFileData(IRFileType type, File file)
+IRObjectPtr IRFileManager::createFileData(IRFileType type, File file, IRObjectPtr owner)
 {
-    
     switch(type)
     {
         case IRIMAGE:
-            return createImageFileData(file);
+            return createImageFileData(file, owner);
             break;
         case IRVIDEO:
             break;
@@ -27,10 +26,14 @@ IRObjectPtr IRFileManager::createFileData(IRFileType type, File file)
     return nullptr;
 }
 
-IRObjectPtr IRFileManager::createImageFileData(File file)
+IRObjectPtr IRFileManager::createImageFileData(File file, IRObjectPtr owner)
 {
-    IRImage* img = new IRImage(file);
+    DataAllocationManager<IRImage>* img = new DataAllocationManager<IRImage>();
+    std::cout << "allocate \n";
+    img->addReferencingObject(owner);
+    img->getData()->loadImage(file);
     return static_cast<IRObjectPtr>(img);
+
 }
 // -------------------------------------------------
 
@@ -83,7 +86,7 @@ void IRFileManager::registerNewFile(File file, IRObjectPtr obj)
 }
 // -------------------------------------------------
 //==================================================
-IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file)
+IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr owner)
 {
     
     std::cout << "IRFileManager ptr = " << this << std::endl;
@@ -91,19 +94,56 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file)
     if(isFileAlreadyRegistered(file))
     {
         printf("file already imported to the project!\n");
-        return retrievePtrByFile(file);
+        IRObjectPtr obj = retrievePtrByFile(file);
+        // manager owner list
+        managerOwner(type, obj, owner, true);
+        return obj;
     }
     else
     {
-        printf("create new object in getFilePtr()\n");
-        IRObjectPtr newObj = createFileData(type, file);
+        IRObjectPtr newObj = createFileData(type, file, owner);
         registerNewFile(file, newObj);
+        printf("registerNewFile done\n");
+
         return newObj;
     }
 }
 // -------------------------------------------------
-IRObjectPtr IRFileManager::discardFilePtr(IRObjectPtr owner, File file)
+IRObjectPtr IRFileManager::discardFilePtr(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, File file)
 {
+    managerOwner(type, obj, owner, false);
     return nullptr;
 }
 //==================================================
+
+
+void IRFileManager::managerOwner(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, bool addOrRemove)
+{
+    switch(type)
+    {
+        case IRIMAGE:
+            IRImageReferencerManager(obj, owner, addOrRemove);
+            break;
+        case IRVIDEO:
+            break;
+        case IRAUDIO:
+            break;
+        default:
+            break;
+    }
+}
+
+// -------------------------------------------------
+void IRFileManager::IRImageReferencerManager(IRObjectPtr obj, IRObjectPtr owner ,bool addOrRemove)
+{
+    if(addOrRemove) // add
+    {
+        DataAllocationManager<IRImage>* data = static_cast<DataAllocationManager<IRImage>*>(obj);
+        data->addReferencingObject(owner);
+    }
+    else // remove
+    {
+        DataAllocationManager<IRImage>* data = static_cast<DataAllocationManager<IRImage>*>(obj);
+        data->removeReferencingObject(owner);
+    }
+}

@@ -12,7 +12,7 @@
 
 #include "JuceHeader.h"
 #include "singletonClass.hpp"
-#include "DataAllocationManager.hpp"
+#include "DataAllocationManager.h"
 #include "DataType.h"
 #include "IRImage.hpp"
 #include "IRVideo.hpp"
@@ -34,21 +34,6 @@
 class IRFileManager
 {
 public:
-    
-    template<class T>
-    struct FileManagerStr
-    {
-        DataAllocationManager<T> dataManager;
-        File file;
-        
-        FileManagerStr(File file,
-                       DataAllocationManager<T> dataManager)
-        {
-            this->file = file;
-            this->dataManager = dataManager;
-        }
-        
-    };
 
     IRFileManager()
     {
@@ -63,9 +48,9 @@ public:
     //==================================================
     // get a file pointer from IRFileManager
     // if file has not yet been loaded, then this method loads the file first and returns its pointer
-    IRObjectPtr getFilePtr(IRFileType type, File file);
+    IRObjectPtr getFilePtr(IRFileType type, File file, IRObjectPtr owner);
     //
-    IRObjectPtr discardFilePtr(IRObjectPtr owner, File file);
+    IRObjectPtr discardFilePtr(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, File file);
     
     //==================================================
 
@@ -73,9 +58,8 @@ private:
     
     //==================================================
     // allocate data by a given FileType
-    IRObjectPtr createFileData(IRFileType type, File file);
-    IRObjectPtr createImageFileData(File file);
-    
+    IRObjectPtr createFileData(IRFileType type, File file, IRObjectPtr owner);
+    IRObjectPtr createImageFileData(File file, IRObjectPtr owner);
     
     // check if the new file is already imported or not
     bool isFileAlreadyRegistered(File newFile);
@@ -87,6 +71,11 @@ private:
     // -------------------------------------------------
     void registerNewFile(File file, IRObjectPtr obj);
     // -------------------------------------------------
+    void managerOwner(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, bool addOrRemove);
+    
+    void IRImageReferencerManager(IRObjectPtr obj, IRObjectPtr owner, bool addOrRemove);
+
+    
     
     //==================================================
     void clear() { this->list.clear(); }

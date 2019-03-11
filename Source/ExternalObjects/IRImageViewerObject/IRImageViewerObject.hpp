@@ -4,12 +4,7 @@
 
 #include "IRImageLoader.hpp"
 #include "IRImageViewer.hpp"
-
 #include "IRNodeObject.hpp"
-
-
-
-
 
 class IRImageViewerObject : public IRNodeObject, private ChangeListener
 {

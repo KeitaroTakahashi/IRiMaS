@@ -68,7 +68,11 @@ public:
     void dropoutNodeObjectFromParent(IRNodeObject* obj) override;
     void editModeChangedInNodeObject(bool editMode) override;
     void saveProject() override;
-    
+    void saveAsProject() override;
+    void closeProject() override;
+    void createNewProject() override;
+    void openProject() override;
+
     void addObjectGlobal(IRObjectPtr obj, String id) override;
     IRObjectPtr getObjectGlobal(String id) override;
     
@@ -122,7 +126,11 @@ public:
     
     // Callback
     std::function<void()> requestWorkspaceListUpdate;
+    std::function<void()> requestNewProject;
     std::function<void()> requestSaveProject;
+    std::function<void()> requestSaveAsProject;
+    std::function<void()> requestCloseProject;
+    std::function<void()> requestOpenProject;
     std::function<void()> notifyEditModeChanged;
     
     

@@ -31,9 +31,9 @@ IRImageViewer::~IRImageViewer()
 void IRImageViewer::paint(Graphics& g)
 {
     
-    if (!this->img.isNull())
+    if (this->imgRef != nullptr)
     {
-        g.drawImageTransformed (*this->imgRef,
+        g.drawImageTransformed (this->imgRef->getImageData(),
                                 AffineTransform::scale (getWidth()  / (float) this->imgRef->getWidth(),
                                                         getHeight() / (float) this->imgRef->getHeight()), false);
         // g.drawImageAt(this->img, 0,0);
@@ -45,10 +45,10 @@ void IRImageViewer::paint(Graphics& g)
 
 void IRImageViewer::resized()
 {
-    
+   /*
     if(this->imgRef != nullptr)
         this->img = this->imgLoader.getData()->rescaled(getWidth(), getHeight());
-    
+  */
     this->openButton.setBounds(0,0,getWidth(),getHeight());
     
 }
@@ -60,6 +60,17 @@ void IRImageViewer::openFile()
     // receive pointer of the image file from FileManager
     this->imgRef = this->imgLoader.getData();
     
+    if(this->imgRef == nullptr)
+    {
+        std::cout << "Image data not loaded!\n";
+        return;
+    }
+    
+    Point<int> fixedSize = this->imgLoader.sizeFix();
+    
+    setSize(fixedSize.getX(), fixedSize.getY());
+    
+    std::cout << "openFIle fixedSize = " << fixedSize.getX() << ", " << fixedSize.getY() << std::endl;
 }
 
 

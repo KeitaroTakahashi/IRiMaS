@@ -22,33 +22,29 @@ public:
     void open(String pathToOpen);
     
     void resized(int w, int h);
-    
-    void sizeFix();
-    
+    Point<int> sizeFix();
+
     double getAspectRatio() const;
     
-    Image* getData();
+    IRImage* getData();
     String getPath() const;
-    
     
     bool isFileLoadCompleted = false;
     bool isFileOpened = false;
-    
     
 private:
     
     String path;
     File file;
-    Image* imgData = nullptr;
     
-    Image bindImage;
-    
+    DataAllocationManager<IRImage>* imgData = nullptr;
+    //IRImage* imgData = nullptr;
+        
     double aspectRatio = 0;
     
     // define max size of the loaded picture to avoid erroneous size change
-    int maxWidth = 3000;
-    int maxHeight = 3000;
-    
+    int maxWidth = 300;
+    int maxHeight = 300;
     
     IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
     

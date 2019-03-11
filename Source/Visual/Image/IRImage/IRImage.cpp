@@ -12,6 +12,11 @@ IRImage::IRImage(File file)
     loadImage(file);
 }
 // --------------------------------------------------
+IRImage::IRImage()
+{
+
+}
+// --------------------------------------------------
 IRImage::~IRImage()
 {
     
@@ -20,6 +25,8 @@ IRImage::~IRImage()
 void IRImage::loadImage(File file)
 {
     this->img = ImageFileFormat::loadFrom(file);
+    
+    std::cout << "loaded " <<file.getFullPathName() << " : w = " << this->img.getWidth() << " : h = " << this->img.getHeight() << std::endl;
 }
 // --------------------------------------------------
 Image IRImage::getImageData() const

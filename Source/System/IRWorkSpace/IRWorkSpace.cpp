@@ -176,7 +176,7 @@ void IRWorkSpace::changeListenerCallback (ChangeBroadcaster* source)
     {
         if(obj->isSelected())
         {
-            std::cout << "selected reported!\n";
+            //std::cout << "selected reported!\n";
         }
         
         // if resizing, deselect all objects and setSelect true only the resized object.
