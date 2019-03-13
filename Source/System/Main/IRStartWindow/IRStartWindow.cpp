@@ -3,17 +3,15 @@
 
 
 
-IRStartWindow::IRStartWindow(String name, Rectangle<int> frameRect)  :
-DocumentWindow (name,
-                Desktop::getInstance().getDefaultLookAndFeel()
-                .findColour (ResizableWindow::backgroundColourId),
-                DocumentWindow::allButtons)
+IRStartWindow::IRStartWindow(String name, Rectangle<int> frameRect) :
+    DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId),
+        DocumentWindow::allButtons)
 {
     // do not show a title bar
-    setUsingNativeTitleBar (false);
+    setUsingNativeTitleBar(false);
     setTitleBarHeight(0);
     
-    // setup systme colour
+    // setup system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     SYSTEMCOLOUR.set(IR::darkBrownSet());
     
@@ -21,17 +19,16 @@ DocumentWindow (name,
     int x = r.getWidth();
     int y = r.getHeight();
     setBounds(0, 0, frameRect.getWidth(), frameRect.getHeight());
-    setCentrePosition(x/2, y/2);
+    setCentrePosition(x / 2, y / 2);
     setResizable(false, false);
     //setName(this->workspace->getTitle());
     
-    setVisible (true);
+    setVisible(true);
     
     this->starter = new IRStarter(frameRect);
     this->starter->addChangeListener(this);
     
     setContentOwned(this->starter, true);
-    
 }
 
 
@@ -53,6 +50,9 @@ void IRStartWindow::closeButtonPressed()
 }
 
 
+
+
+
 // **** **** PRIVATE METHODS **** **** //
 
 
@@ -71,3 +71,7 @@ void IRStartWindow::changeListenerCallback (ChangeBroadcaster* source)
         }
     }
 }
+
+
+
+

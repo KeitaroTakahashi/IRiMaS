@@ -1,6 +1,7 @@
 
 #include "IRStarter.hpp"
 
+#include <random>
 
 
 
@@ -13,7 +14,7 @@ IRStarter::IRStarter(Rectangle<int> frameRect)
     int w = frameRect.getWidth();
     int h = frameRect.getHeight();
     
-    setBounds (w/2, h/2, w, h);
+    setBounds (w / 2, h / 2, w, h);
     
     // menubar
     this->menuBar.reset(new MenuBarComponent(this));
@@ -23,12 +24,12 @@ IRStarter::IRStarter(Rectangle<int> frameRect)
     setMenuBarPosition(MenuBarPosition::global);
 #endif
     addAndMakeVisible(this->menuBar.get());
-    setApplicationCommandManagerToWatch (&this->commandManager);
+    setApplicationCommandManagerToWatch(&this->commandManager);
     
-    this->commandManager.registerAllCommandsForTarget (this);
+    this->commandManager.registerAllCommandsForTarget(this);
     
     addKeyListener(this->commandManager.getKeyMappings());
-    this->editCommandTarget = new EditCommandTarget( commandManager );
+    this->editCommandTarget = new EditCommandTarget(commandManager);
     this->editCommandTarget->addListener(this);
     
     addAndMakeVisible(this->editCommandTarget);
@@ -43,8 +44,9 @@ IRStarter::~IRStarter()
 {
     
 #if JUCE_MAC
-    MenuBarModel::setMacMainMenu (nullptr);
+    MenuBarModel::setMacMainMenu(nullptr);
 #endif
+    
 }
 
 
@@ -59,14 +61,19 @@ void IRStarter::init()
 {
     // randomly chose a logo from 15 variations.
     std::random_device rnd;
-    String index = String(rnd()%15 + 1);
+    String index = String(rnd() % 15 + 1);
     
     std::cout << "selected image logo = " << index << std::endl;
+    
 #if JUCE_MAC
+    
     String url = "/Contents/Resources/materials/Images/Logo/logo_" + index + ".png";
     this->logo = loadImage(url);
+    
 #elif JUCE_IOS
+    
     loadClef("/materials/scores/clefs/F-clef.png");
+    
 #endif
     
     if (this->logo.getWidth() == 0 || this->logo.getHeight() == 0)
@@ -75,11 +82,10 @@ void IRStarter::init()
     }
     std::cout << "logo width = " << this->logo.getWidth() << std::endl;
     
-    
-    float w = 150;
+    float w = 150.0f;
     float h = w * ((float)this->logo.getHeight() / (float)this->logo.getWidth());
-    float x = (float)(getWidth()) / 2.0 - w/2.0;
-    float y = (float)(getHeight()) / 2.0 - h/2.0;
+    float x = (float)(getWidth()) / 2.0f - w / 2.0f;
+    float y = (float)(getHeight()) / 2.0f - h / 2.0f;
     this->logoPos = Rectangle<float>(x, y, w, h);
 }
 
@@ -140,7 +146,7 @@ PopupMenu IRStarter::getMenuForIndex(int menuIndex, const String& menuName)
 }
 
 
-void IRStarter::menuItemSelected (int /*menuItemID*/, int /*topLevelMenuIndex*/)
+void IRStarter::menuItemSelected (int menuItemID, int topLevelMenuIndex)
 {
     
 }
@@ -158,7 +164,7 @@ IRStarter::MenuActionStatus IRStarter::getMenuActionStatus() const
 
 void IRStarter::createNewProject()
 {
-    printf("Creating new project... in Starter\n");
+    std::cout << "Creating new project... in Starter" << std::endl;
     this->menu_action_status = MenuActionStatus::CreateNewProjectAction;
     sendChangeMessage();
 }
@@ -166,7 +172,7 @@ void IRStarter::createNewProject()
 
 void IRStarter::openProject()
 {
-    printf("Opening a project...\n");
+    std::cout << "Opening a project..." << std::endl;
     this->menu_action_status = MenuActionStatus::OpenProjectAction;
     sendChangeMessage();
 }
@@ -180,15 +186,20 @@ void IRStarter::changeListenerCallback(ChangeBroadcaster* source)
 
 void IRStarter::setMenuBarPosition(MenuBarPosition newPosition)
 {
-    if(menuBarPosition != newPosition)
+    if (menuBarPosition != newPosition)
     {
         menuBarPosition = newPosition;
-        if(menuBarPosition != MenuBarPosition::burger)
+        if (menuBarPosition != MenuBarPosition::burger)
+        {
             sidePanel.showOrHide(false);
+        }
         
 #if JUCE_MAC
+        
         MenuBarModel::setMacMainMenu (menuBarPosition == MenuBarPosition::global ? this : nullptr);
+        
 #endif
+        
         menuBar->setVisible   (menuBarPosition == MenuBarPosition::window);
         menuItemsChanged();
         resized();
@@ -204,12 +215,15 @@ ApplicationCommandTarget* IRStarter::getNextCommandTarget()
 
 void IRStarter::getAllCommands(Array<CommandID>&c)
 {
-    Array<CommandID> commands { CommandIDs::NewProject,
+    Array<CommandID> commands
+    {
+        CommandIDs::NewProject,
         CommandIDs::OpenProject,
         CommandIDs::CloseProject,
         CommandIDs::SaveProject,
         CommandIDs::RenameProject,
-        CommandIDs::NewWorkspace };
+        CommandIDs::NewWorkspace
+    };
     c.addArray (commands);
 }
 
@@ -219,33 +233,33 @@ void IRStarter::getCommandInfo(CommandID commandID, ApplicationCommandInfo& resu
     switch (commandID)
     {
         case CommandIDs::NewProject:
-            result.setInfo ("New Project", "Sets the outer colour to red", "File", 0);
-            result.addDefaultKeypress ('n', ModifierKeys::shiftModifier);
+            result.setInfo("New Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress('n', ModifierKeys::shiftModifier);
             result.setActive(true);
             break;
         case CommandIDs::OpenProject:
-            result.setInfo ("Open Project", "Sets the outer colour to red", "File", 0);
-            result.addDefaultKeypress ('o', ModifierKeys::commandModifier);
+            result.setInfo("Open Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress('o', ModifierKeys::commandModifier);
             result.setActive(true);
             break;
         case CommandIDs::CloseProject:
-            result.setInfo ("Close Project", "Sets the outer colour to red", "File", 0);
-            result.addDefaultKeypress ('w', ModifierKeys::commandModifier);
+            result.setInfo("Close Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress('w', ModifierKeys::commandModifier);
             result.setActive(false);
             break;
         case CommandIDs::SaveProject:
-            result.setInfo ("Save Project", "Sets the outer colour to red", "File", 0);
-            result.addDefaultKeypress ('s', ModifierKeys::commandModifier);
+            result.setInfo("Save Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress('s', ModifierKeys::commandModifier);
             result.setActive(false);
             break;
         case CommandIDs::RenameProject:
-            result.setInfo ("Rename Project", "Sets the outer colour to red", "File", 0);
-            result.addDefaultKeypress ('r', ModifierKeys::commandModifier);
+            result.setInfo("Rename Project", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress('r', ModifierKeys::commandModifier);
             result.setActive(false);
             break;
         case CommandIDs::NewWorkspace:
-            result.setInfo ("New Workspace", "Sets the outer colour to red", "File", 0);
-            result.addDefaultKeypress ('n', ModifierKeys::commandModifier);
+            result.setInfo("New Workspace", "Sets the outer colour to red", "File", 0);
+            result.addDefaultKeypress('n', ModifierKeys::commandModifier);
             result.setActive(false);
             break;
         default:
@@ -256,7 +270,7 @@ void IRStarter::getCommandInfo(CommandID commandID, ApplicationCommandInfo& resu
 
 bool IRStarter::perform(const InvocationInfo& info)
 {
-    switch(info.commandID)
+    switch (info.commandID)
     {
         case CommandIDs::NewProject:
             createNewProject();

@@ -8,10 +8,12 @@
 
 
 
+
 class IRStartWindow : public DocumentWindow,
-public ChangeBroadcaster,
-public ChangeListener
+                      public ChangeBroadcaster,
+                      public ChangeListener
 {
+    
 public:
     
     IRStartWindow(String name, Rectangle<int> frameRect);
@@ -19,6 +21,7 @@ public:
     
     IRStarter::MenuActionStatus getMenuActionStatus() const;
     void closeButtonPressed() override;
+    
     
 private:
     
@@ -29,6 +32,10 @@ private:
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRStartWindow)
 };
+
+
+
+
 
 #endif /* IRStartWindow_hpp */
 
