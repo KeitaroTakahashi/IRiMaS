@@ -1691,10 +1691,10 @@
 		823C18142191B3AD00AC9FC9 /* SaveLoadSystem */ = {
 			isa = PBXGroup;
 			children = (
-				823C18152191B3C100AC9FC9 /* IRSaveLoadSystem.cpp */,
 				823C18162191B3C100AC9FC9 /* IRSaveLoadSystem.hpp */,
-				823C18182191B3F800AC9FC9 /* json11.cpp */,
+				823C18152191B3C100AC9FC9 /* IRSaveLoadSystem.cpp */,
 				823C18192191B3F800AC9FC9 /* json11.hpp */,
+				823C18182191B3F800AC9FC9 /* json11.cpp */,
 			);
 			path = SaveLoadSystem;
 			sourceTree = "<group>";
@@ -2008,8 +2008,8 @@
 		82FA8F0F220A58950032983F /* FileManager */ = {
 			isa = PBXGroup;
 			children = (
-				10405816221AC96900E82FED /* IRFileManager.cpp */,
 				82FA8F11220A58AC0032983F /* IRFileManager.hpp */,
+				10405816221AC96900E82FED /* IRFileManager.cpp */,
 				82AB427B22208B0300F9184C /* DataAllocationManager */,
 			);
 			path = FileManager;
