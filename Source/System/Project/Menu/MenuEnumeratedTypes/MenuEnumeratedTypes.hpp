@@ -1,7 +1,9 @@
 
-#ifndef Menus_h
-#define Menus_h
+#ifndef MenuEnumeratedTypes_hpp
+#define MenuEnumeratedTypes_hpp
 
+
+// this used to be in Menus.h
 enum CommandIDs
 {
     NewProject = 1, // Should be 1
@@ -11,7 +13,7 @@ enum CommandIDs
     RenameProject,
     
     NewWorkspace,
-
+    
     // Edit
     EditMode,
     Undo,
@@ -21,16 +23,24 @@ enum CommandIDs
     Paste,
     Duplicate,
     
-    //Window
+    // Window
     fileInspecterWindow,
     menuPreferenceWindow
     
 };
 
 
+// this used to be in MenusListBox.h
+enum MenuObjectStatus
+{
+    MenuOpened,
+    MenuClosed,
+    MenuComplete
+};
+
+
+// stuff added from class declarations by FD
 
 
 
-
-
-#endif /* Menus_h */
+#endif /* MenuEnumeratedTypes_hpp */

@@ -289,6 +289,7 @@
 /* Begin PBXFileReference section */
 		0183A45967EBDB3B8E8362AA /* include_juce_audio_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_utils.mm; path = JuceLibraryCode/include_juce_audio_utils.mm; sourceTree = SOURCE_ROOT; };
 		093A030ABEA2E7305FFD9037 /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = JuceLibraryCode/include_juce_gui_extra.mm; sourceTree = SOURCE_ROOT; };
+		100D8EF12239605700B86CF0 /* MenuEnumeratedTypes.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MenuEnumeratedTypes.hpp; sourceTree = "<group>"; };
 		10405816221AC96900E82FED /* IRFileManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IRFileManager.cpp; sourceTree = "<group>"; };
 		10405841221AD9EE00E82FED /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		106588D9222FFA8D005D6B38 /* MenuObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MenuObject.cpp; sourceTree = "<group>"; };
@@ -606,7 +607,6 @@
 		823C18192191B3F800AC9FC9 /* json11.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = json11.hpp; sourceTree = "<group>"; };
 		823C181C2191B4EE00AC9FC9 /* IRProject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRProject.cpp; sourceTree = "<group>"; };
 		823C181D2191B4EE00AC9FC9 /* IRProject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRProject.hpp; sourceTree = "<group>"; };
-		823C18212193139C00AC9FC9 /* Menus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
 		823E7BBF212F56830046512B /* IRAudioPlayerObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRAudioPlayerObject.hpp; sourceTree = "<group>"; };
 		823E7BC1212F57750046512B /* ExternalObjectHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalObjectHeader.h; sourceTree = "<group>"; };
 		823E7BC321302C110046512B /* IRImageLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageLoader.cpp; sourceTree = "<group>"; };
@@ -636,7 +636,6 @@
 		82657CF021EF4FC5003FA700 /* IRStarter.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRStarter.hpp; sourceTree = "<group>"; };
 		82657CFC21EFC8D8003FA700 /* IRListBoxObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRListBoxObject.cpp; sourceTree = "<group>"; };
 		82657CFD21EFC8D8003FA700 /* IRListBoxObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRListBoxObject.hpp; sourceTree = "<group>"; };
-		82657D0121EFD1A4003FA700 /* MenusListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenusListBox.h; sourceTree = "<group>"; };
 		82657D0321F01367003FA700 /* KeAnimationComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeAnimationComponent.h; sourceTree = "<group>"; };
 		828612152140020700D64F75 /* IRFFTSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFFTSequence.h; sourceTree = "<group>"; };
 		82861216214002E600D64F75 /* IRSignalWindowLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSignalWindowLib.h; sourceTree = "<group>"; };
@@ -898,6 +897,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		100D8EEF22395FF700B86CF0 /* MenuEnumeratedTypes */ = {
+			isa = PBXGroup;
+			children = (
+				100D8EF12239605700B86CF0 /* MenuEnumeratedTypes.hpp */,
+			);
+			path = MenuEnumeratedTypes;
+			sourceTree = "<group>";
+		};
 		104E2AB5221ADD2A008F5C7A /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -1713,8 +1720,7 @@
 		823C18202193138B00AC9FC9 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				823C18212193139C00AC9FC9 /* Menus.h */,
-				82657D0121EFD1A4003FA700 /* MenusListBox.h */,
+				100D8EEF22395FF700B86CF0 /* MenuEnumeratedTypes */,
 				106588D8222FFA79005D6B38 /* MenuObject */,
 				106588D7222FFA5E005D6B38 /* EditCommandTarget */,
 				106588D6222FFA52005D6B38 /* WindowCommandTarget */,

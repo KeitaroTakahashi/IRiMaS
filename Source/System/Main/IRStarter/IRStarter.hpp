@@ -4,7 +4,8 @@
 
 #include "JuceHeader.h"
 
-#include "Menus.h"
+// #include "Menus.h"
+#include "MenuEnumeratedTypes.hpp"
 #include "IRImageViewer.hpp"
 #include "ColourLib.h"
 #include "singletonClass.hpp"

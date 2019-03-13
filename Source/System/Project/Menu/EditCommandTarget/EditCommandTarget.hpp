@@ -4,14 +4,16 @@
 
 #include "JuceHeader.h"
 
-#include "Menus.h"
+// #include "Menus.h"
+#include "MenuEnumeratedTypes.hpp"
 #include "WindowCommandTarget.hpp"
 
 
 
 
 
-class EditCommandTarget : public Component, public ApplicationCommandTarget
+class EditCommandTarget : public Component,
+                          public ApplicationCommandTarget
 {
     
 public:

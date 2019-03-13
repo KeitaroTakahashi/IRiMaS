@@ -4,13 +4,15 @@
 
 #include "JuceHeader.h"
 
-#include "Menus.h"
+// #include "Menus.h"
+#include "MenuEnumeratedTypes.hpp"
 #include "IRFileInspecterWindow.hpp"
 
 
 
 
-class WindowCommandTarget : public Component, public ApplicationCommandTarget
+class WindowCommandTarget : public Component,
+                            public ApplicationCommandTarget
 {
     
 public:

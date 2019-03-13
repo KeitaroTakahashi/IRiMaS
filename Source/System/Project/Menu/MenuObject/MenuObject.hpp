@@ -4,7 +4,9 @@
 
 #include "JuceHeader.h"
 
-#include "MenusListBox.h"
+
+#include "IRListBoxObject.hpp"
+#include "MenuEnumeratedTypes.hpp"
 
 
 

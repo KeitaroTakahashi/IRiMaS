@@ -3,8 +3,11 @@
 #define ObjectListMenuObject_hpp
 
 #include "JuceHeader.h"
+
+#include "IRListBoxObject.hpp"
 #include "ColourLib.h"
 // #include "MenusListBox.h"
+#include "MenuEnumeratedTypes.hpp"
 #include "MenuObject.hpp"
 // #include "IRObjectCreater.hpp"
 #include "IRObjectFactory.hpp"
