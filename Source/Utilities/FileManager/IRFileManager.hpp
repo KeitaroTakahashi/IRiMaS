@@ -74,8 +74,6 @@ private:
     void managerOwner(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, bool addOrRemove);
     
     void IRImageReferencerManager(IRObjectPtr obj, IRObjectPtr owner, bool addOrRemove);
-
-    
     
     //==================================================
     void clear() { this->list.clear(); }
@@ -97,7 +95,7 @@ private:
         {
             this->fileList.push_back(f);
             this->pList.push_back(p);
-            std::cout << "adding to list  "<< this->fileList.size() << std::endl;
+            
             // if any confliction occurs
             if(this->fileList.size() != this->pList.size()) return false;
             
@@ -121,6 +119,8 @@ private:
             
             this->fileList.erase(this->fileList.begin() + index);
             this->pList.erase(this->pList.begin() + index);
+            
+            std::cout << this->fileList.size() << std::endl;
             
             // if any confliction occurs
             if(this->fileList.size() != this->pList.size())
