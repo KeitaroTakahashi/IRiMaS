@@ -31,7 +31,7 @@ bool IRiMaSApplication::moreThanOneInstanceAllowed()
 
 void IRiMaSApplication::initialise(const String& commandLine)
 {
-    this->mainWindow.reset(new IRMAIN(getApplicationName()));
+    this->mainWindow.reset(new IRiMaSMainComponent(getApplicationName()));
     this->mainWindow->initialize();
 }
 

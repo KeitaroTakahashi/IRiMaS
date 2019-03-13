@@ -1,11 +1,11 @@
 
-#include "IRiMaSMain.hpp"
+#include "IRiMaSMainComponent.hpp"
 
 
 
 
 
-IRMAIN::IRMAIN(const String applicationName)
+IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 {
     
     this->applicationName = applicationName;
@@ -17,20 +17,18 @@ IRMAIN::IRMAIN(const String applicationName)
 }
 
 
-IRMAIN::~IRMAIN()
+IRiMaSMainComponent::~IRiMaSMainComponent()
 {
     delete this->preferenceWindow;
-    for(auto win : this->projectLib)
+    for (auto win : this->projectLib)
     {
         delete win;
     }
-    
     this->projectLib.clear();
-    
 }
 
 
-void IRMAIN::initialize()
+void IRiMaSMainComponent::initialize()
 {
     // create window for preference
     this->preferenceWindow = new PreferenceWindow (applicationName);
@@ -39,12 +37,10 @@ void IRMAIN::initialize()
     
     this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640,480)));
     this->startWindow->addChangeListener(this);
-    
-    
 }
 
 
-void IRMAIN::createNewProject()
+void IRiMaSMainComponent::createNewProject()
 {
     printf("Creating new project... projectWindow\n");
     IRProjectWindow* project = new IRProjectWindow("Untitled",this->preferenceWindow);
@@ -65,9 +61,9 @@ void IRMAIN::createNewProject()
 }
 
 
-void IRMAIN::createNewProjectFromSaveData(std::string path)
+void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
 {
-    printf("========== createNewProjectFromSaveData ==========\n");
+    std::cout << "========== createNewProjectFromSaveData ==========" << std::endl;
     IRSaveLoadSystem::dataStr data = this->saveLoadClass.getSaveDataStr();
     IRSaveLoadSystem::headerStr header = data.header;
     
@@ -92,9 +88,9 @@ void IRMAIN::createNewProjectFromSaveData(std::string path)
     //remove startWindow when a project window opens.
     this->startWindow->setVisible(false);
     
-    printf("========== loadWorkspaces ==========\n");
+    std::cout << "========== loadWorkspaces ==========" << std::endl;
     
-    for(auto it = saveData["Workspaces"].object_items().cbegin(); it != saveData["Workspaces"].object_items().cend(); ++it)
+    for (auto it = saveData["Workspaces"].object_items().cbegin(); it != saveData["Workspaces"].object_items().cend(); ++it)
     {
         std::string id = static_cast<std::string>(it->first);
         std::cout << id << std::endl;
@@ -119,16 +115,15 @@ void IRMAIN::createNewProjectFromSaveData(std::string path)
         
         std::cout << "array count = " << objectArray.size() << std::endl;
         
-        
-        for(int i =0; i< objectArray.size(); i++) // for each item of the array...
+        for (int i = 0; i< objectArray.size(); i++)
         {
-            for(auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
+            for (auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
             {
                 
-                std::cout << " ===== "<< it->first << " ===== "<< std::endl;
-                std::cout << "object type= "<< it->second["objectType"].string_value() << std::endl;
-                std::cout << "object uniqueID= "<< it->second["objectUniqueID"].string_value() << std::endl;
-                std::cout << "object status= "<< it->second["status"].string_value() << std::endl;
+                std::cout << " ===== " << it->first << " ===== " << std::endl;
+                std::cout << "object type= " << it->second["objectType"].string_value() << std::endl;
+                std::cout << "object uniqueID= " << it->second["objectUniqueID"].string_value() << std::endl;
+                std::cout << "object status= " << it->second["status"].string_value() << std::endl;
                 
                 
                 // ===== create object =====
@@ -181,7 +176,7 @@ void IRMAIN::createNewProjectFromSaveData(std::string path)
 }
 
 
-void IRMAIN::openProject()
+void IRiMaSMainComponent::openProject()
 {
     printf("Opening a project...\n");
     
@@ -206,7 +201,8 @@ void IRMAIN::openProject()
     }
 }
 
-void IRMAIN::closeProject(DocumentWindow* closingWindow)
+
+void IRiMaSMainComponent::closeProject(DocumentWindow* closingWindow)
 {
     auto it = std::find(this->projectLib.begin(), this->projectLib.end(), closingWindow);
     if (it != this->projectLib.end()) { this->projectLib.erase(it); }
@@ -221,19 +217,19 @@ void IRMAIN::closeProject(DocumentWindow* closingWindow)
 
 
 // from IRProject Listener
-void IRMAIN::createNewProjectAction()
+void IRiMaSMainComponent::createNewProjectAction()
 {
     createNewProject();
 }
 
 
-void IRMAIN::openProjectAction()
+void IRiMaSMainComponent::openProjectAction()
 {
     openProject();
 }
 
 
-void IRMAIN::closeProjectAction(DocumentWindow* closingWindow)
+void IRiMaSMainComponent::closeProjectAction(DocumentWindow* closingWindow)
 {
     std::cout<<"IRMAIN closeProjectAction : " << closingWindow << std::endl;
 
@@ -241,7 +237,7 @@ void IRMAIN::closeProjectAction(DocumentWindow* closingWindow)
 }
 
 
-void IRMAIN::saveProjectAction(IRProject* project)
+void IRiMaSMainComponent::saveProjectAction(IRProject* project)
 {
     //if saveDataPath is not yet set.
     std::cout << "save project Action path = "<< project->getProjectPath() << std::endl;
@@ -277,7 +273,7 @@ void IRMAIN::saveProjectAction(IRProject* project)
 }
 
 
-void IRMAIN::saveAsProjectAction(IRProject* project)
+void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
 {
     FileChooser chooser("Save project...",
                         File::nonexistent,
@@ -301,7 +297,7 @@ void IRMAIN::saveAsProjectAction(IRProject* project)
 // *** PRIVATE METHODS
 
 
-void IRMAIN::changeListenerCallback (ChangeBroadcaster* source)
+void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
     printf("changeListener \n");
     if (this->startWindow.get() == source)

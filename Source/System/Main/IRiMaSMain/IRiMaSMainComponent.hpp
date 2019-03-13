@@ -1,6 +1,6 @@
 
-#ifndef IRiMaSMain_hpp
-#define IRiMaSMain_hpp
+#ifndef IRiMaSMainComponent_hpp
+#define IRiMaSMainComponent_hpp
 
 #include "JuceHeader.h"
 
@@ -19,7 +19,7 @@
                     |
                     IRWorkspace
 
-IRMAIN class operates
+IRiMaSMainComponent - formerly IRMAIN class operates
     creating new project
     opening a saved project
 
@@ -27,14 +27,15 @@ IRMAIN class operates
 
 
 
-class IRMAIN : public Component,
-public ChangeListener,
-public IRProject::Listener
+class IRiMaSMainComponent : public Component,
+               public ChangeListener,
+               public IRProject::Listener
 {
+    
 public:
     
-    IRMAIN(const String applicationName);
-    ~IRMAIN();
+    IRiMaSMainComponent(const String applicationName);
+    ~IRiMaSMainComponent();
     
     void initialize();
     
@@ -49,6 +50,7 @@ public:
     void closeProjectAction(DocumentWindow* closingWindow) override;
     void saveProjectAction(IRProject* project) override;
     void saveAsProjectAction(IRProject* project) override;
+    
     
 private:
     
@@ -83,4 +85,7 @@ private:
 };
 
 
-#endif /* IRiMaSMain_hpp */
+#endif /* IRiMaSMainComponent_hpp */
+
+
+

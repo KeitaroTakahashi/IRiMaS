@@ -1,7 +1,7 @@
 
 #include "JuceHeader.h"
 
-#include "IRiMaSMain.hpp"
+#include "IRiMaSMainComponent.hpp"
 
 
 
@@ -28,7 +28,7 @@ public:
     
 private:
     
-    std::unique_ptr<IRMAIN> mainWindow;
+    std::unique_ptr<IRiMaSMainComponent> mainWindow;
     
 };
 
