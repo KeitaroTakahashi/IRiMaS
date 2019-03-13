@@ -27,29 +27,30 @@
 
 
 class IRWorkSpace : public AudioAppComponent,
-public ChangeBroadcaster,
-public ChangeListener,
-public IRNodeObject::Listener,
-public ObjectListMenu::Listener,
-private KeyListener
-
+                    public ChangeBroadcaster,
+                    public ChangeListener,
+                    public IRNodeObject::Listener,
+                    public ObjectListMenu::Listener,
+                    private KeyListener
 {
+    
 public:
+    
     IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindow* preferenceWindow);
     ~IRWorkSpace();
     
-    void paint (Graphics&) override;
+    void paint(Graphics&) override;
     void drawShadows(Graphics& g);
     void resized() override;
-    String getTitle() { return this->title; }
+    String getTitle();
     
     // interaction
     void mouseDown(const MouseEvent& e) override; // JUCE oriented
     void mouseMove(const MouseEvent& e) override; // JUCE oriented
-    void mouseUp(const MouseEvent& e)override; // JUCE oriented
+    void mouseUp(const MouseEvent& e) override; // JUCE oriented
     void mouseDrag(const MouseEvent& e) override; // JUCE oriented
     void mouseDoubleClick(const MouseEvent& e) override; // JUCE oriented
-    void modifierKeysChanged(const ModifierKeys &mod) override;
+    void modifierKeysChanged(const ModifierKeys& mod) override;
     bool keyPressed(const KeyPress& key, Component* originatingComponent) override;
     
     //Listener
@@ -113,11 +114,14 @@ public:
     Image getSnap();
     
     //Listener
+    class Listener;
+    /*
     class Listener
     {
     public:
         virtual ~Listener() {}
     };
+     */
     
     ListenerList<Listener> listeners;
     
@@ -153,17 +157,17 @@ private:
     // IRObjectPtr for Global values between objects binded in Workspace
     std::map<String, IRObjectPtr> p_obj;
     
-    bool isMultiSelectMode = false;
-    bool isPointAlreadySelected = false;
-    bool isNewSelectedObjectFound = false;
+    bool isMultiSelectMode { false };
+    bool isPointAlreadySelected { false };
+    bool isNewSelectedObjectFound { false };
     
-    bool isShiftPressed = false;
-    bool isCommandPressed = false;
-    bool isControlPressed = false;
-    bool isAltPressed = false;
-    bool isOptionPressed = false;
+    bool isShiftPressed { false };
+    bool isCommandPressed { false };
+    bool isControlPressed { false };
+    bool isAltPressed { false };
+    bool isOptionPressed { false };
     
-    Point<int> currentMousePosition{0,0};
+    Point<int> currentMousePosition {0, 0};
     
     // workspace status
     bool editModeFlag = true;
@@ -179,10 +183,9 @@ private:
     std::unique_ptr<ObjectMenuWindow> objMenuwindow;
     
     // IRObjectFactory
-    IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
+    IRObjectFactory& IRFactory { singleton<IRObjectFactory>::get_instance() };
     
-    // system colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    IR::IRColours& SYSTEMCOLOUR { singleton<IR::IRColours>::get_instance() };
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkSpace)

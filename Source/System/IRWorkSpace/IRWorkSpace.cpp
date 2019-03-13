@@ -34,13 +34,11 @@ IRWorkSpace::~IRWorkSpace()
 }
 
 
-void IRWorkSpace::paint (Graphics& g)
+void IRWorkSpace::paint(Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    //g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-    //g.fillAll(Colour(60, 7, 36));
     g.fillAll(SYSTEMCOLOUR.background);
     
+    // g.fillAll(Colours::black);
     // draw shadows for the selected objects
     //drawShadows(g);
     
@@ -50,7 +48,7 @@ void IRWorkSpace::paint (Graphics& g)
 void IRWorkSpace::drawShadows(Graphics& g)
 {
     
-    printf("drawing... shadow of %d items\n",this->selector->getSelectedObjectList().size());
+    std::cout << "drawing... shadow of" << this->selector->getSelectedObjectList().size() << " items" << std::endl;
     auto list = this->selector->getSelectedObjectList();
     
     for(auto obj : list)
@@ -60,8 +58,7 @@ void IRWorkSpace::drawShadows(Graphics& g)
         Rectangle<int> b = obj->getBounds();
         Rectangle<int> bounds(b.getX() + 20, b.getY() + 30, b.getWidth(), b.getHeight());
         
-        shadow.drawForRectangle(g,
-                                bounds);
+        shadow.drawForRectangle(g, bounds);
     }
 }
 
@@ -72,12 +69,18 @@ void IRWorkSpace::resized()
 }
 
 
+String IRWorkSpace::getTitle()
+{
+    return this->title;
+}
+
+
 void IRWorkSpace::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRWorkSpace mouseDown\n";
+    std::cout << "IRWorkSpace mouseDown" << std::endl;
     this->selector->mouseDownHandler(e);
     
-    if(isEditMode())
+    if (isEditMode())
     {
         addAndMakeVisible(this->selector);
         this->isMultiSelectMode = true;

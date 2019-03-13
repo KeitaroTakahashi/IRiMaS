@@ -7,40 +7,40 @@
 
 void IRWorkSpace::copySelectedObjects()
 {
-    std::cout << "copied\n";
+    std::cout << "copied" << std::endl;
     this->copiedObjects.clear();
     
-    for(auto obj : this->selector->getSelectedObjectList())
+    for (auto obj : this->selector->getSelectedObjectList())
     {
         copyObject(obj, false);
     }
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::pasteSelectedObjects()
 {
-    std::cout << "paste\n";
+    std::cout << "paste" << std::endl;
     
-    for(auto obj: this->copiedObjects)
+    for (auto obj: this->copiedObjects)
     {
         pasteObject(obj,false);
     }
     this->selector->addSelectedObjects();
     copySelectedObjects();
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::deleteSelectedObjects()
 {
-    std::cout << "delete selected objects\n";
+    std::cout << "delete selected objects" << std::endl;
     auto list = this->selector->getSelectedObjectList();
     
-    for(auto obj : list)
+    for (auto obj : list)
     {
         deleteObject(obj);
     }
 }
-// ------------------------------------------------------------
+
 
 void IRWorkSpace::duplicateSelectedObjects()
 {
@@ -68,18 +68,26 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     this->objects.add(obj);
 
     //audiosource
-    if(obj->isContainAudioSource())
+    if (obj->isContainAudioSource())
+    {
         this->mixer.addAudioSource(obj->getAudioSource());
+    }
     
     //request updating the workspaceList
-    if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
+    if (requestWorkspaceListUpdate != nullptr)
+    {
+        requestWorkspaceListUpdate();
+    }
 }
-// ------------------------------------------------------------
+
+
 void IRWorkSpace::copyObject(IRNodeObject *obj, bool clearCopied)
 {
     if(clearCopied) this->copiedObjects.clear();
     this->copiedObjects.add(obj);
 }
+
+
 void IRWorkSpace::pasteObject(IRNodeObject *obj, bool addToSelected)
 {
     IRNodeObject* newObj = obj->copyThis();
@@ -91,52 +99,65 @@ void IRWorkSpace::pasteObject(IRNodeObject *obj, bool addToSelected)
     this->selector->removeSelectedObject(obj);
     newObj->setSelected(true);
     
-    if(addToSelected)
+    if (addToSelected)
     {
         this->selector->addSelectedObjects();
         copySelectedObjects();
     }
 }
+
+
 void IRWorkSpace::duplicateObject(IRNodeObject *obj)
 {
     copyObject(obj, true);
     pasteObject(obj, true);
 }
+
+
 void IRWorkSpace::deleteObject(IRNodeObject *obj)
 {
-    if(this->selector->removeSelectedObject(obj))
+    if (this->selector->removeSelectedObject(obj))
     {
         removeChildComponent(obj);
         
         int index = this->objects.indexOf(obj);
-        if(index >= 0){
+        if (index >= 0)
+        {
             this->objects.remove(index);
             delete obj;
         }
     }
     
     //request updating the workspaceList
-    if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
+    if (requestWorkspaceListUpdate != nullptr)
+    {
+        requestWorkspaceListUpdate();
+    }
 }
+
 
 void IRWorkSpace::manageHeavyWeightComponents(bool flag)
 {
     // check if any components contain HEAVY weight components
-    for(auto obj: this->objects)
+    for (auto obj: this->objects)
     {
         auto objType = obj->getObjectType();
         // check if this object contains any HEAVY weights
-        if(objType.componentType == heavyWeightComponent)
+        if (objType.componentType == heavyWeightComponent)
         {
-            if(flag){
+            if(flag)
+            {
                 addAndMakeVisible(obj);
-            }else{
+            }
+            else
+            {
                 removeChildComponent(obj);
             }
         }
     }
 }
-// ------------------------------------------------------------
+
+
 void IRWorkSpace::openObjectListMenu(Point<int>Pos)
 {
     
@@ -149,35 +170,45 @@ void IRWorkSpace::openObjectListMenu(Point<int>Pos)
     
     this->objMenuwindow.reset(new ObjectMenuWindow("Menu",Rectangle<int>(0,0,c_w,c_h), c));
     
-    
     // adjust position
-    if(x <= c_w){ // if the menu is around left edge of the window
-        if(y <= c_h){
-            this->objMenuwindow->setCentrePosition(x+c_w/2,
-                                                   Pos.getY()+c_h/2);
-            
-        }else if(y >= (getHeight()-c_h)){
-            this->objMenuwindow->setCentrePosition(x+c_w/2,
-                                                   Pos.getY()-c_h/2);
-        }else{
-            this->objMenuwindow->setCentrePosition(x+c_w/2,y);
+    if (x <= c_w) // if the menu is around left edge of the window
+    {
+        if (y <= c_h)
+        {
+            this->objMenuwindow->setCentrePosition(x + c_w / 2, Pos.getY() + c_h / 2);
         }
-    }else if(x >= (getWidth()-c_w)){ // if the menu is around right edge of the window
-        if(y <= c_h){
-            this->objMenuwindow->setCentrePosition(x-c_w/2,
-                                                   Pos.getY()+c_h/2);
-            
-        }else if(y >= (getHeight()-c_h)){
-            this->objMenuwindow->setCentrePosition(x-c_w/2,
-                                                   Pos.getY()-c_h/2);
-        }else{
-            this->objMenuwindow->setCentrePosition(x-c_w/2,y);
+        else if (y >= (getHeight() - c_h))
+        {
+            this->objMenuwindow->setCentrePosition(x + c_w / 2, Pos.getY() - c_h / 2);
         }
-    }else{
-        this->objMenuwindow->setCentrePosition(x,y);
+        else
+        {
+            this->objMenuwindow->setCentrePosition(x + c_w / 2, y);
+        }
     }
-    
+    else if (x >= (getWidth() - c_w)) // if the menu is around right edge of the window
+    {
+        if (y <= c_h)
+        {
+            this->objMenuwindow->setCentrePosition(x - c_w / 2, Pos.getY() + c_h / 2);
+            
+        }
+        else if (y >= (getHeight() - c_h))
+        {
+            this->objMenuwindow->setCentrePosition(x - c_w / 2, Pos.getY() - c_h / 2);
+        }
+        else
+        {
+            this->objMenuwindow->setCentrePosition(x - c_w / 2, y);
+        }
+    }
+    else
+    {
+        this->objMenuwindow->setCentrePosition(x, y);
+    }
 }
+
+
 void IRWorkSpace::closeObjectListMenu()
 {
     //removeChildComponent(this->ObjectMenuComponent);
@@ -190,14 +221,15 @@ void IRWorkSpace::itemSelectionAction(ObjectListMenu* menu)
 {
     
 }
+
+
 void IRWorkSpace::itemHasSelectedAction(ObjectListMenu* menu)
 {
     std::cout << "item has selected action " << menu->getSelectedIndex() << std::endl;
     std::cout << "item has selected action " << menu->getSelectedId() << std::endl;
     
     auto* obj = IRFactory.createObject(menu->getSelectedId(), this);
-    obj->setCentrePosition(this->currentMousePosition.getX(),
-                           this->currentMousePosition.getY());
+    obj->setCentrePosition(this->currentMousePosition.getX(), this->currentMousePosition.getY());
     createObject(obj);
     removeChildComponent(this->ObjectMenuComponent);
     
@@ -205,81 +237,114 @@ void IRWorkSpace::itemHasSelectedAction(ObjectListMenu* menu)
     this->objMenuwindow = nullptr;
     
 }
-// ------------------------------------------------------------
+
+
 void IRWorkSpace::createObject(std::string objName)
 {
     
 }
-// ------------------------------------------------------------
+
+
 void IRWorkSpace::dragoutNodeObjectFromParent(IRNodeObject* obj)
 {
-    std::cout << "workspace : dragoutNodeObject\n";
+    std::cout << "workspace : dragoutNodeObject" << std::endl;
     setEditMode(true);
     // notify the change of editMode to IRProject
-    if(this->notifyEditModeChanged != nullptr)
+    if (this->notifyEditModeChanged != nullptr)
     {
         this->notifyEditModeChanged();
     }
     this->dummy.add(obj);
 }
-// ------------------------------------------------------------
+
+
 void IRWorkSpace::dropoutNodeObjectFromParent(IRNodeObject* obj)
 {
-    std::cout << "workspace : dropOut\n";
+    std::cout << "workspace : dropOut" << std::endl;
 }
-// ------------------------------------------------------------
+
+
 void IRWorkSpace::editModeChangedInNodeObject(bool editMode)
 {
     setEditMode(editMode);
     
     // notify it to IRProject
-    if(this->notifyEditModeChanged != nullptr)
+    if (this->notifyEditModeChanged != nullptr)
     {
         this->notifyEditModeChanged();
     }
 }
-// ------------------------------------------------------------
+
+
 void IRWorkSpace::saveProject()
 {
-    if(this->requestSaveProject != nullptr) requestSaveProject();
+    if (this->requestSaveProject != nullptr)
+    {
+        requestSaveProject();
+    }
 }
+
+
 void IRWorkSpace::saveAsProject()
 {
-    if(this->requestSaveAsProject != nullptr) requestSaveAsProject();
+    if (this->requestSaveAsProject != nullptr)
+    {
+        requestSaveAsProject();
+    }
 }
+
+
 void IRWorkSpace::closeProject()
 {
-    if(this->requestCloseProject != nullptr) requestCloseProject();
+    if (this->requestCloseProject != nullptr)
+    {
+        requestCloseProject();
+    }
 }
+
+
 void IRWorkSpace::openProject()
 {
-    if(this->requestOpenProject != nullptr) requestOpenProject();
+    if (this->requestOpenProject != nullptr)
+    {
+        requestOpenProject();
+    }
 }
+
+
 void IRWorkSpace::createNewProject()
 {
-    if(this->requestNewProject != nullptr) requestNewProject();
+    if (this->requestNewProject != nullptr)
+    {
+        requestNewProject();
+    }
 }
-// ============================================================
+
+
 void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)
 {
-    std::cout << "addObjectGlobal\n";
+    std::cout << "addObjectGlobal" << std::endl;
     this->p_obj.insert(std::make_pair(id, ptr));
     
     std::cout << this->p_obj.at(id) << std::endl;
 }
-// ------------------------------------------------------------
+
+
 IRObjectPtr IRWorkSpace::getObjectGlobal(String id)
 {
-    std::cout << "getObjectGlobal of " << id << "\n";
+    std::cout << "getObjectGlobal of " << id << std::endl;
     
-    if(this->p_obj.find(id) != this->p_obj.end()){
+    if (this->p_obj.find(id) != this->p_obj.end())
+    {
         std::cout << this->p_obj.at(id) << std::endl;
         return this->p_obj.at(id);
-    }else{
+    }
+    else
+    {
         return nullptr;
     }
-    
 }
 
 
-// ------------------------------------------------------------
+
+
