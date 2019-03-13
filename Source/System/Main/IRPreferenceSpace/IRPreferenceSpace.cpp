@@ -3,12 +3,12 @@
 
 
 
+
+
 IRPreferenceSpace::IRPreferenceSpace(String title, Rectangle<int> frameRect)
 {
     this->title = title;
     setSize(frameRect.getWidth(), frameRect.getHeight());
-    
-    
 }
 
 
@@ -20,7 +20,7 @@ IRPreferenceSpace::~IRPreferenceSpace()
 
 void IRPreferenceSpace::resized()
 {
-    if (this->isPrefereneObjAlreadySet == true)
+    if (this->isPreferenceObjAlreadySet == true)
     {
         preferenceObj->setBounds(10, 50, 100, 400);
     }
@@ -51,8 +51,7 @@ void IRPreferenceSpace::setPreferenceObj(IRPreferenceObject* preferenceObj)
     addAndMakeVisible(preferenceObj);
     this->preferenceObj = preferenceObj;
     preferenceObj->setBounds(10, 50, 100, 400);
-    
-    this->isPrefereneObjAlreadySet = true;
+    this->isPreferenceObjAlreadySet = true;
 }
 
 

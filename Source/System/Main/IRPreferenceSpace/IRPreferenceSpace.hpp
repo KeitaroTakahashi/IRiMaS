@@ -2,18 +2,20 @@
 #ifndef IRPreferenceSpace_hpp
 #define IRPreferenceSpace_hpp
 
-#include <stdio.h>
+
 #include "JuceHeader.h"
-#include "Preferences.h"
+
 #include "IRPreferenceObject.hpp"
+#include "ColourLib.h"
+#include "singletonClass.hpp"
 
 
 
 
 
 class IRPreferenceSpace : public Component,
-public ChangeBroadcaster,
-public ChangeListener
+                          public ChangeBroadcaster,
+                          public ChangeListener
 {
     
 public:
@@ -31,21 +33,26 @@ public:
     void setPreferenceObj(IRPreferenceObject* preferenceObj);
     IRPreferenceObject* getPreferenceObj();
 
+    
 private:
     
     String title;
-    bool isPrefereneObjAlreadySet = false;
+    bool isPreferenceObjAlreadySet = false;
     
     IRPreferenceObject* preferenceObj;
     
-    // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRPreferenceSpace)
 };
 
+
+
+
+
 #endif /* IRPreferenceSpace_hpp */
+
 
 
 
