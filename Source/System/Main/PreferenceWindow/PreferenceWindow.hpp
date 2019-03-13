@@ -6,8 +6,7 @@
 #include "JuceHeader.h"
 #include "IRPreferenceSpace.hpp"
 #include "PreferenceWindow.hpp"
-#include "ColourLib.h"
-#include "singletonClass.hpp"
+
 
 
 
@@ -32,8 +31,7 @@ private:
     
     IRPreferenceSpace *preferenceSpace;
     
-    // system colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+//    IR::IRColours& SYSTEMCOLOUR { singleton<IR::IRColours>::get_instance() };
 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PreferenceWindow)

@@ -30,6 +30,8 @@ private:
     
     std::unique_ptr<IRiMaSMainComponent> mainWindow;
     
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRiMaSApplication)
 };
 
 

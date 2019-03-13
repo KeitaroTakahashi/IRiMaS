@@ -63,8 +63,7 @@ private:
     
     IRImageViewer imageViewer;
     
-    // system colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    IR::IRColours& SYSTEMCOLOUR { singleton<IR::IRColours>::get_instance() };
 
     // menubar
     ApplicationCommandManager commandManager;

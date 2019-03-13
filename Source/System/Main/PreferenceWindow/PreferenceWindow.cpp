@@ -4,10 +4,10 @@
 
 
 
-PreferenceWindow::PreferenceWindow(String name) : DocumentWindow(name,
-                                               Desktop::getInstance().getDefaultLookAndFeel()
-                                               .findColour (ResizableWindow::backgroundColourId),
-                                               DocumentWindow::allButtons)
+PreferenceWindow::PreferenceWindow(String name)
+    : DocumentWindow(name,
+        Desktop::getInstance().getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
+        DocumentWindow::allButtons)
 {
     
     setUsingNativeTitleBar(true);

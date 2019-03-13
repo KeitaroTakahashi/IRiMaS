@@ -13,7 +13,6 @@
 #include "IRSaveLoadSystem.hpp"
 #include "IRObjectFactory.hpp"
 #include "ObjectFactory.h" // sic
-#include "ColourLib.h"
 
 
 
@@ -36,8 +35,8 @@ IRiMaSMainComponent - formerly IRMAIN class operates
 
 
 class IRiMaSMainComponent : public Component,
-               public ChangeListener,
-               public IRProject::Listener
+                            public ChangeListener,
+                            public IRProject::Listener
 {
     
 public:
@@ -87,9 +86,8 @@ private:
     // IRObjectFactory
     IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
     
-    // system colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRiMaSMainComponent)
 };
 
 

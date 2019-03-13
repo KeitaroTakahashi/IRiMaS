@@ -4,7 +4,7 @@
 
 #include "JuceHeader.h"
 
-// #include "Menus.h"
+
 #include "MenuEnumeratedTypes.hpp"
 #include "IRFileInspecterWindow.hpp"
 
@@ -26,8 +26,8 @@ public:
     
     void getAllCommands(Array<CommandID>& c) override;
     
-    void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result) override;
-    bool perform (const InvocationInfo& info) override;
+    void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
+    bool perform(const InvocationInfo& info) override;
     
     // ==================================================
 

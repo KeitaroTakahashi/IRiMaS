@@ -6,8 +6,6 @@
 #include "JuceHeader.h"
 
 #include "IRPreferenceObject.hpp"
-#include "ColourLib.h"
-#include "singletonClass.hpp"
 
 
 
@@ -40,8 +38,6 @@ private:
     bool isPreferenceObjAlreadySet = false;
     
     IRPreferenceObject* preferenceObj;
-    
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRPreferenceSpace)
