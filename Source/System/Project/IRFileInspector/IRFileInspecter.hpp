@@ -19,7 +19,7 @@
  */
 
 
-class IRFileInspecter : Component
+class IRFileInspecter : public Component
 {
 public:
     IRFileInspecter();

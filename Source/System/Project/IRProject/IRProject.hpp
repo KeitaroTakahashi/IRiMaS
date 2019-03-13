@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "JuceHeader.h"
 #include "PreferenceWindow.hpp"
+#include "IRFileInspecterWindow.hpp"
 #include "IRWorkSpace.hpp"
 #include "IRWorkspaceList.hpp"
 #include "IRFoundation.h"
@@ -62,6 +63,8 @@ public:
     void removeWorkspace(IRWorkSpace* workspace) override;
     void updateWorkspaceList();
     
+    // ==================================================
+
     // change edit mode : signal received from Menu object
     // this is only fired when Menu obejct has keyboard Focus
     // otherwise it doesn't work.
@@ -97,6 +100,8 @@ public:
     
     // initialize projects. This method is called after loading action to set up workspaces
     void initProjectAfterLoading();
+    
+    // ==================================================
     
     // Listener for Menu action
     class Listener
@@ -160,6 +165,9 @@ private:
     Rectangle<int> frameRect;
     DocumentWindow* parentWindow;
     std::vector<IRWorkSpace*> workspaces;
+    IRFileInspecterWindow* fileInspecterWindow;
+    
+    
     
     // handle a currently displayed workspace
     // do not forget to call toFront() and manageHeavyWeightCoponent() methods when update it.

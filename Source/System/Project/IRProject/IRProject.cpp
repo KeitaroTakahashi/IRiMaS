@@ -564,7 +564,10 @@ void IRProject::getAllCommands(Array<CommandID>&c)
         CommandIDs::CloseProject,
         CommandIDs::SaveProject,
         CommandIDs::RenameProject,
-        CommandIDs::NewWorkspace };
+        CommandIDs::NewWorkspace,
+        CommandIDs::fileInspecterWindow,
+        CommandIDs::menuPreferenceWindow
+    };
     c.addArray (commands);
 }
 
@@ -600,6 +603,16 @@ void IRProject::getCommandInfo(CommandID commandID, ApplicationCommandInfo& resu
             result.addDefaultKeypress ('n', ModifierKeys::commandModifier);
             break;
             
+        case CommandIDs::fileInspecterWindow:
+            result.setInfo ("fileInspecter Window", "Sets the outer colour to red", "Window", 0);
+            result.addDefaultKeypress ('8', ModifierKeys::commandModifier);
+            break;
+            
+        case CommandIDs::menuPreferenceWindow:
+            result.setInfo ("Preference Window", "Sets the outer colour to red", "Window", 0);
+            result.addDefaultKeypress ('9', ModifierKeys::commandModifier);
+            break;
+            
         default:
             break;
     }
@@ -627,6 +640,14 @@ bool IRProject::perform(const InvocationInfo& info)
             break;
         case CommandIDs::NewWorkspace:
             createNewWorkspace();
+            break;
+            
+        case CommandIDs::fileInspecterWindow:
+            printf("window menu perform in IRProject \n");
+            
+            this->fileInspecterWindow = new IRFileInspecterWindow("File Inspecter");
+            break;
+        case CommandIDs::menuPreferenceWindow:
             break;
         default:
             return false;

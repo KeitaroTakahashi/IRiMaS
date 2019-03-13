@@ -14,9 +14,31 @@ DocumentWindow(name,
                 DocumentWindow::allButtons)
 {
     
+    // show a title bar
+    setUsingNativeTitleBar(true);
+    // setup systme colour
+    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    SYSTEMCOLOUR.set(IR::darkBrownSet());
+    
+    setBounds(0, 0, getWidth(), getHeight());
+    
+    this->fileInspecter = new IRFileInspecter();
+    setContentOwned(this->fileInspecter, true);
+
+    setVisible(true);
+
 }
 
 IRFileInspecterWindow::~IRFileInspecterWindow()
 {
     
+}
+
+
+void IRFileInspecterWindow::closeButtonPressed()
+{
+    // This is called when the user tries to close this window. Here, we'll just
+    // ask the app to quit when this happens, but you can change this to do
+    // whatever you need.
+    //JUCEApplication::getInstance()->systemRequestedQuit();
 }

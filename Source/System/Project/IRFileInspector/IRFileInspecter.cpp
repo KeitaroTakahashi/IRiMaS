@@ -9,7 +9,7 @@
 
 IRFileInspecter::IRFileInspecter()
 {
-    
+    setSize(480, 640);
 }
 
 IRFileInspecter::~IRFileInspecter()

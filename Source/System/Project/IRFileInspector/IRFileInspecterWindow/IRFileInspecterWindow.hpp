@@ -18,7 +18,14 @@ public:
     IRFileInspecterWindow(String name);
     ~IRFileInspecterWindow();
     
+    // ==================================================
+    void closeButtonPressed();
+    
+    // ==================================================
+
 private:
+    
+    IRFileInspecter* fileInspecter;
     
 };
 

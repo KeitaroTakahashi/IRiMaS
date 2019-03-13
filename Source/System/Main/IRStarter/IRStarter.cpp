@@ -274,6 +274,7 @@ bool IRStarter::perform(const InvocationInfo& info)
         case CommandIDs::NewWorkspace:
             //createNewWorkspace();
             break;
+            
         default:
             return false;
     }
