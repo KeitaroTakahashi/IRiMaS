@@ -1840,13 +1840,13 @@
 			path = ObjectCreater;
 			sourceTree = "<group>";
 		};
-		82657CEC21EE7DCF003FA700 /* IRiMaSMain */ = {
+		82657CEC21EE7DCF003FA700 /* IRiMaSMainComponent */ = {
 			isa = PBXGroup;
 			children = (
 				82657CEE21EE7DE5003FA700 /* IRiMaSMainComponent.hpp */,
 				82657CED21EE7DE5003FA700 /* IRiMaSMainComponent.cpp */,
 			);
-			path = IRiMaSMain;
+			path = IRiMaSMainComponent;
 			sourceTree = "<group>";
 		};
 		82657CFB21EFC8A8003FA700 /* ListBoxObject */ = {
@@ -1967,7 +1967,7 @@
 				10AD5602222488D80046686E /* PreferenceWindow */,
 				10AD5601222488860046686E /* IRStarter */,
 				10AD5603222489340046686E /* IRStartWindow */,
-				82657CEC21EE7DCF003FA700 /* IRiMaSMain */,
+				82657CEC21EE7DCF003FA700 /* IRiMaSMainComponent */,
 				106DE3DA22242A7200237EE1 /* IRiMaSApplication */,
 			);
 			path = Main;
