@@ -4,11 +4,20 @@
 
 #include "JuceHeader.h"
 
+#include "json11.hpp"
 
-#include "ObjectFactory.h"
+#include "IRProject.hpp"
 #include "IRProjectWindow.hpp"
-#include "IRStarter.hpp"
+#include "PreferenceWindow.hpp"
 #include "IRStartWindow.hpp"
+#include "IRSaveLoadSystem.hpp"
+#include "IRObjectFactory.hpp"
+#include "ObjectFactory.h" // sic
+#include "ColourLib.h"
+
+
+
+
 
 /*
  IRMAIN
@@ -24,7 +33,6 @@ IRiMaSMainComponent - formerly IRMAIN class operates
     opening a saved project
 
  */
-
 
 
 class IRiMaSMainComponent : public Component,

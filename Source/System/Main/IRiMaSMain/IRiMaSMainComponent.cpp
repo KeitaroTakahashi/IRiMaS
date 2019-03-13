@@ -178,10 +178,10 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
 
 void IRiMaSMainComponent::openProject()
 {
-    printf("Opening a project...\n");
+    std::cout << "Opening a project..." << std::endl;
     
     FileChooser chooser("Select an audio file to play...",
-                        File::nonexistent,
+                        {},
                         "*.irimas");
     
     if (chooser.browseForFileToOpen())
@@ -193,11 +193,10 @@ void IRiMaSMainComponent::openProject()
         std::cout << "load file " << p << std::endl;
         this->saveLoadClass.readSaveData(p);
         createNewProjectFromSaveData(p);
-        
     }
     else
     {
-        printf("Could not open any files.\n");
+        std::cout << "Could not open any files." << std::endl;
     }
 }
 
@@ -205,11 +204,17 @@ void IRiMaSMainComponent::openProject()
 void IRiMaSMainComponent::closeProject(DocumentWindow* closingWindow)
 {
     auto it = std::find(this->projectLib.begin(), this->projectLib.end(), closingWindow);
-    if (it != this->projectLib.end()) { this->projectLib.erase(it); }
-    else std::cout << "IRMAIN : closeProject : Could not find window of " << closingWindow << std::endl;
+    if (it != this->projectLib.end())
+    {
+        this->projectLib.erase(it);
+    }
+    else
+    {
+        std::cout << "IRMAIN : closeProject : Could not find window of " << closingWindow << std::endl;
+    }
     
     
-    if(this->projectLib.size() == 0)
+    if (this->projectLib.size() == 0)
     {
         this->startWindow->setVisible(true);
     }
@@ -231,24 +236,23 @@ void IRiMaSMainComponent::openProjectAction()
 
 void IRiMaSMainComponent::closeProjectAction(DocumentWindow* closingWindow)
 {
-    std::cout<<"IRMAIN closeProjectAction : " << closingWindow << std::endl;
-
+    std::cout << "IRMAIN closeProjectAction : " << closingWindow << std::endl;
     closeProject(closingWindow);
 }
 
 
 void IRiMaSMainComponent::saveProjectAction(IRProject* project)
 {
-    //if saveDataPath is not yet set.
-    std::cout << "save project Action path = "<< project->getProjectPath() << std::endl;
-    if(project->getProjectPath().size() == 0){
-        
+    // if saveDataPath is not yet set.
+    std::cout << "save project Action path = " << project->getProjectPath() << std::endl;
+    if (project->getProjectPath().size() == 0)
+    {
         // create new save data file with an extension of ".irimas by default
         FileChooser chooser("Save project...",
-                            File::nonexistent,
+                            {},
                             "");
         
-        if(chooser.browseForFileToSave(true))
+        if (chooser.browseForFileToSave(true))
         {
             auto file = chooser.getResult();
             auto path = file.getFullPathName();
@@ -259,11 +263,10 @@ void IRiMaSMainComponent::saveProjectAction(IRProject* project)
             this->saveData = project->saveAction(this->saveDataPath);
             IRProjectWindow* w = static_cast<IRProjectWindow*>(project->getParentWindow());
             w->setWindowTitle(filename);
-            
         }
         else
         {
-            printf("Could not open any files.\n");
+            std::cout << "Could not open any files." << std::endl;
         }
     }
     else
@@ -276,7 +279,7 @@ void IRiMaSMainComponent::saveProjectAction(IRProject* project)
 void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
 {
     FileChooser chooser("Save project...",
-                        File::nonexistent,
+                        {},
                         "*.irimas");
     
     if (chooser.browseForFileToSave(true))
@@ -289,9 +292,12 @@ void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
     }
     else
     {
-        printf("Could not open any files.\n");
+        std::cout << "Could not open any files." << std::endl;
     }
 }
+
+
+
 
 
 // *** PRIVATE METHODS
@@ -299,7 +305,7 @@ void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
 
 void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
-    printf("changeListener \n");
+    std::cout << "changeListener" << std::endl;
     if (this->startWindow.get() == source)
     {
         if (this->startWindow->getMenuActionStatus() == IRStarter::MenuActionStatus::CreateNewProjectAction)
@@ -311,9 +317,9 @@ void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
             openProject();
         }
     }
-    else if(dynamic_cast<IRProjectWindow*>(source) != nullptr)
+    else if (dynamic_cast<IRProjectWindow*>(source) != nullptr)
     {
-        printf("source == IRProjectWindow object\n");
+        std::cout << "source == IRProjectWindow object" << std::endl;
     }
 }
 
