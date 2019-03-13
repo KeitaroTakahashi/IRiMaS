@@ -430,7 +430,7 @@ void IRProject::menuItemSelected (int menuItemID, int topLevelMenuIndex)
 }
 
 
-IRProject::MenuActionStatus IRProject::getMenuActionStatus() const
+MenuActionStatus IRProject::getMenuActionStatus() const
 {
     return this->menu_action_status;
 }

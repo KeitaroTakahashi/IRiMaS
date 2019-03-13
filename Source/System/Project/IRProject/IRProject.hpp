@@ -9,7 +9,6 @@
 #include "IRWorkSpace.hpp"
 #include "IRWorkspaceList.hpp"
 #include "IRFoundation.h"
-// #include "Menus.h"
 #include "MenuEnumeratedTypes.hpp"
 #include "EditCommandTarget.hpp"
 
@@ -18,30 +17,15 @@
 
 
 class IRProject : public AudioAppComponent,
-public ApplicationCommandTarget,
-public MenuBarModel,
-public ChangeListener,
-public ChangeBroadcaster,
-private EditCommandTarget::Listener,
-private IRWorkspaceList::Listener
+                  public ApplicationCommandTarget,
+                  public MenuBarModel,
+                  public ChangeListener,
+                  public ChangeBroadcaster,
+                  private EditCommandTarget::Listener,
+                  private IRWorkspaceList::Listener
 {
+    
 public:
-    
-    enum class MenuBarPosition
-    {
-        window, // for windows
-        global, // for mac
-        burger
-    };
-    
-    enum MenuActionStatus
-    {
-        CreateNewProjectAction,
-        OpenProjectAction,
-        CloseProjectAction,
-        SaveProjectAction
-    };
-    
     
     IRProject(std::string projectName, Rectangle<int> frameRect,
               PreferenceWindow* preferenceWindow,

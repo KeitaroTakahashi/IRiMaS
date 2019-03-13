@@ -308,11 +308,11 @@ void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
     std::cout << "changeListener" << std::endl;
     if (this->startWindow.get() == source)
     {
-        if (this->startWindow->getMenuActionStatus() == IRStarter::MenuActionStatus::CreateNewProjectAction)
+        if (this->startWindow->getMenuActionStatus() == MenuActionStatus::CreateNewProjectAction)
         {
             createNewProject();
         }
-        else if (this->startWindow->getMenuActionStatus() == IRStarter::MenuActionStatus::OpenProjectAction)
+        else if (this->startWindow->getMenuActionStatus() == MenuActionStatus::OpenProjectAction)
         {
             openProject();
         }

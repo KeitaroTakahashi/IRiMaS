@@ -19,7 +19,7 @@ public:
     IRStartWindow(String name, Rectangle<int> frameRect);
     ~IRStartWindow();
     
-    IRStarter::MenuActionStatus getMenuActionStatus() const;
+    MenuActionStatus getMenuActionStatus() const;
     void closeButtonPressed() override;
     
     

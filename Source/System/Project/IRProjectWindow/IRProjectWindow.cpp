@@ -90,7 +90,7 @@ void IRProjectWindow::changeListenerCallback (ChangeBroadcaster* source)
 {
     if(source == this->project)
     {
-        if(this->project->getMenuActionStatus() == IRProject::MenuActionStatus::CloseProjectAction)
+        if(this->project->getMenuActionStatus() == MenuActionStatus::CloseProjectAction)
         {
             closeWindow();
         }

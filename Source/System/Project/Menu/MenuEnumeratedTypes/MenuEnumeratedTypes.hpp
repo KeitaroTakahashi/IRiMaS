@@ -39,7 +39,23 @@ enum MenuObjectStatus
 };
 
 
-// stuff added from class declarations by FD
+// stuff added from class declarations by FD (IRStarter and IRProject)
+
+enum class MenuBarPosition
+{
+    window, // for windows
+    global, // for mac
+    burger
+};
+
+
+enum MenuActionStatus
+{
+    CreateNewProjectAction,
+    OpenProjectAction,
+    CloseProjectAction,
+    SaveProjectAction
+};
 
 
 

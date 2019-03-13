@@ -4,7 +4,7 @@
 
 #include "JuceHeader.h"
 
-// #include "Menus.h"
+
 #include "MenuEnumeratedTypes.hpp"
 #include "IRImageViewer.hpp"
 #include "ColourLib.h"
@@ -24,19 +24,6 @@ class IRStarter : public Component,
 {
     
 public:
-    
-    enum class MenuBarPosition
-    {
-        window, // for windows
-        global, // for mac
-        burger
-    };
-    
-    enum MenuActionStatus
-    {
-        CreateNewProjectAction,
-        OpenProjectAction
-    };
     
     IRStarter(Rectangle<int> frameRect);
     ~IRStarter();

@@ -152,7 +152,7 @@ void IRStarter::menuItemSelected (int menuItemID, int topLevelMenuIndex)
 }
 
 
-IRStarter::MenuActionStatus IRStarter::getMenuActionStatus() const
+MenuActionStatus IRStarter::getMenuActionStatus() const
 {
     return this->menu_action_status;
 }

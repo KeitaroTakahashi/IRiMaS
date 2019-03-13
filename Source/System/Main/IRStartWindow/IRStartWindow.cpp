@@ -38,7 +38,7 @@ IRStartWindow::~IRStartWindow()
 }
 
 
-IRStarter::MenuActionStatus IRStartWindow::getMenuActionStatus() const
+MenuActionStatus IRStartWindow::getMenuActionStatus() const
 {
     return this->starter->getMenuActionStatus();
 }
@@ -60,12 +60,12 @@ void IRStartWindow::changeListenerCallback (ChangeBroadcaster* source)
 {
     if (this->starter == source)
     {
-        IRStarter::MenuActionStatus status = this->starter->getMenuActionStatus();
-        if (status == IRStarter::MenuActionStatus::CreateNewProjectAction)
+        MenuActionStatus status = this->starter->getMenuActionStatus();
+        if (status == MenuActionStatus::CreateNewProjectAction)
         {
             sendChangeMessage();
         }
-        else if (status == IRStarter::MenuActionStatus::OpenProjectAction)
+        else if (status == MenuActionStatus::OpenProjectAction)
         {
             sendChangeMessage();
         }
