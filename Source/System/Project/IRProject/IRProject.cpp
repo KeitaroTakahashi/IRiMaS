@@ -18,7 +18,7 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
     
     setSize (frameRect.getWidth(), frameRect.getHeight());
     
-    //create menu
+    // create menu
     this->menuBar.reset(new MenuBarComponent(this));
     
     

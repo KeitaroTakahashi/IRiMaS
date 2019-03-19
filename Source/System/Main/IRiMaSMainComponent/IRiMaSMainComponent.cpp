@@ -42,8 +42,8 @@ void IRiMaSMainComponent::initialize()
 
 void IRiMaSMainComponent::createNewProject()
 {
-    printf("Creating new project... projectWindow\n");
-    IRProjectWindow* project = new IRProjectWindow("Untitled",this->preferenceWindow);
+    std::cout << "Creating new project... projectWindow" << std::endl;
+    IRProjectWindow* project = new IRProjectWindow("Untitled", this->preferenceWindow);
     
     // create a Workspace as default
     project->getProjectComponent()->createNewWorkspace();

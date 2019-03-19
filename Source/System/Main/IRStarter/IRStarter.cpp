@@ -14,7 +14,7 @@ IRStarter::IRStarter(Rectangle<int> frameRect)
     int w = frameRect.getWidth();
     int h = frameRect.getHeight();
     
-    setBounds (w / 2, h / 2, w, h);
+    setBounds(w / 2, h / 2, w, h);
     
     // menubar
     this->menuBar.reset(new MenuBarComponent(this));
@@ -53,7 +53,7 @@ IRStarter::~IRStarter()
 void IRStarter::paint(Graphics& g)
 {
     g.fillAll(SYSTEMCOLOUR.background);
-    g.drawImage(this->logo,this->logoPos);
+    g.drawImage(this->logo, this->logoPos);
 }
 
 
