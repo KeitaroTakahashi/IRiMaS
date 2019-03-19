@@ -10,10 +10,8 @@ class IRWorkSpace::Listener
     
 public:
     
-    virtual ~Listener()
-    {
-        
-    }
+    virtual ~Listener();
+    
 };
 
 
