@@ -14,7 +14,7 @@ class IRObjectCreater : public IRObjectCreaterBase
     
 public:
     IRObjectCreater() {}
-    ~IRObjectCreater() {}
+    ~IRObjectCreater() override {}
 
     IRNodeObject* create(Component* parent) override
     {

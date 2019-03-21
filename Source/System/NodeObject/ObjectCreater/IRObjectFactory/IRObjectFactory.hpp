@@ -3,6 +3,8 @@
 #define IRObjectFactory_hpp
 
 
+#include "JuceHeader.h"
+
 #include "IRObjectCreaterBase.hpp"
 #include "IRObjectCreater.hpp"
 
@@ -16,12 +18,20 @@ public:
     {
         std::string id;
         std::string name;
-        Image img;
-        
+        // Image img; // if I leave this as is, I get the leak...
         IRObjectCreaterBase* obj;
         
         t_object() {}
         
+        // DUFEU TESTING IMAGE LEAK
+        t_object(std::string id, std::string name, IRObjectCreaterBase* obj)
+        {
+            this->id = id;
+            this->name = name;
+            this->obj = obj;
+        }
+        
+        /*
         t_object(std::string id, std::string name, Image img, IRObjectCreaterBase* obj)
         {
             this->id = id;
@@ -29,6 +39,7 @@ public:
             this->img = img;
             this->obj = obj;
         }
+         */
     };
     
     
@@ -59,11 +70,16 @@ private:
 template<class T>
 void IRObjectFactory::registerObject(std::string id, std::string name, Image img)
 {
+    
+    // IRObjectCreater<T>* obj = std::unique_ptr<IRObjectCreater<T>
+    // std::unique_ptr<IRObjectCreater<T>> obj(new IRObjectCreater<T>);
+    
     IRObjectCreater<T>* obj = new IRObjectCreater<T>();
-    this->list[id] = IRObjectFactory::t_object(id,name,img, obj);
+    // this->list[id] = IRObjectFactory::t_object(id, name, img, obj);
+    this->list[id] = IRObjectFactory::t_object(id, name, obj); // THIS WORKS ALL RIGHT
     
     std::cout<< id << " registered : size is " << this->list.size() << std::endl;
-    
+    // showRegisteredObjectList();
 }
 
 #endif /* IRObjectFactory_hpp */

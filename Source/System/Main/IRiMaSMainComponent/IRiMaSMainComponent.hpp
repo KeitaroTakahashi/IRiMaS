@@ -69,12 +69,14 @@ private:
     
     // storing all project windows
     std::vector<IRProjectWindow* >projectLib;
+    // std::vector<std::unique_ptr<IRProjectWindow>> projectLib;
     
     // storing a currently active project window
     IRProjectWindow* activeProjectWindow;
     
     // preference window
-    PreferenceWindow* preferenceWindow;
+    // PreferenceWindow* preferenceWindow;
+    std::unique_ptr<PreferenceWindow> preferenceWindow;
     
     // start window initially opened when launching this app
     std::unique_ptr<IRStartWindow> startWindow;

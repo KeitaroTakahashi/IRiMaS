@@ -8,7 +8,7 @@ EditCommandTarget::EditCommandTarget(ApplicationCommandManager& m)
 : commandManager(m),
 windowCommandTarget(commandManager)
 {
-    printf("EditCommandTarget\n");
+    // std::cout << "EditCommandTarget" << std::endl;
     commandManager.registerAllCommandsForTarget(this);
     
     addAndMakeVisible(this->windowCommandTarget);
@@ -17,7 +17,7 @@ windowCommandTarget(commandManager)
 
 void EditCommandTarget::resized()
 {
-    this->windowCommandTarget.setBounds(getLocalBounds().reduced (50));
+    this->windowCommandTarget.setBounds(getLocalBounds().reduced(50));
 }
 
 

@@ -12,28 +12,50 @@ IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
     
     // initialize object factory of IRObjectFactory
     // IRObjectFactory is created as a singleton manner
-    init_factory f;
+    // init_factory f;
+    init_factory();
     
+    initialize();
 }
 
 
 IRiMaSMainComponent::~IRiMaSMainComponent()
 {
-    delete this->preferenceWindow;
+    // delete this->preferenceWindow;
     for (auto win : this->projectLib)
     {
         delete win;
     }
     this->projectLib.clear();
+    
+    // but also get rid of the shit allocated with init_factory
+    
+   /*
+    IRObjectFactory& factory = singleton<IRObjectFactory>::get_instance();
+    
+    auto list = factory.getRegisteredObjectList();
+    list.clear();
+    
+
+    for (auto item : list)
+    {
+        // std::cout << "item at key " << item.first << " is " << &item.second << std::endl;
+        
+        delete item.second.obj;
+        // delete item.second.img;
+    }
+     */
 }
 
 
 void IRiMaSMainComponent::initialize()
 {
     // create window for preference
-    this->preferenceWindow = new PreferenceWindow (applicationName);
+    // this->preferenceWindow = new PreferenceWindow (applicationName);
     // create initial project window
     //this->projectLib.push_back(new IRProjectWindow(applicationName,this->preferenceWindow));
+    
+    this->preferenceWindow.reset(new PreferenceWindow(applicationName));
     
     this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640,480)));
     this->startWindow->addChangeListener(this);
@@ -43,10 +65,10 @@ void IRiMaSMainComponent::initialize()
 void IRiMaSMainComponent::createNewProject()
 {
     std::cout << "Creating new project... projectWindow" << std::endl;
-    IRProjectWindow* project = new IRProjectWindow("Untitled", this->preferenceWindow);
+    IRProjectWindow* project = new IRProjectWindow("Untitled", this->preferenceWindow.get());
     
     // create a Workspace as default
-    project->getProjectComponent()->createNewWorkspace();
+    project->getProjectComponent()->createNewWorkspace(); // FD TEMP REMOVE
     //add Listener to receive signal to open close and save projects
     project->getProjectComponent()->addListener(this);
     this->projectLib.push_back(project);
@@ -69,7 +91,7 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     
     t_json saveData = this->saveLoadClass.getSaveData();
     
-    IRProjectWindow* project = new IRProjectWindow(applicationName,this->preferenceWindow);
+    IRProjectWindow* project = new IRProjectWindow(applicationName,this->preferenceWindow.get());
     
     
     Rectangle<int>bounds = header.bounds;

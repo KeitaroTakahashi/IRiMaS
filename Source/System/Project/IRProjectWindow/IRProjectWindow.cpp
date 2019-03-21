@@ -25,8 +25,10 @@ DocumentWindow (name,
     
     int h = 720;
     int w = h * sqrt(2);
+    
+    
     this->project = new IRProject("Untitled",
-                                  Rectangle<int>(0,0,w,h),
+                                  Rectangle<int>(0, 0, w, h),
                                   preferenceWindow,
                                   this,
                                   this);
@@ -35,7 +37,7 @@ DocumentWindow (name,
     
     setContentOwned(this->project, true);
     setResizable(true, true);
-    
+    setWindowTitle(this->project->getProjectName()); // DUFEU ADD-ON
     setVisible (true);
 
     this->project->createProject();
@@ -44,6 +46,8 @@ DocumentWindow (name,
 
 IRProjectWindow::~IRProjectWindow()
 {
+    // std::cout << "IRProjectWindow destructor called" << std::endl; // indeed. called from destructor of MainComponent - itself guaranteed to be destroyed when application quits as set to nullptr and is unique_ptr
+    
     
 }
 
@@ -100,6 +104,9 @@ void IRProjectWindow::changeListenerCallback (ChangeBroadcaster* source)
 
 void IRProjectWindow::closeButtonPressed()
 {
+    std::cout << "close button pressed" << std::endl;
+    closeWindow(); // FD ADD-ON TO TEST DELETE PROJECT
+    
     // This is called when the user tries to close this window. Here, we'll just
     // ask the app to quit when this happens, but you can change this to do
     // whatever you need.

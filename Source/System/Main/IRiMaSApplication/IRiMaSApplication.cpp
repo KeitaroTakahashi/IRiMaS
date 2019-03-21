@@ -25,20 +25,19 @@ const String IRiMaSApplication::getApplicationVersion()
 
 bool IRiMaSApplication::moreThanOneInstanceAllowed()
 {
-    return true;
+    return false;
 }
 
 
 void IRiMaSApplication::initialise(const String& commandLine)
 {
-    this->mainWindow.reset(new IRiMaSMainComponent(getApplicationName()));
-    this->mainWindow->initialize();
+    this->mainComponent.reset(new IRiMaSMainComponent(getApplicationName()));
 }
 
 
 void IRiMaSApplication::shutdown()
 {
-    this->mainWindow = nullptr;
+    this->mainComponent = nullptr;
 }
 
 

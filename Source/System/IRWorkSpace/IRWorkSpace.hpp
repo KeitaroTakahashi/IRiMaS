@@ -111,7 +111,7 @@ public:
     
     // getter
     Array<IRNodeObject*> getObjectList();
-    Image getSnap();
+    // Image getSnap();
     
     //Listener
     class Listener;
@@ -173,7 +173,7 @@ private:
     bool editModeFlag = true;
     
     // snapshot
-    Image snap;
+    // Image snap;
     
     // Window for the preference
     PreferenceWindow* preferenceWindow;

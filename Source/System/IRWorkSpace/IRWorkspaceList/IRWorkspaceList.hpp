@@ -123,8 +123,8 @@ private:
             IRWorkSpace* space = dynamic_cast<IRWorkSpace* >(this->parent);
             if(space != nullptr)
             {
-                Image img = space->getSnap();
-                setImage(img);
+                // Image img = space->getSnap();
+                // setImage(img);
                 
             }
         }

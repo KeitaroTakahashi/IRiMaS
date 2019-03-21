@@ -7,6 +7,7 @@
 
 IRStarter::IRStarter(Rectangle<int> frameRect)
 {
+    // std::cout << "IR STARTER CONSTRUCTOR CALLED" << std::endl;
     // setup systme colour
     // IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     SYSTEMCOLOUR.set(IR::darkBrownSet());
@@ -47,6 +48,8 @@ IRStarter::~IRStarter()
     MenuBarModel::setMacMainMenu(nullptr);
 #endif
     
+    // FD ADD-ON
+    delete this->editCommandTarget;
 }
 
 
@@ -63,7 +66,7 @@ void IRStarter::init()
     std::random_device rnd;
     String index = String(rnd() % 15 + 1);
     
-    std::cout << "selected image logo = " << index << std::endl;
+    // std::cout << "selected image logo = " << index << std::endl;
     
 #if JUCE_MAC
     
@@ -80,7 +83,8 @@ void IRStarter::init()
     {
         std::cout << "Error : could not load image data of " << url << std::endl;
     }
-    std::cout << "logo width = " << this->logo.getWidth() << std::endl;
+    
+    // std::cout << "logo width = " << this->logo.getWidth() << std::endl;
     
     float w = 150.0f;
     float h = w * ((float)this->logo.getHeight() / (float)this->logo.getWidth());

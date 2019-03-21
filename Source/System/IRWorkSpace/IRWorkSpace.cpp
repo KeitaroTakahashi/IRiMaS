@@ -14,6 +14,8 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     addKeyListener(this);
     
     //object menu
+    this->ObjectMenuComponent = nullptr;
+    
     this->ObjectMenuComponent = new ObjectListMenu(this, Rectangle<int>(300,400));
     this->ObjectMenuComponent->addListener(this);
     
@@ -21,6 +23,8 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     this->preferenceWindow = preferenceWindow;
     
     //give object lists to selector
+    this->selector = nullptr;
+    
     this->selector = new IRNodeObjectSelector(&this->objects);
     
     this->selector->setShiftConstrainsDirection(true);
@@ -30,7 +34,10 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
 
 IRWorkSpace::~IRWorkSpace()
 {
-    
+    // FD ADD-ON
+    std::cout << "IRWorkspace destructor called" << std::endl;
+    delete this->ObjectMenuComponent;
+    delete this->selector;
 }
 
 
@@ -314,12 +321,14 @@ Array<IRNodeObject*> IRWorkSpace::getObjectList()
     return this->objects;
 }
 
+/*
 Image IRWorkSpace::getSnap()
 {
     this->snap = createComponentSnapshot(Rectangle<int>(0, 0, this->getWidth(), this->getHeight()),
                                          false, 0.4);
     return this->snap;
 }
+ */
 
 
 void IRWorkSpace::addListener(Listener* newListener)

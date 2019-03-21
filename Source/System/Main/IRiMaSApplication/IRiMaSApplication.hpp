@@ -7,7 +7,7 @@
 
 
 
-class IRiMaSApplication  : public JUCEApplication
+class IRiMaSApplication : public JUCEApplication
 {
     
 public:
@@ -28,7 +28,7 @@ public:
     
 private:
     
-    std::unique_ptr<IRiMaSMainComponent> mainWindow;
+    std::unique_ptr<IRiMaSMainComponent> mainComponent;
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRiMaSApplication)

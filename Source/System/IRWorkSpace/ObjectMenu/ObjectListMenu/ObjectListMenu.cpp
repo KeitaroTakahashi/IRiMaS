@@ -15,7 +15,8 @@ ObjectListMenu::ObjectListMenu(Component* parent, Rectangle<int>frameRect) : Men
 
 ObjectListMenu::~ObjectListMenu()
 {
-    
+    // FD ADD-ON
+    delete this->menu;
 }
 
 

@@ -46,7 +46,20 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
 
 IRProject::~IRProject()
 {
-    shutdownAudio();
+    shutdownAudio(); // do this first...
+    delete editCommandTarget; // FD ADD-ON
+    delete workspaceList; // FD ADD-ON
+    for (auto w : workspaces) // FD ADD-ON
+    {
+        // std::cout << "SHOULD DELETE!!! " << std::endl;
+        // std::cout << w->getTitle() << std::endl;
+        delete w;
+    }
+    
+    // std::cout << "DONE?" << std::endl;
+    std::cout << "DONE 2?" << std::endl;
+    // OK - this all makes sense now...
+    
 }
 
 
@@ -129,8 +142,11 @@ void IRProject::createNewWorkspace()
     space->addChangeListener(this->listener);
     this->mixer.addAudioSource(&space->getMixer());
     
+    
     addAndMakeVisible(space);
     this->workspaces.push_back(space);
+    
+    
     if(this->workspaceList != nullptr)
     {
         // if there is already a topSpace, then treat heavy components
@@ -148,13 +164,18 @@ void IRProject::createNewWorkspace()
         
         this->workspaceList->addWorkspace(space);
         
-    }else{ printf("Error : createNewWorkspace() : could not add new workspace, workspaceList null.\n");}
+    }
+    else
+    {
+        printf("Error : createNewWorkspace() : could not add new workspace, workspaceList null.\n");
+    }
+     
 }
 
 
 void IRProject::createWorkspaceList()
 {
-    this->workspaceList = new IRWorkspaceList(Rectangle<int>(0,0,this->workspaceListWidth,getHeight()));
+    this->workspaceList = new IRWorkspaceList(Rectangle<int>(0, 0, this->workspaceListWidth, getHeight()));
     this->workspaceList->addListener(this);
     this->workspaceList->addChangeListener(this);
     addAndMakeVisible(this->workspaceList);

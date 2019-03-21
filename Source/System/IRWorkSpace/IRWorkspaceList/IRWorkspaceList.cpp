@@ -41,8 +41,12 @@ void IRWorkspaceList::updateAnimationFrame()
 void IRWorkspaceList::updateList()
 {
     // get index of the selected workspace
+    
+    /* FD - DUMMY OUT UPDATE LIST AS LONG AS THE IMAGE LEAK STORY IS NOT SOLVED */
+    
+    /*
     int selectedIndex = -1;
-    if(this->currentlySelectedSnap != nullptr)
+    if (this->currentlySelectedSnap != nullptr)
     {
         selectedIndex = this->currentlySelectedSnap->getIndex() - 1;
     }
@@ -83,6 +87,8 @@ void IRWorkspaceList::updateList()
     workspaceListFocused();
     
     repaint();
+     
+     */
 }
 
 
