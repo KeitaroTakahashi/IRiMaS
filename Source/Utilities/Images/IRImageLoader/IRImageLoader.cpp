@@ -26,7 +26,7 @@ void IRImageLoader::open()
     this->isFileLoadCompleted = false;
     
     FileChooser chooser("Select an image file...",
-                        File::nonexistent,
+                        {},
                         "*.png, *.jpg, *.jpeg");
     if (chooser.browseForFileToOpen())
     {

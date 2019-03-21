@@ -27,7 +27,7 @@ void IRVideoThumbnail::paint(Graphics& g)
 void IRVideoThumbnail::openVideoFile()
 {
     FileChooser chooser("Select a video file to open...",
-                        File::nonexistent,
+                        {},
                         "*.mov, *.mp4, *.m4v");
     
     FilenameComponent co {"movie", {}, true, false, false, "*", {}, "(choose a video file to play)"};

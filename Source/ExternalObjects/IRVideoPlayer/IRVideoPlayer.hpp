@@ -56,7 +56,7 @@ public:
     void openFile()
     {
         FileChooser chooser("Select an audio file to play...",
-                            File::nonexistent,
+                            {},
                             "*.mov, *.mp4, *.m4v");
         
         FilenameComponent co {"movie", {}, true, false, false, "*", {}, "(choose a video file to play)"};

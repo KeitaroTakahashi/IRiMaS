@@ -32,7 +32,7 @@ AudioThumbnail* IRAudio::getThumbnail()
 bool IRAudio::openFile()
 {
     FileChooser chooser("Select an audio file to play...",
-                        File::nonexistent,
+                        {},
                         "*.wav, *.aif, *.aiff");
     if(chooser.browseForFileToOpen())
     {
