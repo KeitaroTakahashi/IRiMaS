@@ -30,7 +30,8 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
 
 IRWorkSpace::~IRWorkSpace()
 {
-    
+    std::cout << "workspace destructor called" << std::endl;
+    // delete this->selector;
 }
 
 

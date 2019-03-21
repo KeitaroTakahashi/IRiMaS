@@ -69,11 +69,13 @@ public:
     
 private:
     
-    class showSnap : public Component,
-    public ChangeBroadcaster
+    class ShowSnap : public Component,
+                     public ChangeBroadcaster
     {
+        
     public:
-        showSnap(Rectangle<int> frameRect, int index, Component *parent)
+        
+        ShowSnap(Rectangle<int> frameRect, int index, Component *parent)
         {
             setBounds(frameRect);
             this->parent = parent;
@@ -100,18 +102,22 @@ private:
         {
             auto area = getLocalBounds();//.reduced (0);
             
-            if(this->isSelected){
+            if (this->isSelected)
+            {
                 g.setColour (SYSTEMCOLOUR.contents);
                 g.fillRoundedRectangle(area.toFloat(), 5.0);
                 
                 g.setColour (Colours::white);
                 g.drawSingleLineText(String(this->index), this->marginX_right, this->snapRect.getHeight() - this->halfMarginY);
-            }else{
+            }
+            else
+            {
                 g.setColour (SYSTEMCOLOUR.fundamental);
                 g.drawSingleLineText(String(this->index), this->marginX_right, this->snapRect.getHeight() - this->halfMarginY);
             }
     
-            if(this->isBackgroundImage == true){
+            if (this->isBackgroundImage == true)
+            {
                 g.drawImage(this->backgroundImage, this->snapRect);
             }
         }
@@ -163,7 +169,9 @@ private:
         listEventStatus getEventStatus() const { return this->eventStatus; }
         Component* getParent() { return this->parent; }
 
+        
     private:
+        
         Image backgroundImage;
         bool isBackgroundImage = false;
         listEventStatus eventStatus;
@@ -185,6 +193,9 @@ private:
 
         // ========================================
         IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+        
+        
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ShowSnap)
     };
     
 
@@ -194,9 +205,9 @@ public:
     
     Array<IRWorkSpace*> getWorkspaceList();
     
-    void removeWorkspace(showSnap* snap);
+    void removeWorkspace(ShowSnap* snap);
     
-    void snapSelectionChange(showSnap* snap);
+    void snapSelectionChange(ShowSnap* snap);
     
     listEventStatus getEventStatus() const;
     
@@ -209,10 +220,10 @@ private:
     
     
     Array<IRWorkSpace*> workspaces;
-    Array<showSnap*> snapComponents;
+    Array<ShowSnap*> snapComponents;
     
-    showSnap* currentlySelectedSnap = nullptr;
-    showSnap* previouslySelectedSnap = nullptr;
+    ShowSnap* currentlySelectedSnap = nullptr;
+    ShowSnap* previouslySelectedSnap = nullptr;
     
     Component* selectedComponent = nullptr;
 

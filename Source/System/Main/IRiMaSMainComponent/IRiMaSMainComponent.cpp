@@ -49,7 +49,7 @@ void IRiMaSMainComponent::createNewProject()
     // std::shared_ptr<IRProjectWindow> projectWindow = std::make_shared<IRProjectWindow>("Untitled", this->preferenceWindow.get());
     
     // create a Workspace as default
-    // projectWindow->getProjectComponent()->createNewWorkspace(); // DISABLED NEW WORKSPACE FOR NOW
+    projectWindow->getProjectComponent()->createNewWorkspace(); // DISABLED NEW WORKSPACE FOR NOW
     //add Listener to receive signal to open close and save projects
     projectWindow->getProjectComponent()->addListener(this);
     this->projectLib.push_back(projectWindow);
