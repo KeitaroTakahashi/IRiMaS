@@ -3,7 +3,6 @@
 
 
 
-
 IRStarter::IRStarter(Rectangle<int> frameRect)
 {
     // setup systme colour

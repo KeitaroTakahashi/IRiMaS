@@ -5,18 +5,14 @@
 #include "JuceHeader.h"
 #include "IRFoundation.h"
 #include "IRImageLoader.hpp"
+#include "IRUIFoundation.hpp"
 
-
-
-
-
-class IRImageViewer : public Component, private ChangeListener, public ChangeBroadcaster
+class IRImageViewer : public IRUIFoundation, private ChangeListener, public ChangeBroadcaster
 {
     
 public:
     
-    IRImageViewer();
-    
+    IRImageViewer(IRNodeObject* parent);
     ~IRImageViewer();
 
     void paint(Graphics& g) override;
@@ -35,6 +31,7 @@ public:
 private:
     
     IRImageLoader imgLoader;
+    IRNodeObject* parent;
     
     // this member contains a reference from FileManager and should not be modified!
     IRImage* imgRef = nullptr;
@@ -44,11 +41,7 @@ private:
     
     TextButton openButton;
 
-    
 };
-
-
-
 
 #endif /* IRImageViewer_h */
 

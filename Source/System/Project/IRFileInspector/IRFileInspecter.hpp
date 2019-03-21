@@ -10,6 +10,10 @@
 
 #include "JuceHeader.h"
 #include "IRFileManager.hpp"
+#include "KLib.h"
+#include "IRImage.hpp"
+#include "IRPropertyComponent.hpp"
+#include "IRNodeObject.hpp"
 /*
  
     IRFileInspecter shows a list of files being used on the current project.
@@ -25,8 +29,22 @@ public:
     IRFileInspecter();
     ~IRFileInspecter();
     
+    void resized() override;
+    
+    
+    void makePropertyPanel();
+    
+    void updatePropertyPanel();
+    
 private:
+        
+    PropertyPanel panel;
+    
+    Array<PropertyComponent*> panelContents;
+    
     IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRFileInspecter)
 
 };
 

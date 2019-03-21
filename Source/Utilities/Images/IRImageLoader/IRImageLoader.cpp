@@ -1,9 +1,9 @@
 
 #include "IRImageLoader.hpp"
 
-IRImageLoader::IRImageLoader()
+IRImageLoader::IRImageLoader(IRNodeObject* parent)
 {
-    
+    this->parent = parent;
 }
 
 
@@ -43,7 +43,7 @@ void IRImageLoader::open()
             this->isFileOpened = true;
             //loadImage(pathToOpen);
             
-            this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file, this));
+            this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file, this->parent));
             this->isFileLoadCompleted = true;
         }else{
             
@@ -69,7 +69,7 @@ void IRImageLoader::open(String pathToOpen)
         
         File file(this->path);
         
-        this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file, this));
+        this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file, this->parent));
         //loadImage(pathToOpen);
 
         this->isFileLoadCompleted = true;

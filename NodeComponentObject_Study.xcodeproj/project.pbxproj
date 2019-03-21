@@ -249,6 +249,7 @@
 		823E7BD22133012B0046512B /* IRWaveformObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823E7BD02133012B0046512B /* IRWaveformObject.cpp */; };
 		823E7BD5213303260046512B /* IRWaveform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823E7BD3213303260046512B /* IRWaveform.cpp */; };
 		823E7BDB2134075C0046512B /* singletonClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823E7BD92134075C0046512B /* singletonClass.cpp */; };
+		82435C5422393DE200E89E95 /* IRPropertyComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82435C5222393DE200E89E95 /* IRPropertyComponent.cpp */; };
 		8258AC31221C6B9300557661 /* materials in Resources */ = {isa = PBXBuildFile; fileRef = 8258AC30221C6B9300557661 /* materials */; };
 		825DC9CC21FF407000555CB8 /* IRVideoPlayerObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 825DC9CA21FF407000555CB8 /* IRVideoPlayerObject.cpp */; };
 		825DC9CF21FF408400555CB8 /* IRVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 825DC9CD21FF408400555CB8 /* IRVideoPlayer.cpp */; };
@@ -624,6 +625,8 @@
 		823E7BD92134075C0046512B /* singletonClass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = singletonClass.cpp; sourceTree = "<group>"; };
 		823E7BDA2134075C0046512B /* singletonClass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = singletonClass.hpp; sourceTree = "<group>"; };
 		823E7BDC2134193E0046512B /* IRWaveformObjectUI.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRWaveformObjectUI.hpp; sourceTree = "<group>"; };
+		82435C5222393DE200E89E95 /* IRPropertyComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRPropertyComponent.cpp; sourceTree = "<group>"; };
+		82435C5322393DE200E89E95 /* IRPropertyComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRPropertyComponent.hpp; sourceTree = "<group>"; };
 		8258AC30221C6B9300557661 /* materials */ = {isa = PBXFileReference; lastKnownFileType = folder; path = materials; sourceTree = "<group>"; };
 		825DC9CA21FF407000555CB8 /* IRVideoPlayerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoPlayerObject.cpp; sourceTree = "<group>"; };
 		825DC9CB21FF407000555CB8 /* IRVideoPlayerObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoPlayerObject.hpp; sourceTree = "<group>"; };
@@ -1810,6 +1813,15 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		82435C5122393DD400E89E95 /* PropertyComponent */ = {
+			isa = PBXGroup;
+			children = (
+				82435C5222393DE200E89E95 /* IRPropertyComponent.cpp */,
+				82435C5322393DE200E89E95 /* IRPropertyComponent.hpp */,
+			);
+			path = PropertyComponent;
+			sourceTree = "<group>";
+		};
 		825DC9C921FF405000555CB8 /* IRVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1979,6 +1991,7 @@
 				82C909C82236CB8A001E058C /* IRFileInspecterWindow */,
 				82C909C52236CA9E001E058C /* IRFileInspecter.cpp */,
 				82C909C62236CA9E001E058C /* IRFileInspecter.hpp */,
+				82435C5122393DD400E89E95 /* PropertyComponent */,
 			);
 			path = IRFileInspector;
 			sourceTree = "<group>";
@@ -2166,6 +2179,7 @@
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
 				10F647572226DE7700A26D7D /* ObjectListMenu.cpp in Sources */,
 				821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */,
+				82435C5422393DE200E89E95 /* IRPropertyComponent.cpp in Sources */,
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
 				106588FD223031C8005D6B38 /* IRImageViewerObject.cpp in Sources */,
 				82C909C72236CA9E001E058C /* IRFileInspecter.cpp in Sources */,
