@@ -18,12 +18,16 @@ public:
         std::string name;
         Image img;
         
-        IRObjectCreaterBase* obj;
+        // IRObjectCreaterBase* obj;
+        std::shared_ptr<IRObjectCreaterBase> obj;
         
         t_object() {}
+        ~t_object() { std::cout << "destructor of t_object called" << std::endl; }
         
-        t_object(std::string id, std::string name, Image img, IRObjectCreaterBase* obj)
+        // t_object(std::string id, std::string name, Image img, IRObjectCreaterBase* obj)
+        t_object(std::string id, std::string name, Image img, std::shared_ptr<IRObjectCreaterBase> obj)
         {
+            std::cout << "constructor of t_object called" << std::endl;
             this->id = id;
             this->name = name;
             this->img = img;
@@ -33,7 +37,10 @@ public:
     
     
     IRObjectFactory();
-    ~IRObjectFactory();
+    ~IRObjectFactory() // won't be called as is singleton?
+    {
+        std::cout << "destructor of IRObjectFactory called" << std::endl; // I NEED FOR THIS TO HAPPEN...
+    };
     
     template<class T>
     void registerObject(std::string id, std::string name, Image img);
@@ -59,8 +66,13 @@ private:
 template<class T>
 void IRObjectFactory::registerObject(std::string id, std::string name, Image img)
 {
-    IRObjectCreater<T>* obj = new IRObjectCreater<T>();
-    this->list[id] = IRObjectFactory::t_object(id,name,img, obj);
+    // IRObjectCreater<T>* obj = new IRObjectCreater<T>();
+    // this->list[id] = IRObjectFactory::t_object(id, name, img, obj);
+    
+    // now trying with shared pointer
+    
+    std::shared_ptr<IRObjectCreater<T>> obj = std::make_shared<IRObjectCreater<T>>();
+    this->list[id] = IRObjectFactory::t_object(id, name, img, obj);
     
     std::cout<< id << " registered : size is " << this->list.size() << std::endl;
     

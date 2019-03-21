@@ -30,7 +30,10 @@ public:
     init_factory()
     {
         Image img; // dummy
+        
         IRFactory.registerObject<IRLabelObject>("IRLabel", "Label", img);
+        
+        /*
         IRFactory.registerObject<IRTextEditorObject>("IRTextEditor", "Text Editor", img);
         IRFactory.registerObject<IRImageViewerObject>("IRImageViewer", "Image Viewer", img);
         IRFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img);
@@ -42,7 +45,7 @@ public:
         IRFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
         
         IRFactory.registerObject<IRTestObject>("IRTestObject", "test", img);
-
+         */
         
 //IRFactory.registerObject<IRCVVideoPlayer>("IRCVVideoPlayer", "CV Video Player", img);
 

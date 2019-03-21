@@ -32,6 +32,13 @@ public:
         return *instance;
     }
     
+    
+    ~singleton()
+    {
+        destroy();
+    }
+    
+    
 private:
     static void create() {
         instance = new T;

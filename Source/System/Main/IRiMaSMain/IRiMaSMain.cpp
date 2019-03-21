@@ -27,6 +27,17 @@ IRMAIN::~IRMAIN()
     
     this->projectLib.clear();
     
+    // also somehow destroy the objects that have been allocated in IR FACTORY
+    // IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
+    
+    /*
+    for (auto i : IRFactory.getRegisteredObjectList())
+    {
+        std::cout << "Item to delete: " << i.second.name << std::endl;
+        i.second.~t_object(); // 
+    }
+     */
+    
 }
 
 

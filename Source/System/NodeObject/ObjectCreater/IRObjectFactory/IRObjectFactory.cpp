@@ -9,11 +9,12 @@ IRObjectFactory::IRObjectFactory()
     
 }
 
-
+/*
 IRObjectFactory::~IRObjectFactory()
 {
     
 }
+ */
 
 
 IRNodeObject* IRObjectFactory::createObject(std::string id, Component* parent)
