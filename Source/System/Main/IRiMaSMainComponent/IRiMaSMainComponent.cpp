@@ -75,7 +75,7 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     
     t_json saveData = this->saveLoadClass.getSaveData();
     
-    IRProjectWindow* project = new IRProjectWindow(applicationName,this->preferenceWindow.get());
+    IRProjectWindow* project = new IRProjectWindow(applicationName, this->preferenceWindow.get());
     
     
     Rectangle<int>bounds = header.bounds;
