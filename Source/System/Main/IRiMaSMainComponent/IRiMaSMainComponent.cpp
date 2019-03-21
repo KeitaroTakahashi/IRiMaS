@@ -18,10 +18,12 @@ IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 
 IRiMaSMainComponent::~IRiMaSMainComponent()
 {
+    /*
     for (auto win : this->projectLib)
     {
         delete win;
     }
+     */
     
     this->projectLib.clear();
     
@@ -34,31 +36,27 @@ IRiMaSMainComponent::~IRiMaSMainComponent()
 
 void IRiMaSMainComponent::initialise()
 {
-    // create window for preference
-    // this->preferenceWindow = new PreferenceWindow(applicationName);
-    
     this->preferenceWindow = std::make_shared<PreferenceWindow>(applicationName);
     
     this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640, 480)));
     this->startWindow->addChangeListener(this);
-    
-    
 }
 
 
 void IRiMaSMainComponent::createNewProject()
 {
     std::cout << "Creating new project... projectWindow" << std::endl;
-    IRProjectWindow* project = new IRProjectWindow("Untitled", this->preferenceWindow.get());
+    IRProjectWindow* projectWindow = new IRProjectWindow("Untitled", this->preferenceWindow.get());
+    // std::shared_ptr<IRProjectWindow> projectWindow = std::make_shared<IRProjectWindow>("Untitled", this->preferenceWindow.get());
     
     // create a Workspace as default
-    project->getProjectComponent()->createNewWorkspace();
+    // projectWindow->getProjectComponent()->createNewWorkspace(); // DISABLED NEW WORKSPACE FOR NOW
     //add Listener to receive signal to open close and save projects
-    project->getProjectComponent()->addListener(this);
-    this->projectLib.push_back(project);
+    projectWindow->getProjectComponent()->addListener(this);
+    this->projectLib.push_back(projectWindow);
     
     // bring the new window at top of all other windows.
-    project->toFront(true);
+    projectWindow->toFront(true);
     
     //hide startWindow when a project window opens.
     // startWindow only appears when no project window stays opened.
@@ -75,21 +73,21 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     
     t_json saveData = this->saveLoadClass.getSaveData();
     
-    IRProjectWindow* project = new IRProjectWindow(applicationName, this->preferenceWindow.get());
+    IRProjectWindow* projectWindow = new IRProjectWindow(applicationName, this->preferenceWindow.get());
     
     
     Rectangle<int>bounds = header.bounds;
     
-    project->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    projectWindow->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
     
-    project->getProjectComponent()->addListener(this);
-    project->getProjectComponent()->setProjectPath(path);
-    project->setWindowTitle(header.projectName);
+    projectWindow->getProjectComponent()->addListener(this);
+    projectWindow->getProjectComponent()->setProjectPath(path);
+    projectWindow->setWindowTitle(header.projectName);
     
-    this->projectLib.push_back(project);
+    this->projectLib.push_back(projectWindow);
     
     // bring the new window in front of all other windows.
-    project->toFront(true);
+    projectWindow->toFront(true);
     
     //remove startWindow when a project window opens.
     this->startWindow->setVisible(false);
@@ -102,10 +100,10 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
         std::cout << id << std::endl;
         
         // ===== create worksapce =====
-        project->getProjectComponent()->createNewWorkspace();
+        projectWindow->getProjectComponent()->createNewWorkspace();
         
         // get created workspace
-        IRWorkSpace* currentSpace = project->getProjectComponent()->getTopWorkspace();
+        IRWorkSpace* currentSpace = projectWindow->getProjectComponent()->getTopWorkspace();
         
         // retrieve save data of the workspace
         json11::Json data = saveData["Workspaces"][id].object_items();
@@ -176,9 +174,9 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     }
     
     // initialize this Project
-    project->getProjectComponent()->initProjectAfterLoading();
+    projectWindow->getProjectComponent()->initProjectAfterLoading();
     // set project save path
-    project->getProjectComponent()->setProjectPath(path);
+    projectWindow->getProjectComponent()->setProjectPath(path);
     
 }
 

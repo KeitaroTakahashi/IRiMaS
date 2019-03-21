@@ -16,7 +16,7 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
     this->listener = listener;
     this->frameRect = frameRect;
     
-    setSize (frameRect.getWidth(), frameRect.getHeight());
+    setSize(frameRect.getWidth(), frameRect.getHeight());
     
     //create menu
     this->menuBar.reset(new MenuBarComponent(this));
@@ -28,7 +28,7 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
 #endif
     
     addAndMakeVisible(this->menuBar.get());
-    setApplicationCommandManagerToWatch (&this->commandManager);
+    setApplicationCommandManagerToWatch(&this->commandManager);
     
     
     this->commandManager.registerAllCommandsForTarget (this);

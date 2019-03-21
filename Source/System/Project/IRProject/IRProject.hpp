@@ -17,12 +17,12 @@
 
 
 class IRProject : public AudioAppComponent,
-public ApplicationCommandTarget,
-public MenuBarModel,
-public ChangeListener,
-public ChangeBroadcaster,
-private EditCommandTarget::Listener,
-private IRWorkspaceList::Listener
+                  public ApplicationCommandTarget,
+                  public MenuBarModel,
+                  public ChangeListener,
+                  public ChangeBroadcaster,
+                  private EditCommandTarget::Listener,
+                  private IRWorkspaceList::Listener
 {
 public:
     
