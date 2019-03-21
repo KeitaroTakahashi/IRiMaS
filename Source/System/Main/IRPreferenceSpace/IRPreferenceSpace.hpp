@@ -40,7 +40,6 @@ private:
     
     IRPreferenceObject* preferenceObj;
     
-    // system colour
     IR::IRColours& SYSTEMCOLOUR { singleton<IR::IRColours>::get_instance() };
 
     
@@ -48,7 +47,12 @@ private:
     
 };
 
+
+
+
+
 #endif /* IRPreferenceSpace_hpp */
+
 
 
 

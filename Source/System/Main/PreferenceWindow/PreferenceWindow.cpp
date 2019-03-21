@@ -10,12 +10,12 @@ PreferenceWindow::PreferenceWindow(String name) :
     
     setUsingNativeTitleBar(true);
     
-    this->preferenceSpace = std::make_unique<IRPreferenceSpace>("IRiMaS : Object Preferences", Rectangle<int>(0, 0, 400, 720));
+    this->preferenceSpace = std::make_unique<IRPreferenceSpace>("IRiMaS: Object Preferences", Rectangle<int>(0, 0, 400, 720));
     
     this->preferenceSpace->addChangeListener(this);
     setContentOwned(this->preferenceSpace.get(), true);
     
-    setResizable(true,true);
+    setResizable(true, true);
     
     setName(this->preferenceSpace->getTitle());
     
