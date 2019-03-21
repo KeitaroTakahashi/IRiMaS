@@ -23,12 +23,12 @@ public:
         std::shared_ptr<IRObjectCreaterBase> obj;
         
         t_object() {}
-        ~t_object() { std::cout << "destructor of t_object called" << std::endl; }
+        ~t_object() { /*std::cout << "destructor of t_object called" << std::endl;*/ }
         
         // t_object(std::string id, std::string name, Image img, IRObjectCreaterBase* obj)
         t_object(std::string id, std::string name, Image img, std::shared_ptr<IRObjectCreaterBase> obj)
         {
-            std::cout << "constructor of t_object called" << std::endl;
+            // std::cout << "constructor of t_object called" << std::endl;
             this->id = id;
             this->name = name;
             this->img = img;
@@ -40,7 +40,7 @@ public:
     IRObjectFactory();
     ~IRObjectFactory() // won't be called as is singleton?
     {
-        std::cout << "destructor of IRObjectFactory called" << std::endl; // I NEED FOR THIS TO HAPPEN...
+        // std::cout << "destructor of IRObjectFactory called" << std::endl; // I NEED FOR THIS TO HAPPEN...
     };
     
     template<class T>
