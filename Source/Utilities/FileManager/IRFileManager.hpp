@@ -18,6 +18,142 @@
 #include "IRVideo.hpp"
 #include "KLib.h"
 
+class FILEMAP
+{
+private:
+    std::vector<File> fileList;
+    std::vector<IRObjectPtr> pList;
+    
+public:
+    
+    std::vector<File> getFileList() const { return this->fileList; }
+    
+    std::vector<IRObjectPtr> getPList() const { return this->pList; }
+    
+    
+    void clear()
+    {
+        this->fileList.clear();
+        this->pList.clear();
+    }
+    
+    bool add(File f, IRObjectPtr p)
+    {
+        this->fileList.push_back(f);
+        this->pList.push_back(p);
+        
+        // if any confliction occurs
+        if(this->fileList.size() != this->pList.size()) return false;
+        
+        return true;
+    }
+    
+    bool remove(File f)
+    {
+        int index = findIndexOf(f);
+        this->fileList.erase(this->fileList.begin() + index);
+        this->pList.erase(this->pList.begin() + index);
+        return true;
+        
+        // if any confliction occurs
+        if(this->fileList.size() != this->pList.size()) return false;
+    }
+    
+    bool remove(IRObjectPtr p)
+    {
+        int index = findIndexOf(p);
+        
+        this->fileList.erase(this->fileList.begin() + index);
+        this->pList.erase(this->pList.begin() + index);
+        
+        std::cout << this->fileList.size() << std::endl;
+        
+        // if any confliction occurs
+        if(this->fileList.size() != this->pList.size())
+            return false;
+        else return true;
+    }
+    
+    bool isFile(File f)
+    {
+        for(auto _f : this->fileList)
+        {
+            // if the same File found in the list
+            if(_f == f)
+                return true;
+        }
+        return false;
+    }
+    
+    
+    File findFile(File f)
+    {
+        for(auto _f : this->fileList)
+        {
+            // if the same File found in the list
+            if(_f == f)
+                return _f;
+        }
+        //if nothing found
+        return File();
+    }
+    
+    IRObjectPtr findPtr(IRObjectPtr p)
+    {
+        int index = findIndexOf(p);
+        if (index > -1) return this->pList[index];
+        else return nullptr;
+    }
+    
+    IRObjectPtr findPtrByFile(File f)
+    {
+        int index = findIndexOf(f);
+        if (index > -1) return this->pList[index];
+        else return nullptr;
+    }
+    
+    File findFileByPtr(IRObjectPtr p)
+    {
+        int index = findIndexOf(p);
+        if(index > -1) return this->fileList[index];
+        else return File();
+    }
+    
+    int findIndexOf(File f)
+    {
+        int i = 0;
+        int index = -1;
+        for(auto _f : this->fileList)
+        {
+            if(_f == f)
+            {
+                index = i;
+                break;
+            }
+            i++;
+        }
+        
+        return index;
+    }
+    
+    int findIndexOf(IRObjectPtr p)
+    {
+        int i = 0;
+        int index = -1;
+        for(auto _p : this->pList)
+        {
+            if(_p == p)
+            {
+                index = i;
+                break;
+            }
+            i++;
+        }
+        return index;
+    }
+    
+};
+
 /*
  
     IRFileManager should be constructed as singleton.
@@ -53,6 +189,8 @@ public:
     IRObjectPtr discardFilePtr(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, File file);
     
     //==================================================
+    
+    FILEMAP* getObjctList() { return &this->list; }
 
 private:
     
@@ -78,135 +216,7 @@ private:
     //==================================================
     void clear() { this->list.clear(); }
     
-    class FILEMAP
-    {
-    private:
-        std::vector<File> fileList;
-        std::vector<IRObjectPtr> pList;
-        
-    public:
-        void clear()
-        {
-            this->fileList.clear();
-            this->pList.clear();
-        }
-        
-        bool add(File f, IRObjectPtr p)
-        {
-            this->fileList.push_back(f);
-            this->pList.push_back(p);
-            
-            // if any confliction occurs
-            if(this->fileList.size() != this->pList.size()) return false;
-            
-            return true;
-        }
-        
-        bool remove(File f)
-        {
-            int index = findIndexOf(f);
-            this->fileList.erase(this->fileList.begin() + index);
-            this->pList.erase(this->pList.begin() + index);
-            return true;
-            
-            // if any confliction occurs
-            if(this->fileList.size() != this->pList.size()) return false;
-        }
-        
-        bool remove(IRObjectPtr p)
-        {
-            int index = findIndexOf(p);
-            
-            this->fileList.erase(this->fileList.begin() + index);
-            this->pList.erase(this->pList.begin() + index);
-            
-            std::cout << this->fileList.size() << std::endl;
-            
-            // if any confliction occurs
-            if(this->fileList.size() != this->pList.size())
-                return false;
-            else return true;
-        }
-        
-        bool isFile(File f)
-        {
-            for(auto _f : this->fileList)
-            {
-                // if the same File found in the list
-                if(_f == f)
-                    return true;
-            }
-            return false;
-        }
-        
-        
-        File findFile(File f)
-        {
-            for(auto _f : this->fileList)
-            {
-                // if the same File found in the list
-                if(_f == f)
-                    return _f;
-            }
-            //if nothing found
-            return File();
-        }
-        
-        IRObjectPtr findPtr(IRObjectPtr p)
-        {
-            int index = findIndexOf(p);
-            if (index > -1) return this->pList[index];
-            else return nullptr;
-        }
-        
-        IRObjectPtr findPtrByFile(File f)
-        {
-            int index = findIndexOf(f);
-            if (index > -1) return this->pList[index];
-            else return nullptr;
-        }
-        
-        File findFileByPtr(IRObjectPtr p)
-        {
-            int index = findIndexOf(p);
-            if(index > -1) return this->fileList[index];
-            else return File();
-        }
-        
-        int findIndexOf(File f)
-        {
-            int i = 0;
-            int index = -1;
-            for(auto _f : this->fileList)
-            {
-                if(_f == f)
-                {
-                    index = i;
-                    break;
-                }
-                i++;
-            }
-            
-            return index;
-        }
-        
-        int findIndexOf(IRObjectPtr p)
-        {
-            int i = 0;
-            int index = -1;
-            for(auto _p : this->pList)
-            {
-                if(_p == p)
-                {
-                    index = i;
-                    break;
-                }
-                i++;
-            }
-            return index;
-        }
-  
-    };
+    
     
     FILEMAP list;
 };

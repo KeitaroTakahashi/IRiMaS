@@ -47,6 +47,9 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
 IRProject::~IRProject()
 {
     shutdownAudio();
+    
+    if(this->fileInspecterWindow != nullptr)
+        delete this->fileInspecterWindow;
 }
 
 
@@ -504,6 +507,26 @@ void IRProject::setNonSavedChange(bool newStatus)
     this->nonSavedChanges = newStatus;
 }
 
+// ==================================================
+// windows
+
+void IRProject::openFileInspecterWindow()
+{
+    if(this->fileInspecterWindow == nullptr)
+    {
+        this->fileInspecterWindow = new IRFileInspecterWindow("File Inspecter");
+        
+    }else{
+        this->fileInspecterWindow->updateInspecter();
+    }
+    this->fileInspecterWindow->show();
+}
+
+// ==================================================
+
+
+
+
 // **** **** PRIVATE METHODS **** **** //
 
 void IRProject::changeListenerCallback(ChangeBroadcaster* source)
@@ -644,8 +667,7 @@ bool IRProject::perform(const InvocationInfo& info)
             
         case CommandIDs::fileInspecterWindow:
             printf("window menu perform in IRProject \n");
-            
-            this->fileInspecterWindow = new IRFileInspecterWindow("File Inspecter");
+            openFileInspecterWindow();
             break;
         case CommandIDs::menuPreferenceWindow:
             break;

@@ -63,6 +63,12 @@ public:
     void removeWorkspace(IRWorkSpace* workspace) override;
     void updateWorkspaceList();
     
+    
+    // ==================================================
+    // windows
+    
+    void openFileInspecterWindow();
+    
     // ==================================================
 
     // change edit mode : signal received from Menu object
@@ -165,7 +171,7 @@ private:
     Rectangle<int> frameRect;
     DocumentWindow* parentWindow;
     std::vector<IRWorkSpace*> workspaces;
-    IRFileInspecterWindow* fileInspecterWindow;
+    IRFileInspecterWindow* fileInspecterWindow = nullptr;
     
     
     

@@ -5,16 +5,14 @@
 #include "JuceHeader.h"
 
 #include "IRFileManager.hpp"
-
-
-
+#include "IRNodeObject.hpp"
 
 
 class IRImageLoader : public ChangeBroadcaster
 {
 public:
     
-    IRImageLoader();
+    IRImageLoader(IRNodeObject* parent);
     IRImageLoader(String path);
     ~IRImageLoader();
 
@@ -33,6 +31,8 @@ public:
     bool isFileOpened = false;
     
 private:
+    
+    IRNodeObject* parent;
     
     String path;
     File file;

@@ -5,7 +5,8 @@
 
 
 
-IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(parent, "IRImageViewer")
+IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(parent, "IRImageViewer"),
+imageViewer(this)
 {
     
     printf("IRImageViewerObject\n");

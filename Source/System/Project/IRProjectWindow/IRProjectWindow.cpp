@@ -104,6 +104,7 @@ void IRProjectWindow::closeButtonPressed()
     // ask the app to quit when this happens, but you can change this to do
     // whatever you need.
     //JUCEApplication::getInstance()->systemRequestedQuit();
+    
 }
 
 /* Note: Be careful if you override any DocumentWindow methods - the base

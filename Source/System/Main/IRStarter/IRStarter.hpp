@@ -6,7 +6,6 @@
 
 #include "Menus.h"
 #include "EditCommandTarget.hpp"
-#include "IRImageViewer.hpp"
 
 #include <random>
 
@@ -76,8 +75,6 @@ private:
     Image logo;
     Rectangle<float> logoPos;
     Image title;
-    
-    IRImageViewer imageViewer;
     
     // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

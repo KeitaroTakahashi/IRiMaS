@@ -31,7 +31,7 @@ DocumentWindow(name,
 
 IRFileInspecterWindow::~IRFileInspecterWindow()
 {
-    
+    delete this->fileInspecter;
 }
 
 
@@ -41,4 +41,16 @@ void IRFileInspecterWindow::closeButtonPressed()
     // ask the app to quit when this happens, but you can change this to do
     // whatever you need.
     //JUCEApplication::getInstance()->systemRequestedQuit();
+    
+    removeFromDesktop();
+}
+
+void IRFileInspecterWindow::show()
+{
+    addToDesktop();
+}
+
+void IRFileInspecterWindow::updateInspecter()
+{
+    this->fileInspecter->updatePropertyPanel();
 }

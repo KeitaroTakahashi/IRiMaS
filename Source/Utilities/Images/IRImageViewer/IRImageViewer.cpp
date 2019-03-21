@@ -4,8 +4,13 @@
 
 
 
-IRImageViewer::IRImageViewer()
+IRImageViewer::IRImageViewer(IRNodeObject* parent) :
+IRUIFoundation(parent),
+imgLoader(parent)
 {
+    
+    this->parent = parent;
+    
     setSize(100,100);
     addAndMakeVisible(&this->openButton);
     this->openButton.setButtonText("open image");
@@ -36,8 +41,6 @@ void IRImageViewer::paint(Graphics& g)
         g.drawImageTransformed (this->imgRef->getImageData(),
                                 AffineTransform::scale (getWidth()  / (float) this->imgRef->getWidth(),
                                                         getHeight() / (float) this->imgRef->getHeight()), false);
-        // g.drawImageAt(this->img, 0,0);
-        
     }
     
 }
@@ -45,12 +48,7 @@ void IRImageViewer::paint(Graphics& g)
 
 void IRImageViewer::resized()
 {
-   /*
-    if(this->imgRef != nullptr)
-        this->img = this->imgLoader.getData()->rescaled(getWidth(), getHeight());
-  */
     this->openButton.setBounds(0,0,getWidth(),getHeight());
-    
 }
 
 

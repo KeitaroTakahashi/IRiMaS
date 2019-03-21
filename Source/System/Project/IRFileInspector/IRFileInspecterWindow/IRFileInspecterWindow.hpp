@@ -9,7 +9,6 @@
 #define IRFileInspecterWindow_hpp
 
 #include "JuceHeader.h"
-
 #include "IRFileInspecter.hpp"
 
 class IRFileInspecterWindow : DocumentWindow
@@ -19,7 +18,11 @@ public:
     ~IRFileInspecterWindow();
     
     // ==================================================
-    void closeButtonPressed();
+    void closeButtonPressed() override;
+    
+    void show();
+    
+    void updateInspecter();
     
     // ==================================================
 
@@ -27,6 +30,7 @@ private:
     
     IRFileInspecter* fileInspecter;
     
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRFileInspecterWindow)
 };
 
 #endif /* IRFileInspecterWindow_hpp */

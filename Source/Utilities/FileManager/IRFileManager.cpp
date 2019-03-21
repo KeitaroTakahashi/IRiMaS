@@ -97,7 +97,6 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr ow
         IRObjectPtr obj = retrievePtrByFile(file);
         // manager owner list
         managerOwner(type, obj, owner, true);
-        this->list.add(file, obj);
         return obj;
     }
     else
