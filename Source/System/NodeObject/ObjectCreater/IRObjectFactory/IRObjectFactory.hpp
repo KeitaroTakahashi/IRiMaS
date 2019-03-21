@@ -8,6 +8,7 @@
 
 
 
+
 class IRObjectFactory
 {
 public:
@@ -66,12 +67,14 @@ private:
 template<class T>
 void IRObjectFactory::registerObject(std::string id, std::string name, Image img)
 {
-    // IRObjectCreater<T>* obj = new IRObjectCreater<T>();
+    
     // this->list[id] = IRObjectFactory::t_object(id, name, img, obj);
     
     // now trying with shared pointer
     
     std::shared_ptr<IRObjectCreater<T>> obj = std::make_shared<IRObjectCreater<T>>();
+    // IRObjectCreater<T>* obj = new IRObjectCreater<T>();
+    // std::cout << "hallo" << std::endl;
     this->list[id] = IRObjectFactory::t_object(id, name, img, obj);
     
     std::cout<< id << " registered : size is " << this->list.size() << std::endl;

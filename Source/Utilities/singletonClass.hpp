@@ -32,12 +32,12 @@ public:
         return *instance;
     }
     
-    
-    ~singleton()
+    // FD ADD-ON
+    static void explicitlyDestroy()
     {
         destroy();
     }
-    
+
     
 private:
     static void create() {
@@ -47,6 +47,7 @@ private:
     
     static void destroy()
     {
+        std::cout << "singleton destroy function called" << std::endl;
         delete instance;
         instance = nullptr;
     }

@@ -28,15 +28,18 @@ IRMAIN::~IRMAIN()
     this->projectLib.clear();
     
     // also somehow destroy the objects that have been allocated in IR FACTORY
-    // IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
     
+    
+    // IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
+    singleton<IRObjectFactory>::explicitlyDestroy(); // OK - THAT IS THE THING TO DO. THIS ULTIMATELY DESTROYS THE T_OBJECTs AND AVOIDS THE LEAK OF THE ENBEDDED IMAGES.
     /*
     for (auto i : IRFactory.getRegisteredObjectList())
     {
         std::cout << "Item to delete: " << i.second.name << std::endl;
-        i.second.~t_object(); // 
+        // i.second.~t_object(); // removing this causes the leak...
     }
      */
+    std::cout << "done the loop, now" << std::endl;
     
 }
 
