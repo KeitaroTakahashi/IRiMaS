@@ -5,10 +5,15 @@
 #include "JuceHeader.h"
 
 
-#include "ObjectFactoryInitializer.hpp"
+#include "IRProject.hpp"
 #include "IRProjectWindow.hpp"
-#include "IRStarter.hpp"
+#include "PreferenceWindow.hpp"
 #include "IRStartWindow.hpp"
+#include "IRSaveLoadSystem.hpp"
+#include "json11.hpp"
+#include "singletonClass.hpp"
+#include "IRObjectFactory.hpp"
+#include "ColourLib.h"
 
 /*
  IRMAIN
@@ -56,10 +61,10 @@ public:
     
 private:
     
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void changeListenerCallback(ChangeBroadcaster* source) override;
     
     String applicationName;
-    std::string saveDataPath = "";
+    std::string saveDataPath { "" };
     
     // storing all project windows
     std::vector<IRProjectWindow* >projectLib;
@@ -67,7 +72,8 @@ private:
     // storing a currently active project window
     IRProjectWindow* activeProjectWindow;
     
-    PreferenceWindow* preferenceWindow;
+    // PreferenceWindow* preferenceWindow;
+    std::shared_ptr<PreferenceWindow> preferenceWindow;
     
     // start window initially opened when launching this app
     std::unique_ptr<IRStartWindow> startWindow;

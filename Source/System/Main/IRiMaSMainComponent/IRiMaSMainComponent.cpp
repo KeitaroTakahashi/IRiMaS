@@ -1,6 +1,7 @@
 
 #include "IRiMaSMainComponent.hpp"
 
+#include "ObjectFactoryInitializer.hpp"
 
 
 
@@ -17,8 +18,7 @@ IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 
 IRiMaSMainComponent::~IRiMaSMainComponent()
 {
-    delete this->preferenceWindow;
-    for(auto win : this->projectLib)
+    for (auto win : this->projectLib)
     {
         delete win;
     }
@@ -35,9 +35,9 @@ IRiMaSMainComponent::~IRiMaSMainComponent()
 void IRiMaSMainComponent::initialise()
 {
     // create window for preference
-    this->preferenceWindow = new PreferenceWindow(applicationName);
-    // create initial project window
-    //this->projectLib.push_back(new IRProjectWindow(applicationName,this->preferenceWindow));
+    // this->preferenceWindow = new PreferenceWindow(applicationName);
+    
+    this->preferenceWindow = std::make_shared<PreferenceWindow>(applicationName);
     
     this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640, 480)));
     this->startWindow->addChangeListener(this);
@@ -48,8 +48,8 @@ void IRiMaSMainComponent::initialise()
 
 void IRiMaSMainComponent::createNewProject()
 {
-    printf("Creating new project... projectWindow\n");
-    IRProjectWindow* project = new IRProjectWindow("Untitled",this->preferenceWindow);
+    std::cout << "Creating new project... projectWindow" << std::endl;
+    IRProjectWindow* project = new IRProjectWindow("Untitled", this->preferenceWindow.get());
     
     // create a Workspace as default
     project->getProjectComponent()->createNewWorkspace();
@@ -69,13 +69,13 @@ void IRiMaSMainComponent::createNewProject()
 
 void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
 {
-    printf("========== createNewProjectFromSaveData ==========\n");
+    std::cout << "========== createNewProjectFromSaveData ==========" << std::endl;
     IRSaveLoadSystem::dataStr data = this->saveLoadClass.getSaveDataStr();
     IRSaveLoadSystem::headerStr header = data.header;
     
     t_json saveData = this->saveLoadClass.getSaveData();
     
-    IRProjectWindow* project = new IRProjectWindow(applicationName,this->preferenceWindow);
+    IRProjectWindow* project = new IRProjectWindow(applicationName,this->preferenceWindow.get());
     
     
     Rectangle<int>bounds = header.bounds;
@@ -94,9 +94,9 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     //remove startWindow when a project window opens.
     this->startWindow->setVisible(false);
     
-    printf("========== loadWorkspaces ==========\n");
+    std::cout << "========== loadWorkspaces ==========" << std::endl;
     
-    for(auto it = saveData["Workspaces"].object_items().cbegin(); it != saveData["Workspaces"].object_items().cend(); ++it)
+    for (auto it = saveData["Workspaces"].object_items().cbegin(); it != saveData["Workspaces"].object_items().cend(); ++it)
     {
         std::string id = static_cast<std::string>(it->first);
         std::cout << id << std::endl;
@@ -122,15 +122,15 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
         std::cout << "array count = " << objectArray.size() << std::endl;
         
         
-        for(int i =0; i< objectArray.size(); i++) // for each item of the array...
+        for (int i = 0; i < objectArray.size(); i++) // for each item of the array...
         {
-            for(auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
+            for (auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
             {
                 
-                std::cout << " ===== "<< it->first << " ===== "<< std::endl;
-                std::cout << "object type= "<< it->second["objectType"].string_value() << std::endl;
-                std::cout << "object uniqueID= "<< it->second["objectUniqueID"].string_value() << std::endl;
-                std::cout << "object status= "<< it->second["status"].string_value() << std::endl;
+                std::cout << " ===== " << it->first << " ===== " << std::endl;
+                std::cout << "object type= " << it->second["objectType"].string_value() << std::endl;
+                std::cout << "object uniqueID= " << it->second["objectUniqueID"].string_value() << std::endl;
+                std::cout << "object status= " << it->second["status"].string_value() << std::endl;
                 
                 
                 // ===== create object =====
@@ -185,7 +185,7 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
 
 void IRiMaSMainComponent::openProject()
 {
-    printf("Opening a project...\n");
+    std::cout << "Opening a project..." << std::endl;
     
     FileChooser chooser("Select an audio file to play...",
                         {},
@@ -204,18 +204,24 @@ void IRiMaSMainComponent::openProject()
     }
     else
     {
-        printf("Could not open any files.\n");
+        std::cout << "Could not open any files." << std::endl;
     }
 }
 
 void IRiMaSMainComponent::closeProject(DocumentWindow* closingWindow)
 {
     auto it = std::find(this->projectLib.begin(), this->projectLib.end(), closingWindow);
-    if (it != this->projectLib.end()) { this->projectLib.erase(it); }
-    else std::cout << "IRMAIN : closeProject : Could not find window of " << closingWindow << std::endl;
+    if (it != this->projectLib.end())
+    {
+        this->projectLib.erase(it);
+    }
+    else
+    {
+        std::cout << "IRiMaSMainComponent : closeProject : Could not find window of " << closingWindow << std::endl;
+    }
     
     
-    if(this->projectLib.size() == 0)
+    if (this->projectLib.size() == 0)
     {
         this->startWindow->setVisible(true);
     }
@@ -237,7 +243,7 @@ void IRiMaSMainComponent::openProjectAction()
 
 void IRiMaSMainComponent::closeProjectAction(DocumentWindow* closingWindow)
 {
-    std::cout<<"IRMAIN closeProjectAction : " << closingWindow << std::endl;
+    std::cout << "IRiMaSMainComponent closeProjectAction: " << closingWindow << std::endl;
 
     closeProject(closingWindow);
 }
@@ -246,15 +252,16 @@ void IRiMaSMainComponent::closeProjectAction(DocumentWindow* closingWindow)
 void IRiMaSMainComponent::saveProjectAction(IRProject* project)
 {
     //if saveDataPath is not yet set.
-    std::cout << "save project Action path = "<< project->getProjectPath() << std::endl;
-    if(project->getProjectPath().size() == 0){
+    std::cout << "save project Action path = " << project->getProjectPath() << std::endl;
+    if (project->getProjectPath().size() == 0)
+    {
         
         // create new save data file with an extension of ".irimas by default
         FileChooser chooser("Save project...",
                             {},
                             "");
         
-        if(chooser.browseForFileToSave(true))
+        if (chooser.browseForFileToSave(true))
         {
             auto file = chooser.getResult();
             auto path = file.getFullPathName();
@@ -269,7 +276,7 @@ void IRiMaSMainComponent::saveProjectAction(IRProject* project)
         }
         else
         {
-            printf("Could not open any files.\n");
+            std::cout << "Could not open any files." << std::endl;
         }
     }
     else
@@ -295,7 +302,7 @@ void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
     }
     else
     {
-        printf("Could not open any files.\n");
+        std::cout << "Could not open any files." << std::endl;
     }
 }
 
@@ -305,7 +312,7 @@ void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
 
 void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
-    printf("changeListener \n");
+    std::cout << "changeListener" << std::endl;
     if (this->startWindow.get() == source)
     {
         if (this->startWindow->getMenuActionStatus() == IRStarter::MenuActionStatus::CreateNewProjectAction)
@@ -317,9 +324,9 @@ void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
             openProject();
         }
     }
-    else if(dynamic_cast<IRProjectWindow*>(source) != nullptr)
+    else if (dynamic_cast<IRProjectWindow*>(source) != nullptr)
     {
-        printf("source == IRProjectWindow object\n");
+        std::cout << "source == IRProjectWindow object" << std::endl;
     }
 }
 
