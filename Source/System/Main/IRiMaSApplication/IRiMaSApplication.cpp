@@ -25,26 +25,19 @@ const String IRiMaSApplication::getApplicationVersion()
 
 bool IRiMaSApplication::moreThanOneInstanceAllowed()
 {
-    return true;
+    return false;
 }
 
 
-void IRiMaSApplication::initialise (const String& commandLine)
+void IRiMaSApplication::initialise(const String& commandLine)
 {
-    //this->preferenceWindow = new PreferenceWindow (getApplicationName());
-    
-    this->mainWindow.reset(new IRMAIN(getApplicationName()));
-    this->mainWindow->initialize();
-    
-    //this->projectLib.push_back(new IRProjectWindow(getApplicationName(),this->preferenceWindow));
-    
+    this->mainComponent.reset(new IRiMaSMainComponent(getApplicationName()));
 }
 
 
 void IRiMaSApplication::shutdown()
 {
-    // delete this->preferenceWindow;
-    this->mainWindow = nullptr;
+    this->mainComponent = nullptr;
 }
 
 
@@ -53,18 +46,12 @@ void IRiMaSApplication::systemRequestedQuit()
     quit();
 }
 
-void IRiMaSApplication::anotherInstanceStarted (const String& commandLine)
+
+void IRiMaSApplication::anotherInstanceStarted(const String& commandLine)
 {
     
 }
 
-
-/*
-void createNewProject()
-{
-    
-}
-*/
 
 
 

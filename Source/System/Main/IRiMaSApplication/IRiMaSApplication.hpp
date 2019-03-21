@@ -1,12 +1,15 @@
 
 #include "JuceHeader.h"
 
-#include "IRiMaSMain.hpp"
-//#include "PreferenceWindow.hpp"
+#include "IRiMaSMainComponent.hpp"
 
 
-class IRiMaSApplication  : public JUCEApplication
+
+
+
+class IRiMaSApplication : public JUCEApplication
 {
+    
 public:
     
     IRiMaSApplication();
@@ -15,19 +18,19 @@ public:
     const String getApplicationVersion() override;
     bool moreThanOneInstanceAllowed() override;
     
-    void initialise (const String& commandLine) override;
+    void initialise(const String& commandLine) override;
     void shutdown() override;
     
     void systemRequestedQuit() override;
+    void anotherInstanceStarted(const String& commandLine) override;
     
-    void anotherInstanceStarted (const String& commandLine) override;
-    
-    // void createNewProject();
     
 private:
     
-    std::unique_ptr<IRMAIN> mainWindow;
-    //PreferenceWindow* preferenceWindow;
+    std::unique_ptr<IRiMaSMainComponent> mainComponent;
+    
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRiMaSApplication)
     
 };
 

@@ -1,11 +1,11 @@
 
-#include "IRiMaSMain.hpp"
+#include "IRiMaSMainComponent.hpp"
 
 
 
 
 
-IRMAIN::IRMAIN(const String applicationName)
+IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 {
     
     this->applicationName = applicationName;
@@ -14,10 +14,11 @@ IRMAIN::IRMAIN(const String applicationName)
     // IRObjectFactory is created as a singleton manner
     init_factory f;
     
+    this->initialize();
 }
 
 
-IRMAIN::~IRMAIN()
+IRiMaSMainComponent::~IRiMaSMainComponent()
 {
     delete this->preferenceWindow;
     for(auto win : this->projectLib)
@@ -44,7 +45,7 @@ IRMAIN::~IRMAIN()
 }
 
 
-void IRMAIN::initialize()
+void IRiMaSMainComponent::initialize()
 {
     // create window for preference
     this->preferenceWindow = new PreferenceWindow (applicationName);
@@ -58,7 +59,7 @@ void IRMAIN::initialize()
 }
 
 
-void IRMAIN::createNewProject()
+void IRiMaSMainComponent::createNewProject()
 {
     printf("Creating new project... projectWindow\n");
     IRProjectWindow* project = new IRProjectWindow("Untitled",this->preferenceWindow);
@@ -79,7 +80,7 @@ void IRMAIN::createNewProject()
 }
 
 
-void IRMAIN::createNewProjectFromSaveData(std::string path)
+void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
 {
     printf("========== createNewProjectFromSaveData ==========\n");
     IRSaveLoadSystem::dataStr data = this->saveLoadClass.getSaveDataStr();
@@ -195,12 +196,12 @@ void IRMAIN::createNewProjectFromSaveData(std::string path)
 }
 
 
-void IRMAIN::openProject()
+void IRiMaSMainComponent::openProject()
 {
     printf("Opening a project...\n");
     
     FileChooser chooser("Select an audio file to play...",
-                        File::nonexistent,
+                        {},
                         "*.irimas");
     
     if (chooser.browseForFileToOpen())
@@ -220,7 +221,7 @@ void IRMAIN::openProject()
     }
 }
 
-void IRMAIN::closeProject(DocumentWindow* closingWindow)
+void IRiMaSMainComponent::closeProject(DocumentWindow* closingWindow)
 {
     auto it = std::find(this->projectLib.begin(), this->projectLib.end(), closingWindow);
     if (it != this->projectLib.end()) { this->projectLib.erase(it); }
@@ -235,19 +236,19 @@ void IRMAIN::closeProject(DocumentWindow* closingWindow)
 
 
 // from IRProject Listener
-void IRMAIN::createNewProjectAction()
+void IRiMaSMainComponent::createNewProjectAction()
 {
     createNewProject();
 }
 
 
-void IRMAIN::openProjectAction()
+void IRiMaSMainComponent::openProjectAction()
 {
     openProject();
 }
 
 
-void IRMAIN::closeProjectAction(DocumentWindow* closingWindow)
+void IRiMaSMainComponent::closeProjectAction(DocumentWindow* closingWindow)
 {
     std::cout<<"IRMAIN closeProjectAction : " << closingWindow << std::endl;
 
@@ -255,7 +256,7 @@ void IRMAIN::closeProjectAction(DocumentWindow* closingWindow)
 }
 
 
-void IRMAIN::saveProjectAction(IRProject* project)
+void IRiMaSMainComponent::saveProjectAction(IRProject* project)
 {
     //if saveDataPath is not yet set.
     std::cout << "save project Action path = "<< project->getProjectPath() << std::endl;
@@ -263,7 +264,7 @@ void IRMAIN::saveProjectAction(IRProject* project)
         
         // create new save data file with an extension of ".irimas by default
         FileChooser chooser("Save project...",
-                            File::nonexistent,
+                            {},
                             "");
         
         if(chooser.browseForFileToSave(true))
@@ -291,10 +292,10 @@ void IRMAIN::saveProjectAction(IRProject* project)
 }
 
 
-void IRMAIN::saveAsProjectAction(IRProject* project)
+void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
 {
     FileChooser chooser("Save project...",
-                        File::nonexistent,
+                        {},
                         "*.irimas");
     
     if (chooser.browseForFileToSave(true))
@@ -315,7 +316,7 @@ void IRMAIN::saveAsProjectAction(IRProject* project)
 // *** PRIVATE METHODS
 
 
-void IRMAIN::changeListenerCallback (ChangeBroadcaster* source)
+void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
     printf("changeListener \n");
     if (this->startWindow.get() == source)
