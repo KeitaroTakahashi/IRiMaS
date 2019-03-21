@@ -7,14 +7,11 @@
 
 IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 {
-    
     this->applicationName = applicationName;
     
-    // initialize object factory of IRObjectFactory
-    // IRObjectFactory is created as a singleton manner
-    init_factory f;
+    ObjectFactoryInitializer(); // this will create a singleton and initialise the object palette
     
-    this->initialize();
+    this->initialise();
 }
 
 
@@ -28,31 +25,21 @@ IRiMaSMainComponent::~IRiMaSMainComponent()
     
     this->projectLib.clear();
     
-    // also somehow destroy the objects that have been allocated in IR FACTORY
-    
-    
-    // IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
     singleton<IRObjectFactory>::explicitlyDestroy(); // OK - THAT IS THE THING TO DO. THIS ULTIMATELY DESTROYS THE T_OBJECTs AND AVOIDS THE LEAK OF THE ENBEDDED IMAGES.
-    /*
-    for (auto i : IRFactory.getRegisteredObjectList())
-    {
-        std::cout << "Item to delete: " << i.second.name << std::endl;
-        // i.second.~t_object(); // removing this causes the leak...
-    }
-     */
-    std::cout << "done the loop, now" << std::endl;
     
+    
+    std::cout << "end call destructor IRiMaSMainComponent" << std::endl;
 }
 
 
-void IRiMaSMainComponent::initialize()
+void IRiMaSMainComponent::initialise()
 {
     // create window for preference
-    this->preferenceWindow = new PreferenceWindow (applicationName);
+    this->preferenceWindow = new PreferenceWindow(applicationName);
     // create initial project window
     //this->projectLib.push_back(new IRProjectWindow(applicationName,this->preferenceWindow));
     
-    this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640,480)));
+    this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640, 480)));
     this->startWindow->addChangeListener(this);
     
     

@@ -5,7 +5,7 @@
 #include "JuceHeader.h"
 
 
-#include "ObjectFactory.h"
+#include "ObjectFactoryInitializer.hpp"
 #include "IRProjectWindow.hpp"
 #include "IRStarter.hpp"
 #include "IRStartWindow.hpp"
@@ -27,16 +27,19 @@ IRMAIN class operates
 
 
 
+
+
 class IRiMaSMainComponent : public Component,
                             public ChangeListener,
                             public IRProject::Listener
 {
+    
 public:
     
     IRiMaSMainComponent(const String applicationName);
     ~IRiMaSMainComponent();
     
-    void initialize();
+    void initialise();
     
     void createNewProject();
     void createNewProjectFromSaveData(std::string path);
@@ -55,7 +58,6 @@ private:
     
     void changeListenerCallback (ChangeBroadcaster* source) override;
     
-    // application name
     String applicationName;
     std::string saveDataPath = "";
     
@@ -65,7 +67,6 @@ private:
     // storing a currently active project window
     IRProjectWindow* activeProjectWindow;
     
-    // preference window
     PreferenceWindow* preferenceWindow;
     
     // start window initially opened when launching this app
@@ -75,15 +76,21 @@ private:
     IRSaveLoadSystem saveLoadClass;
     json11::Json saveData;
     
-    // IRObjectFactory
     IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
     
-    // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRiMaSMainComponent)
+    
 };
 
 
+
+
+
 #endif /* IRiMaSMain_hpp */
+
+
+
+
