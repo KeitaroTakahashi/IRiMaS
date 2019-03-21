@@ -63,8 +63,10 @@ public:
                 return Mat2Image_RGB(m);
                 break;
             case 4: // ARGB
+                return nullptr;
                 break;
             case 1: // GreyScale
+                return nullptr;
                 break;
             default:
                 return nullptr;

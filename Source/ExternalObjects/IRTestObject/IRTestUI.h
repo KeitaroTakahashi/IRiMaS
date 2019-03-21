@@ -28,7 +28,7 @@ public:
         g.fillAll(Colours::blue);
     }
     // --------------------------------------------------
-    void setEditMode(bool flag)
+    void setEditMode(bool flag) override
     {
         this->editModeFlag = flag;
 

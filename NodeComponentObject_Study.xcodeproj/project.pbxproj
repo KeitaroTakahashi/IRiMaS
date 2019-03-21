@@ -2364,7 +2364,7 @@
 					"-lopencv_imgproc",
 					"-lopencv_core",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NodeComponentObject_Study;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NodeComponentObjectStudy;
 				SDKROOT_ppc = macosx10.5;
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Source/**";
 				USE_HEADERMAP = YES;
@@ -2550,7 +2550,7 @@
 					"-lopencv_imgproc",
 					"-lopencv_core",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NodeComponentObject_Study;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NodeComponentObjectStudy;
 				SDKROOT_ppc = macosx10.5;
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Source/**";
 				USE_HEADERMAP = YES;

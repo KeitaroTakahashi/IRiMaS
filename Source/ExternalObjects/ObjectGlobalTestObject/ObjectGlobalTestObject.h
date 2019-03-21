@@ -82,7 +82,7 @@ public:
     {
         float* test = new float [10];
         
-       char* stringTest = "This is a test.";
+        std::string stringTest = "This is a test.";
         
         for(int i=0;i<10;i++){
             test[i] = (float)i * 0.01;
