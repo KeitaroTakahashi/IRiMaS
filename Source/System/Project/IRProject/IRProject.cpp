@@ -166,10 +166,11 @@ void IRProject::createNewWorkspace()
 
 void IRProject::createWorkspaceList()
 {
-    this->workspaceList = new IRWorkspaceList(Rectangle<int>(0,0,this->workspaceListWidth,getHeight()));
+ //   this->workspaceList = new IRWorkspaceList(Rectangle<int>(0, 0, this->workspaceListWidth, getHeight()));
+    this->workspaceList = std::make_shared<IRWorkspaceList>(Rectangle<int>(0, 0, this->workspaceListWidth, getHeight()));
     this->workspaceList->addListener(this);
     this->workspaceList->addChangeListener(this);
-    addAndMakeVisible(this->workspaceList);
+    addAndMakeVisible(this->workspaceList.get());
 }
 
 
@@ -177,7 +178,8 @@ void IRProject::createWorkspaceList()
 void IRProject::removeWorkspace(IRWorkSpace* workspace)
 {
     auto it = std::find(this->workspaces.begin(), this->workspaces.end(), workspace);
-    if (it != this->workspaces.end()) {
+    if (it != this->workspaces.end())
+    {
         this->workspaces.erase(it);
     }
 }
@@ -450,7 +452,7 @@ IRProject::MenuActionStatus IRProject::getMenuActionStatus() const
 
 IRWorkspaceList* IRProject::getWorkspaceList()
 {
-    return this->workspaceList;
+    return this->workspaceList.get();
 }
 
 
@@ -525,7 +527,9 @@ void IRProject::openFileInspecterWindow()
     {
         this->fileInspecterWindow = new IRFileInspecterWindow("File Inspecter");
         
-    }else{
+    }
+    else
+    {
         this->fileInspecterWindow->updateInspecter();
     }
     this->fileInspecterWindow->show();
@@ -540,7 +544,7 @@ void IRProject::openFileInspecterWindow()
 
 void IRProject::changeListenerCallback(ChangeBroadcaster* source)
 {
-    if(source == this->workspaceList)
+    if(source == this->workspaceList.get())
     {
         // if workspace item is selected
         if(this->workspaceList->getEventStatus() == IRWorkspaceList::listEventStatus::listEventSelected){
@@ -591,7 +595,9 @@ ApplicationCommandTarget* IRProject::getNextCommandTarget()
 
 void IRProject::getAllCommands(Array<CommandID>&c)
 {
-    Array<CommandID> commands { CommandIDs::NewProject,
+    Array<CommandID> commands
+    {
+        CommandIDs::NewProject,
         CommandIDs::OpenProject,
         CommandIDs::CloseProject,
         CommandIDs::SaveProject,
@@ -689,7 +695,7 @@ bool IRProject::perform(const InvocationInfo& info)
 
 
 // AudioAppComponent
-void IRProject::AudioSetup()
+void IRProject::audioSetup()
 {
     setAudioChannels(0, 2);
 }

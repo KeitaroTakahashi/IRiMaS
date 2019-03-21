@@ -158,7 +158,7 @@ private:
     bool perform(const InvocationInfo& info) override;
     
     // AudioAppComponent
-    void AudioSetup();
+    void audioSetup();
     void closeAudioSetup();
     
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
@@ -179,7 +179,8 @@ private:
     // do not forget to call toFront() and manageHeavyWeightCoponent() methods when update it.
     IRWorkSpace* topSpace = nullptr;
     
-    IRWorkspaceList *workspaceList = nullptr;
+    // IRWorkspaceList *workspaceList = nullptr;
+    std::shared_ptr<IRWorkspaceList> workspaceList { nullptr };
     
     int workspaceListWidth = 150;
     

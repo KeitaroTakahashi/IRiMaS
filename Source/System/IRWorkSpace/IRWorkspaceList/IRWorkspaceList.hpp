@@ -11,10 +11,10 @@
 
 
 class IRWorkspaceList : public Component,
-public ChangeBroadcaster,
-public ChangeListener,
-public KeyListener,
-public KeAnimationComponent
+                        public ChangeBroadcaster,
+                        public ChangeListener,
+                        public KeyListener,
+                        public KeAnimationComponent
 {
     
 public:
@@ -225,6 +225,9 @@ private:
     
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkspaceList)
+    
 };
 
 
