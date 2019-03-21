@@ -44,6 +44,8 @@ IRStarter::~IRStarter()
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
 #endif
+    
+    delete editCommandTarget;
 }
 
 
