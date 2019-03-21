@@ -18,12 +18,11 @@ IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 
 IRiMaSMainComponent::~IRiMaSMainComponent()
 {
-    /*
+
     for (auto win : this->projectLib)
     {
         delete win;
     }
-     */
     
     this->projectLib.clear();
     

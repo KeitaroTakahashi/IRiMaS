@@ -34,10 +34,11 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
     this->commandManager.registerAllCommandsForTarget (this);
     
     addKeyListener(this->commandManager.getKeyMappings());
-    this->editCommandTarget = new EditCommandTarget( commandManager );
+    // this->editCommandTarget = new EditCommandTarget( commandManager );
+    this->editCommandTarget = std::make_unique<EditCommandTarget>(commandManager);
     this->editCommandTarget->addListener(this);
     
-    addAndMakeVisible(this->editCommandTarget);
+    addAndMakeVisible(this->editCommandTarget.get());
 
     // setup
     setAudioChannels(0, 2);
@@ -46,10 +47,14 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
 
 IRProject::~IRProject()
 {
+    std::cout << "beg of IR Project destructor" << std::endl;
+    
     shutdownAudio();
     
     if(this->fileInspecterWindow != nullptr)
         delete this->fileInspecterWindow;
+    
+    std::cout << "end of IR Project destructor" << std::endl;
 }
 
 
@@ -151,7 +156,11 @@ void IRProject::createNewWorkspace()
         
         this->workspaceList->addWorkspace(space);
         
-    }else{ printf("Error : createNewWorkspace() : could not add new workspace, workspaceList null.\n");}
+    }
+    else
+    {
+        std::cout << "Error : createNewWorkspace() : could not add new workspace, workspaceList null" << std::endl;
+    }
 }
 
 
@@ -576,7 +585,7 @@ void IRProject::setMenuBarPosition ( MenuBarPosition newPosition )
 
 ApplicationCommandTarget* IRProject::getNextCommandTarget()
 {
-    return editCommandTarget;
+    return editCommandTarget.get();
 }
 
 

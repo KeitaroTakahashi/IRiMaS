@@ -201,7 +201,8 @@ private:
     
     std::unique_ptr<MenuBarComponent> menuBar;
     MenuBarPosition menuBarPosition = MenuBarPosition::window;
-    EditCommandTarget* editCommandTarget;
+    // EditCommandTarget* editCommandTarget;
+    std::unique_ptr<EditCommandTarget> editCommandTarget;
     
     SidePanel sidePanel { "Menu", 300, false };
     

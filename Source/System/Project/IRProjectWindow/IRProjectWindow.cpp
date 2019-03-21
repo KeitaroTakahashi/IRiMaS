@@ -44,7 +44,7 @@ DocumentWindow (name,
 
 IRProjectWindow::~IRProjectWindow()
 {
-    
+    std::cout << "end of IR ProjectWindow destructor" << std::endl;
 }
 
 
