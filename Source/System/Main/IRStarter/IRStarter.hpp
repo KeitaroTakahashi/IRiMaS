@@ -7,22 +7,16 @@
 #include "Menus.h"
 #include "EditCommandTarget.hpp"
 
-#include <random>
 
-/*
-    IRMAIN
-    |
-    IRStartWindow
-    |
-    IRStarter
- 
- */
+
+
+
 class IRStarter : public Component,
-public ApplicationCommandTarget,
-public MenuBarModel,
-public ChangeListener,
-public ChangeBroadcaster,
-private EditCommandTarget::Listener
+                  public ApplicationCommandTarget,
+                  public MenuBarModel,
+                  public ChangeListener,
+                  public ChangeBroadcaster,
+                  private EditCommandTarget::Listener
 {
     
 public:
@@ -83,12 +77,15 @@ private:
     ApplicationCommandManager commandManager;
     std::unique_ptr<MenuBarComponent> menuBar;
     MenuBarPosition menuBarPosition = MenuBarPosition::window;
-    EditCommandTarget* editCommandTarget;
+    // EditCommandTarget* editCommandTarget;
+    std::unique_ptr<EditCommandTarget> editCommandTarget;
     SidePanel sidePanel { "Menu", 300, false };
     
     MenuActionStatus menu_action_status;
     
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRStarter)
+    
 };
 
 

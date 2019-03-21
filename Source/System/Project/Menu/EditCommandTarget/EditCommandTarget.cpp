@@ -4,11 +4,12 @@
 
 
 
+
 EditCommandTarget::EditCommandTarget(ApplicationCommandManager& m)
-: commandManager(m),
-windowCommandTarget(commandManager)
+    : commandManager(m),
+    windowCommandTarget(commandManager)
 {
-    printf("EditCommandTarget\n");
+    // std::cout << "EditCommandTarget" << std::endl;
     commandManager.registerAllCommandsForTarget(this);
     
     addAndMakeVisible(this->windowCommandTarget);
@@ -35,7 +36,8 @@ ApplicationCommandTarget* EditCommandTarget::getNextCommandTarget()
 
 void EditCommandTarget::getAllCommands(Array<CommandID>& c)
 {
-    Array<CommandID> commands {
+    Array<CommandID> commands
+    {
         CommandIDs::EditMode,
         CommandIDs::Undo,
         CommandIDs::Redo,
@@ -54,32 +56,32 @@ void EditCommandTarget::getCommandInfo(CommandID commandID, ApplicationCommandIn
     switch (commandID)
     {
         case CommandIDs::EditMode:
-            result.setInfo ("EditMode", "Switch Edit Mode", "Edit", 0);
-            result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
+            result.setInfo("EditMode", "Switch Edit Mode", "Edit", 0);
+            result.addDefaultKeypress('e', ModifierKeys::commandModifier);
             break;
         case CommandIDs::Undo:
-            result.setInfo ("Undo", "Sets the outer colour to red", "Edit", 0);
-            result.addDefaultKeypress ('z', ModifierKeys::commandModifier);
+            result.setInfo("Undo", "Sets the outer colour to red", "Edit", 0);
+            result.addDefaultKeypress('z', ModifierKeys::commandModifier);
             break;
         case CommandIDs::Redo:
-            result.setInfo ("Redo", "Sets the outer colour to red", "Edit", 0);
-            result.addDefaultKeypress ('z', ModifierKeys::shiftModifier);
+            result.setInfo("Redo", "Sets the outer colour to red", "Edit", 0);
+            result.addDefaultKeypress('z', ModifierKeys::shiftModifier);
             break;
         case CommandIDs::Cut:
-            result.setInfo ("Cut", "Sets the outer colour to red", "Edit", 0);
-            result.addDefaultKeypress ('x', ModifierKeys::commandModifier);
+            result.setInfo("Cut", "Sets the outer colour to red", "Edit", 0);
+            result.addDefaultKeypress('x', ModifierKeys::commandModifier);
             break;
         case CommandIDs::Copy:
-            result.setInfo ("Copy", "Sets the outer colour to red", "Edit", 0);
-            result.addDefaultKeypress ('c', ModifierKeys::commandModifier);
+            result.setInfo("Copy", "Sets the outer colour to red", "Edit", 0);
+            result.addDefaultKeypress('c', ModifierKeys::commandModifier);
             break;
         case CommandIDs::Paste:
-            result.setInfo ("Paste", "Sets the outer colour to red", "Edit", 0);
-            result.addDefaultKeypress ('v', ModifierKeys::commandModifier);
+            result.setInfo("Paste", "Sets the outer colour to red", "Edit", 0);
+            result.addDefaultKeypress('v', ModifierKeys::commandModifier);
             break;
         case CommandIDs::Duplicate:
-            result.setInfo ("Duplicate", "Sets the outer colour to red", "Edit", 0);
-            result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
+            result.setInfo("Duplicate", "Sets the outer colour to red", "Edit", 0);
+            result.addDefaultKeypress('d', ModifierKeys::commandModifier);
             break;
             
         default:
