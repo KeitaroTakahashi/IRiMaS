@@ -19,6 +19,7 @@ IRNodeObject(parent,"IRSoundPlayer")
 
 IRSoundPlayerObject::~IRSoundPlayerObject()
 {
+    std::cout << "~IRSOUNDPLAYEROBJECT DESTRUCTOR CALLED" << std::endl;
     // delete this->player;
 }
 

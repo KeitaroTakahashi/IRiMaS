@@ -10,7 +10,7 @@ IRNodeObject::IRNodeObject(Component* parent, String name, NodeObjectType object
 
 IRNodeObject::~IRNodeObject()
 {
-    
+    std::cout << "~IRNODEOBJECT DESTRUCTOR CALLED" << std::endl;
 }
 
 
