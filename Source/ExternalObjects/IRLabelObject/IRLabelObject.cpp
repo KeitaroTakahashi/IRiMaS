@@ -44,7 +44,7 @@ IRLabelObject::IRLabelObject(Component* parent) : IRNodeObject(parent, "IRLabel"
 
 IRLabelObject::~IRLabelObject()
 {
-    
+    delete this->preference;
 }
 
 

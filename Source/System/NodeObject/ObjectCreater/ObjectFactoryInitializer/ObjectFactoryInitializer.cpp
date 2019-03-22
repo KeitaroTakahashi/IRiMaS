@@ -10,6 +10,10 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     Image img; // dummy
     
     objectFactory.registerObject<IRLabelObject>("IRLabel", "Label", img);
+    
+    // DISABLING THE REST NOW TO FOCUS MY ATTENTION ON IRLABELOBJECT
+    
+    /*
     objectFactory.registerObject<IRTextEditorObject>("IRTextEditor", "Text Editor", img);
     objectFactory.registerObject<IRImageViewerObject>("IRImageViewer", "Image Viewer", img);
     objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img);
@@ -21,6 +25,7 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
     
     objectFactory.registerObject<IRTestObject>("IRTestObject", "test", img);
+     */
     
     // objectFactory.registerObject<IRCVVideoPlayer>("IRCVVideoPlayer", "CV Video Player", img);
 }

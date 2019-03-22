@@ -111,7 +111,9 @@ private:
     // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FontGUI)
+    
 };
 
 

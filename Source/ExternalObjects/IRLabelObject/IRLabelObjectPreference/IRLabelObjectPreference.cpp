@@ -7,6 +7,7 @@
 IRLabelObjectPreference::IRLabelObjectPreference(String title, Rectangle<int> frameRect) :
 IRPreferenceObject(title,frameRect)
 {
+    std::cout << "IRLABELOBJECTPREFERENCE CREATED??" << std::endl;
     this->fontGUI = new FontGUI(title);
     addAndMakeVisible(this->fontGUI);
     this->fontGUI->addChangeListener(this);
@@ -15,7 +16,7 @@ IRPreferenceObject(title,frameRect)
 
 IRLabelObjectPreference::~IRLabelObjectPreference()
 {
-    
+    std::cout << "IRLABELOBJECTPREFERENCE DESTROYED??" << std::endl;
 }
 
 
