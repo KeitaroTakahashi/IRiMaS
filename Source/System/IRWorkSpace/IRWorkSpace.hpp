@@ -27,14 +27,15 @@
 
 
 class IRWorkSpace : public AudioAppComponent,
-public ChangeBroadcaster,
-public ChangeListener,
-public IRNodeObject::Listener,
-public ObjectListMenu::Listener,
-private KeyListener
-
+                    public ChangeBroadcaster,
+                    public ChangeListener,
+                    public IRNodeObject::Listener,
+                    public ObjectListMenu::Listener,
+                    private KeyListener
 {
+    
 public:
+    
     IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindow* preferenceWindow);
     ~IRWorkSpace();
     
@@ -88,7 +89,7 @@ public:
     
     // object management
     void createObject(IRNodeObject* obj);
-    void createObject(std::string objName);
+    // void createObject(std::string objName);
     void copyObject(IRNodeObject *obj, bool clearCopied);
     void pasteObject(IRNodeObject *obj, bool addToSelected);
     void duplicateObject(IRNodeObject *obj);
@@ -186,9 +187,15 @@ private:
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkSpace)
+    
 };
 
+
+
+
+
 #endif /* IRWorkSpace_hpp */
+
 
 
 

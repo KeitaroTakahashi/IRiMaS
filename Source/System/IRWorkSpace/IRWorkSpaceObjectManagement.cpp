@@ -216,10 +216,12 @@ void IRWorkSpace::itemHasSelectedAction(ObjectListMenu* menu)
     
 }
 // ------------------------------------------------------------
+/*
 void IRWorkSpace::createObject(std::string objName)
 {
     
 }
+ */
 // ------------------------------------------------------------
 void IRWorkSpace::dragoutNodeObjectFromParent(IRNodeObject* obj)
 {

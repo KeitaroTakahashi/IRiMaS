@@ -33,6 +33,12 @@ IRWorkSpace::~IRWorkSpace()
     std::cout << "workspace destructor called" << std::endl;
     delete this->objectMenuComponent;
     delete this->selector;
+    
+    // but of course, all objects on the workspace must also be destroyed.
+    for (auto &&o : this->objects)
+    {
+        delete o;
+    }
 }
 
 
