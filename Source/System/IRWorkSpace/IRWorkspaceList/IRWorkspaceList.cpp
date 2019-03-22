@@ -16,7 +16,14 @@ IRWorkspaceList::IRWorkspaceList(Rectangle<int> frameRect)
 
 IRWorkspaceList::~IRWorkspaceList()
 {
-    
+    std::cout << "workspace list deleted" << std::endl;
+
+    for (auto &&s : this->snapComponents)
+    {
+        delete s;
+    }
+    removeAllChildren();
+    this->snapComponents.clear();
 }
 
 
@@ -47,6 +54,10 @@ void IRWorkspaceList::updateList()
         selectedIndex = this->currentlySelectedSnap->getIndex() - 1;
     }
     
+    for (auto &&s : this->snapComponents)
+    {
+        delete s;
+    }
     removeAllChildren();
     this->snapComponents.clear();
     
@@ -63,12 +74,12 @@ void IRWorkspaceList::updateList()
         
         Rectangle<int> rect(0, ht, getWidth(), h);
         
-        // ShowSnap *s = new ShowSnap(rect, index, space);
-        std::shared_ptr<ShowSnap> s = std::make_shared<ShowSnap>(rect, index, space);
+        ShowSnap *s = new ShowSnap(rect, index, space);
+        // std::shared_ptr<ShowSnap> s = std::make_shared<ShowSnap>(rect, index, space);
         s->updateImage();
         s->addChangeListener(this);
-        this->snapComponents.add(s.get());
-        addAndMakeVisible(s.get());
+        this->snapComponents.add(s);
+        addAndMakeVisible(s);
         
         index++;
     }
