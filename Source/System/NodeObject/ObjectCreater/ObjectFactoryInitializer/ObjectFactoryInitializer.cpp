@@ -18,13 +18,14 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     objectFactory.registerObject<IRAutomationObject>("IRAutomation", "Automation Graph", img);
     objectFactory.registerObject<IRVideoPlayerObject>("IRVideoPlayer", "Video Player", img); // leak videocomp
     objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
+    objectFactory.registerObject<IRTestObject>("IRTestObject", "test", img);
     
     /*
     
     
     
     
-    objectFactory.registerObject<IRTestObject>("IRTestObject", "test", img);
+    
      */
     
     // objectFactory.registerObject<IRCVVideoPlayer>("IRCVVideoPlayer", "CV Video Player", img);
