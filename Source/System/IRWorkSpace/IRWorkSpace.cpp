@@ -236,7 +236,7 @@ AudioSource& IRWorkSpace::getMixer()
 json11::Json IRWorkSpace::makeSaveDataOfThis()
 {
     
-    printf("makeSaveDataOfThis\n");
+    std::cout << "makeSaveDataOfThis" << std::endl;
     std::vector<json11::Json::object> objectList;
     
     int index = 0;

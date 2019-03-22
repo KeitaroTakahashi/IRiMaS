@@ -247,13 +247,25 @@ json11::Json IRProject::saveAction(std::string filePath)
     this->projectPath = filePath;
 
     // the project path is not yet given.
-    if(filePath.size() == 0) { printf("projectPath 0\n"); return false; }
+    if (filePath.size() == 0)
+    {
+        std::cout << "projectPath 0" << std::endl;
+        return false;
+    }
     
     // if no contents in this project
-    if(this->workspaces.size() == 0) { printf("workspace size 0\n"); return false; }
+    if (this->workspaces.size() == 0)
+    {
+        std::cout << "workspace size 0" << std::endl;
+        return false;
+    }
     
     // try to make project directories
-    if(!this->saveLoadClass.createProjectDirectory(filePath)) {printf("could not make project directory.\n"); return false; }
+    if(! this->saveLoadClass.createProjectDirectory(filePath))
+    {
+        std::cout << "could not make project directory." << std::endl;
+        return false;
+    }
     
     Rectangle<int> b = getBounds();
     
@@ -686,7 +698,7 @@ bool IRProject::perform(const InvocationInfo& info)
             break;
             
         case CommandIDs::fileInspecterWindow:
-            printf("window menu perform in IRProject \n");
+            std::cout << "window menu perform in IRProject" << std::endl;
             openFileInspecterWindow();
             break;
         case CommandIDs::menuPreferenceWindow:

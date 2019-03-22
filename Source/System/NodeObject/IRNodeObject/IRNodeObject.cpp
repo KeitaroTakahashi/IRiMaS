@@ -226,7 +226,7 @@ void IRNodeObject::callCloseProject()
 void IRNodeObject::callOpenProject()
 {
     
-    printf("IRNodeObject : openProject\n");
+    std::cout << "IRNodeObject : openProject" << std::endl;
     Component::BailOutChecker checker(this);
     //==========
     // check if the objects are not deleted, if deleted, return

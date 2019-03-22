@@ -81,7 +81,7 @@ private:
         
         void mouseDoubleClick(const MouseEvent& e)override
         {
-            printf("Item double clicked!!\n");
+            std::cout << "Item double clicked!!" << std::endl;
             this->owner.selectedRowDoubleClicked(this->index);
         }
         

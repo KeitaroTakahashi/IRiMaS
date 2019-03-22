@@ -25,7 +25,7 @@ IRNodeObject* IRObjectFactory::createObject(std::string id, Component* parent)
 
 void IRObjectFactory::showRegisteredObjectList()
 {
-    printf("showRegisteredObjectList\n");
+    std::cout << "showRegisteredObjectList" << std::endl;
     for (auto item : this->list)
     {
         std::cout << item.first << std::endl;
