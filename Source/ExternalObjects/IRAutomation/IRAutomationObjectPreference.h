@@ -23,7 +23,7 @@ public:
     
     ~IRAutomationObjectPreference()
     {
-    
+        delete this->UI;
     }
     
     //===============================================================
