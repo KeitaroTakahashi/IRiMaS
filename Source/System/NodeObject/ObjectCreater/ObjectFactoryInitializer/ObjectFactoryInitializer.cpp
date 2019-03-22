@@ -11,12 +11,12 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     
     objectFactory.registerObject<IRLabelObject>("IRLabel", "Label", img);
     objectFactory.registerObject<IRTextEditorObject>("IRTextEditor", "Text Editor", img);
+    objectFactory.registerObject<IRImageViewerObject>("IRImageViewer", "Image Viewer", img);
     
     // DISABLING THE REST NOW TO FOCUS MY ATTENTION ON IRLABELOBJECT
     
     /*
     
-    objectFactory.registerObject<IRImageViewerObject>("IRImageViewer", "Image Viewer", img);
     objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img);
     objectFactory.registerObject<IRWaveformObject>("IRWaveform", "Waveform", img);
     objectFactory.registerObject<IRSpectrogramObject>("IRSpectrogram", "Spectrogram", img);
