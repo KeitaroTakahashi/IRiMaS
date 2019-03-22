@@ -1518,23 +1518,23 @@
 		8210D9CC213D3D3F0042F646 /* FFTRelated */ = {
 			isa = PBXGroup;
 			children = (
-				8210D9CD213D3D4D0042F646 /* IRSpectrum */,
+				8210D9CD213D3D4D0042F646 /* IRSpectrogramObject */,
 				821ED1A0217F36EA0019CF54 /* FFTPreferenceUI */,
 			);
 			path = FFTRelated;
 			sourceTree = "<group>";
 		};
-		8210D9CD213D3D4D0042F646 /* IRSpectrum */ = {
+		8210D9CD213D3D4D0042F646 /* IRSpectrogramObject */ = {
 			isa = PBXGroup;
 			children = (
-				8210D9CE213D3E050042F646 /* IRSpectrogramObject.cpp */,
 				8210D9CF213D3E050042F646 /* IRSpectrogramObject.hpp */,
+				8210D9CE213D3E050042F646 /* IRSpectrogramObject.cpp */,
 				8210D9D2213D405D0042F646 /* IRSpectrogram.h */,
 				8286122A214017F900D64F75 /* IRSpectrogramUI.h */,
 				82B0DF33214268FB0000516C /* IRSpectrogramUIEvents.cpp */,
 				821ED19F217F33090019CF54 /* IRSpectrogramObjectPreference.h */,
 			);
-			path = IRSpectrum;
+			path = IRSpectrogramObject;
 			sourceTree = "<group>";
 		};
 		8210D9D7213D4B560042F646 /* DSP */ = {

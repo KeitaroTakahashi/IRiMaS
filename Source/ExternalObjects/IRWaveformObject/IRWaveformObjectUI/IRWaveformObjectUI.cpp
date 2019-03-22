@@ -17,7 +17,7 @@ IRWaveformObjectUI::IRWaveformObjectUI() : IRWaveform()
 
 IRWaveformObjectUI::~IRWaveformObjectUI()
 {
-    
+    delete this->selector;
 }
 
 

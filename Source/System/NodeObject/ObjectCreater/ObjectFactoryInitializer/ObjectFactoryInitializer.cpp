@@ -12,16 +12,20 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     objectFactory.registerObject<IRLabelObject>("IRLabel", "Label", img);
     objectFactory.registerObject<IRTextEditorObject>("IRTextEditor", "Text Editor", img);
     objectFactory.registerObject<IRImageViewerObject>("IRImageViewer", "Image Viewer", img);
-    objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img);
+    objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
+    objectFactory.registerObject<IRWaveformObject>("IRWaveform", "Waveform", img);           // leak is audio
+    objectFactory.registerObject<IRSpectrogramObject>("IRSpectrogram", "Spectrogram", img);  // leak is audio
+    objectFactory.registerObject<IRAutomationObject>("IRAutomation", "Automation Graph", img);
+    
     
     // DISABLING THE REST NOW TO FOCUS MY ATTENTION ON IRLABELOBJECT
     
     /*
     
     
-    objectFactory.registerObject<IRWaveformObject>("IRWaveform", "Waveform", img);
-    objectFactory.registerObject<IRSpectrogramObject>("IRSpectrogram", "Spectrogram", img);
-    objectFactory.registerObject<IRAutomationObject>("IRAutomation", "Automation Graph", img);
+    
+    
+    
     objectFactory.registerObject<IRVideoPlayerObject>("IRVideoPlayer", "Video Player", img);
     
     objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);

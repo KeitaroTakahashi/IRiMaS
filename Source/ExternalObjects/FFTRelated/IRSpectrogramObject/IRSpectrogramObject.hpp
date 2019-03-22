@@ -15,14 +15,16 @@
 #include "IRSpectrogramUI.h"
 
 class IRSpectrogramObject : public IRNodeObject,
-IRNodeObject::Listener,
-KeyListener,
-private ChangeListener
+                            public IRNodeObject::Listener,
+                            public KeyListener,
+                            private ChangeListener
 {
+    
 public:
+    
     IRSpectrogramObject(Component* parent) : IRNodeObject(parent, "IRSpectrogram")
     {
-        this->preference = new IRSpectrogramObjectPreference("Spectrogram Preference", Rectangle<int>(400,720));
+        this->preference = new IRSpectrogramObjectPreference("Spectrogram Preference", Rectangle<int>(400, 720));
         
         this->spectrogram = new IRSpectrogramUI();
         this->spectrogram->addChangeListener(this);
@@ -43,7 +45,14 @@ public:
         setSize(300,100);
 
     }
-    ~IRSpectrogramObject() { /* delete this->selector; // FD ATTEMPT */ }
+    
+    
+    ~IRSpectrogramObject()
+    {
+        delete this->preference;
+        delete this->spectrogram;
+        delete this->selector;
+    }
     
     //==========================================================================
     // copy constructor

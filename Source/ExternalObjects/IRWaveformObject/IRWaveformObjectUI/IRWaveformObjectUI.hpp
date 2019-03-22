@@ -13,8 +13,8 @@
 #include "IRGraphSelector.hpp"
 
 class IRWaveformObjectUI : public IRWaveform,
-                     public IRNodeObject::Listener,
-                     public KeyListener
+                           public IRNodeObject::Listener,
+                           public KeyListener
 {
 
 public:

@@ -40,7 +40,11 @@ public:
         this->FFTSequence = new IRFFTSequence(4096, 2048, IRWindow::TYPE::HAMMING);
     }
     
-    ~IRSpectrogram() {}
+    ~IRSpectrogram()
+    {
+        delete this->player;
+        delete this->FFTSequence;
+    }
     //==========================================================================
 
     struct vertex2d{
