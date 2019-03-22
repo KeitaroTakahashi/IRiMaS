@@ -54,6 +54,11 @@ IRProject::~IRProject()
     if(this->fileInspecterWindow != nullptr)
         delete this->fileInspecterWindow;
     
+    for (auto w : this->workspaces)
+    {
+        delete w;
+    }
+    
     std::cout << "end of IR Project destructor" << std::endl;
 }
 
