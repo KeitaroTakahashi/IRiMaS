@@ -4,8 +4,8 @@
 
 
 
-IRSoundPlayerObject::IRSoundPlayerObject(Component* parent):
-IRNodeObject(parent,"IRSoundPlayer")
+IRSoundPlayerObject::IRSoundPlayerObject(Component* parent)
+: IRNodeObject(parent, "IRSoundPlayer")
 {
     this->player = new AudioPlayer_threadSafe(); // FOR SOME UNCLEAR REASON THIS DOES NOT LEAK (FD)
     addAndMakeVisible(this->player);
@@ -19,8 +19,10 @@ IRNodeObject(parent,"IRSoundPlayer")
 
 IRSoundPlayerObject::~IRSoundPlayerObject()
 {
+    // de la même manière que nous ajoutons addAudioComponent au mixeur du projet
     std::cout << "~IRSOUNDPLAYEROBJECT DESTRUCTOR CALLED" << std::endl;
     // delete this->player;
+    // removeAudioComponent(this->player);
 }
 
 

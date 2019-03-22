@@ -120,8 +120,14 @@ void IRNodeComponent::paint(Graphics& g)
 void IRNodeComponent::childComponentManager(Component* comp)
 {
     comp->addMouseListener(this, true);
-    if(isEditMode()) comp->setInterceptsMouseClicks(false, false);
-    else comp->setInterceptsMouseClicks(true, false);
+    if (isEditMode())
+    {
+        comp->setInterceptsMouseClicks(false, false);
+    }
+    else
+    {
+        comp->setInterceptsMouseClicks(true, false);
+    }
 }
 
 
@@ -130,6 +136,12 @@ void IRNodeComponent::addAudioComponent(AudioSource *source)
 {
     this->mixer->addInputSource(source, true);
     this->containAudioSourceFlag = true;
+}
+
+
+void IRNodeComponent::removeAudioComponent(AudioSource *source) // FD ADDON
+{
+    this->mixer->removeInputSource(source); // which will be deleted automatically
 }
 
 

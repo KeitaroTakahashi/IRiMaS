@@ -13,7 +13,8 @@
 #include "IRNodeObject.hpp"
 
 
-class SoundPlayerClass : public PositionableAudioSource, public ChangeBroadcaster
+class SoundPlayerClass : public PositionableAudioSource,
+                         public ChangeBroadcaster
 {
     //============================================================
     
@@ -162,19 +163,23 @@ public:
     }
     
     
-    // AudioAppComponent
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override
     {
         this->player.prepareToPlay(samplesPerBlockExpected, sampleRate);
     }
+    
+    
     virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override
     {
         this->player.getNextAudioBlock(bufferToFill);
     }
+    
+    
     virtual void releaseResources() override
     {
         this->player.releaseResources();
     }
+    
     
     void resized() override
     {

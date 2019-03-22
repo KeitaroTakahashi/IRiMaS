@@ -121,6 +121,7 @@ public:
     // Use addAudioComponent() to add any AudioSource made in the NodeObject
     // This method adds a given AudioSource to a mixer which connects to the global mixer to the audio output.
     void addAudioComponent(AudioSource *source);
+    void removeAudioComponent(AudioSource *source);
     // Workspace uses this method to get AudioSources added in this NodeObject
     MixerAudioSource* getAudioSource() const;
     // check if any AudioSources are added in this NodeObject.

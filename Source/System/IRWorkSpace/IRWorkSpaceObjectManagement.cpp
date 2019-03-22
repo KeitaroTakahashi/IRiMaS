@@ -109,6 +109,12 @@ void IRWorkSpace::deleteObject(IRNodeObject *obj)
         removeChildComponent(obj);
         
         int index = this->objects.indexOf(obj);
+        
+        // DUFEU ADDON
+        if (obj->isContainAudioSource())
+            this->mixer.removeSource(obj->getAudioSource());
+        // END DUFEU ADDON
+        
         if(index >= 0){
             this->objects.remove(index);
             delete obj;
