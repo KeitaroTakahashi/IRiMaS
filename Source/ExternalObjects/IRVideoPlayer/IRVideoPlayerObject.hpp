@@ -14,17 +14,20 @@
 
 class IRVideoPlayerObject : public IRNodeObject
 {
+    
 public:
+    
     IRVideoPlayerObject(Component* parent) : IRNodeObject(parent, "IRVideoPlayer", NodeObjectType(heavyWeightComponent))
     {
-        this->videoPlayer = new IRVideoPlayer();
+        // this->videoPlayer = new IRVideoPlayer();
+        this->videoPlayer = std::make_shared<IRVideoPlayer>();
         this->videoPlayer->setBounds(getLocalBounds().reduced(5));
         this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
-        addAndMakeVisible(this->videoPlayer);
+        addAndMakeVisible(this->videoPlayer.get());
     }
     ~IRVideoPlayerObject()
     {
-        delete this->videoPlayer;
+        // delete this->videoPlayer;
     }
     
     // --------------------------------------------------
@@ -64,12 +67,13 @@ public:
     
     // --------------------------------------------------
 
-    IRVideoPlayer* getVideoPlayer() { return this->videoPlayer; }
+    IRVideoPlayer* getVideoPlayer() { return this->videoPlayer.get(); }
 
     // --------------------------------------------------
 
 private:
-    IRVideoPlayer *videoPlayer;
+    // IRVideoPlayer *videoPlayer;
+    std::shared_ptr<IRVideoPlayer> videoPlayer;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayerObject)
 };

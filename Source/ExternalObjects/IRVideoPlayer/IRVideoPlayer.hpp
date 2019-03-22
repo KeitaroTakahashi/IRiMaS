@@ -189,7 +189,8 @@ private:
     IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
 
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
+    // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
+    JUCE_LEAK_DETECTOR (IRVideoPlayer)
     
 };
 #endif /* IRVideoPlayer_hpp */

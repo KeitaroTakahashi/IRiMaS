@@ -16,19 +16,13 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     objectFactory.registerObject<IRWaveformObject>("IRWaveform", "Waveform", img);           // leak is audio
     objectFactory.registerObject<IRSpectrogramObject>("IRSpectrogram", "Spectrogram", img);  // leak is audio
     objectFactory.registerObject<IRAutomationObject>("IRAutomation", "Automation Graph", img);
-    
-    
-    // DISABLING THE REST NOW TO FOCUS MY ATTENTION ON IRLABELOBJECT
+    objectFactory.registerObject<IRVideoPlayerObject>("IRVideoPlayer", "Video Player", img); // leak videocomp
+    objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
     
     /*
     
     
     
-    
-    
-    objectFactory.registerObject<IRVideoPlayerObject>("IRVideoPlayer", "Video Player", img);
-    
-    objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
     
     objectFactory.registerObject<IRTestObject>("IRTestObject", "test", img);
      */
