@@ -49,6 +49,7 @@ public:
     
     ~IRSpectrogramObject()
     {
+        std::cout << "~IRSPECTROGRAM DESTRUCTOR CALLED" << std::endl;
         delete this->preference;
         delete this->spectrogram;
         delete this->selector;

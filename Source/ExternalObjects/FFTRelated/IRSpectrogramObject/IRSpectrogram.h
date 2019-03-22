@@ -42,7 +42,7 @@ public:
     
     ~IRSpectrogram()
     {
-        delete this->player;
+        // delete this->player; // leave it - the owner will delete it.
         delete this->FFTSequence;
     }
     //==========================================================================

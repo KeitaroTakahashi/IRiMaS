@@ -25,7 +25,10 @@ public:
         this->selector->setParentSize(getWidth(), getHeight());
         
     }
-    ~IRSpectrogramUI() {}
+    ~IRSpectrogramUI()
+    {
+        delete this->selector;
+    }
     // ============================================================
     // ------------------------------------------------------------
     void resized() override
