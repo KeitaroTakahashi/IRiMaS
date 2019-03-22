@@ -163,7 +163,7 @@ private:
     bool isAltPressed = false;
     bool isOptionPressed = false;
     
-    Point<int> currentMousePosition{0,0};
+    Point<int> currentMousePosition {0, 0};
     
     // workspace status
     bool editModeFlag = true;
@@ -175,7 +175,7 @@ private:
     PreferenceWindow* preferenceWindow;
     
     // Object list menu
-    ObjectListMenu* ObjectMenuComponent;
+    ObjectListMenu* objectMenuComponent;
     std::unique_ptr<ObjectMenuWindow> objMenuwindow;
     
     // IRObjectFactory
