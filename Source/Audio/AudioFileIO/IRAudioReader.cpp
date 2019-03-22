@@ -16,6 +16,8 @@ Thread("ImportAudioFile Background thread")
 // ------------------------------------------------------------------
 IRAudio::~IRAudio()
 {
+    if (this->reader)
+        delete this->reader;
     stopThread(4000);
 }
 // ------------------------------------------------------------------
