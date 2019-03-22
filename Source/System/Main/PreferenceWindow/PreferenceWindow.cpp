@@ -26,7 +26,8 @@ PreferenceWindow::PreferenceWindow(String name) :
     
     setBounds(w - getWidth(), y, getWidth(), getHeight());
     
-    setVisible(true);
+    // setVisible(true);
+    setVisible(false);
     
 }
 

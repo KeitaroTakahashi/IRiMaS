@@ -60,7 +60,7 @@ void IRiMaSMainComponent::createNewProject()
     //hide startWindow when a project window opens.
     // startWindow only appears when no project window stays opened.
     this->startWindow->setVisible(false);
-    
+    this->preferenceWindow->setVisible(true);
 }
 
 
