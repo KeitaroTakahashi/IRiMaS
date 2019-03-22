@@ -9,13 +9,13 @@ IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(paren
 imageViewer(this)
 {
     
-    printf("IRImageViewerObject\n");
-    this->imageViewer.setBounds(5,5, getWidth()-10, getHeight()-10);
+    std::cout << "IRImageViewerObject" << std::endl;
+    this->imageViewer.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
     addAndMakeVisible(this->imageViewer);
     childComponentManager(&this->imageViewer);
     
     this->imageViewer.addChangeListener(this);
-    setSize(150,150);
+    setSize(150, 150);
 }
 
 
@@ -37,7 +37,7 @@ t_json IRImageViewerObject::saveThisToSaveData()
     std::string imgPath = this->imageViewer.getFilePath().toStdString();
     
     Rectangle<int> b = this->imageViewer.getBounds();
-    t_json imageViwerData = t_json::object({
+    t_json imageViewerData = t_json::object({
         {"bounds", t_json::array({b.getX(), b.getY(), b.getWidth(), b.getHeight()})},
         {"imgPath", imgPath},
     });
@@ -46,7 +46,7 @@ t_json IRImageViewerObject::saveThisToSaveData()
     
     t_json saveData = t_json::object({
         
-        {"imageViewer", imageViwerData}
+        { "imageViewer", imageViewerData }
     });
     
     
@@ -84,9 +84,9 @@ void IRImageViewerObject::paint(Graphics& g)
 {
     if (isEditMode())
     {
-        auto area = getLocalBounds().reduced (2);
-        g.setColour (SYSTEMCOLOUR.contents);
-        g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
+        auto area = getLocalBounds().reduced(2);
+        g.setColour(SYSTEMCOLOUR.contents);
+        g.drawRoundedRectangle(area.toFloat(), 5.0f, 2.0f);
     }
 }
 
