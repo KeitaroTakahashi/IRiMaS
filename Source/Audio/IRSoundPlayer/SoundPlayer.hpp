@@ -116,12 +116,12 @@ private:
 
 //==========================================================================
 
-class AudioPlayer_threadSafe
-: public    AudioAppComponent,
-private   ChangeListener,
-IRAudio::Listener
+class AudioPlayer_threadSafe : public AudioAppComponent,
+                               private ChangeListener, IRAudio::Listener
 {
+    
 public:
+    
     AudioPlayer_threadSafe();
     
     ~AudioPlayer_threadSafe()
@@ -338,6 +338,7 @@ private:
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer_threadSafe)
 };
 
 

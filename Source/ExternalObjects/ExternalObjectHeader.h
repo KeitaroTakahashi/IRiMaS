@@ -14,7 +14,7 @@
 
 // ------------------------------------------------------------
 // audio related object
-#include "IRAudioPlayerObject.hpp"
+#include "IRSoundPlayerObject.hpp"
 
 #include "IRWaveformObject.hpp"
 
