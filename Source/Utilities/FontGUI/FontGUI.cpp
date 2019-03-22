@@ -190,7 +190,7 @@ void FontGUI::makeAlignMenu()
 
 void FontGUI::FontMenuChanged()
 {
-    std::cout << "font changed!" << std::endl;
+    std::cout << "Font changed" << std::endl;
     
     this->status = FontChanged;
     sendChangeMessage();
@@ -213,7 +213,7 @@ void FontGUI::FontSizeInputChanged()
     
     if(valFloat == 0){
         valFloat = 1.0;
-        this->FontSizeInput.setText("1.0",dontSendNotification);
+        this->FontSizeInput.setText("1.0", dontSendNotification);
     }
     
     this->fontSize = valFloat;
@@ -344,7 +344,9 @@ void FontGUI::changeListenerCallback (ChangeBroadcaster* source)
 
 void FontGUI::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
-    std::cout << "comboBox selection changed\n";
+    std::cout << "comboBox selection changed" << std::endl;
 }
+
+
 
 

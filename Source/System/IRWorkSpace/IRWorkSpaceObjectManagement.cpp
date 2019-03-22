@@ -68,7 +68,7 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     this->objects.add(obj);
 
     //audiosource
-    if(obj->isContainAudioSource())
+    if (obj->isContainAudioSource())
         this->mixer.addAudioSource(obj->getAudioSource());
     
     //request updating the workspaceList
@@ -223,7 +223,7 @@ void IRWorkSpace::createObject(std::string objName)
 // ------------------------------------------------------------
 void IRWorkSpace::dragoutNodeObjectFromParent(IRNodeObject* obj)
 {
-    std::cout << "workspace : dragoutNodeObject\n";
+    std::cout << "workspace : dragoutNodeObject" << std::endl;
     setEditMode(true);
     // notify the change of editMode to IRProject
     if (this->notifyEditModeChanged != nullptr)
@@ -235,7 +235,8 @@ void IRWorkSpace::dragoutNodeObjectFromParent(IRNodeObject* obj)
 // ------------------------------------------------------------
 void IRWorkSpace::dropoutNodeObjectFromParent(IRNodeObject* obj)
 {
-    std::cout << "workspace : dropOut\n";
+    std::cout << "workspace : dropOut" << std::endl;
+
 }
 // ------------------------------------------------------------
 void IRWorkSpace::editModeChangedInNodeObject(bool editMode)
@@ -272,7 +273,8 @@ void IRWorkSpace::createNewProject()
 // ============================================================
 void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)
 {
-    std::cout << "addObjectGlobal\n";
+    std::cout << "addObjectGlobal" << std::endl;
+
     this->p_obj.insert(std::make_pair(id, ptr));
     
     std::cout << this->p_obj.at(id) << std::endl;
@@ -280,7 +282,7 @@ void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)
 // ------------------------------------------------------------
 IRObjectPtr IRWorkSpace::getObjectGlobal(String id)
 {
-    std::cout << "getObjectGlobal of " << id << "\n";
+    std::cout << "getObjectGlobal of " << id << std::endl;
     
     if(this->p_obj.find(id) != this->p_obj.end()){
         std::cout << this->p_obj.at(id) << std::endl;

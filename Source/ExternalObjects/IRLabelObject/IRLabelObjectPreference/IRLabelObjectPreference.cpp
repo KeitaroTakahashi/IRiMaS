@@ -7,16 +7,17 @@
 IRLabelObjectPreference::IRLabelObjectPreference(String title, Rectangle<int> frameRect) :
 IRPreferenceObject(title,frameRect)
 {
-    std::cout << "IRLABELOBJECTPREFERENCE CREATED??" << std::endl;
-    this->fontGUI = new FontGUI(title);
-    addAndMakeVisible(this->fontGUI);
+    std::cout << "IRLABELOBJECTPREFERENCE CONSTRUCTOR" << std::endl;
+    // this->fontGUI = new FontGUI(title);
+    this->fontGUI = std::make_unique<FontGUI>(title);
+    addAndMakeVisible(this->fontGUI.get());
     this->fontGUI->addChangeListener(this);
 }
 
 
 IRLabelObjectPreference::~IRLabelObjectPreference()
 {
-    std::cout << "IRLABELOBJECTPREFERENCE DESTROYED??" << std::endl;
+    std::cout << "~IRLABELOBJECTPREFERENCE DESTRUCTOR" << std::endl;
 }
 
 
@@ -30,7 +31,7 @@ void IRLabelObjectPreference::resized()
 
 void IRLabelObjectPreference::changeListenerCallback (ChangeBroadcaster* source)
 {
-    if (source == this->fontGUI)
+    if (source == this->fontGUI.get())
     {
         switch (this->fontGUI->getChangeStatus())
         {
@@ -54,7 +55,7 @@ void IRLabelObjectPreference::changeListenerCallback (ChangeBroadcaster* source)
 
 FontGUI* IRLabelObjectPreference::getFontGUI()
 {
-    return this->fontGUI;
+    return this->fontGUI.get();
 }
 
 

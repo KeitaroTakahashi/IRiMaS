@@ -2,7 +2,7 @@
 #include "IRNodeObject.hpp"
 
 IRNodeObject::IRNodeObject(Component* parent, String name, NodeObjectType objectType)
-: IRNodeComponent(parent,name, objectType)
+: IRNodeComponent(parent, name, objectType)
 {
     this->parent = parent;
 }
