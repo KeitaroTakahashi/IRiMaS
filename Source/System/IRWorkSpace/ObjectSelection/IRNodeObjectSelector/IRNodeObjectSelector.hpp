@@ -15,12 +15,12 @@
 
 
 
-class IRNodeObjectSelector : public IRObjectSelection<IRNodeObject* >
+class IRNodeObjectSelector : public IRObjectSelection<IRNodeObject*>
 {
     
 public:
     
-    IRNodeObjectSelector(Array<IRNodeObject* > *list);
+    IRNodeObjectSelector(Array<IRNodeObject*> *list);
     ~IRNodeObjectSelector();
 
     void mouseDownHandler(const MouseEvent& e) override;
@@ -35,19 +35,20 @@ public:
     
     void judgeSelection(const Rectangle<int>& area, const MouseEvent& e) override;
 
-    Array<IRNodeObject* > getSelectedObjectList() const;
+    Array<IRNodeObject*> getSelectedObjectList() const;
     
     
 private:
     
+    Array<IRNodeObject*> selectedObjectList;
+    Array<IRNodeObject*> *objectList;
+    
+    bool multiSelectionFlag { false };
+
+    // **** **** private methods **** **** //
+    
     Rectangle<int> getAreaOfSelectedObj();
     
-    Array<IRNodeObject* > selectedObjectList;
-
-    Array<IRNodeObject* > *objectList;
-    
-    bool multiSelectionFlag = false;
-
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeObjectSelector)
     

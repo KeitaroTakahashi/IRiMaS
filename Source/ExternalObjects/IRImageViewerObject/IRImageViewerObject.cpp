@@ -85,7 +85,11 @@ void IRImageViewerObject::paint(Graphics& g)
     if (isEditMode())
     {
         auto area = getLocalBounds().reduced(2);
-        g.setColour(SYSTEMCOLOUR.contents);
+        // FD - PROV. ADD-
+        if (isSelected())
+            g.setColour(Colours::red);
+        else
+            g.setColour(SYSTEMCOLOUR.contents);
         g.drawRoundedRectangle(area.toFloat(), 5.0f, 2.0f);
     }
 }

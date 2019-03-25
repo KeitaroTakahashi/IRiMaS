@@ -1,29 +1,32 @@
-//
-//  IRObjectSelection.hpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 22/08/2018.
-//
 
 #ifndef IRObjectSelection_hpp
 #define IRObjectSelection_hpp
 
 #include "JuceHeader.h"
 
+
+
+
+
 template <class SelectableItemType>
 class IRObjectSelection : public Component
 {
+    
 public:
-    //==============================================================================
 
     IRObjectSelection()
     {
         setShiftConstrainsDirection(true);
-        setConstrainBoundsToParent(true, {0,0,10,10});
+        setConstrainBoundsToParent(true, { 0, 0, 10, 10 });
+    }
+    
+    
+    ~IRObjectSelection()
+    {
         
     }
-    ~IRObjectSelection(){}
-    // ------------------------------------------------------------
+    
+    
     // selection mode : default all true
     // # horizontalMovable false = fixed width
     // # verticalMovable false = fixed height
@@ -32,14 +35,15 @@ public:
         this->horizontalMovable = horizontalMovable;
         this->verticalMovable = verticalMovable;
     }
-    // ------------------------------------------------------------
+    
+    
     // set Parent size to fix width or height of the selection square
     void setParentSize(int w, int h)
     {
         this->parentWidth = w;
         this->parentHeight = h;
     }
-    // ------------------------------------------------------------
+    
 
     // put this method in mouseDown()
     void beginSelection(const MouseEvent& e)
@@ -61,18 +65,19 @@ public:
         int w = abs(deltaX);
         int h = abs(deltaY);
         
-        if(! this->horizontalMovable)
+        if (! this->horizontalMovable)
         {
             x = 0;
             w = this->parentWidth;
         }
-        if(! this->verticalMovable)
+        
+        if (! this->verticalMovable)
         {
-            y = 0;//this->parentHeight;
+            y = 0;
             h = this->parentHeight;
         }
 
-        Rectangle<int> rect(x,y,w,h);
+        Rectangle<int> rect(x, y, w, h);
         
         this->selectionArea = rect;
         setBounds(x, y, w, h);
@@ -84,43 +89,47 @@ public:
     // put this method in mouseUp()
     void endSelection(const MouseEvent& e)
     {
-        if(! this->isSelectionRectRemainedAfterMouseUp)
+        if (! this->isSelectionRectRemainedAfterMouseUp)
         {
-            
             judgeSelection(Rectangle<int>(getX(), getY(), getWidth(), getHeight()), e);
          
-            if(deleteSquareAfterSelection)
+            if (deleteSquareAfterSelection)
             {
-                Rectangle<int> rect(0,0,0,0);
-                setBounds(0,0,0,0);
-                setSize(0,0);
+                Rectangle<int> rect(0, 0, 0, 0);
+                setBounds(0, 0, 0, 0);
+                setSize(0, 0);
             
                 this->selectionArea = rect;
             }
-            
-
         }
     }
-    // ------------------------------------------------------------
+    
+    
     void resized() override
     {
         //setBounds(this->selectionArea.getX(), this->selectionArea.getY(), this->selectionArea.getWidth(), this->selectionArea.getHeight());
     }
-    // ------------------------------------------------------------
+    
+    
     enum ColourIds
     {
         fillColour,
         borderColour,
     };
-    // ------------------------------------------------------------
+    
+    
     virtual void judgeSelection(const Rectangle<int>& area, const MouseEvent& e )
     {
         
     }
-    // ------------------------------------------------------------
+    
 
-    bool hitTest(int, int) override { return false; } // FD - FOR NOW. TO AVOID RETURN TYPE FAULT WARNING
-    // ------------------------------------------------------------
+    bool hitTest(int, int) override
+    {
+        return false; // FD - FOR NOW. TO AVOID RETURN TYPE FAULT WARNING
+    }
+    
+    
     virtual void paint(Graphics& g) override
     {
         g.setColour(Colours::lightgrey);
@@ -128,48 +137,77 @@ public:
         g.fillAll();
     }
     
-    // ------------------------------------------------------------
   
-    virtual void mouseDownHandler(const MouseEvent& e){}
+    virtual void mouseDownHandler(const MouseEvent& e)
+    {
+        
+    }
 
-    virtual void mouseDragHandler(const MouseEvent& e){};
+    virtual void mouseDragHandler(const MouseEvent& e)
+    {
+        
+    }
 
-    virtual void mouseUpHandler(const MouseEvent& e){};
+    virtual void mouseUpHandler(const MouseEvent& e)
+    {
+        
+    }
+    
 
-    // ------------------------------------------------------------
     void deselectAll()
     {
         this->list.removeAll();
     }
-    
-    // ------------------------------------------------------------
+   
     
     void setBeingDraggedObject(SelectableItemType obj)
     {
         this->beingDraggedObject = obj;
     }
-    SelectableItemType getBeingDraggedObject() const { return this->beingDraggedObject; }
     
-    bool isDragging() const { return this->dragging; }
-    void setDragging(bool flag) { this->dragging = flag; }
-    // ------------------------------------------------------------
-    void setDeleteSquareAfterSelection(bool flag) { this->deleteSquareAfterSelection = flag; }
-    bool getDeleteSquareAfterSelection() const { return this->deleteSquareAfterSelection; }
-    // ------------------------------------------------------------
-    // ============================================================
-    // set
-    void setConstrainBoundsToParent(bool constrainToParentSize,
-                                    BorderSize<int> amountPermittedOffscreen)
+    
+    SelectableItemType getBeingDraggedObject() const
+    {
+        return this->beingDraggedObject;
+    }
+    
+    bool isDragging() const
+    {
+        return this->dragging;
+    }
+    
+    
+    void setDragging(bool flag)
+    {
+        this->dragging = flag;
+    }
+    
+    
+    void setDeleteSquareAfterSelection(bool flag)
+    {
+        this->deleteSquareAfterSelection = flag;
+    }
+    
+    
+    bool getDeleteSquareAfterSelection() const
+    {
+        return this->deleteSquareAfterSelection;
+    }
+    
+    
+    void setConstrainBoundsToParent(bool constrainToParentSize, BorderSize<int> amountPermittedOffscreen)
     {
         this->constrainToParent = constrainToParentSize;
         this->amountPermittedOffscreen = amountPermittedOffscreen;
     }
-    // ------------------------------------------------------------
+    
+    
     void setShiftConstrainsDirection(bool constrainDirection)
     {
         this->shiftConstrainsDirection = constrainDirection;
     }
-    // ------------------------------------------------------------
+    
+    
     void applyDirectionConstraints(const MouseEvent &e, Point<int> &delta)
     {
         if (shiftConstrainsDirection && e.mods.isShiftDown())
@@ -185,34 +223,26 @@ public:
             if (xy < -minimumMovementToStartDrag)
                 constrainedDirection = yAxisOnly;
             
-            if ((xy > 0 && constrainedDirection != yAxisOnly)
-                ||
-                (constrainedDirection == xAxisOnly))
+            if ((xy > 0 && constrainedDirection != yAxisOnly) || (constrainedDirection == xAxisOnly))
             {
                 delta.y = -totalDragDelta.y; /* move X direction only. */
                 constrainedDirection = xAxisOnly;
             }
-            else if ((xy <= 0 && constrainedDirection != xAxisOnly)
-                     ||
-                     constrainedDirection == yAxisOnly)
+            else if ((xy <= 0 && constrainedDirection != xAxisOnly) || constrainedDirection == yAxisOnly)
             {
                 delta.x = -totalDragDelta.x; /* move Y direction only. */
                 constrainedDirection = yAxisOnly;
             }
             else
             {
-                delta = {0, 0};
+                delta = { 0, 0 };
             }
         }
         else
         {
             constrainedDirection = noConstraint;
-            
         }
     }
-
-    // ------------------------------------------------------------
-
     
     
     /**
@@ -220,7 +250,6 @@ public:
      */
     void setSelected(SelectableItemType * component, bool shouldNowBeSelected)
     {
-        
         bool isAlreadySelected = isSelected(component);
         
         if (! isAlreadySelected && shouldNowBeSelected)
@@ -230,6 +259,7 @@ public:
             removeSelectedComponent(component);
     }
     
+    
     /** Toggles the selected status of a particular component. */
     void toggleSelection(SelectableItemType * component)
     {
@@ -237,14 +267,13 @@ public:
     }
     
     
-    
-public:
     enum
     {
         noConstraint,
         xAxisOnly,
         yAxisOnly
     } constrainedDirection;
+    
     
     Point<int> mouseDownWithinTarget;
     Point<int> totalDragDelta;
@@ -254,30 +283,38 @@ public:
     BorderSize<int> amountPermittedOffscreen;
     
     std::vector<WeakReference<Component>> selectedComponents;
-    const int minimumMovementToStartDrag = 10;
+    const int minimumMovementToStartDrag { 10 };
 
+    
 private:
-    //==============================================================================
 
     Rectangle<int> selectionArea;
     
     SelectableItemType beingDraggedObject;
     
-    bool isSelectionRectRemainedAfterMouseUp = false;
+    bool isSelectionRectRemainedAfterMouseUp { false };
     
-    bool dragging = false;
+    bool dragging = { false };
     
-    bool horizontalMovable = true;
-    bool verticalMovable = true;
+    bool horizontalMovable { true };
+    bool verticalMovable { true };
     
-    bool deleteSquareAfterSelection = true;
+    bool deleteSquareAfterSelection { true };
     
-    int parentWidth = 0;
-    int parentHeight = 0;
+    int parentWidth { 0 };
+    int parentHeight { 0 };
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRObjectSelection)
 
 };
 
+
+
+
+
 #endif /* IRObjectSelection_hpp */
+
+
+
+

@@ -71,7 +71,8 @@ void IRNodeObjectSelector::mouseDragHandler(const MouseEvent& e)
     }
     else
     {
-        if (! isDragging()) return;
+        if (! isDragging())
+            return;
         
         Point<int> delta = e.getEventRelativeTo(getBeingDraggedObject()).getPosition() - this->mouseDownWithinTarget;
 
@@ -90,15 +91,14 @@ void IRNodeObjectSelector::mouseDragHandler(const MouseEvent& e)
         
         this->totalDragDelta += delta;
     }
-    
-
 }
 
 
 void IRNodeObjectSelector::mouseUpHandler(const MouseEvent& e)
 {
     // finish dragging action
-    if (isDragging()) setDragging(false);
+    if (isDragging())
+        setDragging(false);
     
     if (this->multiSelectionFlag)
     {
@@ -147,7 +147,7 @@ bool IRNodeObjectSelector::removeSelectedObject(IRNodeObject* removeObj)
 
 void IRNodeObjectSelector::repaintAllSelectedObjects()
 {
-    for(auto obj : this->selectedObjectList)
+    for (auto obj : this->selectedObjectList)
     {
         obj->repaint();
     }
@@ -193,7 +193,10 @@ Rectangle<int> IRNodeObjectSelector::getAreaOfSelectedObj()
     Rectangle<int> a = this->selectedObjectList[0]->getBounds();
     
     for (auto obj : this->selectedObjectList)
-        if (obj) a = a.getUnion(obj->getBounds());
+    {
+        if (obj)
+            a = a.getUnion(obj->getBounds());
+    }
     
     return a;
 }
