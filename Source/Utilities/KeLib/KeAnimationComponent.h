@@ -10,7 +10,9 @@
 
 class KeAnimationComponent : public Timer
 {
+    
 public:
+    
     KeAnimationComponent()
     {
         
@@ -44,7 +46,8 @@ private:
     
     int fps;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (KeAnimationComponent);
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(KeAnimationComponent)
     
 };
 

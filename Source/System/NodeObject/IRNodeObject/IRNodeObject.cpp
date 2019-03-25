@@ -2,7 +2,7 @@
 #include "IRNodeObject.hpp"
 
 IRNodeObject::IRNodeObject(Component* parent, String name, NodeObjectType objectType)
-: IRNodeComponent(parent,name, objectType)
+: IRNodeComponent(parent, name, objectType)
 {
     this->parent = parent;
 }
@@ -10,7 +10,7 @@ IRNodeObject::IRNodeObject(Component* parent, String name, NodeObjectType object
 
 IRNodeObject::~IRNodeObject()
 {
-    
+    std::cout << "~IRNODEOBJECT DESTRUCTOR CALLED" << std::endl;
 }
 
 
@@ -226,7 +226,7 @@ void IRNodeObject::callCloseProject()
 void IRNodeObject::callOpenProject()
 {
     
-    printf("IRNodeObject : openProject\n");
+    std::cout << "IRNodeObject : openProject" << std::endl;
     Component::BailOutChecker checker(this);
     //==========
     // check if the objects are not deleted, if deleted, return

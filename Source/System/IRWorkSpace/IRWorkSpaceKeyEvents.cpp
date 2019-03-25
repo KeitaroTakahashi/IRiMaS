@@ -60,10 +60,10 @@ bool IRWorkSpace::keyPressed (const KeyPress& key, Component* originatingCompone
     // in case no key
     if(! this->isEditMode())
     {
-        printf("IRWworkspace : The workspace can not receive any key event because it is in Control Mode, if you want to control Object interface, please click an object you want to control and give a KeyEventFocus on it.\n");
+        std::cout << "IRWworkspace : The workspace can not receive any key event because it is in Control Mode, if you want to control Object interface, please click an object you want to control and give a KeyEventFocus on it." << std::endl;
     }
     else {
-        printf("IRWorkspace : Unknown KeyEvent received.\n");
+        std::cout << "IRWorkspace : Unknown KeyEvent received." << std::endl;
     }
     
     return false;

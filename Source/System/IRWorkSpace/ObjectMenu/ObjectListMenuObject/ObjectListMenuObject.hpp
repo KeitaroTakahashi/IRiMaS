@@ -29,10 +29,10 @@ public:
     
 private:
     
-    class cellComponent : public Component
+    class CellComponent : public Component
     {
     public:
-        cellComponent(String titleText, std::string id, int index, IRTableListBox& td) :
+        CellComponent(String titleText, std::string id, int index, IRTableListBox& td) :
         owner(td)
         {
             this->titleText = titleText;
@@ -40,13 +40,13 @@ private:
             this->id = id;
         }
         
-        ~cellComponent()
+        ~CellComponent()
         {
         }
         
-        cellComponent* copy()
+        CellComponent* copy()
         {
-            cellComponent* comp = new cellComponent(this->titleText,
+            CellComponent* comp = new CellComponent(this->titleText,
                                                     this->id,
                                                     this->index,
                                                     this->owner);
@@ -81,7 +81,7 @@ private:
         
         void mouseDoubleClick(const MouseEvent& e)override
         {
-            printf("Item double clicked!!\n");
+            std::cout << "Item double clicked!!" << std::endl;
             this->owner.selectedRowDoubleClicked(this->index);
         }
         
@@ -100,12 +100,13 @@ private:
         
         // system appearance
         IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(cellComponent);
+        
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CellComponent);
     };
     
 private:
     
-    std::vector<cellComponent* > cells;
+    std::vector<CellComponent* > cells;
     std::vector<std::string> idBank;
     
     // IRObjectFactory

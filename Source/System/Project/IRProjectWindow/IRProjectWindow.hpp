@@ -8,7 +8,8 @@
 
 
 
-class IRProjectWindow : public DocumentWindow, public ChangeListener
+class IRProjectWindow : public DocumentWindow,
+                        public ChangeListener
 {
     
 public:

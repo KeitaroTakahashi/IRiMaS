@@ -27,7 +27,7 @@ void IRVideoThumbnail::paint(Graphics& g)
 void IRVideoThumbnail::openVideoFile()
 {
     FileChooser chooser("Select a video file to open...",
-                        File::nonexistent,
+                        {},
                         "*.mov, *.mp4, *.m4v");
     
     FilenameComponent co {"movie", {}, true, false, false, "*", {}, "(choose a video file to play)"};
@@ -64,28 +64,38 @@ void IRVideoThumbnail::openVideoFile()
         repaint();
     }
 }
+
+
 void IRVideoThumbnail::getCameraCapture()
 {
     *this->cap >> this->frame;
-    if(this->frame.empty()) printf("Error : Could not get frame\n");
+    if (this->frame.empty())
+    {
+        std::cout << "Error : Could not get frame" << std::endl;
+    }
     
 }
+
+
 void IRVideoThumbnail::createThumbnail(int num, cv::VideoCapture* input)
 {
     
     // use input if given, otherwise use member cap
     cv::VideoCapture* video;
-    if(input != nullptr){
+    if (input != nullptr)
+    {
         video = input;
-    }else{
+    }
+    else
+    {
         video = this->cap;
     }
     
     // check if videoInfo is loaded.
     int fc = this->videoInfo.frameCount;
-    if(fc == 0)
+    if (fc == 0)
     {
-        printf("Error : createThumbnail() : frameCount is 0\n");
+        std::cout << "Error : createThumbnail() : frameCount is 0" << std::endl;
         return;
     }
     
@@ -103,7 +113,7 @@ void IRVideoThumbnail::createThumbnail(int num, cv::VideoCapture* input)
     cv::Mat buf = cv::Mat (rh, rw, CV_8U, new cv::Scalar(4));
     
     // for each frame
-    for(i=0;i<num;i++)
+    for (i = 0; i < num; i++)
     {
         std::cout << "writing thumbnail of " << i << " : size " << rw << std::endl;
         int index = i*interval; // calc interval frame index
@@ -111,33 +121,43 @@ void IRVideoThumbnail::createThumbnail(int num, cv::VideoCapture* input)
         *video >> buf; // read a frame from vide
         cv::resize(buf,buf, cv::Size(rw,rh)); // resize
         thumb.push_back(buf); // store
-        cv::imwrite("/Users/keitaro/Desktop/frames/im_" + std::to_string(rw) + "_"+std::to_string(i)+".png", buf);
+        cv::imwrite("/Users/keitaro/Desktop/frames/im_" + std::to_string(rw) + "_" + std::to_string(i) + ".png", buf);
     }
 }
+
+
 void IRVideoThumbnail::loadThumbnail(std::string directoryPath)
 {
     File file(directoryPath);
-    Array<File> files = file.findChildFiles(File::TypesOfFileToFind::findFiles,false);
+    Array<File> files = file.findChildFiles(File::TypesOfFileToFind::findFiles, false);
     
-    for(auto f : files)
+    for (auto f : files)
     {
-        if(f.getFileExtension() == ".png")
+        if (f.getFileExtension() == ".png")
+        {
             this->thumbImages.push_back(loadImage(f.getFullPathName()));
+        }
     }
     
 }
+
 
 Image IRVideoThumbnail::loadImage(String filePath)
 {
     File file (filePath);
     Image imgData = ImageFileFormat::loadFrom(file);
     
-    if(imgData.getWidth() == 0 || imgData.getHeight() == 0)
+    if (imgData.getWidth() == 0 || imgData.getHeight() == 0)
     {
         std::cout << "Error : problem occurs during loading the file " << filePath << std::endl;
-    }else{
-        std::cout << "file loaded!! width = " <<imgData.getWidth() << ", " << imgData.getHeight() << " : " << filePath << std::endl;
+    }
+    else
+    {
+        std::cout << "file loaded!! width = " << imgData.getWidth() << ", " << imgData.getHeight() << " : " << filePath << std::endl;
     }
     return imgData;
 }
+
+
+
 

@@ -15,7 +15,7 @@ ObjectListMenu::ObjectListMenu(Component* parent, Rectangle<int>frameRect) : Men
 
 ObjectListMenu::~ObjectListMenu()
 {
-    
+    delete menu;
 }
 
 
@@ -26,7 +26,7 @@ void ObjectListMenu::paint(Graphics& g)
     
     auto area = getLocalBounds().reduced (2);
     
-    g.setColour (SYSTEMCOLOUR.contents.brighter());
+    g.setColour(SYSTEMCOLOUR.contents.brighter());
     g.fillRoundedRectangle (area.toFloat(), 5.0f);
     
 }

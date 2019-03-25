@@ -13,7 +13,8 @@
 #include "IRNodeObject.hpp"
 
 
-class SoundPlayerClass : public PositionableAudioSource, public ChangeBroadcaster
+class SoundPlayerClass : public PositionableAudioSource,
+                         public ChangeBroadcaster
 {
     //============================================================
     
@@ -116,12 +117,12 @@ private:
 
 //==========================================================================
 
-class AudioPlayer_threadSafe
-: public    AudioAppComponent,
-private   ChangeListener,
-IRAudio::Listener
+class AudioPlayer_threadSafe : public /*AudioAppComponent*/ Component, public AudioSource,
+                               private ChangeListener, IRAudio::Listener
 {
+    
 public:
+    
     AudioPlayer_threadSafe();
     
     ~AudioPlayer_threadSafe()
@@ -131,28 +132,30 @@ public:
     
     void changeListenerCallback (ChangeBroadcaster* source) override
     {
-        if(source == &this->player)
+        if (source == &this->player)
         {
-            if(this->player.isPlaying())
+            if (this->player.isPlaying())
                 changeState(Playing);
-            else if(this->player.isPausing()){
+            else if (this->player.isPausing()){
                 // Stopped does not reset playingPosition but just freeze playing process
                 changeState(Pausing);
-            }else{
+            }
+            else
+            {
                 //first call Stopping to reset playingPosition
                 changeState(Stopping);
                 //then call Stopped to stop
                 changeState(Stopped);
             }
-        }else if(source == &this->audioFile)
+        } else if (source == &this->audioFile)
         {
-            if(this->audioFile.isFileLoadCompleted)
+            if (this->audioFile.isFileLoadCompleted)
             {
                 
                 
             }
             
-            if(this->audioFile.isFileOpened)
+            if (this->audioFile.isFileOpened)
             {
                 
             }
@@ -160,19 +163,23 @@ public:
     }
     
     
-    // AudioAppComponent
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override
     {
         this->player.prepareToPlay(samplesPerBlockExpected, sampleRate);
     }
+    
+    
     virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override
     {
         this->player.getNextAudioBlock(bufferToFill);
     }
+    
+    
     virtual void releaseResources() override
     {
         this->player.releaseResources();
     }
+    
     
     void resized() override
     {
@@ -338,6 +345,7 @@ private:
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer_threadSafe)
 };
 
 

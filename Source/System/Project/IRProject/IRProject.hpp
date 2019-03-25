@@ -17,12 +17,12 @@
 
 
 class IRProject : public AudioAppComponent,
-public ApplicationCommandTarget,
-public MenuBarModel,
-public ChangeListener,
-public ChangeBroadcaster,
-private EditCommandTarget::Listener,
-private IRWorkspaceList::Listener
+                  public ApplicationCommandTarget,
+                  public MenuBarModel,
+                  public ChangeListener,
+                  public ChangeBroadcaster,
+                  private EditCommandTarget::Listener,
+                  private IRWorkspaceList::Listener
 {
 public:
     
@@ -158,7 +158,7 @@ private:
     bool perform(const InvocationInfo& info) override;
     
     // AudioAppComponent
-    void AudioSetup();
+    void audioSetup();
     void closeAudioSetup();
     
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
@@ -179,7 +179,8 @@ private:
     // do not forget to call toFront() and manageHeavyWeightCoponent() methods when update it.
     IRWorkSpace* topSpace = nullptr;
     
-    IRWorkspaceList *workspaceList = nullptr;
+    // IRWorkspaceList *workspaceList = nullptr;
+    std::shared_ptr<IRWorkspaceList> workspaceList { nullptr };
     
     int workspaceListWidth = 150;
     
@@ -201,7 +202,8 @@ private:
     
     std::unique_ptr<MenuBarComponent> menuBar;
     MenuBarPosition menuBarPosition = MenuBarPosition::window;
-    EditCommandTarget* editCommandTarget;
+    // EditCommandTarget* editCommandTarget;
+    std::unique_ptr<EditCommandTarget> editCommandTarget;
     
     SidePanel sidePanel { "Menu", 300, false };
     

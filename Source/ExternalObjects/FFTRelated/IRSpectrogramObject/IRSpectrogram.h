@@ -40,7 +40,11 @@ public:
         this->FFTSequence = new IRFFTSequence(4096, 2048, IRWindow::TYPE::HAMMING);
     }
     
-    ~IRSpectrogram() {}
+    ~IRSpectrogram()
+    {
+        // delete this->player; // leave it - the owner will delete it.
+        delete this->FFTSequence;
+    }
     //==========================================================================
 
     struct vertex2d{
@@ -93,13 +97,17 @@ public:
     }
     //==========================================================================
     
+    /*
     std::vector<float> getSpectrumAtIndex(int index)
     {
         if(index < (this->FFTSequence->getNumFrame()-1))
         {
             
         }
+        
+        // return std::vector<float>; // FD QUICK FIX TO PREVENT WRONG TYPE
     }
+     */
 
     void makeSpectrum()
     {
@@ -353,7 +361,7 @@ public:
         const int nBin = endBin - startBin;
         const int nIndex = endIndex - startIndex;
         
-        const float yIncrement = (area.getHeight() / nBin);
+        // const float yIncrement = (area.getHeight() / nBin);
         const float xIncrement = (area.getWidth() / nIndex);
         
         sonogramStr sonogramBuf = makeSonogram(area,

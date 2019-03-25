@@ -56,7 +56,7 @@ public:
     void openFile()
     {
         FileChooser chooser("Select an audio file to play...",
-                            File::nonexistent,
+                            {},
                             "*.mov, *.mp4, *.m4v");
         
         FilenameComponent co {"movie", {}, true, false, false, "*", {}, "(choose a video file to play)"};
@@ -189,7 +189,8 @@ private:
     IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
 
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
+    // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
+    JUCE_LEAK_DETECTOR (IRVideoPlayer)
     
 };
 #endif /* IRVideoPlayer_hpp */

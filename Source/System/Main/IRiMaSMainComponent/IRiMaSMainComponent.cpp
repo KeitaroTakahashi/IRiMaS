@@ -1,109 +1,108 @@
 
-#include "IRiMaSMain.hpp"
+#include "IRiMaSMainComponent.hpp"
+
+#include "ObjectFactoryInitializer.hpp"
 
 
 
 
-
-IRMAIN::IRMAIN(const String applicationName)
+IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 {
-    
     this->applicationName = applicationName;
     
-    // initialize object factory of IRObjectFactory
-    // IRObjectFactory is created as a singleton manner
-    init_factory f;
+    ObjectFactoryInitializer(); // this will create a singleton and initialise the object palette
     
+    this->initialise();
 }
 
 
-IRMAIN::~IRMAIN()
+IRiMaSMainComponent::~IRiMaSMainComponent()
 {
-    delete this->preferenceWindow;
-    for(auto win : this->projectLib)
+
+    for (auto win : this->projectLib)
     {
         delete win;
     }
     
     this->projectLib.clear();
     
+    singleton<IRObjectFactory>::explicitlyDestroy(); // OK - THAT IS THE THING TO DO. THIS ULTIMATELY DESTROYS THE T_OBJECTs AND AVOIDS THE LEAK OF THE ENBEDDED IMAGES.
+    
+    
+    std::cout << "end call destructor IRiMaSMainComponent" << std::endl;
 }
 
 
-void IRMAIN::initialize()
+void IRiMaSMainComponent::initialise()
 {
-    // create window for preference
-    this->preferenceWindow = new PreferenceWindow (applicationName);
-    // create initial project window
-    //this->projectLib.push_back(new IRProjectWindow(applicationName,this->preferenceWindow));
+    this->preferenceWindow = std::make_shared<PreferenceWindow>(applicationName);
     
-    this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640,480)));
+    this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640, 480)));
     this->startWindow->addChangeListener(this);
-    
-    
 }
 
 
-void IRMAIN::createNewProject()
+void IRiMaSMainComponent::createNewProject()
 {
-    printf("Creating new project... projectWindow\n");
-    IRProjectWindow* project = new IRProjectWindow("Untitled",this->preferenceWindow);
+    std::cout << "Creating new project... projectWindow" << std::endl;
+    IRProjectWindow* projectWindow = new IRProjectWindow("Untitled", this->preferenceWindow.get());
+    // std::shared_ptr<IRProjectWindow> projectWindow = std::make_shared<IRProjectWindow>("Untitled", this->preferenceWindow.get());
     
     // create a Workspace as default
-    project->getProjectComponent()->createNewWorkspace();
+    projectWindow->getProjectComponent()->createNewWorkspace(); // DISABLED NEW WORKSPACE FOR NOW
     //add Listener to receive signal to open close and save projects
-    project->getProjectComponent()->addListener(this);
-    this->projectLib.push_back(project);
+    projectWindow->getProjectComponent()->addListener(this);
+    this->projectLib.push_back(projectWindow);
     
     // bring the new window at top of all other windows.
-    project->toFront(true);
+    projectWindow->toFront(true);
     
     //hide startWindow when a project window opens.
     // startWindow only appears when no project window stays opened.
     this->startWindow->setVisible(false);
-    
+    this->preferenceWindow->setVisible(true);
 }
 
 
-void IRMAIN::createNewProjectFromSaveData(std::string path)
+void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
 {
-    printf("========== createNewProjectFromSaveData ==========\n");
+    std::cout << "========== createNewProjectFromSaveData ==========" << std::endl;
     IRSaveLoadSystem::dataStr data = this->saveLoadClass.getSaveDataStr();
     IRSaveLoadSystem::headerStr header = data.header;
     
     t_json saveData = this->saveLoadClass.getSaveData();
     
-    IRProjectWindow* project = new IRProjectWindow(applicationName,this->preferenceWindow);
+    IRProjectWindow* projectWindow = new IRProjectWindow(applicationName, this->preferenceWindow.get());
     
     
     Rectangle<int>bounds = header.bounds;
     
-    project->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    projectWindow->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
     
-    project->getProjectComponent()->addListener(this);
-    project->getProjectComponent()->setProjectPath(path);
-    project->setWindowTitle(header.projectName);
+    projectWindow->getProjectComponent()->addListener(this);
+    projectWindow->getProjectComponent()->setProjectPath(path);
+    projectWindow->setWindowTitle(header.projectName);
     
-    this->projectLib.push_back(project);
+    this->projectLib.push_back(projectWindow);
     
     // bring the new window in front of all other windows.
-    project->toFront(true);
+    projectWindow->toFront(true);
     
     //remove startWindow when a project window opens.
     this->startWindow->setVisible(false);
     
-    printf("========== loadWorkspaces ==========\n");
+    std::cout << "========== loadWorkspaces ==========" << std::endl;
     
-    for(auto it = saveData["Workspaces"].object_items().cbegin(); it != saveData["Workspaces"].object_items().cend(); ++it)
+    for (auto it = saveData["Workspaces"].object_items().cbegin(); it != saveData["Workspaces"].object_items().cend(); ++it)
     {
         std::string id = static_cast<std::string>(it->first);
         std::cout << id << std::endl;
         
         // ===== create worksapce =====
-        project->getProjectComponent()->createNewWorkspace();
+        projectWindow->getProjectComponent()->createNewWorkspace();
         
         // get created workspace
-        IRWorkSpace* currentSpace = project->getProjectComponent()->getTopWorkspace();
+        IRWorkSpace* currentSpace = projectWindow->getProjectComponent()->getTopWorkspace();
         
         // retrieve save data of the workspace
         json11::Json data = saveData["Workspaces"][id].object_items();
@@ -120,15 +119,15 @@ void IRMAIN::createNewProjectFromSaveData(std::string path)
         std::cout << "array count = " << objectArray.size() << std::endl;
         
         
-        for(int i =0; i< objectArray.size(); i++) // for each item of the array...
+        for (int i = 0; i < objectArray.size(); i++) // for each item of the array...
         {
-            for(auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
+            for (auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
             {
                 
-                std::cout << " ===== "<< it->first << " ===== "<< std::endl;
-                std::cout << "object type= "<< it->second["objectType"].string_value() << std::endl;
-                std::cout << "object uniqueID= "<< it->second["objectUniqueID"].string_value() << std::endl;
-                std::cout << "object status= "<< it->second["status"].string_value() << std::endl;
+                std::cout << " ===== " << it->first << " ===== " << std::endl;
+                std::cout << "object type= " << it->second["objectType"].string_value() << std::endl;
+                std::cout << "object uniqueID= " << it->second["objectUniqueID"].string_value() << std::endl;
+                std::cout << "object status= " << it->second["status"].string_value() << std::endl;
                 
                 
                 // ===== create object =====
@@ -174,19 +173,19 @@ void IRMAIN::createNewProjectFromSaveData(std::string path)
     }
     
     // initialize this Project
-    project->getProjectComponent()->initProjectAfterLoading();
+    projectWindow->getProjectComponent()->initProjectAfterLoading();
     // set project save path
-    project->getProjectComponent()->setProjectPath(path);
+    projectWindow->getProjectComponent()->setProjectPath(path);
     
 }
 
 
-void IRMAIN::openProject()
+void IRiMaSMainComponent::openProject()
 {
-    printf("Opening a project...\n");
+    std::cout << "Opening a project..." << std::endl;
     
     FileChooser chooser("Select an audio file to play...",
-                        File::nonexistent,
+                        {},
                         "*.irimas");
     
     if (chooser.browseForFileToOpen())
@@ -202,18 +201,24 @@ void IRMAIN::openProject()
     }
     else
     {
-        printf("Could not open any files.\n");
+        std::cout << "Could not open any files." << std::endl;
     }
 }
 
-void IRMAIN::closeProject(DocumentWindow* closingWindow)
+void IRiMaSMainComponent::closeProject(DocumentWindow* closingWindow)
 {
     auto it = std::find(this->projectLib.begin(), this->projectLib.end(), closingWindow);
-    if (it != this->projectLib.end()) { this->projectLib.erase(it); }
-    else std::cout << "IRMAIN : closeProject : Could not find window of " << closingWindow << std::endl;
+    if (it != this->projectLib.end())
+    {
+        this->projectLib.erase(it);
+    }
+    else
+    {
+        std::cout << "IRiMaSMainComponent : closeProject : Could not find window of " << closingWindow << std::endl;
+    }
     
     
-    if(this->projectLib.size() == 0)
+    if (this->projectLib.size() == 0)
     {
         this->startWindow->setVisible(true);
     }
@@ -221,38 +226,39 @@ void IRMAIN::closeProject(DocumentWindow* closingWindow)
 
 
 // from IRProject Listener
-void IRMAIN::createNewProjectAction()
+void IRiMaSMainComponent::createNewProjectAction()
 {
     createNewProject();
 }
 
 
-void IRMAIN::openProjectAction()
+void IRiMaSMainComponent::openProjectAction()
 {
     openProject();
 }
 
 
-void IRMAIN::closeProjectAction(DocumentWindow* closingWindow)
+void IRiMaSMainComponent::closeProjectAction(DocumentWindow* closingWindow)
 {
-    std::cout<<"IRMAIN closeProjectAction : " << closingWindow << std::endl;
+    std::cout << "IRiMaSMainComponent closeProjectAction: " << closingWindow << std::endl;
 
     closeProject(closingWindow);
 }
 
 
-void IRMAIN::saveProjectAction(IRProject* project)
+void IRiMaSMainComponent::saveProjectAction(IRProject* project)
 {
     //if saveDataPath is not yet set.
-    std::cout << "save project Action path = "<< project->getProjectPath() << std::endl;
-    if(project->getProjectPath().size() == 0){
+    std::cout << "save project Action path = " << project->getProjectPath() << std::endl;
+    if (project->getProjectPath().size() == 0)
+    {
         
         // create new save data file with an extension of ".irimas by default
         FileChooser chooser("Save project...",
-                            File::nonexistent,
+                            {},
                             "");
         
-        if(chooser.browseForFileToSave(true))
+        if (chooser.browseForFileToSave(true))
         {
             auto file = chooser.getResult();
             auto path = file.getFullPathName();
@@ -267,7 +273,7 @@ void IRMAIN::saveProjectAction(IRProject* project)
         }
         else
         {
-            printf("Could not open any files.\n");
+            std::cout << "Could not open any files." << std::endl;
         }
     }
     else
@@ -277,10 +283,10 @@ void IRMAIN::saveProjectAction(IRProject* project)
 }
 
 
-void IRMAIN::saveAsProjectAction(IRProject* project)
+void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
 {
     FileChooser chooser("Save project...",
-                        File::nonexistent,
+                        {},
                         "*.irimas");
     
     if (chooser.browseForFileToSave(true))
@@ -293,7 +299,7 @@ void IRMAIN::saveAsProjectAction(IRProject* project)
     }
     else
     {
-        printf("Could not open any files.\n");
+        std::cout << "Could not open any files." << std::endl;
     }
 }
 
@@ -301,9 +307,9 @@ void IRMAIN::saveAsProjectAction(IRProject* project)
 // *** PRIVATE METHODS
 
 
-void IRMAIN::changeListenerCallback (ChangeBroadcaster* source)
+void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
-    printf("changeListener \n");
+    std::cout << "changeListener" << std::endl;
     if (this->startWindow.get() == source)
     {
         if (this->startWindow->getMenuActionStatus() == IRStarter::MenuActionStatus::CreateNewProjectAction)
@@ -315,9 +321,9 @@ void IRMAIN::changeListenerCallback (ChangeBroadcaster* source)
             openProject();
         }
     }
-    else if(dynamic_cast<IRProjectWindow*>(source) != nullptr)
+    else if (dynamic_cast<IRProjectWindow*>(source) != nullptr)
     {
-        printf("source == IRProjectWindow object\n");
+        std::cout << "source == IRProjectWindow object" << std::endl;
     }
 }
 

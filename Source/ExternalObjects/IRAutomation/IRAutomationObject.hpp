@@ -14,7 +14,7 @@
 #include "AutomationUI.h"
 
 class IRAutomationObject : public IRNodeObject,
-public ChangeListener
+                           public ChangeListener
 {
 public:
     IRAutomationObject(Component *parent) :
@@ -29,13 +29,14 @@ public:
                             getHeight()-(this->yMargin*2));
         addAndMakeVisible(this->UI);
         
-        setSize(300,100);
+        setSize(300, 100);
 
     }
     
     ~IRAutomationObject()
     {
-        
+        delete this->preference;
+        delete this->UI;
     }
     
     // ------------------------------------------------------------

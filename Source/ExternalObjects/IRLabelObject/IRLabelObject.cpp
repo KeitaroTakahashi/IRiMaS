@@ -7,7 +7,7 @@
 
 IRLabelObject::IRLabelObject(Component* parent) : IRNodeObject(parent, "IRLabel")
 {
-    
+    // std::cout << "IRLABELOBJECT CONSTRUCTOR" << std::endl;
     // initialize preference
     this->preference = new IRLabelObjectPreference("Label Preference", Rectangle<int>(400,720));
     this->preference->getFontGUI()->addChangeListener(this);
@@ -37,14 +37,15 @@ IRLabelObject::IRLabelObject(Component* parent) : IRNodeObject(parent, "IRLabel"
     Image img;
     //IRFactory.registerObject<IRLabelObject*>("IRLabel", "Label", img);
     
-    std::cout << "IRLabel initialized\n";
+    // std::cout << "IRLabel initialized\n";
     
 }
 
 
 IRLabelObject::~IRLabelObject()
 {
-    
+    // std::cout << "~IRLABELOBJECT DESTRUCTOR" << std::endl;
+    delete this->preference;
 }
 
 

@@ -16,7 +16,14 @@ IRWorkspaceList::IRWorkspaceList(Rectangle<int> frameRect)
 
 IRWorkspaceList::~IRWorkspaceList()
 {
-    
+    std::cout << "workspace list deleted" << std::endl;
+
+    for (auto &&s : this->snapComponents)
+    {
+        delete s;
+    }
+    removeAllChildren();
+    this->snapComponents.clear();
 }
 
 
@@ -42,11 +49,15 @@ void IRWorkspaceList::updateList()
 {
     // get index of the selected workspace
     int selectedIndex = -1;
-    if(this->currentlySelectedSnap != nullptr)
+    if (this->currentlySelectedSnap != nullptr)
     {
         selectedIndex = this->currentlySelectedSnap->getIndex() - 1;
     }
     
+    for (auto &&s : this->snapComponents)
+    {
+        delete s;
+    }
     removeAllChildren();
     this->snapComponents.clear();
     
@@ -54,17 +65,17 @@ void IRWorkspaceList::updateList()
     int doubleX = this->marginX_left + this->marginX_right;
     
     int w = getWidth() - doubleX;
-    int h = w * 4 / 6 + this->marginY*2; // 6:4
-    for(auto space : this->workspaces)
+    int h = w * 4 / 6 + this->marginY * 2; // 6:4
+    
+    for (auto space : this->workspaces)
     {
         
-        int ht = (index-1)*h;
+        int ht = (index - 1) * h;
         
-        Rectangle<int> rect(0,
-                            ht,
-                            getWidth(),       h);
+        Rectangle<int> rect(0, ht, getWidth(), h);
         
-        showSnap *s = new showSnap(rect, index, space);
+        ShowSnap *s = new ShowSnap(rect, index, space);
+        // std::shared_ptr<ShowSnap> s = std::make_shared<ShowSnap>(rect, index, space);
         s->updateImage();
         s->addChangeListener(this);
         this->snapComponents.add(s);
@@ -73,7 +84,7 @@ void IRWorkspaceList::updateList()
         index++;
     }
     
-    if(selectedIndex >= 0)
+    if (selectedIndex >= 0)
     {
         this->snapComponents[selectedIndex]->listEventSelectedAction();
     }
@@ -180,9 +191,10 @@ Array<IRWorkSpace*> IRWorkspaceList::getWorkspaceList()
 }
 
 
-void IRWorkspaceList::removeWorkspace(showSnap* snap)
+void IRWorkspaceList::removeWorkspace(ShowSnap* snap)
 {
-    if (snap == nullptr) return;
+    if (snap == nullptr)
+        return;
     
     int removeIndex = snap->getIndex() - 1;
     
@@ -198,7 +210,7 @@ void IRWorkspaceList::removeWorkspace(showSnap* snap)
 }
 
 
-void IRWorkspaceList::snapSelectionChange(showSnap* snap)
+void IRWorkspaceList::snapSelectionChange(ShowSnap* snap)
 {
     if (this->currentlySelectedSnap != nullptr)
     {
@@ -231,14 +243,14 @@ bool IRWorkspaceList::keyPressed (const KeyPress& key,
                  Component* originatingComponent)
 {
     std::cout << "IRWorkspaceList keyPressed : " << key.getKeyCode() << std::endl;
-    if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
+    if (key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
     {
         
         IRWorkSpace* space = dynamic_cast<IRWorkSpace*>(this->selectedComponent);
         
         if(space != nullptr){
             
-            showSnap* removeSnap = this->currentlySelectedSnap;
+            ShowSnap* removeSnap = this->currentlySelectedSnap;
             int removeIndex = removeSnap->getIndex();
             
             // set new selectedSnap
@@ -267,9 +279,9 @@ bool IRWorkspaceList::keyPressed (const KeyPress& key,
         return true;
     }
     // select neighbor slides
-    else if(key.getKeyCode() == key.upKey)
+    else if (key.getKeyCode() == key.upKey)
     {
-        showSnap* snap = this->currentlySelectedSnap;
+        ShowSnap* snap = this->currentlySelectedSnap;
         int snapIndex = snap->getIndex() - 1;
         // if selected snap is not the first one, then move to the forward
         if (snapIndex > 0)
@@ -280,11 +292,11 @@ bool IRWorkspaceList::keyPressed (const KeyPress& key,
     }
     else if (key.getKeyCode() == key.downKey)
     {
-        showSnap* snap = this->currentlySelectedSnap;
+        ShowSnap* snap = this->currentlySelectedSnap;
         int snapIndex = snap->getIndex();
 
         // if selected snap is not the last one, then move to the backward
-        if(snapIndex < this->snapComponents.size()){
+        if (snapIndex < this->snapComponents.size()){
             snapSelectionChange(this->snapComponents[snapIndex]);
         }
         return true;

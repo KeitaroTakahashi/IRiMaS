@@ -21,13 +21,18 @@ public:
     
     FontGUI* getFontGUI();
     
+    
 private:
     
-    FontGUI* fontGUI;
+    // FontGUI* fontGUI;
+    std::unique_ptr<FontGUI> fontGUI;
     
     // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRTextEditorObjectPreference)
+    
+    
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRTextEditorObjectPreference)
     
 };
 

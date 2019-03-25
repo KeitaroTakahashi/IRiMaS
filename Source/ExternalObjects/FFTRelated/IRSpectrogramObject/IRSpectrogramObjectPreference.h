@@ -23,7 +23,7 @@ public:
     
     ~IRSpectrogramObjectPreference()
     {
-        
+        delete this->FFTUI;
     }
     //===============================================================
     void resized() override

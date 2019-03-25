@@ -119,7 +119,7 @@ public:
     }
     // ------------------------------------------------------------
 
-    bool hitTest(int, int)override {}
+    bool hitTest(int, int) override { return false; } // FD - FOR NOW. TO AVOID RETURN TYPE FAULT WARNING
     // ------------------------------------------------------------
     virtual void paint(Graphics& g) override
     {
@@ -276,7 +276,7 @@ private:
     int parentHeight = 0;
     
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRObjectSelection)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRObjectSelection)
 
 };
 

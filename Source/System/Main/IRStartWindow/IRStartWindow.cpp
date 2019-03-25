@@ -3,17 +3,14 @@
 
 
 
-IRStartWindow::IRStartWindow(String name, Rectangle<int> frameRect)  :
-DocumentWindow (name,
-                Desktop::getInstance().getDefaultLookAndFeel()
-                .findColour (ResizableWindow::backgroundColourId),
-                DocumentWindow::allButtons)
+IRStartWindow::IRStartWindow(String name, Rectangle<int> frameRect) :
+    DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), DocumentWindow::allButtons)
 {
     // do not show a title bar
-    setUsingNativeTitleBar (false);
+    setUsingNativeTitleBar(false);
     setTitleBarHeight(0);
     
-    // setup systme colour
+    // setup system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     SYSTEMCOLOUR.set(IR::darkBrownSet());
     
@@ -21,23 +18,23 @@ DocumentWindow (name,
     int x = r.getWidth();
     int y = r.getHeight();
     setBounds(0, 0, frameRect.getWidth(), frameRect.getHeight());
-    setCentrePosition(x/2, y/2);
+    setCentrePosition(x / 2, y / 2);
     setResizable(false, false);
-    //setName(this->workspace->getTitle());
     
-    setVisible (true);
     
-    this->starter = new IRStarter(frameRect);
+    setVisible(true);
+    
+    this->starter = std::make_unique<IRStarter>(frameRect);
     this->starter->addChangeListener(this);
     
-    setContentOwned(this->starter, true);
+    setContentOwned(this->starter.get(), true);
     
 }
 
 
 IRStartWindow::~IRStartWindow()
 {
-    delete starter;
+    
 }
 
 
@@ -58,7 +55,7 @@ void IRStartWindow::closeButtonPressed()
 
 void IRStartWindow::changeListenerCallback (ChangeBroadcaster* source)
 {
-    if (this->starter == source)
+    if (source == this->starter.get())
     {
         IRStarter::MenuActionStatus status = this->starter->getMenuActionStatus();
         if (status == IRStarter::MenuActionStatus::CreateNewProjectAction)
@@ -71,3 +68,7 @@ void IRStartWindow::changeListenerCallback (ChangeBroadcaster* source)
         }
     }
 }
+
+
+
+

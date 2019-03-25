@@ -8,15 +8,15 @@
 FontGUI::FontGUI(String title)
 {
     
-    addAndMakeVisible(this->LabelTitle);
-    this->LabelTitle.setText(title, dontSendNotification);
-    this->LabelTitle.setColour(Label::textColourId, Colours::black);
-    this->LabelTitle.setJustificationType(Justification::left);
+    addAndMakeVisible(this->labelTitle);
+    this->labelTitle.setText(title, dontSendNotification);
+    this->labelTitle.setColour(Label::textColourId, Colours::black);
+    this->labelTitle.setJustificationType(Justification::left);
     
-    addAndMakeVisible(this->LabelFont);
-    this->LabelFont.setText("Font : ", dontSendNotification);
-    this->LabelFont.setColour(Label::textColourId, Colours::black);
-    this->LabelFont.setJustificationType(Justification::left);
+    addAndMakeVisible(this->labelFont);
+    this->labelFont.setText("Font : ", dontSendNotification);
+    this->labelFont.setColour(Label::textColourId, Colours::black);
+    this->labelFont.setJustificationType(Justification::left);
     
     // get info
     getAllFonts();
@@ -24,46 +24,46 @@ FontGUI::FontGUI(String title)
     makeFontMenu();
     makeFontStyleMenu();
     
-    addAndMakeVisible(this->LabelStyle);
-    this->LabelStyle.setText("Style : ", dontSendNotification);
-    this->LabelStyle.setColour(Label::textColourId, Colours::black);
-    this->LabelStyle.setJustificationType(Justification::left);
+    addAndMakeVisible(this->labelStyle);
+    this->labelStyle.setText("Style : ", dontSendNotification);
+    this->labelStyle.setColour(Label::textColourId, Colours::black);
+    this->labelStyle.setJustificationType(Justification::left);
     
-    addAndMakeVisible(this->LabelFontSize);
-    this->LabelFontSize.setText("Font size : ", dontSendNotification);
-    this->LabelFontSize.setColour(Label::textColourId, Colours::black);
-    this->LabelFontSize.setJustificationType(Justification::left);
+    addAndMakeVisible(this->labelFontSize);
+    this->labelFontSize.setText("Font size : ", dontSendNotification);
+    this->labelFontSize.setColour(Label::textColourId, Colours::black);
+    this->labelFontSize.setJustificationType(Justification::left);
     
-    addAndMakeVisible(this->FontSizeInput);
-    this->FontSizeInput.setEditable(true);
-    this->FontSizeInput.setText("16", dontSendNotification);
-    this->FontSizeInput.setColour(Label::textColourId, Colours::black);
-    this->FontSizeInput.setColour(Label::textWhenEditingColourId, Colours::black);
+    addAndMakeVisible(this->fontSizeInput);
+    this->fontSizeInput.setEditable(true);
+    this->fontSizeInput.setText("16", dontSendNotification);
+    this->fontSizeInput.setColour(Label::textColourId, Colours::black);
+    this->fontSizeInput.setColour(Label::textWhenEditingColourId, Colours::black);
     
-    this->FontSizeInput.setJustificationType(Justification::left);
-    this->FontSizeInput.onTextChange = [this] { FontSizeInputChanged(); };
+    this->fontSizeInput.setJustificationType(Justification::left);
+    this->fontSizeInput.onTextChange = [this] { fontSizeInputChanged(); };
     
-    addAndMakeVisible(this->LabelAlign);
-    this->LabelAlign.setText("Align : ", dontSendNotification);
-    this->LabelAlign.setColour(Label::textColourId, Colours::black);
-    this->LabelAlign.setJustificationType(Justification::left);
+    addAndMakeVisible(this->labelAlign);
+    this->labelAlign.setText("Align : ", dontSendNotification);
+    this->labelAlign.setColour(Label::textColourId, Colours::black);
+    this->labelAlign.setJustificationType(Justification::left);
     
     makeAlignMenu();
     
-    addAndMakeVisible(this->LabelTextColour);
-    this->LabelTextColour.setText("Text Colour : ", dontSendNotification);
-    this->LabelTextColour.setColour(Label::textColourId, Colours::black);
-    this->LabelTextColour.setJustificationType(Justification::left);
+    addAndMakeVisible(this->labelTextColour);
+    this->labelTextColour.setText("Text Colour : ", dontSendNotification);
+    this->labelTextColour.setColour(Label::textColourId, Colours::black);
+    this->labelTextColour.setJustificationType(Justification::left);
     
     addAndMakeVisible(this->textColour);
     this->textColour.setCurrentColour(Colours::black);
     this->textColour.addChangeListener(this);
     
     
-    addAndMakeVisible(this->LabelBackgroundColour);
-    this->LabelBackgroundColour.setText("BackGround Colour : ", dontSendNotification);
-    this->LabelBackgroundColour.setColour(Label::textColourId, Colours::black);
-    this->LabelBackgroundColour.setJustificationType(Justification::left);
+    addAndMakeVisible(this->labelBackgroundColour);
+    this->labelBackgroundColour.setText("BackGround Colour : ", dontSendNotification);
+    this->labelBackgroundColour.setColour(Label::textColourId, Colours::black);
+    this->labelBackgroundColour.setJustificationType(Justification::left);
     
     addAndMakeVisible(this->backgroundColour);
     this->backgroundColour.setCurrentColour(SYSTEMCOLOUR.background);
@@ -82,25 +82,25 @@ void FontGUI::resized()
 {
     
     // margin 10
-    this->LabelTitle.setBounds      (20, 10, 300, 30);
+    this->labelTitle.setBounds              (20, 10, 300, 30);
     
-    this->LabelFont.setBounds       (10,50,100,30);
-    this->FontMenu.setBounds        (110,50,250,30);
+    this->labelFont.setBounds               (10, 50, 100, 30);
+    this->fontMenu.setBounds                (110, 50, 250, 30);
     
-    this->LabelStyle.setBounds      (10,90,100,30);
-    this->StyleMenu.setBounds       (110,90,250,30);
+    this->labelStyle.setBounds              (10, 90, 100, 30);
+    this->styleMenu.setBounds               (110, 90, 250, 30);
     
-    this->LabelFontSize.setBounds   (10,130,100,30);
-    this->FontSizeInput.setBounds   (110,130,100,30);
+    this->labelFontSize.setBounds           (10, 130, 100, 30);
+    this->fontSizeInput.setBounds           (110, 130, 100, 30);
     
-    this->LabelAlign.setBounds      (10,170,100,30);
-    this->AlignMenu.setBounds       (110,170,250,30);
+    this->labelAlign.setBounds              (10, 170, 100, 30);
+    this->alignMenu.setBounds               (110, 170, 250, 30);
     
-    this->LabelTextColour.setBounds (10,210,100,30);
-    this->textColour.setBounds      (110,210,250,250);
+    this->labelTextColour.setBounds         (10, 210, 100, 30);
+    this->textColour.setBounds              (110, 210, 250, 250);
     
-    this->LabelBackgroundColour.setBounds (10,470, 100, 30);
-    this->backgroundColour.setBounds      (110, 470, 250, 250);
+    this->labelBackgroundColour.setBounds   (10, 470, 100, 30);
+    this->backgroundColour.setBounds        (110, 470, 250, 250);
     
 }
 
@@ -109,7 +109,7 @@ void FontGUI::paint(Graphics& g)
 {
     g.fillAll(Colours::white);
     g.setColour(Colours::black);
-    g.drawLine(0,42.5,getWidth(),42.5);
+    g.drawLine(0, 42.5, getWidth(), 42.5);
 }
 
 
@@ -136,20 +136,21 @@ void FontGUI::getSelectedFontStyles(String fontName)
 
 void FontGUI::makeFontMenu()
 {
-    addAndMakeVisible(this->FontMenu);
+    addAndMakeVisible(this->fontMenu);
     
-    this->FontMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
-    this->FontMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
-    this->FontMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
+    this->fontMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
+    this->fontMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
+    this->fontMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
     int index = 1;
-    for (auto family : this->fontFamilyList){
-        this->FontMenu.addItem(family, index);
-        index ++;
+    for (auto family : this->fontFamilyList)
+    {
+        this->fontMenu.addItem(family, index);
+        index++;
     }
-    this->FontMenu.onChange = [this]{ FontMenuChanged(); };
-    this->FontMenu.addListener(this);
+    this->fontMenu.onChange = [this] { fontMenuChanged(); };
+    this->fontMenu.addListener(this);
     int defaultFontIndex = 1;
-    this->FontMenu.setSelectedId(defaultFontIndex);
+    this->fontMenu.setSelectedId(defaultFontIndex);
     
     getSelectedFontStyles(this->fontFamilyList[defaultFontIndex-1]);
 }
@@ -157,40 +158,41 @@ void FontGUI::makeFontMenu()
 
 void FontGUI::makeFontStyleMenu()
 {
-    addAndMakeVisible(this->StyleMenu);
+    addAndMakeVisible(this->styleMenu);
     
-    this->StyleMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
-    this->StyleMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
-    this->StyleMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
+    this->styleMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
+    this->styleMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
+    this->styleMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
     int index = 1;
-    for (auto style : this->fontStyleList){
-        this->StyleMenu.addItem(style, index);
-        index ++;
+    for (auto style : this->fontStyleList)
+    {
+        this->styleMenu.addItem(style, index);
+        index++;
     }
     int defaultFontIndex = 1;
-    this->StyleMenu.setSelectedId(defaultFontIndex);
-    this->StyleMenu.onChange = [this] { FontStyleMenuChanged(); };
+    this->styleMenu.setSelectedId(defaultFontIndex);
+    this->styleMenu.onChange = [this] { fontStyleMenuChanged(); };
 }
 
 
 void FontGUI::makeAlignMenu()
 {
-    addAndMakeVisible(this->AlignMenu);
-    this->AlignMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
-    this->AlignMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
-    this->AlignMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
+    addAndMakeVisible(this->alignMenu);
+    this->alignMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
+    this->alignMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
+    this->alignMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
     
-    this->AlignMenu.addItem("Left",1);
-    this->AlignMenu.addItem("Centre",2);
-    this->AlignMenu.addItem("Right",3);
-    this->AlignMenu.setSelectedId(1);
-    this->AlignMenu.onChange = [this] { FontAlignMenuChanged(); };
+    this->alignMenu.addItem("Left",1);
+    this->alignMenu.addItem("Centre",2);
+    this->alignMenu.addItem("Right",3);
+    this->alignMenu.setSelectedId(1);
+    this->alignMenu.onChange = [this] { fontAlignMenuChanged(); };
 }
 
 
-void FontGUI::FontMenuChanged()
+void FontGUI::fontMenuChanged()
 {
-    std::cout << "font changed!" << std::endl;
+    std::cout << "Font changed" << std::endl;
     
     this->status = FontChanged;
     sendChangeMessage();
@@ -198,22 +200,23 @@ void FontGUI::FontMenuChanged()
 }
 
 
-void FontGUI::FontStyleMenuChanged()
+void FontGUI::fontStyleMenuChanged()
 {
     this->status = FontStyleChanged;
     sendChangeMessage();
 }
 
 
-void FontGUI::FontSizeInputChanged()
+void FontGUI::fontSizeInputChanged()
 {
-    std::string val = this->FontSizeInput.getText().toStdString();
+    std::string val = this->fontSizeInput.getText().toStdString();
     float valFloat = atof(val.c_str());
     //std::cout << "fontSize value = " << valFloat << std::endl;
     
-    if(valFloat == 0){
-        valFloat = 1.0;
-        this->FontSizeInput.setText("1.0",dontSendNotification);
+    if (valFloat == 0.0f)
+    {
+        valFloat = 1.0f;
+        this->fontSizeInput.setText("1.0", dontSendNotification);
     }
     
     this->fontSize = valFloat;
@@ -223,21 +226,21 @@ void FontGUI::FontSizeInputChanged()
 }
 
 
-void FontGUI::FontAlignMenuChanged()
+void FontGUI::fontAlignMenuChanged()
 {
     this->status = FontAlignChanged;
     sendChangeMessage();
 }
 
 
-void FontGUI::FontColourMenuChanged()
+void FontGUI::fontColourMenuChanged()
 {
     this->status = FontColourChanged;
     sendChangeMessage();
 }
 
 
-void FontGUI::BackgroundColourMenuChanged()
+void FontGUI::backgroundColourMenuChanged()
 {
     this->status = BackgroundColourChanged;
     sendChangeMessage();
@@ -252,43 +255,43 @@ FontGUIStatus FontGUI::getChangeStatus() const
 
 void FontGUI::setTypefaceNameIndex(int index)
 {
-    this->FontMenu.setSelectedId(index);
+    this->fontMenu.setSelectedId(index);
 }
 
 
 String FontGUI::getTypefaceName() const
 {
-    return this->fontFamilyList[this->FontMenu.getSelectedId() - 1];
+    return this->fontFamilyList[this->fontMenu.getSelectedId() - 1];
 }
 
 
 void FontGUI::setTypefaceName(const String newStyle)
 {
-    this->FontMenu.setSelectedId(this->fontFamilyList.indexOf(newStyle) + 1);
+    this->fontMenu.setSelectedId(this->fontFamilyList.indexOf(newStyle) + 1);
 }
 
 
 String FontGUI::getTypefaceStyle() const
 {
-    return this->fontStyleList[this->StyleMenu.getSelectedId()-1];
+    return this->fontStyleList[this->styleMenu.getSelectedId() - 1];
 }
 
 
 void FontGUI::setTypefaceStyle(const String newStyle)
 {
-    this->StyleMenu.setSelectedId(this->fontStyleList.indexOf(newStyle)+1);
+    this->styleMenu.setSelectedId(this->fontStyleList.indexOf(newStyle) + 1);
 }
 
 
 int FontGUI::getAlign() const
 {
-    return this->AlignMenu.getSelectedId();
+    return this->alignMenu.getSelectedId();
 }
 
 
 void FontGUI::setAlign(int newId)
 {
-    this->AlignMenu.setSelectedId(newId);
+    this->alignMenu.setSelectedId(newId);
 }
 
 
@@ -328,23 +331,25 @@ void FontGUI::setBackgroundColour(Colour newColour)
 }
 
 
-void FontGUI::changeListenerCallback (ChangeBroadcaster* source)
+void FontGUI::changeListenerCallback(ChangeBroadcaster* source)
 {
     if (source == &this->textColour)
     {
         // colour changed
-        FontColourMenuChanged();
+        fontColourMenuChanged();
     }
     else if (source == &this->backgroundColour)
     {
-        BackgroundColourMenuChanged();
+        backgroundColourMenuChanged();
     }
 }
 
 
-void FontGUI::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
+void FontGUI::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 {
-    std::cout << "comboBox selection changed\n";
+    std::cout << "comboBox selection changed" << std::endl;
 }
+
+
 
 

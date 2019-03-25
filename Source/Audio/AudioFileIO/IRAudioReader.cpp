@@ -16,6 +16,8 @@ Thread("ImportAudioFile Background thread")
 // ------------------------------------------------------------------
 IRAudio::~IRAudio()
 {
+    if (this->reader)
+        delete this->reader;
     stopThread(4000);
 }
 // ------------------------------------------------------------------
@@ -32,7 +34,7 @@ AudioThumbnail* IRAudio::getThumbnail()
 bool IRAudio::openFile()
 {
     FileChooser chooser("Select an audio file to play...",
-                        File::nonexistent,
+                        {},
                         "*.wav, *.aif, *.aiff");
     if(chooser.browseForFileToOpen())
     {

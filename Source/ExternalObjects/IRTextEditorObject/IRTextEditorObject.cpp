@@ -32,13 +32,13 @@ IRTextEditorObject::IRTextEditorObject(Component* parent) : IRNodeObject(parent,
     
     childComponentManager(&this->textEditor);
     
-    setSize(150,150);
+    setSize(150, 150);
 }
 
 
 IRTextEditorObject::~IRTextEditorObject()
 {
-    
+    delete this->preference;
 }
 
 

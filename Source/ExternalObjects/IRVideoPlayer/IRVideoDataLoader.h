@@ -104,7 +104,7 @@ public:
             
             
         }else{
-            printf("Error : could not find cap. cap is empty\n");
+            std::cout << "Error : could not find cap. cap is empty" << std::endl;
             // if no video file opened, then return empty videoInfo
             return videoStr();
         }

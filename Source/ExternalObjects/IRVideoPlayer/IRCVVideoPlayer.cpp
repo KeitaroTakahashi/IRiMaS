@@ -1,9 +1,3 @@
-//
-//  IRCVVideoPlayer.cpp
-//  NodeComponentObject_Study - App
-//
-//  Created by Keitaro on 07/02/2019.
-//
 
 #include "IRCVVideoPlayer.hpp"
 
@@ -18,17 +12,17 @@ void IRCVVideoPlayer::createButton()
                                Colour((uint8)255, (uint8)255, (uint8)255, (uint8)255));
     this->openButton.onClick =[this] { openVideoFile(); };
 }
-// --------------------------------------------------
+
 
 void IRCVVideoPlayer::openVideoFile()
 {
     FileChooser chooser("Select a video file to open...",
-                        File::nonexistent,
+                        {},
                         "*.mov, *.mp4, *.m4v");
     
     FilenameComponent co {"movie", {}, true, false, false, "*", {}, "(choose a video file to play)"};
     
-    if(chooser.browseForFileToOpen())
+    if (chooser.browseForFileToOpen())
     {
         auto file = chooser.getResult();
         auto path = file.getFullPathName();
@@ -45,7 +39,8 @@ void IRCVVideoPlayer::openVideoFile()
     }
     repaint();
 }
-// --------------------------------------------------
+
+
 void IRCVVideoPlayer::getCameraCapture()
 {
     
@@ -58,14 +53,15 @@ void IRCVVideoPlayer::getCameraCapture()
 
         this->img = KPixelDataConvertor().Mat2Image_RGB(&resizedFrame);
         
-        if(this->frame.empty()){
+        if (this->frame.empty())
+        {
            
             stopAnimation();
-         printf("Error : Could not get frame\n");
+            std::cout << "Error : Could not get frame" << std::endl;
         }
     }
 }
-// --------------------------------------------------
+
 
 void IRCVVideoPlayer::MatToImage(Image* img, cv::Mat *m)
 {
@@ -73,4 +69,5 @@ void IRCVVideoPlayer::MatToImage(Image* img, cv::Mat *m)
 }
 
 
-// --------------------------------------------------
+
+

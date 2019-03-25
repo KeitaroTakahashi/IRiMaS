@@ -35,7 +35,7 @@ thumbnail(512, formatManager, thumbnailCache)
 
 IRWaveform::~IRWaveform()
 {
-    
+    // delete this->player; // leave it - the owner will delete it.
 }
 
 

@@ -63,7 +63,7 @@ bool WindowCommandTarget::perform(const InvocationInfo& info)
     {
         
         case CommandIDs::fileInspecterWindow:
-            printf("window menu perform\n");
+            std::cout << "window menu perform" << std::endl;
             break;
         case CommandIDs::menuPreferenceWindow:
             break;

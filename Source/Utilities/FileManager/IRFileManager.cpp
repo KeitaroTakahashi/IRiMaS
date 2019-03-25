@@ -41,7 +41,7 @@ bool IRFileManager::isFileAlreadyRegistered(File newFile)
 {
     return this->list.isFile(newFile);
 }
-// -------------------------------------------------
+
 
 bool IRFileManager::isObjectAlreadyRegistered(IRObjectPtr obj)
 {
@@ -49,7 +49,7 @@ bool IRFileManager::isObjectAlreadyRegistered(IRObjectPtr obj)
     if(p != nullptr) return true;
     else return false;
 }
-// -------------------------------------------------
+
 
 IRObjectPtr IRFileManager::retrievePtrByFile(File file)
 {
@@ -57,13 +57,13 @@ IRObjectPtr IRFileManager::retrievePtrByFile(File file)
     if(p != nullptr) return p;
     else return nullptr;
 }
-// -------------------------------------------------
+
 
 File IRFileManager::retrieveFileByPtr(IRObjectPtr obj)
 {
     return this->list.findFileByPtr(obj);
 }
-// -------------------------------------------------
+
 
 void IRFileManager::registerNewFile(File file, IRObjectPtr obj)
 {
@@ -84,16 +84,16 @@ void IRFileManager::registerNewFile(File file, IRObjectPtr obj)
         KLib().showConnectionErrorMessage("Error : FileManager List size conflicts!! for " + file.getFullPathName() + "\n");
     }
 }
-// -------------------------------------------------
-//==================================================
+
+
 IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr owner)
 {
     
     std::cout << "IRFileManager ptr = " << this << std::endl;
     
-    if(isFileAlreadyRegistered(file))
+    if (isFileAlreadyRegistered(file))
     {
-        printf("file already imported to the project!\n");
+        std::cout << "file already imported to the project." << std::endl;
         IRObjectPtr obj = retrievePtrByFile(file);
         // manager owner list
         managerOwner(type, obj, owner, true);
@@ -103,24 +103,24 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr ow
     {
         IRObjectPtr newObj = createFileData(type, file, owner);
         registerNewFile(file, newObj);
-        printf("registerNewFile done\n");
+        std::cout << "registerNewFile done" << std::endl;
 
         return newObj;
     }
 }
-// -------------------------------------------------
+
+
 IRObjectPtr IRFileManager::discardFilePtr(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, File file)
 {
     managerOwner(type, obj, owner, false);
     this->list.remove(obj);
     return nullptr;
 }
-//==================================================
 
 
 void IRFileManager::managerOwner(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, bool addOrRemove)
 {
-    switch(type)
+    switch (type)
     {
         case IRIMAGE:
             IRImageReferencerManager(obj, owner, addOrRemove);
@@ -134,10 +134,10 @@ void IRFileManager::managerOwner(IRFileType type, IRObjectPtr obj, IRObjectPtr o
     }
 }
 
-// -------------------------------------------------
+
 void IRFileManager::IRImageReferencerManager(IRObjectPtr obj, IRObjectPtr owner ,bool addOrRemove)
 {
-    if(addOrRemove) // add
+    if (addOrRemove) // add
     {
         DataAllocationManager<IRImage>* data = static_cast<DataAllocationManager<IRImage>*>(obj);
         data->addReferencingObject(owner);
@@ -148,3 +148,7 @@ void IRFileManager::IRImageReferencerManager(IRObjectPtr obj, IRObjectPtr owner 
         data->removeReferencingObject(owner);
     }
 }
+
+
+
+

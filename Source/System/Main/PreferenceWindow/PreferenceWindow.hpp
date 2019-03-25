@@ -1,15 +1,19 @@
 
-#ifndef PreferenceWindow_h
-#define PreferenceWindow_h
+#ifndef PreferenceWindow_hpp
+#define PreferenceWindow_hpp
 
 
 #include "JuceHeader.h"
+
 #include "IRPreferenceSpace.hpp"
 #include "Preferences.h"
 
 
 
-class PreferenceWindow : public DocumentWindow, public ChangeListener
+
+
+class PreferenceWindow : public DocumentWindow,
+                         public ChangeListener
 {
     
 public:
@@ -17,25 +21,30 @@ public:
     PreferenceWindow(String name);
     ~PreferenceWindow();
     
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void changeListenerCallback(ChangeBroadcaster* source) override;
     
     void closeButtonPressed() override;
     
     IRPreferenceSpace* getPreferenceSpace();
     
+    
 private:
     
-    IRPreferenceSpace *preferenceSpace;
+    std::unique_ptr<IRPreferenceSpace> preferenceSpace;
     
-    // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PreferenceWindow)
+    
 };
 
 
-#endif /* PreferenceWindow_h */
+
+
+
+#endif /* PreferenceWindow_hpp */
+
 
 
 

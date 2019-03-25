@@ -11,7 +11,8 @@
 
 
 
-class EditCommandTarget : public Component, public ApplicationCommandTarget
+class EditCommandTarget : public Component,
+                          public ApplicationCommandTarget
 {
     
 public:
@@ -24,7 +25,7 @@ public:
     ApplicationCommandTarget* getNextCommandTarget() override;
     
     void getAllCommands(Array<CommandID>& c) override;
-    void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result) override;
+    void getCommandInfo(CommandID commandID, ApplicationCommandInfo& result) override;
     
     bool perform (const InvocationInfo& info) override;
     
@@ -33,7 +34,7 @@ public:
     public:
         virtual ~Listener() {}
         
-        //write methods called by IRNodeComponent objects.
+        // write methods called by IRNodeComponent objects.
         virtual void performEditModeChange() {};
         
     };
@@ -51,6 +52,9 @@ private:
     ApplicationCommandManager& commandManager;
     ListenerList<Listener> listeners;
     WindowCommandTarget windowCommandTarget;
+    
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditCommandTarget)
     
 };
 

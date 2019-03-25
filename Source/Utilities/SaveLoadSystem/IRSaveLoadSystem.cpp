@@ -29,7 +29,7 @@ void IRSaveLoadSystem::createHeader()
 void IRSaveLoadSystem::loadHeader()
 {
     
-    printf("========== loadHeader ==========\n");
+    std::cout << "========== loadHeader ==========" << std::endl;
     
     json11::Json data = this->saveData["Header"]["Project"].object_items();
     
@@ -61,7 +61,7 @@ void IRSaveLoadSystem::loadHeader()
 
     std::cout << "projectName = " << data["projectName"].string_value() << std::endl;
     this->saveDataStr.header.projectName = data["projectName"].string_value();
-    printf("========== end ==========\n");
+    std::cout << "========== end ==========" << std::endl;
 
 }
 // ----------------------------------------
@@ -79,7 +79,7 @@ void IRSaveLoadSystem::createWorkspaces(json11::Json workspaceSaveData)
 // ----------------------------------------
 void IRSaveLoadSystem::loadWorkspaces()
 {
-    printf("========== loadWorkspaces ==========\n");
+    std::cout << "========== loadWorkspaces ==========" << std::endl;
 
     
     for(auto it = this->saveData["Workspaces"].object_items().cbegin(); it != this->saveData["Workspaces"].object_items().cend(); ++it)
@@ -117,7 +117,7 @@ void IRSaveLoadSystem::loadWorkspaces()
         
         
     }
-    printf("========== end ==========\n");
+    std::cout << "========== end ==========" << std::endl;
 }
 // ----------------------------------------
 void IRSaveLoadSystem::callCreateNewProjectFromSaveData()

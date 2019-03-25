@@ -28,6 +28,7 @@ public:
 private:
     
     AudioPlayer_threadSafe *player;
+    // std::shared_ptr<AudioPlayer_threadSafe> player;
     
 };
 

@@ -5,10 +5,15 @@
 #include "JuceHeader.h"
 
 
-#include "ObjectFactory.h"
+#include "IRProject.hpp"
 #include "IRProjectWindow.hpp"
-#include "IRStarter.hpp"
+#include "PreferenceWindow.hpp"
 #include "IRStartWindow.hpp"
+#include "IRSaveLoadSystem.hpp"
+#include "json11.hpp"
+#include "singletonClass.hpp"
+#include "IRObjectFactory.hpp"
+#include "ColourLib.h"
 
 /*
  IRMAIN
@@ -27,16 +32,19 @@ IRMAIN class operates
 
 
 
-class IRMAIN : public Component,
-public ChangeListener,
-public IRProject::Listener
+
+
+class IRiMaSMainComponent : public Component,
+                            public ChangeListener,
+                            public IRProject::Listener
 {
+    
 public:
     
-    IRMAIN(const String applicationName);
-    ~IRMAIN();
+    IRiMaSMainComponent(const String applicationName);
+    ~IRiMaSMainComponent();
     
-    void initialize();
+    void initialise();
     
     void createNewProject();
     void createNewProjectFromSaveData(std::string path);
@@ -50,13 +58,13 @@ public:
     void saveProjectAction(IRProject* project) override;
     void saveAsProjectAction(IRProject* project) override;
     
+    
 private:
     
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void changeListenerCallback(ChangeBroadcaster* source) override;
     
-    // application name
     String applicationName;
-    std::string saveDataPath = "";
+    std::string saveDataPath { "" };
     
     // storing all project windows
     std::vector<IRProjectWindow* >projectLib;
@@ -64,8 +72,8 @@ private:
     // storing a currently active project window
     IRProjectWindow* activeProjectWindow;
     
-    // preference window
-    PreferenceWindow* preferenceWindow;
+    // PreferenceWindow* preferenceWindow;
+    std::shared_ptr<PreferenceWindow> preferenceWindow;
     
     // start window initially opened when launching this app
     std::unique_ptr<IRStartWindow> startWindow;
@@ -74,13 +82,21 @@ private:
     IRSaveLoadSystem saveLoadClass;
     json11::Json saveData;
     
-    // IRObjectFactory
     IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
     
-    // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRiMaSMainComponent)
     
 };
 
 
+
+
+
 #endif /* IRiMaSMain_hpp */
+
+
+
+

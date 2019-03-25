@@ -54,7 +54,7 @@ void ObjectListMenuObject::makeCells()
     this->idBank.push_back(""); // dummy
     for (auto &obj : list)
     {
-        cellComponent* cell = new cellComponent(obj.second.name,
+        CellComponent* cell = new CellComponent(obj.second.name,
                                                 obj.second.id,
                                                 index,
                                                 *this);

@@ -10,7 +10,7 @@ void IRWorkSpace::copySelectedObjects()
     std::cout << "copied\n";
     this->copiedObjects.clear();
     
-    for(auto obj : this->selector->getSelectedObjectList())
+    for (auto obj : this->selector->getSelectedObjectList())
     {
         copyObject(obj, false);
     }
@@ -21,7 +21,7 @@ void IRWorkSpace::pasteSelectedObjects()
 {
     std::cout << "paste\n";
     
-    for(auto obj: this->copiedObjects)
+    for (auto obj: this->copiedObjects)
     {
         pasteObject(obj,false);
     }
@@ -68,7 +68,7 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     this->objects.add(obj);
 
     //audiosource
-    if(obj->isContainAudioSource())
+    if (obj->isContainAudioSource())
         this->mixer.addAudioSource(obj->getAudioSource());
     
     //request updating the workspaceList
@@ -109,6 +109,12 @@ void IRWorkSpace::deleteObject(IRNodeObject *obj)
         removeChildComponent(obj);
         
         int index = this->objects.indexOf(obj);
+        
+        // DUFEU ADDON
+        if (obj->isContainAudioSource())
+            this->mixer.removeSource(obj->getAudioSource());
+        // END DUFEU ADDON
+        
         if(index >= 0){
             this->objects.remove(index);
             delete obj;
@@ -140,47 +146,57 @@ void IRWorkSpace::manageHeavyWeightComponents(bool flag)
 void IRWorkSpace::openObjectListMenu(Point<int>Pos)
 {
     
-    ObjectListMenu* c = this->ObjectMenuComponent;
+    ObjectListMenu* c = this->objectMenuComponent;
     
     int c_w = c->getWidth();
     int c_h = c->getHeight();
     int x = Pos.getX();
     int y = Pos.getY();
     
-    this->objMenuwindow.reset(new ObjectMenuWindow("Menu",Rectangle<int>(0,0,c_w,c_h), c));
+    this->objMenuwindow.reset(new ObjectMenuWindow("Menu", Rectangle<int>(0, 0, c_w, c_h), c));
     
     
     // adjust position
-    if(x <= c_w){ // if the menu is around left edge of the window
-        if(y <= c_h){
-            this->objMenuwindow->setCentrePosition(x+c_w/2,
-                                                   Pos.getY()+c_h/2);
-            
-        }else if(y >= (getHeight()-c_h)){
-            this->objMenuwindow->setCentrePosition(x+c_w/2,
-                                                   Pos.getY()-c_h/2);
-        }else{
-            this->objMenuwindow->setCentrePosition(x+c_w/2,y);
+    if (x <= c_w)
+    { // if the menu is around left edge of the window
+        if (y <= c_h)
+        {
+            this->objMenuwindow->setCentrePosition(x + c_w / 2, Pos.getY() + c_h / 2);
         }
-    }else if(x >= (getWidth()-c_w)){ // if the menu is around right edge of the window
-        if(y <= c_h){
-            this->objMenuwindow->setCentrePosition(x-c_w/2,
-                                                   Pos.getY()+c_h/2);
-            
-        }else if(y >= (getHeight()-c_h)){
-            this->objMenuwindow->setCentrePosition(x-c_w/2,
-                                                   Pos.getY()-c_h/2);
-        }else{
-            this->objMenuwindow->setCentrePosition(x-c_w/2,y);
+        else if (y >= (getHeight()-c_h))
+        {
+            this->objMenuwindow->setCentrePosition(x + c_w / 2, Pos.getY() - c_h / 2);
         }
-    }else{
-        this->objMenuwindow->setCentrePosition(x,y);
+        else
+        {
+            this->objMenuwindow->setCentrePosition(x + c_w / 2, y);
+        }
+    }
+    else if (x >= (getWidth() - c_w)) // if the menu is around right edge of the window
+    {
+        if (y <= c_h)
+        {
+            this->objMenuwindow->setCentrePosition(x - c_w / 2, Pos.getY() + c_h / 2);
+            
+        }
+        else if (y >= (getHeight()-c_h))
+        {
+            this->objMenuwindow->setCentrePosition(x- c_w / 2, Pos.getY() - c_h / 2);
+        }
+        else
+        {
+            this->objMenuwindow->setCentrePosition(x - c_w / 2, y);
+        }
+    }
+    else
+    {
+        this->objMenuwindow->setCentrePosition(x, y);
     }
     
 }
 void IRWorkSpace::closeObjectListMenu()
 {
-    //removeChildComponent(this->ObjectMenuComponent);
+    //removeChildComponent(this->objectMenuComponent);
     
     // free menu window here.
     this->objMenuwindow = nullptr;
@@ -199,24 +215,26 @@ void IRWorkSpace::itemHasSelectedAction(ObjectListMenu* menu)
     obj->setCentrePosition(this->currentMousePosition.getX(),
                            this->currentMousePosition.getY());
     createObject(obj);
-    removeChildComponent(this->ObjectMenuComponent);
+    removeChildComponent(this->objectMenuComponent);
     
     //destroy window
     this->objMenuwindow = nullptr;
     
 }
 // ------------------------------------------------------------
+/*
 void IRWorkSpace::createObject(std::string objName)
 {
     
 }
+ */
 // ------------------------------------------------------------
 void IRWorkSpace::dragoutNodeObjectFromParent(IRNodeObject* obj)
 {
-    std::cout << "workspace : dragoutNodeObject\n";
+    std::cout << "workspace : dragoutNodeObject" << std::endl;
     setEditMode(true);
     // notify the change of editMode to IRProject
-    if(this->notifyEditModeChanged != nullptr)
+    if (this->notifyEditModeChanged != nullptr)
     {
         this->notifyEditModeChanged();
     }
@@ -225,7 +243,8 @@ void IRWorkSpace::dragoutNodeObjectFromParent(IRNodeObject* obj)
 // ------------------------------------------------------------
 void IRWorkSpace::dropoutNodeObjectFromParent(IRNodeObject* obj)
 {
-    std::cout << "workspace : dropOut\n";
+    std::cout << "workspace : dropOut" << std::endl;
+
 }
 // ------------------------------------------------------------
 void IRWorkSpace::editModeChangedInNodeObject(bool editMode)
@@ -262,7 +281,8 @@ void IRWorkSpace::createNewProject()
 // ============================================================
 void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)
 {
-    std::cout << "addObjectGlobal\n";
+    std::cout << "addObjectGlobal" << std::endl;
+
     this->p_obj.insert(std::make_pair(id, ptr));
     
     std::cout << this->p_obj.at(id) << std::endl;
@@ -270,7 +290,7 @@ void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)
 // ------------------------------------------------------------
 IRObjectPtr IRWorkSpace::getObjectGlobal(String id)
 {
-    std::cout << "getObjectGlobal of " << id << "\n";
+    std::cout << "getObjectGlobal of " << id << std::endl;
     
     if(this->p_obj.find(id) != this->p_obj.end()){
         std::cout << this->p_obj.at(id) << std::endl;

@@ -14,8 +14,8 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     addKeyListener(this);
     
     //object menu
-    this->ObjectMenuComponent = new ObjectListMenu(this, Rectangle<int>(300,400));
-    this->ObjectMenuComponent->addListener(this);
+    this->objectMenuComponent = new ObjectListMenu(this, Rectangle<int>(300,400));
+    this->objectMenuComponent->addListener(this);
     
     // get a pointer of the preference window
     this->preferenceWindow = preferenceWindow;
@@ -30,7 +30,15 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
 
 IRWorkSpace::~IRWorkSpace()
 {
+    std::cout << "workspace destructor called" << std::endl;
+    delete this->objectMenuComponent;
+    delete this->selector;
     
+    // but of course, all objects on the workspace must also be destroyed.
+    for (auto &&o : this->objects)
+    {
+        delete o;
+    }
 }
 
 
@@ -50,7 +58,7 @@ void IRWorkSpace::paint (Graphics& g)
 void IRWorkSpace::drawShadows(Graphics& g)
 {
     
-    printf("drawing... shadow of %d items\n",this->selector->getSelectedObjectList().size());
+    std::cout << "drawing... shadow of " << this->selector->getSelectedObjectList().size() << " items" << std::endl;
     auto list = this->selector->getSelectedObjectList();
     
     for(auto obj : list)
@@ -60,8 +68,7 @@ void IRWorkSpace::drawShadows(Graphics& g)
         Rectangle<int> b = obj->getBounds();
         Rectangle<int> bounds(b.getX() + 20, b.getY() + 30, b.getWidth(), b.getHeight());
         
-        shadow.drawForRectangle(g,
-                                bounds);
+        shadow.drawForRectangle(g, bounds);
     }
 }
 
@@ -74,7 +81,7 @@ void IRWorkSpace::resized()
 
 void IRWorkSpace::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRWorkSpace mouseDown\n";
+    std::cout << "IRWorkSpace mouseDown" << std::endl;
     this->selector->mouseDownHandler(e);
     
     if(isEditMode())
@@ -229,7 +236,7 @@ AudioSource& IRWorkSpace::getMixer()
 json11::Json IRWorkSpace::makeSaveDataOfThis()
 {
     
-    printf("makeSaveDataOfThis\n");
+    std::cout << "makeSaveDataOfThis" << std::endl;
     std::vector<json11::Json::object> objectList;
     
     int index = 0;

@@ -16,7 +16,7 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
     this->listener = listener;
     this->frameRect = frameRect;
     
-    setSize (frameRect.getWidth(), frameRect.getHeight());
+    setSize(frameRect.getWidth(), frameRect.getHeight());
     
     //create menu
     this->menuBar.reset(new MenuBarComponent(this));
@@ -28,16 +28,17 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
 #endif
     
     addAndMakeVisible(this->menuBar.get());
-    setApplicationCommandManagerToWatch (&this->commandManager);
+    setApplicationCommandManagerToWatch(&this->commandManager);
     
     
     this->commandManager.registerAllCommandsForTarget (this);
     
     addKeyListener(this->commandManager.getKeyMappings());
-    this->editCommandTarget = new EditCommandTarget( commandManager );
+    // this->editCommandTarget = new EditCommandTarget( commandManager );
+    this->editCommandTarget = std::make_unique<EditCommandTarget>(commandManager);
     this->editCommandTarget->addListener(this);
     
-    addAndMakeVisible(this->editCommandTarget);
+    addAndMakeVisible(this->editCommandTarget.get());
 
     // setup
     setAudioChannels(0, 2);
@@ -46,10 +47,19 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
 
 IRProject::~IRProject()
 {
+    std::cout << "beg of IR Project destructor" << std::endl;
+    
     shutdownAudio();
     
     if(this->fileInspecterWindow != nullptr)
         delete this->fileInspecterWindow;
+    
+    for (auto w : this->workspaces)
+    {
+        delete w;
+    }
+    
+    std::cout << "end of IR Project destructor" << std::endl;
 }
 
 
@@ -151,16 +161,21 @@ void IRProject::createNewWorkspace()
         
         this->workspaceList->addWorkspace(space);
         
-    }else{ printf("Error : createNewWorkspace() : could not add new workspace, workspaceList null.\n");}
+    }
+    else
+    {
+        std::cout << "Error : createNewWorkspace() : could not add new workspace, workspaceList null" << std::endl;
+    }
 }
 
 
 void IRProject::createWorkspaceList()
 {
-    this->workspaceList = new IRWorkspaceList(Rectangle<int>(0,0,this->workspaceListWidth,getHeight()));
+ //   this->workspaceList = new IRWorkspaceList(Rectangle<int>(0, 0, this->workspaceListWidth, getHeight()));
+    this->workspaceList = std::make_shared<IRWorkspaceList>(Rectangle<int>(0, 0, this->workspaceListWidth, getHeight()));
     this->workspaceList->addListener(this);
     this->workspaceList->addChangeListener(this);
-    addAndMakeVisible(this->workspaceList);
+    addAndMakeVisible(this->workspaceList.get());
 }
 
 
@@ -168,7 +183,8 @@ void IRProject::createWorkspaceList()
 void IRProject::removeWorkspace(IRWorkSpace* workspace)
 {
     auto it = std::find(this->workspaces.begin(), this->workspaces.end(), workspace);
-    if (it != this->workspaces.end()) {
+    if (it != this->workspaces.end())
+    {
         this->workspaces.erase(it);
     }
 }
@@ -231,13 +247,25 @@ json11::Json IRProject::saveAction(std::string filePath)
     this->projectPath = filePath;
 
     // the project path is not yet given.
-    if(filePath.size() == 0) { printf("projectPath 0\n"); return false; }
+    if (filePath.size() == 0)
+    {
+        std::cout << "projectPath 0" << std::endl;
+        return false;
+    }
     
     // if no contents in this project
-    if(this->workspaces.size() == 0) { printf("workspace size 0\n"); return false; }
+    if (this->workspaces.size() == 0)
+    {
+        std::cout << "workspace size 0" << std::endl;
+        return false;
+    }
     
     // try to make project directories
-    if(!this->saveLoadClass.createProjectDirectory(filePath)) {printf("could not make project directory.\n"); return false; }
+    if(! this->saveLoadClass.createProjectDirectory(filePath))
+    {
+        std::cout << "could not make project directory." << std::endl;
+        return false;
+    }
     
     Rectangle<int> b = getBounds();
     
@@ -441,7 +469,7 @@ IRProject::MenuActionStatus IRProject::getMenuActionStatus() const
 
 IRWorkspaceList* IRProject::getWorkspaceList()
 {
-    return this->workspaceList;
+    return this->workspaceList.get();
 }
 
 
@@ -516,7 +544,9 @@ void IRProject::openFileInspecterWindow()
     {
         this->fileInspecterWindow = new IRFileInspecterWindow("File Inspecter");
         
-    }else{
+    }
+    else
+    {
         this->fileInspecterWindow->updateInspecter();
     }
     this->fileInspecterWindow->show();
@@ -531,7 +561,7 @@ void IRProject::openFileInspecterWindow()
 
 void IRProject::changeListenerCallback(ChangeBroadcaster* source)
 {
-    if(source == this->workspaceList)
+    if(source == this->workspaceList.get())
     {
         // if workspace item is selected
         if(this->workspaceList->getEventStatus() == IRWorkspaceList::listEventStatus::listEventSelected){
@@ -576,13 +606,15 @@ void IRProject::setMenuBarPosition ( MenuBarPosition newPosition )
 
 ApplicationCommandTarget* IRProject::getNextCommandTarget()
 {
-    return editCommandTarget;
+    return editCommandTarget.get();
 }
 
 
 void IRProject::getAllCommands(Array<CommandID>&c)
 {
-    Array<CommandID> commands { CommandIDs::NewProject,
+    Array<CommandID> commands
+    {
+        CommandIDs::NewProject,
         CommandIDs::OpenProject,
         CommandIDs::CloseProject,
         CommandIDs::SaveProject,
@@ -666,7 +698,7 @@ bool IRProject::perform(const InvocationInfo& info)
             break;
             
         case CommandIDs::fileInspecterWindow:
-            printf("window menu perform in IRProject \n");
+            std::cout << "window menu perform in IRProject" << std::endl;
             openFileInspecterWindow();
             break;
         case CommandIDs::menuPreferenceWindow:
@@ -680,7 +712,7 @@ bool IRProject::perform(const InvocationInfo& info)
 
 
 // AudioAppComponent
-void IRProject::AudioSetup()
+void IRProject::audioSetup()
 {
     setAudioChannels(0, 2);
 }
