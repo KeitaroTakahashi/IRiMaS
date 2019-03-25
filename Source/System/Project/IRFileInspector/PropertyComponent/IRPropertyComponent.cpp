@@ -7,10 +7,11 @@
 
 #include "IRPropertyComponent.hpp"
 
-IRPropertyComponent::IRPropertyComponent(const String &propertyName, Point<int>Marge, int preferredHeight) :
+IRPropertyComponent::IRPropertyComponent(const String &propertyName, Point<int>Marge, Rectangle<int> objectBounds, int preferredHeight) :
 PropertyComponent(propertyName, preferredHeight)
 {
-    this->title.setText(propertyName, dontSendNotification);
+    this->objectBounds = objectBounds;
+    this->title.setText(propertyName + " : (" + String(this->objectBounds.getX()) + ", " + String(this->objectBounds.getY()) + ")", dontSendNotification);
     addAndMakeVisible(this->title);
     
     setMarge(Marge.getX(), Marge.getY());
@@ -41,3 +42,8 @@ void IRPropertyComponent::setMarge(int x, int y)
     this->yMarge = y;
 }
 
+
+void IRPropertyComponent::setObjectPosition(Rectangle<int> bounds)
+{
+    this->objectBounds = bounds;
+}

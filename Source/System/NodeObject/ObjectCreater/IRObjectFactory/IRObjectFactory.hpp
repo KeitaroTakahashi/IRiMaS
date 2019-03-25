@@ -21,9 +21,11 @@ public:
         IRObjectCreaterBase* obj;
         
         t_object() {}
+        ~t_object(){ printf("t_object deconstructor called\n");}
         
         t_object(std::string id, std::string name, Image img, IRObjectCreaterBase* obj)
         {
+            printf("t_object constructor called\n");
             this->id = id;
             this->name = name;
             this->img = img;

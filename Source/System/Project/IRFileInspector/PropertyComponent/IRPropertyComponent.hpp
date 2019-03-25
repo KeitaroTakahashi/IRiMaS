@@ -16,7 +16,7 @@
 class IRPropertyComponent : public PropertyComponent
 {
 public:
-    IRPropertyComponent(const String &propertyName, Point<int>Marge, int preferredHeight = 25);
+    IRPropertyComponent(const String &propertyName, Point<int>Marge, Rectangle<int> objectBounds = Rectangle<int>(0,0,0,0), int preferredHeight = 25);
     ~IRPropertyComponent();
     
     void resized() override;
@@ -28,6 +28,8 @@ public:
     
     void setMarge(int x, int y);
     
+    void setObjectPosition(Rectangle<int> bounds);
+    
     // ==================================================
 
 private:
@@ -36,6 +38,8 @@ private:
     
     int xMarge = 0;
     int yMarge = 0;
+    
+    Rectangle<int> objectBounds;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRPropertyComponent)
 

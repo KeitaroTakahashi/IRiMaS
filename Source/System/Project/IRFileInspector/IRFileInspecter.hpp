@@ -30,7 +30,7 @@ public:
     ~IRFileInspecter();
     
     void resized() override;
-    
+    void paint(Graphics& g) override;
     
     void makePropertyPanel();
     
@@ -43,6 +43,10 @@ private:
     Array<PropertyComponent*> panelContents;
     
     IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
+    
+    // system colour
+    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRFileInspecter)
 
