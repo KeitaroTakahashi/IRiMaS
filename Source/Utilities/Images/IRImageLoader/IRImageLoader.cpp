@@ -17,7 +17,7 @@ IRImageLoader::~IRImageLoader()
 {
     // remove pointer
     if(this->imgData != nullptr)
-        FILEMANAGER.discardFilePtr(IRFileType::IRIMAGE, this->imgData, this, this->file);
+        FILEMANAGER.discardFilePtr(IRFileType::IRIMAGE, this->imgData, this->parent, this->file);
 }
 
 

@@ -22,8 +22,8 @@ DocumentWindow(name,
     
     setBounds(0, 0, getWidth(), getHeight());
     
-    this->fileInspecter = new IRFileInspecter();
-    setContentOwned(this->fileInspecter, true);
+    this->fileInspecter.reset(new IRFileInspecter());
+    setContentOwned(this->fileInspecter.get(), true);
 
     setVisible(true);
 
@@ -31,9 +31,8 @@ DocumentWindow(name,
 
 IRFileInspecterWindow::~IRFileInspecterWindow()
 {
-    delete this->fileInspecter;
-}
 
+}
 
 void IRFileInspecterWindow::closeButtonPressed()
 {

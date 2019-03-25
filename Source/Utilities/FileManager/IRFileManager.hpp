@@ -27,9 +27,7 @@ private:
 public:
     
     std::vector<File> getFileList() const { return this->fileList; }
-    
     std::vector<IRObjectPtr> getPList() const { return this->pList; }
-    
     
     void clear()
     {

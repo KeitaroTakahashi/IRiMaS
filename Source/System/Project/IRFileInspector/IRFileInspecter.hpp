@@ -39,9 +39,7 @@ public:
 private:
         
     PropertyPanel panel;
-    
-    Array<PropertyComponent*> panelContents;
-    
+        
     IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
     
     // system colour

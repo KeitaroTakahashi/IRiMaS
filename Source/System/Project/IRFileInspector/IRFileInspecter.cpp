@@ -37,7 +37,6 @@ void IRFileInspecter::paint(Graphics& g)
 
 void IRFileInspecter::makePropertyPanel()
 {
-    this->panelContents.clear();
     this->panel.clear();
     
     FILEMAP* list = FILEMANAGER.getObjctList();

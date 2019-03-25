@@ -28,7 +28,7 @@ public:
 
 private:
     
-    IRFileInspecter* fileInspecter;
+    std::shared_ptr<IRFileInspecter> fileInspecter;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRFileInspecterWindow)
 };

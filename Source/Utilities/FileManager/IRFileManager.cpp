@@ -113,7 +113,6 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr ow
 IRObjectPtr IRFileManager::discardFilePtr(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, File file)
 {
     managerOwner(type, obj, owner, false);
-    this->list.remove(obj);
     return nullptr;
 }
 
@@ -145,7 +144,12 @@ void IRFileManager::IRImageReferencerManager(IRObjectPtr obj, IRObjectPtr owner 
     else // remove
     {
         DataAllocationManager<IRImage>* data = static_cast<DataAllocationManager<IRImage>*>(obj);
-        data->removeReferencingObject(owner);
+        
+        // if there is no owner holding the object, then remove the object from the list
+        if(! data->removeReferencingObject(owner))
+        {
+            this->list.remove(obj);
+        }
     }
 }
 
