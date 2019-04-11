@@ -26,7 +26,7 @@ public:
     {
         this->preference = new IRSpectrogramObjectPreference("Spectrogram Preference", Rectangle<int>(400, 720));
         
-        this->spectrogram = new IRSpectrogramUI();
+        this->spectrogram = new IRSpectrogramUI(this);
         this->spectrogram->addChangeListener(this);
         //this->spectrogram->addKeyListener(this);
         this->spectrogram->setBounds(this->xMargin,

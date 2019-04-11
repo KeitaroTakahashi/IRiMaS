@@ -19,7 +19,7 @@ class IRWaveformObjectUI : public IRWaveform,
 
 public:
     
-    IRWaveformObjectUI();
+    IRWaveformObjectUI(IRNodeObject* parent);
     ~IRWaveformObjectUI();
     
     void resized() override;
@@ -92,7 +92,6 @@ private:
     
     int previousWidth = 0;
     int previousHeight = 0;
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWaveformObjectUI)
 

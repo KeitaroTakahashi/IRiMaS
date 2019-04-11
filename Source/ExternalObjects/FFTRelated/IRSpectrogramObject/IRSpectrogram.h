@@ -20,7 +20,7 @@ class IRSpectrogram : public AudioAppComponent,
                       private IRAudio::Listener
 {
 public:
-    IRSpectrogram()
+    IRSpectrogram(IRNodeObject* parent)
     {
         this->formatManager.registerBasicFormats();
         
@@ -34,7 +34,7 @@ public:
         this->audioFile.addChangeListener(this);
         this->audioFile.addListener(this);
         
-        this->player = new SoundPlayerClass();
+        this->player = new SoundPlayerClass(parent);
         this->player->addChangeListener(this);
         
         this->FFTSequence = new IRFFTSequence(4096, 2048, IRWindow::TYPE::HAMMING);

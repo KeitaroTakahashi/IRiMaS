@@ -9,8 +9,8 @@
 #ifndef IRSoundPlayer_hpp
 #define IRSoundPlayer_hpp
 
-#include "IRAudioReader.hpp"
 #include "IRNodeObject.hpp"
+#include "IRAudio.hpp"
 
 
 class SoundPlayerClass : public PositionableAudioSource,
@@ -19,7 +19,8 @@ class SoundPlayerClass : public PositionableAudioSource,
     //============================================================
     
 public:
-    SoundPlayerClass();
+    SoundPlayerClass(IRNodeObject* parent);
+
     ~SoundPlayerClass();
     
     //------------------------------------------------------------
@@ -80,6 +81,9 @@ public:
     
     //============================================================
 private:
+    
+    IRNodeObject* parent;
+
     // holds a pointer to an object which can optionally be deleted when this pointer goes out of scope.
     OptionalScopedPointer<AudioBuffer<float>> buffer;
     
@@ -116,238 +120,6 @@ private:
 };
 
 //==========================================================================
-
-class AudioPlayer_threadSafe : public /*AudioAppComponent*/ Component, public AudioSource,
-                               private ChangeListener, IRAudio::Listener
-{
-    
-public:
-    
-    AudioPlayer_threadSafe();
-    
-    ~AudioPlayer_threadSafe()
-    {
-        
-    }
-    
-    void changeListenerCallback (ChangeBroadcaster* source) override
-    {
-        if (source == &this->player)
-        {
-            if (this->player.isPlaying())
-                changeState(Playing);
-            else if (this->player.isPausing()){
-                // Stopped does not reset playingPosition but just freeze playing process
-                changeState(Pausing);
-            }
-            else
-            {
-                //first call Stopping to reset playingPosition
-                changeState(Stopping);
-                //then call Stopped to stop
-                changeState(Stopped);
-            }
-        } else if (source == &this->audioFile)
-        {
-            if (this->audioFile.isFileLoadCompleted)
-            {
-                
-                
-            }
-            
-            if (this->audioFile.isFileOpened)
-            {
-                
-            }
-        }
-    }
-    
-    
-    virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override
-    {
-        this->player.prepareToPlay(samplesPerBlockExpected, sampleRate);
-    }
-    
-    
-    virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override
-    {
-        this->player.getNextAudioBlock(bufferToFill);
-    }
-    
-    
-    virtual void releaseResources() override
-    {
-        this->player.releaseResources();
-    }
-    
-    
-    void resized() override
-    {
-        int numButton = 5;
-        
-        //distance between buttons in y
-        int dis = 2;
-        int x2 = this->xMargin * 2;
-        int w = getWidth() - x2;
-        int h = (getHeight() - this->yMargin*2)/numButton - dis;
-        
-        int yPosition = this->yMargin + dis;
-        this->openButton.setBounds  (this->xMargin, yPosition, w, h);
-        yPosition += dis + h;
-        this->playButton.setBounds  (this->xMargin, yPosition, w, h);
-        yPosition += dis + h;
-        this->loopButton.setBounds  (this->xMargin, yPosition, w, h);
-        yPosition += dis + h;
-        this->pauseButton.setBounds (this->xMargin, yPosition, w, h);
-        yPosition += dis + h;
-        this->stopButton.setBounds  (this->xMargin, yPosition, w, h);
-        
-    }
-    
-    void openFile()
-    {
-        if(this->audioFile.openFile()){
-            this->stopButton.setEnabled(true);
-            this->playButton.setEnabled(true);
-        }else{
-            std::cout << "Error : could not open\n";
-        }
-    }
-    
-    
-    void openButtonClicked()
-    {
-        openFile();
-    }
-    
-    void playButtonClicked()
-    {
-        this->player.start();
-        changeState(Starting);
-    }
-    
-    void loopButtonClicked()
-    {
-        bool flag = ! this->player.isLooping();
-        this->player.setLooping(flag);
-        changeState(Looping);
-    }
-    
-    void stopButtonClicked()
-    {
-        this->player.stop();
-        changeState(Stopping);
-    }
-    
-    void pauseButtonClicked()
-    {
-        this->player.pause();
-        changeState(Pausing);
-    }
-    
-    
-    //==========================================================================
-    // Callback functions
-    //==========================================================================
-    
-    
-    // this method is called when the file import completed.
-    virtual void fileImportCompleted(IRAudio *obj) override
-    {
-        //set audioBuffer to player
-        std::vector<int>v = {0,1};
-        this->player.setAudioBuffer(this->audioFile.getAudioBuffer(), false, this->audioFile.getSampleRate(),v);
-        //this->player.setParameters(44100, 22050, 44100, false);
-        //std::cout << " fileImported next position = " << this->player.getNextReadPosition() << std::endl;
-    }
-    
-    //this method is called when file status changed
-    virtual void fileStatusChanged(IRAudio *obj) override
-    {
-        
-    }
-    
-    //==========================================================================
-    //change labels
-    
-    
-private:
-    //==========================================================================
-    
-    enum TransportState
-    {
-        Stopped,
-        Starting,
-        Playing,
-        Looping,
-        Stopping,
-        Pausing
-    };
-    
-    void changeState (TransportState newState)
-    {
-        if(this->state != newState)
-        {
-            this->state = newState;
-            switch(this->state)
-            {
-                case Stopped: // called when clickling a stop button or by callback
-                    this->stopButton.setEnabled(false);
-                    this->playButton.setEnabled(true);
-                    this->pauseButton.setEnabled(false);
-                    //reset playing position
-                    this->player.setNextReadPosition(0);
-                    break;
-                case Starting:
-                    this->playButton.setEnabled(false);
-                    break;
-                case Playing:
-                    this->stopButton.setEnabled(true);
-                    this->pauseButton.setEnabled(true);
-                    break;
-                case Looping:
-                    this->loopButton.setEnabled(false);
-                    break;
-                case Stopping: // called when clicking a stop button
-                    
-                    this->player.setLooping(false);
-                    this->loopButton.setEnabled(true);
-                    break;
-                case Pausing:
-                    this->pauseButton.setEnabled(false);
-                    this->playButton.setEnabled(true);
-                    this->stopButton.setEnabled(true);
-                    break;
-            }
-        }
-    }
-    //==========================================================================
-    
-    IRAudio audioFile;
-    SoundPlayerClass player;
-    
-    TransportState state;
-    
-    //buttons
-    TextButton playButton;
-    TextButton openButton;
-    TextButton stopButton;
-    TextButton pauseButton;
-    TextButton loopButton;
-    
-    int buttonWidth = 90;
-    int buttonHeight = 20;
-    int xMargin = 5;
-    int yMargin = 4;
-    
-    
-    // ===========================================================================
-    // system appearance
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer_threadSafe)
-};
-
 
 
 #endif /* IRSoundPlayer_hpp */

@@ -9,21 +9,22 @@
 
 class IRWaveform : public AudioAppComponent,
                    private ChangeListener,
-                   public ChangeBroadcaster,
-                   IRAudio::Listener
+                   public ChangeBroadcaster
 {
     
 public:
     
-    IRWaveform();
+    IRWaveform(IRNodeObject* parent);
     ~IRWaveform();
     
     void openFile();
-    
+    void openFile(String path);
+
     void changeListenerCallback (ChangeBroadcaster* source) override;
     
-    void fileImportCompleted(IRAudio *obj) override;
-    void fileStatusChanged(IRAudio *obj) override;
+    void fileImportCompleted();
+    void getFilePtr(File file);
+    void makeThumbnail(String path);
     
     virtual void resized() override;
     void paint(Graphics& g) override;
@@ -49,13 +50,19 @@ public:
     
     SoundPlayerClass* getPlayer() const;
 
+    String getPath() const { return this->path; }
     
-    IRAudio audioFile;
+    DataAllocationManager<IRAudio>* audioData = nullptr;
+
+    //IRAudio audioFile;
     SoundPlayerClass *player;
 
     
 private:
     
+    File file;
+    String path;
+    IRNodeObject* parent;
     TextButton openButton;
 
     bool drawWaveform = false;
@@ -75,6 +82,7 @@ private:
 
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
 
 };
 

@@ -7,7 +7,7 @@
 IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IRWaveform")
 {
     
-    this->waveform = new IRWaveformObjectUI();
+    this->waveform = new IRWaveformObjectUI(this);
     this->waveform->addChangeListener(this);
     //this->waveform->addKeyListener(this);
     this->waveform->setBounds(this->xMargin,
@@ -34,6 +34,8 @@ IRWaveformObject::~IRWaveformObject()
 {
     delete this->waveform;
     delete this->selector;
+    
+   
 }
 
 
@@ -50,7 +52,7 @@ IRNodeObject* IRWaveformObject::copyThisWithContents()
     // temporary set the same bounds to calculate all other child components at the right positions.
     obj->setBounds(getLocalBounds());
     // open the same audio file
-    obj->waveform->audioFile.openFileFromPath(this->waveform->audioFile.getPath());
+    obj->waveform->openFile(this->waveform->getPath());
     // add all selectionSquares
     for(auto o : this->waveform->selectionSquareObjects)
     {
@@ -67,8 +69,8 @@ IRNodeObject* IRWaveformObject::copySelectedContents()
     // temporary set the same bounds to calculate all other child components at the right positions.
     //obj->setBounds(this->getX(), this->getY(), this->getWidth(), this->getHeight());
     // open the same audio file
-    obj->waveform->audioFile.openFileFromPath(this->waveform->audioFile.getPath());
-    
+    obj->waveform->openFile(this->waveform->getPath());
+
     for(auto o : this->waveform->selectedSquareObjectList)
     {
         //Rectangle<int>rect(o->getX(), o->getY(), o->getWidth(), o->getHeight());
@@ -108,7 +110,7 @@ t_json IRWaveformObject::saveThisToSaveData()
         {"bounds", t_json::array({wb.getX(), wb.getY(), wb.getWidth(), wb.getHeight()})},
         {"start_ms",this->waveform->getStart()},
         {"duration_ms", this->waveform->getDisplayDuration()},
-        {"filePath", this->waveform->audioFile.getPath().toStdString()},
+        {"filePath", this->waveform->getPath().toStdString()},
         {"selectionObj", selectionData}
     });
     
@@ -128,7 +130,7 @@ void IRWaveformObject::loadThisFromSaveData(t_json data)
     std::cout << "waveform : start ms = " << w["start_ms"].number_value() << std::endl;
     this->waveform->setStart(w["start_ms"].number_value());
     this->waveform->setDisplayDuration(w["duration_ms"].number_value());
-    this->waveform->audioFile.openFileFromPath(w["filePath"].string_value());
+    this->waveform->openFile(w["filePath"].string_value());
     t_json::array selectionData = w["selectionObj"].array_items();
     std::cout << "selectionData count = " << selectionData.size() << std::endl;
     int index = 0;

@@ -4,7 +4,7 @@
 
 
 
-IRWaveformObjectUI::IRWaveformObjectUI() : IRWaveform()
+IRWaveformObjectUI::IRWaveformObjectUI(IRNodeObject* parent) : IRWaveform(parent)
 {
     this->selector = new IRGraphSelector();
     // only horizontal axis is movable and height follows the object height.

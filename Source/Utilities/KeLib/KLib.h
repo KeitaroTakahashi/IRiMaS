@@ -37,6 +37,14 @@ public:
                                           "OK");
     }
     
+    void showErrorMessage (const String& messageText)
+    {
+        AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
+                                          "Connection error",
+                                          messageText,
+                                          "OK");
+    }
+    
     template<typename T>
     void showRectangle(Rectangle<T> rect){
         std::cout << "x = " << rect.getX() << " : y = " << rect.getY() << " : w = " << rect.getWidth() << " : h = " << rect.getHeight() << std::endl;

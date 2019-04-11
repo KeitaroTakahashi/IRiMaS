@@ -1,0 +1,300 @@
+//
+//  SoundPlayer_ThreadSafe.hpp
+//  NodeComponentObject_Study - App
+//
+//  Created by Keitaro on 10/04/2019.
+//
+
+#ifndef SoundPlayer_ThreadSafe_hpp
+#define SoundPlayer_ThreadSafe_hpp
+
+#include "SoundPlayer.hpp"
+
+
+class AudioPlayer_threadSafe : public /*AudioAppComponent*/ Component, public AudioSource,
+private ChangeListener, IRAudio::Listener
+{
+    
+public:
+    
+    AudioPlayer_threadSafe(IRNodeObject* parent);
+    
+    ~AudioPlayer_threadSafe()
+    {
+        // remove pointer
+        if(this->audioData != nullptr)
+            FILEMANAGER.discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+    }
+    
+    void changeListenerCallback (ChangeBroadcaster* source) override
+    {
+        if (source == &this->player)
+        {
+            if (this->player.isPlaying())
+                changeState(Playing);
+            else if (this->player.isPausing()){
+                // Stopped does not reset playingPosition but just freeze playing process
+                changeState(Pausing);
+            }
+            else
+            {
+                //first call Stopping to reset playingPosition
+                changeState(Stopping);
+                //then call Stopped to stop
+                changeState(Stopped);
+            }
+        } else if (source == &this->audioFile)
+        {
+            if (this->audioFile.isFileLoadCompleted)
+            {
+                
+                
+            }
+            
+            if (this->audioFile.isFileOpened)
+            {
+                
+            }
+        }
+    }
+    
+    
+    // ==================================================
+    virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override
+    {
+        this->player.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    }
+    
+    virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override
+    {
+        this->player.getNextAudioBlock(bufferToFill);
+    }
+    
+    virtual void releaseResources() override
+    {
+        this->player.releaseResources();
+    }
+    // ==================================================
+    
+    void resized() override
+    {
+        int numButton = 5;
+        
+        //distance between buttons in y
+        int dis = 2;
+        int x2 = this->xMargin * 2;
+        int w = getWidth() - x2;
+        int h = (getHeight() - this->yMargin*2)/numButton - dis;
+        
+        int yPosition = this->yMargin + dis;
+        this->openButton.setBounds  (this->xMargin, yPosition, w, h);
+        yPosition += dis + h;
+        this->playButton.setBounds  (this->xMargin, yPosition, w, h);
+        yPosition += dis + h;
+        this->loopButton.setBounds  (this->xMargin, yPosition, w, h);
+        yPosition += dis + h;
+        this->pauseButton.setBounds (this->xMargin, yPosition, w, h);
+        yPosition += dis + h;
+        this->stopButton.setBounds  (this->xMargin, yPosition, w, h);
+        
+    }
+    // ==================================================
+
+    void openFile()
+    {
+        this->isFileOpened = false;
+        
+        FileChooser chooser("Select an image file...",
+                            {},
+                            "*.wav, *.aif, *.aiff");
+        if (chooser.browseForFileToOpen())
+        {
+            auto file = chooser.getResult();
+            this->file = file;
+            auto p = file.getFullPathName();
+            this->path = p;
+            
+            String pathToOpen;
+            pathToOpen.swapWith(p);
+            
+            if(pathToOpen.isNotEmpty())
+            {
+                // set a callback function which is called when file load is completed.
+                // get a pointer of the audio file
+                std::function<void()> callback = [this]{fileImportCompleted();};
+                FILEMANAGER.getFilePtrWithCallBack(IRFileType::IRAUDIO,
+                                                   file,
+                                                   this->parent,
+                                                   callback);
+                
+                // do not write any process here but got
+
+                // if success, then enable play and stop buttons
+                this->stopButton.setEnabled(true);
+                this->playButton.setEnabled(true);
+               
+            }else // cancel
+            {
+                if(!this->isFileOpened)
+                    this->audioData = nullptr;
+            }
+        }
+    }
+    
+    void openFile(String pathToOpen)
+    {
+        
+    }
+    // ==================================================
+
+    void openButtonClicked()
+    {
+        openFile();
+    }
+    
+    void playButtonClicked()
+    {
+        this->player.start();
+        changeState(Starting);
+    }
+    
+    void loopButtonClicked()
+    {
+        bool flag = ! this->player.isLooping();
+        this->player.setLooping(flag);
+        changeState(Looping);
+    }
+    
+    void stopButtonClicked()
+    {
+        this->player.stop();
+        changeState(Stopping);
+    }
+    
+    void pauseButtonClicked()
+    {
+        this->player.pause();
+        changeState(Pausing);
+    }
+    
+    
+    //==========================================================================
+    // Callback functions
+    //==========================================================================
+    
+    void fileImportCompleted()
+    {
+        
+        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(FILEMANAGER.getFileObject());
+        //set audioBuffer to player
+        std::vector<int>v = {0,1};
+        this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
+
+    }
+    
+    // this method is called when the file import completed.
+    virtual void fileImportCompleted(IRAudio *obj) override
+    {
+        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(FILEMANAGER.getFileObject());
+        //set audioBuffer to player
+        std::vector<int>v = {0,1};
+        this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
+    }
+    
+    //this method is called when file status changed
+    virtual void fileStatusChanged(IRAudio *obj) override
+    {
+        
+    }
+    
+    //==========================================================================
+    //change labels
+    
+    
+private:
+    //==========================================================================
+    
+    enum TransportState
+    {
+        Stopped,
+        Starting,
+        Playing,
+        Looping,
+        Stopping,
+        Pausing
+    };
+    
+    void changeState (TransportState newState)
+    {
+        if(this->state != newState)
+        {
+            this->state = newState;
+            switch(this->state)
+            {
+                case Stopped: // called when clickling a stop button or by callback
+                    this->stopButton.setEnabled(false);
+                    this->playButton.setEnabled(true);
+                    this->pauseButton.setEnabled(false);
+                    //reset playing position
+                    this->player.setNextReadPosition(0);
+                    break;
+                case Starting:
+                    this->playButton.setEnabled(false);
+                    break;
+                case Playing:
+                    this->stopButton.setEnabled(true);
+                    this->pauseButton.setEnabled(true);
+                    break;
+                case Looping:
+                    this->loopButton.setEnabled(false);
+                    break;
+                case Stopping: // called when clicking a stop button
+                    
+                    this->player.setLooping(false);
+                    this->loopButton.setEnabled(true);
+                    break;
+                case Pausing:
+                    this->pauseButton.setEnabled(false);
+                    this->playButton.setEnabled(true);
+                    this->stopButton.setEnabled(true);
+                    break;
+            }
+        }
+    }
+    //==========================================================================
+    
+    IRNodeObject* parent;
+    
+    IRAudio audioFile;
+    SoundPlayerClass player;
+    
+    bool isFileOpened = false;
+    String path;
+    File file;
+    
+    TransportState state;
+    
+    //buttons
+    TextButton playButton;
+    TextButton openButton;
+    TextButton stopButton;
+    TextButton pauseButton;
+    TextButton loopButton;
+    
+    int buttonWidth = 90;
+    int buttonHeight = 20;
+    int xMargin = 5;
+    int yMargin = 4;
+    
+    DataAllocationManager<IRAudio>* audioData = nullptr;
+    
+    // ===========================================================================
+    // system appearance
+    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer_threadSafe)
+};
+
+
+#endif /* SoundPlayer_ThreadSafe_hpp */

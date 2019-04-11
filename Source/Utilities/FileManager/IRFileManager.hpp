@@ -15,6 +15,7 @@
 #include "DataAllocationManager.h"
 #include "DataType.h"
 #include "IRImage.hpp"
+#include "IRAudio.hpp"
 #include "IRVideo.hpp"
 #include "KLib.h"
 
@@ -182,20 +183,29 @@ public:
     //==================================================
     // get a file pointer from IRFileManager
     // if file has not yet been loaded, then this method loads the file first and returns its pointer
+    // you can set a callback function to notify the completion of importing files
     IRObjectPtr getFilePtr(IRFileType type, File file, IRObjectPtr owner);
-    //
+    
+    // with callback function,
+    // note that we are using pointer of IRObjectPtr means double pointer in order to modify the pointer itself inside of this function and keep the results in the outside
+    void getFilePtrWithCallBack(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback = nullptr);
+
+    
     IRObjectPtr discardFilePtr(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, File file);
     
     //==================================================
     
     FILEMAP* getObjctList() { return &this->list; }
+    
+    IRObjectPtr getFileObject() { return this->dummy; }
 
 private:
     
     //==================================================
     // allocate data by a given FileType
-    IRObjectPtr createFileData(IRFileType type, File file, IRObjectPtr owner);
+    IRObjectPtr createFileData(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback = nullptr);
     IRObjectPtr createImageFileData(File file, IRObjectPtr owner);
+    IRObjectPtr createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback);
     
     // check if the new file is already imported or not
     bool isFileAlreadyRegistered(File newFile);
@@ -210,13 +220,18 @@ private:
     void managerOwner(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, bool addOrRemove);
     
     void IRImageReferencerManager(IRObjectPtr obj, IRObjectPtr owner, bool addOrRemove);
+    void IRAudioReferencerManager(IRObjectPtr obj, IRObjectPtr owner ,bool addOrRemove);
     
     //==================================================
     void clear() { this->list.clear(); }
     
     
-    
+    //==================================================
+
     FILEMAP list;
+    
+    // dummy pointer for fileImport process with callback
+    IRObjectPtr dummy;
 };
 
 

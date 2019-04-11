@@ -2,7 +2,6 @@
 #ifndef IRImageViwerObject_h
 #define IRImageViwerObject_h
 
-#include "IRImageLoader.hpp"
 #include "IRImageViewer.hpp"
 #include "IRNodeObject.hpp"
 

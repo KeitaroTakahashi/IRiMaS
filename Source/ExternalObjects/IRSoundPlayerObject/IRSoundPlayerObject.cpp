@@ -7,7 +7,7 @@
 IRSoundPlayerObject::IRSoundPlayerObject(Component* parent)
 : IRNodeObject(parent, "IRSoundPlayer")
 {
-    this->player = new AudioPlayer_threadSafe(); // FOR SOME UNCLEAR REASON THIS DOES NOT LEAK (FD)
+    this->player = new AudioPlayer_threadSafe(this); // FOR SOME UNCLEAR REASON THIS DOES NOT LEAK (FD)
     addAndMakeVisible(this->player);
     childComponentManager(this->player);
     // in case we use any AudioSources, we must add them to the internal mixer via this method.

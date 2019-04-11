@@ -17,7 +17,7 @@ class IRSpectrogramUI : public IRSpectrogram,
                         public KeyListener
 {
 public:
-    IRSpectrogramUI() : IRSpectrogram()
+    IRSpectrogramUI(IRNodeObject* parent) : IRSpectrogram(parent)
     {
         this->selector = new IRGraphSelector();
         // only horizontal axis is movable and height follows the object height.

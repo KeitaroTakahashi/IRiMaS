@@ -9,7 +9,7 @@
 
 // -------------------------------------------------
 
-IRObjectPtr IRFileManager::createFileData(IRFileType type, File file, IRObjectPtr owner)
+IRObjectPtr IRFileManager::createFileData(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback)
 {
     switch(type)
     {
@@ -19,22 +19,41 @@ IRObjectPtr IRFileManager::createFileData(IRFileType type, File file, IRObjectPt
         case IRVIDEO:
             break;
         case IRAUDIO:
+            return createAudioFileData(file, owner, callback);
             break;
         default:
             break;
     }
     return nullptr;
 }
+// -------------------------------------------------
 
 IRObjectPtr IRFileManager::createImageFileData(File file, IRObjectPtr owner)
 {
     DataAllocationManager<IRImage>* img = new DataAllocationManager<IRImage>();
-    std::cout << "allocate \n";
+    std::cout << "allocate IRImage\n";
     img->addReferencingObject(owner);
     img->getData()->loadImage(file);
     return static_cast<IRObjectPtr>(img);
 
 }
+
+IRObjectPtr IRFileManager::createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback)
+{
+    DataAllocationManager<IRAudio>* audio = new DataAllocationManager<IRAudio>();
+    std::cout << "allocate IRAudio \n";
+    audio->addReferencingObject(owner);
+    
+    // set callback function to notify when importing audio file is successfuly completed.
+    if(callback != nullptr)
+        audio->getData()->onImportCompleted = callback;
+    
+    if(audio->getData()->loadFile(file))
+        return static_cast<IRObjectPtr>(audio);
+    else return nullptr;
+
+}
+
 // -------------------------------------------------
 
 bool IRFileManager::isFileAlreadyRegistered(File newFile)
@@ -97,6 +116,7 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr ow
         IRObjectPtr obj = retrievePtrByFile(file);
         // manager owner list
         managerOwner(type, obj, owner, true);
+        
         return obj;
     }
     else
@@ -106,6 +126,32 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr ow
         std::cout << "registerNewFile done" << std::endl;
 
         return newObj;
+    }
+}
+
+void IRFileManager::getFilePtrWithCallBack(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback)
+{
+    std::cout << "IRFileManager ptr = " << this << std::endl;
+    
+    if (isFileAlreadyRegistered(file))
+    {
+        std::cout << "file already imported to the project." << std::endl;
+        IRObjectPtr obj = retrievePtrByFile(file);
+        // manager owner list
+        managerOwner(type, obj, owner, true);
+        
+        this->dummy = obj;
+        
+        if(callback != nullptr) callback();
+
+    }
+    else
+    {
+        IRObjectPtr newObj = createFileData(type, file, owner, callback);
+        registerNewFile(file, newObj);
+        std::cout << "registerNewFile done on " << newObj << std::endl;
+    
+        this->dummy = newObj;
     }
 }
 
@@ -127,6 +173,7 @@ void IRFileManager::managerOwner(IRFileType type, IRObjectPtr obj, IRObjectPtr o
         case IRVIDEO:
             break;
         case IRAUDIO:
+            IRAudioReferencerManager(obj, owner, addOrRemove);
             break;
         default:
             break;
@@ -153,6 +200,23 @@ void IRFileManager::IRImageReferencerManager(IRObjectPtr obj, IRObjectPtr owner 
     }
 }
 
-
+void IRFileManager::IRAudioReferencerManager(IRObjectPtr obj, IRObjectPtr owner ,bool addOrRemove)
+{
+    if (addOrRemove) // add
+    {
+        DataAllocationManager<IRAudio>* data = static_cast<DataAllocationManager<IRAudio>*>(obj);
+        data->addReferencingObject(owner);
+    }
+    else // remove
+    {
+        DataAllocationManager<IRAudio>* data = static_cast<DataAllocationManager<IRAudio>*>(obj);
+        
+        // if there is no owner holding the object, then remove the object from the list
+        if(! data->removeReferencingObject(owner))
+        {
+            this->list.remove(obj);
+        }
+    }
+}
 
 
