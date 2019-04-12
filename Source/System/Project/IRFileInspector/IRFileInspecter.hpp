@@ -22,7 +22,6 @@
  
  */
 
-
 class IRFileInspecter : public Component
 {
 public:
@@ -31,7 +30,7 @@ public:
     
     void resized() override;
     void paint(Graphics& g) override;
-    
+        
     void makePropertyPanel();
     
     void updatePropertyPanel();
@@ -45,6 +44,7 @@ private:
     // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
+    bool FILEINSPECTER_DEBUG = false;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRFileInspecter)
 

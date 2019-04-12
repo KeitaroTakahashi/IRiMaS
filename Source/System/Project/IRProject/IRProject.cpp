@@ -138,6 +138,7 @@ void IRProject::createNewWorkspace()
     space->requestOpenProject = [this] { callOpenProjectAction(); };
     space->requestCloseProject = [this] { callCloseProjectAction(); };
     space->notifyEditModeChanged = [this] { notifyEditModeChange(); };
+    space->notifyNodeObjectModification = [this](IRNodeObject* obj) { receiveNodeObjectModification(obj); };
     
     space->addChangeListener(this->listener);
     this->mixer.addAudioSource(&space->getMixer());
@@ -232,6 +233,12 @@ void IRProject::notifyEditModeChange()
     {
         this->notifyEditModeChanged();
     }
+}
+
+void IRProject::receiveNodeObjectModification(IRNodeObject* obj)
+{
+    std::cout << "receiveNodeObjectModification\n";
+    updateFileInspecterWindow();
 }
 
 
@@ -552,6 +559,11 @@ void IRProject::openFileInspecterWindow()
     this->fileInspecterWindow->show();
 }
 
+void IRProject::updateFileInspecterWindow()
+{
+    if(this->fileInspecterWindow != nullptr)
+        this->fileInspecterWindow->updateInspecter();
+}
 // ==================================================
 
 

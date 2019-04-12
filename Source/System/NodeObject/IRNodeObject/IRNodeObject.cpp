@@ -22,18 +22,15 @@ IRNodeObject* IRNodeObject::copyThis()
 
 
 // copy constructor with contents
-IRNodeObject* IRNodeObject::copyThisWithContents()
+IRNodeObject* IRNodeObject::copyContents(IRNodeObject* object)
 {
     return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
 }
 
-
-// copy constructor with irregular contents
-IRNodeObject* IRNodeObject::copySelectedContents()
+IRNodeObject* IRNodeObject::copyDragDropContents(IRNodeObject* object)
 {
     return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
 }
-
 
 
 t_json IRNodeObject::saveThisToSaveData()
@@ -251,6 +248,17 @@ void IRNodeObject::callCreateNewProject()
     
 }
 
+void IRNodeObject::notifyNodeObjectModification()
+{
+    
+    std::cout << "notifyNodeObjectModification\n";
+    Component::BailOutChecker checker(this);
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.nodeObjectModifiedNotification(this); });
+    if(checker.shouldBailOut()) return;
+    
+    std::cout << "notifyNodeObjectModification completed\n";
+}
 
 
 void IRNodeObject::saveObjectContents()

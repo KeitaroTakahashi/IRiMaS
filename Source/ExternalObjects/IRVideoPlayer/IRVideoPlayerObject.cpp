@@ -12,9 +12,9 @@ IRNodeObject* IRVideoPlayerObject::copyThis()
     return new IRVideoPlayerObject(this->parent);
 }
 // --------------------------------------------------
-IRNodeObject* IRVideoPlayerObject::copyThisWithContents()
+IRNodeObject* IRVideoPlayerObject::copyContents(IRNodeObject* object)
 {
-    IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent);
+    IRVideoPlayerObject* obj = static_cast<IRVideoPlayerObject*>(this->parent);
     obj->setBounds(getLocalBounds());
     File movieFile = obj->getVideoPlayer()->getMovieFile();
     obj->getVideoPlayer()->openFile(movieFile);
@@ -22,7 +22,7 @@ IRNodeObject* IRVideoPlayerObject::copyThisWithContents()
     return obj;
 }
 // --------------------------------------------------
-IRNodeObject* IRVideoPlayerObject::copySelectedContents()
+IRNodeObject* IRVideoPlayerObject::copyDragDropContents(IRNodeObject* object)
 {
     IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent);
     return obj;

@@ -100,6 +100,40 @@ public:
     }
     // ==================================================
 
+    void openFile(File file)
+    {
+        this->file = file;
+        auto p = file.getFullPathName();
+        this->path = p;
+        
+        String pathToOpen;
+        pathToOpen.swapWith(p);
+        
+        if(pathToOpen.isNotEmpty())
+        {
+            // set a callback function which is called when file load is completed.
+            // get a pointer of the audio file
+            std::function<void()> callback = [this]{fileImportCompleted();};
+            FILEMANAGER.getFilePtrWithCallBack(IRFileType::IRAUDIO,
+                                               file,
+                                               this->parent,
+                                               callback);
+            
+            this->parent->notifyNodeObjectModification();
+            
+            // do not write any process here but got
+            
+            // if success, then enable play and stop buttons
+            this->stopButton.setEnabled(true);
+            this->playButton.setEnabled(true);
+            
+        }else // cancel
+        {
+            if(!this->isFileOpened)
+                this->audioData = nullptr;
+        }
+    }
+    
     void openFile()
     {
         this->isFileOpened = false;
@@ -110,40 +144,13 @@ public:
         if (chooser.browseForFileToOpen())
         {
             auto file = chooser.getResult();
-            this->file = file;
-            auto p = file.getFullPathName();
-            this->path = p;
-            
-            String pathToOpen;
-            pathToOpen.swapWith(p);
-            
-            if(pathToOpen.isNotEmpty())
-            {
-                // set a callback function which is called when file load is completed.
-                // get a pointer of the audio file
-                std::function<void()> callback = [this]{fileImportCompleted();};
-                FILEMANAGER.getFilePtrWithCallBack(IRFileType::IRAUDIO,
-                                                   file,
-                                                   this->parent,
-                                                   callback);
-                
-                // do not write any process here but got
-
-                // if success, then enable play and stop buttons
-                this->stopButton.setEnabled(true);
-                this->playButton.setEnabled(true);
-               
-            }else // cancel
-            {
-                if(!this->isFileOpened)
-                    this->audioData = nullptr;
-            }
+            openFile(file);
         }
     }
     
     void openFile(String pathToOpen)
     {
-        
+        openFile(File(pathToOpen));
     }
     // ==================================================
 

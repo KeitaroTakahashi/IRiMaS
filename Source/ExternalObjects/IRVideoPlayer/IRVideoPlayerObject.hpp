@@ -35,9 +35,9 @@ public:
     
     IRNodeObject* copyThis() override;
     
-    IRNodeObject* copyThisWithContents() override;
+    IRNodeObject* copyContents(IRNodeObject* object) override;
     
-    IRNodeObject* copySelectedContents() override;
+    IRNodeObject* copyDragDropContents(IRNodeObject* object) override;
     
     // --------------------------------------------------
     

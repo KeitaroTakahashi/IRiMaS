@@ -18,9 +18,9 @@ public:
     
     
     IRNodeObject* copyThis() override; // copy constructor
-    IRNodeObject* copyThisWithContents() override;
-    IRNodeObject* copySelectedContents() override;
-    
+    IRNodeObject* copyContents(IRNodeObject* object) override;
+    IRNodeObject* copyDragDropContents(IRNodeObject* object) override;
+
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json data) override;
     

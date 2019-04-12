@@ -238,7 +238,28 @@ void IRWorkSpace::dragoutNodeObjectFromParent(IRNodeObject* obj)
     {
         this->notifyEditModeChanged();
     }
-    this->dummy.add(obj);
+    
+    // create new object
+    IRNodeObject* o = obj->copyThis();
+    
+    // create eobject first!!
+    createObject(o);
+    
+    // copy contents here.
+    o = obj->copyDragDropContents(o);
+    
+    // set Position
+    o->setCentrePosition(this->currentMousePosition.getX(),
+                         this->currentMousePosition.getY());
+    
+    // set other parameters
+    o->setSelected(true);
+    this->selector->addSelectedObjects();
+    o->repaint();
+    
+    this->dummy.add(o);
+
+    //obj->addToDesktop(0);
 }
 // ------------------------------------------------------------
 void IRWorkSpace::dropoutNodeObjectFromParent(IRNodeObject* obj)
@@ -300,6 +321,12 @@ IRObjectPtr IRWorkSpace::getObjectGlobal(String id)
     }
     
 }
-
-
 // ------------------------------------------------------------
+
+void IRWorkSpace::nodeObjectModifiedNotification(IRNodeObject* obj)
+{
+    std::cout << "nodeObjectModifiedNotification workspace \n";
+    if(this->notifyNodeObjectModification != nullptr)
+        this->notifyNodeObjectModification(obj);
+}
+// ============================================================

@@ -75,12 +75,13 @@ void IRWaveformObjectUI::mouseUp(const MouseEvent& e)
 
 void IRWaveformObjectUI::mouseUpHandler(const MouseEvent& e)
 {
+    
+    // THIS DOES NOT WORK!!! because mouse event is out of focus when drag out from the object
     if(this->dragdropCalled)
     {
 
         for(auto obj : this->selectedSquareObjectList)
         {
-            //this->callDropOutNodeObjectFromParent();
             this->status = DROPOUT;
             sendChangeMessage();
         }

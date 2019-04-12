@@ -51,5 +51,6 @@ void IRFileInspecterWindow::show()
 
 void IRFileInspecterWindow::updateInspecter()
 {
+    std::cout << "updateInspecter\n";
     this->fileInspecter->updatePropertyPanel();
 }

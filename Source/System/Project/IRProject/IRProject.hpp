@@ -68,6 +68,7 @@ public:
     // windows
     
     void openFileInspecterWindow();
+    void updateFileInspecterWindow();
     
     // ==================================================
 
@@ -80,6 +81,9 @@ public:
     // this is called when IRUIFoundation, IRNodeObject, IRWorkspace or any other object
     // has changed the edit mode
     void notifyEditModeChange();
+    
+    // receive notifications from IRWorkspaces reporting any modifications of their NodeObjects
+    void receiveNodeObjectModification(IRNodeObject* obj);
     
     // return top workspace which is currently displayed
     IRWorkSpace* getTopWorkspace();

@@ -74,6 +74,9 @@ public:
     void createNewProject() override;
     void openProject() override;
 
+    // get to know when NodeObject is modified e.g. loading new file.
+    void nodeObjectModifiedNotification(IRNodeObject* obj) override;
+
     void addObjectGlobal(IRObjectPtr obj, String id) override;
     IRObjectPtr getObjectGlobal(String id) override;
     
@@ -118,6 +121,8 @@ public:
     {
     public:
         virtual ~Listener() {}
+        
+        
     };
     
     ListenerList<Listener> listeners;
@@ -133,7 +138,7 @@ public:
     std::function<void()> requestCloseProject;
     std::function<void()> requestOpenProject;
     std::function<void()> notifyEditModeChanged;
-    
+    std::function<void(IRNodeObject*)> notifyNodeObjectModification;
     
 private:
     

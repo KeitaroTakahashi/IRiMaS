@@ -46,9 +46,10 @@ IRNodeObject* IRWaveformObject::copyThis()
 }
 
 
-IRNodeObject* IRWaveformObject::copyThisWithContents()
+IRNodeObject* IRWaveformObject::copyContents(IRNodeObject* object)
 {
-    IRWaveformObject* obj = new IRWaveformObject(this->parent);
+    IRWaveformObject* obj = static_cast<IRWaveformObject*>(object);
+
     // temporary set the same bounds to calculate all other child components at the right positions.
     obj->setBounds(getLocalBounds());
     // open the same audio file
@@ -62,20 +63,17 @@ IRNodeObject* IRWaveformObject::copyThisWithContents()
     return obj;
 }
 
-
-IRNodeObject* IRWaveformObject::copySelectedContents()
+IRNodeObject* IRWaveformObject::copyDragDropContents(IRNodeObject* object)
 {
-    IRWaveformObject* obj = new IRWaveformObject(this->parent);
-    // temporary set the same bounds to calculate all other child components at the right positions.
-    //obj->setBounds(this->getX(), this->getY(), this->getWidth(), this->getHeight());
-    // open the same audio file
+    IRWaveformObject* obj = static_cast<IRWaveformObject*>(object);
+    
     obj->waveform->openFile(this->waveform->getPath());
-
+    
     for(auto o : this->waveform->selectedSquareObjectList)
     {
-        //Rectangle<int>rect(o->getX(), o->getY(), o->getWidth(), o->getHeight());
-        //obj->waveform->createSquareObject(rect);
-        obj->setBounds(o->getX(), o->getY(), o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
+        //obj->setBounds(o->getX(), o->getY(), o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
+        
+        obj->setSize(o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
         
         Rectangle<float> bounds = o->getBoundsInRatio();
         double startms = ((double)this->waveform->getStart() + (float)this->waveform->getDisplayDuration()*bounds.getX());

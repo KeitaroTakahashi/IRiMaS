@@ -45,6 +45,9 @@ void IRImageLoader::open()
             
             this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file, this->parent));
             this->isFileLoadCompleted = true;
+            
+            // notify modification
+            this->parent->notifyNodeObjectModification();
         }else{
             
             if(!this->isFileOpened)
@@ -70,9 +73,10 @@ void IRImageLoader::open(String pathToOpen)
         File file(this->path);
         
         this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(IRFileType::IRIMAGE, file, this->parent));
-        //loadImage(pathToOpen);
-
         this->isFileLoadCompleted = true;
+        // notify
+        this->parent->notifyNodeObjectModification();
+
     }else{
         this->isFileOpened = false;
         this->imgData = nullptr;

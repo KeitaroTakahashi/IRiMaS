@@ -92,6 +92,8 @@ void IRWaveform::openFile(String path)
 
 void IRWaveform::getFilePtr(File file)
 {
+    
+    std::cout << "getFilePtr\n";
     // set a callback function which is called when file load is completed.
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
@@ -101,6 +103,9 @@ void IRWaveform::getFilePtr(File file)
                                        callback);
     
     makeThumbnail(this->path);
+    
+    // notify changes to IRProject to update IRFileInspecter
+    this->parent->notifyNodeObjectModification();
 }
 
 

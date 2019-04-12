@@ -17,7 +17,7 @@ public:
     IRMultiPurposeObject(Component* parent);
     ~IRMultiPurposeObject();
     
-    IRNodeObject* copyThisWithContents() override;
+    IRNodeObject* copyContents(IRNodeObject* object) override;
     
     void resized() override;
     void paint(Graphics& g) override;

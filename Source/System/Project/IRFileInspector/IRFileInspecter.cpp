@@ -38,9 +38,7 @@ void IRFileInspecter::paint(Graphics& g)
 void IRFileInspecter::makePropertyPanel()
 {
     this->panel.clear();
-    
     FILEMAP* list = FILEMANAGER.getObjctList();
-    
     std::vector<File> fileList = list->getFileList();
     std::vector<IRObjectPtr> pList = list->getPList();
     
@@ -49,23 +47,17 @@ void IRFileInspecter::makePropertyPanel()
     for(int i = 0; i < fileList.size(); i++)
     {
         Array<PropertyComponent* > components;
-
         DataAllocationManager<IRImage>* obj = static_cast<DataAllocationManager<IRImage>*>(pList[i]);
         
         for(int j = 0; j < obj->getOwnerCount(); j++)
         {
             IRNodeObject* node = static_cast<IRNodeObject* >(obj->getOwnerList()[j]);
-            
-            std::cout << "node = " << node << std::endl;
+            //std::cout << "node = " << node << std::endl;
             components.add(new IRPropertyComponent(node->name, Point<int>(40,0), node->getBounds()));
-            
-            std::cout << "makePropertyPanel : " << i << " of " << fileList.size() << " : " << node->name << "\n";
+            //std::cout << "makePropertyPanel : " << i << " of " << fileList.size() << " : " << node->name << "\n";
         }
-
         this->panel.addSection(fileList[i].getFileName(), components);
-
     }
-
 }
 
 void IRFileInspecter::updatePropertyPanel()

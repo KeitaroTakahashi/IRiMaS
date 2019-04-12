@@ -62,9 +62,9 @@ public:
         return new IRSpectrogramObject(this->parent);
     }
     // ------------------------------------------------------------
-    IRNodeObject* copyThisWithContents() override
+    IRNodeObject* copyContents(IRNodeObject* object) override
     {
-        IRSpectrogramObject* obj = new IRSpectrogramObject(this->parent);
+        IRSpectrogramObject* obj = static_cast<IRSpectrogramObject*>(this->parent);
         // temporary set the same bounds to calculate all other child components at the right positions.
         obj->setBounds(this->getX(), this->getY(), this->getWidth(), this->getHeight());
         // open the same audio file
@@ -78,27 +78,21 @@ public:
         return obj;
     }
     // ------------------------------------------------------------
-    IRNodeObject* copySelectedContents() override
+    IRNodeObject* copyDragDropContents(IRNodeObject* object) override
     {
-        IRSpectrogramObject* obj = new IRSpectrogramObject(this->parent);
-        // temporary set the same bounds to calculate all other child components at the right positions.
-        //obj->setBounds(this->getX(), this->getY(), this->getWidth(), this->getHeight());
-        // open the same audio file
+        IRSpectrogramObject* obj = static_cast<IRSpectrogramObject*>(this->parent);
         obj->spectrogram->audioFile.openFileFromPath(this->spectrogram->audioFile.getPath());
         
         for(auto o : this->spectrogram->selectedSquareObjectList)
         {
-            //Rectangle<int>rect(o->getX(), o->getY(), o->getWidth(), o->getHeight());
-            //obj->waveform->createSquareObject(rect);
-            obj->setBounds(o->getX(), o->getY(), o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
+            obj->setSize(o->getWidth() + (this->xMargin*2),
+                         o->getHeight() + (this->yMargin*2));
             
             Rectangle<float> bounds = o->getBoundsInRatio();
             double startms = ((double)this->spectrogram->getStart() + (float)this->spectrogram->getDisplayDuration()*bounds.getX());
             double durationms = ((double)this->spectrogram->getDisplayDuration() * bounds.getWidth()) + startms;
             obj->spectrogram->setStart(startms);
             obj->spectrogram->setDisplayDuration(durationms);
-            
-            std::cout << "start = " << startms << " : duration = " << durationms << std::endl;
         }
         
         return obj;
@@ -108,7 +102,6 @@ public:
     {
         
     }
-    
     //==========================================================================
     // ------------------------------------------------------------
     void resized() override

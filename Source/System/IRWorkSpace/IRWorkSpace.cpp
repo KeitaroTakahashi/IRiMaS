@@ -114,25 +114,8 @@ void IRWorkSpace::mouseUp(const MouseEvent& e)
     
     if (this->dummy.size() > 0)
     {
-        for (auto obj : this->dummy)
-        {
-            IRNodeObject* o = obj->copySelectedContents();
-            Rectangle<int> bounds = o->getBounds();
-            //std::cout << "workspace xy = " << this->currentMousePosition.getX() << ", " << this->currentMousePosition.getY() << std::endl;
-            
-            o->setBounds(this->currentMousePosition.getX(),
-                         this->currentMousePosition.getY(),
-                         bounds.getWidth(),
-                         bounds.getHeight());
-            
-            createObject(o);
-            o->setSelected(true);
-            this->selector->addSelectedObjects();
-            o->repaint();
-        }
         this->dummy.clear();
     }
-    
 }
 
 
@@ -142,6 +125,15 @@ void IRWorkSpace::mouseDrag(const MouseEvent& e)
     
     //std::cout << "workspace e = " << e.getPosition().x << ", " << e.getPosition().y << std::endl;
     this->selector->mouseDragHandler(e);
+    
+    if(this->dummy.size() > 0)
+    {
+        for(auto obj : this->dummy)
+        {
+            obj->setCentrePosition(this->currentMousePosition.getX(),
+                                   this->currentMousePosition.getY());
+        }
+    }
     
 }
 

@@ -2,9 +2,6 @@
 #include "IRMultiPurposeObject.hpp"
 
 
-
-
-
 IRMultiPurposeObject::IRMultiPurposeObject(Component* parent)
 : IRNodeObject(parent, "IRMultiPurposeObject")
 {
@@ -18,7 +15,7 @@ IRMultiPurposeObject::~IRMultiPurposeObject()
 }
 
 
-IRNodeObject* IRMultiPurposeObject::copyThisWithContents()
+IRNodeObject* IRMultiPurposeObject::copyContents(IRNodeObject *object)
 {
     IRMultiPurposeObject* obj = new IRMultiPurposeObject(this->parent);
     obj->setBoundsInRatio(this->xRatio, this->yRatio, this->wRatio, this->hRatio);

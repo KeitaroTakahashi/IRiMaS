@@ -12,9 +12,6 @@
 #include "IRNodeObject.hpp"
 
 
-
-
-
 class IRNodeObjectSelector : public IRObjectSelection<IRNodeObject* >
 {
     

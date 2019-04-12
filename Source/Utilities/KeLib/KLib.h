@@ -45,6 +45,14 @@ public:
                                           "OK");
     }
     
+    void debugMessage(const String& messageText, bool flag)
+    {
+        if(flag)
+        {
+            std::cout << messageText << std::endl;
+        }
+    }
+    
     template<typename T>
     void showRectangle(Rectangle<T> rect){
         std::cout << "x = " << rect.getX() << " : y = " << rect.getY() << " : w = " << rect.getWidth() << " : h = " << rect.getHeight() << std::endl;

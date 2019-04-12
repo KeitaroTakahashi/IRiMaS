@@ -22,8 +22,9 @@ public:
     
     
     virtual IRNodeObject* copyThis(); //copy constructor
-    virtual IRNodeObject* copyThisWithContents(); // copy constructor with contents
-    virtual IRNodeObject* copySelectedContents(); // copy constructor with irregular contents
+    virtual IRNodeObject* copyContents(IRNodeObject* object); // copy constructor with contents
+    virtual IRNodeObject* copyDragDropContents(IRNodeObject* object); // copy draged and dropped contents
+    
     
     virtual t_json saveThisToSaveData();
     virtual void loadThisFromSaveData(t_json saveData);
@@ -55,6 +56,9 @@ public:
         virtual void openProject() {};
         
         virtual void createNewProject() {};
+        
+        // notification to IRWorkspace
+        virtual void nodeObjectModifiedNotification(IRNodeObject* obj) {};
         
         //inform its parent that edit mode status changed
         virtual void editModeChangedInNodeObject(bool editMode) {};
@@ -102,6 +106,8 @@ public:
     void callCloseProject();
     void callCreateNewProject();
     void callOpenProject();
+    
+    void notifyNodeObjectModification();
     // ===========================================================================
     
     // methods for save and load functions. Developers need to define the behavior of objects when save or load project files.
