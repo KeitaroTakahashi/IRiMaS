@@ -4,11 +4,10 @@
 
 
 #include "JuceHeader.h"
-
-
-
+#include "IRComponents.hpp"
 
 class IRPreferenceObject : public Component,
+public IRComponents,
 public ChangeBroadcaster,
 public ChangeListener
 {
@@ -23,11 +22,8 @@ public:
     
     virtual void changeListenerCallback(ChangeBroadcaster* source) override;
     
-    
 private:
-    
     Rectangle<int> frameRect;
-    
 };
 
 

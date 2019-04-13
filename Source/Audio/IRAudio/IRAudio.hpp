@@ -36,11 +36,12 @@ public:
     // audio file reader
     // -----------------------------------------------------------------
     // open dialog to select a file
-    bool openFile();
+    bool openFile(bool threadSafe = true);
     // open audio file by path
-    bool openFileFromPath(String path);
+    bool openFileFromPath(String path, bool threadSafe = true);
     // open audio file by File
-    bool loadFile(File file);
+    bool loadFile(File file, bool threadSafe = true);
+    
     // -----------------------------------------------------------------
     // getter of the audio file info
     // -----------------------------------------------------------------
@@ -103,9 +104,12 @@ private:
     
     // impoart audio file and read the data
     void checkForPathToOpen();
+    void OpenPath(File file);
     
     // ---------------------------------------------------------------------------
-    
+    void callFileImportCompleted();
+    // ---------------------------------------------------------------------------
+
     String path;
     String filePath;
     String fileName;

@@ -4,21 +4,15 @@
 
 
 #include "JuceHeader.h"
-
 #include "Preferences.h"
 #include "IRPreferenceObject.hpp"
 
-
-
-
-
 class IRPreferenceSpace : public Component,
+                          public IRComponents,
                           public ChangeBroadcaster,
                           public ChangeListener
 {
-    
 public:
-    
     IRPreferenceSpace(String title, Rectangle<int> frameRect);
     ~IRPreferenceSpace();
     
@@ -32,19 +26,12 @@ public:
     void setPreferenceObj(IRPreferenceObject* preferenceObj);
     IRPreferenceObject* getPreferenceObj();
 
-    
 private:
-    
     String title;
     bool isPreferenceObjAlreadySet { false };
-    
     IRPreferenceObject* preferenceObj;
     
-    IR::IRColours& SYSTEMCOLOUR { singleton<IR::IRColours>::get_instance() };
-
-    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRPreferenceSpace)
-    
 };
 
 

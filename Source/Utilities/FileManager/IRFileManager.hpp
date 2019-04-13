@@ -65,7 +65,7 @@ public:
         this->fileList.erase(this->fileList.begin() + index);
         this->pList.erase(this->pList.begin() + index);
         
-        std::cout << this->fileList.size() << std::endl;
+        std::cout << "fileList size = " << this->fileList.size() << std::endl;
         
         // if any confliction occurs
         if(this->fileList.size() != this->pList.size())
@@ -205,7 +205,7 @@ private:
     // allocate data by a given FileType
     IRObjectPtr createFileData(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback = nullptr);
     IRObjectPtr createImageFileData(File file, IRObjectPtr owner);
-    IRObjectPtr createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback);
+    IRObjectPtr createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback, bool threadSafe = true);
     
     // check if the new file is already imported or not
     bool isFileAlreadyRegistered(File newFile);

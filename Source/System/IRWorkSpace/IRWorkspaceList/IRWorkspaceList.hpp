@@ -67,6 +67,10 @@ public:
     
     void callRemoveWorkspaceAction(IRWorkSpace* workspace);
     
+    // set IRFileManager from IRProject
+    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
+    IRFileManager* getFileManager() { return this->fileManager; }
+    
 private:
     
     class ShowSnap : public Component,
@@ -233,6 +237,9 @@ private:
     int marginX_left = 30;
     int marginX_right = 10;
     int marginY = 10;
+    
+    // IRFileManager is exclusive for each Project
+    IRFileManager* fileManager = nullptr;
     
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 

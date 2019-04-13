@@ -21,6 +21,8 @@ IRObjectPtr IRFileManager::createFileData(IRFileType type, File file, IRObjectPt
         case IRAUDIO:
             return createAudioFileData(file, owner, callback);
             break;
+        case IRAUDIO_THREADSAFE:
+            
         default:
             break;
     }
@@ -38,7 +40,7 @@ IRObjectPtr IRFileManager::createImageFileData(File file, IRObjectPtr owner)
 
 }
 
-IRObjectPtr IRFileManager::createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback)
+IRObjectPtr IRFileManager::createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback, bool threadSafe)
 {
     DataAllocationManager<IRAudio>* audio = new DataAllocationManager<IRAudio>();
     std::cout << "allocate IRAudio \n";
@@ -48,10 +50,15 @@ IRObjectPtr IRFileManager::createAudioFileData(File file, IRObjectPtr owner, std
     if(callback != nullptr)
         audio->getData()->onImportCompleted = callback;
     
-    if(audio->getData()->loadFile(file))
-        return static_cast<IRObjectPtr>(audio);
-    else return nullptr;
-
+    if(threadSafe)
+    {
+        if(audio->getData()->loadFile(file, true)) return static_cast<IRObjectPtr>(audio);
+        else return nullptr;
+    }
+    else{
+        if(audio->getData()->loadFile(file, false)) return static_cast<IRObjectPtr>(audio);
+        else return nullptr;
+    }
 }
 
 // -------------------------------------------------
@@ -112,7 +119,7 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr ow
     
     if (isFileAlreadyRegistered(file))
     {
-        std::cout << "file already imported to the project." << std::endl;
+        std::cout << file.getFileName() << " : file already imported to the project." << std::endl;
         IRObjectPtr obj = retrievePtrByFile(file);
         // manager owner list
         managerOwner(type, obj, owner, true);
@@ -173,6 +180,7 @@ void IRFileManager::managerOwner(IRFileType type, IRObjectPtr obj, IRObjectPtr o
         case IRVIDEO:
             break;
         case IRAUDIO:
+        case IRAUDIO_THREADSAFE:
             IRAudioReferencerManager(obj, owner, addOrRemove);
             break;
         default:

@@ -140,6 +140,10 @@ public:
     std::function<void()> notifyEditModeChanged;
     std::function<void(IRNodeObject*)> notifyNodeObjectModification;
     
+    // set IRFileManager from IRProject
+    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
+    IRFileManager* getFileManager() { return this->fileManager; }
+    
 private:
     
     String name = "";
@@ -190,7 +194,8 @@ private:
     // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     
-    
+    // IRFileManager is exclusive for each Project
+    IRFileManager* fileManager = nullptr;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkSpace)
     
 };

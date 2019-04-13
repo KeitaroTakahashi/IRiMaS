@@ -53,6 +53,7 @@
 		7AA9BD6FC2BBE29E9C8B46AA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E05BF71795BB3482E429F07 /* OpenGL.framework */; };
 		820D3BB8225EA44100BDA679 /* SoundPlayer_ThreadSafe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820D3BB6225EA44100BDA679 /* SoundPlayer_ThreadSafe.cpp */; };
 		820D3BBE225F936200BDA679 /* FileManagerTUTORIAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820D3BBC225F936200BDA679 /* FileManagerTUTORIAL.cpp */; };
+		820D3BC22262A49700BDA679 /* IRComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820D3BC02262A49700BDA679 /* IRComponents.cpp */; };
 		8210D9D0213D3E050042F646 /* IRSpectrogramObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8210D9CE213D3E050042F646 /* IRSpectrogramObject.cpp */; };
 		8210D9D4213D4A470042F646 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8210D9D3213D4A470042F646 /* libfftw3.a */; };
 		821A5A942249290F00F11668 /* IRAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5A922249290F00F11668 /* IRAudio.cpp */; };
@@ -363,6 +364,8 @@
 		820D3BB7225EA44100BDA679 /* SoundPlayer_ThreadSafe.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SoundPlayer_ThreadSafe.hpp; sourceTree = "<group>"; };
 		820D3BBC225F936200BDA679 /* FileManagerTUTORIAL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileManagerTUTORIAL.cpp; sourceTree = "<group>"; };
 		820D3BBD225F936200BDA679 /* FileManagerTUTORIAL.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FileManagerTUTORIAL.hpp; sourceTree = "<group>"; };
+		820D3BC02262A49700BDA679 /* IRComponents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRComponents.cpp; sourceTree = "<group>"; };
+		820D3BC12262A49700BDA679 /* IRComponents.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRComponents.hpp; sourceTree = "<group>"; };
 		8210422721F625760091CEEF /* ObjectFactoryInitializer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectFactoryInitializer.hpp; sourceTree = "<group>"; };
 		8210D9CE213D3E050042F646 /* IRSpectrogramObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramObject.cpp; sourceTree = "<group>"; };
 		8210D9CF213D3E050042F646 /* IRSpectrogramObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSpectrogramObject.hpp; sourceTree = "<group>"; };
@@ -1553,6 +1556,15 @@
 			path = FileManagerTUTORIAL;
 			sourceTree = "<group>";
 		};
+		820D3BBF2262A46200BDA679 /* IRComponents */ = {
+			isa = PBXGroup;
+			children = (
+				820D3BC02262A49700BDA679 /* IRComponents.cpp */,
+				820D3BC12262A49700BDA679 /* IRComponents.hpp */,
+			);
+			path = IRComponents;
+			sourceTree = "<group>";
+		};
 		8210D9CC213D3D3F0042F646 /* FFTRelated */ = {
 			isa = PBXGroup;
 			children = (
@@ -2035,6 +2047,7 @@
 		82AB427F2224284000F9184C /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				820D3BBF2262A46200BDA679 /* IRComponents */,
 				821ED1912177320E0019CF54 /* IRPreferenceSpace */,
 				10AD5602222488D80046686E /* PreferenceWindow */,
 				10AD5601222488860046686E /* IRStarter */,
@@ -2255,6 +2268,7 @@
 				10F647632226F13F00A26D7D /* IRObjectCreaterBase.cpp in Sources */,
 				50936D63BE57464710DD09CD /* include_juce_audio_formats.mm in Sources */,
 				821A5E89212E2B9800BF593D /* IRWorkSpaceObjectManagement.cpp in Sources */,
+				820D3BC22262A49700BDA679 /* IRComponents.cpp in Sources */,
 				A356740963DB8BF888A6691C /* include_juce_audio_processors.mm in Sources */,
 				821A5E87212DAECE00BF593D /* IRNodeObjectSelector.cpp in Sources */,
 				10405817221AC96900E82FED /* IRFileManager.cpp in Sources */,

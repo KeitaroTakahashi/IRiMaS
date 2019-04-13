@@ -10,6 +10,7 @@
 
 #include "JuceHeader.h"
 #include "IRNodeObject.hpp"
+#include "IRFileManager.hpp"
 
 class IRUIFoundation : public Component,
 public KeyListener
@@ -54,6 +55,9 @@ private:
     
     // ==================================================
 
+    // set IRFileManager from IRProject
+    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
+    IRFileManager* getFileManager() { return this->fileManager; }
 
 private:
     
@@ -67,6 +71,7 @@ private:
     
     IRNodeObject* parent;
     
+    IRFileManager* fileManager = nullptr;
 };
 
 #endif /* IRUIFoundation_hpp */

@@ -12,10 +12,6 @@
 #include "Menus.h"
 #include "EditCommandTarget.hpp"
 
-
-
-
-
 class IRProject : public AudioAppComponent,
                   public ApplicationCommandTarget,
                   public MenuBarModel,
@@ -152,6 +148,7 @@ public:
     
 private:
     
+    
     void changeListenerCallback(ChangeBroadcaster* source) override;
     
     // Menu bar
@@ -214,6 +211,13 @@ private:
     MenuActionStatus menu_action_status;
     
     json11::Json saveData;
+    
+    // --------------------------------------------------
+    // IRFileManager is exclusive for each Project
+    std::shared_ptr<IRFileManager> fileManager = nullptr;
+    void createFileManager();
+    // --------------------------------------------------
+
     
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     

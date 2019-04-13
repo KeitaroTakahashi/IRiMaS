@@ -9,7 +9,6 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
                      DocumentWindow* parentWindow,
                      ChangeListener* listener)
 {
-    
     this->projectName = projectName;
     this->preferenceWindow = preferenceWindow;
     this->parentWindow = parentWindow;
@@ -18,9 +17,11 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
     
     setSize(frameRect.getWidth(), frameRect.getHeight());
     
+    // create File Manager
+    createFileManager();
+    
     //create menu
     this->menuBar.reset(new MenuBarComponent(this));
-    
     
     // for mac only. Windows takes window menu
 #if JUCE_MAC
@@ -40,6 +41,7 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
     
     addAndMakeVisible(this->editCommandTarget.get());
 
+    
     // setup
     setAudioChannels(0, 2);
 }
@@ -752,7 +754,11 @@ void IRProject::releaseResources()
 {
     this->mixer.getAudioSource().releaseResources();
 }
+// --------------------------------------------------
 
-
+void IRProject::createFileManager()
+{
+    this->fileManager.reset(new IRFileManager());
+}
 
 

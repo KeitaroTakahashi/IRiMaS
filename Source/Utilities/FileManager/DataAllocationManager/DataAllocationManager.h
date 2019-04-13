@@ -14,7 +14,8 @@ enum IRFileType
 {
     IRIMAGE,
     IRVIDEO,
-    IRAUDIO
+    IRAUDIO,
+    IRAUDIO_THREADSAFE // IRAUDIO thread safe
 };
 
 // DO NOT SEPARATE THIS CLASS TO hpp AND cpp because THIS IS Template!!
@@ -52,18 +53,21 @@ public:
     
     void addReferencingObject(IRObjectPtr owner)
     {
-        int index = this->owners.indexOf(owner);
-        if(index == -1) // if the given owner is not yet added
+        if(owner != nullptr)
         {
-            // if not yet then allocate
-            if(this->owners.size() == 0) allocate();
-            this->owners.add(owner);
-        }
+            int index = this->owners.indexOf(owner);
+            if(index == -1) // if the given owner is not yet added
+            {
+                // if not yet then allocate
+                if(this->owners.size() == 0) allocate();
+                this->owners.add(owner);
+            }
         
-        std::cout << "DataAllocationManager : addReferencer count = " << this->owners.size() << std::endl;
-        for(auto ref : this->owners)
-        {
-            std::cout<< ref << std::endl;
+            std::cout << "DataAllocationManager : addReferencer count = " << this->owners.size() << std::endl;
+            for(auto ref : this->owners)
+            {
+                std::cout<< ref << std::endl;
+            }
         }
     }
     

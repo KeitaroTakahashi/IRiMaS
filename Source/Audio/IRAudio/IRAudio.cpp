@@ -32,7 +32,7 @@ AudioThumbnail* IRAudio::getThumbnail()
     return this->thumbnail;
 }
 // ------------------------------------------------------------------
-bool IRAudio::openFile()
+bool IRAudio::openFile(bool threadSafe)
 {
     FileChooser chooser("Select an audio file to play...",
                         {},
@@ -40,36 +40,35 @@ bool IRAudio::openFile()
     if(chooser.browseForFileToOpen())
     {
         auto file = chooser.getResult();
-        auto path = file.getFullPathName();
-        this->filePath.swapWith(path);
-        this->path.swapWith(path);
-        notify();
-        return true;
+        return loadFile(file, threadSafe);
     }
     return false;
 }
 // ------------------------------------------------------------------
-bool IRAudio::openFileFromPath(String path)
+bool IRAudio::openFileFromPath(String path, bool threadSafe)
 {
     File f(path);
-    if(f.exists())
-    {
-        this->path.swapWith(path);
-        this->filePath.swapWith(path);
-        notify();
-        return true;
-    }else return false;
+    return loadFile(f, threadSafe);
 }
 
-bool IRAudio::loadFile(File file)
+bool IRAudio::loadFile(File file, bool threadSafe)
 {
     if(file.exists())
     {
         String p = file.getFullPathName();
         this->path.swapWith(p);
         this->filePath.swapWith(p);
-        notify();
-        return true;
+
+        if(threadSafe)
+        {
+            notify();
+            return true;
+        }else{
+            //simply load audio file
+            checkForPathToOpen();
+            checkForBuffersToFree();
+            return true;
+        }
     }else return false;
 }
 // ------------------------------------------------------------------
@@ -107,7 +106,6 @@ void IRAudio::checkForBuffersToFree()
     }
 }
 // ------------------------------------------------------------------
-
 void IRAudio::checkForPathToOpen()
 {
     String pathToOpen;
@@ -117,7 +115,6 @@ void IRAudio::checkForPathToOpen()
     {
         this->isFileOpened = true;
         
-        Component::BailOutChecker checker(this);
         
         File file (pathToOpen);
         if((this->reader = this->formatManager.createReaderFor(file)))
@@ -136,27 +133,14 @@ void IRAudio::checkForPathToOpen()
             this->buffer = newBuffer;
             this->buffers.add (newBuffer);
             
-            // thumbail thread safe
-            //ReferenceCountedThumbnail::Ptr newThumbnail = new ReferenceCountedThumbnail(file.getFileName());
-            
-            //newThumbnail->getThumbnail()->setSource(new FileInputSource(file));
-            
             this->sampleRate = this->reader->sampleRate;
             this->numChannels = this->reader->numChannels;
             this->numSamples = this->reader->lengthInSamples;
             this->bitsPerSample = this->reader->bitsPerSample;
             
             std::cout << "reading samples of "<<(int) reader->lengthInSamples<<std::endl;
-            //==========
-            // check if the objects are not deleted, if deleted, return
-            if(checker.shouldBailOut()) return;
             
-            // fire call back signal here!
-            this->ImportAudioListeners.callChecked(checker, [this] (Listener& l) {l.fileImportCompleted(this);});
-            //check again
-            if(checker.shouldBailOut()) return;
-            //std::function
-            if(this->onImportCompleted != nullptr) this->onImportCompleted();
+            callFileImportCompleted();
             
             this->isFileLoadCompleted = true;
             this->fileName = file.getFileName();
@@ -172,4 +156,19 @@ void IRAudio::checkForPathToOpen()
         this->isFileLoadCompleted = false;
         sendChangeMessage();
     }
+}
+
+void IRAudio::callFileImportCompleted()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    
+    // fire call back signal here!
+    this->ImportAudioListeners.callChecked(checker, [this] (Listener& l) {l.fileImportCompleted(this);});
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->onImportCompleted != nullptr) this->onImportCompleted();
 }

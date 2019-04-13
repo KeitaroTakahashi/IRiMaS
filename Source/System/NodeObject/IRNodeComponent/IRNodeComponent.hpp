@@ -221,6 +221,10 @@ public:
 
     String getUniqueID() const;
     
+    // set IRFileManager from IRProject
+    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
+    IRFileManager* getFileManager() { return this->fileManager; }
+    
     // object type
     NodeObjectType getObjectType() const;
     
@@ -318,6 +322,8 @@ private:
     
     PreferenceWindow* preferenceWindow;
 
+    // IRFileManager is exclusive for each Project
+    IRFileManager* fileManager = nullptr;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeComponent)
 };
