@@ -13,17 +13,18 @@
 #include "IRFileManager.hpp"
 
 class IRUIFoundation : public Component,
-public KeyListener
+public IRComponents,
+public KeyListener,
+private IRNodeObject::Listener
 {
 public:
-    IRUIFoundation(IRNodeObject* parent);
+    IRUIFoundation(IRNodeObject* nodeObject);
     ~IRUIFoundation();
     
     // --------------------------------------------------
     // ==================================================
     // key events
-    
-public:
+
     virtual void IRKeyPressed(int keyCode);
     virtual void IRKeyReleased(int keyCode);
     
@@ -32,9 +33,6 @@ public:
     
     virtual void setEditMode(bool newEditMode) {};
     // --------------------------------------------------
-    
-
-
 
     // --------------------------------------------------
 private:
@@ -45,6 +43,10 @@ private:
     // ==================================================
     // get signal from IRNodeComponent when IRNodeObject status changed.
     void NodeObjectStatusChanged(IRNodeComponentStatus status);
+    
+    
+    // called when IRFileManager is given or updated in IRNodeObject
+    void updateFileManager(IRFileManager* fileManager);
     // --------------------------------------------------
     
     
@@ -55,10 +57,6 @@ private:
     
     // ==================================================
 
-    // set IRFileManager from IRProject
-    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
-    IRFileManager* getFileManager() { return this->fileManager; }
-
 private:
     
     //key event
@@ -66,12 +64,10 @@ private:
     
     // status
     bool editModeFlag = true;
-        
+
     // object
+    IRNodeObject* nodeObject;
     
-    IRNodeObject* parent;
-    
-    IRFileManager* fileManager = nullptr;
 };
 
 #endif /* IRUIFoundation_hpp */

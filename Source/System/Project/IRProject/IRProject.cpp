@@ -17,8 +17,12 @@ IRProject::IRProject(std::string projectName, Rectangle<int> frameRect,
     
     setSize(frameRect.getWidth(), frameRect.getHeight());
     
+    // ==========
     // create File Manager
+    
     createFileManager();
+    
+    // ==========
     
     //create menu
     this->menuBar.reset(new MenuBarComponent(this));
@@ -139,11 +143,15 @@ void IRProject::createNewWorkspace()
     space->requestSaveAsProject = [this] { callSaveAsProjectAction(); };
     space->requestOpenProject = [this] { callOpenProjectAction(); };
     space->requestCloseProject = [this] { callCloseProjectAction(); };
+    space->requestOpenFileInspecter = [this] { openFileInspecterWindow(); };
     space->notifyEditModeChanged = [this] { notifyEditModeChange(); };
     space->notifyNodeObjectModification = [this](IRNodeObject* obj) { receiveNodeObjectModification(obj); };
     
     space->addChangeListener(this->listener);
     this->mixer.addAudioSource(&space->getMixer());
+    
+    // IRFileManager
+    space->setIRFileManager(getFileManager());
     
     addAndMakeVisible(space);
     this->workspaces.push_back(space);
@@ -178,6 +186,9 @@ void IRProject::createWorkspaceList()
     this->workspaceList = std::make_shared<IRWorkspaceList>(Rectangle<int>(0, 0, this->workspaceListWidth, getHeight()));
     this->workspaceList->addListener(this);
     this->workspaceList->addChangeListener(this);
+    
+    // IRFileManager
+    this->workspaceList->setIRFileManager(getFileManager());
     addAndMakeVisible(this->workspaceList.get());
 }
 
@@ -552,7 +563,8 @@ void IRProject::openFileInspecterWindow()
     if(this->fileInspecterWindow == nullptr)
     {
         this->fileInspecterWindow = new IRFileInspecterWindow("File Inspecter");
-        
+        this->fileInspecterWindow->setFileManager(getFileManager());
+        this->fileInspecterWindow->updateInspecter();
     }
     else
     {
@@ -755,10 +767,3 @@ void IRProject::releaseResources()
     this->mixer.getAudioSource().releaseResources();
 }
 // --------------------------------------------------
-
-void IRProject::createFileManager()
-{
-    this->fileManager.reset(new IRFileManager());
-}
-
-

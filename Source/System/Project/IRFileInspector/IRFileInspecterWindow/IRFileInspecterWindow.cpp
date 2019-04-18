@@ -54,3 +54,8 @@ void IRFileInspecterWindow::updateInspecter()
     std::cout << "updateInspecter\n";
     this->fileInspecter->updatePropertyPanel();
 }
+
+void IRFileInspecterWindow::setFileManager(IRFileManager* fileManager)
+{
+    this->fileInspecter->setIRFileManager(fileManager);
+}

@@ -4,16 +4,16 @@
 
 #include "JuceHeader.h"
 
-#include "IRFileManager.hpp"
+#include "IRUIFoundation.hpp"
 #include "IRNodeObject.hpp"
 
 
-class IRImageLoader : public ChangeBroadcaster
+class IRImageLoader : public IRUIFoundation,
+public ChangeBroadcaster
 {
 public:
     
     IRImageLoader(IRNodeObject* parent);
-    IRImageLoader(String path);
     ~IRImageLoader();
 
     void open();
@@ -45,9 +45,7 @@ private:
     // define max size of the loaded picture to avoid erroneous size change
     int maxWidth = 300;
     int maxHeight = 300;
-    
-    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
-    
+        
 };
 
 

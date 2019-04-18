@@ -20,7 +20,7 @@ public:
     IRVideoPlayerObject(Component* parent) : IRNodeObject(parent, "IRVideoPlayer", NodeObjectType(heavyWeightComponent))
     {
         // this->videoPlayer = new IRVideoPlayer();
-        this->videoPlayer = std::make_shared<IRVideoPlayer>();
+        this->videoPlayer = std::make_shared<IRVideoPlayer>(this);
         this->videoPlayer->setBounds(getLocalBounds().reduced(5));
         this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
         addAndMakeVisible(this->videoPlayer.get());

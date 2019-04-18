@@ -10,6 +10,7 @@
 
 #include "JuceHeader.h"
 #include "IRFileInspecter.hpp"
+#include "IRFileManager.hpp"
 
 class IRFileInspecterWindow : DocumentWindow
 {
@@ -25,6 +26,8 @@ public:
     void updateInspecter();
     
     // ==================================================
+    
+    void setFileManager(IRFileManager* fileManager);
 
 private:
     

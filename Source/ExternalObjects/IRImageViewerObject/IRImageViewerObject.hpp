@@ -32,7 +32,7 @@ private:
     void statusChangedCallback(IRNodeComponentStatus status) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
 
-    IRImageViewer imageViewer;
+    std::shared_ptr<IRImageViewer> imageViewer { nullptr };
 };
 
 #endif /* IRImageViwerObject_h */

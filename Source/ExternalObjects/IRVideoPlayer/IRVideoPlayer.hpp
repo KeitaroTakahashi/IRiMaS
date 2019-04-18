@@ -12,16 +12,20 @@
 #include <opencv.hpp>
 #include <opencv2/opencv.hpp>
 #include <highgui.hpp>
+#include "IRUIFoundation.hpp"
 
 #include "IRFoundation.h"
 #include "IRCVVideoPlayer.hpp"
 
 
-class IRVideoPlayer : public Component,
+class IRVideoPlayer : public IRUIFoundation,
                       public DragAndDropContainer
 {
 public:
-    IRVideoPlayer() : player(false), player_with_controller(true)
+    IRVideoPlayer(IRNodeObject* parent) :
+    IRUIFoundation(parent),
+    player(false),
+    player_with_controller(true)
     {
         this->openButton.setButtonText("open a movie file");
         this->openButton.setColour(TextButton::buttonColourId,
@@ -184,10 +188,6 @@ private:
     
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-
-    //File Manager
-    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
-
     
     // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
     JUCE_LEAK_DETECTOR (IRVideoPlayer)

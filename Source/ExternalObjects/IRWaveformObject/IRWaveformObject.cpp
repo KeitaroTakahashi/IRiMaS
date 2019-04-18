@@ -15,6 +15,9 @@ IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IR
                               getWidth()-(this->xMargin*2),
                               getHeight()-(this->yMargin*2));
     this->waveform->setEditMode(isEditMode());
+    
+    //IRFileManager
+    
     //addKeyListener(this->waveform);
     addAndMakeVisible(this->waveform);
     childComponentManager(this->waveform);
@@ -213,6 +216,8 @@ void IRWaveformObject::changeListenerCallback(ChangeBroadcaster* source)
             case IRWaveformObjectUI::DROPOUT:
                 this->callDropOutNodeObjectFromParent();
                 break;
+                
+                /*
             case IRWaveformObjectUI::EDITMODECHANGE:
                 // first change its EditMode status
                 setEditMode(! isEditMode());
@@ -224,6 +229,7 @@ void IRWaveformObject::changeListenerCallback(ChangeBroadcaster* source)
                 // request IRMAIN to save this project.
                 // IRNodeObject -> IRWorkspace -> IRProject -> IRMAIN
                 this->callSaveProject();
+                 */
             default:
                 break;
         }

@@ -5,8 +5,9 @@
 
 
 
-IRWaveform::IRWaveform(IRNodeObject* parent)
-:   thumbnailCache(5),
+IRWaveform::IRWaveform(IRNodeObject* parent) :
+IRUIAudioFoundation(parent),
+thumbnailCache(5),
 thumbnail(512, formatManager, thumbnailCache)
 {
  
@@ -36,7 +37,7 @@ IRWaveform::~IRWaveform()
     // delete this->player; // leave it - the owner will delete it.
     // remove pointer
     if(this->audioData != nullptr)
-        FILEMANAGER.discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
 }
 
 
@@ -97,10 +98,10 @@ void IRWaveform::getFilePtr(File file)
     // set a callback function which is called when file load is completed.
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
-    FILEMANAGER.getFilePtrWithCallBack(IRFileType::IRAUDIO,
-                                       this->file,
-                                       this->parent,
-                                       callback);
+    getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+                                             this->file,
+                                             this->parent,
+                                             callback);
     
     makeThumbnail(this->path);
     
@@ -157,7 +158,7 @@ void IRWaveform::makeThumbnail(String path)
 void IRWaveform::fileImportCompleted()
 {
     
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(FILEMANAGER.getFileObject());
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
     //set audioBuffer to player
     std::vector<int>v = {0,1};
     this->player->setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);

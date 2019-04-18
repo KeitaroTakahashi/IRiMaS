@@ -6,3 +6,20 @@
 //
 
 #include "IRComponents.hpp"
+
+void IRComponents::createFileManager()
+{
+    this->fileManager = new IRFileManager();
+}
+
+void IRComponents::deleteFileManager()
+{
+    delete this->fileManager;
+}
+
+void IRComponents::setIRFileManager(IRFileManager* manager)
+{
+    this->fileManager = manager;
+    if(this->fileManagerUpdated != nullptr) this->fileManagerUpdated(this->fileManager);
+
+}

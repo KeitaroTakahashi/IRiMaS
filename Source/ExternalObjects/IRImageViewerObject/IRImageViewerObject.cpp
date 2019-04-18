@@ -1,20 +1,19 @@
 
 #include "IRImageViewerObject.hpp"
 
-
-
-
-
-IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(parent, "IRImageViewer"),
-imageViewer(this)
+IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(parent, "IRImageViewer")
 {
     
     std::cout << "IRImageViewerObject" << std::endl;
-    this->imageViewer.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
-    addAndMakeVisible(this->imageViewer);
-    childComponentManager(&this->imageViewer);
-    
-    this->imageViewer.addChangeListener(this);
+    this->imageViewer = std::make_shared<IRImageViewer>(this);
+
+    this->imageViewer->setBounds(5, 5, getWidth() - 10, getHeight() - 10);
+    addAndMakeVisible(this->imageViewer.get());
+    childComponentManager(this->imageViewer.get());
+    this->imageViewer->addChangeListener(this);
+
+    std::cout << " IRFileManager in IRImageViewerObject = " << getFileManager() << std::endl;
+
     setSize(150, 150);
 }
 
@@ -34,9 +33,9 @@ IRNodeObject* IRImageViewerObject::copyThis()
 
 t_json IRImageViewerObject::saveThisToSaveData()
 {
-    std::string imgPath = this->imageViewer.getFilePath().toStdString();
+    std::string imgPath = this->imageViewer->getFilePath().toStdString();
     
-    Rectangle<int> b = this->imageViewer.getBounds();
+    Rectangle<int> b = this->imageViewer->getBounds();
     t_json imageViewerData = t_json::object({
         {"bounds", t_json::array({b.getX(), b.getY(), b.getWidth(), b.getHeight()})},
         {"imgPath", imgPath},
@@ -58,10 +57,10 @@ void IRImageViewerObject::loadThisFromSaveData(t_json saveData)
 {
     t_json data = saveData["imageViewer"];
     
-    this->imageViewer.openFile(String(data["imgPath"].string_value()));
+    this->imageViewer->openFile(String(data["imgPath"].string_value()));
     
     t_json::array b = data["bounds"].array_items();
-    this->imageViewer.setBounds(b[0].int_value(),
+    this->imageViewer->setBounds(b[0].int_value(),
                                 b[1].int_value(),
                                 b[2].int_value(),
                                 b[3].int_value());
@@ -76,7 +75,7 @@ void IRImageViewerObject::resized()
 {
     std::cout << "IRImageViewerObject resized " << getWidth() << ", " << getHeight() << std::endl;
     
-    this->imageViewer.setBounds(5,5, getWidth()-10, getHeight()-10);
+    this->imageViewer->setBounds(5,5, getWidth()-10, getHeight()-10);
 }
 
 
@@ -95,7 +94,7 @@ void IRImageViewerObject::paint(Graphics& g)
 // this method employs different resizing way with shift key.
 void IRImageViewerObject::resizeThisComponentEvent(const MouseEvent& e)
 {
-    double ratio = this->imageViewer.getAspectRatio();
+    double ratio = this->imageViewer->getAspectRatio();
     
     
     std::cout << "resizeThisComponentEvent isShiftDown = " << e.mods.isShiftDown() << " : ratio = " << ratio << std::endl;
@@ -151,9 +150,9 @@ void IRImageViewerObject::statusChangedCallback(IRNodeComponentStatus status)
 
 void IRImageViewerObject::changeListenerCallback (ChangeBroadcaster* source)
 {
-    if (source == &this->imageViewer)
+    if (source == this->imageViewer.get())
     {
-        setSize(this->imageViewer.getWidth(), this->imageViewer.getHeight());
+        setSize(this->imageViewer->getWidth(), this->imageViewer->getHeight());
     }
 }
 

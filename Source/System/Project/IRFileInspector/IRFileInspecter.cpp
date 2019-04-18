@@ -11,9 +11,7 @@ IRFileInspecter::IRFileInspecter():
 panel("panel test")
 {
     setSize(480, 640);
-    
-    makePropertyPanel();
-    
+        
     addAndMakeVisible(panel);
 }
 
@@ -38,7 +36,7 @@ void IRFileInspecter::paint(Graphics& g)
 void IRFileInspecter::makePropertyPanel()
 {
     this->panel.clear();
-    FILEMAP* list = FILEMANAGER.getObjctList();
+    FILEMAP* list = getFileManager()->getObjctList();
     std::vector<File> fileList = list->getFileList();
     std::vector<IRObjectPtr> pList = list->getPList();
     

@@ -27,6 +27,7 @@
 
 
 class IRWorkSpace : public AudioAppComponent,
+                    public IRComponents,
                     public ChangeBroadcaster,
                     public ChangeListener,
                     public IRNodeObject::Listener,
@@ -73,6 +74,7 @@ public:
     void closeProject() override;
     void createNewProject() override;
     void openProject() override;
+    void openFileInspecter() override;
 
     // get to know when NodeObject is modified e.g. loading new file.
     void nodeObjectModifiedNotification(IRNodeObject* obj) override;
@@ -137,12 +139,10 @@ public:
     std::function<void()> requestSaveAsProject;
     std::function<void()> requestCloseProject;
     std::function<void()> requestOpenProject;
+    std::function<void()> requestOpenFileInspecter;
+
     std::function<void()> notifyEditModeChanged;
     std::function<void(IRNodeObject*)> notifyNodeObjectModification;
-    
-    // set IRFileManager from IRProject
-    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
-    IRFileManager* getFileManager() { return this->fileManager; }
     
 private:
     
@@ -190,14 +190,8 @@ private:
     
     // IRObjectFactory
     IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
-    
-    // system colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    
-    // IRFileManager is exclusive for each Project
-    IRFileManager* fileManager = nullptr;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkSpace)
-    
 };
 
 

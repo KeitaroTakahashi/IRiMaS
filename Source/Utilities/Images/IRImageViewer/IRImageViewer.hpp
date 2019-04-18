@@ -7,7 +7,9 @@
 #include "IRImageLoader.hpp"
 #include "IRUIFoundation.hpp"
 
-class IRImageViewer : public IRUIFoundation, private ChangeListener, public ChangeBroadcaster
+class IRImageViewer : public IRUIFoundation,
+private ChangeListener,
+public ChangeBroadcaster
 {
     
 public:

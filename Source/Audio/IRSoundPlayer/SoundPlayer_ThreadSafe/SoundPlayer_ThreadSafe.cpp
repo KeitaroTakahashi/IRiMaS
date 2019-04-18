@@ -11,6 +11,7 @@
 //# AudioPlayer_threadSafe
 // =============================================================
 AudioPlayer_threadSafe::AudioPlayer_threadSafe(IRNodeObject* parent) :
+IRUIAudioFoundation(parent),
 player(parent)
 {
     this->parent = parent;

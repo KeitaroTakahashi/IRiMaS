@@ -66,6 +66,11 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     obj->addKeyListener(this); // key listener
     obj->setPreferenceWindow(this->preferenceWindow); // set preference window
     this->objects.add(obj);
+    
+    // use this function in order to also update file manger of all related UIs etc.
+    obj->updateFileManager(getFileManager());
+    
+    std::cout << " IRFileManager in WorkSpace = " << getFileManager() << std::endl;
 
     //audiosource
     if (obj->isContainAudioSource())
@@ -298,6 +303,10 @@ void IRWorkSpace::openProject()
 void IRWorkSpace::createNewProject()
 {
     if(this->requestNewProject != nullptr) requestNewProject();
+}
+void IRWorkSpace::openFileInspecter()
+{
+    if(this->requestOpenFileInspecter != nullptr) requestOpenFileInspecter();
 }
 // ============================================================
 void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)

@@ -13,6 +13,7 @@
 #include "EditCommandTarget.hpp"
 
 class IRProject : public AudioAppComponent,
+                  public IRComponents,
                   public ApplicationCommandTarget,
                   public MenuBarModel,
                   public ChangeListener,
@@ -212,15 +213,7 @@ private:
     
     json11::Json saveData;
     
-    // --------------------------------------------------
-    // IRFileManager is exclusive for each Project
-    std::shared_ptr<IRFileManager> fileManager = nullptr;
-    void createFileManager();
-    // --------------------------------------------------
-
-    
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    
+    // --------------------------------------------------    
 };
 
 

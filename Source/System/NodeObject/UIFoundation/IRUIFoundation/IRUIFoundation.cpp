@@ -7,10 +7,12 @@
 
 #include "IRUIFoundation.hpp"
 
-IRUIFoundation::IRUIFoundation(IRNodeObject* parent)
+IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject)
 {
-    this->parent = parent;
-    this->parent->statusChangeCompleted = [this](IRNodeComponentStatus status){ NodeObjectStatusChanged(status); };
+    this->nodeObject = nodeObject;
+    this->nodeObject->statusChangeCompleted = [this](IRNodeComponentStatus status){ NodeObjectStatusChanged(status); };
+
+    this->nodeObject->fileManagerUpdated = [this](IRFileManager* fileManager) { updateFileManager(fileManager); };
     
 }
 // --------------------------------------------------
@@ -51,15 +53,15 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
     if(key.getTextDescription() == "command + E")
     {
         // inform parent the change of editMode
-        parent->setEditMode(!parent->isEditMode());
-        parent->callEditModeChangedInNodeObject();
+        this->nodeObject->setEditMode(!this->nodeObject->isEditMode());
+        this->nodeObject->callEditModeChangedInNodeObject();
         
         return true;
     }
     // save project key command
     else if(key.getTextDescription() == "command + S")
     {
-        parent->callSaveProject();
+        this->nodeObject->callSaveProject();
         return true;
     }
     // close project key command
@@ -74,7 +76,13 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
     // open project key command
     else if(key.getTextDescription() == "command + O")
     {
-        parent->callOpenProject();
+        this->nodeObject->callOpenProject();
+        return true;
+    }
+    
+    else if(key.getTextDescription() == "command + 8")
+    {
+        this->nodeObject->callOpenFileInspecter();
         return true;
     }
     
@@ -98,7 +106,7 @@ void IRUIFoundation::NodeObjectStatusChanged(IRNodeComponentStatus status)
             // control KeyEvent
             // editmode = does not receive any KeyEvent,
             // controlmode = receive keyEvent
-            setEditModeBase(this->parent->isEditMode());
+            setEditModeBase(this->nodeObject->isEditMode());
             
             break;
             
@@ -129,3 +137,8 @@ void IRUIFoundation::setEditModeBase(bool newEditMode)
     setEditMode(newEditMode);
 }
 // --------------------------------------------------
+
+void IRUIFoundation::updateFileManager(IRFileManager* fileManager)
+{
+    setIRFileManager(fileManager);
+}

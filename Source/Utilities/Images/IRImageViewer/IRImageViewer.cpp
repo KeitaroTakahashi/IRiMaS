@@ -1,16 +1,11 @@
 
 #include "IRImageViewer.hpp"
 
-
-
-
 IRImageViewer::IRImageViewer(IRNodeObject* parent) :
 IRUIFoundation(parent),
 imgLoader(parent)
 {
-    
     this->parent = parent;
-    
     setSize(100,100);
     addAndMakeVisible(&this->openButton);
     this->openButton.setButtonText("open image");
@@ -21,9 +16,7 @@ imgLoader(parent)
     this->openButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.fundamental);
     this->setEnabled(true);
     this->openButton.onClick = [this]{ openFile(); };
-    
     this->imgLoader.addChangeListener(this);
-    
 }
 
 

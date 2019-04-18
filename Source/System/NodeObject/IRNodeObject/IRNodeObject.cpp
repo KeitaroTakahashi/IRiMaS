@@ -10,6 +10,8 @@ IRNodeObject::IRNodeObject(Component* parent, String name, NodeObjectType object
 
 IRNodeObject::~IRNodeObject()
 {
+    //notify any modification
+    notifyNodeObjectModification();
     std::cout << "~IRNODEOBJECT DESTRUCTOR CALLED" << std::endl;
 }
 
@@ -56,6 +58,11 @@ void IRNodeObject::mouseDownEvent(const MouseEvent& e)
 void IRNodeObject::mouseUpEvent(const MouseEvent& e)
 {
     
+}
+
+void IRNodeObject::mouseUpCompleted(const MouseEvent& e)
+{
+    notifyNodeObjectModification();
 }
 
 
@@ -246,6 +253,14 @@ void IRNodeObject::callCreateNewProject()
     if(checker.shouldBailOut()) return;
     if(this->createNewProjectCompleted != nullptr) this->createNewProjectCompleted();
     
+}
+
+void IRNodeObject::callOpenFileInspecter()
+{
+    Component::BailOutChecker checker(this);
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.openFileInspecter(); });
+    if(checker.shouldBailOut()) return;
 }
 
 void IRNodeObject::notifyNodeObjectModification()

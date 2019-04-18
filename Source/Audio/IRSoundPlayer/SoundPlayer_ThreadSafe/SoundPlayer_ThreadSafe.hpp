@@ -8,10 +8,12 @@
 #ifndef SoundPlayer_ThreadSafe_hpp
 #define SoundPlayer_ThreadSafe_hpp
 
+#include "IRUIAudioFoundation.hpp"
 #include "SoundPlayer.hpp"
 
 
-class AudioPlayer_threadSafe : public /*AudioAppComponent*/ Component, public AudioSource,
+class AudioPlayer_threadSafe : //public /*AudioAppComponent*/ Component, public AudioSource,
+public IRUIAudioFoundation,
 private ChangeListener, IRAudio::Listener
 {
     
@@ -23,7 +25,7 @@ public:
     {
         // remove pointer
         if(this->audioData != nullptr)
-            FILEMANAGER.discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+            getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
     }
     
     void changeListenerCallback (ChangeBroadcaster* source) override
@@ -114,7 +116,7 @@ public:
             // set a callback function which is called when file load is completed.
             // get a pointer of the audio file
             std::function<void()> callback = [this]{fileImportCompleted();};
-            FILEMANAGER.getFilePtrWithCallBack(IRFileType::IRAUDIO,
+            getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                                file,
                                                this->parent,
                                                callback);
@@ -192,7 +194,7 @@ public:
     void fileImportCompleted()
     {
         
-        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(FILEMANAGER.getFileObject());
+        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
         //set audioBuffer to player
         std::vector<int>v = {0,1};
         this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
@@ -202,7 +204,7 @@ public:
     // this method is called when the file import completed.
     virtual void fileImportCompleted(IRAudio *obj) override
     {
-        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(FILEMANAGER.getFileObject());
+        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
         //set audioBuffer to player
         std::vector<int>v = {0,1};
         this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
@@ -298,7 +300,6 @@ private:
     // ===========================================================================
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer_threadSafe)
 };

@@ -9,7 +9,7 @@
 #define IRFileInspecter_hpp
 
 #include "JuceHeader.h"
-#include "IRFileManager.hpp"
+#include "IRFoundation.h"
 #include "KLib.h"
 #include "IRImage.hpp"
 #include "IRPropertyComponent.hpp"
@@ -22,7 +22,8 @@
  
  */
 
-class IRFileInspecter : public Component
+class IRFileInspecter : public Component,
+public IRComponents
 {
 public:
     IRFileInspecter();
@@ -38,16 +39,10 @@ public:
 private:
         
     PropertyPanel panel;
-        
-    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
-    
-    // system colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
     bool FILEINSPECTER_DEBUG = false;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRFileInspecter)
-
 };
 
 

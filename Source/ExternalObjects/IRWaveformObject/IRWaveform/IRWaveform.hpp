@@ -3,11 +3,12 @@
 #define IRWaveform_hpp
 
 #include "IRFoundation.h"
+#include "IRUIAudioFoundation.hpp"
 #include "IRAudioReader.hpp"
 #include "SoundPlayer.hpp"
 
 
-class IRWaveform : public AudioAppComponent,
+class IRWaveform : public IRUIAudioFoundation,
                    private ChangeListener,
                    public ChangeBroadcaster
 {

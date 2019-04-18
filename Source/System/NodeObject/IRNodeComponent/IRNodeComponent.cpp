@@ -98,6 +98,11 @@ PreferenceWindow* IRNodeComponent::getPreferenceWindow()
     return this->preferenceWindow;
 }
 
+void IRNodeComponent::updateFileManager(IRFileManager* fileManager)
+{
+    setIRFileManager(fileManager);
+    if(this->fileManagerUpdated != nullptr) this->fileManagerUpdated(fileManager);
+}
 
 // paint
 void IRNodeComponent::paint(Graphics& g)
@@ -134,7 +139,7 @@ void IRNodeComponent::childComponentManager(Component* comp)
 // Audio source
 void IRNodeComponent::addAudioComponent(AudioSource *source)
 {
-    this->mixer->addInputSource(source, true);
+    this->mixer->addInputSource(source, false);
     this->containAudioSourceFlag = true;
 }
 
@@ -178,8 +183,8 @@ void IRNodeComponent::mouseUp(const MouseEvent& e)
 {
     mouseUpNodeEvent(e);
     mouseUpEvent(e);
+    mouseUpCompleted(e);
 }
-
 
 void IRNodeComponent::mouseDoubleClick(const MouseEvent& e)
 {

@@ -11,10 +11,11 @@
 #include "Preferences.h"
 #include "DataType.h"
 
-#include "IRFileManager.hpp"
-
+#include "IRComponents.hpp"
 #include "PreferenceWindow.hpp"
 #include "IRSaveLoadSystem.hpp"
+
+
 
 // ===========================================================================
 // system appearance

@@ -11,6 +11,7 @@
 
 
 class IRWorkspaceList : public Component,
+                        public IRComponents,
                         public ChangeBroadcaster,
                         public ChangeListener,
                         public KeyListener,
@@ -66,10 +67,6 @@ public:
     std::function<void()> removeWorkspaceCompleted; // FD note to myself - need to understand this decl. with no implementation
     
     void callRemoveWorkspaceAction(IRWorkSpace* workspace);
-    
-    // set IRFileManager from IRProject
-    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
-    IRFileManager* getFileManager() { return this->fileManager; }
     
 private:
     
@@ -215,13 +212,10 @@ public:
     
     listEventStatus getEventStatus() const;
     
-    
 private:
     
     bool keyPressed (const KeyPress& key,
                      Component* originatingComponent) override;
-    
-    
     
     Array<IRWorkSpace*> workspaces;
     Array<ShowSnap*> snapComponents;
@@ -237,15 +231,8 @@ private:
     int marginX_left = 30;
     int marginX_right = 10;
     int marginY = 10;
-    
-    // IRFileManager is exclusive for each Project
-    IRFileManager* fileManager = nullptr;
-    
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
-    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkspaceList)
-    
 };
 
 

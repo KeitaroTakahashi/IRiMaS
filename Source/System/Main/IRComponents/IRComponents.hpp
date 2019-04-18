@@ -18,17 +18,33 @@ class IRComponents
 {
 public:
     IRComponents() {}
-    ~IRComponents() {}
+    
+    ~IRComponents() { /* no delete here! */}
+    
+    // --------------------------------------------------
     
     // set IRFileManager from IRProject
-    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
+    void setIRFileManager(IRFileManager* manager);
     IRFileManager* getFileManager() { return this->fileManager; }
+    
+    void createFileManager();
+    
+    // use this only when you are sure that other objects are not refering this
+    void deleteFileManager();
+    
+    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    
+    // --------------------------------------------------
+    
+    std::function<void(IRFileManager*)> fileManagerUpdated;
+    
+    // --------------------------------------------------
     
 private:
     // IRFileManager is exclusive for each Project
-    IRFileManager* fileManager = nullptr;
+    // DO NOT USE SHARED_PTR here but leave it as a simple pointer
+    IRFileManager* fileManager;
     
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRComponents)
 };

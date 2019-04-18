@@ -21,8 +21,8 @@ IRSoundPlayerObject::~IRSoundPlayerObject()
 {
     // de la même manière que nous ajoutons addAudioComponent au mixeur du projet
     std::cout << "~IRSOUNDPLAYEROBJECT DESTRUCTOR CALLED" << std::endl;
-    // delete this->player;
-    // removeAudioComponent(this->player);
+    removeAudioComponent(this->player);
+     delete this->player;
 }
 
 

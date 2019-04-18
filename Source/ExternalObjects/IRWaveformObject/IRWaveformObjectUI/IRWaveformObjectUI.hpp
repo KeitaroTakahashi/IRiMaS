@@ -12,9 +12,7 @@
 #include "IRNodeObjectSelector.hpp"
 #include "IRGraphSelector.hpp"
 
-class IRWaveformObjectUI : public IRWaveform,
-                           public IRNodeObject::Listener,
-                           public KeyListener
+class IRWaveformObjectUI : public IRWaveform
 {
 
 public:
@@ -25,7 +23,7 @@ public:
     void resized() override;
     bool isSelectMode() const;
     
-    void setEditMode(bool flag);
+    void setEditMode(bool flag) override;
     
     bool isEditMode() const;
     
@@ -57,7 +55,8 @@ public:
     // This object takes an exclusive listener which is expected to be Workspace.
     void setListener(IRNodeObject::Listener* newListener);
     
-    bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
+    // IRUIAudioFoundation related method
+    void IRKeyPressed (int keyCode) override;
     
     enum UISTATUS
     {

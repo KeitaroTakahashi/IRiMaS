@@ -8,10 +8,6 @@
 //#include "IRUIFoundation.hpp"
 #include "IRFileManager.hpp"
 
-
-
-
-
 class IRNodeObject : public IRNodeComponent
 {
     
@@ -35,6 +31,8 @@ public:
     virtual void mouseMoveEvent(const MouseEvent& e) override;
     virtual void mouseDoubleClickEvent(const MouseEvent& e) override;
     virtual void mouseDragEvent(const MouseEvent& e) override;
+    
+    void mouseUpCompleted(const MouseEvent& e) override;
 
     class Listener
     {
@@ -57,11 +55,17 @@ public:
         
         virtual void createNewProject() {};
         
+        virtual void openFileInspecter() {};
+        
         // notification to IRWorkspace
         virtual void nodeObjectModifiedNotification(IRNodeObject* obj) {};
         
         //inform its parent that edit mode status changed
         virtual void editModeChangedInNodeObject(bool editMode) {};
+        
+        // give its IRFileManager when it is given or modified.
+        // this is used for IRUIFoundation to receive IRFileManager
+        virtual void updateIRFileManager(IRFileManager* fileManager) {};
         
         // add object to a global space in Workspace
         virtual void addObjectGlobal(IRObjectPtr obj, String id) {};
@@ -106,6 +110,8 @@ public:
     void callCloseProject();
     void callCreateNewProject();
     void callOpenProject();
+    
+    void callOpenFileInspecter();
     
     void notifyNodeObjectModification();
     // ===========================================================================

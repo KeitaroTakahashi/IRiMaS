@@ -199,27 +199,16 @@ void IRWaveformObjectUI::setListener(IRNodeObject::Listener* newListener)
 }
 
 
-bool IRWaveformObjectUI::keyPressed(const KeyPress& key, Component* originatingComponent)
+void IRWaveformObjectUI::IRKeyPressed(int keyCode)
 {
-    std::cout << "IRWaveformObjectUI keyPressed : " << key.getKeyCode() << std::endl;
-    if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
+    KeyPress key;
+    
+    std::cout << "IRWaveformObjectUI keyPressed : " << keyCode << std::endl;
+    if(keyCode == key.deleteKey || keyCode == key.backspaceKey)
     {
         if(! isEditMode())
             deleteSquareObject();
     }
-    
-    if (key.getTextDescription() == "command + E")
-    {
-        this->status = EDITMODECHANGE;
-        sendChangeMessage();
-        
-    }
-    else if (key.getTextDescription() == "command + S")
-    {
-        this->status = PROJECTSAVE;
-        sendChangeMessage();
-    }
-    return true;
 }
 
 

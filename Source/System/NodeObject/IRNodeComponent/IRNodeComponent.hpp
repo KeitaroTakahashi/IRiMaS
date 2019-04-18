@@ -14,8 +14,6 @@
 #include "IRFoundation.h"
 #include "IRSaveLoadSystem.hpp"
 
-
-
 enum IRNodeComponentSetUp
 {
     // resizing
@@ -87,6 +85,7 @@ struct NodeObjectType
 // ===========================================================================
 
 class IRNodeComponent : public Component,
+                        public IRComponents,
                         public ChangeBroadcaster
 {
 public:
@@ -116,7 +115,6 @@ public:
     // # setInterceptsMouseClicks -> status changed by Edit mode of workspace
     void childComponentManager(Component* comp);
     
-    
     // Audio Source Management
     // Use addAudioComponent() to add any AudioSource made in the NodeObject
     // This method adds a given AudioSource to a mixer which connects to the global mixer to the audio output.
@@ -136,6 +134,8 @@ public:
     void mouseUp(const MouseEvent& e)override; // JUCE oriented
     void mouseDoubleClick(const MouseEvent& e) override; // JUCE oriented
     void mouseDrag(const MouseEvent& e) override; // JUCE oriented
+    
+    virtual void mouseUpCompleted(const MouseEvent& e) {};
     
     // # controlling Node Object
     void mouseDownNodeEvent(const MouseEvent& e); // make another method to avoid spaghetti codes
@@ -185,6 +185,12 @@ public:
     virtual void statusChangedCallback(IRNodeComponentStatus status);
     // callback informing
     std::function<void(IRNodeComponentStatus)> statusChangeCompleted;
+    
+    // when file manager of this Object is updated, then all objects of IRUIFoundation
+    // will share the file manger automatically.
+    void updateFileManager(IRFileManager* fileManager);
+    // callback informing fileManager changes
+    std::function<void(IRFileManager*)> fileManagerUpdated;
 
     
     // change status
@@ -221,10 +227,6 @@ public:
 
     String getUniqueID() const;
     
-    // set IRFileManager from IRProject
-    void setIRFileManager(IRFileManager* manager) { this->fileManager = manager; }
-    IRFileManager* getFileManager() { return this->fileManager; }
-    
     // object type
     NodeObjectType getObjectType() const;
     
@@ -252,12 +254,8 @@ public:
     // object name 
     String name;
 
-    // system appearance
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-
     // parent
     Component* parent;
-    
     
 private:
     
@@ -275,7 +273,6 @@ private:
     // if this object contains any AudioSource
     bool containAudioSourceFlag = false;
     
-    
     // Object appearance setup
     float minWidth = 50;
     float minHeight = 25;
@@ -286,11 +283,9 @@ private:
     float previousWidth = 0;
     float previousHeight = 0;
 
-    
     // Interaction
     ComponentBoundsConstrainer constrainer;
     ComponentDragger dragger;
-    
     
     bool draggingFlag = false;
     
@@ -321,9 +316,6 @@ private:
     bool editModeFlag = true;
     
     PreferenceWindow* preferenceWindow;
-
-    // IRFileManager is exclusive for each Project
-    IRFileManager* fileManager = nullptr;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeComponent)
 };

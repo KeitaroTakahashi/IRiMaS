@@ -9,10 +9,6 @@
 // #include "IRObjectCreater.hpp"
 #include "IRObjectFactory.hpp"
 
-
-
-
-
 class ObjectListMenuObject : public IRTableListBox
 {
     
