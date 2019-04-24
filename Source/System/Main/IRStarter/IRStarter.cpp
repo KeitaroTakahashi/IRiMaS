@@ -126,6 +126,7 @@ PopupMenu IRStarter::getMenuForIndex(int menuIndex, const String& menuName)
     else if (menuIndex == 1)
     {
         menu.addCommandItem(&commandManager, CommandIDs::EditMode);
+        menu.addCommandItem(&commandManager, CommandIDs::LinkMode);
         menu.addSeparator();
         menu.addCommandItem(&commandManager, CommandIDs::Undo);
         menu.addCommandItem(&commandManager, CommandIDs::Redo);

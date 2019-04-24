@@ -17,6 +17,13 @@ public:
     ~IRNodeObject();
     
     
+    // something should be painted on the workspace.
+    // @param1 Graphics from the workspace
+    // @param2 frame rect of the workspace
+    virtual void paintOnWorkspace(Graphics& g, Component* workspace) {};
+    // paint oparated by parent
+    void initialPaintOnWorkspace(Graphics& g, Component* workspace);
+    
     virtual IRNodeObject* copyThis(); //copy constructor
     virtual IRNodeObject* copyContents(IRNodeObject* object); // copy constructor with contents
     virtual IRNodeObject* copyDragDropContents(IRNodeObject* object); // copy draged and dropped contents
@@ -33,7 +40,13 @@ public:
     virtual void mouseDragEvent(const MouseEvent& e) override;
     
     void mouseUpCompleted(const MouseEvent& e) override;
-
+    
+    
+    // selected event from IRNodeComponent
+    void selectedChangeEvent() override;
+    void editModeChangedEvent() override;
+    void linkModeChangedEvent() override;
+    
     class Listener
     {
     public:
@@ -63,6 +76,8 @@ public:
         //inform its parent that edit mode status changed
         virtual void editModeChangedInNodeObject(bool editMode) {};
         
+        virtual void linkModeChangedInNodeObject(bool linkMode) {};
+        
         // give its IRFileManager when it is given or modified.
         // this is used for IRUIFoundation to receive IRFileManager
         virtual void updateIRFileManager(IRFileManager* fileManager) {};
@@ -81,6 +96,8 @@ public:
     std::function<void()> dragoutNodeObjectCompleted;
     std::function<void()> dropoutNodeObjectCompleted;
     std::function<void()> editModeChangedCompleted;
+    std::function<void()> linkModeChangedCompleted;
+
     std::function<void()> addOBjectGlobalCompleted;
     
     // requests to IRProject
@@ -99,6 +116,8 @@ public:
     void callDropOutNodeObjectFromParent();
     // fire editModeChangedInNodeObject() methods in Listener
     void callEditModeChangedInNodeObject();
+    
+    void callLinkModeChangedInNodeObject();
     // fire addObjectGlobal() method in Listener
     void callAddObjectGlobal(IRObjectPtr obj, String id);
     // fire getObjectGlobal() method in Listener
@@ -125,6 +144,21 @@ public:
     virtual void loadObjectContents();
     
     // ============================================================
+    // Linking System
+    
+    void addLinkParam(IRLinkSystemFlag flag);
+    void revemoLinkParam(IRLinkSystemFlag flag);
+    void clearLinkParam();
+    std::vector<IRLinkSystemFlag> getLinkParams() const { return this->linkFlags; }
+    void createLinkMenu();
+    
+    IRLinkMenuObject* getLinkMenu();
+    void openLinkMenu();
+    void closeLinkMenu();
+    bool isLinkMenuOpened() const;
+    
+    // ============================================================
+
     
 /*
     virtual bool keyPressed (const KeyPress& key,
@@ -140,6 +174,10 @@ protected:
     Component* parent;
 
 private:
+    
+    int linkMenuSize = 60;
+    
+    bool linkMenuOpenedFlag = false;
     
     ListenerList<Listener> listeners;
     

@@ -1,9 +1,6 @@
 
 #include "IRNodeComponent.hpp"
 
-
-
-
 IRNodeComponent::IRNodeComponent(Component* parent, String name, NodeObjectType objectType) :
 resizingArea(25, 25)
 {
@@ -24,13 +21,19 @@ resizingArea(25, 25)
     this->menu.addItem(4, "Copy");
     this->menu.addItem(5, "Paste");
     this->menu.addItem(6, "Duplicate");
+    
+    this->linkFlags.clear();
 }
 
 
 IRNodeComponent::~IRNodeComponent()
 {
     delete this->mixer;
+    
+    this->linkFlags.clear();
+
     std::cout << "~IRNODECOMPONENT DESTRUCTOR CALLED" << std::endl;
+    
 }
 
 
@@ -119,6 +122,7 @@ void IRNodeComponent::paint(Graphics& g)
     //g.drawFittedText ("NodeObject", area, Justification::centred, 1);
     
 }
+
 
 
 // Child Component Management
@@ -344,6 +348,10 @@ bool IRNodeComponent::isEditMode() const
     return this->editModeFlag;
 }
 
+bool IRNodeComponent::isLinkMode() const
+{
+    return this->linkModeFlag;
+}
 
 // if edit mode is true, this object does not receive any Mouse/Keyboard events
 // if false, this object receive Mouse/Keyboard events
@@ -351,6 +359,15 @@ void IRNodeComponent::setEditMode(bool flag)
 {
     this->editModeFlag = flag;
     statusChangedWrapper(IRNodeComponentStatus::EditModeStatus);
+    editModeChangedEvent();
+    repaint();
+}
+
+void IRNodeComponent::setLinkMode(bool flag)
+{
+    this->linkModeFlag = flag;
+    statusChangedWrapper(IRNodeComponentStatus::LinkModeStatus);
+    linkModeChangedEvent();
     repaint();
 }
 

@@ -151,6 +151,19 @@ void IRNodeObject::callEditModeChangedInNodeObject()
     if(this->editModeChangedCompleted != nullptr) this->editModeChangedCompleted();
 }
 
+void IRNodeObject::callLinkModeChangedInNodeObject()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.linkModeChangedInNodeObject(isLinkMode()); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->linkModeChangedCompleted != nullptr) this->linkModeChangedCompleted();
+}
+
 void IRNodeObject::callAddObjectGlobal(IRObjectPtr obj, String id)
 {
     Component::BailOutChecker checker(this);
@@ -266,13 +279,11 @@ void IRNodeObject::callOpenFileInspecter()
 void IRNodeObject::notifyNodeObjectModification()
 {
     
-    std::cout << "notifyNodeObjectModification\n";
     Component::BailOutChecker checker(this);
     if(checker.shouldBailOut()) return;
     this->listeners.callChecked(checker, [this](Listener& l){ l.nodeObjectModifiedNotification(this); });
     if(checker.shouldBailOut()) return;
     
-    std::cout << "notifyNodeObjectModification completed\n";
 }
 
 
@@ -287,13 +298,128 @@ void IRNodeObject::loadObjectContents()
     
 }
 
+// ==================================================
 
-/*
-bool IRNodeObject::keyPressed(const KeyPress& key, Component* originatingComponent)
+void IRNodeObject::selectedChangeEvent()
 {
-    std::cout << "key pressed\n";
-    return true;
+    if(isSelected())
+    {
+        if(isLinkMode()) openLinkMenu();
+    }
+    else
+    {
+        if(isLinkMode()) closeLinkMenu();
+    }
+
 }
-*/
+void IRNodeObject::editModeChangedEvent()
+{
+    
+}
 
+void IRNodeObject::linkModeChangedEvent()
+{
+    if(isLinkMode())
+    {
+        if(isSelected()) openLinkMenu();
+    }else{
+        if(isLinkMenuOpened()) closeLinkMenu();
+    }
+}
 
+// ==================================================
+
+void IRNodeObject::addLinkParam(IRLinkSystemFlag flag)
+{
+    this->linkFlags.push_back(flag);
+}
+// --------------------------------------------------
+void IRNodeObject::revemoLinkParam(IRLinkSystemFlag flag)
+{
+    int index = 0;
+    for(auto f : this->linkFlags)
+    {
+        if(f == flag)
+            this->linkFlags.erase(this->linkFlags.begin() + index);
+        index++;
+    }
+}
+// --------------------------------------------------
+void IRNodeObject::clearLinkParam()
+{
+    this->linkFlags.clear();
+}
+// --------------------------------------------------
+void IRNodeObject::createLinkMenu()
+{
+    this->linkMenu = std::make_shared<IRLinkMenuObject>(this->parent, this->linkFlags);
+    this->linkMenu.get()->setCentrePosition(getX() + getWidth()/2,
+                                            getY() + getHeight()/2);
+    this->linkMenu.get()->setSize(this->linkMenuSize * (int) this->linkFlags.size(),
+                                  this->linkMenuSize);
+}
+// --------------------------------------------------
+
+IRLinkMenuObject* IRNodeObject::getLinkMenu()
+{
+    if(this->linkMenu)
+    {
+        return this->linkMenu.get();
+    }else{
+        createLinkMenu();
+        return this->linkMenu.get();
+    }
+}
+
+void IRNodeObject::openLinkMenu()
+{
+    if(this->linkMenu)
+    {
+        if(!this->linkMenu.get()->isShowing()){
+            
+            this->parent->addAndMakeVisible(this->linkMenu.get());
+            this->linkMenu.get()->toFront(true);
+        }
+    }else{
+
+        createLinkMenu();
+        this->parent->addAndMakeVisible(this->linkMenu.get());
+        this->linkMenu.get()->toFront(true);
+
+    }
+    this->linkMenuOpenedFlag = true;
+}
+
+void IRNodeObject::closeLinkMenu()
+{
+    if(this->linkMenu)
+    {
+        if(this->linkMenu.get()->isShowing())
+        {
+            this->linkMenu.get()->deSelectAll();
+            this->parent->removeChildComponent(this->linkMenu.get());
+            this->linkMenuOpenedFlag = false;
+        }
+    }
+}
+
+bool IRNodeObject::isLinkMenuOpened() const
+{
+    return this->linkMenuOpenedFlag;
+}
+// --------------------------------------------------
+
+void IRNodeObject::initialPaintOnWorkspace(Graphics& g, Component* workspace)
+{
+    // draw link menu
+    if(isLinkMenuOpened())
+    {
+        std::cout << "menu drawing...\n";
+        this->linkMenu.get()->setCentrePosition(getX() + getWidth()/2,
+                                                getY() + getHeight()/2);
+        //this->linkMenu.get()->paintLinkMenu(g);
+    }
+ 
+    paintOnWorkspace(g, workspace);
+    workspace->repaint();
+}

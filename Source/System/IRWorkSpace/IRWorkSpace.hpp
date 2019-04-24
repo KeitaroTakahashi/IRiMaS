@@ -69,6 +69,8 @@ public:
     void dragoutNodeObjectFromParent(IRNodeObject* obj) override;
     void dropoutNodeObjectFromParent(IRNodeObject* obj) override;
     void editModeChangedInNodeObject(bool editMode) override;
+    void linkModeChangedInNodeObject(bool editMode) override;
+
     void saveProject() override;
     void saveAsProject() override;
     void closeProject() override;
@@ -107,12 +109,22 @@ public:
     void itemSelectionAction(ObjectListMenu* menu) override;
     void itemHasSelectedAction(ObjectListMenu* menu) override;
     
+    
+    // Link Menu
+    void openLinkMenuOfSelectedObject();
+    void openAllLinkMenu();
+    void closeLinkMenu();
+    void closeLinkMenu(IRNodeObject* obj);
+    
     // save load
     json11::Json makeSaveDataOfThis();
     
     //flag
     bool isEditMode() const;
     void setEditMode(bool flag);
+    
+    bool isLinkMode() const;
+    void setLinkMode(bool flag);
     
     // getter
     Array<IRNodeObject*> getObjectList();
@@ -142,6 +154,8 @@ public:
     std::function<void()> requestOpenFileInspecter;
 
     std::function<void()> notifyEditModeChanged;
+    std::function<void()> notifyLinkModeChanged;
+
     std::function<void(IRNodeObject*)> notifyNodeObjectModification;
     
 private:
@@ -177,7 +191,7 @@ private:
     
     // workspace status
     bool editModeFlag = true;
-    
+    bool linkModeFlag = false;
     // snapshot
     Image snap;
     

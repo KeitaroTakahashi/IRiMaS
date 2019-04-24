@@ -18,12 +18,13 @@ IRWorkspaceList::~IRWorkspaceList()
 {
     std::cout << "workspace list deleted" << std::endl;
 
-    for (auto &&s : this->snapComponents)
-    {
-        delete s;
-    }
     removeAllChildren();
+    // juce::Array free the memory space when cleared.
     this->snapComponents.clear();
+    this->workspaces.clear();
+    
+    this->currentlySelectedSnap = nullptr;
+    
 }
 
 
@@ -47,16 +48,13 @@ void IRWorkspaceList::updateAnimationFrame()
 
 void IRWorkspaceList::updateList()
 {
+    
+    std::cout << "IRWorkspaceList : updateList " << std::endl;
     // get index of the selected workspace
     int selectedIndex = -1;
     if (this->currentlySelectedSnap != nullptr)
     {
         selectedIndex = this->currentlySelectedSnap->getIndex() - 1;
-    }
-    
-    for (auto &&s : this->snapComponents)
-    {
-        delete s;
     }
     removeAllChildren();
     this->snapComponents.clear();
@@ -123,7 +121,7 @@ void IRWorkspaceList::changeListenerCallback(ChangeBroadcaster* source)
             switch (snap->getEventStatus())
             {
                 case listEventSelected:
-                    std::cout << "IRWorkspaceList : listEventSelected ChangeCallba\n";
+                    std::cout << "IRWorkspaceList : listEventSelected ChangeCallback\n";
                     
                     snapSelectionChange(snap);
                     
@@ -212,6 +210,8 @@ void IRWorkspaceList::removeWorkspace(ShowSnap* snap)
 
 void IRWorkspaceList::snapSelectionChange(ShowSnap* snap)
 {
+    
+    std::cout << "snapSelectionChange() : " << snap << " : "<< this->currentlySelectedSnap << std::endl;
     if (this->currentlySelectedSnap != nullptr)
     {
         this->previouslySelectedSnap = this->currentlySelectedSnap;

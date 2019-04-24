@@ -7,21 +7,19 @@
 
 #include "FileManagerTUTORIAL.hpp"
 
-FileManagerTUTORIAL::FileManagerTUTORIAL(Component* parent) :
-IRNodeObject(parent, "FileManagerTutorial")
+FileManagerTUTORIAL::FileManagerTUTORIAL(IRNodeObject* parent) :
+IRUIFoundation(parent)
 {
     
-   
-
 }
 
 FileManagerTUTORIAL::~FileManagerTUTORIAL()
 {
     if(this->imgData != nullptr)
-        FILEMANAGER.discardFilePtr(IRFileType::IRIMAGE, this->imgData, this, this->imgFile);
+        getFileManager()->discardFilePtr(IRFileType::IRIMAGE, this->imgData, this, this->imgFile);
     
     if(this->audioData != nullptr)
-        FILEMANAGER.discardFilePtr(IRFileType::IRAUDIO, this->audioData, this, this->audioFile);
+        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this, this->audioFile);
         
 }
 
@@ -34,7 +32,7 @@ void FileManagerTUTORIAL::loadImageData(File file)
     
     // it requires IRFileType, File, and a pointer of the owner (IRNodeObject)
     this->imgFile = file;
-    this->imgData = static_cast<DataAllocationManager<IRImage>*>(FILEMANAGER.getFilePtr(
+    this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager()->getFilePtr(
                                                                                         IRFileType::IRIMAGE,
                                                                                         this->imgFile,
                                                                                         this
@@ -51,10 +49,10 @@ void FileManagerTUTORIAL::loadAudioData(File file)
     this->audioFile = file;
     
     std::function<void()> callback = [this]{ fileImportCompleted();};
-    FILEMANAGER.getFilePtrWithCallBack(IRFileType::IRAUDIO,
-                                       this->audioFile,
-                                       this->parent,
-                                       callback);
+    getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+                                             this->audioFile,
+                                             this->parent,
+                                             callback);
     
     
 }
@@ -62,7 +60,7 @@ void FileManagerTUTORIAL::loadAudioData(File file)
 // thread locked.
 void FileManagerTUTORIAL::fileImportCompleted()
 {
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(FILEMANAGER.getFileObject());
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
     
     //this->audioData->getData()->getAudioBuffer()
 }

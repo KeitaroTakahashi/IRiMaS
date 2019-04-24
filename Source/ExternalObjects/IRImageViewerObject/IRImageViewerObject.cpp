@@ -15,6 +15,10 @@ IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(paren
     std::cout << " IRFileManager in IRImageViewerObject = " << getFileManager() << std::endl;
 
     setSize(150, 150);
+    
+    clearLinkParam();
+    addLinkParam(ImageLinkFlag);
+    addLinkParam(ConsoleLinkFlag);  
 }
 
 

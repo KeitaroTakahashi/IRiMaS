@@ -23,6 +23,7 @@ public:
     void loadThisFromSaveData(t_json data) override;
 
     void paint(Graphics &g) override;
+    void paintOnWorkspace(Graphics& g, Component* workspace) override;
     void resized() override;
     
     void mouseDownEvent(const MouseEvent& e) override;
@@ -39,7 +40,6 @@ public:
     // preference
     IRLabelObjectPreference *preference;
 
-    
 private:
     // ------------------------------------------------------------
     // call back function automatically called when the status of this object changed by others.
@@ -48,6 +48,7 @@ private:
     
     Font font;
 
+    
 };
 
 

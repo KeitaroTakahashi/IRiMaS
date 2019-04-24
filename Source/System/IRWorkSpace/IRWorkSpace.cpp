@@ -33,12 +33,9 @@ IRWorkSpace::~IRWorkSpace()
     std::cout << "workspace destructor called" << std::endl;
     delete this->objectMenuComponent;
     delete this->selector;
-    
-    // but of course, all objects on the workspace must also be destroyed.
-    for (auto &&o : this->objects)
-    {
-        delete o;
-    }
+  
+    // juce::Array free the memory space as well when cleared.
+    this->objects.clear();
 }
 
 
@@ -51,6 +48,13 @@ void IRWorkSpace::paint (Graphics& g)
     
     // draw shadows for the selected objects
     //drawShadows(g);
+    
+    // paint all of
+    for(auto obj : this->objects)
+    {
+        obj->initialPaintOnWorkspace(g, this);
+    }
+    
     
 }
 
@@ -304,6 +308,25 @@ void IRWorkSpace::setEditMode(bool flag)
     sendChangeMessage();
 }
 
+bool IRWorkSpace::isLinkMode() const
+{
+    return this->linkModeFlag;
+}
+void IRWorkSpace::setLinkMode(bool flag)
+{
+    this->linkModeFlag = flag;
+    
+    for(auto obj : this->objects)
+    {
+        obj->setLinkMode(this->linkModeFlag);
+    }
+    
+    
+    if(this->linkModeFlag)
+        openLinkMenuOfSelectedObject();
+    else
+        closeLinkMenu();
+}
 
 Array<IRNodeObject*> IRWorkSpace::getObjectList()
 {
@@ -329,5 +352,39 @@ void IRWorkSpace::removeListener(Listener* listener)
     this->listeners.remove(listener);
 }
 
+// ==================================================
+// Link Menu
+void IRWorkSpace::openLinkMenuOfSelectedObject()
+{
+    for (auto obj : this->selector->getSelectedObjectList())
+    {
+        obj->openLinkMenu();
+    }
+}
+// ----------------------------------------
+void IRWorkSpace::openAllLinkMenu()
+{
+    for(auto obj : this->objects)
+    {
+        obj->openLinkMenu();
+    }
+}
+// ----------------------------------------
 
+void IRWorkSpace::closeLinkMenu()
+{
+    for(auto obj : this->objects)
+    {
+        obj->closeLinkMenu();
+    }
+}
+// ----------------------------------------
 
+void IRWorkSpace::closeLinkMenu(IRNodeObject* obj)
+{
+    for (auto obj : this->selector->getSelectedObjectList())
+    {
+        obj->closeLinkMenu();
+    }
+}
+// ==================================================

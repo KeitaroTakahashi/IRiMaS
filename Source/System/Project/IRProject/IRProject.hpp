@@ -79,6 +79,10 @@ public:
     // has changed the edit mode
     void notifyEditModeChange();
     
+    void performLinkModeChange() override;
+    
+    void notifyLinkModeChange();
+    
     // receive notifications from IRWorkspaces reporting any modifications of their NodeObjects
     void receiveNodeObjectModification(IRNodeObject* obj);
     
@@ -136,6 +140,7 @@ public:
     
     // edit mode changed call back
     std::function<void()> notifyEditModeChanged;
+    std::function<void()> notifyLinkModeChanged;
     
     void callCreateNewProjectAction(); //fire createNewProjectAction() method in the Listener
     void callOpenProjectAction(); //fire openProjectAction() method in the Listener
@@ -144,6 +149,7 @@ public:
     void callSaveAsProjectAction(); // fire saveAsProjectAction() method in the Listener
     
     bool isEditMode() const;
+    bool isLinkMode() const;
     bool isNonSavedChange() const;
     void setNonSavedChange(bool newStatus);
     
@@ -171,7 +177,7 @@ private:
     std::string projectName;
     
     Rectangle<int> frameRect;
-    DocumentWindow* parentWindow;
+    DocumentWindow* parentWindow = nullptr;
     std::vector<IRWorkSpace*> workspaces;
     IRFileInspecterWindow* fileInspecterWindow = nullptr;
     
@@ -196,6 +202,7 @@ private:
     
     // Edit Mode flag
     bool EditModeFlag = true;
+    bool LinkModeFlag = false;
     
     // is there any changes which have not been saved yet?
     bool nonSavedChanges = false;

@@ -58,6 +58,12 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
         
         return true;
     }
+    // Link Mode
+    else if(key.getTextDescription() == "command + L")
+    {
+        this->nodeObject->callLinkModeChangedInNodeObject();
+        return true;
+    }
     // save project key command
     else if(key.getTextDescription() == "command + S")
     {

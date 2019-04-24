@@ -1,13 +1,8 @@
 
 #include "IRLabelObject.hpp"
 
-
-
-
-
 IRLabelObject::IRLabelObject(Component* parent) : IRNodeObject(parent, "IRLabel")
 {
-    // std::cout << "IRLABELOBJECT CONSTRUCTOR" << std::endl;
     // initialize preference
     this->preference = new IRLabelObjectPreference("Label Preference", Rectangle<int>(400,720));
     this->preference->getFontGUI()->addChangeListener(this);
@@ -34,11 +29,15 @@ IRLabelObject::IRLabelObject(Component* parent) : IRNodeObject(parent, "IRLabel"
                             );
     
     childComponentManager(&this->label);
-    Image img;
-    //IRFactory.registerObject<IRLabelObject*>("IRLabel", "Label", img);
     
-    // std::cout << "IRLabel initialized\n";
-    
+    // Link Menu
+    clearLinkParam();
+    addLinkParam(TextLinkFlag);
+    addLinkParam(ConsoleLinkFlag);
+    addLinkParam(AudioLinkFlag);
+    addLinkParam(ImageLinkFlag);
+    addLinkParam(DataLinkFlag);
+
 }
 
 
@@ -125,12 +124,27 @@ void IRLabelObject::paint(Graphics &g)
         g.setColour (SYSTEMCOLOUR.contents);
         g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
     }
+    
+    //this->linkMenu.setCentrePosition(getX() + getWidth()/2, getY() + getHeight()/2);
+    
+
+}
+
+void IRLabelObject::paintOnWorkspace(Graphics& g, Component* workspace)
+{
+    //this->linkMenu.paintLinkMenu(g);
+    
 }
 
 
 void IRLabelObject::resized()
 {
     this->label.setBounds(5,5, getWidth()-10, getHeight()-10);
+    
+    //this->linkMenu.setSize(300,60);
+    //this->linkMenu.setCentrePosition(getX() + getWidth()/2, getY() + getHeight()/2);
+    
+
 }
 
 

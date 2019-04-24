@@ -29,6 +29,11 @@ IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IR
     
     setSize(300,100);
     
+    clearLinkParam();
+    addLinkParam(AudioLinkFlag);
+    addLinkParam(DataLinkFlag);
+    addLinkParam(ConsoleLinkFlag);
+    
     
 }
 

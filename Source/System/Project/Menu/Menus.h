@@ -14,6 +14,7 @@ enum CommandIDs
 
     // Edit
     EditMode,
+    LinkMode,
     Undo,
     Redo,
     Cut,

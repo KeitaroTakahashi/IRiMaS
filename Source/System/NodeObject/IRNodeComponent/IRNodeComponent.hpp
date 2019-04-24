@@ -13,6 +13,8 @@
 #include "json11.hpp"
 #include "IRFoundation.h"
 #include "IRSaveLoadSystem.hpp"
+#include "iRLinkMenuObject.hpp"
+
 
 enum IRNodeComponentSetUp
 {
@@ -39,6 +41,7 @@ enum IRNodeComponentSetUp
 enum IRNodeComponentStatus
 {
     EditModeStatus, // global status for workspace
+    LinkModeStatus,
 
     SelectableStatus,
     CopiableStatus,
@@ -107,8 +110,7 @@ public:
     
     // paint
     virtual void paint(Graphics& g) override;
-    
-    
+
     // managing child components binded on the NodeObject
     // this method operates following
     // # addMouseListner -> status changed by Edit mode of workspace
@@ -209,11 +211,16 @@ public:
     // return a flag shows whether this Component is being selected or not. Default is false.
     bool isSelected() const; // FD - THIS HAS NO IMPLEMENTATION
     void setSelected(bool flag);
+    virtual void selectedChangeEvent() {}; // for IRNodeObject
     // return a flag shows whether the belonging workspace is on edit mode or not.
     bool isEditMode() const;
+    virtual void editModeChangedEvent() {}; // for IRNodeObject
+    bool isLinkMode() const;
+    virtual void linkModeChangedEvent() {}; // for IRNodeObject
     // if edit mode is true, this object does not receive any Mouse/Keyboard events
     // if false, this object receive Mouse/Keyboard events
     void setEditMode(bool flag);
+    void setLinkMode(bool flag);
     
     bool isCopied() const;
     bool isCopiable() const;
@@ -256,6 +263,14 @@ public:
 
     // parent
     Component* parent;
+    
+    // ============================================================
+    // Link System
+    
+    std::vector<IRLinkSystemFlag> linkFlags;
+    std::shared_ptr<IRLinkMenuObject> linkMenu { nullptr };
+    
+    // ============================================================
     
 private:
     
@@ -314,9 +329,11 @@ private:
     
     // global mode
     bool editModeFlag = true;
-    
+    bool linkModeFlag = false;
     PreferenceWindow* preferenceWindow;
     
+
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeComponent)
 };
 

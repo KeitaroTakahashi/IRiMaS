@@ -259,6 +259,7 @@
 		8258AC31221C6B9300557661 /* materials in Resources */ = {isa = PBXBuildFile; fileRef = 8258AC30221C6B9300557661 /* materials */; };
 		825DC9CC21FF407000555CB8 /* IRVideoPlayerObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 825DC9CA21FF407000555CB8 /* IRVideoPlayerObject.cpp */; };
 		825DC9CF21FF408400555CB8 /* IRVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 825DC9CD21FF408400555CB8 /* IRVideoPlayer.cpp */; };
+		826056B2226FA8A000CAF8C5 /* IRLinkMenuObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 826056B0226FA8A000CAF8C5 /* IRLinkMenuObject.cpp */; };
 		82657CEF21EE7DE5003FA700 /* IRiMaSMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82657CED21EE7DE5003FA700 /* IRiMaSMainComponent.cpp */; };
 		82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82657CFC21EFC8D8003FA700 /* IRListBoxObject.cpp */; };
 		8293FBC3220C3E5B00C09BD5 /* IRFfomegVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8293FBC1220C3E5B00C09BD5 /* IRFfomegVideoPlayer.cpp */; };
@@ -650,6 +651,8 @@
 		825DC9CB21FF407000555CB8 /* IRVideoPlayerObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoPlayerObject.hpp; sourceTree = "<group>"; };
 		825DC9CD21FF408400555CB8 /* IRVideoPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoPlayer.cpp; sourceTree = "<group>"; };
 		825DC9CE21FF408400555CB8 /* IRVideoPlayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoPlayer.hpp; sourceTree = "<group>"; };
+		826056B0226FA8A000CAF8C5 /* IRLinkMenuObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRLinkMenuObject.cpp; sourceTree = "<group>"; };
+		826056B1226FA8A000CAF8C5 /* IRLinkMenuObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRLinkMenuObject.hpp; sourceTree = "<group>"; };
 		82657CE921EBFA6D003FA700 /* IRObjectCreater.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRObjectCreater.hpp; sourceTree = "<group>"; };
 		82657CEB21EE542A003FA700 /* IRProjectWindow.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRProjectWindow.hpp; sourceTree = "<group>"; };
 		82657CED21EE7DE5003FA700 /* IRiMaSMainComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRiMaSMainComponent.cpp; sourceTree = "<group>"; };
@@ -1872,6 +1875,7 @@
 		823E7BD82134073A0046512B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				826056AE226FA88000CAF8C5 /* Graphics */,
 				823E7BC221302BEA0046512B /* Images */,
 				821ED19B217DF1080019CF54 /* FontGUI */,
 				82657CFB21EFC8A8003FA700 /* ListBoxObject */,
@@ -1914,6 +1918,23 @@
 				8293FBCE220C6EAC00C09BD5 /* IRCVVideoPlayer.hpp */,
 			);
 			path = IRVideoPlayer;
+			sourceTree = "<group>";
+		};
+		826056AE226FA88000CAF8C5 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				826056AF226FA89100CAF8C5 /* CircleMenu */,
+			);
+			path = Graphics;
+			sourceTree = "<group>";
+		};
+		826056AF226FA89100CAF8C5 /* CircleMenu */ = {
+			isa = PBXGroup;
+			children = (
+				826056B0226FA8A000CAF8C5 /* IRLinkMenuObject.cpp */,
+				826056B1226FA8A000CAF8C5 /* IRLinkMenuObject.hpp */,
+			);
+			path = CircleMenu;
 			sourceTree = "<group>";
 		};
 		82657CE721EBFA56003FA700 /* ObjectCreater */ = {
@@ -2216,6 +2237,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = FBE2371A27F329EBAA2387BD /* Source */;
 			projectDirPath = "";
@@ -2321,6 +2343,7 @@
 				821ED19421776A3E0019CF54 /* IRPreferenceSpace.cpp in Sources */,
 				106588DB222FFA8D005D6B38 /* MenuObject.cpp in Sources */,
 				823E7BDB2134075C0046512B /* singletonClass.cpp in Sources */,
+				826056B2226FA8A000CAF8C5 /* IRLinkMenuObject.cpp in Sources */,
 				106588E1222FFAB1005D6B38 /* WindowCommandTarget.cpp in Sources */,
 				820D3BB8225EA44100BDA679 /* SoundPlayer_ThreadSafe.cpp in Sources */,
 				82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */,
@@ -2543,7 +2566,7 @@
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_DEBUG=1",
 					"DEBUG=1",

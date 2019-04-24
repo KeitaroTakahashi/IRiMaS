@@ -39,6 +39,7 @@ void EditCommandTarget::getAllCommands(Array<CommandID>& c)
     Array<CommandID> commands
     {
         CommandIDs::EditMode,
+        CommandIDs::LinkMode,
         CommandIDs::Undo,
         CommandIDs::Redo,
         CommandIDs::Cut,
@@ -58,6 +59,10 @@ void EditCommandTarget::getCommandInfo(CommandID commandID, ApplicationCommandIn
         case CommandIDs::EditMode:
             result.setInfo("EditMode", "Switch Edit Mode", "Edit", 0);
             result.addDefaultKeypress('e', ModifierKeys::commandModifier);
+            break;
+        case CommandIDs::LinkMode:
+            result.setInfo("LinkMode", "Switch Link Mode", "Link", 0);
+            result.addDefaultKeypress('l', ModifierKeys::commandModifier);
             break;
         case CommandIDs::Undo:
             result.setInfo("Undo", "Sets the outer colour to red", "Edit", 0);
@@ -97,6 +102,9 @@ bool EditCommandTarget::perform(const InvocationInfo& info)
         case CommandIDs::EditMode:
             callPerformEditModeChange();
             break;
+        case CommandIDs::LinkMode:
+            callPerformLinkModeChange();
+            break;
         case CommandIDs::Undo:
             break;
         case CommandIDs::Redo:
@@ -133,6 +141,16 @@ void EditCommandTarget::callPerformEditModeChange() // fire performEditModeChang
     
 }
 
-
-
-
+void EditCommandTarget::callPerformLinkModeChange()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.performLinkModeChange(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+    //std::function
+    if(this->performLinkModeChangeCompleted != nullptr) this->performLinkModeChangeCompleted();
+    
+    }

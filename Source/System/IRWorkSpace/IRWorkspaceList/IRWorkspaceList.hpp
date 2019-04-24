@@ -127,6 +127,8 @@ private:
         
         void updateImage()
         {
+            
+            std::cout << "updateImage = " << this->parent << std::endl;
             IRWorkSpace* space = dynamic_cast<IRWorkSpace* >(this->parent);
             if(space != nullptr)
             {
@@ -190,7 +192,7 @@ private:
         
         
         // workspace corresponding to this snap component
-        Component* parent;
+        Component* parent = nullptr;
 
         // ========================================
         IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

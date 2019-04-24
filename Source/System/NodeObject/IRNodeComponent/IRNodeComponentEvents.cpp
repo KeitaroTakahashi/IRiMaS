@@ -136,6 +136,8 @@ void IRNodeComponent::setSelected(bool flag)
 {
     this->selectedFlag = flag;
     statusChangedCallback(IRNodeComponentStatus::SelectableStatus); // call back
+    
+    selectedChangeEvent();
 }
 
 

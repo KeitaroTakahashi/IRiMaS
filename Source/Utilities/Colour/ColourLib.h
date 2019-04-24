@@ -9,6 +9,7 @@
 #define ColourLib_h
 
 #include "JuceHeader.h"
+#include "singletonClass.hpp"
 
 namespace IR
 {

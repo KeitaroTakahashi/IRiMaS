@@ -15,13 +15,20 @@
 #ifndef FileManagerTUTORIAL_hpp
 #define FileManagerTUTORIAL_hpp
 
+#include "IRUIFoundation.hpp"
 #include "IRNodeObject.hpp"
 #include "IRFileManager.hpp"
 
-class FileManagerTUTORIAL : public IRNodeObject
+/*
+    To use IRFileManager System, you must inherit IRUIFoundation.
+    IRUIFoundation contains all necessary members and methods to use IRUIFoundation.
+    See cpp file for details.
+ */
+
+class FileManagerTUTORIAL : public IRUIFoundation
 {
 public:
-    FileManagerTUTORIAL(Component* parent);
+    FileManagerTUTORIAL(IRNodeObject* parent);
     ~FileManagerTUTORIAL();
     
     
@@ -42,9 +49,6 @@ private:
     File audioFile;
     DataAllocationManager<IRAudio>* audioData = nullptr;
 
-    // IRFileManager must be used as singleton
-    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
-    
 };
 
 

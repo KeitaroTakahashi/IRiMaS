@@ -145,6 +145,8 @@ void IRProject::createNewWorkspace()
     space->requestCloseProject = [this] { callCloseProjectAction(); };
     space->requestOpenFileInspecter = [this] { openFileInspecterWindow(); };
     space->notifyEditModeChanged = [this] { notifyEditModeChange(); };
+    space->notifyLinkModeChanged = [this] { notifyLinkModeChange(); };
+
     space->notifyNodeObjectModification = [this](IRNodeObject* obj) { receiveNodeObjectModification(obj); };
     
     space->addChangeListener(this->listener);
@@ -229,6 +231,25 @@ void IRProject::performEditModeChange()
     }
 }
 
+void IRProject::performLinkModeChange()
+{
+    std::cout << "performLinkModeChange\n";
+    // change the status
+    this->LinkModeFlag = !this->topSpace->isLinkMode();
+    
+    //apply the editMode status to all workspaces
+    for(auto space : this->workspaces)
+    {
+        space->setLinkMode(this->LinkModeFlag);
+    }
+    
+    // notify IRProjectWindow change of the edit mode
+    if(this->notifyLinkModeChanged != nullptr)
+    {
+        this->notifyLinkModeChanged();
+    }
+}
+
 void IRProject::notifyEditModeChange()
 {
     // DO NOT change the status
@@ -248,9 +269,13 @@ void IRProject::notifyEditModeChange()
     }
 }
 
+void IRProject::notifyLinkModeChange()
+{
+    
+}
+
 void IRProject::receiveNodeObjectModification(IRNodeObject* obj)
 {
-    std::cout << "receiveNodeObjectModification\n";
     updateFileInspecterWindow();
 }
 
@@ -451,6 +476,7 @@ PopupMenu IRProject::getMenuForIndex(int menuIndex, const String& menuName)
     }else if(menuIndex == 1)
     {
         menu.addCommandItem(&commandManager, CommandIDs::EditMode);
+        menu.addCommandItem(&commandManager, CommandIDs::LinkMode);
         menu.addSeparator();
         menu.addCommandItem(&commandManager, CommandIDs::Undo);
         menu.addCommandItem(&commandManager, CommandIDs::Redo);
@@ -527,9 +553,13 @@ DocumentWindow* IRProject::getParentWindow()
 // initialize projects. This method is called after loading action to set up workspaces
 void IRProject::initProjectAfterLoading()
 {
+    int index = 0;
     for (auto space : this->workspaces)
     {
         space->setEditMode(false);
+        
+        std::cout << "workspace[" << index << "] = " << space << std::endl;
+        index++;
     }
     
     this->topSpace = this->workspaces[0];
@@ -543,6 +573,11 @@ void IRProject::initProjectAfterLoading()
 bool IRProject::isEditMode() const
 {
     return this->EditModeFlag;
+}
+
+bool IRProject::isLinkMode() const
+{
+    return this->LinkModeFlag;
 }
 
 bool IRProject::isNonSavedChange() const

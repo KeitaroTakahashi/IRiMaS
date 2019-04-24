@@ -52,7 +52,8 @@ void IRWorkSpace::duplicateSelectedObjects()
 void IRWorkSpace::createObject(IRNodeObject *obj)
 {
     obj->setEditMode(isEditMode());
-    
+    obj->setLinkMode(isLinkMode());
+
     // make uniqueID
     KeRandomStringGenerator a;
     std::string id = a.createStrings(10);
@@ -78,6 +79,8 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     
     //request updating the workspaceList
     if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
+
+    repaint();
 }
 // ------------------------------------------------------------
 void IRWorkSpace::copyObject(IRNodeObject *obj, bool clearCopied)
@@ -283,6 +286,16 @@ void IRWorkSpace::editModeChangedInNodeObject(bool editMode)
         this->notifyEditModeChanged();
     }
 }
+
+void IRWorkSpace::linkModeChangedInNodeObject(bool linkMode)
+{
+    setLinkMode(linkMode);
+    // notify it to IRProject
+    if(this->notifyLinkModeChanged != nullptr)
+    {
+        this->notifyLinkModeChanged();
+    }
+}
 // ------------------------------------------------------------
 void IRWorkSpace::saveProject()
 {
@@ -334,7 +347,6 @@ IRObjectPtr IRWorkSpace::getObjectGlobal(String id)
 
 void IRWorkSpace::nodeObjectModifiedNotification(IRNodeObject* obj)
 {
-    std::cout << "nodeObjectModifiedNotification workspace \n";
     if(this->notifyNodeObjectModification != nullptr)
         this->notifyNodeObjectModification(obj);
 }

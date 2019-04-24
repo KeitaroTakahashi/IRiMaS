@@ -36,6 +36,7 @@ public:
         
         // write methods called by IRNodeComponent objects.
         virtual void performEditModeChange() {};
+        virtual void performLinkModeChange() {};
         
     };
     
@@ -43,9 +44,10 @@ public:
     virtual void removeListener(Listener* listener) { this->listeners.remove(listener); }
     
     std::function<void()> performEditModeChangeCompleted;
+    std::function<void()> performLinkModeChangeCompleted;
 
     void callPerformEditModeChange(); // fire performEditModeChange() methods in Listener
-    
+    void callPerformLinkModeChange();
     
 private:
     
