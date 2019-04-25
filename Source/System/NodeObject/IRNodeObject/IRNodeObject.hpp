@@ -78,6 +78,8 @@ public:
         
         virtual void linkModeChangedInNodeObject(bool linkMode) {};
         
+        virtual void getSelectedLinkSystemFlag(IRNodeObject* obj) {};
+        
         // give its IRFileManager when it is given or modified.
         // this is used for IRUIFoundation to receive IRFileManager
         virtual void updateIRFileManager(IRFileManager* fileManager) {};
@@ -118,6 +120,8 @@ public:
     void callEditModeChangedInNodeObject();
     
     void callLinkModeChangedInNodeObject();
+    void callGetSelectedLinkSystemFlag();
+    
     // fire addObjectGlobal() method in Listener
     void callAddObjectGlobal(IRObjectPtr obj, String id);
     // fire getObjectGlobal() method in Listener
@@ -157,6 +161,12 @@ public:
     void closeLinkMenu();
     bool isLinkMenuOpened() const;
     
+    // receive the selected IRLinkSystemFlag from IRLinkMenuObject
+    void receiveSelectedLinkMenuItem(IRLinkSystemFlag flag);
+        
+    IRLinkSystemFlag selectedLinkSystemFlag;
+
+    
     // ============================================================
 
     
@@ -180,6 +190,8 @@ private:
     bool linkMenuOpenedFlag = false;
     
     ListenerList<Listener> listeners;
+    
+    //link System
     
     IRObjectPtr p_obj;
     String p_id;

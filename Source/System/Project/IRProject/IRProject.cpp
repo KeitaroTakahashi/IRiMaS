@@ -80,9 +80,7 @@ void IRProject::resized()
     }
     
     if(this->workspaceList != nullptr)
-    {
-        std::cout << "resize workspacelist to "<< this->workspaceListWidth << " / " << getHeight() << std::endl;
-        this->workspaceList->setBounds(Rectangle<int>(0,0,this->workspaceListWidth,getHeight()));
+    {        this->workspaceList->setBounds(Rectangle<int>(0,0,this->workspaceListWidth,getHeight()));
         
     }
 }

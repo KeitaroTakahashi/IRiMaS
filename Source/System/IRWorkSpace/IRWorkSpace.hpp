@@ -42,6 +42,7 @@ public:
     
     void paint (Graphics&) override;
     void drawShadows(Graphics& g);
+    void drawGrids(Graphics& g);
     void resized() override;
     String getTitle() { return this->title; }
     
@@ -70,6 +71,7 @@ public:
     void dropoutNodeObjectFromParent(IRNodeObject* obj) override;
     void editModeChangedInNodeObject(bool editMode) override;
     void linkModeChangedInNodeObject(bool editMode) override;
+    void getSelectedLinkSystemFlag(IRNodeObject* obj) override;
 
     void saveProject() override;
     void saveAsProject() override;
@@ -115,6 +117,7 @@ public:
     void openAllLinkMenu();
     void closeLinkMenu();
     void closeLinkMenu(IRNodeObject* obj);
+
     
     // save load
     json11::Json makeSaveDataOfThis();
@@ -162,6 +165,13 @@ private:
     
     String name = "";
     String title = "";
+    
+    // grids
+    int thin_grids_pixel = 10;
+    int thick_grids_interval = 50;
+    float grid_thickness = 1.0;
+    float grid_thickness2 = 0.5;
+
     
     Array<IRNodeObject* > objects;
     IRNodeObjectSelector *selector;

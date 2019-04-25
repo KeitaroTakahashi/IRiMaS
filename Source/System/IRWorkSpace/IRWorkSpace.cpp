@@ -55,6 +55,8 @@ void IRWorkSpace::paint (Graphics& g)
         obj->initialPaintOnWorkspace(g, this);
     }
     
+    if(isEditMode())
+        drawGrids(g);
     
 }
 
@@ -76,6 +78,50 @@ void IRWorkSpace::drawShadows(Graphics& g)
     }
 }
 
+void IRWorkSpace::drawGrids(Graphics& g)
+{
+    int w = getWidth();
+    int h = getHeight();
+    const float myDashLength[] = { 1, 1 };
+
+    g.setColour(Colours::lightgrey.brighter());
+    int i = 0;
+    while(i < w)
+    {
+        // draw thick line
+        if((i % this->thick_grids_interval) == 0)
+        {
+            g.drawLine(i, 0, i, h, this->grid_thickness);
+        }else // draw thin line
+        {
+            
+            g.drawLine(i, 0, i, h, this->grid_thickness2);
+
+            //g.drawDashedLine(Line<float>(i,0,i,h), &myDashLength[0], 2, this->grid_thickness);
+        }
+        
+        i += this->thin_grids_pixel;
+    }
+    
+    i = 0;
+    while(i < h)
+    {
+        // draw thick line
+        if((i % this->thick_grids_interval) == 0)
+        {
+            g.drawLine(0, i, w, i, this->grid_thickness);
+        }else // draw thin line
+        {
+            g.drawLine(0, i, w, i, this->grid_thickness2);
+
+            //g.drawDashedLine(Line<float>(0,i,w,i), &myDashLength[0], 2, this->grid_thickness);
+        }
+        
+        i += this->thin_grids_pixel;
+    }
+    
+    
+}
 
 void IRWorkSpace::resized()
 {
@@ -306,6 +352,8 @@ void IRWorkSpace::setEditMode(bool flag)
     }
     // send change message to IRProject
     sendChangeMessage();
+    
+    repaint();
 }
 
 bool IRWorkSpace::isLinkMode() const
@@ -387,4 +435,17 @@ void IRWorkSpace::closeLinkMenu(IRNodeObject* obj)
         obj->closeLinkMenu();
     }
 }
+
+void IRWorkSpace::getSelectedLinkSystemFlag(IRNodeObject* obj)
+{
+    std::cout << obj << " : ws getSelected flag = " <<  obj->selectedLinkSystemFlag << std::endl;
+
+    for(auto o : this->selector->getSelectedObjectList())
+    {
+        o->getLinkMenu()->deSelectAll();
+    }
+    
+    obj->getLinkMenu()->setSelectedItem(obj->selectedLinkSystemFlag);
+}
+
 // ==================================================

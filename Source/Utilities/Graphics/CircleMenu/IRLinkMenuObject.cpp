@@ -321,6 +321,28 @@ void IRLinkMenuObject::mouseDownDetectedInSquareButton(IRLinkSystemFlag flag)
     
     deSelectAll();
     
+    setSelectedItem(flag);
+    
+    if(this->notifySelectedItem != nullptr) this->notifySelectedItem(flag);
+    else printf("null\n");
+}
+void IRLinkMenuObject::deSelectAll()
+{
+    // all reset
+    if(this->button_data)
+        this->button_data.get()->isSelected = false;
+    if(this->button_img)
+        this->button_img.get()->isSelected = false;
+    if(this->button_wav)
+        this->button_wav.get()->isSelected = false;
+    if(this->button_play)
+        this->button_play.get()->isSelected = false;
+    if(this->button_text)
+        this->button_text.get()->isSelected = false;
+}
+
+void IRLinkMenuObject::setSelectedItem(IRLinkSystemFlag flag)
+{
     switch(flag)
     {
         case AudioLinkFlag:
@@ -343,19 +365,4 @@ void IRLinkMenuObject::mouseDownDetectedInSquareButton(IRLinkSystemFlag flag)
         default:
             break;
     }
-
-}
-void IRLinkMenuObject::deSelectAll()
-{
-    // all reset
-    if(this->button_data)
-        this->button_data.get()->isSelected = false;
-    if(this->button_img)
-        this->button_img.get()->isSelected = false;
-    if(this->button_wav)
-        this->button_wav.get()->isSelected = false;
-    if(this->button_play)
-        this->button_play.get()->isSelected = false;
-    if(this->button_text)
-        this->button_text.get()->isSelected = false;
 }

@@ -124,15 +124,11 @@ void IRLabelObject::paint(Graphics &g)
         g.setColour (SYSTEMCOLOUR.contents);
         g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
     }
-    
-    //this->linkMenu.setCentrePosition(getX() + getWidth()/2, getY() + getHeight()/2);
-    
 
 }
 
 void IRLabelObject::paintOnWorkspace(Graphics& g, Component* workspace)
 {
-    //this->linkMenu.paintLinkMenu(g);
     
 }
 
@@ -140,10 +136,6 @@ void IRLabelObject::paintOnWorkspace(Graphics& g, Component* workspace)
 void IRLabelObject::resized()
 {
     this->label.setBounds(5,5, getWidth()-10, getHeight()-10);
-    
-    //this->linkMenu.setSize(300,60);
-    //this->linkMenu.setCentrePosition(getX() + getWidth()/2, getY() + getHeight()/2);
-    
 
 }
 

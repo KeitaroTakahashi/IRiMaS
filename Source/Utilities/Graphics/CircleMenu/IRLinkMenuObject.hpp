@@ -95,10 +95,13 @@ public:
     
     void mouseDown(const MouseEvent& e) override
     {
-        std::cout << "IRLinkMenuObject mouse Down\n";
     }
     
     void deSelectAll();
+    void setSelectedItem(IRLinkSystemFlag flag);
+    
+    std::function<void(IRLinkSystemFlag)> notifySelectedItem;
+
 
 private:
     void mouseDownDetectedInSquareButton(IRLinkSystemFlag flag);
