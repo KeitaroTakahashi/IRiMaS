@@ -33,10 +33,13 @@ public:
     // getter
     int getHeight();
     int getWidth();
+    
+    File getFile() const { return this->file; }
 
 private:
     Image img;
     
+    File file;
 
 };
 

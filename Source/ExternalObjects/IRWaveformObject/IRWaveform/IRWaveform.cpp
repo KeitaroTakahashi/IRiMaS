@@ -36,10 +36,17 @@ IRWaveform::~IRWaveform()
 {
     // delete this->player; // leave it - the owner will delete it.
     // remove pointer
+    deinitializeAudioData();
+}
+
+void IRWaveform::deinitializeAudioData()
+{
+    setStart(0);
+    setDisplayDuration(0);
+    
     if(this->audioData != nullptr)
         getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
 }
-
 
 // OpenAudioFile
 // # DO NOT write any task expected to be done after opening file here!
@@ -99,14 +106,15 @@ void IRWaveform::getFilePtr(File file)
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
     getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
-                                             this->file,
+                                             file,
                                              this->parent,
                                              callback);
     
-    makeThumbnail(this->path);
+    makeThumbnail(file.getFullPathName());
     
     // notify changes to IRProject to update IRFileInspecter
     this->parent->notifyNodeObjectModification();
+    
 }
 
 
@@ -137,9 +145,9 @@ void IRWaveform::makeThumbnail(String path)
 {
     {
         const ScopedLock sl (this->callbackLock); // lock thread
-        File file (this->path);
+        File file (path);
         
-        std::cout << "thumnail = " << this->path << std::endl;
+        std::cout << "thumnail = " << path << std::endl;
         this->thumbnail.setSource(new FileInputSource(file));
         
         // initialize display duration if no user defined duration is set.
@@ -157,13 +165,14 @@ void IRWaveform::makeThumbnail(String path)
 
 void IRWaveform::fileImportCompleted()
 {
-    
     this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
     //set audioBuffer to player
     std::vector<int>v = {0,1};
     this->player->setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
     
-   
+   // set received Ptr to the Link System
+    this->parent->setAudioLink(this->audioData->getData());
+
     
 }
 
@@ -194,7 +203,7 @@ void IRWaveform::paint(Graphics& g)
                                     1.0f // zoom factor
                                     );
         
-        //std::cout<<"paint duration = " << this->duration << std::endl;
+        std::cout<<"paint duration = " << this->duration << " : start = " << this->start << std::endl;
     }
 }
 
@@ -307,5 +316,14 @@ SoundPlayerClass* IRWaveform::getPlayer() const
 }
 
 
+void IRWaveform::audioPtrDelivery(IRAudio *obj)
+{
+    std::cout << "audioPtrDelivery filename = " << obj->getFile().getFullPathName() << std::endl;
+    //makeThumbnail(obj->getFile().getFullPathName());
+    
+    this->file = obj->getFile();
+
+    getFilePtr(this->file);    
+}
 
 

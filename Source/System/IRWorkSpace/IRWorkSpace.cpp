@@ -9,6 +9,8 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     this->name = title;
     this->title = this->name + " (EDIT MODE)";
     setBounds(frameRect);
+    loadBackgroundImageLink(); // for LinkMode
+    
     //setSize (frameRect.getWidth(), frameRect.getHeight());
     setWantsKeyboardFocus(true);
     addKeyListener(this);
@@ -21,7 +23,7 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     this->preferenceWindow = preferenceWindow;
     
     //give object lists to selector
-    this->selector = new IRNodeObjectSelector(&this->objects);
+    this->selector = new IRNodeObjectSelector(&this->objects, &this->linkModeFlag);
     
     this->selector->setShiftConstrainsDirection(true);
     this->selector->setConstrainBoundsToParent(true, {0,0,10,10});
@@ -57,6 +59,16 @@ void IRWorkSpace::paint (Graphics& g)
     
     if(isEditMode())
         drawGrids(g);
+    
+    if(isLinkMode())
+    {
+        float w = getWidth() / 2;
+        float h = w;
+        float x = w - w/2;
+        float y = getHeight()/2 - h/2;
+        //g.drawImage(&this->background_image_link,Rectangle<float>(x,y,w,h));
+        g.drawImage(this->background_image_link, Rectangle<float>(x,y,w,h));
+    }
     
 }
 
@@ -125,7 +137,6 @@ void IRWorkSpace::drawGrids(Graphics& g)
 
 void IRWorkSpace::resized()
 {
-    
 }
 
 
@@ -369,11 +380,13 @@ void IRWorkSpace::setLinkMode(bool flag)
         obj->setLinkMode(this->linkModeFlag);
     }
     
-    
-    if(this->linkModeFlag)
+    if(this->linkModeFlag){
+        
         openLinkMenuOfSelectedObject();
-    else
+    }
+    else{
         closeLinkMenu();
+    }
 }
 
 Array<IRNodeObject*> IRWorkSpace::getObjectList()
@@ -404,7 +417,7 @@ void IRWorkSpace::removeListener(Listener* listener)
 // Link Menu
 void IRWorkSpace::openLinkMenuOfSelectedObject()
 {
-    for (auto obj : this->selector->getSelectedObjectList())
+    for (auto obj : this->selector->getActivatedLinkingObjectList())
     {
         obj->openLinkMenu();
     }
@@ -430,7 +443,7 @@ void IRWorkSpace::closeLinkMenu()
 
 void IRWorkSpace::closeLinkMenu(IRNodeObject* obj)
 {
-    for (auto obj : this->selector->getSelectedObjectList())
+    for (auto obj : this->selector->getActivatedLinkingObjectList())
     {
         obj->closeLinkMenu();
     }
@@ -440,12 +453,42 @@ void IRWorkSpace::getSelectedLinkSystemFlag(IRNodeObject* obj)
 {
     std::cout << obj << " : ws getSelected flag = " <<  obj->selectedLinkSystemFlag << std::endl;
 
-    for(auto o : this->selector->getSelectedObjectList())
+    // if shift is pressed, then link this flag with the previously selected Flag
+
+    if(this->isShiftPressed)
     {
-        o->getLinkMenu()->deSelectAll();
+        addLinkingObject(obj);
+    }
+    else{
+        // if no shift pressed, then deselect other flag, and re-select the new one.
+        for(auto o : this->selector->getActivatedLinkingObjectList())
+        {
+            o->getLinkMenu()->deSelectAll();
+            removeAllLinkingObjects();
+        }
+        addLinkingObject(obj);
     }
     
-    obj->getLinkMenu()->setSelectedItem(obj->selectedLinkSystemFlag);
+    showLinkingObjects();
+  
 }
 
 // ==================================================
+
+void IRWorkSpace::loadBackgroundImageLink()
+{
+    String url = "/materials/Images/icon/link/link.png";
+#if JUCE_MAC
+    this->background_image_link = loadImage("/Contents/Resources" + url);
+#elif JUCE_IOS
+    this->background_image_link = loadImage(url);
+#endif
+    
+    std::cout << "background_image_link " << this->background_image_link.getWidth() << std::endl;
+}
+
+Image IRWorkSpace::loadImage(String url)
+{
+    File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url);
+    return ImageFileFormat::loadFrom(file);
+}

@@ -8,7 +8,16 @@
 #ifndef DataType_h
 #define DataType_h
 
+#include "IRAudio.hpp"
+#include "IRVideo.hpp"
+#include "IRData.hpp"
+#include "IRText.hpp"
+#include "IRImage.hpp"
+
 typedef void* IRObjectPtr;
+
+
+
 
 
 #endif /* DataType_h */

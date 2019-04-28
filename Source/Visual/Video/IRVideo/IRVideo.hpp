@@ -17,7 +17,6 @@ public:
     ~IRVideo();
     
 private:
-    
     VideoComponent video;
 };
 

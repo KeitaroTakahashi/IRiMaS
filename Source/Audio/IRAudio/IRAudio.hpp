@@ -77,6 +77,7 @@ public:
         // called when audio file has been loaded
         virtual void fileImportCompleted(IRAudio *obj) = 0;
         // called when file status changed (will be loaded, completed, deleted etc.)
+        // give IRAudio* which is THIS object, in order to notify when this object is deallocated by giving nullptr. see deconstructer of this class
         virtual void fileStatusChanged(IRAudio *obj) = 0;
     };
     
@@ -86,12 +87,13 @@ public:
     // ---------------------------------------------------------------------------
     
     std::function<void()> onImportCompleted;
-    std::function<void()> onFileStatusChanged;
     
     // ===========================================================================
     // public members
     bool isFileOpened = false;
     bool isFileLoadCompleted = false;
+    
+    File getFile() const { return this->file; }
     
 private:
     // ===========================================================================
@@ -108,8 +110,10 @@ private:
     
     // ---------------------------------------------------------------------------
     void callFileImportCompleted();
+    void callFileStatusChanged(IRAudio* obj);
     // ---------------------------------------------------------------------------
 
+    File file;
     String path;
     String filePath;
     String fileName;

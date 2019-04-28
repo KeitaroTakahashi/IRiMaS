@@ -14,6 +14,8 @@ IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject)
 
     this->nodeObject->fileManagerUpdated = [this](IRFileManager* fileManager) { updateFileManager(fileManager); };
     
+    this->nodeObject->addListener(this);
+    
 }
 // --------------------------------------------------
 IRUIFoundation::~IRUIFoundation()
@@ -148,3 +150,30 @@ void IRUIFoundation::updateFileManager(IRFileManager* fileManager)
 {
     setIRFileManager(fileManager);
 }
+// --------------------------------------------------
+
+void IRUIFoundation::receiveAudioLink(IRNodeObject* obj)
+{
+    if(obj->getAudioLink() != nullptr)
+    {
+        audioPtrDelivery(obj->getAudioLink());
+        std::cout << obj << " : delivered audio file = " << obj->getAudioLink()->getFile().getFileName() << " : filename = "<<  obj->getAudioLink()->getFileName() <<std::endl;
+    }
+}
+void IRUIFoundation::receiveTextLink(IRNodeObject* obj)
+{
+    if(obj->getTextLink() != nullptr) textPtrDelivery(obj->getTextLink());
+}
+void IRUIFoundation::receiveImageLink(IRNodeObject* obj)
+{
+    if(obj->getImageLink() != nullptr) imagePtrDelivery(obj->getImageLink());
+}
+void IRUIFoundation::receiveDataLink(IRNodeObject* obj)
+{
+    if(obj->getDataLink() != nullptr) dataPtrDelivery(obj->getDataLink());
+}
+void IRUIFoundation::receiveVideoLink(IRNodeObject* obj)
+{
+    if(obj->getVideoLink() != nullptr) videoPtrDelivery(obj->getVideoLink());
+}
+// --------------------------------------------------

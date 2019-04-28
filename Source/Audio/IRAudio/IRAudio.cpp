@@ -17,8 +17,12 @@ Thread("ImportAudioFile Background thread")
 // ------------------------------------------------------------------
 IRAudio::~IRAudio()
 {
-    if (this->reader)
+    if (this->reader){
         delete this->reader;
+        
+        // because this class is about to deleted, notify all objects using this object that this object is null.
+        callFileStatusChanged(nullptr);
+    }
     stopThread(4000);
 }
 // ------------------------------------------------------------------
@@ -39,16 +43,16 @@ bool IRAudio::openFile(bool threadSafe)
                         "*.wav, *.aif, *.aiff");
     if(chooser.browseForFileToOpen())
     {
-        auto file = chooser.getResult();
-        return loadFile(file, threadSafe);
+        this->file = chooser.getResult();
+        return loadFile(this->file, threadSafe);
     }
     return false;
 }
 // ------------------------------------------------------------------
 bool IRAudio::openFileFromPath(String path, bool threadSafe)
 {
-    File f(path);
-    return loadFile(f, threadSafe);
+    this->file = File(path);
+    return loadFile(this->file, threadSafe);
 }
 
 bool IRAudio::loadFile(File file, bool threadSafe)
@@ -116,7 +120,7 @@ void IRAudio::checkForPathToOpen()
         this->isFileOpened = true;
         
         
-        File file (pathToOpen);
+        this->file = File(pathToOpen);
         if((this->reader = this->formatManager.createReaderFor(file)))
         {
             
@@ -141,6 +145,7 @@ void IRAudio::checkForPathToOpen()
             std::cout << "reading samples of "<<(int) reader->lengthInSamples<<std::endl;
             
             callFileImportCompleted();
+            callFileStatusChanged(this);
             
             this->isFileLoadCompleted = true;
             this->fileName = file.getFileName();
@@ -171,4 +176,17 @@ void IRAudio::callFileImportCompleted()
     if(checker.shouldBailOut()) return;
     //std::function
     if(this->onImportCompleted != nullptr) this->onImportCompleted();
+}
+
+void IRAudio::callFileStatusChanged(IRAudio* obj)
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    
+    // fire call back signal here!
+    this->ImportAudioListeners.callChecked(checker, [this] (Listener& l) {l.fileStatusChanged(this);});
+    //check again
+    if(checker.shouldBailOut()) return;
 }

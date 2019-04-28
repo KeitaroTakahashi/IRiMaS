@@ -8,7 +8,8 @@
 //#include "IRUIFoundation.hpp"
 #include "IRFileManager.hpp"
 
-class IRNodeObject : public IRNodeComponent
+class IRNodeObject : public IRNodeComponent,
+public IRLinkFoundation
 {
     
 public:
@@ -47,6 +48,8 @@ public:
     void editModeChangedEvent() override;
     void linkModeChangedEvent() override;
     
+    // ==================================================
+
     class Listener
     {
     public:
@@ -76,10 +79,18 @@ public:
         //inform its parent that edit mode status changed
         virtual void editModeChangedInNodeObject(bool editMode) {};
         
+        // link
         virtual void linkModeChangedInNodeObject(bool linkMode) {};
         
         virtual void getSelectedLinkSystemFlag(IRNodeObject* obj) {};
-        
+        // overriden by IRUIFoundation
+        virtual void receiveAudioLink(IRNodeObject* obj) {};
+        virtual void receiveTextLink(IRNodeObject* obj) {};
+        virtual void receiveImageLink(IRNodeObject* obj) {};
+        virtual void receiveDataLink(IRNodeObject* obj) {};
+        virtual void receiveVideoLink(IRNodeObject* obj) {};
+
+        //
         // give its IRFileManager when it is given or modified.
         // this is used for IRUIFoundation to receive IRFileManager
         virtual void updateIRFileManager(IRFileManager* fileManager) {};
@@ -120,6 +131,11 @@ public:
     void callEditModeChangedInNodeObject();
     
     void callLinkModeChangedInNodeObject();
+    void receiveSelectedLinkMenuItemEvent() override;// from IRLinkFoundation
+    void setLinkModeEvent() override {};
+    void setLinkActivationEvent() override;
+    
+    void setLinkedEvent() override {};
     void callGetSelectedLinkSystemFlag();
     
     // fire addObjectGlobal() method in Listener
@@ -137,6 +153,14 @@ public:
     void callOpenFileInspecter();
     
     void notifyNodeObjectModification();
+    
+    
+    void callReceiveAudioLink(IRAudio *obj);
+    void callReceiveTextLink(IRText *obj);
+    void callReceiveImageLink(IRImage* obj);
+    void callReceiveDataLink(IRData *obj);
+    void callReceiveVideoLink(IRVideo *obj);
+
     // ===========================================================================
     
     // methods for save and load functions. Developers need to define the behavior of objects when save or load project files.
@@ -150,21 +174,9 @@ public:
     // ============================================================
     // Linking System
     
-    void addLinkParam(IRLinkSystemFlag flag);
-    void revemoLinkParam(IRLinkSystemFlag flag);
-    void clearLinkParam();
-    std::vector<IRLinkSystemFlag> getLinkParams() const { return this->linkFlags; }
-    void createLinkMenu();
     
-    IRLinkMenuObject* getLinkMenu();
-    void openLinkMenu();
-    void closeLinkMenu();
-    bool isLinkMenuOpened() const;
     
-    // receive the selected IRLinkSystemFlag from IRLinkMenuObject
-    void receiveSelectedLinkMenuItem(IRLinkSystemFlag flag);
-        
-    IRLinkSystemFlag selectedLinkSystemFlag;
+    
 
     
     // ============================================================
@@ -184,12 +196,11 @@ protected:
     Component* parent;
 
 private:
-    
-    int linkMenuSize = 60;
-    
-    bool linkMenuOpenedFlag = false;
+        
     
     ListenerList<Listener> listeners;
+    
+
     
     //link System
     

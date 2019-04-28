@@ -1,13 +1,10 @@
 
 #include "IRNodeObjectSelector.hpp"
 
-
-
-
-
-IRNodeObjectSelector::IRNodeObjectSelector(Array<IRNodeObject* > *list)
+IRNodeObjectSelector::IRNodeObjectSelector(Array<IRNodeObject* > *list, bool* linkModeFlag)
 {
     this->objectList = list;
+    this->linkModeFlag = linkModeFlag;
 }
 
 
@@ -30,14 +27,27 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
             
         }
         else if (! nodeObj->isSelected()){ // if the object is not yet selected.
+            
+            // if not linkMode, then clear all objects otherwise, add newly selected objects
             deselectAllObjects(); // CLEAR
+            
             nodeObj->setSelected(true);
         }
+        
+        // linkMode behavior
+        if(*this->linkModeFlag){
+            if(nodeObj->isLinkActivated()) nodeObj->setLinkActivation(false);
+            else nodeObj->setLinkActivation(true);
+        }
+        
+        std::cout << "*this->linkModeFlag = " << *this->linkModeFlag << " : " << nodeObj->isLinkActivated() << std::endl;
+        
         //repaint obj graphics
         nodeObj->repaint();
         
         //add all selected nodeObj to a list
         addSelectedObjects();
+        addActivatedObjects();
         
         //if this object is selected
         if (nodeObj->isSelected())
@@ -52,11 +62,16 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
     }
     else
     {
+        std::cout << "workSpace mouseDowned "<< "*this->linkModeFlag = " << *this->linkModeFlag << " : " << std::endl;
+
         if (! e.mods.isShiftDown() && ! e.mods.isCommandDown())
         {
-            //if background clicked, clear all selected status
+            //if background clicked
             deselectAllObjects();
         }
+        // linkMode behavior when background clicked
+        //deactivateAllLinkingObjects();
+
         beginSelection(e);
         this->multiSelectionFlag = true;
     }
@@ -119,6 +134,14 @@ void IRNodeObjectSelector::deselectAllObjects()
     }
 }
 
+void IRNodeObjectSelector::deactivateAllLinkingObjects()
+{
+    this->activatedLinkingObjectList.clear();
+    for (auto obj : *this->objectList)
+    {
+        obj->setLinkActivation(false);
+    }
+}
 
 void IRNodeObjectSelector::addSelectedObjects()
 {
@@ -132,6 +155,17 @@ void IRNodeObjectSelector::addSelectedObjects()
     }
 }
 
+void IRNodeObjectSelector::addActivatedObjects()
+{
+    this->activatedLinkingObjectList.clear();
+    for (auto obj : *this->objectList)
+    {
+        if (obj->isLinkActivated())
+        {
+            this->activatedLinkingObjectList.add(obj);
+        }
+    }
+}
 
 bool IRNodeObjectSelector::removeSelectedObject(IRNodeObject* removeObj)
 {
@@ -144,10 +178,24 @@ bool IRNodeObjectSelector::removeSelectedObject(IRNodeObject* removeObj)
     return false;
 }
 
-
+bool IRNodeObjectSelector::removeActivatedObject(IRNodeObject* removeObj)
+{
+    int index = this->activatedLinkingObjectList.indexOf(removeObj);
+    if (index >= 0)
+    {
+        this->activatedLinkingObjectList.remove(index);
+        return true;
+    }
+    return false;
+}
 void IRNodeObjectSelector::repaintAllSelectedObjects()
 {
     for(auto obj : this->selectedObjectList)
+    {
+        obj->repaint();
+    }
+    
+    for(auto obj : this->activatedLinkingObjectList)
     {
         obj->repaint();
     }
@@ -180,6 +228,11 @@ void IRNodeObjectSelector::judgeSelection(const Rectangle<int>& area, const Mous
 Array<IRNodeObject*> IRNodeObjectSelector::getSelectedObjectList() const
 {
     return this->selectedObjectList;
+}
+
+Array<IRNodeObject*> IRNodeObjectSelector::getActivatedLinkingObjectList() const
+{
+    return this->activatedLinkingObjectList;
 }
 
 

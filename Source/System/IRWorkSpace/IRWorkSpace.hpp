@@ -16,6 +16,7 @@
 #include "PreferenceWindow.hpp"
 
 #include "IRNodeObject.hpp"
+#include "IRWorkSpaceLinkManager.hpp"
 #include "AudioEngine.h"
 #include "IRNodeObjectSelector.hpp"
 #include "ObjectMenuWindow.hpp"
@@ -28,6 +29,7 @@
 
 class IRWorkSpace : public AudioAppComponent,
                     public IRComponents,
+                    public IRWorkSpaceLinkManager,
                     public ChangeBroadcaster,
                     public ChangeListener,
                     public IRNodeObject::Listener,
@@ -214,6 +216,10 @@ private:
     
     // IRObjectFactory
     IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
+    
+    Image background_image_link;
+    void loadBackgroundImageLink();
+    Image loadImage(String url);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkSpace)
 };

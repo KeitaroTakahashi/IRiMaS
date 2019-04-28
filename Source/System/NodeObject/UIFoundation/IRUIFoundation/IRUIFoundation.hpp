@@ -34,6 +34,13 @@ public:
     virtual void setEditMode(bool newEditMode) {};
     // --------------------------------------------------
 
+    virtual void audioPtrDelivery(IRAudio* obj) {};
+    virtual void textPtrDelivery(IRText* obj) {};
+    virtual void imagePtrDelivery(IRImage* obj) {};
+    virtual void dataPtrDelivery(IRData* obj) {};
+    virtual void videoPtrDelivery(IRVideo* obj) {};
+
+    
     // --------------------------------------------------
 private:
     bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override;
@@ -44,6 +51,15 @@ private:
     // get signal from IRNodeComponent when IRNodeObject status changed.
     void NodeObjectStatusChanged(IRNodeComponentStatus status);
     
+    // ==================================================
+    // NodeObject Listener
+    void receiveAudioLink(IRNodeObject* obj) override;
+    void receiveTextLink(IRNodeObject* obj) override;
+    void receiveImageLink(IRNodeObject* obj) override;
+    void receiveDataLink(IRNodeObject* obj) override;
+    void receiveVideoLink(IRNodeObject* obj) override;
+    
+   
     
     // called when IRFileManager is given or updated in IRNodeObject
     void updateFileManager(IRFileManager* fileManager);

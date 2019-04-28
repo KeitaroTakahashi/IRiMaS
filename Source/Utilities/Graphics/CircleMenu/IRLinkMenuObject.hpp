@@ -34,6 +34,7 @@ public:
         this->img = img;
         this->parent = parent;
         this->flag = flag;
+        addMouseListener(this->parent, false);
     }
     
     ~SquareButton() {}

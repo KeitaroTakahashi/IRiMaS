@@ -18,6 +18,8 @@ IRWaveformObjectUI::IRWaveformObjectUI(IRNodeObject* parent) : IRWaveform(parent
 IRWaveformObjectUI::~IRWaveformObjectUI()
 {
     delete this->selector;
+    
+    this->selectionSquareObjects.clear();
 }
 
 
@@ -213,4 +215,17 @@ void IRWaveformObjectUI::IRKeyPressed(int keyCode)
 
 
 
+void IRWaveformObjectUI::audioPtrDelivery(IRAudio *obj)
+{
+    std::cout << "IRWaveformObjectUI : audioPtrDelivery filename = " << obj->getFile().getFullPathName() << std::endl;
+    //makeThumbnail(obj->getFile().getFullPathName());
+    
+    // init
+    stopPlaying();
+    deleteSquareObject();
+    deinitializeAudioData();
+    
+    
 
+    openFile(obj->getFile().getFullPathName());
+}

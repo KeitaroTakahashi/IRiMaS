@@ -202,8 +202,11 @@ public:
     }
     
     // this method is called when the file import completed.
+    // THIS IS NOT CURRENTLY USED = KEITARO
     virtual void fileImportCompleted(IRAudio *obj) override
     {
+        
+        std::cout << "fileImportCompleted object \n";
         this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
         //set audioBuffer to player
         std::vector<int>v = {0,1};

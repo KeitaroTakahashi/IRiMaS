@@ -22,7 +22,6 @@ resizingArea(25, 25)
     this->menu.addItem(5, "Paste");
     this->menu.addItem(6, "Duplicate");
     
-    this->linkFlags.clear();
 }
 
 
@@ -30,8 +29,6 @@ IRNodeComponent::~IRNodeComponent()
 {
     delete this->mixer;
     
-    this->linkFlags.clear();
-
     std::cout << "~IRNODECOMPONENT DESTRUCTOR CALLED" << std::endl;
     
 }
@@ -348,10 +345,6 @@ bool IRNodeComponent::isEditMode() const
     return this->editModeFlag;
 }
 
-bool IRNodeComponent::isLinkMode() const
-{
-    return this->linkModeFlag;
-}
 
 // if edit mode is true, this object does not receive any Mouse/Keyboard events
 // if false, this object receive Mouse/Keyboard events
@@ -362,15 +355,6 @@ void IRNodeComponent::setEditMode(bool flag)
     editModeChangedEvent();
     repaint();
 }
-
-void IRNodeComponent::setLinkMode(bool flag)
-{
-    this->linkModeFlag = flag;
-    statusChangedWrapper(IRNodeComponentStatus::LinkModeStatus);
-    linkModeChangedEvent();
-    repaint();
-}
-
 
 bool IRNodeComponent::isCopied() const
 {
@@ -425,8 +409,6 @@ void IRNodeComponent::popupMenuEvents()
 {
     
 }
-
-
 
 // **** BELOW ALREDY DONE BY K
 

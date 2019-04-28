@@ -316,9 +316,7 @@ void IRLinkMenuObject::childComponentManager(Component* comp)
 
 // --------------------------------------------------
 void IRLinkMenuObject::mouseDownDetectedInSquareButton(IRLinkSystemFlag flag)
-{
-    std::cout << "mouseDownDetectedInSquareButton\n";
-    
+{    
     deSelectAll();
     
     setSelectedItem(flag);

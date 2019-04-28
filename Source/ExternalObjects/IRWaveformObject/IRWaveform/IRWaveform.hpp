@@ -41,10 +41,12 @@ public:
     double getSampleRate() const;
     bool isWaveformPainted() const;
     
+    // ==================================================
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
     virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
     virtual void releaseResources() override;
-    
+    // ==================================================
+
     void play(int start, int duration, int offset, bool looping);
     void stop();
     void pausing();
@@ -57,8 +59,16 @@ public:
 
     //IRAudio audioFile;
     SoundPlayerClass *player;
-
     
+    
+    // ==================================================
+    // link system
+    virtual void audioPtrDelivery(IRAudio *obj) override;
+
+    // ==================================================
+    
+    void deinitializeAudioData();
+
 private:
     
     File file;

@@ -72,6 +72,12 @@ public:
     Array<IRMultiPurposeObject* > selectedSquareObjectList;
 
     
+    // ==================================================
+    // link system
+    virtual void audioPtrDelivery(IRAudio *obj) override;
+    
+    // ==================================================
+    
 private:
     
     IRGraphSelector* selector;
