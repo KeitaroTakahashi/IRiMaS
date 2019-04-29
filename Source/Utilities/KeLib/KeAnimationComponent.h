@@ -51,4 +51,38 @@ private:
     
 };
 
+class KMoveTo
+{
+public:
+    KMoveTo()
+    {
+        
+    }
+    ~KMoveTo()
+    {
+        
+    }
+    
+    void setSpeed(float speed) { this->speed = speed; }
+    void animation()
+    {
+        this->current = (this->dest - this->prev) * this->speed +
+        this->prev;
+        
+        this->prev = this->current;
+    }
+    
+    float setValue(float dest) { this->dest = dest; }
+    float getValue() const { return this->current; }
+    
+private:
+    float dest = 0;
+    float prev = 0;
+    float current = 0;
+    
+    float speed = 0.2;
+    
+};
+
+
 #endif /* KeAnimationComponent_h */

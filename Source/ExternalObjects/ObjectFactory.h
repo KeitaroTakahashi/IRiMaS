@@ -27,6 +27,7 @@
 class init_factory
 {
 public:
+ 
     init_factory()
     {
         Image img; // dummy
@@ -38,6 +39,9 @@ public:
         IRFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img);
         IRFactory.registerObject<IRWaveformObject>("IRWaveform", "Waveform", img);
         IRFactory.registerObject<IRSpectrogramObject>("IRSpectrogram", "Spectrogram", img);
+        
+        IRFactory.registerObject<IRAudioAnalysisObject>("IRAudioAnalysis", "AudioAnalysis", img);
+
         IRFactory.registerObject<IRAutomationObject>("IRAutomation", "Automation Graph", img);
         IRFactory.registerObject<IRVideoPlayerObject>("IRVideoPlayer", "Video Player", img);
         

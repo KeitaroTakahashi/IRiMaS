@@ -7,6 +7,9 @@
 
 #ifndef IRFFTSequence_h
 #define IRFFTSequence_h
+#include <iostream>
+#include <math.h>
+#include <vector>
 #include "IRFFT.h"
 #include "IRSignalWindowLib.h"
 
@@ -37,6 +40,7 @@ public:
         fftForwardSetup();
         for(int i=0; i<getNumFrame(); i++)
         {
+            
             setSamples(&this->frameData[i][0], 0, this->fftsize);
             fftExecute();
             this->complexResult.push_back(copyComplexData(getComplexResult()));

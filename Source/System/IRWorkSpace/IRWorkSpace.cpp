@@ -387,6 +387,8 @@ void IRWorkSpace::setLinkMode(bool flag)
     else{
         closeLinkMenu();
     }
+    
+    repaint();
 }
 
 Array<IRNodeObject*> IRWorkSpace::getObjectList()
