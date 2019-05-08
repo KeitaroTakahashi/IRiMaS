@@ -16,8 +16,8 @@ public:
     IRImageLoader(IRNodeObject* parent);
     ~IRImageLoader();
 
-    void open();
-    void open(String pathToOpen);
+    bool open();
+    bool open(String pathToOpen);
     
     void resized(int w, int h);
     Point<int> sizeFix();

@@ -47,7 +47,8 @@ void IRImageViewer::resized()
 
 void IRImageViewer::openFile()
 {
-    this->imgLoader.open();
+    bool isOk = this->imgLoader.open();
+    if(!isOk) return;
     // receive pointer of the image file from FileManager
     this->imgRef = this->imgLoader.getData();
     

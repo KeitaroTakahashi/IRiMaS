@@ -15,7 +15,7 @@ IRImageLoader::~IRImageLoader()
 }
 
 
-void IRImageLoader::open()
+bool IRImageLoader::open()
 {
     this->isFileLoadCompleted = false;
     
@@ -45,6 +45,7 @@ void IRImageLoader::open()
             
                 // notify modification
                 this->parent->notifyNodeObjectModification();
+                
             }else{
                 this->imgData = nullptr;
                 this->isFileOpened = false;
@@ -54,14 +55,18 @@ void IRImageLoader::open()
             if(!this->isFileOpened)
                 this->imgData = nullptr;
             this->isFileOpened = false;
+            
         }
         
         sendChangeMessage();
     }
+    
+    if(this->isFileOpened) return true;
+    else return false;
 }
 
 
-void IRImageLoader::open(String pathToOpen)
+bool IRImageLoader::open(String pathToOpen)
 {
     this->isFileLoadCompleted = false;
     this->path = pathToOpen;
