@@ -58,7 +58,7 @@ void IRAnalysisUI::openFile()
     
     FileChooser chooser("Select an image file...",
                         {},
-                        "*.wav, *.aif, *.aiff");
+                        "*.wav, *.aif, *.aiff, *.mp3");
     if (chooser.browseForFileToOpen())
     {
         auto file = chooser.getResult();
@@ -188,5 +188,18 @@ void IRAnalysisUI::executeAnalysis()
     std::cout << "power size = " << this->FFTSequence->getPower().size() << " : frames = " << this->FFTSequence->getPower()[5].size() << std::endl;
     
     std::vector<float> buf = this->FFTSequence->getPower()[5];
+    
+    this->magData = std::make_shared<IRAnalysisDataStr>();
+    this->magData->fftsize = this->fftsize;
+    this->magData->nframe = this->nframe;
+    
+    this->centData = std::make_shared<IRAnalysisDataStr>();
+    this->centData->fftsize = this->fftsize;
+    this->centData->nframe = this->nframe;
+   // magData->data = this->
+    
+    
+    if(this->completeAnalysis != nullptr) this->completeAnalysis();
+    
 
 }

@@ -41,6 +41,8 @@ public:
     
 private:
     
+    void analaysisCompleted();
+    
     std::shared_ptr<IRAnalysisUI> analysisUI;
     
     int xMargin = 5;

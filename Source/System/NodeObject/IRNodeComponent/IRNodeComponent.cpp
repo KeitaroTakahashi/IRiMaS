@@ -148,6 +148,8 @@ void IRNodeComponent::addAudioComponent(AudioSource *source)
 void IRNodeComponent::removeAudioComponent(AudioSource *source) // FD ADDON
 {
     this->mixer->removeInputSource(source); // which will be deleted automatically
+    this->containAudioSourceFlag = false;
+
 }
 
 

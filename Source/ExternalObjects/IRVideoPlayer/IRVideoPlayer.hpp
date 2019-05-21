@@ -59,7 +59,7 @@ public:
     // --------------------------------------------------
     void openFile()
     {
-        FileChooser chooser("Select an audio file to play...",
+        FileChooser chooser("Select an video file to play...",
                             {},
                             "*.mov, *.mp4, *.m4v");
         

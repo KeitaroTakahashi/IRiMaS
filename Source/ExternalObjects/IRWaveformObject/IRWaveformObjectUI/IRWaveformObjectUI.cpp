@@ -201,7 +201,7 @@ void IRWaveformObjectUI::setListener(IRNodeObject::Listener* newListener)
 }
 
 
-void IRWaveformObjectUI::IRKeyPressed(int keyCode)
+void IRWaveformObjectUI::IRKeyPressed(int keyCode, String keyText)
 {
     KeyPress key;
     

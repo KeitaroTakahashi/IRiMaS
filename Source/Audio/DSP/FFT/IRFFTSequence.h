@@ -77,6 +77,8 @@ public:
         }
     }
     
+    void calcDescriptors();
+    
     // ------------------------------------------------------------
     int getNumFrame() const { return (int)this->frameData.size(); }
     std::vector<fftw_complex*> getComplexResultList() { return this->complexResult; }

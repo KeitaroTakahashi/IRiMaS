@@ -21,6 +21,8 @@ IRAudioAnalysisObject::IRAudioAnalysisObject(Component* parent) : IRNodeObject(p
                               getHeight()-(this->yMargin*2));
     this->analysisUI->setEditMode(isEditMode());
     
+    this->analysisUI->completeAnalysis = [this]{ analaysisCompleted(); };
+    
     //IRFileManager
     
     //addKeyListener(this->waveform);
@@ -162,4 +164,25 @@ int IRAudioAnalysisObject::getXMargin() const
 int IRAudioAnalysisObject::getYMargin() const
 {
     return this->yMargin;
+}
+
+void IRAudioAnalysisObject::analaysisCompleted()
+{
+    String id = "IRAnalysisMagnitude";
+    IRAnalysisDataStr* magData = this->analysisUI->magData.get();
+    this->callAddObjectGlobal(static_cast<IRObjectPtr>(magData), id);
+    
+    
+    IRObjectPtr val = nullptr;
+    
+    //get pointer of the data
+    val = this->callGetObjectGlobal(id);
+
+    // if success
+    if(val != nullptr){
+    
+    }else{
+        std::cout << id << " found\n";
+    }
+    std::cout << id << " stored\n";
 }

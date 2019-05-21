@@ -142,7 +142,7 @@ public:
         
         FileChooser chooser("Select an image file...",
                             {},
-                            "*.wav, *.aif, *.aiff");
+                            "*.wav, *.aif, *.aiff, *.mp3");
         if (chooser.browseForFileToOpen())
         {
             auto file = chooser.getResult();
@@ -198,6 +198,8 @@ public:
         //set audioBuffer to player
         std::vector<int>v = {0,1};
         this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
+        
+       
 
     }
     

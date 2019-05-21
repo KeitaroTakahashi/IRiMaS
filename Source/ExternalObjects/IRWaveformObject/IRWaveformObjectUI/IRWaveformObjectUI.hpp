@@ -56,7 +56,7 @@ public:
     void setListener(IRNodeObject::Listener* newListener);
     
     // IRUIAudioFoundation related method
-    void IRKeyPressed (int keyCode) override;
+    void IRKeyPressed (int keyCode, String keyText) override;
     
     enum UISTATUS
     {

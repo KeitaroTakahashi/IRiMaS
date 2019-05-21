@@ -11,7 +11,8 @@
 #include "IRNodeObject.hpp"
 #include "IRObjectSelection.hpp"
 #include "IRAutomationObjectPreference.h"
-#include "AutomationUI.h"
+#include "IRAutomationUI.hpp"
+#include "IRAnalysisData.h"
 
 class IRAutomationObject : public IRNodeObject,
                            public ChangeListener
@@ -22,14 +23,29 @@ public:
     {
         this->preference = new IRAutomationObjectPreference("Automation Preference", Rectangle<int>(400,720));
 
-        this->UI = new AutomationUI(Rectangle<int>(getWidth(),getHeight()));
+        this->UI = new IRAutomationUI(this);
         this->UI->setBounds(this->xMargin,
                             this->yMargin,
                             getWidth()-(this->xMargin*2),
                             getHeight()-(this->yMargin*2));
         addAndMakeVisible(this->UI);
+        this->UI->demoData(1260);
         
         setSize(300, 100);
+        
+        // get
+        IRObjectPtr val = nullptr;
+        String id = "IRAnalysisMagnitude";
+        val = this->callGetObjectGlobal(id);
+        
+        if(val != nullptr)
+        {
+            IRAnalysisDataStr* magData = static_cast<IRAnalysisDataStr*>(val);
+            std::cout << "fftsize = " << magData->fftsize << " : nframe = " << magData->nframe << std::endl;
+        }else
+        {
+            std::cout << "Error : could not load " << id << std::endl;
+        }
 
     }
     
@@ -55,18 +71,18 @@ public:
     void paint(Graphics &g) override
     {
         
-            auto area = getLocalBounds().reduced (2);
+        auto area = getLocalBounds().reduced (2);
             
-            g.setColour (SYSTEMCOLOUR.contents);
-            g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
-            
+        g.setColour (SYSTEMCOLOUR.contents);
+            //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
+        g.drawRect(getLocalBounds().toFloat(), 1.0);
       
         
     }
     // ------------------------------------------------------------
     void resized() override
     {
-        this->UI->setSize(getWidth()-10, getHeight()-10);
+        this->UI->setSize(getWidth(), getHeight());
     }
     // ------------------------------------------------------------
     
@@ -134,7 +150,7 @@ private:
         }
     }
     
-    AutomationUI *UI;
+    IRAutomationUI *UI;
     
     int xMargin = 5;
     int yMargin = 5;

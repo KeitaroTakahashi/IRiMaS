@@ -184,7 +184,7 @@ void IRiMaSMainComponent::openProject()
 {
     std::cout << "Opening a project..." << std::endl;
     
-    FileChooser chooser("Select an audio file to play...",
+    FileChooser chooser("Select a project file...",
                         {},
                         "*.irimas");
     

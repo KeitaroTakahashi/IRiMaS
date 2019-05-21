@@ -25,8 +25,8 @@ public:
     // ==================================================
     // key events
 
-    virtual void IRKeyPressed(int keyCode);
-    virtual void IRKeyReleased(int keyCode);
+    virtual void IRKeyPressed(int keyCode, String keyText);
+    virtual void IRKeyReleased(int keyCode, String keyText);
     
     // ==================================================
     // status change
@@ -77,6 +77,7 @@ private:
     
     //key event
     int pressedKeyCode;
+    String pressedKeyText;
     
     // status
     bool editModeFlag = true;

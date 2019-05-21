@@ -40,7 +40,7 @@ bool IRAudio::openFile(bool threadSafe)
 {
     FileChooser chooser("Select an audio file to play...",
                         {},
-                        "*.wav, *.aif, *.aiff");
+                        "*.wav, *.aif, *.aiff, *.mp3");
     if(chooser.browseForFileToOpen())
     {
         this->file = chooser.getResult();

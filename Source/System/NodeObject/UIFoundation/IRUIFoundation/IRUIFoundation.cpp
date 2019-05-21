@@ -23,13 +23,13 @@ IRUIFoundation::~IRUIFoundation()
     
 }
 // --------------------------------------------------
-void IRUIFoundation::IRKeyPressed(int keyCode)
+void IRUIFoundation::IRKeyPressed(int keyCode, String keyText)
 {
     std::cout << "IRUIFoundation IRKeyPressed = " << keyCode << std::endl;
 
 }
 // --------------------------------------------------
-void IRUIFoundation::IRKeyReleased(int keyCode)
+void IRUIFoundation::IRKeyReleased(int keyCode, String keyText)
 {
     std::cout << "IRUIFoundation IRKeyReleased = " << keyCode << std::endl;
 
@@ -41,7 +41,7 @@ bool IRUIFoundation::keyStateChanged(bool isKeyDown, Component* originatingCompo
     ///std::cout << "IRUIFoundation Key state changed = " << isKeyDown << std::endl;
     
     // IRKeyPressed() should be callsed in keyPressed event
-    if(!isKeyDown) IRKeyReleased(this->pressedKeyCode);
+    if(!isKeyDown) IRKeyReleased(this->pressedKeyCode, this->pressedKeyText);
     
     return true;
     
@@ -96,7 +96,8 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
     
     // user defined key commands
     this->pressedKeyCode = key.getKeyCode();
-    IRKeyPressed(this->pressedKeyCode);
+    this->pressedKeyText = key.getTextDescription();
+    IRKeyPressed(this->pressedKeyCode, this->pressedKeyText);
     //std::cout << "IRUIFoundation keyPressed = " << key.getKeyCode() << std::endl;
 
     return true;

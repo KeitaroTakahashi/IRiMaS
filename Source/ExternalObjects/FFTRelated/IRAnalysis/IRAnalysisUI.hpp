@@ -13,6 +13,8 @@
 #include "IRAudioReader.hpp"
 #include "IRAudioDescriptor.hpp"
 
+#include "IRAnalysisData.h"
+
 class IRAnalysisUI : public IRUIAudioFoundation,
 private ChangeListener,
 public ChangeBroadcaster
@@ -52,6 +54,12 @@ public:
     // ==================================================
     
     void deinitializeAudioData();
+    
+    std::function<void()> completeAnalysis;
+    
+    
+    std::shared_ptr<IRAnalysisDataStr> magData;
+    std::shared_ptr<IRAnalysisDataStr> centData;
 private:
     
     
@@ -84,6 +92,9 @@ private:
     std::vector<float> rawData;
     
     std::shared_ptr<IRFFTDescriptor> FFTSequence;
+    
+
+
     
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

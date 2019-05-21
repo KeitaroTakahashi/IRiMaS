@@ -65,7 +65,7 @@ void IRWaveform::openFile()
     
     FileChooser chooser("Select an image file...",
                         {},
-                        "*.wav, *.aif, *.aiff");
+                        "*.wav, *.aif, *.aiff, *.mp3");
     if (chooser.browseForFileToOpen())
     {
         auto file = chooser.getResult();
