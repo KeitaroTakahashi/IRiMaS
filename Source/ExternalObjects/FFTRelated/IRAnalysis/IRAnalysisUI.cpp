@@ -126,10 +126,12 @@ void IRAnalysisUI::fileImportCompleted()
     this->rawData.clear();
     this->rawData = this->audioData->getData()->getAudioBufferInVector();
     
+    /*
     for(auto val : this->rawData)
     {
         std::cout << val << std::endl;
     }
+     */
     this->FFTSequence->setAudioData(this->rawData);
     
     executeAnalysis();
@@ -175,23 +177,35 @@ void IRAnalysisUI::executeAnalysis()
 {
     if(this->FFTSequence.get() != nullptr)
     {
-        std::cout << "go\n";
         if(this->FFTSequence->getNumFrame() > 0)
-        {        std::cout << "go\n";
-
+        {
+            this->nframe = this->FFTSequence->getNumFrame();
             this->FFTSequence->FFT();
         }
     }
     
     this->FFTSequence->cartopol();
     
-    std::cout << "power size = " << this->FFTSequence->getPower().size() << " : frames = " << this->FFTSequence->getPower()[5].size() << std::endl;
+    //std::cout << "power size = " << this->FFTSequence->getPower().size() << " : frames = " << this->FFTSequence->getPower()[5].size() << std::endl;
     
     std::vector<float> buf = this->FFTSequence->getPower()[5];
     
     this->magData = std::make_shared<IRAnalysisDataStr>();
     this->magData->fftsize = this->fftsize;
     this->magData->nframe = this->nframe;
+    this->magData->data.clear();
+    for(auto powers : this->FFTSequence->getPower())
+    {
+        float p = 0;
+        for(auto power : powers)
+        {
+            p += power;
+        }
+        p = p/this->FFTSequence->ffthalfsize;
+        this->magData->data.push_back(p);
+    }
+    
+    
     
     this->centData = std::make_shared<IRAnalysisDataStr>();
     this->centData->fftsize = this->fftsize;

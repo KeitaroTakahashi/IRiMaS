@@ -17,40 +17,59 @@ IRIconBank::~IRIconBank()
     
 }
 
-Image IRIconBank::loadImageAndReturn(String url)
+IRIconBank::IRIconImage IRIconBank::loadImageAndReturn(String url)
 {
 #if JUCE_MAC
     return loadImage("/Contents/Resources" + url);
 #elif JUCE_IOS
     return loadImage(url);
 #endif
-    return Image();
+    return IRIconImage();
 }
 
 void IRIconBank::loadImages()
 {
-    String url = "/materials/Images/icon/menu/icon_zoomIn_white.png";
+    String url = "/materials/Images/icon/menu/icon_zoomIn";
     this->icon_zoomIn = loadImageAndReturn(url);
     
-    url = "/materials/Images/icon/menu/icon_zoomOut_white.png";
+    url = "/materials/Images/icon/menu/icon_zoomOut";
     this->icon_zoomOut = loadImageAndReturn(url);
     
-    url = "/materials/Images/icon/menu/icon_horizontalArrow_white.png";
+    url = "/materials/Images/icon/menu/icon_horizontalArrow";
     this->icon_horizontalMovable = loadImageAndReturn(url);
     
-    url = "/materials/Images/icon/menu/icon_verticalArrow_white.png";
+    url = "/materials/Images/icon/menu/icon_verticalArrow";
     this->icon_verticalMovable = loadImageAndReturn(url);
     
-    url = "/materials/Images/icon/menu/icon_crossArrow_white.png";
+    url = "/materials/Images/icon/menu/icon_crossArrow";
     this->icon_crossMovable = loadImageAndReturn(url);
     
-    url = "/materials/Images/icon/menu/icon_stop_white.png";
+    url = "/materials/Images/icon/menu/icon_stop";
     this->icon_notMovable = loadImageAndReturn(url);
+    
+    url = "/materials/Images/icon/menu/icon_comment";
+    this->icon_comment = loadImageAndReturn(url);
+    
+    url = "/materials/Images/icon/menu/icon_bezier";
+    this->icon_bezier = loadImageAndReturn(url);
+    
+    url = "/materials/Images/icon/menu/icon_linear";
+    this->icon_linear = loadImageAndReturn(url);
 }
 
 
-Image IRIconBank::loadImage(String url)
+IRIconBank::IRIconImage IRIconBank::loadImage(String url)
 {
-    File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url);
-    return ImageFileFormat::loadFrom(file);
+    IRIconImage img;
+    
+    String url_white = url + "_white.png";
+    String url_black = url + "_black.png";
+    
+    File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_white);
+    img.white = ImageFileFormat::loadFrom(file);
+    
+    file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_black);
+    img.black = ImageFileFormat::loadFrom(file);
+    
+    return img;
 }

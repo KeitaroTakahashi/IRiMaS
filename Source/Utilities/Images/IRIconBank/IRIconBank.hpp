@@ -15,31 +15,44 @@ class IRIconBank
 {
     
 public:
+    
+    struct IRIconImage
+    {
+        Image white;
+        Image black;
+    };
+    
     IRIconBank();
     ~IRIconBank();
     
     void loadImages();
     
-    Image getZoomIn() const { return this->icon_zoomIn; }
-    Image getZoomOut() const { return this->icon_zoomOut; }
-    Image getHorizontalMovable() const { return this->icon_horizontalMovable; }
-    Image getVerticalMovable() const { return this->icon_verticalMovable; }
-    Image getCrossMovable() const { return this->icon_crossMovable; }
-    Image getNotMovable() const { return this->icon_notMovable; }
-    
-    
-    Image loadImageAndReturn(String url);
+    IRIconImage getZoomIn() const { return this->icon_zoomIn; }
+    IRIconImage getZoomOut() const { return this->icon_zoomOut; }
+    IRIconImage getHorizontalMovable() const { return this->icon_horizontalMovable; }
+    IRIconImage getVerticalMovable() const { return this->icon_verticalMovable; }
+    IRIconImage getCrossMovable() const { return this->icon_crossMovable; }
+    IRIconImage getNotMovable() const { return this->icon_notMovable; }
+    IRIconImage getComment() const { return this->icon_comment; }
+    IRIconImage getBezier() const { return this->icon_bezier; }
+    IRIconImage getLinear() const { return this->icon_linear; }
+
+    IRIconImage loadImageAndReturn(String url);
     
 private:
     
-    Image loadImage(String url);
-    Image icon_zoomIn;
-    Image icon_zoomOut;
+    IRIconImage loadImage(String url);
+    IRIconImage icon_zoomIn;
+    IRIconImage icon_zoomOut;
     
-    Image icon_horizontalMovable;
-    Image icon_verticalMovable;
-    Image icon_crossMovable;
-    Image icon_notMovable;
+    IRIconImage icon_horizontalMovable;
+    IRIconImage icon_verticalMovable;
+    IRIconImage icon_crossMovable;
+    IRIconImage icon_notMovable;
+    
+    IRIconImage icon_comment;
+    IRIconImage icon_bezier;
+    IRIconImage icon_linear;
     
     
 };

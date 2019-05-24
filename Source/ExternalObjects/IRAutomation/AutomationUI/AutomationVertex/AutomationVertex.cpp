@@ -124,6 +124,7 @@ void vertex::mouseDragNodeEvent(const MouseEvent& e)
 void vertex::mouseUpNodeEvent(const MouseEvent& e)
 {
     recoverEventStatus();
+    
 }
 
 void vertex::recoverEventStatus()
@@ -219,10 +220,16 @@ Point<int> vertex::getMouseDownPos() const { return this->mouseDownPos; }
 void vertex::setPosition(Point<float>pos)
 {
     this->position = pos;
-    
     setCentrePosition(pos.getX(), pos.getY());
-    //setTopLeftPosition(pos.getX(), pos.getY());
 }
+
+void vertex::setPositionEx(Point<float>pos)
+{
+    this->position = pos;
+    setTopLeftPosition(pos.getX(), pos.getY());
+}
+
+
 
 Point<float> vertex::getPosition()
 {

@@ -28,11 +28,11 @@ public:
     
 private:
     
-    Image setImageByStatus();
+    void setImageByStatus();
     IRIconBank& ImageBank = singleton<IRIconBank>::get_instance();
 
     
-    movableStatus status = NOTMOVABLE;
+    movableStatus status = VERTICALMOVABLE;
     
 };
 #endif /* IRImageMovableButton_hpp */

@@ -11,11 +11,14 @@ IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeOb
 {
     this->automation = std::make_shared<InteractiveAutomation>(nodeObject);
     addAndMakeVisible(&this->automationView);
-    this->automationView.setViewedComponent(this->automation.get());
     
     this->automation->zoomInClickedCallback = [this]{ zoomInClicked(); };
     this->automation->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
     this->automation->movableClickedCallback = [this](IRAutomation::movableStatus status){ movableClicked(status); };
+    
+    // IRViewPort
+    this->automationView.setViewedComponent(this->automation.get());
+    this->automationView.visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
     
 }
 
@@ -33,14 +36,13 @@ void IRAutomationUI::resized()
     int h = getHeight() - this->yMargin*2;
     
     this->automationView.setBounds(this->xMargin, this->yMargin, w, h);
+    this->automationView.setViewPosition(this->previousOffsetX, 0);
     this->automation->setBounds(this->xMargin, this->yMargin, w * this->automation_width_ratio, h - 20);
-    
 }
 // ==================================================
 
 void IRAutomationUI::zoomInClicked()
 {
-    std::cout << "zoomInClicked\n";
     this->automation_width_ratio *= 2;
     resized();
     this->automation->reCalcPos();
@@ -48,7 +50,6 @@ void IRAutomationUI::zoomInClicked()
 
 void IRAutomationUI::zoomOutClicked()
 {
-    std::cout << "zoomOutClicked\n";
     this->automation_width_ratio /= 2;
     resized();
     this->automation->reCalcPos();
@@ -77,9 +78,6 @@ void IRAutomationUI::movableClicked(IRAutomation::movableStatus status)
             break;
             
     }
-    
-    
-    
 }
 
 void IRAutomationUI::setMovable(bool movable, bool verticalMovable, bool horizontalMovable)
@@ -96,15 +94,15 @@ void IRAutomationUI::setMovable(bool movable, bool verticalMovable, bool horizon
     
 }
 
-void IRAutomationUI::verticalMovableClicked()
+// ==================================================
+
+void IRAutomationUI::visibleAreaChanged(Rectangle<int> area)
 {
+    this->automation->setVisibleArea(area);
     
+    this->previousOffsetX = area.getX();
 }
 
-void IRAutomationUI::horizontalMovableClicked()
-{
-    
-}
 // ==================================================
 
 
@@ -113,3 +111,10 @@ void IRAutomationUI::demoData(int num)
     this->automation->demoData(num);
     //this->controller->setMovableStatus(IRAutomation::movableStatus::VERTICALMOVABLE);
 }
+
+void IRAutomationUI::setDescriptor(IRAnalysisDataStr* data)
+{
+    this->automation->setDescriptor(data);
+}
+
+

@@ -170,6 +170,7 @@ void IRAudioAnalysisObject::analaysisCompleted()
 {
     String id = "IRAnalysisMagnitude";
     IRAnalysisDataStr* magData = this->analysisUI->magData.get();
+    
     this->callAddObjectGlobal(static_cast<IRObjectPtr>(magData), id);
     
     
@@ -182,7 +183,7 @@ void IRAudioAnalysisObject::analaysisCompleted()
     if(val != nullptr){
     
     }else{
-        std::cout << id << " found\n";
+        std::cout << id << " NOT found\n";
     }
     std::cout << id << " stored\n";
 }

@@ -72,7 +72,7 @@ public:
         this->prev = this->current;
     }
     
-    float setValue(float dest) { this->dest = dest; }
+    void setValue(float dest) { this->dest = dest; }
     float getValue() const { return this->current; }
     
 private:

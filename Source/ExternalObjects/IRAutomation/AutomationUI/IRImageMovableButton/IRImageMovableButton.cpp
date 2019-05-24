@@ -27,28 +27,26 @@ void IRImageMovableButton::mouseDown(const MouseEvent& e)
 
 }
 
-Image IRImageMovableButton::setImageByStatus()
+void IRImageMovableButton::setImageByStatus()
 {
     switch(this->status)
     {
         case NOTMOVABLE:
-            setImage(ImageBank.getNotMovable());
+            setImage(ImageBank.getNotMovable().white);
             break;
         case HORIZONTALMOVABLE:
-            setImage(ImageBank.getHorizontalMovable());
+            setImage(ImageBank.getHorizontalMovable().white);
             break;
         case VERTICALMOVABLE:
-            setImage(ImageBank.getVerticalMovable());
+            setImage(ImageBank.getVerticalMovable().white);
             break;
         case CROSSMOVABLE:
-            setImage(ImageBank.getCrossMovable());
+            setImage(ImageBank.getCrossMovable().white);
             break;
         default:
-            return Image();
             break;
             
     }
     
-    return Image();
 }
 

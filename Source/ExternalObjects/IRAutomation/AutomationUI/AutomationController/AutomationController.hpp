@@ -14,6 +14,8 @@
 #include "IRImageButton.hpp"
 #include "IRImageMovableButton.hpp"
 #include "AutomationVertex.hpp"
+#include "IRImageLineButton.h"
+
 
 class AutomationController : public Component
 {
@@ -31,9 +33,9 @@ public:
     
     void setZoomInEvent(std::function<void()> callBack);
     void setZoomOutEvent(std::function<void()> callBack);
-    
-    
     void setMovableEvent(std::function<void(IRAutomation::movableStatus)> callBack);
+    void setCommentEvent(std::function<void()> callBack);
+    void setBezierEvent(std::function<void(IRAutomation::lineStatus)> callBack);
     
     // ==================================================
 
@@ -49,6 +51,10 @@ private:
     IRImageButton zoomOutButton;
     
     IRImageMovableButton movableButton;
+    
+    IRImageButton commentButton;
+    
+    IRImageLineButton bezierButton;
 
     // ==================================================
 
@@ -56,9 +62,18 @@ private:
     void zoomInClicked();
     void zoomOutClicked();
     
+    void commentClicked();
+    void bezierClicked();
+    
+    
+    bool isCommentOn = true;
+    
     
     int buttonSize = 40;
     int buttonInterval = 5;
+    
+    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+
 };
 
 #endif /* AutomationController_hpp */

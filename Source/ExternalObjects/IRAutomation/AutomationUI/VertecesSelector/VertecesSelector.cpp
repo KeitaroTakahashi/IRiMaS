@@ -35,7 +35,6 @@ void VertecesSelector::mouseDownHandler(const MouseEvent& e)
     
     //vertex* nodeObj = dynamic_cast<vertex* >(e.originalComponent);
  
-    std::cout << "mouseDown : " << nodeObj << std::endl;
     if (nodeObj != nullptr)
     {
         if (e.mods.isShiftDown() || e.mods.isCommandDown())
@@ -106,8 +105,9 @@ void VertecesSelector::mouseDragHandler(const MouseEvent& e)
                     
                     bounds = boundsConstrainAboveZero(bounds);
                     bounds = boundsConstrainWithinParent(bounds);
-
+                
                     comp->setBounds(bounds);
+                    //comp->setPosition(Point<float>(bounds.getX(), bounds.getY()));
             }
         }
         
@@ -125,6 +125,12 @@ void VertecesSelector::mouseUpHandler(const MouseEvent& e)
     {
         endSelection(e);
         this->multiSelectionFlag = false;
+    }else{
+        for(auto comp : this->selectedObjectList)
+        {
+            Rectangle<float> b = comp->getBounds().toFloat();
+            comp->setPosition(Point<float>(b.getX() + b.getWidth()/2, b.getY() + b.getHeight()/2));
+        }
     }
 }
 
@@ -173,7 +179,7 @@ void VertecesSelector::judgeSelection(const Rectangle<int>& area, const MouseEve
 
         vertex* obj = static_cast<vertex*>(item);
         
-        obj->showRect();
+        //obj->showRect();
         
         
         

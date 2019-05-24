@@ -331,17 +331,18 @@ void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)
     std::cout << this->p_obj.at(id) << std::endl;
 }
 // ------------------------------------------------------------
-IRObjectPtr IRWorkSpace::getObjectGlobal(String id)
+void IRWorkSpace::getObjectGlobal(IRNodeObject* obj)
 {
+    String id = obj->getGlobalObjectID();
+
     std::cout << "getObjectGlobal of " << id << std::endl;
     
     if(this->p_obj.find(id) != this->p_obj.end()){
         std::cout << this->p_obj.at(id) << std::endl;
-        return this->p_obj.at(id);
+        obj->setGlobalObject(this->p_obj.at(id));
     }else{
-        return nullptr;
+        std::cout << "could not find "<< id << std::endl;
     }
-    
 }
 // ------------------------------------------------------------
 

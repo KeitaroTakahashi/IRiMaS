@@ -15,6 +15,9 @@
 #include "AutomationVertex.hpp"
 #include "VertecesSelector.hpp"
 #include "AutomationController.hpp"
+#include "IRMouseGrid.h"
+#include "IRAnalysisData.h"
+
 
 using namespace IRAutomation;
 
@@ -79,14 +82,32 @@ public:
     void zoomInClicked();
     void zoomOutClicked();
     void movableClicked(IRAutomation::movableStatus status);
-    
+    void commentClicked();
+    void bezierClicked(IRAutomation::lineStatus status);
+
     std::function<void()>zoomInClickedCallback;
     std::function<void()>zoomOutClickedCallback;
     std::function<void(IRAutomation::movableStatus status)>movableClickedCallback;
     // ==================================================
+
+    void setVisibleArea(Rectangle<int> area);
+    // ==================================================
     
+    bool isCommentShow() const { return this->isCommentShowFlag; }
+    void setCommentShow(bool flag) { this->isCommentShowFlag = flag; repaint(); }
+    
+    void paintComment(Graphics& g);
+    
+    bool isBezierShow() const { return this->isBezierShowFlag; }
+    void setBezierShow(bool flag) { this->isBezierShowFlag = flag; repaint(); }
+    void paintBezierLines(Graphics& g);
+    // ==================================================
+
     // test
     void demoData(int num);
+    
+    void setDescriptor(IRAnalysisDataStr* data);
+
     
     // ==================================================
     
@@ -107,6 +128,8 @@ private:
     };
     
     std::shared_ptr<AutomationController> controller;
+    int previousOffsetX = 0;
+    Rectangle<int> visibleArea;
     
     
     float automation_width_ratio = 1.0;
@@ -116,6 +139,7 @@ private:
     Array<vertex* > verteces;
     Array<vertex* > selectedVerteces;
     
+    
     float MaxVertexValue = -999999;
     float MinVertexValue = 999999;
     
@@ -123,11 +147,17 @@ private:
     
     std::shared_ptr<VertecesSelector> selector;
     
-    void createVertex(Point<int> pos, bool isSelected);
+    void createVertex(Point<float> pos, bool isSelected);
     
     void drawVerteces(Graphics& g);
     
     void drawLinesBetweenVerteces(Graphics& g);
+    
+    // ==================================================
+
+    bool isCommentShowFlag = true;
+    
+    bool isBezierShowFlag = false;
     
     // ==================================================
     
@@ -136,6 +166,7 @@ private:
     
     // ==================================================
     
+    IRMouseGrid mouseGrid;
     
     
     // ==================================================

@@ -207,15 +207,16 @@ IRObjectPtr IRNodeObject::callGetObjectGlobal(String id)
     
     this->p_id = id;
     
-    std::cout << "er \n";
-    
-    this->listeners.callChecked(checker, [this](Listener& l){ p_obj = l.getObjectGlobal(p_id); });
-    
+    std::cout << "listener" <<  this->p_obj << std::endl;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.getObjectGlobal(this); });
+    std::cout << "listener" <<  this->p_obj << std::endl;
+
     //check again
     if(checker.shouldBailOut()) return nullptr;
     //std::function
     if(this->getObjectGlobalCompleted != nullptr) this->getObjectGlobalCompleted();
     
+    std::cout << " got pointer " <<  this->p_obj << std::endl;
     return this->p_obj;
 }
 

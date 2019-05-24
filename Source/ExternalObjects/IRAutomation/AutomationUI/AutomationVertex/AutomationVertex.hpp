@@ -28,6 +28,13 @@ namespace IRAutomation {
         CROSSMOVABLE
     };
     
+    enum lineStatus
+    {
+        LINEAR,
+        BEZIER
+    };
+    
+    
     class vertex : public Component
     {
         
@@ -105,8 +112,18 @@ namespace IRAutomation {
         void setPosition(Point<float>pos);
         Point<float> getPosition();
         
+        void setPositionEx(Point<float>pos);
+        
+        void setBezierRatio(float ratio) { this->bezierRatio = ratio; }
+        float getBezierRatio() const { return this->bezierRatio; }
         // --------------------------------------------------
-
+        
+        void calcBezier(vertex* previous);
+        void setBezier(vertex* a, vertex* b)
+        {
+            this->bezier1 = a;
+            this->bezier2 = b;
+        }
     
     private:
         
@@ -133,8 +150,13 @@ namespace IRAutomation {
         int ordinarySize = 5;
         
         // --------------------------------------------------
-
         
+        vertex* bezier1;
+        vertex* bezier2;
+        // in case this object is used for bezier points.
+        float bezierRatio = 0.5;
+        // --------------------------------------------------
+
     };
 }
 #endif /* AutomationVertex_hpp */

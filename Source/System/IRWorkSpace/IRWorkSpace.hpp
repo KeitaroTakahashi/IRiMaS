@@ -86,7 +86,7 @@ public:
     void nodeObjectModifiedNotification(IRNodeObject* obj) override;
 
     void addObjectGlobal(IRObjectPtr obj, String id) override;
-    IRObjectPtr getObjectGlobal(String id) override;
+    void getObjectGlobal(IRNodeObject* obj) override;
     
     // object control
     void copySelectedObjects();

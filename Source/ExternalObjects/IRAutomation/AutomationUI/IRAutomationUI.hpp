@@ -13,7 +13,7 @@
 #include "IRUIFoundation.hpp"
 #include "InteractiveAutomation.hpp"
 #include "AutomationController.hpp"
-
+#include "IRViewPort.hpp"
 
 class IRAutomationUI : public IRUIFoundation
 {
@@ -26,21 +26,26 @@ public:
     
     void demoData(int num);
     
+    void setDescriptor(IRAnalysisDataStr* data);
+    
 private:
     // ==================================================
     
-    Viewport automationView;
+    IRViewPort automationView;
+    
+    void visibleAreaChanged(Rectangle<int> area);
+    
+    int previousOffsetX = 0;
     
     // ==================================================
     void zoomInClicked();
     void zoomOutClicked();
     void movableClicked(IRAutomation::movableStatus status);
-    
+    // ==================================================
+
     // setup
     bool isVerticalMovable = true;
     bool isHorizontalMovable = true;
-    void verticalMovableClicked();
-    void horizontalMovableClicked();
     
     // all setter
     void setMovable(bool movable, bool verticalMovable, bool horizontalMovable);
@@ -52,8 +57,8 @@ private:
     
     float automation_width_ratio = 1.0;
     
-    int xMargin = 10;
-    int yMargin = 10;
+    int xMargin = 5;
+    int yMargin = 1;
     
     int controllerWidth = 40;
 };

@@ -97,7 +97,7 @@ public:
         
         // add object to a global space in Workspace
         virtual void addObjectGlobal(IRObjectPtr obj, String id) {};
-        virtual IRObjectPtr getObjectGlobal(String id) { return nullptr;};
+        virtual void getObjectGlobal(IRNodeObject *obj) {};
     };
     
     virtual void addListener(Listener* newListener) { this->listeners.add(newListener); }
@@ -162,7 +162,13 @@ public:
     void callReceiveVideoLink(IRVideo *obj);
 
     // ===========================================================================
+        // Global Object
     
+    String getGlobalObjectID() const { return this->p_id; }
+    void setGlobalObject(IRObjectPtr obj) { this->p_obj = obj; }
+    IRObjectPtr getGlobalObject() { return this->p_obj; }
+    // ===========================================================================
+
     // methods for save and load functions. Developers need to define the behavior of objects when save or load project files.
     // otherwise, save data does not contain any information about the object setting but only the objectType and its bounds.
     // The save method must follow the syntax of Json using json11 library.

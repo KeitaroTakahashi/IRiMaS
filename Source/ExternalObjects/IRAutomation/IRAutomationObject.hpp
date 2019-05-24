@@ -12,7 +12,6 @@
 #include "IRObjectSelection.hpp"
 #include "IRAutomationObjectPreference.h"
 #include "IRAutomationUI.hpp"
-#include "IRAnalysisData.h"
 
 class IRAutomationObject : public IRNodeObject,
                            public ChangeListener
@@ -33,19 +32,7 @@ public:
         
         setSize(300, 100);
         
-        // get
-        IRObjectPtr val = nullptr;
-        String id = "IRAnalysisMagnitude";
-        val = this->callGetObjectGlobal(id);
-        
-        if(val != nullptr)
-        {
-            IRAnalysisDataStr* magData = static_cast<IRAnalysisDataStr*>(val);
-            std::cout << "fftsize = " << magData->fftsize << " : nframe = " << magData->nframe << std::endl;
-        }else
-        {
-            std::cout << "Error : could not load " << id << std::endl;
-        }
+       
 
     }
     
@@ -71,7 +58,7 @@ public:
     void paint(Graphics &g) override
     {
         
-        auto area = getLocalBounds().reduced (2);
+        //auto area = getLocalBounds().reduced (2);
             
         g.setColour (SYSTEMCOLOUR.contents);
             //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
@@ -100,6 +87,9 @@ public:
             space->setPreferenceObj(preference);
         }
         
+        getGlobalObjectFromParent();
+       
+        
     }
     //===============================================================
     //Listener
@@ -110,6 +100,33 @@ public:
     //===============================================================
 
     IRAutomationObjectPreference *preference;
+    
+    //===============================================================
+// Global Object
+    
+    void getGlobalObjectFromParent()
+    {
+        // get
+        IRObjectPtr val = nullptr;
+        String id = "IRAnalysisMagnitude";
+        this->callGetObjectGlobal(id);
+        
+        val = this->getGlobalObject();
+        if(val != nullptr)
+        {
+            IRAnalysisDataStr* magData = static_cast<IRAnalysisDataStr*>(val);
+            std::cout << "fftsize = " << magData->fftsize << " : nframe = " << magData->nframe << std::endl;
+            
+            this->UI->setDescriptor(magData);
+        }else
+        {
+            std::cout << "Error : could not load " << id << std::endl;
+        }
+    }
+    
+    
+    //===============================================================
+
     
 private:
     
@@ -152,8 +169,8 @@ private:
     
     IRAutomationUI *UI;
     
-    int xMargin = 5;
-    int yMargin = 5;
+    int xMargin = 0;
+    int yMargin = 0;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRAutomationObject)
 

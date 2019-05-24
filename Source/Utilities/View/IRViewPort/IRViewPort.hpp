@@ -1,0 +1,33 @@
+//
+//  IRViewPort.hpp
+//  NodeComponentObject_Study - App
+//
+//  Created by Keitaro on 21/05/2019.
+//
+
+#ifndef IRViewPort_hpp
+#define IRViewPort_hpp
+
+#include "JuceHeader.h"
+#include "ColourLib.h"
+
+class IRViewPort : public Viewport
+{
+public:
+    IRViewPort();
+    ~IRViewPort();
+    
+    std::function<void(Rectangle<int>)> visibleAreaChangedCallback;
+    std::function<void()> viewedComponentChangedCallback;
+    
+private:
+    
+    
+    void visibleAreaChanged (const Rectangle< int > &newVisibleArea) override;
+    void viewedComponentChanged (Component *newComponent) override;
+    
+    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+
+};
+
+#endif /* IRViewPort_hpp */
