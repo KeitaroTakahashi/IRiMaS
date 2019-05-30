@@ -17,8 +17,8 @@ IRUIAudioFoundation(parent)
                                                         IRWindow::TYPE::HAMMING);
     
     this->FFTSequence->setDescriptor(2,
-                                     IRFFTDescriptor::FFTDescriptor::FFT_MAGNITUDE,
-                                     IRFFTDescriptor::FFTDescriptor::FFT_CENTROID);
+                                     FFTDescriptor::FFT_MAGNITUDE,
+                                     FFTDescriptor::FFT_CENTROID);
     
     addAndMakeVisible(&this->openButton);
     this->openButton.setButtonText("open audio");
@@ -139,6 +139,8 @@ void IRAnalysisUI::fileImportCompleted()
     // set received Ptr to the Link System
     this->parent->setAudioLink(this->audioData->getData());
     
+   
+    
 }
 
 
@@ -171,12 +173,14 @@ void IRAnalysisUI::audioPtrDelivery(IRAudio *obj)
     getFilePtr(this->file);
 }
 
-
-
 void IRAnalysisUI::executeAnalysis()
 {
+    
     if(this->FFTSequence.get() != nullptr)
     {
+        
+        std::cout << "opearate analysis for " << this->FFTSequence->getNumFrame() << " frames\n";
+
         if(this->FFTSequence->getNumFrame() > 0)
         {
             this->nframe = this->FFTSequence->getNumFrame();
@@ -186,34 +190,25 @@ void IRAnalysisUI::executeAnalysis()
     
     this->FFTSequence->cartopol();
     
-    //std::cout << "power size = " << this->FFTSequence->getPower().size() << " : frames = " << this->FFTSequence->getPower()[5].size() << std::endl;
+    std::cout << "power size = " << this->FFTSequence->getPower().size() << " : frames = " << this->FFTSequence->getPower()[0].size() << std::endl;
     
-    std::vector<float> buf = this->FFTSequence->getPower()[5];
+    this->FFTSequence->calcMagnitude();
     
     this->magData = std::make_shared<IRAnalysisDataStr>();
-    this->magData->fftsize = this->fftsize;
-    this->magData->nframe = this->nframe;
-    this->magData->data.clear();
-    for(auto powers : this->FFTSequence->getPower())
+    this->magData->setFFTSize(this->fftsize);
+    this->magData->setRowDataAndNoamalize(this->FFTSequence->getMagnitude());
+    
+    // register extracted descriptors to IRDescriptor through IRAudio
+    // descriptors are stored in IRAudio class in the file manager
+    IRDescriptor* descriptor = this->audioData->getData()->getDescriptor();
+    if(!descriptor->isMagnitude())
     {
-        float p = 0;
-        for(auto power : powers)
-        {
-            p += power;
-        }
-        p = p/this->FFTSequence->ffthalfsize;
-        this->magData->data.push_back(p);
+        descriptor->setMagnitude(*this->magData.get());
+        descriptor->addDescriptorList(FFTDescriptor::FFT_MAGNITUDE);
     }
-    
-    
-    
-    this->centData = std::make_shared<IRAnalysisDataStr>();
-    this->centData->fftsize = this->fftsize;
-    this->centData->nframe = this->nframe;
-   // magData->data = this->
-    
     
     if(this->completeAnalysis != nullptr) this->completeAnalysis();
     
+    std::cout << "Analysis Completed\n";
 
 }

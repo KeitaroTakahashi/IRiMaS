@@ -9,13 +9,9 @@
 #define IRVideoPlayer_hpp
 
 // opencv for getting a video frame
-#include <opencv.hpp>
-#include <opencv2/opencv.hpp>
-#include <highgui.hpp>
 #include "IRUIFoundation.hpp"
 
 #include "IRFoundation.h"
-#include "IRCVVideoPlayer.hpp"
 
 
 class IRVideoPlayer : public IRUIFoundation,

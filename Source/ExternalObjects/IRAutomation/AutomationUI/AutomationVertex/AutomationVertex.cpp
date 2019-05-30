@@ -220,13 +220,19 @@ Point<int> vertex::getMouseDownPos() const { return this->mouseDownPos; }
 void vertex::setPosition(Point<float>pos)
 {
     this->position = pos;
-    setCentrePosition(pos.getX(), pos.getY());
+    setCentrePosition(pos.roundToInt());
+}
+
+void vertex::setPosition(Point<int>pos)
+{
+    this->position = pos.toFloat();
+    setCentrePosition(pos);
 }
 
 void vertex::setPositionEx(Point<float>pos)
 {
     this->position = pos;
-    setTopLeftPosition(pos.getX(), pos.getY());
+    setTopLeftPosition(pos.roundToInt());
 }
 
 

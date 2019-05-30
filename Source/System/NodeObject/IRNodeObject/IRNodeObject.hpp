@@ -160,6 +160,8 @@ public:
     void callReceiveImageLink(IRImage* obj);
     void callReceiveDataLink(IRData *obj);
     void callReceiveVideoLink(IRVideo *obj);
+    
+    void callUpdateIRFileManager(IRFileManager* fileManager);
 
     // ===========================================================================
         // Global Object

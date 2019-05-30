@@ -68,9 +68,10 @@ template<class T>
 void IRObjectFactory::registerObject(std::string id, std::string name, Image img)
 {
     
-    // this->list[id] = IRObjectFactory::t_object(id, name, img, obj);
-    
     // now trying with shared pointer
+    
+    std::cout<< id << " registering : size is " << this->list.size() << std::endl;
+
     
     std::shared_ptr<IRObjectCreater<T>> obj = std::make_shared<IRObjectCreater<T>>();
     // IRObjectCreater<T>* obj = new IRObjectCreater<T>();

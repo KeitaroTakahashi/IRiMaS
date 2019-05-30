@@ -110,6 +110,8 @@ namespace IRAutomation {
         
         
         void setPosition(Point<float>pos);
+        void setPosition(Point<int>pos);
+
         Point<float> getPosition();
         
         void setPositionEx(Point<float>pos);
@@ -151,8 +153,8 @@ namespace IRAutomation {
         
         // --------------------------------------------------
         
-        vertex* bezier1;
-        vertex* bezier2;
+        vertex* bezier1 = nullptr;
+        vertex* bezier2 = nullptr;
         // in case this object is used for bezier points.
         float bezierRatio = 0.5;
         // --------------------------------------------------

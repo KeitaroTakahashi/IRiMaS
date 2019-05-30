@@ -363,6 +363,15 @@ void IRNodeObject::callReceiveVideoLink(IRVideo* obj)
     if(checker.shouldBailOut()) return;
 }
 
+void IRNodeObject::callUpdateIRFileManager(IRFileManager* fileManager)
+{
+    
+    setIRFileManager(fileManager);
+    Component::BailOutChecker checker(this);
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.updateIRFileManager(getFileManager()); });
+    if(checker.shouldBailOut()) return;
+}
 // ==================================================
 
 void IRNodeObject::saveObjectContents()

@@ -12,6 +12,8 @@ IRAudio::IRAudio():
 Thread("ImportAudioFile Background thread")
 {
     this->formatManager.registerBasicFormats();
+    this->descriptor = std::make_shared<IRDescriptor>();
+    this->analyzer = std::make_shared<IRFFTDescriptor>(2048, 1024);
     startThread();
 }
 // ------------------------------------------------------------------
@@ -162,6 +164,7 @@ void IRAudio::checkForPathToOpen()
         sendChangeMessage();
     }
 }
+// --------------------------------------------------
 
 void IRAudio::callFileImportCompleted()
 {
@@ -177,6 +180,7 @@ void IRAudio::callFileImportCompleted()
     //std::function
     if(this->onImportCompleted != nullptr) this->onImportCompleted();
 }
+// --------------------------------------------------
 
 void IRAudio::callFileStatusChanged(IRAudio* obj)
 {
@@ -190,3 +194,91 @@ void IRAudio::callFileStatusChanged(IRAudio* obj)
     //check again
     if(checker.shouldBailOut()) return;
 }
+
+// --------------------------------------------------
+void IRAudio::operateBasicDescriptors()
+{
+    this->analyzer->calcCentroid();
+
+    IRAnalysisDataStr newMag (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
+    newMag.setRowDataAndNoamalize(this->analyzer->getMagnitude());
+    getDescriptor()->setMagnitude(newMag);
+
+    IRAnalysisDataStr newCent (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
+    newCent.setRowDataAndNoamalize(this->analyzer->getCentroid());
+    getDescriptor()->setCentroid(newCent);
+
+    IRAnalysisDataStr newSp (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
+    newSp.setRowDataAndNoamalize(this->analyzer->getSpread());
+    getDescriptor()->setSpread(newSp);
+}
+// --------------------------------------------------
+void IRAudio::operateFlatness()
+{
+    this->analyzer->calcFlatness();
+ 
+    IRAnalysisDataStr newFlat (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
+    newFlat.setRowDataAndNoamalize(this->analyzer->getFlatness());
+    getDescriptor()->setFlatness(newFlat);
+}
+// --------------------------------------------------
+
+bool IRAudio::operateAnalysis(FFTDescriptor descriptor)
+{
+    
+    // if FFT is not yet operated, then do it.
+    if(!this->analyzer->hasFFTOperated()){
+        
+        if(this->analyzer->getNumFrame() == 0)
+            this->analyzer->setAudioData(this->getAudioBufferInVector());
+        this->analyzer->operateAnalysis();
+        
+    }
+    
+    // calcCentroid calculates Magnitude, Centroid, and Spread
+    switch (descriptor)
+    {
+        case FFTDescriptor::FFT_MAGNITUDE:
+            operateBasicDescriptors();
+            break;
+        case FFTDescriptor::FFT_CENTROID:
+            operateBasicDescriptors();
+            break;
+        case FFTDescriptor::FFT_SPREAD:
+            operateBasicDescriptors();
+            break;
+        case FFTDescriptor::FFT_FLATNESS:
+            operateFlatness();
+            break;
+        case FFTDescriptor::FFT_NOISINESS:
+            return "Noisiness";
+            break;
+            
+        case FFTDescriptor::FFT_PITCH:
+            return "Pitch";
+            break;
+            
+        case FFTDescriptor::FFT_MFCS:
+            return "MFCs";
+            break;
+            
+        case FFTDescriptor::FFT_MFCCS:
+            return "MFCCs";
+            break;
+            
+        case FFTDescriptor::FFT_BFCS:
+            return "BFCs";
+            break;
+            
+        case FFTDescriptor::FFT_BFCCS:
+            return "BFCCs";
+            break;
+        default:
+            return "UNKNOWN";
+            break;
+            
+    }
+    
+    return true;
+}
+// --------------------------------------------------

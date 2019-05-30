@@ -31,8 +31,6 @@
 // video related object
 #include "IRVideoPlayerObject.hpp"
 #include "IRVideoThumbnailObject.hpp"
-#include "IRFfomegVideoPlayer.hpp"
-#include "IRCVVideoPlayer.hpp"
 // ------------------------------------------------------------
 // Text related object
 #include "IRLabelObject.hpp"

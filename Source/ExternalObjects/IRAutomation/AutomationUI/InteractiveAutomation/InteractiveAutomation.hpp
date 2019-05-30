@@ -13,10 +13,9 @@
 
 #include "IRUIFoundation.hpp"
 #include "AutomationVertex.hpp"
-#include "VertecesSelector.hpp"
+#include "VertecesSelector.h"
 #include "AutomationController.hpp"
 #include "IRMouseGrid.h"
-#include "IRAnalysisData.h"
 
 
 using namespace IRAutomation;
@@ -34,6 +33,8 @@ public:
     
     void paint(Graphics& g) override;
     void resized() override;
+    
+    void initAutomation();
     // ==================================================
     
     void mouseDown(const MouseEvent& e) override;
@@ -106,7 +107,7 @@ public:
     // test
     void demoData(int num);
     
-    void setDescriptor(IRAnalysisDataStr* data);
+    void setDescriptor(IRAnalysisDataStr& data);
 
     
     // ==================================================
@@ -147,7 +148,7 @@ private:
     
     std::shared_ptr<VertecesSelector> selector;
     
-    void createVertex(Point<float> pos, bool isSelected);
+    void createVertex(Point<float> pos, bool isSelected, bool shouldSort = true);
     
     void drawVerteces(Graphics& g);
     
@@ -175,6 +176,11 @@ private:
       //              Component* originatingComponent) override;
     void IRKeyPressed(int keyCode,String keyText) override;
     // ==================================================
+    
+    
+
+    // ==================================================
+
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InteractiveAutomation)

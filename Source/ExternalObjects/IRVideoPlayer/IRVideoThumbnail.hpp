@@ -8,6 +8,7 @@
 #ifndef IRVideoThumnail_hpp
 #define IRVideoThumnail_hpp
 
+/*
 #include <opencv.hpp>
 #include <opencv2/opencv.hpp>
 #include <highgui.hpp>
@@ -92,5 +93,5 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoThumbnail)
     
 };
-
+*/
 #endif /* IRVideoThumnail_hpp */

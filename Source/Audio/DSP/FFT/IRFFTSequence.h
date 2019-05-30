@@ -23,7 +23,6 @@ public:
     windowType(windowType),
     windowLib(fftsize, windowType)
     {
-        
     }
     // ------------------------------------------------------------
     ~IRFFTSequence() {}
@@ -46,6 +45,9 @@ public:
             this->complexResult.push_back(copyComplexData(getComplexResult()));
         }
         destroySetup();
+        
+        this->hasFFTOperatedFlag = true;
+        
     }
     
     void IFFT()
@@ -84,6 +86,10 @@ public:
     std::vector<fftw_complex*> getComplexResultList() { return this->complexResult; }
     std::vector<std::vector<float>> getPower() { return this->power; }
     std::vector<float> getMaxPower() const { return this->maxPower; }
+    
+    bool hasFFTOperated()               const { return this->hasFFTOperatedFlag; }
+
+    int getHopSize() const { return this->hopsize; }
     // ============================================================
 private:
     
@@ -120,7 +126,7 @@ private:
             }
         }while(true);
         
-        std::cout << "audio segment for FFT made. nframe = " << this->frameData.size() << std::endl;
+        std::cout << "audio segment for FFT made. nframe = " << this->frameData.size() << " : fftsize = " << getFFTSize() << " : hopsize = " << getHopSize() <<std::endl;
     }
     
     int fftsize;
@@ -136,5 +142,12 @@ private:
     IRWindow::TYPE windowType;
     
     IRWindow::IRSignalWindowLib windowLib;
+    // ============================================================
+
+    bool hasFFTOperatedFlag = false;
+    
+    
+
+
 };
 #endif /* IRFFTSequence_h */

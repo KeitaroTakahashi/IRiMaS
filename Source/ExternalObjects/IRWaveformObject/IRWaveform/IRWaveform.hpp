@@ -93,7 +93,6 @@ private:
 
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    IRFileManager& FILEMANAGER = singleton<IRFileManager>::get_instance();
 
 };
 

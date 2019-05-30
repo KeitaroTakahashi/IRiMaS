@@ -7,10 +7,11 @@
 
 #ifndef IRVideoDataLoader_h
 #define IRVideoDataLoader_h
-#include <opencv.hpp>
-#include <opencv2/opencv.hpp>
-#include <highgui.hpp>
+//#include <opencv.hpp>
+//#include <opencv2/opencv.hpp>
+//#include <highgui.hpp>
 
+/*
 #include "IRFoundation.h"
 
 class IRVideoDataLoader
@@ -134,6 +135,6 @@ private:
     cv::Mat frame;
     cv::VideoCapture* cap = nullptr;
     
-};
+};*/
 
 #endif /* IRVideoDataLoader_h */

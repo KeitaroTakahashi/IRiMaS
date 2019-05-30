@@ -6,7 +6,7 @@
 //
 
 #include "IRVideoThumbnail.hpp"
-
+/*
 void IRVideoThumbnail::paint(Graphics& g)
 {
     g.fillAll(SYSTEMCOLOUR.background);
@@ -158,6 +158,6 @@ Image IRVideoThumbnail::loadImage(String filePath)
     return imgData;
 }
 
-
+*/
 
 

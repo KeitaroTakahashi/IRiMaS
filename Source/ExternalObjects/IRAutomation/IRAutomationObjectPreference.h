@@ -19,6 +19,8 @@ public:
     {
         this->UI = new AutomationPreferenceUI(title);
         addAndMakeVisible(this->UI);
+        
+       
     }
     
     ~IRAutomationObjectPreference()
@@ -32,6 +34,7 @@ public:
         IRPreferenceObject::resized();
         this->UI->setBounds(0,0,getWidth(), getHeight());
         
+        
     }
     
     //===============================================================
@@ -41,9 +44,14 @@ public:
         
     }
     
+    AutomationPreferenceUI* getUI() { return this->UI; }
+    
+    
 private:
     
     AutomationPreferenceUI* UI;
+    
+    
     
     // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

@@ -49,6 +49,8 @@ public:
         if(this->windowType != TYPE::NONE)
             for(int i=0;i<length;i++)
                 buffer[i] *= this->window[i];
+
+        
         return buffer;
     }
     // ------------------------------------------------------------
@@ -84,15 +86,18 @@ private:
     // ------------------------------------------------------------
     void createHanning()
     {
+        float ff = (float)this->framesize;
         for(int i=0;i<this->framesize;i++){
-            this->window.push_back(0.5 - 0.5 * cos( 2 * M_PI * i));
+            this->window.push_back(0.5 - 0.5 * cos( 2 * M_PI * (float)i/ff));
+
         }
     }
     // ------------------------------------------------------------
     void createHamming()
     {
+        float ff = (float)this->framesize;
         for(int i=0;i<this->framesize;i++){
-            this->window.push_back(0.54 - 0.46 * cos( 2 * M_PI * i));
+            this->window.push_back(0.54 - 0.46 * cos( 2 * M_PI * (float)i/ff));
         }
     }
     // ------------------------------------------------------------

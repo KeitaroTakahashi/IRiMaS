@@ -20,12 +20,14 @@ IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeOb
     this->automationView.setViewedComponent(this->automation.get());
     this->automationView.visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
     
+    this->parent = nodeObject;
 }
 
 
 IRAutomationUI::~IRAutomationUI()
 {
-    
+    if(this->audioData != nullptr)
+        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
 }
 
 // ==================================================
@@ -112,9 +114,79 @@ void IRAutomationUI::demoData(int num)
     //this->controller->setMovableStatus(IRAutomation::movableStatus::VERTICALMOVABLE);
 }
 
-void IRAutomationUI::setDescriptor(IRAnalysisDataStr* data)
+void IRAutomationUI::setDescriptor(IRAnalysisDataStr& data)
 {
     this->automation->setDescriptor(data);
 }
 
+void IRAutomationUI::openFile()
+{
+    
+    FileChooser chooser("Select an image file...",
+                        {},
+                        "*.wav, *.aif, *.aiff, *.mp3");
+    if (chooser.browseForFileToOpen())
+    {
+        auto file = chooser.getResult();
+        this->file = file;
+        auto p = file.getFullPathName();
+        this->path = p;
+        
+        String pathToOpen;
+        pathToOpen.swapWith(p);
+        
+        if(pathToOpen.isNotEmpty())
+        {
+            getFilePtr(this->file);
+        }
+    }
+}
 
+void IRAutomationUI::openFile(String path)
+{
+    if(path.isNotEmpty())
+    {
+        File f(path);
+        this->file = f;
+        this->path = path;
+        
+        if(f.exists())
+        {
+            getFilePtr(this->file);
+        }
+    }
+}
+
+void IRAutomationUI::getFilePtr(File file)
+{
+    
+    std::cout << "getFilePtr\n";
+    // set a callback function which is called when file load is completed.
+    // get a pointer of the audio file
+    std::function<void()> callback = [this]{fileImportCompleted();};
+    std::cout << "getFilePtrWithCallBack "<< getFileManager()<< std::endl;
+    
+    
+    getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+                                             file,
+                                             this->parent,
+                                             callback);
+    std::cout << "notify!\n";
+
+    // notify changes to IRProject to update IRFileInspecter
+    this->parent->notifyNodeObjectModification();
+    
+}
+
+void IRAutomationUI::fileImportCompleted()
+{
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+    
+    this->status = AudioFileImportCompleted;
+    sendChangeMessage();
+    
+    fileImportCompletedAction();
+    
+    std::cout << "fileImportCompleted!\n";
+
+}

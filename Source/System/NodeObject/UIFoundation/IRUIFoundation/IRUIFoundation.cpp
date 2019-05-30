@@ -12,9 +12,11 @@ IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject)
     this->nodeObject = nodeObject;
     this->nodeObject->statusChangeCompleted = [this](IRNodeComponentStatus status){ NodeObjectStatusChanged(status); };
 
-    this->nodeObject->fileManagerUpdated = [this](IRFileManager* fileManager) { updateFileManager(fileManager); };
+    //this->nodeObject->fileManagerUpdated = [this](IRFileManager* fileManager) { updateFileManager(fileManager); };
     
     this->nodeObject->addListener(this);
+    
+    std::cout <<"==========" << nodeObject->name << " : IRUIFoundation inited\n";
     
 }
 // --------------------------------------------------
@@ -147,10 +149,13 @@ void IRUIFoundation::setEditModeBase(bool newEditMode)
 }
 // --------------------------------------------------
 
-void IRUIFoundation::updateFileManager(IRFileManager* fileManager)
+void IRUIFoundation::updateIRFileManager(IRFileManager* fileManager)
 {
     setIRFileManager(fileManager);
+    
+    std::cout << "IRUIFoundation : updateFileManager updated! for " << nodeObject->name << " : " << fileManager << std::endl;
 }
+
 // --------------------------------------------------
 
 void IRUIFoundation::receiveAudioLink(IRNodeObject* obj)

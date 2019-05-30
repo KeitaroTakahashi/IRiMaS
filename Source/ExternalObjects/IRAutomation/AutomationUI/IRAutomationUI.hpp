@@ -14,10 +14,20 @@
 #include "InteractiveAutomation.hpp"
 #include "AutomationController.hpp"
 #include "IRViewPort.hpp"
+#include "IRFFTAnalysis.h"
 
-class IRAutomationUI : public IRUIFoundation
+class IRAutomationUI : public IRUIFoundation,
+public ChangeBroadcaster
 {
 public:
+    
+    enum IRAutomationUIStatus
+    {
+        AudioFileImportCompleted,
+        AudioFileChanged,
+        DescriptorSelected
+    };
+    
     IRAutomationUI(IRNodeObject* nodeObject);
     ~IRAutomationUI();
     // ==================================================
@@ -26,9 +36,31 @@ public:
     
     void demoData(int num);
     
-    void setDescriptor(IRAnalysisDataStr* data);
+    void setDescriptor(IRAnalysisDataStr& data);
+    
+    void openFile();
+    void openFile(String path);
+        
+    String getFilePath() const { return this->path; }
+    
+    IRAutomationUIStatus getStatus() const { return this->status; }
+    
+    virtual void fileImportCompletedAction() = 0;
+    
+    DataAllocationManager<IRAudio>* getAudioData() { return this->audioData; }
     
 private:
+    
+    IRAutomationUIStatus status;
+    
+    IRNodeObject* parent;
+    
+    void getFilePtr(File file);
+    void fileImportCompleted();
+    
+    DataAllocationManager<IRAudio>* audioData = nullptr;
+
+    
     // ==================================================
     
     IRViewPort automationView;
@@ -61,6 +93,9 @@ private:
     int yMargin = 1;
     
     int controllerWidth = 40;
+    
+    File file;
+    String path;
 };
 
 #endif /* IRAutomation_hpp */

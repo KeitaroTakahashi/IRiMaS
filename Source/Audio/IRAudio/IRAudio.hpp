@@ -10,6 +10,8 @@
 
 #include "JuceHeader.h"
 #include "IRAudioReader.hpp"
+#include "IRDescriptor.h"
+#include "IRAudioDescriptor.hpp"
 #include "KLib.h"
 // ===========================================================================
 // import audio file
@@ -95,6 +97,12 @@ public:
     
     File getFile() const { return this->file; }
     
+    IRDescriptor* getDescriptor() { return this->descriptor.get(); }
+    
+    bool operateAnalysis(FFTDescriptor descriptor);
+    
+    void operateBasicDescriptors();
+    void operateFlatness();
 private:
     // ===========================================================================
     //thread related methods
@@ -140,6 +148,14 @@ private:
     //thumbnail
     AudioThumbnail* thumbnail = nullptr;
     
+    std::shared_ptr<IRFFTDescriptor> analyzer;
+    
+    // ===========================================================================
+    // descriptor
+    std::shared_ptr<IRDescriptor> descriptor;
+
+    // ===========================================================================
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRAudio)
     
 };

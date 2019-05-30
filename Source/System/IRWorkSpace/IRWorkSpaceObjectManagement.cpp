@@ -51,6 +51,8 @@ void IRWorkSpace::duplicateSelectedObjects()
 
 void IRWorkSpace::createObject(IRNodeObject *obj)
 {
+    std::cout << "==================================================\n ";
+    std::cout << "creating " << obj->getName() << std::endl;
     obj->setEditMode(isEditMode());
     obj->setLinkMode(isLinkMode());
 
@@ -69,8 +71,8 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     this->objects.add(obj);
     
     // use this function in order to also update file manger of all related UIs etc.
-    obj->updateFileManager(getFileManager());
-    
+    //obj->updateFileManager(getFileManager());
+    obj->callUpdateIRFileManager(getFileManager());
     std::cout << " IRFileManager in WorkSpace = " << getFileManager() << std::endl;
 
     //audiosource

@@ -39,8 +39,13 @@ public:
     virtual void imagePtrDelivery(IRImage* obj) {};
     virtual void dataPtrDelivery(IRData* obj) {};
     virtual void videoPtrDelivery(IRVideo* obj) {};
-
+    // --------------------------------------------------
+    // ==================================================
     
+    // ==================================================
+
+    // object
+    IRNodeObject* nodeObject;
     // --------------------------------------------------
 private:
     bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override;
@@ -59,10 +64,8 @@ private:
     void receiveDataLink(IRNodeObject* obj) override;
     void receiveVideoLink(IRNodeObject* obj) override;
     
-   
-    
     // called when IRFileManager is given or updated in IRNodeObject
-    void updateFileManager(IRFileManager* fileManager);
+    void updateIRFileManager(IRFileManager* fileManager) override;
     // --------------------------------------------------
     
     
@@ -72,6 +75,7 @@ private:
     void setEditModeBase(bool newEditMode);
     
     // ==================================================
+    
 
 private:
     
@@ -82,8 +86,6 @@ private:
     // status
     bool editModeFlag = true;
 
-    // object
-    IRNodeObject* nodeObject;
     
 };
 

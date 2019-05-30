@@ -8,7 +8,7 @@
 #ifndef KPixelDataConvertor_h
 #define KPixelDataConvertor_h
 #include "JuceHeader.h"
-
+/*
 #include <opencv.hpp>
 #include <opencv2/opencv.hpp>
 #include <highgui.hpp>
@@ -121,5 +121,6 @@ public:
     
     
 };
+ */
 
 #endif /* KPixelDataConvertor_h */

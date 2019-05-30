@@ -29,21 +29,29 @@ IRUIFoundation(nodeObject)
     //addAndMakeVisible(&this->mouseGrid);
 
     
+    
 }
 
 InteractiveAutomation::~InteractiveAutomation()
 {
     
-    this->verteces.clear();
-    
+    deleteAllVerteces();
     
 }
 // ==================================================
 
+void InteractiveAutomation::initAutomation()
+{
+    deleteAllVerteces();
+    this->MinVertexValue = 99999999;
+    this->MaxVertexValue = -99999999;
+}
 
 void InteractiveAutomation::paint(Graphics& g)
 {
     g.fillAll(Colours::white);
+    g.setColour(SYSTEMCOLOUR.fundamental);
+    g.drawRect(0, 0, getWidth(), getHeight(), 1);
     
     if(isBezierShow()) paintBezierLines(g);
     else drawLinesBetweenVerteces(g);
@@ -235,19 +243,17 @@ void InteractiveAutomation::mouseDoubleClick(const MouseEvent& e)
     
     if(!isHitAnyVerteces(area)) createVertex(this->currentMousePos.toFloat(), true);
     
+    repaint();
+    
 }
 
 void InteractiveAutomation::mouseUp(const MouseEvent& e)
 {
-    std::cout << "interactiveAutomation mouse up\n";
-
     this->selector->mouseUpHandler(e);
     removeChildComponent(this->selector.get());
     
     repaint();
-    
-    std::cout << "interactiveAutomation mouse up\n";
-    
+        
 }
 void InteractiveAutomation::mouseMove(const MouseEvent& e)
 {
@@ -264,34 +270,38 @@ void InteractiveAutomation::mouseDrag(const MouseEvent& e)
 }
 // ==================================================
 
-void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected)
+void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected, bool shouldSort)
 {
-    if(pos.getY() > this->MaxVertexValue) this->MaxVertexValue = pos.getY();
-    if(pos.getY() < this->MinVertexValue) this->MinVertexValue = pos.getY();
     
     vertex* obj = new vertex (this);
     obj->setPosition(pos);
-    //obj->setCentrePosition(pos.getX(), pos.getY());
     obj->setSelected(isSelected);
     obj->addMouseListener(this, true);
     addAndMakeVisible(obj);
     this->verteces.add( obj );
+    
+   
     // sort
-    ascendingSorter sorter;
-    this->verteces.sort(sorter);
+    if(shouldSort)
+    {
+        ascendingSorter sorter;
+        this->verteces.sort(sorter);
+    }
     
     int index = this->verteces.indexOf(obj);
-    
     // bezier
+ 
     if(index > 0)
     {
         vertex* current = this->verteces[index];
         vertex* previous = this->verteces[index - 1];
         
+        //vertex* b1 = new vertex (this);
+        //vertex* b2 = new vertex (this);
         
-        vertex* b1 = new vertex (this);
-        vertex* b2 = new vertex (this);
-        
+        std::shared_ptr<vertex> b1 = std::make_shared<vertex>(this);
+        std::shared_ptr<vertex> b2 = std::make_shared<vertex>(this);
+
         int x_b1 = previous->getPosition().getX() +
                    (current->getPosition().getX() -
                     previous->getPosition().getX())/2;
@@ -305,13 +315,10 @@ void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected)
         Point<float> p2 (x_b1, y_b2);
         b2->setPosition(p2);
         
-        current->setBezier(b1, b2);
+        current->setBezier(b1.get(), b2.get());
         
     }
-   
-    
-    repaint();
-    repaintAllverteces();
+ 
 }
 
 void InteractiveAutomation::selectAllVerteces()
@@ -356,6 +363,10 @@ void InteractiveAutomation::deleteSelectedVerteces()
 
 void InteractiveAutomation::deleteAllVerteces()
 {
+    for(auto vertex : this->verteces)
+    {
+        removeChildComponent(vertex);
+    }
     this->verteces.clear();
 }
 
@@ -386,14 +397,18 @@ void InteractiveAutomation::demoData(int num)
 {
     
     float increment = (float) getWidth() / (float) num;
-    this->verteces.clear();
-    this->dataBuffer.clear();
+    initAutomation();
+    
+    std::cout << "vertex num = " << num << std::endl;
     
     for(int i = 0; i < num ; i++)
     {
         float value = (rand() % getHeight());
-        createVertex(Point<float>((float)i * increment, value), false);
+        //float value = (rand() % 1000) / 1000.0 * getHeight();
+
+        //std::cout << i << " : value = " << value << std::endl;
         
+        createVertex(Point<float>((float)i * increment, value), false);
         
         if(value < this->MinVertexValue) this->MinVertexValue = value;
         if(value > this->MaxVertexValue) this->MaxVertexValue = value;
@@ -404,40 +419,46 @@ void InteractiveAutomation::demoData(int num)
     reCalcPos();
 }
 
-void InteractiveAutomation::setDescriptor(IRAnalysisDataStr* data)
+void InteractiveAutomation::setDescriptor(IRAnalysisDataStr& data)
 {
+    
+  
     std::cout << "setDescriptor \n";
+    initAutomation();
 
-    int num = data->nframe;
+    int num = data.getNumFrame();
+    std::cout << "nframe = " << num << std::endl;
     float increment = (float) getWidth() / (float) num;
-    this->verteces.clear();
-    this->dataBuffer.clear();
-    
-    float max = -999999;
-    float min = 999999;
-    
-    for(int i = 0; i < num ; i++)
-    {
-        if(max < data->data[i]) max = data->data[i];
-        if(min > data->data[i]) min = data->data[i];
-    }
-    
-    std::cout << "max = " << max << " : " << min << std::endl;
 
+    //auto buffer = data.getNormalizedData()[0];
+    auto buffer = data.getScaledMaxData()[0];
+    auto buffer2 = data.getRowData()[0];
+    
+    float height = (float)getHeight();
     
     for(int i = 0; i < num ; i++)
     {
+        float value = height - (buffer[i] * height);
         
-        float value = getHeight() - ((data->data[i] + min) / max) * getHeight();
-        createVertex(Point<float>((float)i * increment, value), false);
+        std::cout << i << " : " << buffer[i] << " , " << buffer2[i] <<std::endl;
+        //float value = (rand() % 1000) / 1000.0 * getHeight();
+
+        //std::cout << "value = " << value << std::endl;
+
+        createVertex(Point<float>((float)i * increment, value), false, false);
     
         if(value < this->MinVertexValue) this->MinVertexValue = value;
         if(value > this->MaxVertexValue) this->MaxVertexValue = value;
     }
     
+    std::cout << "setDescriptor done \n";
+
     deselectAllVerteces();
+    
+
     //showVerteces();
     reCalcPos();
+    std::cout << "reCalsPos done \n";
 
 }
 

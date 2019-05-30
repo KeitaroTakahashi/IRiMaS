@@ -11,7 +11,7 @@
 #include "IRNodeObject.hpp"
 #include "IRObjectSelection.hpp"
 #include "IRAutomationObjectPreference.h"
-#include "IRAutomationUI.hpp"
+#include "IRAUtomationUIWithPreference.hpp"
 
 class IRAutomationObject : public IRNodeObject,
                            public ChangeListener
@@ -20,25 +20,31 @@ public:
     IRAutomationObject(Component *parent) :
     IRNodeObject(parent, "IRAutomation")
     {
-        this->preference = new IRAutomationObjectPreference("Automation Preference", Rectangle<int>(400,720));
+        
+       // this->preference = new IRAutomationObjectPreference("Automation Preference", Rectangle<int>(400,720));
+        //this->preference->getUI()->getOpenAudioUI()->setOpenAudioButtonCallback([this]{openAudioFileAction();});
 
-        this->UI = new IRAutomationUI(this);
+        this->UI = new IRAutomationUIWithPreference(this);
+        this->UI->setEditMode(isEditMode());
         this->UI->setBounds(this->xMargin,
                             this->yMargin,
                             getWidth()-(this->xMargin*2),
                             getHeight()-(this->yMargin*2));
+        //this->UI->setAudioFileCompletedCallback([this]{ openAudioFileCompleted(); });
+        this->UI->addChangeListener(this);
         addAndMakeVisible(this->UI);
-        this->UI->demoData(1260);
+        childComponentManager(this->UI);
+        //this->UI->demoData(3689);
         
         setSize(300, 100);
         
-       
+        
 
     }
     
     ~IRAutomationObject()
     {
-        delete this->preference;
+        //delete this->preference;
         delete this->UI;
     }
     
@@ -83,19 +89,40 @@ public:
         
         std::cout << "PreferenceOBject = " << preference << std::endl;
         
-        if(current != preference){
-            space->setPreferenceObj(preference);
+        if(current != this->UI->getPreference()){
+            space->setPreferenceObj(this->UI->getPreference());
         }
         
-        getGlobalObjectFromParent();
+        //getGlobalObjectFromParent();
        
+    }
+    
+    // ------------------------------------------------------------
+
+    void openAudioFileAction()
+    {
+        std::cout << "openAudilFileAction\n";
+        this->UI->openFile();
+    }
+    
+    void openAudioFileCompleted()
+    {
+        //this->preference->getUI()->getOpenAudioUI()->setAudioFileURL(this->UI->getFilePath());
+        
         
     }
+    
     //===============================================================
     //Listener
     void changeListenerCallback (ChangeBroadcaster* source) override
     {
-        
+        if(source == this->UI)
+        {
+            if(this->UI->getStatus() == IRAutomationUI::AudioFileImportCompleted)
+            {
+                openAudioFileCompleted();
+            }
+        }
     }
     //===============================================================
 
@@ -110,14 +137,14 @@ public:
         IRObjectPtr val = nullptr;
         String id = "IRAnalysisMagnitude";
         this->callGetObjectGlobal(id);
-        
         val = this->getGlobalObject();
+        
         if(val != nullptr)
         {
             IRAnalysisDataStr* magData = static_cast<IRAnalysisDataStr*>(val);
-            std::cout << "fftsize = " << magData->fftsize << " : nframe = " << magData->nframe << std::endl;
+            std::cout << "fftsize = " << magData->getFFTSize() << " : nframe = " << magData->getNumFrame() << std::endl;
             
-            this->UI->setDescriptor(magData);
+            //this->UI->setDescriptor(magData);
         }else
         {
             std::cout << "Error : could not load " << id << std::endl;
@@ -154,7 +181,6 @@ private:
                 }else{
                     setWantsKeyboardFocus(true);
                     //addKeyListener(this);
-                    
                 }
                 
                 break;
@@ -167,10 +193,16 @@ private:
         }
     }
     
-    IRAutomationUI *UI;
+    IRAutomationUIWithPreference *UI;
+    
+    // IRAudio from File Manger
+    DataAllocationManager<IRAudio>* audioData = nullptr;
+
     
     int xMargin = 0;
     int yMargin = 0;
+    
+    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRAutomationObject)
 

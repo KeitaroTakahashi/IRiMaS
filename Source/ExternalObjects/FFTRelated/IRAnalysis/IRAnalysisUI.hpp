@@ -13,8 +13,6 @@
 #include "IRAudioReader.hpp"
 #include "IRAudioDescriptor.hpp"
 
-#include "IRAnalysisData.h"
-
 class IRAnalysisUI : public IRUIAudioFoundation,
 private ChangeListener,
 public ChangeBroadcaster

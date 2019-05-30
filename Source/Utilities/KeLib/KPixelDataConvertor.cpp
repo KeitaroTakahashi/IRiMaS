@@ -13,6 +13,8 @@
  When the input data is deallocated or switched to another, any crash or further errors may be caused.
  
  */
+
+/*
 class NonCopyingPixelData : public ImagePixelData
 {
 public:
@@ -78,3 +80,4 @@ ImagePixelData::Ptr NonCopyingImageType::create (Image::PixelFormat format, int 
     n->setData(this->data);
     return *n;
 }
+*/
