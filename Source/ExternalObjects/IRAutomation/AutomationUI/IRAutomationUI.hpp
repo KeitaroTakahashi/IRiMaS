@@ -84,7 +84,6 @@ private:
     
     // ==================================================
     
-    
     std::shared_ptr<InteractiveAutomation> automation;
     
     float automation_width_ratio = 1.0;

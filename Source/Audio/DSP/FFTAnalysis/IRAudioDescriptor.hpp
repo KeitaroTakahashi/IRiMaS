@@ -10,7 +10,6 @@
 #include <stdarg.h>
 #include "IRFFTSequence.h"
 
-
 enum FFTDescriptor{
     FFT_MAGNITUDE,
     FFT_CENTROID,

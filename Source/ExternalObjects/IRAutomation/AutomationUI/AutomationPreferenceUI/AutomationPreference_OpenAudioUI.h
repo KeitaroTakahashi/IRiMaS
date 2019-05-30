@@ -81,6 +81,11 @@ public:
     {
         this->descriptorList.addItem(descriptorName, this->descriptorList.getNumItems()+1);
     }
+    
+    void setSelectedDescriptorItem(int index)
+    {
+        this->descriptorList.setSelectedItemIndex (index, dontSendNotification);
+    }
     //===============================================================
 
     void hasDescriptorMenuSelectedChanged()

@@ -304,6 +304,8 @@ void IRFFTDescriptor::calcFlatness()
 void IRFFTDescriptor::calcPitch()
 {
     if(hasPitchCalculated()) return;
+    
+    
     this->hasPitchCalculatedFlag = true;
 }
 // --------------------------------------------------

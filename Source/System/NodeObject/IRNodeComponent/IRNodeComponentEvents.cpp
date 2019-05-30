@@ -11,8 +11,12 @@ void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
     
     //std::cout << this->name << " : mouseDown\n";
     if (e.mods.isCtrlDown())
-    { // show popup menu
-        defaultPopupMenuEvents();
+    {
+        if(isEditMode())
+        {
+            // show popup menu
+            defaultPopupMenuEvents();
+        }
 
     }
     else

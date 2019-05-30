@@ -110,6 +110,8 @@
 		82D8B124229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B122229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp */; };
 		82D8B13D229FF9B500940CD1 /* libessentia.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D8B13C229FF9B500940CD1 /* libessentia.dylib */; };
 		82D8B15C22A004F900940CD1 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D8B15B22A004F900940CD1 /* libfftw3.a */; };
+		82D8B15E22A0096800940CD1 /* essentia in Resources */ = {isa = PBXBuildFile; fileRef = 82D8B15D22A0096800940CD1 /* essentia */; };
+		82D8B16922A017B000940CD1 /* IRMeasureGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */; };
 		82DEA5312292F9AF004D3D9F /* IRImageMovableButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA52F2292F9AF004D3D9F /* IRImageMovableButton.cpp */; };
 		82DEA5342292F9B9004D3D9F /* IRImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA5322292F9B8004D3D9F /* IRImageButton.cpp */; };
 		82DEA5392292F9FF004D3D9F /* AutomationVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA5372292F9FF004D3D9F /* AutomationVertex.cpp */; };
@@ -573,6 +575,9 @@
 		82D8B123229D8DC700940CD1 /* IRAutomationUIWithPreference.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRAutomationUIWithPreference.hpp; sourceTree = "<group>"; };
 		82D8B13C229FF9B500940CD1 /* libessentia.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libessentia.dylib; path = "../../../../../usr/local/Cellar/essentia/HEAD-8c1d4f0/lib/libessentia.dylib"; sourceTree = "<group>"; };
 		82D8B15B22A004F900940CD1 /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = ../../../../../usr/local/Cellar/fftw/3.3.8_1/lib/libfftw3.a; sourceTree = "<group>"; };
+		82D8B15D22A0096800940CD1 /* essentia */ = {isa = PBXFileReference; lastKnownFileType = folder; path = essentia; sourceTree = "<group>"; };
+		82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRMeasureGrid.cpp; sourceTree = "<group>"; };
+		82D8B16822A017B000940CD1 /* IRMeasureGrid.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRMeasureGrid.hpp; sourceTree = "<group>"; };
 		82D9030E21A8486300E57471 /* KDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDictionary.h; sourceTree = "<group>"; };
 		82D9030F21A84B3300E57471 /* KLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLib.h; sourceTree = "<group>"; };
 		82D9031021A84FF500E57471 /* KRandomStringGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KRandomStringGenerator.h; sourceTree = "<group>"; };
@@ -1620,6 +1625,7 @@
 		823E7BD82134073A0046512B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				82D8B16522A0179E00940CD1 /* UIs */,
 				82DEA55422943668004D3D9F /* Mouse */,
 				82DEA54F229423CE004D3D9F /* View */,
 				82DEA52C2292F976004D3D9F /* Buttons */,
@@ -2016,8 +2022,26 @@
 		82D8B13A229FF1DF00940CD1 /* ExternalLibraries */ = {
 			isa = PBXGroup;
 			children = (
+				82D8B15D22A0096800940CD1 /* essentia */,
 			);
 			path = ExternalLibraries;
+			sourceTree = "<group>";
+		};
+		82D8B16522A0179E00940CD1 /* UIs */ = {
+			isa = PBXGroup;
+			children = (
+				82D8B16622A017A200940CD1 /* MeasureGrid */,
+			);
+			path = UIs;
+			sourceTree = "<group>";
+		};
+		82D8B16622A017A200940CD1 /* MeasureGrid */ = {
+			isa = PBXGroup;
+			children = (
+				82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */,
+				82D8B16822A017B000940CD1 /* IRMeasureGrid.hpp */,
+			);
+			path = MeasureGrid;
 			sourceTree = "<group>";
 		};
 		82D9030D21A8484300E57471 /* KeLib */ = {
@@ -2290,6 +2314,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82D8B15E22A0096800940CD1 /* essentia in Resources */,
 				CAFE3E12413B5C5A6033D185 /* RecentFilesMenuTemplate.nib in Resources */,
 				8258AC31221C6B9300557661 /* materials in Resources */,
 			);
@@ -2316,6 +2341,7 @@
 				10F6476B22273FBD00A26D7D /* IRProjectWindow.cpp in Sources */,
 				82C08B01227663BC00938726 /* OpenGLVertexNoise.cpp in Sources */,
 				821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */,
+				82D8B16922A017B000940CD1 /* IRMeasureGrid.cpp in Sources */,
 				82C08AF22276625300938726 /* IRIcographObject.cpp in Sources */,
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
 				82DEA54C2292FD19004D3D9F /* IRAutomationUI.cpp in Sources */,

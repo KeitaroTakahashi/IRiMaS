@@ -28,6 +28,8 @@ void IRAutomationUIWithPreference::openAudioFileAction()
 {
     startAnimation();
     openFile();
+    
+   
 }
 
 void IRAutomationUIWithPreference::updateAudioPreferenceUI()
@@ -35,9 +37,9 @@ void IRAutomationUIWithPreference::updateAudioPreferenceUI()
     this->preference->getUI()->getOpenAudioUI()->setAudioFileURL(getFilePath());
     
     //get audio data
-    auto data = getAudioData();
+    auto data = getAudioData()->getData();
     // get descriptor
-    auto de = data->getData()->getDescriptor();
+    auto de = data->getDescriptor();
     // get a list of descriptor name
     auto list = de->getDescriptorNameList();
     // add each descriptor name to the menu
@@ -52,6 +54,17 @@ void IRAutomationUIWithPreference::updateAudioPreferenceUI()
     
     this->isFileImportCompletedFlag = false;
     stopAnimation();
+    
+    // initially set Magnitude
+    // check if magnitude is already exctracted from the audio data
+    if(de->isMagnitude()) setDescriptor(de->getMagnitude());
+    else {
+        std::cout << "not yet analyzed\n";
+        data->operateAnalysis(FFTDescriptor::FFT_MAGNITUDE);
+        if(de->isMagnitude()) setDescriptor(de->getMagnitude());
+    }
+    this->preference->getUI()->getOpenAudioUI()->setSelectedDescriptorItem(0);
+
 }
 
 void IRAutomationUIWithPreference::fileImportCompletedAction()
