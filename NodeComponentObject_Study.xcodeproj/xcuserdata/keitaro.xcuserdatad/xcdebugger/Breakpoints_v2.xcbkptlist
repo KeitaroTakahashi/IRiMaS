@@ -15,10 +15,10 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::SidePanel::parentHierarchyChanged()"
+                  symbolName = "juce::SidePanel::showOrHide(bool)"
                   moduleName = "NodeComponentObject_Study"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "210">
+                  offsetFromSymbolStart = "50">
                </Location>
             </Locations>
          </BreakpointContent>

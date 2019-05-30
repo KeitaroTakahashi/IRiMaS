@@ -108,7 +108,8 @@
 		82C909C72236CA9E001E058C /* IRFileInspecter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C909C52236CA9E001E058C /* IRFileInspecter.cpp */; };
 		82C909CB2236CB9B001E058C /* IRFileInspecterWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C909C92236CB9B001E058C /* IRFileInspecterWindow.cpp */; };
 		82D8B124229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B122229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp */; };
-		82D8B13B229FF61700940CD1 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8210D9D3213D4A470042F646 /* libfftw3.a */; };
+		82D8B13D229FF9B500940CD1 /* libessentia.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D8B13C229FF9B500940CD1 /* libessentia.dylib */; };
+		82D8B15C22A004F900940CD1 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D8B15B22A004F900940CD1 /* libfftw3.a */; };
 		82DEA5312292F9AF004D3D9F /* IRImageMovableButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA52F2292F9AF004D3D9F /* IRImageMovableButton.cpp */; };
 		82DEA5342292F9B9004D3D9F /* IRImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA5322292F9B8004D3D9F /* IRImageButton.cpp */; };
 		82DEA5392292F9FF004D3D9F /* AutomationVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA5372292F9FF004D3D9F /* AutomationVertex.cpp */; };
@@ -570,6 +571,8 @@
 		82D8B120229D82EB00940CD1 /* VertecesSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VertecesSelector.h; sourceTree = "<group>"; };
 		82D8B122229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRAutomationUIWithPreference.cpp; sourceTree = "<group>"; };
 		82D8B123229D8DC700940CD1 /* IRAutomationUIWithPreference.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRAutomationUIWithPreference.hpp; sourceTree = "<group>"; };
+		82D8B13C229FF9B500940CD1 /* libessentia.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libessentia.dylib; path = "../../../../../usr/local/Cellar/essentia/HEAD-8c1d4f0/lib/libessentia.dylib"; sourceTree = "<group>"; };
+		82D8B15B22A004F900940CD1 /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = ../../../../../usr/local/Cellar/fftw/3.3.8_1/lib/libfftw3.a; sourceTree = "<group>"; };
 		82D9030E21A8486300E57471 /* KDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDictionary.h; sourceTree = "<group>"; };
 		82D9030F21A84B3300E57471 /* KLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLib.h; sourceTree = "<group>"; };
 		82D9031021A84FF500E57471 /* KRandomStringGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KRandomStringGenerator.h; sourceTree = "<group>"; };
@@ -634,7 +637,8 @@
 				7AA9BD6FC2BBE29E9C8B46AA /* OpenGL.framework in Frameworks */,
 				AF962BC3CB9B6914A2A66481 /* QuartzCore.framework in Frameworks */,
 				C8A2AE5DC63457796D1DBCB4 /* WebKit.framework in Frameworks */,
-				82D8B13B229FF61700940CD1 /* libfftw3.a in Frameworks */,
+				82D8B15C22A004F900940CD1 /* libfftw3.a in Frameworks */,
+				82D8B13D229FF9B500940CD1 /* libessentia.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1021,6 +1025,8 @@
 		2D1F25B34F10551155A3CC5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				82D8B15B22A004F900940CD1 /* libfftw3.a */,
+				82D8B13C229FF9B500940CD1 /* libessentia.dylib */,
 				8293FBB6220C3D6C00C09BD5 /* libavdevice.a */,
 				8293FBB8220C3D6C00C09BD5 /* libavfilter.a */,
 				8293FBB7220C3D6C00C09BD5 /* libavformat.a */,
@@ -2456,23 +2462,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/Cellar/essentia/HEAD-8c1d4f0/lib/**",
-					/usr/local/Cellar/fftw/3.3.8/lib,
+					/usr/local/Cellar/fftw/3.3.8_1/lib,
 				);
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
-				OTHER_LDFLAGS = (
-					"-lessentia",
-					"-lfftw",
-					"-lyaml",
-					"-lavcodec",
-					"-lavformat",
-					"-lavutil",
-					"-lsamplerate",
-					"-ltag",
-					"-lswresample",
-					"-lfftw3f",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NodeComponentObjectStudy;
 				SDKROOT_ppc = macosx10.5;
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Source/**";
@@ -2609,22 +2604,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/Cellar/essentia/HEAD-8c1d4f0/lib/**",
-					/usr/local/Cellar/fftw/3.3.8/lib,
+					/usr/local/Cellar/fftw/3.3.8_1/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
-				OTHER_LDFLAGS = (
-					"-lessentia",
-					"-lfftw",
-					"-lyaml",
-					"-lavcodec",
-					"-lavformat",
-					"-lavutil",
-					"-lsamplerate",
-					"-ltag",
-					"-lswresample",
-					"-lfftw3f",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.NodeComponentObjectStudy;
 				SDKROOT_ppc = macosx10.5;
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Source/**";
