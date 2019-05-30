@@ -66,7 +66,7 @@ private:
     void bezierClicked();
     
     
-    bool isCommentOn = true;
+    bool isCommentOn = false;
     
     
     int buttonSize = 40;

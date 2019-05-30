@@ -36,7 +36,7 @@ public:
         childComponentManager(this->UI);
         //this->UI->demoData(3689);
         
-        setSize(300, 100);
+        setSize(400, 160);
         
         
 

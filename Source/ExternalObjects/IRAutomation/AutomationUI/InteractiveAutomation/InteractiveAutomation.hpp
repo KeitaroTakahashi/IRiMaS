@@ -16,6 +16,8 @@
 #include "VertecesSelector.h"
 #include "AutomationController.hpp"
 #include "IRMouseGrid.h"
+#include "IRMeasureGrid.hpp"
+
 
 
 using namespace IRAutomation;
@@ -156,7 +158,7 @@ private:
     
     // ==================================================
 
-    bool isCommentShowFlag = true;
+    bool isCommentShowFlag = false;
     
     bool isBezierShowFlag = false;
     
@@ -168,7 +170,6 @@ private:
     // ==================================================
     
     IRMouseGrid mouseGrid;
-    
     
     // ==================================================
     

@@ -29,7 +29,6 @@ IRUIFoundation(nodeObject)
     //addAndMakeVisible(&this->mouseGrid);
 
     
-    
 }
 
 InteractiveAutomation::~InteractiveAutomation()
@@ -146,7 +145,7 @@ void InteractiveAutomation::paintBezierLines(Graphics& g)
 
 void InteractiveAutomation::resized()
 {
-    
+
     if(getHeight() < 50) setBounds(getX(), getY(), getWidth(), 50);
     
     int s = getHeight();
@@ -154,12 +153,13 @@ void InteractiveAutomation::resized()
     int y = getHeight() / 2 - s / 2;
     
     this->controller->setBounds(this->visibleArea.getX(), y, getWidth(), s);
-    
+
     this->mouseGrid.setBounds(getLocalBounds());
     
     reCalcPos();
     
     this->previousBounds = getLocalBounds();
+
 }
 
 void InteractiveAutomation::setVisibleArea(Rectangle<int> area) {
@@ -241,7 +241,9 @@ void InteractiveAutomation::mouseDoubleClick(const MouseEvent& e)
                            this->currentMousePos.getY(),
                            1,1);
     
+  
     if(!isHitAnyVerteces(area)) createVertex(this->currentMousePos.toFloat(), true);
+    
     
     repaint();
     
@@ -403,12 +405,14 @@ void InteractiveAutomation::demoData(int num)
     
     for(int i = 0; i < num ; i++)
     {
-        float value = (rand() % getHeight());
+        float value = (rand() % (getHeight()));
+        
+        float x = (float)i * increment;
         //float value = (rand() % 1000) / 1000.0 * getHeight();
 
         //std::cout << i << " : value = " << value << std::endl;
         
-        createVertex(Point<float>((float)i * increment, value), false);
+        createVertex(Point<float>(x, value), false);
         
         if(value < this->MinVertexValue) this->MinVertexValue = value;
         if(value > this->MaxVertexValue) this->MaxVertexValue = value;

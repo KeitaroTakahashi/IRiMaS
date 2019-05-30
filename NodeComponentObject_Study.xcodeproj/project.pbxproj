@@ -108,9 +108,7 @@
 		82C909C72236CA9E001E058C /* IRFileInspecter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C909C52236CA9E001E058C /* IRFileInspecter.cpp */; };
 		82C909CB2236CB9B001E058C /* IRFileInspecterWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C909C92236CB9B001E058C /* IRFileInspecterWindow.cpp */; };
 		82D8B124229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B122229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp */; };
-		82D8B13D229FF9B500940CD1 /* libessentia.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D8B13C229FF9B500940CD1 /* libessentia.dylib */; };
 		82D8B15C22A004F900940CD1 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D8B15B22A004F900940CD1 /* libfftw3.a */; };
-		82D8B15E22A0096800940CD1 /* essentia in Resources */ = {isa = PBXBuildFile; fileRef = 82D8B15D22A0096800940CD1 /* essentia */; };
 		82D8B16922A017B000940CD1 /* IRMeasureGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */; };
 		82DEA5312292F9AF004D3D9F /* IRImageMovableButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA52F2292F9AF004D3D9F /* IRImageMovableButton.cpp */; };
 		82DEA5342292F9B9004D3D9F /* IRImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA5322292F9B8004D3D9F /* IRImageButton.cpp */; };
@@ -575,9 +573,9 @@
 		82D8B123229D8DC700940CD1 /* IRAutomationUIWithPreference.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRAutomationUIWithPreference.hpp; sourceTree = "<group>"; };
 		82D8B13C229FF9B500940CD1 /* libessentia.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libessentia.dylib; path = "../../../../../usr/local/Cellar/essentia/HEAD-8c1d4f0/lib/libessentia.dylib"; sourceTree = "<group>"; };
 		82D8B15B22A004F900940CD1 /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = ../../../../../usr/local/Cellar/fftw/3.3.8_1/lib/libfftw3.a; sourceTree = "<group>"; };
-		82D8B15D22A0096800940CD1 /* essentia */ = {isa = PBXFileReference; lastKnownFileType = folder; path = essentia; sourceTree = "<group>"; };
 		82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRMeasureGrid.cpp; sourceTree = "<group>"; };
 		82D8B16822A017B000940CD1 /* IRMeasureGrid.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRMeasureGrid.hpp; sourceTree = "<group>"; };
+		82D8B16C22A01D4700940CD1 /* IRGridStr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRGridStr.h; sourceTree = "<group>"; };
 		82D9030E21A8486300E57471 /* KDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDictionary.h; sourceTree = "<group>"; };
 		82D9030F21A84B3300E57471 /* KLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLib.h; sourceTree = "<group>"; };
 		82D9031021A84FF500E57471 /* KRandomStringGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KRandomStringGenerator.h; sourceTree = "<group>"; };
@@ -643,7 +641,6 @@
 				AF962BC3CB9B6914A2A66481 /* QuartzCore.framework in Frameworks */,
 				C8A2AE5DC63457796D1DBCB4 /* WebKit.framework in Frameworks */,
 				82D8B15C22A004F900940CD1 /* libfftw3.a in Frameworks */,
-				82D8B13D229FF9B500940CD1 /* libessentia.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -662,7 +659,6 @@
 		104E2AB5221ADD2A008F5C7A /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				82D8B13A229FF1DF00940CD1 /* ExternalLibraries */,
 				820D3BBA225F933800BDA679 /* TUTORIAL */,
 				10F6473F2226B49900A26D7D /* System */,
 				10F647402226B4A200A26D7D /* ExternalObjects */,
@@ -2019,14 +2015,6 @@
 			path = FileOpenLib;
 			sourceTree = "<group>";
 		};
-		82D8B13A229FF1DF00940CD1 /* ExternalLibraries */ = {
-			isa = PBXGroup;
-			children = (
-				82D8B15D22A0096800940CD1 /* essentia */,
-			);
-			path = ExternalLibraries;
-			sourceTree = "<group>";
-		};
 		82D8B16522A0179E00940CD1 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2038,10 +2026,19 @@
 		82D8B16622A017A200940CD1 /* MeasureGrid */ = {
 			isa = PBXGroup;
 			children = (
+				82D8B16A22A01D3500940CD1 /* gridStr */,
 				82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */,
 				82D8B16822A017B000940CD1 /* IRMeasureGrid.hpp */,
 			);
 			path = MeasureGrid;
+			sourceTree = "<group>";
+		};
+		82D8B16A22A01D3500940CD1 /* gridStr */ = {
+			isa = PBXGroup;
+			children = (
+				82D8B16C22A01D4700940CD1 /* IRGridStr.h */,
+			);
+			path = gridStr;
 			sourceTree = "<group>";
 		};
 		82D9030D21A8484300E57471 /* KeLib */ = {
@@ -2314,7 +2311,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82D8B15E22A0096800940CD1 /* essentia in Resources */,
 				CAFE3E12413B5C5A6033D185 /* RecentFilesMenuTemplate.nib in Resources */,
 				8258AC31221C6B9300557661 /* materials in Resources */,
 			);
@@ -2480,14 +2476,12 @@
 					"$(PROJECT_DIR)/JuceLibraryCode",
 					"$(JUCE_MODULES_PATH)",
 					"$(inherited)",
-					"/usr/local/include/essentia/**",
 				);
 				INFOPLIST_FILE = "Info-App.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/usr/local/Cellar/essentia/HEAD-8c1d4f0/lib/**",
 					/usr/local/Cellar/fftw/3.3.8_1/lib,
 				);
 				LLVM_LTO = YES;
@@ -2622,14 +2616,12 @@
 					"$(PROJECT_DIR)/JuceLibraryCode",
 					"$(JUCE_MODULES_PATH)",
 					"$(inherited)",
-					"/usr/local/include/essentia/**",
 				);
 				INFOPLIST_FILE = "Info-App.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/usr/local/Cellar/essentia/HEAD-8c1d4f0/lib/**",
 					/usr/local/Cellar/fftw/3.3.8_1/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
