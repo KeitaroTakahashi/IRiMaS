@@ -675,6 +675,7 @@
 		104E2AB5221ADD2A008F5C7A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				820963D522A68E0F00723C81 /* ExternalLibraries */,
 				820D3BBA225F933800BDA679 /* TUTORIAL */,
 				10F6473F2226B49900A26D7D /* System */,
 				10F647402226B4A200A26D7D /* ExternalObjects */,
@@ -1278,6 +1279,13 @@
 				D56A3A08DEF2AEEF4D7B8A40 /* RecentFilesMenuTemplate.nib */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		820963D522A68E0F00723C81 /* ExternalLibraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ExternalLibraries;
 			sourceTree = "<group>";
 		};
 		820AB79B22A28DA100FC7B46 /* IRIVSRPreference */ = {
