@@ -1,12 +1,12 @@
 //
-//  IRIcographUI.hpp
+//  IR3DGraphicUI.hpp
 //  NodeComponentObject_Study - App
 //
 //  Created by Keitaro on 28/04/2019.
 //
 
-#ifndef IRIcographUI_hpp
-#define IRIcographUI_hpp
+#ifndef IR3DGraphicUI_hpp
+#define IR3DGraphicUI_hpp
 
 #include "IRFoundation.h"
 #include "IRUIFoundation.hpp"
@@ -14,16 +14,15 @@
 #include "KeAnimationComponent.h"
 
 
-class IRIcographUI : public IRUIFoundation,
-private ChangeListener,
+class IR3DGraphicUI : public IRUIFoundation,
 public ChangeBroadcaster,
 private KeAnimationComponent
 {
 public:
     //==============================================================================
 
-    IRIcographUI(IRNodeObject* parent);
-    ~IRIcographUI();
+    IR3DGraphicUI(IRNodeObject* parent);
+    ~IR3DGraphicUI();
     
     //==============================================================================
     
@@ -35,7 +34,10 @@ public:
     
 
     void vertexSetup();
-
+    
+    void startRendering();
+    void stopRendering();
+    
     // ==================================================
     void OffsetXChanged(float x);
     void OffsetYChanged(float y);
@@ -43,7 +45,11 @@ public:
     
     
     //==============================================================================
+    bool isRendering() const { return this->vertex->isRendering(); }
+    //==============================================================================
 
+    OpenGLVertexNoise* getOpenGLContents() const { return this->vertex.get(); }
+    
 private:
     
     float amplitude = 0;
@@ -54,11 +60,10 @@ private:
     float fineness = 0;
     KMoveTo fineness_smoother;
     
-    
-    OpenGLVertexNoise* vertex;
+    std::shared_ptr<OpenGLVertexNoise> vertex;
 
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRIcographUI)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IR3DGraphicUI)
     
 };
-#endif /* IRIcographUI_hpp */
+#endif /* IR3DGraphicUI_hpp */

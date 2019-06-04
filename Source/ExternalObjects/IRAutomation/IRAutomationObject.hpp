@@ -20,9 +20,6 @@ public:
     IRAutomationObject(Component *parent) :
     IRNodeObject(parent, "IRAutomation")
     {
-        
-       // this->preference = new IRAutomationObjectPreference("Automation Preference", Rectangle<int>(400,720));
-        //this->preference->getUI()->getOpenAudioUI()->setOpenAudioButtonCallback([this]{openAudioFileAction();});
 
         this->UI = new IRAutomationUIWithPreference(this);
         this->UI->setEditMode(isEditMode());
@@ -30,11 +27,9 @@ public:
                             this->yMargin,
                             getWidth()-(this->xMargin*2),
                             getHeight()-(this->yMargin*2));
-        //this->UI->setAudioFileCompletedCallback([this]{ openAudioFileCompleted(); });
         this->UI->addChangeListener(this);
         addAndMakeVisible(this->UI);
         childComponentManager(this->UI);
-        //this->UI->demoData(3689);
         
         setSize(400, 160);
         

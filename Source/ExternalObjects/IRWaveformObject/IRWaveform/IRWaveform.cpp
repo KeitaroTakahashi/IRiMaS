@@ -190,7 +190,8 @@ void IRWaveform::paint(Graphics& g)
         auto area = getLocalBounds();//.reduced (2);
         
         g.setColour (SYSTEMCOLOUR.contents);
-        g.fillRoundedRectangle(area.toFloat(), 5.0f);
+        //g.fillRoundedRectangle(area.toFloat(), 5.0f);
+        g.fillRect(area.toFloat());
         
         g.setColour(SYSTEMCOLOUR.fundamental);
         //small margin

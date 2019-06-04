@@ -55,8 +55,8 @@ private:
     bool selectFlag = true;
     bool isSelectMode = false;
     
-    int xMargin = 5;
-    int yMargin = 5;
+    int xMargin = 0;
+    int yMargin = 0;
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWaveformObject)

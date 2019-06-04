@@ -1,34 +1,28 @@
 //
-//  IRIcographUI.cpp
+//  IR3DGraphicUI.cpp
 //  NodeComponentObject_Study - App
 //
 //  Created by Keitaro on 28/04/2019.
 //
 
-#include "IRIcographUI.hpp"
+#include "IR3DGraphicUI.hpp"
 
-IRIcographUI::IRIcographUI(IRNodeObject* parent) : IRUIFoundation(parent)
+IR3DGraphicUI::IR3DGraphicUI(IRNodeObject* parent) : IRUIFoundation(parent)
 {
-    setSize (1200, 900);
+    setSize(600, 400);
     setFps(33);
     startAnimation();
-    
-    int w = getWidth() * 0.9;
-    int h = getHeight() * 0.9;
-    
-    int x = getWidth() / 20;
-    int y = getHeight() / 20;
     
     vertexSetup();
 }
 
-IRIcographUI::~IRIcographUI()
+IR3DGraphicUI::~IR3DGraphicUI()
 {
     stopAnimation();
 }
 
 //==============================================================================
-void IRIcographUI::paint (Graphics& g)
+void IR3DGraphicUI::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
@@ -38,28 +32,24 @@ void IRIcographUI::paint (Graphics& g)
     g.drawText ("Hello World!", getLocalBounds(), Justification::centred, true);
 }
 
-void IRIcographUI::resized()
+void IR3DGraphicUI::resized()
 {
-
+    if(this->vertex.get() != nullptr)
+        this->vertex->setBounds(0, 0, getWidth(), getHeight());
 }
 
-void IRIcographUI::vertexSetup()
+void IR3DGraphicUI::vertexSetup()
 {
-    int w = getWidth() * 0.95;
-    int h = 600;
-    
-    int x = getWidth() / 40;
-    int y = 20;
-    
-    this->vertex = new OpenGLVertexNoise();
-    this->vertex->setBounds(x, y, w, h);
-    addAndMakeVisible(this->vertex);
+   
+    this->vertex = std::make_shared<OpenGLVertexNoise>();
+    this->vertex->setBounds(0, 0, getWidth(), getHeight());
+    addAndMakeVisible(this->vertex.get());
     
 }
 
 /*
 
-void IRIcographUI::sliderValueChanged (Slider* slider)
+void IR3DGraphicUI::sliderValueChanged (Slider* slider)
 {
     if(slider == &this->offsetX)
     {
@@ -88,7 +78,7 @@ void IRIcographUI::sliderValueChanged (Slider* slider)
     }
 }
 */
-void IRIcographUI::updateAnimationFrame()
+void IR3DGraphicUI::updateAnimationFrame()
 {
     
     /*
@@ -115,14 +105,25 @@ void IRIcographUI::updateAnimationFrame()
  */
 }
 
-void IRIcographUI::OffsetXChanged(float x)
+void IR3DGraphicUI::OffsetXChanged(float x)
 {
 }
 
-void IRIcographUI::OffsetYChanged(float y)
+void IR3DGraphicUI::OffsetYChanged(float y)
 {
 }
 
-void IRIcographUI::OffsetZChanged(float z)
+void IR3DGraphicUI::OffsetZChanged(float z)
 {
+}
+
+
+// ==================================================
+void IR3DGraphicUI::startRendering()
+{
+    this->vertex->startRendering();
+}
+void IR3DGraphicUI::stopRendering()
+{
+    this->vertex->stopRendering();
 }

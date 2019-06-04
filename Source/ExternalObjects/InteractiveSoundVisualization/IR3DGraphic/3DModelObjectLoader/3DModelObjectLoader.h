@@ -24,20 +24,25 @@ struct Shape
     Shape (OpenGLContext& openGLContext)
     {
         
-        File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/3DModel/sphere.obj");
+        File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/3DModel/sphere64.obj");
         
         if (shapeFile.load (loadEntireAssetIntoString (file.getFullPathName().toStdString().c_str())).wasOk())
-            for (auto* s : shapeFile.shapes)
+            for (auto* s : shapeFile.shapes){
                 vertexBuffers.add (new VertexBuffer (openGLContext, *s));
+                
+                std::cout << "shape : name " << s->name << std::endl;
+            }
     }
     
-    void draw (OpenGLContext& openGLContext, Attributes& attributes)
+    void draw (OpenGLContext& openGLContext, Attributes& attributes, GLenum mode)
     {
+        
+        
         for (auto* vertexBuffer : vertexBuffers)
         {
             vertexBuffer->bind();
             attributes.enable (openGLContext);
-            glDrawElements (GL_LINE_STRIP, vertexBuffer->numIndices, GL_UNSIGNED_INT, nullptr);
+            glDrawElements (mode, vertexBuffer->numIndices, GL_UNSIGNED_INT, nullptr);
             attributes.disable (openGLContext);
         }
     }

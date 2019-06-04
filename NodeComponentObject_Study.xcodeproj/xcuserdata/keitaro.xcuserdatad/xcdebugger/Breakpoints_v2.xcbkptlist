@@ -15,16 +15,16 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::SHA256Processor::processFullBlock(void const*)"
+                  symbolName = "juce::Whirlpool::process(void const*, unsigned long)"
                   moduleName = "NodeComponentObject_Study"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Applications/JUCE/modules/juce_cryptography/hashing/juce_SHA256.cpp"
-                  timestampString = "580951744.432708"
+                  urlString = "file:///Applications/JUCE/modules/juce_core/memory/juce_Memory.h"
+                  timestampString = "581336477.119218"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "151"
-                  endingLineNumber = "151"
-                  offsetFromSymbolStart = "1874">
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "114">
                </Location>
             </Locations>
          </BreakpointContent>

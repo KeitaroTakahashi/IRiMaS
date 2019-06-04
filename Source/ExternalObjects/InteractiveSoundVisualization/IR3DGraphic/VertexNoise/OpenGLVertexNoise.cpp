@@ -7,10 +7,12 @@
 
 #include "OpenGLVertexNoise.hpp"
 
-OpenGLVertexNoise::OpenGLVertexNoise()
+OpenGLVertexNoise::OpenGLVertexNoise() :
+materialColour(0.5f, 0.84f, 0.1f, 1.0f),
+lightingColour(0.71f, 1.0f, 0.77f, 1.0f),
+positiveStretch(1.0f, 1.0f, 1.0f, 1.0f),
+negativeStretch(1.0f, 1.0f, 1.0f, 1.0f)
 {
-    
-    
     /*
      if(auto* peer = getPeer())
      peer->setCurrentRenderingEngine(0);
@@ -23,11 +25,12 @@ OpenGLVertexNoise::OpenGLVertexNoise()
     openGLContext.setRenderer (this);
     openGLContext.attachTo (*this);
     openGLContext.setContinuousRepainting (true);
-    openGLContext.setSwapInterval(30);
+    openGLContext.setSwapInterval(33);
+    this->isRenderingFlag = true;
+    
+    stopRendering();
     
     setSize(500, 500);
-    
-    
 }
 
 OpenGLVertexNoise::~OpenGLVertexNoise()
@@ -72,7 +75,7 @@ void OpenGLVertexNoise::renderOpenGL()
     
     auto desktopScale = (float) this->openGLContext.getRenderingScale();
     
-    OpenGLHelpers::clear(Colours::white);
+    OpenGLHelpers::clear(Colours::black);
     
     if(doBackgroundDrawing)
         drawBackground2DStuff(desktopScale);
@@ -109,14 +112,39 @@ void OpenGLVertexNoise::renderOpenGL()
     if (uniforms->lightPosition.get() != nullptr)
         uniforms->lightPosition->set (this->lightPositionY, 5.0f, 15.0f, 0.0f);
     
-    //        uniforms->lightPosition->set (-15.0f, this->lightPositionY, 15.0f, 0.0f);
-    
     // diffuse colour
     
     if (uniforms->materialColour.get() != nullptr)
-        uniforms->materialColour->set (0.5f, 0.84f, 0.1f, 0.0f);
+        uniforms->materialColour->set (this->materialColour.getX(),
+                                       this->materialColour.getY(),
+                                       this->materialColour.getWidth(),
+                                       this->materialColour.getHeight());
+
     
-    //uniforms->materialColour->set (0.1f, 0.84f, 0.94f, 0.0f);
+    if (uniforms->DiffuseColour.get() != nullptr)
+        uniforms->DiffuseColour->set(this->lightingColour.getX(),
+                                     this->lightingColour.getY(),
+                                     this->lightingColour.getWidth(),
+                                     this->lightingColour.getHeight());
+    
+    if (uniforms->SpecularColour.get() != nullptr)
+        uniforms->SpecularColour->set (0.71f, 1.0f, 0.77f, 0.0f);
+    
+    // stretch
+    
+    if (uniforms->positiveStretch.get() != nullptr)
+        uniforms->positiveStretch->set (this->positiveStretch.getX(),
+                                        this->positiveStretch.getY(),
+                                        this->positiveStretch.getWidth());
+    
+    if(uniforms->negativeStretch.get() != nullptr)
+        uniforms->negativeStretch->set (this->negativeStretch.getX(),
+                                        this->negativeStretch.getY(),
+                                        this->negativeStretch.getWidth());
+    
+    if(uniforms->stretch_amount.get() != nullptr)
+        uniforms->stretch_amount->set (this->stretchAmount);
+    
     
     //vertex noise
     if (uniforms->vertexOffset.get() != nullptr){
@@ -129,7 +157,8 @@ void OpenGLVertexNoise::renderOpenGL()
     if (uniforms->vertexScaleOut.get() != nullptr)
         uniforms->vertexScaleOut->set (this->intensity);
     
-    
+    if (uniforms->vertexXYZAmount.get() != nullptr)
+        uniforms->vertexXYZAmount->set (this->amountX, this->amountY, this->amountZ);
     //uniforms->lightPosition->set (-15.0f, 10.0f, 15.0f, 0.0f);
     
     
@@ -141,10 +170,39 @@ void OpenGLVertexNoise::renderOpenGL()
      
      if (uniforms->bouncingNumber.get() != nullptr)
      uniforms->bouncingNumber->set (bouncingNumber.getValue());
+     
      */
     
     
-    shape->draw (openGLContext, *attributes);
+    // triangle
+    static const GLfloat g_vertex_buffer_data[] = {
+        -1.0f, -1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,
+        0.0f,  1.0f, 0.0f,
+    };
+    GLuint vertexBuffer;
+    openGLContext.extensions.glGenBuffers(1, &vertexBuffer);
+    openGLContext.extensions.glBindBuffer(GL_ARRAY_BUFFER,
+                                          vertexBuffer);
+    openGLContext.extensions.glBufferData(GL_ARRAY_BUFFER,
+                                          sizeof(g_vertex_buffer_data),
+                                          g_vertex_buffer_data,
+                                          GL_STATIC_DRAW);
+    
+    openGLContext.extensions.glEnableVertexAttribArray(0);
+    openGLContext.extensions.glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    openGLContext.extensions.glVertexAttribPointer(0,
+                                                   3,
+                                                   GL_FLOAT,
+                                                   GL_FALSE,
+                                                   0,
+                                                   (void* )0);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    openGLContext.extensions.glDisableVertexAttribArray(0);
+    
+    
+    shape->draw (openGLContext, *attributes, GL_TRIANGLES);
+    
     
     // Reset the element buffers so child Components draw correctly
     openGLContext.extensions.glBindBuffer (GL_ARRAY_BUFFER, 0);
@@ -152,9 +210,9 @@ void OpenGLVertexNoise::renderOpenGL()
     
     
     this->rotation += (float) rotationSpeed;
-    this->offsetX += rotationSpeed;
-    this->offsetY += rotationSpeed;
-    this->offsetZ += rotationSpeed;
+    //this->offsetX += rotationSpeed;
+    //this->offsetY += rotationSpeed;
+    //this->offsetZ += rotationSpeed;
     
     //this->lpy = (this->lpy + this->lightPositionYSpeed);
     this->lightPositionY = -15.0f;
@@ -165,7 +223,7 @@ Matrix3D<float> OpenGLVertexNoise::getProjectionMatrix() const
     auto w = 1.0f / (scale + 0.1f);
     auto h = w * getLocalBounds().toFloat().getAspectRatio (false);
     
-    return Matrix3D<float>::fromFrustum (-w, w, -h, h, 4.0f, 30.0f);
+    return Matrix3D<float>::fromFrustum (-w, w, -h, h, 4.0f, 100.0f);
 }
 
 Matrix3D<float> OpenGLVertexNoise::getViewMatrix() const
@@ -173,10 +231,14 @@ Matrix3D<float> OpenGLVertexNoise::getViewMatrix() const
     // auto viewMatrix = draggableOrientation.getRotationMatrix()
     //* Vector3D<float> (0.0f, 1.0f, -10.0f);
     
-    auto viewMatrix = Vector3D<float> (0.0f, -0.5f, -18.0f);
-    
+    //auto viewMatrix = Vector3D<float> (0.0f, -0.5f, this->positionZ);
+    auto viewMatrix = Vector3D<float> (0.0f, 0.0f, this->positionZ);
+
     //auto rotationMatrix = Matrix3D<float>::rotation ({ rotation, rotation, -0.3f });
-    auto rotationMatrix = Matrix3D<float>::rotation ({ 0, 30, -30 });
+    //auto rotationMatrix = Matrix3D<float>::rotation ({ 0, 30, -3 });
+    auto rotationMatrix = Matrix3D<float>::rotation ({ 0, 0, 0 });
+
+    //auto rotationMatrix = Matrix3D<float>::rotation ({ 0, 90, 0 });
     
     
     return rotationMatrix * viewMatrix;
@@ -293,14 +355,16 @@ void OpenGLVertexNoise::updateShader()
 
 void OpenGLVertexNoise::createShaders()
 {
-    File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/lighting_vertex.txt");
+    //File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/lighting_vertex.txt");
+    File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/multipleLights_vertex.vert");
     
     IRTextLoader vertexText (file.getFullPathName().toStdString());
     
     this->vertexShader = vertexText.getConstChar();
     
     
-    File file2 = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/lighting_fragment.txt");
+    // File file2 = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/lighting_fragment.txt");
+    File file2 = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/multipleLights_fragment.frag");
     
     IRTextLoader fragmentText (file2.getFullPathName().toStdString());
     
@@ -359,4 +423,106 @@ void OpenGLVertexNoise::setIntensity(float intensity)
 {
     this->intensity = intensity;
 }
+
+void OpenGLVertexNoise::setAmountX(float amountX)
+{
+    this->amountX = amountX;
+}
+
+void OpenGLVertexNoise::setAmountY(float amountY)
+{
+    this->amountY = amountY;
+}
+
+void OpenGLVertexNoise::setAmountZ(float amountZ)
+{
+    this->amountZ = amountZ;
+}
+
+void OpenGLVertexNoise::setPositiveStretch(float x, float y, float z)
+{
+    if(x >= 0) this->positiveStretch.setX(x);
+    if(y >= 0) this->positiveStretch.setY(y);
+    if(z >= 0) this->positiveStretch.setWidth(z);
+
+}
+
+void OpenGLVertexNoise::setNegativeStretch(float x, float y, float z)
+{
+    if(x >= 0) this->negativeStretch.setX(x);
+    if(y >= 0) this->negativeStretch.setY(y);
+    if(z >= 0) this->negativeStretch.setWidth(z);
+}
+
+void OpenGLVertexNoise::setPositiveTBStretch(float x, float y, float z)
+{
+    if(x >= 0) this->positiveTBStretch.setX(x);
+    if(y >= 0) this->positiveTBStretch.setY(y);
+    if(z >= 0) this->positiveTBStretch.setWidth(z);
+    
+}
+
+void OpenGLVertexNoise::setNegativeTBStretch(float x, float y, float z)
+{
+    if(x >= 0) this->negativeTBStretch.setX(x);
+    if(y >= 0) this->negativeTBStretch.setY(y);
+    if(z >= 0) this->negativeTBStretch.setWidth(z);
+}
+
+void OpenGLVertexNoise::setPositiveTBStretchPos(float x, float y, float z)
+{
+    if(x >= 0) this->positiveTBStretchPos.setX(x);
+    if(y >= 0) this->positiveTBStretchPos.setY(y);
+    if(z >= 0) this->positiveTBStretchPos.setWidth(z);
+    
+}
+
+void OpenGLVertexNoise::setNegativeTBStretchPos(float x, float y, float z)
+{
+    if(x >= 0) this->negativeTBStretchPos.setX(x);
+    if(y >= 0) this->negativeTBStretchPos.setY(y);
+    if(z >= 0) this->negativeTBStretchPos.setWidth(z);
+}
+void OpenGLVertexNoise::setStretchAmount(float amount)
+{
+    this->stretchAmount = amount;
+}
+// ================
+
+void OpenGLVertexNoise::startRendering()
+{
+    if(!isRendering())
+    {
+        //this->openGLContext.setContinuousRepainting(true);
+        this->isRenderingFlag = true;
+    }
+}
+
+void OpenGLVertexNoise::stopRendering()
+{
+    if(isRendering())
+    {
+        //this->openGLContext.setContinuousRepainting(false);
+        this->isRenderingFlag = false;
+    }
+}
+// ================
+
+void OpenGLVertexNoise::setMaterialColour(Colour colour)
+{
+    this->materialColour = Rectangle<float>(colour.getFloatRed(),
+                                               colour.getFloatGreen(),
+                                               colour.getFloatBlue(),
+                                               colour.getFloatAlpha());
+}
+
+void OpenGLVertexNoise::setLightingColour(Colour colour)
+{
+    this->lightingColour =    Rectangle<float>(colour.getFloatRed(),
+                                               colour.getFloatGreen(),
+                                               colour.getFloatBlue(),
+                                               colour.getFloatAlpha());
+}
+
+
 

@@ -133,11 +133,13 @@ public:
     // interaction
     // # these JUCE oriented methods are not intended to be overriden in the IRNodeObject
     // # override mouseXXXEvent() method insted to add any interactive tasks.
+private:
     void mouseDown(const MouseEvent& e) override; // JUCE oriented
     void mouseMove(const MouseEvent& e) override; // JUCE oriented
     void mouseUp(const MouseEvent& e)override; // JUCE oriented
     void mouseDoubleClick(const MouseEvent& e) override; // JUCE oriented
     void mouseDrag(const MouseEvent& e) override; // JUCE oriented
+public:
     
     virtual void mouseUpCompleted(const MouseEvent& e) {};
     

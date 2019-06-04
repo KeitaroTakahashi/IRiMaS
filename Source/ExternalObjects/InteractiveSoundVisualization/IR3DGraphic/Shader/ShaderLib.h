@@ -87,9 +87,28 @@ struct Uniforms
         viewMatrix      .reset (createUniform (openGLContext, shader, "viewMatrix"));
         lightPosition   .reset (createUniform (openGLContext, shader, "lightPosition"));
         materialColour  .reset (createUniform (openGLContext, shader, "materialColour"));
+        DiffuseColour  .reset (createUniform (openGLContext, shader, "diffuseColour"));
+        SpecularColour  .reset (createUniform (openGLContext, shader, "specularColour"));
+        
+        positiveStretch .reset (createUniform (openGLContext, shader, "positiveStretch"));
+        negativeStretch      .reset (createUniform (openGLContext, shader, "negativeStretch"));
+        
+        stretch_amount  .reset (createUniform (openGLContext, shader, "stretch_amount"));
+        
+        positiveTBStretch  .reset (createUniform (openGLContext, shader, "positiveTBSTretch"));
+
+        positiveTBStretchPos  .reset (createUniform (openGLContext, shader, "positiveTBSTretchPos"));
+
+        negativeTBStretch  .reset (createUniform (openGLContext, shader, "negativeTBStretch"));
+        
+        negativeTBStretchPos  .reset (createUniform (openGLContext, shader, "negativeTBStretchPos"));
+
         vertexOffset    .reset (createUniform (openGLContext, shader, "vertexOffset"));
         vertexScaleIn   .reset (createUniform (openGLContext, shader, "vertexScaleIn"));
         vertexScaleOut  .reset (createUniform (openGLContext, shader, "vertexScaleOut"));
+        
+        vertexXYZAmount  .reset (createUniform (openGLContext, shader, "vertexXYZAmount"));
+        
         
         
         
@@ -103,9 +122,19 @@ struct Uniforms
     viewMatrix,
     lightPosition,
     materialColour,
+    DiffuseColour,
+    SpecularColour,
+    positiveStretch,
+    negativeStretch,
+    stretch_amount,
+    positiveTBStretch,
+    positiveTBStretchPos,
+    negativeTBStretch,
+    negativeTBStretchPos,
     vertexOffset,
     vertexScaleIn,
-    vertexScaleOut;
+    vertexScaleOut,
+    vertexXYZAmount;
     
 private:
     static OpenGLShaderProgram::Uniform* createUniform (OpenGLContext& openGLContext,

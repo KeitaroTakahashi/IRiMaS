@@ -14,6 +14,9 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     objectFactory.registerObject<IRWaveformObject>("IRWaveform", "Waveform", img);           // leak is audio
 
     objectFactory.registerObject<IRLabelObject>("IRLabel", "Label", img);
+    
+    objectFactory.registerObject<IRISVObject>("IRISV", "Interactive Sound Visualizer", img);
+
 
     //objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
 

@@ -157,7 +157,7 @@ void IRWaveformObject::loadThisFromSaveData(t_json data)
 
 void IRWaveformObject::resized()
 {
-    this->waveform->setSize(getWidth()-10, getHeight()-10);
+    this->waveform->setSize(getWidth(), getHeight());
 }
 
 
@@ -168,7 +168,8 @@ void IRWaveformObject::paint(Graphics& g)
         auto area = getLocalBounds();//.reduced (2);
         
         g.setColour (SYSTEMCOLOUR.contents);
-        g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
+        //g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
+        g.drawRect(area.toFloat(), 1.0);
     }
 }
 

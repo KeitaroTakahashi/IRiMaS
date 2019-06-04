@@ -8,7 +8,7 @@
 IRPreferenceObject::IRPreferenceObject(String title, Rectangle<int> frameRect)
 {
     this->frameRect = frameRect;
-    setBounds(frameRect.getX(), frameRect.getY(), frameRect.getWidth(), frameRect.getHeight());
+    //setBounds(frameRect.getX(), frameRect.getY(), frameRect.getWidth(), frameRect.getHeight());
 }
 
 
@@ -20,7 +20,7 @@ IRPreferenceObject::~IRPreferenceObject()
 
 void IRPreferenceObject::resized()
 {
-    setBounds(frameRect.getX(), frameRect.getY(), frameRect.getWidth(), frameRect.getHeight());
+    //setBounds(frameRect.getX(), frameRect.getY(), frameRect.getWidth(), frameRect.getHeight());
 }
 
 
