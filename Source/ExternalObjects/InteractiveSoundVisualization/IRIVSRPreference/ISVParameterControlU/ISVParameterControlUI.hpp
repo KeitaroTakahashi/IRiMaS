@@ -8,8 +8,7 @@
 #ifndef ISVParameterControlUI_hpp
 #define ISVParameterControlUI_hpp
 
-#include "JuceHeader.h"
-#include "ColourLib.h"
+#include "ISVParameterSliders.hpp"
 
 class ISVParameterControlUI : public Component,
 public ChangeBroadcaster
@@ -29,8 +28,11 @@ public:
     void resized() override;
     
     // ==================================================
-
+    //ISVPresetDataStr* getPreset1() const { return this->parameterSliders1.getPreset1(); }
+    //void setPreset1(ISVPresetDataStr newPreset) { this->preset1 = newPreset; }
     // ==================================================
+    
+    
     
     float getStretch_x_sei() const { return this->stretch_x_sei.getValue(); }
     float getStretch_x_fu() const { return this->stretch_x_fu.getValue(); }
@@ -41,7 +43,18 @@ public:
     float getStretch_z_sei() const { return this->stretch_z_sei.getValue(); }
     float getStretch_z_fu() const { return this->stretch_z_fu.getValue(); }
     
+    float getStretch_x_1() const { return this->stretch_x_1.getValue(); }
+    float getStretch_x_2() const { return this->stretch_x_2.getValue(); }
+    float getStretch_x_3() const { return this->stretch_x_3.getValue(); }
+    float getStretch_x_4() const { return this->stretch_x_4.getValue(); }
+    float getStretch_y_1() const { return this->stretch_y_1.getValue(); }
+    float getStretch_y_2() const { return this->stretch_y_2.getValue(); }
+    float getStretch_y_3() const { return this->stretch_y_3.getValue(); }
+    float getStretch_y_4() const { return this->stretch_y_4.getValue(); }
+    
     float getStretchAmount() const { return this->stretch_amount.getValue(); }
+    float getXIndex() const { return this->xIndex.getValue(); }
+    float getYIndex() const { return this->yIndex.getValue(); }
     float getZIndex() const { return this->zIndex.getValue(); }
     // ==================================================
 
@@ -51,6 +64,10 @@ private:
     ISVParameterControlUIStatus status;
     void stretchUI();
     // ==================================================
+    
+    //std::shared_ptr<ISVParameterSliders> parameterSliders1;
+    // ==================================================
+
 
     
     // slider component
@@ -122,9 +139,23 @@ private:
     sliderUI1 stretch_z_sei;
     sliderUI1 stretch_z_fu;
     
+    sliderUI1 stretch_x_1;
+    sliderUI1 stretch_x_2;
+    sliderUI1 stretch_x_3;
+    sliderUI1 stretch_x_4;
+
+    sliderUI1 stretch_y_1;
+    sliderUI1 stretch_y_2;
+    sliderUI1 stretch_y_3;
+    sliderUI1 stretch_y_4;
+    
     sliderUI1 stretch_amount;
     
+    sliderUI1 xIndex;
+    sliderUI1 yIndex;
     sliderUI1 zIndex;
+    
+    ISVPresetDataStr preset1;
     
     // ==================================================
     

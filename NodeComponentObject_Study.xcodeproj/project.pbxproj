@@ -51,6 +51,8 @@
 		637BC285A220FCF68FC92126 /* include_juce_video.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7907DFD219CED1867C25E057 /* include_juce_video.mm */; };
 		6481B42C94CD81374F0B2359 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4D4D139E7E24147F3BF561 /* Carbon.framework */; };
 		7AA9BD6FC2BBE29E9C8B46AA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E05BF71795BB3482E429F07 /* OpenGL.framework */; };
+		820963DA22A7E6D100723C81 /* ISVParameterSliders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820963D822A7E6D100723C81 /* ISVParameterSliders.cpp */; };
+		820963DD22A7EC7400723C81 /* ISVParameterControlComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820963DB22A7EC7400723C81 /* ISVParameterControlComponent.cpp */; };
 		820AB79822A1762600FC7B46 /* IRISVObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820AB79622A1762600FC7B46 /* IRISVObject.cpp */; };
 		820D3BB8225EA44100BDA679 /* SoundPlayer_ThreadSafe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820D3BB6225EA44100BDA679 /* SoundPlayer_ThreadSafe.cpp */; };
 		820D3BBE225F936200BDA679 /* FileManagerTUTORIAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820D3BBC225F936200BDA679 /* FileManagerTUTORIAL.cpp */; };
@@ -212,6 +214,11 @@
 		7907DFD219CED1867C25E057 /* include_juce_video.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_video.mm; path = JuceLibraryCode/include_juce_video.mm; sourceTree = SOURCE_ROOT; };
 		7C4D4D139E7E24147F3BF561 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		7E05BF71795BB3482E429F07 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		820963D622A7D2CE00723C81 /* ISVPresetDataStr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISVPresetDataStr.h; sourceTree = "<group>"; };
+		820963D822A7E6D100723C81 /* ISVParameterSliders.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ISVParameterSliders.cpp; sourceTree = "<group>"; };
+		820963D922A7E6D100723C81 /* ISVParameterSliders.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ISVParameterSliders.hpp; sourceTree = "<group>"; };
+		820963DB22A7EC7400723C81 /* ISVParameterControlComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ISVParameterControlComponent.cpp; sourceTree = "<group>"; };
+		820963DC22A7EC7400723C81 /* ISVParameterControlComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ISVParameterControlComponent.hpp; sourceTree = "<group>"; };
 		820AB79622A1762600FC7B46 /* IRISVObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRISVObject.cpp; sourceTree = "<group>"; };
 		820AB79722A1762600FC7B46 /* IRISVObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRISVObject.hpp; sourceTree = "<group>"; };
 		820D3BB6225EA44100BDA679 /* SoundPlayer_ThreadSafe.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundPlayer_ThreadSafe.cpp; sourceTree = "<group>"; };
@@ -1288,6 +1295,15 @@
 			path = ExternalLibraries;
 			sourceTree = "<group>";
 		};
+		820963D722A7E6C300723C81 /* ISVParameterSliders */ = {
+			isa = PBXGroup;
+			children = (
+				820963D822A7E6D100723C81 /* ISVParameterSliders.cpp */,
+				820963D922A7E6D100723C81 /* ISVParameterSliders.hpp */,
+			);
+			path = ISVParameterSliders;
+			sourceTree = "<group>";
+		};
 		820AB79B22A28DA100FC7B46 /* IRIVSRPreference */ = {
 			isa = PBXGroup;
 			children = (
@@ -2033,6 +2049,7 @@
 			children = (
 				82D0D28422A296F800C771B1 /* ISVPreferenceUI.cpp */,
 				82D0D28522A296F800C771B1 /* ISVPreferenceUI.hpp */,
+				820963D622A7D2CE00723C81 /* ISVPresetDataStr.h */,
 			);
 			path = ISVPreferenceUI;
 			sourceTree = "<group>";
@@ -2049,10 +2066,13 @@
 		82D0D28E22A455EA00C771B1 /* ISVParameterControlU */ = {
 			isa = PBXGroup;
 			children = (
+				820963D722A7E6C300723C81 /* ISVParameterSliders */,
 				82D0D28F22A4560500C771B1 /* ISVParameterControlUI.cpp */,
 				82D0D29022A4560500C771B1 /* ISVParameterControlUI.hpp */,
 				82D0D29222A5516F00C771B1 /* ISVParameterControlWindow.cpp */,
 				82D0D29322A5516F00C771B1 /* ISVParameterControlWindow.hpp */,
+				820963DB22A7EC7400723C81 /* ISVParameterControlComponent.cpp */,
+				820963DC22A7EC7400723C81 /* ISVParameterControlComponent.hpp */,
 			);
 			path = ISVParameterControlU;
 			sourceTree = "<group>";
@@ -2398,6 +2418,7 @@
 				821A5EA0212EBF7800BF593D /* SoundPlayer.cpp in Sources */,
 				82A98B2A2199B84B0077EAE6 /* IRWorkspaceList.cpp in Sources */,
 				821A5E65212ACD9400BF593D /* IRNodeComponent.cpp in Sources */,
+				820963DD22A7EC7400723C81 /* ISVParameterControlComponent.cpp in Sources */,
 				826056B62271DC7900CAF8C5 /* IRLinkFoundation.cpp in Sources */,
 				821A5E62212ACD1800BF593D /* IRNodeObject.cpp in Sources */,
 				10658904223036B2005D6B38 /* IRWaveformObjectPreference.cpp in Sources */,
@@ -2407,6 +2428,7 @@
 				82C08B01227663BC00938726 /* OpenGLVertexNoise.cpp in Sources */,
 				821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */,
 				82D8B16922A017B000940CD1 /* IRMeasureGrid.cpp in Sources */,
+				820963DA22A7E6D100723C81 /* ISVParameterSliders.cpp in Sources */,
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
 				82DEA54C2292FD19004D3D9F /* IRAutomationUI.cpp in Sources */,
 				10F647572226DE7700A26D7D /* ObjectListMenu.cpp in Sources */,

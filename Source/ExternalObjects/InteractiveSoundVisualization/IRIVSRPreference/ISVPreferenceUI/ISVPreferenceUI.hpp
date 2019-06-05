@@ -55,7 +55,18 @@ public:
     float getStretch_z_sei() const;
     float getStretch_z_fu() const;
     
+    float getStretch_x_1() const;
+    float getStretch_x_2() const;
+    float getStretch_x_3() const;
+    float getStretch_x_4() const;
+    float getStretch_y_1() const;
+    float getStretch_y_2() const;
+    float getStretch_y_3() const;
+    float getStretch_y_4() const;
+
     float getStretchAmount() const;
+    float getXIndex() const;
+    float getYIndex() const;
     float getZIndex() const;
     
     // ==================================================

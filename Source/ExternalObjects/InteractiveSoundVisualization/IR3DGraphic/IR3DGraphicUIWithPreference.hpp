@@ -43,6 +43,7 @@ private:
     // ==================================================
 
     std::shared_ptr<IRISVObjectPreference> preference;
+    ISVParameterControlUI controlUI;
     
 };
 #endif /* IR3DGraphicUIWithPreference_hpp */

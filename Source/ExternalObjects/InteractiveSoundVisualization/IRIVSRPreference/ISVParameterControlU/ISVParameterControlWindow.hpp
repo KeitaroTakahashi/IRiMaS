@@ -19,7 +19,7 @@ public ChangeListener,
 public ChangeBroadcaster
 {
 public:
-    ISVParameterControlWindow(String name, Rectangle<int> frameRect);
+    ISVParameterControlWindow(ISVParameterControlUI* ui, String name, Rectangle<int> frameRect);
     ~ISVParameterControlWindow();
     
     ISVParameterControlUI* getControlUI() const { return this->controlUI.get(); }
@@ -32,7 +32,7 @@ private:
     void closeButtonPressed() override;
 
     std::shared_ptr<ISVParameterControlUI> controlUI;
-    
+    ISVParameterControlUI* ui;
     String name;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ISVParameterControlWindow)

@@ -15,16 +15,10 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::Whirlpool::process(void const*, unsigned long)"
+                  symbolName = "void juce::ObjCClass&lt;NSView&gt;::addMethod&lt;unsigned long (*)(objc_object*, objc_selector*, id&lt;NSDraggingInfo&gt;)&gt;(objc_selector*, unsigned long (*)(objc_object*, objc_selector*, id&lt;NSDraggingInfo&gt;), char const*, char const)"
                   moduleName = "NodeComponentObject_Study"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Applications/JUCE/modules/juce_core/memory/juce_Memory.h"
-                  timestampString = "581336477.119218"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "28"
-                  endingLineNumber = "28"
-                  offsetFromSymbolStart = "114">
+                  offsetFromSymbolStart = "210">
                </Location>
             </Locations>
          </BreakpointContent>

@@ -8,15 +8,17 @@
 #include "OpenGLVertexNoise.hpp"
 
 OpenGLVertexNoise::OpenGLVertexNoise() :
-materialColour(0.5f, 0.84f, 0.1f, 1.0f),
-lightingColour(0.71f, 1.0f, 0.77f, 1.0f),
 positiveStretch(1.0f, 1.0f, 1.0f, 1.0f),
-negativeStretch(1.0f, 1.0f, 1.0f, 1.0f)
+negativeStretch(1.0f, 1.0f, 1.0f, 1.0f),
+stretchX(1.0f, 1.0f, 1.0f, 1.0f),
+stretchY(1.0f, 1.0f, 1.0f, 1.0f),
+materialColour(0.5f, 0.84f, 0.1f, 1.0f),
+lightingColour(0.71f, 1.0f, 0.77f, 1.0f)
 {
-    /*
-     if(auto* peer = getPeer())
-     peer->setCurrentRenderingEngine(0);
-     */
+    
+    if(auto* peer = getPeer())
+        peer->setCurrentRenderingEngine(0);
+    
     
     setOpaque(true);
     //this->controlsOverlay.reset(new DemoController());
@@ -40,6 +42,8 @@ OpenGLVertexNoise::~OpenGLVertexNoise()
 
 void OpenGLVertexNoise::newOpenGLContextCreated()
 {
+    std::cout << "newOpenGLContextCreated\n";
+
     // nothing to do in this case - we'll initialise our shaders + textures
     // on demand, during the render callback.
     freeAllContextObjects();
@@ -52,6 +56,8 @@ void OpenGLVertexNoise::newOpenGLContextCreated()
 
 void OpenGLVertexNoise::openGLContextClosing()
 {
+    
+    std::cout << "openGLContextClosing\n";
     // When the context is about to close, you must use this callback to delete
     // any GPU resources while the context is still current.
     freeAllContextObjects();
@@ -141,6 +147,18 @@ void OpenGLVertexNoise::renderOpenGL()
         uniforms->negativeStretch->set (this->negativeStretch.getX(),
                                         this->negativeStretch.getY(),
                                         this->negativeStretch.getWidth());
+    
+    if (uniforms->stretchX.get() != nullptr)
+        uniforms->stretchX->set (this->stretchX.getX(),
+                                 this->stretchX.getY(),
+                                 this->stretchX.getWidth(),
+                                 this->stretchX.getHeight());
+    
+    if (uniforms->stretchY.get() != nullptr)
+        uniforms->stretchY->set (this->stretchY.getX(),
+                                 this->stretchY.getY(),
+                                 this->stretchY.getWidth(),
+                                 this->stretchY.getHeight());
     
     if(uniforms->stretch_amount.get() != nullptr)
         uniforms->stretch_amount->set (this->stretchAmount);
@@ -232,7 +250,7 @@ Matrix3D<float> OpenGLVertexNoise::getViewMatrix() const
     //* Vector3D<float> (0.0f, 1.0f, -10.0f);
     
     //auto viewMatrix = Vector3D<float> (0.0f, -0.5f, this->positionZ);
-    auto viewMatrix = Vector3D<float> (0.0f, 0.0f, this->positionZ);
+    auto viewMatrix = Vector3D<float> (this->positionX, this->positionY, this->positionZ);
 
     //auto rotationMatrix = Matrix3D<float>::rotation ({ rotation, rotation, -0.3f });
     //auto rotationMatrix = Matrix3D<float>::rotation ({ 0, 30, -3 });
@@ -454,35 +472,26 @@ void OpenGLVertexNoise::setNegativeStretch(float x, float y, float z)
     if(z >= 0) this->negativeStretch.setWidth(z);
 }
 
-void OpenGLVertexNoise::setPositiveTBStretch(float x, float y, float z)
+void OpenGLVertexNoise::setStretchX(float x, float y, float z, float w)
 {
-    if(x >= 0) this->positiveTBStretch.setX(x);
-    if(y >= 0) this->positiveTBStretch.setY(y);
-    if(z >= 0) this->positiveTBStretch.setWidth(z);
     
+    std::cout << "setStretch X " << x << ", " << y << std::endl;
+    if(x >= 0) this->stretchX.setX(x);
+    if(y >= 0) this->stretchX.setY(y);
+    if(z >= 0) this->stretchX.setWidth(z);
+    if(w >= 0) this->stretchX.setHeight(w);
 }
 
-void OpenGLVertexNoise::setNegativeTBStretch(float x, float y, float z)
+void OpenGLVertexNoise::setStretchY(float x, float y, float z, float w)
 {
-    if(x >= 0) this->negativeTBStretch.setX(x);
-    if(y >= 0) this->negativeTBStretch.setY(y);
-    if(z >= 0) this->negativeTBStretch.setWidth(z);
+    if(x >= 0) this->stretchY.setX(x);
+    if(y >= 0) this->stretchY.setY(y);
+    if(z >= 0) this->stretchY.setWidth(z);
+    if(w >= 0) this->stretchY.setHeight(w);
 }
 
-void OpenGLVertexNoise::setPositiveTBStretchPos(float x, float y, float z)
-{
-    if(x >= 0) this->positiveTBStretchPos.setX(x);
-    if(y >= 0) this->positiveTBStretchPos.setY(y);
-    if(z >= 0) this->positiveTBStretchPos.setWidth(z);
-    
-}
 
-void OpenGLVertexNoise::setNegativeTBStretchPos(float x, float y, float z)
-{
-    if(x >= 0) this->negativeTBStretchPos.setX(x);
-    if(y >= 0) this->negativeTBStretchPos.setY(y);
-    if(z >= 0) this->negativeTBStretchPos.setWidth(z);
-}
+
 void OpenGLVertexNoise::setStretchAmount(float amount)
 {
     this->stretchAmount = amount;
@@ -493,7 +502,7 @@ void OpenGLVertexNoise::startRendering()
 {
     if(!isRendering())
     {
-        //this->openGLContext.setContinuousRepainting(true);
+        this->openGLContext.setContinuousRepainting(true);
         this->isRenderingFlag = true;
     }
 }
@@ -502,7 +511,7 @@ void OpenGLVertexNoise::stopRendering()
 {
     if(isRendering())
     {
-        //this->openGLContext.setContinuousRepainting(false);
+        this->openGLContext.setContinuousRepainting(false);
         this->isRenderingFlag = false;
     }
 }

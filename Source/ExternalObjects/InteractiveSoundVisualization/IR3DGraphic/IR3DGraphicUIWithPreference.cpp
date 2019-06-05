@@ -13,6 +13,8 @@ IR3DGraphicUIWithPreference::IR3DGraphicUIWithPreference(IRNodeObject* nodeObjec
     
     this->preference->getUI()->addChangeListener(this);
     this->preference->getUI()->addListener(this);
+    
+    this->controlUI.addChangeListener(this);
 
 }
 
@@ -71,12 +73,32 @@ void IR3DGraphicUIWithPreference::stretchValueChanged(ISVPreferenceUI* obj)
     float n_z = obj->getStretch_z_fu();
     
     getOpenGLContents()->setNegativeStretch(n_x, n_y, n_z);
+  
+    float s_x_1 = obj->getStretch_x_1();
+    float s_x_2 = obj->getStretch_x_2();
+    float s_x_3 = obj->getStretch_x_3();
+    float s_x_4 = obj->getStretch_x_4();
+    getOpenGLContents()->setStretchX(s_x_1, s_x_2, s_x_3, s_x_4);
+
+    float s_y_1 = obj->getStretch_y_1();
+    float s_y_2 = obj->getStretch_y_2();
+    float s_y_3 = obj->getStretch_y_3();
+    float s_y_4 = obj->getStretch_y_4();
     
+    getOpenGLContents()->setStretchY(s_y_1, s_y_2, s_y_3, s_y_4);
+
+
     float amount = obj->getStretchAmount();
     getOpenGLContents()->setStretchAmount(amount);
     
+    float xIndex = obj->getXIndex();
+    getOpenGLContents()->setPositionX(xIndex);
+    float yIndex = obj->getYIndex();
+    getOpenGLContents()->setPositionY(yIndex);
     float zIndex = obj->getZIndex();
     getOpenGLContents()->setPositionZ(zIndex);
+    
+    
     
     std::cout << "stretchValueChanged\n";
 }
@@ -108,6 +130,19 @@ void IR3DGraphicUIWithPreference::changeListenerCallback(ChangeBroadcaster* sour
             default:
                 break;
                 
+        }
+    }else if(source == &this->controlUI)
+    {
+        ISVParameterControlUI::ISVParameterControlUIStatus status = this->controlUI.getStatus();
+        
+        switch (status)
+        {
+            case ISVParameterControlUI::ISVParameterControlUIStatus::SliderValueChanged:
+                
+                break;
+                
+            default:
+                break;
         }
     }
 }

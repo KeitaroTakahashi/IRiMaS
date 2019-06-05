@@ -95,14 +95,18 @@ struct Uniforms
         
         stretch_amount  .reset (createUniform (openGLContext, shader, "stretch_amount"));
         
-        positiveTBStretch  .reset (createUniform (openGLContext, shader, "positiveTBSTretch"));
+        positiveTBStretch  .reset (createUniform (openGLContext, shader, "positiveTBStretch"));
 
-        positiveTBStretchPos  .reset (createUniform (openGLContext, shader, "positiveTBSTretchPos"));
+        positiveTBStretchPos  .reset (createUniform (openGLContext, shader, "positiveTBStretchPos"));
 
         negativeTBStretch  .reset (createUniform (openGLContext, shader, "negativeTBStretch"));
         
         negativeTBStretchPos  .reset (createUniform (openGLContext, shader, "negativeTBStretchPos"));
 
+        stretchX  .reset (createUniform (openGLContext, shader, "stretchX"));
+        stretchY  .reset (createUniform (openGLContext, shader, "stretchY"));
+
+        
         vertexOffset    .reset (createUniform (openGLContext, shader, "vertexOffset"));
         vertexScaleIn   .reset (createUniform (openGLContext, shader, "vertexScaleIn"));
         vertexScaleOut  .reset (createUniform (openGLContext, shader, "vertexScaleOut"));
@@ -126,6 +130,8 @@ struct Uniforms
     SpecularColour,
     positiveStretch,
     negativeStretch,
+    stretchX,
+    stretchY,
     stretch_amount,
     positiveTBStretch,
     positiveTBStretchPos,

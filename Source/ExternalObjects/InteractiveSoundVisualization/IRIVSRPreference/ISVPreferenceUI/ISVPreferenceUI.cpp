@@ -19,8 +19,6 @@ ISVPreferenceUI::ISVPreferenceUI(String title)
     addAndMakeVisible(&this->openControllerButton);
     this->openControllerButton.onClick = [this]{ openControllerAction(); };
     
-    
-    
     this->PresetsLabel.setText("Presets", dontSendNotification);
     this->PresetsLabel.setColour(Label::textColourId, SYSTEMCOLOUR.titleText);
     addAndMakeVisible(&this->PresetsLabel);
@@ -64,7 +62,6 @@ ISVPreferenceUI::ISVPreferenceUI(String title)
     this->LightingColourLabel.setColour(Label::textColourId, SYSTEMCOLOUR.titleText);
     addAndMakeVisible(&this->LightingColourLabel);
     
-    
     addAndMakeVisible(&this->lightingColour);
     this->lightingColour.setCurrentColour(Colours::black);
     this->lightingColour.addChangeListener(this);
@@ -77,10 +74,8 @@ ISVPreferenceUI::ISVPreferenceUI(String title)
     addAndMakeVisible(&this->materialColour);
     this->materialColour.setCurrentColour(Colours::black);
     this->materialColour.addChangeListener(this);
-
     
     // --------------------------------------------------
-
 
 }
 
@@ -249,8 +244,8 @@ void ISVPreferenceUI::openControllerAction()
     std::cout << "openControllerAction\n";
     if(this->controllerWindow == nullptr)
     {
-        Rectangle<int> winSize (0, 0, 1280, 800);
-        this->controllerWindow = new ISVParameterControlWindow("ISV controller", winSize);
+        Rectangle<int> winSize (0, 0, 1280, 900);
+        this->controllerWindow = new ISVParameterControlWindow(nullptr, "ISV controller", winSize);
         this->controllerWindow->getControlUI()->addChangeListener(this);
 
     }else
@@ -301,9 +296,59 @@ float ISVPreferenceUI::getStretchAmount() const
     ISVParameterControlUI* u = this->controllerWindow->getControlUI();
     return u->getStretchAmount();
 }
-
+float ISVPreferenceUI::getXIndex() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getXIndex();
+}
+float ISVPreferenceUI::getYIndex() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getYIndex();
+}
 float ISVPreferenceUI::getZIndex() const
 {
     ISVParameterControlUI* u = this->controllerWindow->getControlUI();
     return u->getZIndex();
+}
+// ------------------------------
+float ISVPreferenceUI::getStretch_x_1() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getStretch_x_1();
+}
+float ISVPreferenceUI::getStretch_x_2() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getStretch_x_2();
+}
+float ISVPreferenceUI::getStretch_x_3() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getStretch_x_3();
+}
+float ISVPreferenceUI::getStretch_x_4() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getStretch_x_4();
+}
+float ISVPreferenceUI::getStretch_y_1() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getStretch_y_1();
+}
+float ISVPreferenceUI::getStretch_y_2() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getStretch_y_2();
+}
+float ISVPreferenceUI::getStretch_y_3() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getStretch_y_3();
+}
+float ISVPreferenceUI::getStretch_y_4() const
+{
+    ISVParameterControlUI* u = this->controllerWindow->getControlUI();
+    return u->getStretch_y_4();
 }

@@ -18,9 +18,9 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     objectFactory.registerObject<IRISVObject>("IRISV", "Interactive Sound Visualizer", img);
 
 
-    //objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
+    objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
 
-/*
+
     objectFactory.registerObject<IRTextEditorObject>("IRTextEditor", "Text Editor", img);
     objectFactory.registerObject<IRImageViewerObject>("IRImageViewer", "Image Viewer", img);
     objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
@@ -28,11 +28,10 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
 
  
     objectFactory.registerObject<IRVideoPlayerObject>("IRVideoPlayer", "Video Player", img); // leak videocomp
-    objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
     objectFactory.registerObject<IRTestObject>("IRTestObject", "test", img);
   
-    */
-    // objectFactory.registerObject<IRCVVideoPlayer>("IRCVVideoPlayer", "CV Video Player", img);
+    //objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
+
 }
 
 

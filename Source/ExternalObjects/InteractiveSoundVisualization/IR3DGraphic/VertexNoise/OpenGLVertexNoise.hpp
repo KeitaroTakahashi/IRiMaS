@@ -65,10 +65,9 @@ public:
     void setPositiveStretch(float x, float y, float z);
     void setNegativeStretch(float x, float y, float z);
     
-    void setPositiveTBStretch(float x, float y, float z);
-    void setPositiveTBStretchPos(float x, float y, float z);
-    void setNegativeTBStretch(float x, float y, float z);
-    void setNegativeTBStretchPos(float x, float y, float z);
+   
+    void setStretchX(float x, float y, float z, float w);
+    void setStretchY(float x, float y, float z, float w);
 
     void setStretchAmount(float amount);
 
@@ -82,6 +81,10 @@ public:
     float getAmountY() const { return this->amountY; }
     float getAmountZ() const { return this->amountZ; }
     
+    void setPositionX(float positionX) { this->positionX = positionX; }
+    float getPositionX() const { return this->positionX; }
+    void setPositionY(float positionY) { this->positionY = positionY; }
+    float getPositionY() const { return this->positionY; }
     void setPositionZ(float positionZ) { this->positionZ = positionZ; }
     float getPositionZ() const { return this->positionZ; }
     
@@ -157,11 +160,10 @@ private:
     // stretch
     Rectangle<float> positiveStretch;
     Rectangle<float> negativeStretch;
+
     
-    Rectangle<float> positiveTBStretch;
-    Rectangle<float> negativeTBStretch;
-    Rectangle<float> positiveTBStretchPos;
-    Rectangle<float> negativeTBStretchPos;
+    Rectangle<float> stretchX;
+    Rectangle<float> stretchY;
     float stretchAmount = 1.0;
     
     
@@ -172,6 +174,8 @@ private:
     float lpy = -15.0f;
     float lightPositionYSpeed = 0.1;
     
+    float positionX = 0.0;
+    float positionY = 0.0;
     float positionZ = -18.0;
 
     // ==============================

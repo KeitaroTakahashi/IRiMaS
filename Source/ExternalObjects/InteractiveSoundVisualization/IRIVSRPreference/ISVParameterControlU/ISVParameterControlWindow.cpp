@@ -7,10 +7,10 @@
 
 #include "ISVParameterControlWindow.hpp"
 
-ISVParameterControlWindow::ISVParameterControlWindow(String name, Rectangle<int> frameRect) :
+ISVParameterControlWindow::ISVParameterControlWindow(ISVParameterControlUI* ui, String name, Rectangle<int> frameRect) :
 DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), DocumentWindow::allButtons)
 {
-    
+    this->ui = ui;
     this->name = name;
     setUsingNativeTitleBar(true);
     this->controlUI = std::make_shared<ISVParameterControlUI>();
