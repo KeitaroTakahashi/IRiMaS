@@ -8,7 +8,7 @@
 #ifndef VertecesSelector_h
 #define VertecesSelector_h
 
-#include "/Users/keitaro/program/JUCE/IRiMaS/Source/System/IRWorkSpace/ObjectSelection/IRObjectSelection/IRObjectSelection.hpp"
+#include "IRObjectSelection.hpp"
 
 #include "AutomationVertex.hpp"
 
