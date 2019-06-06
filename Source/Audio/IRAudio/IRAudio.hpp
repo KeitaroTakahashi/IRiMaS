@@ -57,7 +57,7 @@ public:
     
     String getPath() const { return this->filePath; }
     
-    String getFileName() const { return this->fileName; }
+    //String getFileName() const { return this->fileName; }
     
     // print audio file info for debug
     void showAudioFileInfo();

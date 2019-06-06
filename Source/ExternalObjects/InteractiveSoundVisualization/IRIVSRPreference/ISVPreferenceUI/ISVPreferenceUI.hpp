@@ -26,7 +26,9 @@ public:
         IntensitySliderChanged,
         FinenessSliderChanged,
         LightingColourChanged,
-        MaterialColourChanged
+        MaterialColourChanged,
+        PresetSelected,
+        ClearAllPresets
     };
     
     ISVPreferenceUI(String title);
@@ -38,108 +40,34 @@ public:
     // ==================================================
     void sliderValueChanged (Slider* slider) override;
     void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
+    
+    int getSelectedPresetIndex() const { return this->PresetsBox.getSelectedId(); }
 
     // ==================================================
-
-    float getIntensitySliderValue() const;
-    float getFinenessSliderValue() const;
-    Colour getLightingColour() const;
-    Colour getMaterialColour() const;
-    
-    float getStretch_x_sei() const;
-    float getStretch_x_fu() const;
-    
-    float getStretch_y_sei() const;
-    float getStretch_y_fu() const;
-    
-    float getStretch_z_sei() const;
-    float getStretch_z_fu() const;
-    
-    float getStretch_x_1() const;
-    float getStretch_x_2() const;
-    float getStretch_x_3() const;
-    float getStretch_x_4() const;
-    float getStretch_y_1() const;
-    float getStretch_y_2() const;
-    float getStretch_y_3() const;
-    float getStretch_y_4() const;
-
-    float getStretchAmount() const;
-    float getXIndex() const;
-    float getYIndex() const;
-    float getZIndex() const;
+    void clearAllPresetsAction();
     
     // ==================================================
     ISVPreferenceStatus getStatus() const { return this->status; }
     // ==================================================
 
-    class Listener
-    {
-    public:
-        virtual ~Listener() {}
-        
-        virtual void intensitySliderChanged(ISVPreferenceUI* obj) {}
-        virtual void finenessSliderChanged(ISVPreferenceUI* obj) {}
-        virtual void lightingColourChanged(ISVPreferenceUI* obj) {}
-        virtual void materialColourChanged(ISVPreferenceUI* obj) {}
-        
-        virtual void stretchValueChanged(ISVPreferenceUI* obj) {}
-
-    };
-    
-    virtual void addListener(Listener* newListener) { this->listeners.add(newListener); }
-    virtual void removeListener(Listener* listener) { this->listeners.remove(listener);}
-    ListenerList<Listener> listeners;
-    
-    void callIntentisySliderChanged(ISVPreferenceUI* obj);
-    void callFinenessSliderChanged(ISVPreferenceUI* obj);
-    void callLightingColourChanged(ISVPreferenceUI* obj);
-    void callMaterialColourChanged(ISVPreferenceUI* obj);
-
-    void callStretchValueChanged(ISVPreferenceUI* obj);
+    void addPresetItem(Array<ISVPresetDataStr> presets);
     // ==================================================
 
-    
-
+   
 private:
     // ==================================================
-
-    void openControllerAction();
     
     void changeListenerCallback(ChangeBroadcaster* source) override;
 
     ISVPreferenceStatus status;
     // ==================================================
     
-    TextButton openControllerButton;
-
     Label       LabelTitle;
     Label       PresetsLabel;
     ComboBox    PresetsBox;
     
-    Label       IntensityLabel;
-    Slider      IntensitySlider;
-    Label       FinenessLabel;
-    Slider      FinenessSlider;
-    
-    Label       LightingColourLabel;
-    
-    ColourSelector lightingColour
-    {
-        ColourSelector::showSliders
-        | ColourSelector::showColourspace
-        | ColourSelector::showAlphaChannel
-    };
-    
-    Label       MaterialColourLabel;
-    
-    ColourSelector materialColour
-    {
-        ColourSelector::showSliders
-        | ColourSelector::showColourspace
-        | ColourSelector::showAlphaChannel
-    };
-    
+    TextButton clearAllPresetsButton;
+
     // ==================================================
     
     ISVParameterControlWindow* controllerWindow = nullptr;

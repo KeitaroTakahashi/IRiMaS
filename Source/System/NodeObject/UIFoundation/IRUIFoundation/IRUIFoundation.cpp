@@ -163,7 +163,7 @@ void IRUIFoundation::receiveAudioLink(IRNodeObject* obj)
     if(obj->getAudioLink() != nullptr)
     {
         audioPtrDelivery(obj->getAudioLink());
-        std::cout << obj << " : delivered audio file = " << obj->getAudioLink()->getFile().getFileName() << " : filename = "<<  obj->getAudioLink()->getFileName() <<std::endl;
+        //std::cout << obj << " : delivered audio file = " << obj->getAudioLink()->getFile().getFileName() << " : filename = "<<  obj->getAudioLink()->getFileName() <<std::endl;
     }
 }
 void IRUIFoundation::receiveTextLink(IRNodeObject* obj)

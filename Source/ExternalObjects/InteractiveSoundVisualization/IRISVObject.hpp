@@ -26,10 +26,9 @@ public:
         return newObj;
     }
     // ------------------------------------------------------------
-    void loadThisFromSaveData(t_json saveData) override
-    {
-        
-    }
+    
+    t_json saveThisToSaveData() override;
+    void loadThisFromSaveData(t_json data) override;
     
     // ------------------------------------------------------------
     void paint(Graphics &g) override;

@@ -80,17 +80,22 @@ void IRWorkspaceList::updateList()
         addAndMakeVisible(s);
         
         index++;
+        
+        std::cout << "spanshop taken for " << space << std::endl;
     }
     
     if (selectedIndex >= 0)
     {
         this->snapComponents[selectedIndex]->listEventSelectedAction();
     }
-    
+    std::cout << "snapComponents done" << std::endl;
+
     // IMPORTANT!!
     // give back keyboard focus on this object.
     workspaceListFocused();
     
+    std::cout << "workspaceListFocused done" << std::endl;
+
     repaint();
 }
 

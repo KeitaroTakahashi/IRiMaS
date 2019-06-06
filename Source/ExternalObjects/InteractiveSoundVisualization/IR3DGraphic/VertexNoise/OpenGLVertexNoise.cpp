@@ -116,7 +116,10 @@ void OpenGLVertexNoise::renderOpenGL()
         uniforms->viewMatrix->setMatrix4 (getViewMatrix().mat, 1, false);
     
     if (uniforms->lightPosition.get() != nullptr)
-        uniforms->lightPosition->set (this->lightPositionY, 5.0f, 15.0f, 0.0f);
+        uniforms->lightPosition->set (this->lightPositionX,
+                                      this->lightPositionY,
+                                      this->lightPositionZ,
+                                      0.0f);
     
     // diffuse colour
     
@@ -177,7 +180,6 @@ void OpenGLVertexNoise::renderOpenGL()
     
     if (uniforms->vertexXYZAmount.get() != nullptr)
         uniforms->vertexXYZAmount->set (this->amountX, this->amountY, this->amountZ);
-    //uniforms->lightPosition->set (-15.0f, 10.0f, 15.0f, 0.0f);
     
     
     /*    if (uniforms->texture.get() != nullptr)
@@ -233,7 +235,6 @@ void OpenGLVertexNoise::renderOpenGL()
     //this->offsetZ += rotationSpeed;
     
     //this->lpy = (this->lpy + this->lightPositionYSpeed);
-    this->lightPositionY = -15.0f;
 }
 
 Matrix3D<float> OpenGLVertexNoise::getProjectionMatrix() const
@@ -250,7 +251,7 @@ Matrix3D<float> OpenGLVertexNoise::getViewMatrix() const
     //* Vector3D<float> (0.0f, 1.0f, -10.0f);
     
     //auto viewMatrix = Vector3D<float> (0.0f, -0.5f, this->positionZ);
-    auto viewMatrix = Vector3D<float> (this->positionX, this->positionY, this->positionZ);
+    auto viewMatrix = Vector3D<float> (this->transform.getX(), this->transform.getY(), this->transform.getWidth());
 
     //auto rotationMatrix = Matrix3D<float>::rotation ({ rotation, rotation, -0.3f });
     //auto rotationMatrix = Matrix3D<float>::rotation ({ 0, 30, -3 });
@@ -418,6 +419,47 @@ void OpenGLVertexNoise::createShaders()
 
 // ================
 
+void OpenGLVertexNoise::setLightPosition(Rectangle<float> val)
+{
+    this->lightPositionX = val.getX();
+    this->lightPositionY = val.getY();
+    this->lightPositionZ = val.getWidth();
+}
+
+void OpenGLVertexNoise::setQuaterStretchX(Rectangle<float> val)
+{
+    this->stretchX = val;
+    //std::cout << "vertexNoise this->stretchX " << this->stretchX.getX() << ", " << this->stretchX.getY() << ", " << this->stretchX.getWidth() << ", " << this->stretchX.getWidth() << std::endl;
+
+}
+void OpenGLVertexNoise::setQuaterStretchY(Rectangle<float> val)
+{
+    this->stretchY = val;
+    
+    //std::cout << "vertexNoise this->stretchY " << this->stretchY.getX() << ", " << this->stretchY.getY() << ", " << this->stretchY.getWidth() << ", " << this->stretchY.getHeight() <<std::endl;
+}
+void OpenGLVertexNoise::setHalfStretchX(Point<float> val)
+{
+    this->positiveStretch.setX(val.getX());
+    this->negativeStretch.setX(val.getY());
+}
+void OpenGLVertexNoise::setHalfStretchY(Point<float> val)
+{
+    this->positiveStretch.setY(val.getX());
+    this->negativeStretch.setY(val.getY());
+}
+void OpenGLVertexNoise::setHalfStretchZ(Point<float> val)
+{
+    this->positiveStretch.setWidth(val.getX());
+    this->negativeStretch.setWidth(val.getY());
+}
+void OpenGLVertexNoise::setTransform(Rectangle<float> val)
+{
+    this->transform = val;
+}
+
+// ================
+
 void OpenGLVertexNoise::setOffsetX(float offsetX)
 {
     this->offsetX = offsetX;
@@ -433,13 +475,13 @@ void OpenGLVertexNoise::setOffsetZ(float offsetZ)
     
 }
 
-void OpenGLVertexNoise::setFineness(float fineness)
+void OpenGLVertexNoise::setFineness(float val)
 {
-    this->fineness = fineness;
+    this->fineness = val;
 }
-void OpenGLVertexNoise::setIntensity(float intensity)
+void OpenGLVertexNoise::setIntensity(float val)
 {
-    this->intensity = intensity;
+    this->intensity = val;
 }
 
 void OpenGLVertexNoise::setAmountX(float amountX)

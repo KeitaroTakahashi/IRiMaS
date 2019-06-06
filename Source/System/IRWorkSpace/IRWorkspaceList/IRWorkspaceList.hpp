@@ -136,6 +136,9 @@ private:
                 setImage(img);
                 
             }
+            
+            std::cout << "updateImage done"<< std::endl;
+
         }
         void resize(Rectangle<int> frameRect)
         {

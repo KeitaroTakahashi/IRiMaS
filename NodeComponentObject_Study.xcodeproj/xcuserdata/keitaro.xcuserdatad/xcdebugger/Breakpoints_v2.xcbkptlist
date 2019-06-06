@@ -15,10 +15,16 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "void juce::ObjCClass&lt;NSView&gt;::addMethod&lt;unsigned long (*)(objc_object*, objc_selector*, id&lt;NSDraggingInfo&gt;)&gt;(objc_selector*, unsigned long (*)(objc_object*, objc_selector*, id&lt;NSDraggingInfo&gt;), char const*, char const)"
+                  symbolName = "IRAudio::openFileFromPath(juce::String, bool)"
                   moduleName = "NodeComponentObject_Study"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "210">
+                  urlString = "file:///Users/keitaro/program/JUCE/IRiMaS/Source/Audio/IRAudio/IRAudio.cpp"
+                  timestampString = "581520741.424232"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "18">
                </Location>
             </Locations>
          </BreakpointContent>

@@ -7,25 +7,40 @@
 
 #include "ISVParameterControlComponent.hpp"
 
-ISVParameterControlComonent::ISVParameterControlComonent()
+ISVParameterControlComponent::ISVParameterControlComponent()
 {
-    addAndMakeVisible(this->ui);
+
 }
 
-ISVParameterControlComonent::~ISVParameterControlComonent()
+ISVParameterControlComponent::~ISVParameterControlComponent()
 {
     
 }
 
 // ==================================================
-void ISVParameterControlComonent::paint(Graphics& g)
+void ISVParameterControlComponent::paint(Graphics& g)
 {
     
 }
 
-void ISVParameterControlComonent::resized()
+void ISVParameterControlComponent::resized()
 {
     this->ui->setBounds(0, 0, getWidth(), getHeight());
 }
 
+// ==================================================
+
+void ISVParameterControlComponent::setParameterUI(ISVParameterControlUI* ui)
+{
+    this->ui = ui;
+}
+void ISVParameterControlComponent::addParameterUI()
+{
+    if(this->ui != nullptr) addAndMakeVisible(this->ui);
+}
+
+void ISVParameterControlComponent::removeParameterUI()
+{
+    if(this->ui != nullptr) removeChildComponent(this->ui);
+}
 // ==================================================

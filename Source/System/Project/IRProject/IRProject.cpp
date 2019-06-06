@@ -761,6 +761,7 @@ bool IRProject::perform(const InvocationInfo& info)
             openFileInspecterWindow();
             break;
         case CommandIDs::menuPreferenceWindow:
+            this->preferenceWindow->setVisible(true);
             break;
         default:
             return false;

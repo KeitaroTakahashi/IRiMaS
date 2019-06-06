@@ -64,6 +64,8 @@ bool IRAudio::loadFile(File file, bool threadSafe)
         String p = file.getFullPathName();
         this->path.swapWith(p);
         this->filePath.swapWith(p);
+        
+        //this->fileName.swapWith(file.getFileName());
 
         if(threadSafe)
         {
@@ -121,7 +123,6 @@ void IRAudio::checkForPathToOpen()
     {
         this->isFileOpened = true;
         
-        
         this->file = File(pathToOpen);
         if((this->reader = this->formatManager.createReaderFor(file)))
         {
@@ -136,6 +137,8 @@ void IRAudio::checkForPathToOpen()
                                0,
                                true,
                                true);
+            
+            std::cout << "newBuffer " << newBuffer->getAudioSampleBuffer()->getNumSamples() << std::endl;
             this->buffer = newBuffer;
             this->buffers.add (newBuffer);
             
@@ -145,13 +148,11 @@ void IRAudio::checkForPathToOpen()
             this->bitsPerSample = this->reader->bitsPerSample;
             
             std::cout << "reading samples of "<<(int) reader->lengthInSamples<<std::endl;
-            
+          
             callFileImportCompleted();
             callFileStatusChanged(this);
-            
+           
             this->isFileLoadCompleted = true;
-            this->fileName = file.getFileName();
-            this->filePath = file.getFullPathName();
             sendChangeMessage();
             
         }else{

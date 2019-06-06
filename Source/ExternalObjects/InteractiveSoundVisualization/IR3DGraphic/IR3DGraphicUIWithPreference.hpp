@@ -12,8 +12,7 @@
 #include "IRISVObjectPreference.h"
 
 class IR3DGraphicUIWithPreference : public IR3DGraphicUI,
-private ChangeListener,
-private ISVPreferenceUI::Listener
+private ChangeListener
 {
 public:
     IR3DGraphicUIWithPreference(IRNodeObject*nodeObject);
@@ -26,24 +25,31 @@ public:
     void resized() override;
     // ==================================================
 
+    Array<ISVPresetDataStr> getPresetData() const { return this->presetData; }
+    
+    void addPreset(ISVPresetDataStr newPreset);
+
 private:
     
+    void loadPreset(int index);
+    void clearAllPresets();
     // ==================================================
-    void intensitySliderChanged(ISVPreferenceUI* obj) override;
-    void finenessSliderChanged(ISVPreferenceUI* obj) override;
-    void lightingColourChanged(ISVPreferenceUI* obj) override;
-    void materialColourChanged(ISVPreferenceUI* obj) override;
-    
-    void stretchValueChanged(ISVPreferenceUI* obj) override;
+    void uiUpdated();
+    void colourUpdated();
+    void saveAction();
+    // ==================================================
+    void setSliderParams(ISVPresetDataStr preset);
+    void setColourParams(ISVPresetDataStr preset);
     // ==================================================
 
-    
     void changeListenerCallback(ChangeBroadcaster* source) override;
 
     // ==================================================
 
     std::shared_ptr<IRISVObjectPreference> preference;
     ISVParameterControlUI controlUI;
+    
+    Array<ISVPresetDataStr> presetData;
     
 };
 #endif /* IR3DGraphicUIWithPreference_hpp */

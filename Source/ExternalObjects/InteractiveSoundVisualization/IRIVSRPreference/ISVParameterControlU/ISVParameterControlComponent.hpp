@@ -11,16 +11,18 @@
 #include "ISVParameterSliders.hpp"
 #include "ISVParameterControlUI.hpp"
 
-class ISVParameterControlComonent : public Component,
+class ISVParameterControlComponent : public Component,
 public ChangeBroadcaster
 {
 public:
     
-    ISVParameterControlComonent();
-    ~ISVParameterControlComonent();
+    ISVParameterControlComponent();
+    ~ISVParameterControlComponent();
     
     // ==================================================
-    void setParameterUI(ISVParameterControlUI* ui) { this->ui = ui; }
+    void setParameterUI(ISVParameterControlUI* ui);
+    void addParameterUI();
+    void removeParameterUI();
     // ==================================================
     // ==================================================
     // ==================================================

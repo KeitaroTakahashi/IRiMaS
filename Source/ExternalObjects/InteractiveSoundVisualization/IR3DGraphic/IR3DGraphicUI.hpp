@@ -45,11 +45,12 @@ public:
     
     
     //==============================================================================
-    bool isRendering() const { return this->vertex->isRendering(); }
+    bool isRendering() const { return this->vertex.isRendering(); }
     //==============================================================================
 
-    OpenGLVertexNoise* getOpenGLContents() const { return this->vertex.get(); }
-    
+    //OpenGLVertexNoise* getOpenGLContents() const { return this->vertex.get(); }
+    OpenGLVertexNoise vertex;
+
 private:
     
     float amplitude = 0;
@@ -60,8 +61,7 @@ private:
     float fineness = 0;
     KMoveTo fineness_smoother;
     
-    std::shared_ptr<OpenGLVertexNoise> vertex;
-
+    //std::shared_ptr<OpenGLVertexNoise> vertex;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IR3DGraphicUI)
     

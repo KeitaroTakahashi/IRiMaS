@@ -12,6 +12,7 @@
 
 struct ISVPresetDataStr
 {
+    String presetTitle;
     
     Rectangle<float> lightPosition;
     
@@ -34,6 +35,8 @@ struct ISVPresetDataStr
     float intensity = 0.0;
     float fineness = 0.0;
     
+    float amount;
+    
     ISVPresetDataStr()
     {
         this->materialColour = Colour(0.5f, 0.84f, 0.1f, 1.0f);
@@ -49,6 +52,8 @@ struct ISVPresetDataStr
         this->halfStretchZ = Point<float> (1.0f, 1.0f);
 
         this->transform = Rectangle<float> (0.0f, 0.0f, -18.0f, 0.0f);
+        
+        this->amount = 0.0;
     }
 
 };

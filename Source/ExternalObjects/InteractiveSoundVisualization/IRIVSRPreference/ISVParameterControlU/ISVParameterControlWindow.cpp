@@ -11,16 +11,13 @@ ISVParameterControlWindow::ISVParameterControlWindow(ISVParameterControlUI* ui, 
 DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), DocumentWindow::allButtons)
 {
     this->ui = ui;
+    this->ui->setBounds(frameRect.getX(),
+                        frameRect.getY(),
+                        frameRect.getWidth(),
+                        frameRect.getHeight());
     this->name = name;
     setUsingNativeTitleBar(true);
-    this->controlUI = std::make_shared<ISVParameterControlUI>();
-    this->controlUI->setBounds(frameRect.getX(),
-                               frameRect.getY(),
-                               frameRect.getWidth(),
-                               frameRect.getHeight());
-    this->controlUI->addChangeListener(this);
-    setContentOwned(this->controlUI.get(), true);
-    
+    setContentOwned(ui, true);
     setResizable(true, true);
     setName(name);
     
@@ -41,13 +38,14 @@ ISVParameterControlWindow::~ISVParameterControlWindow()
 
 void ISVParameterControlWindow::changeListenerCallback(ChangeBroadcaster* source)
 {
+    /*
     if (source == this->controlUI.get())
     {
         if(this->controlUI->getStatus() == ISVParameterControlUI::ISVParameterControlUIStatus::SliderValueChanged)
         {
             
         }
-    }
+    }*/
 }
 
 void ISVParameterControlWindow::closeButtonPressed()

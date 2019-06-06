@@ -11,6 +11,7 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     objectFactory.registerObject<IRAutomationObject>("IRAutomation", "Automation Graph", img);
     
     objectFactory.registerObject<IRAudioAnalysisObject>("IRAudioAnalysis", "AudioAnalysis", img);
+    
     objectFactory.registerObject<IRWaveformObject>("IRWaveform", "Waveform", img);           // leak is audio
 
     objectFactory.registerObject<IRLabelObject>("IRLabel", "Label", img);
@@ -18,6 +19,7 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
     objectFactory.registerObject<IRISVObject>("IRISV", "Interactive Sound Visualizer", img);
 
 
+    /*
     objectFactory.registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
 
 
@@ -29,7 +31,7 @@ ObjectFactoryInitializer::ObjectFactoryInitializer()
  
     objectFactory.registerObject<IRVideoPlayerObject>("IRVideoPlayer", "Video Player", img); // leak videocomp
     objectFactory.registerObject<IRTestObject>("IRTestObject", "test", img);
-  
+  */
     //objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
 
 }

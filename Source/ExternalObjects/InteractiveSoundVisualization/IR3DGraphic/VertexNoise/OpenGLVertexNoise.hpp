@@ -50,6 +50,24 @@ public:
     
     void startRendering();
     // ==================================================
+    
+    void setLightPosition(Rectangle<float> val);
+    void setIntensity(float val);
+    void setFineness(float val);
+
+    void setQuaterStretchX(Rectangle<float> val);
+    void setQuaterStretchY(Rectangle<float> val);
+
+    void setHalfStretchX(Point<float> val);
+    void setHalfStretchY(Point<float> val);
+    void setHalfStretchZ(Point<float> val);
+
+    void setTransform(Rectangle<float> val);
+
+    void setMaterialColour(Colour colour);
+    void setLightingColour(Colour colour);
+    // ==================================================
+
     void setOffsetX(float offsetX);
     void setOffsetY(float offsetY);
     void setOffsetZ(float offsetZ);
@@ -58,13 +76,11 @@ public:
     void setAmountY(float amountY);
     void setAmountZ(float amountZ);
     
-    void setMaterialColour(Colour colour);
-    void setLightingColour(Colour colour);
+
     
     // if x, y, z is under 0, then ignore
     void setPositiveStretch(float x, float y, float z);
     void setNegativeStretch(float x, float y, float z);
-    
    
     void setStretchX(float x, float y, float z, float w);
     void setStretchY(float x, float y, float z, float w);
@@ -88,8 +104,6 @@ public:
     void setPositionZ(float positionZ) { this->positionZ = positionZ; }
     float getPositionZ() const { return this->positionZ; }
     
-    void setFineness(float fineness);
-    void setIntensity(float intensity);
     // ==================================================
     
     bool isRendering() const { return this->isRenderingFlag; }
@@ -161,16 +175,18 @@ private:
     Rectangle<float> positiveStretch;
     Rectangle<float> negativeStretch;
 
-    
     Rectangle<float> stretchX;
     Rectangle<float> stretchY;
+    
+    Rectangle<float> transform;
     float stretchAmount = 1.0;
     
     
     // ==============================
 
-    
+    float lightPositionX = 5.0f;
     float lightPositionY = 1.0f;
+    float lightPositionZ = 15.0f;
     float lpy = -15.0f;
     float lightPositionYSpeed = 0.1;
     

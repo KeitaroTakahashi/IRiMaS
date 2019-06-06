@@ -13,24 +13,33 @@
 #include "ColourLib.h"
 
 class ISVParameterSliders : public Component,
-public ChangeBroadcaster
+public ChangeBroadcaster,
+public ChangeListener
 {
 public:
     
     enum ISVParameterSlidersStatus
     {
         NONE,
-        SliderValueChanged
+        SliderValueChanged,
+        ColourChanged,
+        SavePresetAction
     };
     
     ISVParameterSliders();
     ~ISVParameterSliders();
     // ==================================================
+    
+    void saveAction();
     // ==================================================
     // ==================================================
     ISVPresetDataStr getPreset1() const { return this->preset1; }
-    void setPreset1(ISVPresetDataStr newPreset) { this->preset1 = newPreset; }
+    void setPreset1(ISVPresetDataStr newPreset);
+    
+    String getPresetName() const { return this->SavePresetInput.getText(); }
     // ==================================================
+    
+    
 
     ISVParameterSlidersStatus getStatus() const { return this->status; }
 
@@ -41,7 +50,7 @@ private:
     void paint(Graphics& g) override;
     void resized() override;
     
-    
+    void changeListenerCallback(ChangeBroadcaster* source) override;
     
     // ==================================================
 
@@ -89,6 +98,7 @@ private:
         }
         
         float getValue() const { return slider.getValue(); }
+        void setValue(float val) { slider.setValue(val); }
         
     private:
         ISVParameterSliders* parent;
@@ -133,6 +143,31 @@ private:
     sliderUI1 xIndex;
     sliderUI1 yIndex;
     sliderUI1 zIndex;
+    
+    Label VertexNoiseLabel;
+    sliderUI1 intensity;
+    sliderUI1 fineness;
+    
+    sliderUI1 lightPosition_x;
+    sliderUI1 lightPosition_y;
+    sliderUI1 lightPosition_z;
+
+    Label       LightingColourLabel;
+    
+    ColourSelector lightingColour
+    {
+        ColourSelector::showColourspace
+    };
+    
+    Label       MaterialColourLabel;
+    
+    ColourSelector materialColour
+    {
+        ColourSelector::showColourspace
+    };
+    
+    Label SavePresetInput;
+    TextButton SaveButton;
     
     // data
     ISVPresetDataStr preset1;
