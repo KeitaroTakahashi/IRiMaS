@@ -19,10 +19,18 @@ public:
     ~ISVParameterControlUI();
     // ==================================================
     ISVPresetDataStr getPreset1() const;
-    
+    ISVPresetDataStr getPreset2() const;
+    ISVPresetDataStr getCurrentPreset() const;
+
     String getPresetSaveName() const;
+
+    void setCurrentPreset(ISVPresetDataStr newPreset);
     
     void setPreset(ISVPresetDataStr newPreset);
+    
+    void setToPreset(ISVPresetDataStr newPreset);
+    
+    ISVPresetDataStr getDeltaPreset() const { return this->param_sliders.getDeltaPreset(); }
 
     // ==================================================
 

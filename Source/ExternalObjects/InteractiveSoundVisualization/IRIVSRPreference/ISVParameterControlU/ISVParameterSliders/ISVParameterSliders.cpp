@@ -33,6 +33,12 @@ lightPosition_y     (this, "Light Position", -100.0, 100.0, 1.0),
 lightPosition_z     (this, "Light Position", -50.0, 50.0, 15.0)
 
 {
+    
+    this->resetButton.setButtonText("Reset All");
+    this->resetButton.onClick = [this] { resetAction(); };
+    addAndMakeVisible(&this->resetButton);
+    
+    
     addAndMakeVisible(&this->stretch_x_sei);
     addAndMakeVisible(&this->stretch_x_fu);
     addAndMakeVisible(&this->stretch_y_sei);
@@ -195,32 +201,34 @@ void ISVParameterSliders::resized()
     y += 30;
     this->lightingColour.setBounds      (sideX, y, w, 150);
     
-    
+    sideX += w + 30;
+    this->resetButton.setBounds(sideX, 30, 100, 30);
+
     
 }
 // ==================================================
 void ISVParameterSliders::sliderUIValueChanged(sliderUI1* obj)
 {
     
-    this->preset1.lightPosition = Rectangle<float> (this->lightPosition_x.getValue(),
+    this->preset1.lightPosition = KVector<float> (this->lightPosition_x.getValue(),
                                                     this->lightPosition_y.getValue(),
                                                     this->lightPosition_z.getValue(),
                                                     0.0);
-    this->preset1.quaterStretchX = Rectangle<float> (this->stretch_x_1.getValue(),
+    this->preset1.quaterStretchX = KVector<float> (this->stretch_x_1.getValue(),
                                                      this->stretch_x_2.getValue(),
                                                      this->stretch_x_3.getValue(),
                                                      this->stretch_x_4.getValue());
-    this->preset1.quaterStretchY = Rectangle<float> (this->stretch_y_1.getValue(),
+    this->preset1.quaterStretchY = KVector<float> (this->stretch_y_1.getValue(),
                                                      this->stretch_y_2.getValue(),
                                                      this->stretch_y_3.getValue(),
                                                      this->stretch_y_4.getValue());
-    this->preset1.halfStretchX = Point<float> (this->stretch_x_sei.getValue(),
+    this->preset1.halfStretchX = KVector<float> (this->stretch_x_sei.getValue(),
                                                this->stretch_x_fu.getValue());
-    this->preset1.halfStretchY = Point<float> (this->stretch_y_sei.getValue(),
+    this->preset1.halfStretchY = KVector<float> (this->stretch_y_sei.getValue(),
                                                this->stretch_y_fu.getValue());
-    this->preset1.halfStretchZ = Point<float> (this->stretch_z_sei.getValue(),
+    this->preset1.halfStretchZ = KVector<float> (this->stretch_z_sei.getValue(),
                                                this->stretch_z_fu.getValue());
-    this->preset1.transform = Rectangle<float> (this->xIndex.getValue(),
+    this->preset1.transform = KVector<float> (this->xIndex.getValue(),
                                                 this->yIndex.getValue(),
                                                 this->zIndex.getValue(),
                                                 0.0);
@@ -239,6 +247,9 @@ void ISVParameterSliders::changeListenerCallback(ChangeBroadcaster* source)
     if( source == &this->lightingColour)
     {
         this->preset1.lightingColour = this->lightingColour.getCurrentColour();
+        
+        
+        
         this->status = ColourChanged;
         sendChangeMessage();
     }else if( source == &this->materialColour)
@@ -266,49 +277,167 @@ void ISVParameterSliders::saveAction()
 
 // ==================================================
 
+void ISVParameterSliders::setCurrentPreset(ISVPresetDataStr newPreset)
+{
+    this->currentPreset = newPreset;
+    
+    KVector<float> lp = this->currentPreset.lightPosition;
+    this->lightPosition_x.setValue(lp.getVal1(), dontSendNotification);
+    this->lightPosition_y.setValue(lp.getVal2(), dontSendNotification);
+    this->lightPosition_z.setValue(lp.getVal3(), dontSendNotification);
+    
+    KVector<float> mc = this->currentPreset.materialColour;
+    this->materialColour.setCurrentColour((Colour::fromFloatRGBA(mc.getVal1(), mc.getVal2(), mc.getVal3(), mc.getVal4())), dontSendNotification);
+    
+    KVector<float> lc = this->currentPreset.lightingColour;
+    this->lightingColour.setCurrentColour(Colour::fromFloatRGBA(lc.getVal1(), lc.getVal2(), lc.getVal3(), lc.getVal4()), dontSendNotification);
+    
+    KVector<float> qX = this->currentPreset.quaterStretchX;
+    this->stretch_x_1.setValue(qX.getVal1(), dontSendNotification);
+    this->stretch_x_2.setValue(qX.getVal2(), dontSendNotification);
+    this->stretch_x_3.setValue(qX.getVal3(), dontSendNotification);
+    this->stretch_x_4.setValue(qX.getVal4(), dontSendNotification);
+    
+    KVector<float> qY = this->currentPreset.quaterStretchY;
+    this->stretch_y_1.setValue(qY.getVal1(), dontSendNotification);
+    this->stretch_y_2.setValue(qY.getVal2(), dontSendNotification);
+    this->stretch_y_3.setValue(qY.getVal3(), dontSendNotification);
+    this->stretch_y_4.setValue(qY.getVal4(), dontSendNotification);
+    
+    KVector<float> hX = this->currentPreset.halfStretchX;
+    this->stretch_x_sei.setValue(hX.getVal1(), dontSendNotification);
+    this->stretch_x_fu.setValue(hX.getVal2(), dontSendNotification);
+    
+    KVector<float> hY = this->preset1.halfStretchY;
+    this->stretch_y_sei.setValue(hY.getVal1(), dontSendNotification);
+    this->stretch_y_fu.setValue(hY.getVal2(), dontSendNotification);
+    
+    KVector<float> tm = this->currentPreset.transform;
+    this->xIndex.setValue(tm.getVal1(), dontSendNotification);
+    this->yIndex.setValue(tm.getVal2(), dontSendNotification);
+    this->zIndex.setValue(tm.getVal3(), dontSendNotification);
+    
+    this->intensity.setValue(this->currentPreset.intensity, dontSendNotification);
+    this->fineness.setValue(this->currentPreset.fineness, dontSendNotification);
+    this->stretch_amount.setValue(this->currentPreset.amount, dontSendNotification);
+}
+
 void ISVParameterSliders::setPreset1(ISVPresetDataStr newPreset)
 {
+    std::cout << "setPreset1\n";
     this->preset1 = newPreset;
     
-    Rectangle<float> lp = this->preset1.lightPosition;
-    this->lightPosition_x.setValue(lp.getX());
-    this->lightPosition_y.setValue(lp.getY());
-    this->lightPosition_z.setValue(lp.getWidth());
-    
-    Colour mc = this->preset1.materialColour;
-    this->materialColour.setCurrentColour(mc);
-    
-    Colour lc = this->preset1.lightingColour;
-    this->lightingColour.setCurrentColour(lc);
-    
-    Rectangle<float> qX = this->preset1.quaterStretchX;
-    this->stretch_x_1.setValue(qX.getX());
-    this->stretch_x_2.setValue(qX.getY());
-    this->stretch_x_3.setValue(qX.getWidth());
-    this->stretch_x_4.setValue(qX.getHeight());
-    
-    Rectangle<float> qY = this->preset1.quaterStretchY;
-    this->stretch_y_1.setValue(qY.getX());
-    this->stretch_y_2.setValue(qY.getY());
-    this->stretch_y_3.setValue(qY.getWidth());
-    this->stretch_y_4.setValue(qY.getHeight());
-    
-    Point<float> hX = this->preset1.halfStretchX;
-    this->stretch_x_sei.setValue(hX.getX());
-    this->stretch_x_fu.setValue(hX.getY());
-    
-    Point<float> hY = this->preset1.halfStretchY;
-    this->stretch_y_sei.setValue(hY.getX());
-    this->stretch_y_fu.setValue(hY.getY());
-    
-    Rectangle<float> tm = this->preset1.transform;
-    this->xIndex.setValue(tm.getX());
-    this->yIndex.setValue(tm.getY());
-    this->zIndex.setValue(tm.getWidth());
-
-    this->intensity.setValue(this->preset1.intensity);
-    this->fineness.setValue(this->preset1.fineness);
-    this->stretch_amount.setValue(this->preset1.amount);
+    // initially, currentPreset is the same with preset1
+    setCurrentPreset(newPreset);
 
 }
 
+void ISVParameterSliders::setPreset2(ISVPresetDataStr newPreset)
+{
+    this->preset2 = newPreset;
+    calcDeltaPreset();
+}
+
+void ISVParameterSliders::calcDeltaPreset()
+{
+    std::cout <<"calcDeltaPreset : \n";
+    std::cout << "preset1 "; this->preset1.show();
+    std::cout << "preset2 "; this->preset2.show();
+
+    
+    this->deltaPreset.presetTitle = this->preset1.presetTitle + "_" + this->preset2.presetTitle;
+    
+    ISVPresetDataStr d = this->preset1;
+    ISVPresetDataStr p = this->preset2;
+    
+    //this->deltaPreset = this->preset1;
+    /*
+    d.lightPosition.setVal1(d.lightPosition.getVal1() - p.lightPosition.getVal1());
+    d.lightPosition.setVal2(d.lightPosition.getVal2() - p.lightPosition.getVal2());
+    d.lightPosition.setVal3(d.lightPosition.getVal3() - p.lightPosition.getVal3());
+    d.lightPosition.setVal4(d.lightPosition.getVal4() - p.lightPosition.getVal4());
+
+    d.materialColour = KVector<float>(d.materialColour.getVal1() - p.materialColour.getVal1(),
+                                      d.materialColour.getVal2() - p.materialColour.getVal2(),
+                                      d.materialColour.getVal3() - p.materialColour.getVal3(),
+                                      d.materialColour.getVal4() - p.materialColour.getVal4()
+                                      );
+    
+    d.lightingColour = KVector<float>(d.lightingColour.getVal1() - p.lightingColour.getVal1(),
+                                      d.lightingColour.getVal2() - p.lightingColour.getVal2(),
+                                      d.lightingColour.getVal3() - p.lightingColour.getVal3(),
+                                      d.lightingColour.getVal4() - p.lightingColour.getVal4()
+                                      );
+
+    
+    KVector<float> qx = d.quaterStretchX;
+    KVector<float> qx2 = p.quaterStretchX;
+    d.quaterStretchX = KVector<float> (qx.getVal1() - qx2.getVal1(),
+                                       qx.getVal2() - qx2.getVal2(),
+                                       qx.getVal3() - qx2.getVal3(),
+                                       qx.getVal4() - qx2.getVal4());
+    
+    KVector<float> qy = d.quaterStretchY;
+    KVector<float> qy2 = p.quaterStretchY;
+    d.quaterStretchY = KVector<float> (qy.getVal1() - qy2.getVal1(),
+                                       qy.getVal2() - qy2.getVal2(),
+                                       qy.getVal3() - qy2.getVal3(),
+                                       qy.getVal4() - qy2.getVal4());
+    
+    
+    d.halfStretchX = KVector<float> (d.halfStretchX.getVal1() - p.halfStretchX.getVal1(),
+                                   d.halfStretchX.getVal2() - p.halfStretchX.getVal2());
+    
+    d.halfStretchY = KVector<float> (d.halfStretchY.getVal1() - p.halfStretchY.getVal1(),
+                                   d.halfStretchY.getVal2() - p.halfStretchY.getVal2());
+    
+    d.halfStretchZ = KVector<float> (d.halfStretchZ.getVal1() - p.halfStretchZ.getVal1(),
+                                   d.halfStretchZ.getVal2() - p.halfStretchZ.getVal2());
+    
+    d.transform = KVector<float> (d.transform.getVal1() - p.transform.getVal1(),
+                                    d.transform.getVal2() - p.transform.getVal2(),
+                                    d.transform.getVal3() - p.transform.getVal3(),
+                                    0.0f );
+    
+    d.intensity = d.intensity - p.intensity;
+    d.fineness = d.fineness - p.fineness;
+    d.amount -= p.amount;
+    */
+    this->deltaPreset = this->preset1 - this->preset2;
+    
+}
+
+void ISVParameterSliders::resetAction()
+{
+    this->stretch_x_sei.resetButtonClicked();
+    this->stretch_x_fu.resetButtonClicked();
+    this->stretch_y_sei.resetButtonClicked();
+    this->stretch_y_fu.resetButtonClicked();
+    this->stretch_z_sei.resetButtonClicked();
+    this->stretch_z_fu.resetButtonClicked();
+    
+    this->stretch_x_1.resetButtonClicked();
+    this->stretch_x_2.resetButtonClicked();
+    this->stretch_x_3.resetButtonClicked();
+    this->stretch_x_4.resetButtonClicked();
+    this->stretch_y_1.resetButtonClicked();
+    this->stretch_y_2.resetButtonClicked();
+    this->stretch_y_3.resetButtonClicked();
+    this->stretch_y_4.resetButtonClicked();
+    
+    this->stretch_amount.resetButtonClicked();
+    this->xIndex.resetButtonClicked();
+    this->yIndex.resetButtonClicked();
+    this->zIndex.resetButtonClicked();
+    
+    this->intensity.resetButtonClicked();
+    this->fineness.resetButtonClicked();
+    
+    this->lightPosition_x.resetButtonClicked();
+    this->lightPosition_y.resetButtonClicked();
+    this->lightPosition_z.resetButtonClicked();
+
+    this->materialColour.setCurrentColour(Colours::white);
+    this->lightingColour.setCurrentColour(Colours::black);
+
+}

@@ -11,6 +11,7 @@
 
 #include "KRandomStringGenerator.h"
 #include "KDictionary.h"
+#include "KVector.h"
 
 
 class KLib

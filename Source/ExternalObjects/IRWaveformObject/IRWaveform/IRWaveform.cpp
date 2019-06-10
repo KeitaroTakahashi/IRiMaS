@@ -110,7 +110,7 @@ void IRWaveform::getFilePtr(File file)
                                              this->parent,
                                              callback);
     
-    makeThumbnail(file.getFullPathName());
+
     
     // notify changes to IRProject to update IRFileInspecter
     this->parent->notifyNodeObjectModification();
@@ -137,6 +137,10 @@ void IRWaveform::changeListenerCallback (ChangeBroadcaster* source)
     }
     else if (source == &this->thumbnail)
     {
+        
+        std::cout << "thumbnail changeMessage chan = " << this->thumbnail.getNumChannels() << std::endl;
+        this->drawWaveform = true;
+
         repaint();
     }
 }
@@ -155,8 +159,7 @@ void IRWaveform::makeThumbnail(String path)
             this->duration = this->thumbnail.getTotalLength();
         
         removeChildComponent(&this->openButton);
-        this->drawWaveform = true;
-        repaint();
+        //repaint();
     }
 }
 //==========================================================================
@@ -165,6 +168,8 @@ void IRWaveform::makeThumbnail(String path)
 
 void IRWaveform::fileImportCompleted()
 {
+
+    std::cout << "IRWaveform : fileImportCompleted\n";
     this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
     //set audioBuffer to player
     std::vector<int>v = {0,1};
@@ -173,7 +178,8 @@ void IRWaveform::fileImportCompleted()
    // set received Ptr to the Link System
     this->parent->setAudioLink(this->audioData->getData());
 
-    
+    makeThumbnail(file.getFullPathName());
+
 }
 
 
@@ -200,7 +206,7 @@ void IRWaveform::paint(Graphics& g)
                                     thumbnailBounds, // rounds rectangle
                                     this->start, // start in ms.
                                     this->start + this->duration, // end in ms.
-                                    0, // channel index
+                                    1, // channel index
                                     1.0f // zoom factor
                                     );
         

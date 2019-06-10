@@ -31,12 +31,24 @@ public:
     // ==================================================
     
     void saveAction();
+    
+    void resetAction();
     // ==================================================
     // ==================================================
+    ISVPresetDataStr getCurrentPreset() const { return this->currentPreset; }
+    void setCurrentPreset(ISVPresetDataStr newPreset);
     ISVPresetDataStr getPreset1() const { return this->preset1; }
     void setPreset1(ISVPresetDataStr newPreset);
     
+    ISVPresetDataStr getPreset2() const { return this->preset2; }
+    void setPreset2(ISVPresetDataStr newPreset);
+    
+    
+    ISVPresetDataStr getDeltaPreset() const { return this->deltaPreset; }
+
+    
     String getPresetName() const { return this->SavePresetInput.getText(); }
+
     // ==================================================
     
     
@@ -98,7 +110,7 @@ private:
         }
         
         float getValue() const { return slider.getValue(); }
-        void setValue(float val) { slider.setValue(val); }
+        void setValue(float val, NotificationType type = sendNotificationAsync) { slider.setValue(val, type); }
         
     private:
         ISVParameterSliders* parent;
@@ -110,7 +122,8 @@ private:
     };
     
     // ==================================================
-
+    // reset button
+    TextButton resetButton;
     // slider appearance
     int sliderW = 300;
     int sliderH = 70;
@@ -169,9 +182,19 @@ private:
     Label SavePresetInput;
     TextButton SaveButton;
     
+    // aplied preset, initialy currentPreset == preset1
+    // currentPreset can be modified but preset1 shoud be consistent
+    ISVPresetDataStr currentPreset;
     // data
     ISVPresetDataStr preset1;
 
+    // to make transition
+    ISVPresetDataStr preset2;
+
+    // delta between preset1 and preset2
+    ISVPresetDataStr deltaPreset;
+    void calcDeltaPreset();
+    
     
     // ==================================================
     

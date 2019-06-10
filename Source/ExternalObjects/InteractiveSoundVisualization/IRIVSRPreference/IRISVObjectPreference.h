@@ -59,7 +59,7 @@ public:
     void setControllerUI(ISVParameterControlUI* controlUI)
     {
         this->controlUI = controlUI;
-        Rectangle<int> winSize (0, 0, 700, 920);
+        Rectangle<int> winSize (0, 0, 780, 920);
         this->controllerWindow = std::make_shared<ISVParameterControlWindow>(this->controlUI, "ISV Controller", winSize);
     }
     
@@ -76,6 +76,9 @@ public:
     }
     
     int getSelectedPresetIndex() const { return this->UI->getSelectedPresetIndex(); }
+    
+    int getSelectedToPresetIndex() const { return this->UI->getSelectedToPresetIndex(); }
+
     
     //===============================================================
     //Listener

@@ -61,8 +61,28 @@ String ISVParameterControlUI::getPresetSaveName() const
     return this->param_sliders.getPresetName();
 }
 
+ISVPresetDataStr ISVParameterControlUI::getPreset2() const
+{
+    return this->param_sliders.getPreset2();
+}
+
+ISVPresetDataStr ISVParameterControlUI::getCurrentPreset() const
+{
+    return this->param_sliders.getCurrentPreset();
+}
+
+void ISVParameterControlUI::setCurrentPreset(ISVPresetDataStr newPreset)
+{
+    this->param_sliders.setCurrentPreset(newPreset);
+}
+
 void ISVParameterControlUI::setPreset(ISVPresetDataStr newPreset)
 {
     this->param_sliders.setPreset1(newPreset);
 }
 
+
+void ISVParameterControlUI::setToPreset(ISVPresetDataStr newPreset)
+{
+    this->param_sliders.setPreset2(newPreset);
+}

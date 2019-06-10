@@ -15,16 +15,16 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "IRAudio::openFileFromPath(juce::String, bool)"
+                  symbolName = "juce::AudioDeviceSettingsPanel::updateAllControls()"
                   moduleName = "NodeComponentObject_Study"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/keitaro/program/JUCE/IRiMaS/Source/Audio/IRAudio/IRAudio.cpp"
-                  timestampString = "581520741.424232"
+                  urlString = "file:///Applications/JUCE/modules/juce_audio_utils/gui/juce_AudioDeviceSelectorComponent.cpp"
+                  timestampString = "581817566.4196219"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "55"
-                  endingLineNumber = "55"
-                  offsetFromSymbolStart = "18">
+                  startingLineNumber = "434"
+                  endingLineNumber = "434"
+                  offsetFromSymbolStart = "114">
                </Location>
             </Locations>
          </BreakpointContent>

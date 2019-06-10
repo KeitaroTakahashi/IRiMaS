@@ -222,6 +222,7 @@
 		820963DC22A7EC7400723C81 /* ISVParameterControlComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ISVParameterControlComponent.hpp; sourceTree = "<group>"; };
 		820963DE22A819EF00723C81 /* ISVParameterControlUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ISVParameterControlUI.cpp; sourceTree = "<group>"; };
 		820963DF22A819EF00723C81 /* ISVParameterControlUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ISVParameterControlUI.hpp; sourceTree = "<group>"; };
+		820998D522AD2BE600E282AF /* KVector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KVector.h; sourceTree = "<group>"; };
 		820AB79622A1762600FC7B46 /* IRISVObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRISVObject.cpp; sourceTree = "<group>"; };
 		820AB79722A1762600FC7B46 /* IRISVObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRISVObject.hpp; sourceTree = "<group>"; };
 		820D3BB6225EA44100BDA679 /* SoundPlayer_ThreadSafe.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundPlayer_ThreadSafe.cpp; sourceTree = "<group>"; };
@@ -2143,6 +2144,7 @@
 				8293FBD0220C727700C09BD5 /* KPixelDataConvertor.h */,
 				8293FBD1221451EA00C09BD5 /* KPixelDataConvertor.cpp */,
 				82C08B042276668D00938726 /* KTextLoader.h */,
+				820998D522AD2BE600E282AF /* KVector.h */,
 			);
 			path = KeLib;
 			sourceTree = "<group>";
@@ -2554,7 +2556,7 @@
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				DEAD_CODE_STRIPPING = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_NDEBUG=1",
@@ -2584,7 +2586,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/fftw/3.3.8_1/lib,
 				);
-				LLVM_LTO = YES;
+				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				OTHER_LDFLAGS = "";
@@ -2695,7 +2697,7 @@
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_DEBUG=1",
@@ -2724,6 +2726,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/fftw/3.3.8_1/lib,
 				);
+				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				OTHER_LDFLAGS = "";

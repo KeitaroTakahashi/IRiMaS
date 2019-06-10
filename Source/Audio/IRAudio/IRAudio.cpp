@@ -14,6 +14,8 @@ Thread("ImportAudioFile Background thread")
     this->formatManager.registerBasicFormats();
     this->descriptor = std::make_shared<IRDescriptor>();
     this->analyzer = std::make_shared<IRFFTDescriptor>(2048, 1024);
+    
+    setFps(33);
     startThread();
 }
 // ------------------------------------------------------------------
@@ -65,8 +67,14 @@ bool IRAudio::loadFile(File file, bool threadSafe)
         this->path.swapWith(p);
         this->filePath.swapWith(p);
         
-        //this->fileName.swapWith(file.getFileName());
+        this->fileName.swapWith(p);
+        
+        // start calling update func...
+        this->isFileLoadFailed = false;
+        this->isFileLoadCompleted = false;
+        startAnimation();
 
+        // go thread
         if(threadSafe)
         {
             notify();
@@ -98,6 +106,27 @@ void IRAudio::run()
         checkForPathToOpen();
         checkForBuffersToFree();
         wait(500);
+    }
+}
+
+void IRAudio::updateAnimationFrame()
+{
+    if(this->isFileLoadFailed)
+    {
+        
+    }else{
+        if(this->isFileLoadCompleted)
+        {
+            
+            std::cout<< "file Import Completed\n";
+            callFileImportCompleted();
+            callFileStatusChanged(this);
+            
+            //this->isFileLoadCompleted = true;
+            //sendChangeMessage();
+            
+            stopAnimation();
+        }
     }
 }
 // ------------------------------------------------------------------
@@ -138,7 +167,7 @@ void IRAudio::checkForPathToOpen()
                                true,
                                true);
             
-            std::cout << "newBuffer " << newBuffer->getAudioSampleBuffer()->getNumSamples() << std::endl;
+            //std::cout << "newBuffer " << newBuffer->getAudioSampleBuffer()->getNumSamples() << std::endl;
             this->buffer = newBuffer;
             this->buffers.add (newBuffer);
             
@@ -147,28 +176,25 @@ void IRAudio::checkForPathToOpen()
             this->numSamples = this->reader->lengthInSamples;
             this->bitsPerSample = this->reader->bitsPerSample;
             
-            std::cout << "reading samples of "<<(int) reader->lengthInSamples<<std::endl;
+            //std::cout << "reading samples of "<<(int) reader->lengthInSamples<<std::endl;
           
-            callFileImportCompleted();
-            callFileStatusChanged(this);
-           
             this->isFileLoadCompleted = true;
-            sendChangeMessage();
             
         }else{
-            std::cout << "read failed\n";
+            //std::cout << "read failed\n";
             
         }
     }else{
-        this->isFileOpened = false;
+       // could not load audio file
         this->isFileLoadCompleted = false;
-        sendChangeMessage();
+        this->isFileLoadFailed = true;
     }
 }
 // --------------------------------------------------
 
 void IRAudio::callFileImportCompleted()
 {
+    std::cout << "callFileImportCompleted()\n";
     Component::BailOutChecker checker(this);
     //==========
     // check if the objects are not deleted, if deleted, return

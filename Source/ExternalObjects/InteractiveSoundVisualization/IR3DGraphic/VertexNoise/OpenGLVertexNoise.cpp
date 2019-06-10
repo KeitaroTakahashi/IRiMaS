@@ -82,9 +82,10 @@ void OpenGLVertexNoise::renderOpenGL()
     auto desktopScale = (float) this->openGLContext.getRenderingScale();
     
     OpenGLHelpers::clear(Colours::black);
-    
+    /*
     if(doBackgroundDrawing)
         drawBackground2DStuff(desktopScale);
+     */
     
     updateShader();
     
@@ -124,17 +125,17 @@ void OpenGLVertexNoise::renderOpenGL()
     // diffuse colour
     
     if (uniforms->materialColour.get() != nullptr)
-        uniforms->materialColour->set (this->materialColour.getX(),
-                                       this->materialColour.getY(),
-                                       this->materialColour.getWidth(),
-                                       this->materialColour.getHeight());
+        uniforms->materialColour->set (this->materialColour.getVal1(),
+                                       this->materialColour.getVal2(),
+                                       this->materialColour.getVal3(),
+                                       this->materialColour.getVal4());
 
     
     if (uniforms->DiffuseColour.get() != nullptr)
-        uniforms->DiffuseColour->set(this->lightingColour.getX(),
-                                     this->lightingColour.getY(),
-                                     this->lightingColour.getWidth(),
-                                     this->lightingColour.getHeight());
+        uniforms->DiffuseColour->set(this->lightingColour.getVal1(),
+                                     this->lightingColour.getVal2(),
+                                     this->lightingColour.getVal3(),
+                                     this->lightingColour.getVal4());
     
     if (uniforms->SpecularColour.get() != nullptr)
         uniforms->SpecularColour->set (0.71f, 1.0f, 0.77f, 0.0f);
@@ -142,26 +143,26 @@ void OpenGLVertexNoise::renderOpenGL()
     // stretch
     
     if (uniforms->positiveStretch.get() != nullptr)
-        uniforms->positiveStretch->set (this->positiveStretch.getX(),
-                                        this->positiveStretch.getY(),
-                                        this->positiveStretch.getWidth());
+        uniforms->positiveStretch->set (this->positiveStretch.getVal1(),
+                                        this->positiveStretch.getVal2(),
+                                        this->positiveStretch.getVal3());
     
     if(uniforms->negativeStretch.get() != nullptr)
-        uniforms->negativeStretch->set (this->negativeStretch.getX(),
-                                        this->negativeStretch.getY(),
-                                        this->negativeStretch.getWidth());
+        uniforms->negativeStretch->set (this->negativeStretch.getVal1(),
+                                        this->negativeStretch.getVal2(),
+                                        this->negativeStretch.getVal3());
     
     if (uniforms->stretchX.get() != nullptr)
-        uniforms->stretchX->set (this->stretchX.getX(),
-                                 this->stretchX.getY(),
-                                 this->stretchX.getWidth(),
-                                 this->stretchX.getHeight());
+        uniforms->stretchX->set (this->stretchX.getVal1(),
+                                 this->stretchX.getVal2(),
+                                 this->stretchX.getVal3(),
+                                 this->stretchX.getVal4());
     
     if (uniforms->stretchY.get() != nullptr)
-        uniforms->stretchY->set (this->stretchY.getX(),
-                                 this->stretchY.getY(),
-                                 this->stretchY.getWidth(),
-                                 this->stretchY.getHeight());
+        uniforms->stretchY->set (this->stretchY.getVal1(),
+                                 this->stretchY.getVal2(),
+                                 this->stretchY.getVal3(),
+                                 this->stretchY.getVal4());
     
     if(uniforms->stretch_amount.get() != nullptr)
         uniforms->stretch_amount->set (this->stretchAmount);
@@ -192,34 +193,8 @@ void OpenGLVertexNoise::renderOpenGL()
      uniforms->bouncingNumber->set (bouncingNumber.getValue());
      
      */
-    
-    
-    // triangle
-    static const GLfloat g_vertex_buffer_data[] = {
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        0.0f,  1.0f, 0.0f,
-    };
-    GLuint vertexBuffer;
-    openGLContext.extensions.glGenBuffers(1, &vertexBuffer);
-    openGLContext.extensions.glBindBuffer(GL_ARRAY_BUFFER,
-                                          vertexBuffer);
-    openGLContext.extensions.glBufferData(GL_ARRAY_BUFFER,
-                                          sizeof(g_vertex_buffer_data),
-                                          g_vertex_buffer_data,
-                                          GL_STATIC_DRAW);
-    
-    openGLContext.extensions.glEnableVertexAttribArray(0);
-    openGLContext.extensions.glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    openGLContext.extensions.glVertexAttribPointer(0,
-                                                   3,
-                                                   GL_FLOAT,
-                                                   GL_FALSE,
-                                                   0,
-                                                   (void* )0);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    openGLContext.extensions.glDisableVertexAttribArray(0);
-    
+
+  
     
     shape->draw (openGLContext, *attributes, GL_TRIANGLES);
     
@@ -251,7 +226,7 @@ Matrix3D<float> OpenGLVertexNoise::getViewMatrix() const
     //* Vector3D<float> (0.0f, 1.0f, -10.0f);
     
     //auto viewMatrix = Vector3D<float> (0.0f, -0.5f, this->positionZ);
-    auto viewMatrix = Vector3D<float> (this->transform.getX(), this->transform.getY(), this->transform.getWidth());
+    auto viewMatrix = Vector3D<float> (this->transform.getVal1(), this->transform.getVal2(), this->transform.getVal3());
 
     //auto rotationMatrix = Matrix3D<float>::rotation ({ rotation, rotation, -0.3f });
     //auto rotationMatrix = Matrix3D<float>::rotation ({ 0, 30, -3 });
@@ -419,41 +394,41 @@ void OpenGLVertexNoise::createShaders()
 
 // ================
 
-void OpenGLVertexNoise::setLightPosition(Rectangle<float> val)
+void OpenGLVertexNoise::setLightPosition(KVector<float> val)
 {
-    this->lightPositionX = val.getX();
-    this->lightPositionY = val.getY();
-    this->lightPositionZ = val.getWidth();
+    this->lightPositionX = val.getVal1();
+    this->lightPositionY = val.getVal2();
+    this->lightPositionZ = val.getVal3();
 }
 
-void OpenGLVertexNoise::setQuaterStretchX(Rectangle<float> val)
+void OpenGLVertexNoise::setQuaterStretchX(KVector<float> val)
 {
     this->stretchX = val;
-    //std::cout << "vertexNoise this->stretchX " << this->stretchX.getX() << ", " << this->stretchX.getY() << ", " << this->stretchX.getWidth() << ", " << this->stretchX.getWidth() << std::endl;
+    //std::cout << "vertexNoise this->stretchX " << this->stretchX.getVal1() << ", " << this->stretchX.getVal2() << ", " << this->stretchX.getVal3() << ", " << this->stretchX.getVal3() << std::endl;
 
 }
-void OpenGLVertexNoise::setQuaterStretchY(Rectangle<float> val)
+void OpenGLVertexNoise::setQuaterStretchY(KVector<float> val)
 {
     this->stretchY = val;
     
-    //std::cout << "vertexNoise this->stretchY " << this->stretchY.getX() << ", " << this->stretchY.getY() << ", " << this->stretchY.getWidth() << ", " << this->stretchY.getHeight() <<std::endl;
+    //std::cout << "vertexNoise this->stretchY " << this->stretchY.getVal1() << ", " << this->stretchY.getVal2() << ", " << this->stretchY.getVal3() << ", " << this->stretchY.getVal4() <<std::endl;
 }
-void OpenGLVertexNoise::setHalfStretchX(Point<float> val)
+void OpenGLVertexNoise::setHalfStretchX(KVector<float> val)
 {
-    this->positiveStretch.setX(val.getX());
-    this->negativeStretch.setX(val.getY());
+    this->positiveStretch.setVal1(val.getVal1());
+    this->negativeStretch.setVal1(val.getVal2());
 }
-void OpenGLVertexNoise::setHalfStretchY(Point<float> val)
+void OpenGLVertexNoise::setHalfStretchY(KVector<float> val)
 {
-    this->positiveStretch.setY(val.getX());
-    this->negativeStretch.setY(val.getY());
+    this->positiveStretch.setVal2(val.getVal1());
+    this->negativeStretch.setVal2(val.getVal2());
 }
-void OpenGLVertexNoise::setHalfStretchZ(Point<float> val)
+void OpenGLVertexNoise::setHalfStretchZ(KVector<float> val)
 {
-    this->positiveStretch.setWidth(val.getX());
-    this->negativeStretch.setWidth(val.getY());
+    this->positiveStretch.setVal3(val.getVal1());
+    this->negativeStretch.setVal3(val.getVal2());
 }
-void OpenGLVertexNoise::setTransform(Rectangle<float> val)
+void OpenGLVertexNoise::setTransform(KVector<float> val)
 {
     this->transform = val;
 }
@@ -501,35 +476,35 @@ void OpenGLVertexNoise::setAmountZ(float amountZ)
 
 void OpenGLVertexNoise::setPositiveStretch(float x, float y, float z)
 {
-    if(x >= 0) this->positiveStretch.setX(x);
-    if(y >= 0) this->positiveStretch.setY(y);
-    if(z >= 0) this->positiveStretch.setWidth(z);
+    if(x >= 0) this->positiveStretch.setVal1(x);
+    if(y >= 0) this->positiveStretch.setVal2(y);
+    if(z >= 0) this->positiveStretch.setVal3(z);
 
 }
 
 void OpenGLVertexNoise::setNegativeStretch(float x, float y, float z)
 {
-    if(x >= 0) this->negativeStretch.setX(x);
-    if(y >= 0) this->negativeStretch.setY(y);
-    if(z >= 0) this->negativeStretch.setWidth(z);
+    if(x >= 0) this->negativeStretch.setVal1(x);
+    if(y >= 0) this->negativeStretch.setVal2(y);
+    if(z >= 0) this->negativeStretch.setVal3(z);
 }
 
 void OpenGLVertexNoise::setStretchX(float x, float y, float z, float w)
 {
     
     std::cout << "setStretch X " << x << ", " << y << std::endl;
-    if(x >= 0) this->stretchX.setX(x);
-    if(y >= 0) this->stretchX.setY(y);
-    if(z >= 0) this->stretchX.setWidth(z);
-    if(w >= 0) this->stretchX.setHeight(w);
+    if(x >= 0) this->stretchX.setVal1(x);
+    if(y >= 0) this->stretchX.setVal2(y);
+    if(z >= 0) this->stretchX.setVal3(z);
+    if(w >= 0) this->stretchX.setVal4(w);
 }
 
 void OpenGLVertexNoise::setStretchY(float x, float y, float z, float w)
 {
-    if(x >= 0) this->stretchY.setX(x);
-    if(y >= 0) this->stretchY.setY(y);
-    if(z >= 0) this->stretchY.setWidth(z);
-    if(w >= 0) this->stretchY.setHeight(w);
+    if(x >= 0) this->stretchY.setVal1(x);
+    if(y >= 0) this->stretchY.setVal2(y);
+    if(z >= 0) this->stretchY.setVal3(z);
+    if(w >= 0) this->stretchY.setVal4(w);
 }
 
 
@@ -559,20 +534,25 @@ void OpenGLVertexNoise::stopRendering()
 }
 // ================
 
-void OpenGLVertexNoise::setMaterialColour(Colour colour)
+void OpenGLVertexNoise::setMaterialColour(KVector<float> colour)
 {
-    this->materialColour = Rectangle<float>(colour.getFloatRed(),
-                                               colour.getFloatGreen(),
-                                               colour.getFloatBlue(),
-                                               colour.getFloatAlpha());
+    this->materialColour = KVector<float>(colour.getVal1(),
+                                          colour.getVal2(),
+                                          colour.getVal3(),
+                                          colour.getVal4());
+    
+    std::cout << "setMaterialColour = " << this->materialColour.getVal1() << ", " << this->materialColour.getVal2() << std::endl;
 }
 
-void OpenGLVertexNoise::setLightingColour(Colour colour)
+void OpenGLVertexNoise::setLightingColour(KVector<float> colour)
 {
-    this->lightingColour =    Rectangle<float>(colour.getFloatRed(),
-                                               colour.getFloatGreen(),
-                                               colour.getFloatBlue(),
-                                               colour.getFloatAlpha());
+    this->lightingColour =    KVector<float>(colour.getVal1(),
+                                             colour.getVal2(),
+                                             colour.getVal3(),
+                                             colour.getVal4());
+    
+    std::cout << "setLightingColour = " << this->lightingColour.getVal1() << ", " << this->lightingColour.getVal2() << std::endl;
+
 }
 
 

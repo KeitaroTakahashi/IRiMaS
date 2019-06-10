@@ -47,7 +47,7 @@ class IRLinkFoundation
 public:
     // parent = IRWorkSpace
     IRLinkFoundation(Component* parent, int size);
-    ~IRLinkFoundation();
+    virtual ~IRLinkFoundation();
     
     // --------------------------------------------------
     // link mode

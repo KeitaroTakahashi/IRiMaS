@@ -403,7 +403,6 @@ public:
             this->descriptorNameList.add(getDescriptorName(de));
         }
         
-        std::cout << "addDescriptorList ; " << this->descriptorList.size() << std::endl;
     }
     Array<std::string> getDescriptorNameList() const { return this->descriptorNameList; }
     

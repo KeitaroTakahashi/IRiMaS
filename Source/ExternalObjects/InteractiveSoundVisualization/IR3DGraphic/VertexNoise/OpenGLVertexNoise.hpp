@@ -16,6 +16,7 @@
 #include "3DModelObjectLoader.h"
 #include "DemoController.h"
 #include "KTextLoader.h"
+#include "KVector.h"
 
 class OpenGLVertexNoise : public Component,
 private OpenGLRenderer,
@@ -51,21 +52,21 @@ public:
     void startRendering();
     // ==================================================
     
-    void setLightPosition(Rectangle<float> val);
+    void setLightPosition(KVector<float> val);
     void setIntensity(float val);
     void setFineness(float val);
 
-    void setQuaterStretchX(Rectangle<float> val);
-    void setQuaterStretchY(Rectangle<float> val);
+    void setQuaterStretchX(KVector<float> val);
+    void setQuaterStretchY(KVector<float> val);
 
-    void setHalfStretchX(Point<float> val);
-    void setHalfStretchY(Point<float> val);
-    void setHalfStretchZ(Point<float> val);
+    void setHalfStretchX(KVector<float> val);
+    void setHalfStretchY(KVector<float> val);
+    void setHalfStretchZ(KVector<float> val);
 
-    void setTransform(Rectangle<float> val);
+    void setTransform(KVector<float> val);
 
-    void setMaterialColour(Colour colour);
-    void setLightingColour(Colour colour);
+    void setMaterialColour(KVector<float> colour);
+    void setLightingColour(KVector<float> colour);
     // ==================================================
 
     void setOffsetX(float offsetX);
@@ -172,13 +173,13 @@ private:
     float intensity = 0.1;
     // ==============================
     // stretch
-    Rectangle<float> positiveStretch;
-    Rectangle<float> negativeStretch;
+    KVector<float> positiveStretch;
+    KVector<float> negativeStretch;
 
-    Rectangle<float> stretchX;
-    Rectangle<float> stretchY;
+    KVector<float> stretchX;
+    KVector<float> stretchY;
     
-    Rectangle<float> transform;
+    KVector<float> transform;
     float stretchAmount = 1.0;
     
     
@@ -195,8 +196,8 @@ private:
     float positionZ = -18.0;
 
     // ==============================
-    Rectangle<float> materialColour;
-    Rectangle<float> lightingColour;
+    KVector<float> materialColour;
+    KVector<float> lightingColour;
     
     // ==============================
 

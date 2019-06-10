@@ -27,7 +27,7 @@ DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(R
     int w = r.getWidth();
     setBounds(w - getWidth(), y, getWidth(), getHeight());
     
-    setVisible(true);
+    setVisible(false);
 }
 
 ISVParameterControlWindow::~ISVParameterControlWindow()
@@ -55,5 +55,6 @@ void ISVParameterControlWindow::closeButtonPressed()
 
 void ISVParameterControlWindow::show()
 {
+    setVisible(true);
     addToDesktop();
 }

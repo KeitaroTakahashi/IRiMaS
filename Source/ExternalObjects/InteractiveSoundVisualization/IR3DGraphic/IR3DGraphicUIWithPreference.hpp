@@ -32,6 +32,8 @@ public:
 private:
     
     void loadPreset(int index);
+    void loadToPreset(int index);
+
     void clearAllPresets();
     // ==================================================
     void uiUpdated();

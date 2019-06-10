@@ -7,7 +7,10 @@
 
 #include "ISVPreferenceUI.hpp"
 
-ISVPreferenceUI::ISVPreferenceUI(String title)
+ISVPreferenceUI::ISVPreferenceUI(String title) :
+transitionToInitialSphere       (this, "Transition to initial sphere", 0.0, 1.0, 1.0),
+transitionBetweenPresets        (this, "Transition between presets", 0.0, 1.0, 0.0)
+
 {
     addAndMakeVisible(&this->LabelTitle);
     this->LabelTitle.setText("Interactive Sound Visualizer", dontSendNotification);
@@ -24,7 +27,7 @@ ISVPreferenceUI::ISVPreferenceUI(String title)
     this->PresetsBox.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
     this->PresetsBox.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
     this->PresetsBox.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
-    this->PresetsBox.setText("Animation Presets", dontSendNotification);
+    this->PresetsBox.setText("Shape Presets", dontSendNotification);
     this->PresetsBox.addItem("Brightness", this->PresetsBox.getNumItems()+1);
     this->PresetsBox.addItem("Weight", this->PresetsBox.getNumItems()+1);
     this->PresetsBox.addItem("Tension", this->PresetsBox.getNumItems()+1);
@@ -32,6 +35,24 @@ ISVPreferenceUI::ISVPreferenceUI(String title)
     this->PresetsBox.addItem("Thinness", this->PresetsBox.getNumItems()+1);
     this->PresetsBox.addListener(this);
     addAndMakeVisible(&this->PresetsBox);
+    // --------------------------------------------------
+
+    addAndMakeVisible(&this->transitionToInitialSphere);
+    addAndMakeVisible(&this->transitionBetweenPresets);
+    
+    
+    addAndMakeVisible(&this->toLabel);
+    this->toLabel.setText("to Preset ", dontSendNotification);
+    this->toLabel.setColour(Label::textColourId, SYSTEMCOLOUR.titleText);
+
+    addAndMakeVisible(&this->toPreset);
+    this->toPreset.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
+    this->toPreset.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
+    this->toPreset.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
+    this->toPreset.setText("Destination Presets", dontSendNotification);
+    this->toPreset.addListener(this);
+
+
     // --------------------------------------------------
     this->clearAllPresetsButton.setButtonText("Clear All Presets");
     this->clearAllPresetsButton.onClick = [this] { clearAllPresetsAction(); };
@@ -51,20 +72,28 @@ ISVPreferenceUI::~ISVPreferenceUI()
 
 void ISVPreferenceUI::resized()
 {
-    
     int marginX = 20;
-    
+    int y = 10;
     // margin 10
-    this->LabelTitle.setBounds           (20, 10, 300, 30);
+    this->LabelTitle.setBounds           (20, y, 300, 30);
     
-    this->PresetsLabel.setBounds         (20, 50, 100, 30);
-    this->PresetsBox.setBounds           (70 + marginX,
-                                          50,
-                                          getWidth() - 120 - marginX,
+    y += 40;
+    this->PresetsLabel.setBounds         (20, y, 100, 30);
+    this->PresetsBox.setBounds           (90,
+                                          y,
+                                          getWidth() - 100,
                                           30);
-    
-    this->clearAllPresetsButton.setBounds (20, 200, getWidth() - 40, 30);
+    y += 40;
+    this->transitionToInitialSphere.setBounds  (20, y, getWidth() - 40, 70);
 
+    y += 70;
+    this->toLabel.setBounds         (20, y, 100, 30);
+    this->toPreset.setBounds        (90, y, getWidth() - 100, 30);
+    
+    y+= 30;
+    this->transitionBetweenPresets.setBounds   (20, y, getWidth() - 40, 70);
+
+    this->clearAllPresetsButton.setBounds      (20, 300, getWidth() - 40, 30);
 
 }
 // ==================================================
@@ -97,6 +126,10 @@ void ISVPreferenceUI::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     {
         this->status = PresetSelected;
         sendChangeMessage();
+    }else if(comboBoxThatHasChanged == &this->toPreset)
+    {
+        this->status = toPresetSelected;
+        sendChangeMessage();
     }
 }
 
@@ -104,10 +137,12 @@ void ISVPreferenceUI::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 void ISVPreferenceUI::addPresetItem(Array<ISVPresetDataStr> presets)
 {
     this->PresetsBox.clear();
+    this->toPreset.clear();
     for(auto item : presets)
     {
         std::cout << "adding presets " << item.presetTitle << std::endl;
         this->PresetsBox.addItem(item.presetTitle, this->PresetsBox.getNumItems() + 1);
+        this->toPreset.addItem(item.presetTitle, this->toPreset.getNumItems() + 1);
     }
 }
 // ==================================================
@@ -117,3 +152,19 @@ void ISVPreferenceUI::clearAllPresetsAction()
     this->status = ClearAllPresets;
     sendChangeMessage();
 }
+
+void ISVPreferenceUI::sliderUIValueChanged(sliderUI1 *obj)
+{
+    if(obj == &this->transitionToInitialSphere)
+    {
+        
+        
+        this->status = TransitionToInitialSphereChanged;
+        sendChangeMessage();
+    }else if(obj == &this->transitionBetweenPresets)
+    {
+        this->status = TransitionBetweenPresetsChanged;
+        sendChangeMessage();
+    }
+}
+

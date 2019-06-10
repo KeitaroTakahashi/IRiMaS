@@ -49,11 +49,55 @@ void IR3DGraphicUIWithPreference::changeListenerCallback(ChangeBroadcaster* sour
         ISVPreferenceUI::ISVPreferenceStatus status = this->preference->getUI()->getStatus();
         if(status == ISVPreferenceUI::ISVPreferenceStatus::PresetSelected)
         {
+
             int presetIndex = this->preference->getSelectedPresetIndex();
+            std::cout << "Preset selected " << presetIndex << std::endl;
             loadPreset(presetIndex);
-        }else if(status == ISVPreferenceUI::ISVPreferenceStatus::ClearAllPresets)
+            
+        }else if(status == ISVPreferenceUI::ISVPreferenceStatus::toPresetSelected)
+        {
+            int presetIndex = this->preference->getSelectedToPresetIndex();
+            std::cout << "toPreset selected " << presetIndex << std::endl;
+            loadToPreset(presetIndex);
+        }
+        else if(status == ISVPreferenceUI::ISVPreferenceStatus::ClearAllPresets)
         {
             clearAllPresets();
+        }else if(status == ISVPreferenceUI::ISVPreferenceStatus::TransitionToInitialSphereChanged)
+        {
+            ISVPresetDataStr preset = this->controlUI.getCurrentPreset();
+            preset.amount = this->preference->getUI()->getTransitionToInitialSphereValue();
+            setSliderParams(preset);
+            
+        }else if(status == ISVPreferenceUI::ISVPreferenceStatus::TransitionBetweenPresetsChanged)
+        {
+            
+            std::cout << "\n ---------- \n";
+            
+            ISVPresetDataStr preset = this->controlUI.getPreset1();
+            float amount = this->preference->getUI()->getTransitionBetweenPresetsValue();
+            
+            std::cout << "preset1 "; preset.show();
+            
+            std::cout << "preset2 "; this->controlUI.getPreset2().show();
+            
+            std::cout << "deltaPreset "; this->controlUI.getDeltaPreset().show();
+
+            
+            ISVPresetDataStr deltaPreset = this->controlUI.getDeltaPreset() * amount;
+            
+            preset = preset - deltaPreset;
+            
+            std::cout << "transition between presets : amount = " << amount << " : " << deltaPreset.amount << std::endl;
+            
+            
+
+
+            setSliderParams(preset);
+            setColourParams(preset);
+            
+            std::cout << "\n ---------- \n";
+
         }
     }
 }
@@ -61,7 +105,7 @@ void IR3DGraphicUIWithPreference::changeListenerCallback(ChangeBroadcaster* sour
 void IR3DGraphicUIWithPreference::setSliderParams(ISVPresetDataStr preset)
 {
     
-    this->controlUI.setPreset(preset);
+    this->controlUI.setCurrentPreset(preset);
    
     this->vertex.setLightPosition(preset.lightPosition);
     this->vertex.setIntensity(preset.intensity);
@@ -146,10 +190,40 @@ void IR3DGraphicUIWithPreference::loadPreset(int index)
     
     if(index > 0)
     {
-    
         ISVPresetDataStr preset = this->presetData[index - 1];
         setSliderParams(preset);
         setColourParams(preset);
+        
+        std::cout << "preset loaded! materialColour = " << preset.materialColour.getVal1() << ", " << preset.materialColour.getVal2() << std::endl;
+        
+        std::cout << "preset loaded! lightColour = " << preset.lightingColour.getVal1() << ", " << preset.lightingColour.getVal2() << std::endl;
+
+        
+        this->controlUI.setPreset(preset);
+    }
+}
+
+void IR3DGraphicUIWithPreference::loadToPreset(int index)
+{
+    
+    std::cout << "loadToPreset " << index << std::endl;
+    if(index > this->presetData.size())
+    {
+        AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon,
+                                          "ERROR! loadPreset()",
+                                          "Wrong index number",
+                                          "OK");
+        return;
+    }
+    
+    
+    if(index > 0)
+    {
+        
+        ISVPresetDataStr preset = this->presetData[index - 1];
+        this->controlUI.setToPreset(preset);
+        //setSliderParams(preset);
+        //setColourParams(preset);
     }
 }
 
@@ -174,7 +248,6 @@ void IR3DGraphicUIWithPreference::addPreset(ISVPresetDataStr newPreset)
         }
         index ++;
     }
-    newPreset.presetTitle = presetName;
     
     this->presetData.add(newPreset);
     

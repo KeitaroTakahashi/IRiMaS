@@ -13,12 +13,14 @@
 #include "IRDescriptor.h"
 #include "IRAudioDescriptor.hpp"
 #include "KLib.h"
+#include "KeAnimationComponent.h"
 // ===========================================================================
 // import audio file
 // ===========================================================================
 
 class IRAudio : public Component,
 public ChangeBroadcaster,
+private KeAnimationComponent,
 private Thread
 {
 public:
@@ -94,6 +96,7 @@ public:
     // public members
     bool isFileOpened = false;
     bool isFileLoadCompleted = false;
+    bool isFileLoadFailed = false;
     
     File getFile() const { return this->file; }
     
@@ -115,6 +118,9 @@ private:
     // impoart audio file and read the data
     void checkForPathToOpen();
     void OpenPath(File file);
+    
+    // to check when file import completed
+    void updateAnimationFrame() override;
     
     // ---------------------------------------------------------------------------
     void callFileImportCompleted();
