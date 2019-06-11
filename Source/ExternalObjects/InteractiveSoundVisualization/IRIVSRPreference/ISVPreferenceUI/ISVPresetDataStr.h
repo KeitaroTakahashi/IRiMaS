@@ -35,6 +35,7 @@ struct ISVPresetDataStr
     // vertex noise
     float intensity = 0.0;
     float fineness = 0.0;
+    float vertexNoiseSpeed = 0.0;
     
     float amount;
     
@@ -75,6 +76,7 @@ struct ISVPresetDataStr
         result.transform = this->transform - b.transform;
         result.intensity = this->intensity - b.intensity;
         result.fineness = this->fineness - b.fineness;
+        result.vertexNoiseSpeed = this->vertexNoiseSpeed - b.vertexNoiseSpeed;
         result.amount = this->amount - b.amount;
 
         
@@ -100,6 +102,7 @@ struct ISVPresetDataStr
         result.transform = this->transform * a;
         result.intensity = this->intensity * a;
         result.fineness = this->fineness * a;
+        result.vertexNoiseSpeed = this->vertexNoiseSpeed * a;
         
         result.amount = this->amount * a;
 
@@ -120,6 +123,11 @@ struct ISVPresetDataStr
         std::cout << "halfStretchX "; this->halfStretchX.show();
         std::cout << "halfStretchY "; this->halfStretchY.show();
         std::cout << "halfStretchZ "; this->halfStretchZ.show();
+        
+        std::cout << "intensity = " << this->intensity << std::endl;
+        std::cout << "fineness = " << this->fineness << std::endl;
+        std::cout << "vertexNoise speed = " << this->vertexNoiseSpeed << std::endl;
+
 
         std::cout << "transform "; this->transform.show();
         std::cout << "amount " << this->amount << std::endl;

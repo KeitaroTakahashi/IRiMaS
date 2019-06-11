@@ -28,6 +28,7 @@ yIndex              (this, "Y Index", -10.0, 10.0, 0.0),
 zIndex              (this, "Z Index", -100.0, 0.0, -18.0),
 intensity           (this, "Intensity", 0.0, 5.0, 0.0),
 fineness            (this, "Fineness", 0.0, 1.0, 0.0),
+vertexNoiseSpeed    (this, "VertexNoise Speed", 0.0, 0.1, 0.0),
 lightPosition_x     (this, "Light Position", -100.0, 100.0, 5.0),
 lightPosition_y     (this, "Light Position", -100.0, 100.0, 1.0),
 lightPosition_z     (this, "Light Position", -50.0, 50.0, 15.0)
@@ -67,6 +68,7 @@ lightPosition_z     (this, "Light Position", -50.0, 50.0, 15.0)
     
     addAndMakeVisible(&this->intensity);
     addAndMakeVisible(&this->fineness);
+    addAndMakeVisible(&this->vertexNoiseSpeed);
     
     this->LightingColourLabel.setText("Lighting", dontSendNotification);
     addAndMakeVisible(&this->LightingColourLabel);
@@ -190,19 +192,28 @@ void ISVParameterSliders::resized()
                                         w, h);
     
     y += 60;
+    this->vertexNoiseSpeed.setBounds    (sideX, y,
+                                         w, h);
+    
+    y += 60;
     this->stretch_amount.setBounds      (sideX, y,
                                          w, h);
-    y += 90;
-    this->SavePresetInput.setBounds(sideX, y, w - 70, 30);
-    this->SaveButton.setBounds(sideX + (w - 60), y, 60, 30);
-    
-    y += 30;
+   
+    y += 60;
     this->LightingColourLabel.setBounds(sideX, y, w, 30);
     y += 30;
     this->lightingColour.setBounds      (sideX, y, w, 150);
     
+    // Third Line
+    y = 30;
     sideX += w + 30;
-    this->resetButton.setBounds(sideX, 30, 100, 30);
+    this->resetButton.setBounds(sideX, y, 100, 30);
+    
+    y += 40;
+    this->SavePresetInput.setBounds(sideX, y, 100, 30);
+    y += 40;
+    this->SaveButton.setBounds(sideX, y, 60, 30);
+    
 
     
 }
@@ -234,6 +245,7 @@ void ISVParameterSliders::sliderUIValueChanged(sliderUI1* obj)
                                                 0.0);
     this->preset1.intensity = this->intensity.getValue();
     this->preset1.fineness = this->fineness.getValue();
+    this->preset1.vertexNoiseSpeed = this->vertexNoiseSpeed.getValue();
     
     this->preset1.amount = this->stretch_amount.getValue();
     
@@ -320,6 +332,7 @@ void ISVParameterSliders::setCurrentPreset(ISVPresetDataStr newPreset)
     this->intensity.setValue(this->currentPreset.intensity, dontSendNotification);
     this->fineness.setValue(this->currentPreset.fineness, dontSendNotification);
     this->stretch_amount.setValue(this->currentPreset.amount, dontSendNotification);
+    this->vertexNoiseSpeed.setValue(this->currentPreset.vertexNoiseSpeed, dontSendNotification);
 }
 
 void ISVParameterSliders::setPreset1(ISVPresetDataStr newPreset)
@@ -380,6 +393,7 @@ void ISVParameterSliders::resetAction()
     
     this->intensity.resetButtonClicked();
     this->fineness.resetButtonClicked();
+    this->vertexNoiseSpeed.resetButtonClicked();
     
     this->lightPosition_x.resetButtonClicked();
     this->lightPosition_y.resetButtonClicked();

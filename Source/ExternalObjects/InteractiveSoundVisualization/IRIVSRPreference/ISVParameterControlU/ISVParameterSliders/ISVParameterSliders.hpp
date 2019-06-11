@@ -160,6 +160,7 @@ private:
     Label VertexNoiseLabel;
     sliderUI1 intensity;
     sliderUI1 fineness;
+    sliderUI1 vertexNoiseSpeed;
     
     sliderUI1 lightPosition_x;
     sliderUI1 lightPosition_y;

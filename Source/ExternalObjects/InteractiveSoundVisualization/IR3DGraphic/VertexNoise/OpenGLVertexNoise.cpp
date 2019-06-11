@@ -206,9 +206,9 @@ void OpenGLVertexNoise::renderOpenGL()
     
     
     this->rotation += (float) rotationSpeed;
-    //this->offsetX += rotationSpeed;
-    //this->offsetY += rotationSpeed;
-    //this->offsetZ += rotationSpeed;
+    this->offsetX += this->vertexNoiseSpeed;
+    this->offsetY += this->vertexNoiseSpeed;
+    this->offsetZ += this->vertexNoiseSpeed;
     
     //this->lpy = (this->lpy + this->lightPositionYSpeed);
     
@@ -455,6 +455,11 @@ void OpenGLVertexNoise::setOffsetZ(float offsetZ)
 {
     this->offsetZ = offsetZ;
     
+}
+
+void OpenGLVertexNoise::setVertexNoiseSpeed(float speed)
+{
+    this->vertexNoiseSpeed = speed;
 }
 
 void OpenGLVertexNoise::setFineness(float val)

@@ -138,6 +138,8 @@ t_json IRISVObject::saveThisToSaveData()
 
             {"fineness", p.fineness},
             
+            {"vertexNoiseSpeed", p.vertexNoiseSpeed},
+            
             {"stretch_amount", p.amount}
 
         });
@@ -246,15 +248,12 @@ void IRISVObject::loadThisFromSaveData(t_json data)
         
         loadedPresets.intensity = s["intensity"].number_value();
         loadedPresets.fineness = s["fineness"].number_value();
+        loadedPresets.vertexNoiseSpeed = s["vertexNoiseSpeed"].number_value();
         loadedPresets.amount = s["stretch_amount"].number_value();
         
         std::cout << "intensity = " << loadedPresets.intensity << ", fineness = " << loadedPresets.fineness << std::endl;
         // quater Stretch X
-        
-        
-        
-        
-        
+
         this->UI->addPreset(loadedPresets, false);
         
         index ++;

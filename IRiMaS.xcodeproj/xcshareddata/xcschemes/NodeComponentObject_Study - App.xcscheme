@@ -17,7 +17,7 @@
                BlueprintIdentifier = "76C41EF623EE254E47CDCA51"
                BuildableName = "NodeComponentObject_Study.app"
                BlueprintName = "NodeComponentObject_Study - App"
-               ReferencedContainer = "container:NodeComponentObject_Study.xcodeproj">
+               ReferencedContainer = "container:IRiMaS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
             BlueprintIdentifier = "76C41EF623EE254E47CDCA51"
             BuildableName = "NodeComponentObject_Study.app"
             BlueprintName = "NodeComponentObject_Study - App"
-            ReferencedContainer = "container:NodeComponentObject_Study.xcodeproj">
+            ReferencedContainer = "container:IRiMaS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -58,7 +58,7 @@
             BlueprintIdentifier = "76C41EF623EE254E47CDCA51"
             BuildableName = "NodeComponentObject_Study.app"
             BlueprintName = "NodeComponentObject_Study - App"
-            ReferencedContainer = "container:NodeComponentObject_Study.xcodeproj">
+            ReferencedContainer = "container:IRiMaS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -84,7 +84,7 @@
             BlueprintIdentifier = "76C41EF623EE254E47CDCA51"
             BuildableName = "NodeComponentObject_Study.app"
             BlueprintName = "NodeComponentObject_Study - App"
-            ReferencedContainer = "container:NodeComponentObject_Study.xcodeproj">
+            ReferencedContainer = "container:IRiMaS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

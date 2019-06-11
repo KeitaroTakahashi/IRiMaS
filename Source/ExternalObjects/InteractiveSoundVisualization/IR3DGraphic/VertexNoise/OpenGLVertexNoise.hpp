@@ -77,7 +77,7 @@ public:
     void setAmountY(float amountY);
     void setAmountZ(float amountZ);
     
-
+    void setVertexNoiseSpeed(float speed);
     
     // if x, y, z is under 0, then ignore
     void setPositiveStretch(float x, float y, float z);
@@ -139,6 +139,7 @@ private:
     std::unique_ptr<DemoController> controlsOverlay;
     
     float rotation = 30;
+    float vertexNoiseSpeed = 0.0;
     
     std::unique_ptr<OpenGLShaderProgram> shader;
     std::unique_ptr<Shape> shape;

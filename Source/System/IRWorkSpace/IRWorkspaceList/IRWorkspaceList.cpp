@@ -19,8 +19,12 @@ IRWorkspaceList::~IRWorkspaceList()
     std::cout << "workspace list deleted" << std::endl;
 
     removeAllChildren();
-    // juce::Array free the memory space when cleared.
-    this->snapComponents.clear();
+    for(auto snap : this->snapComponents)
+    {
+        delete snap;
+    }
+    this->snapComponents.clearQuick();
+
     this->workspaces.clear();
     
     this->currentlySelectedSnap = nullptr;
@@ -57,7 +61,11 @@ void IRWorkspaceList::updateList()
         selectedIndex = this->currentlySelectedSnap->getIndex() - 1;
     }
     removeAllChildren();
-    this->snapComponents.clear();
+    for(auto snap : this->snapComponents)
+    {
+        delete snap;
+    }
+    this->snapComponents.clearQuick();
     
     int index = 1;
     int doubleX = this->marginX_left + this->marginX_right;

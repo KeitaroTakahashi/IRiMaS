@@ -120,6 +120,7 @@ void IR3DGraphicUIWithPreference::setSliderParams(ISVPresetDataStr preset)
     this->vertex.setLightPosition(preset.lightPosition);
     this->vertex.setIntensity(preset.intensity);
     this->vertex.setFineness(preset.fineness);
+    this->vertex.setVertexNoiseSpeed(preset.vertexNoiseSpeed);
     
     this->vertex.setQuaterStretchX(preset.quaterStretchX);
     this->vertex.setQuaterStretchY(preset.quaterStretchY);

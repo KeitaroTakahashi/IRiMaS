@@ -37,7 +37,11 @@ IRWorkSpace::~IRWorkSpace()
     delete this->selector;
   
     // juce::Array free the memory space as well when cleared.
-    this->objects.clear();
+    for(auto obj : this->objects)
+    {
+        delete obj;
+    }
+    this->objects.clearQuick();
 }
 
 
