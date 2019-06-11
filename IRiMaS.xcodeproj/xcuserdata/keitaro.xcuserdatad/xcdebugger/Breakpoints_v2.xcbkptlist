@@ -16,15 +16,15 @@
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "juce::AudioDeviceSelectorComponent::updateMidiOutput()"
-                  moduleName = "NodeComponentObject_Study"
+                  moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Applications/JUCE/modules/juce_audio_utils/gui/juce_AudioDeviceSelectorComponent.cpp"
-                  timestampString = "581958198.820693"
+                  timestampString = "581959051.2610919"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1109"
-                  endingLineNumber = "1109"
-                  offsetFromSymbolStart = "130">
+                  startingLineNumber = "1108"
+                  endingLineNumber = "1108"
+                  offsetFromSymbolStart = "98">
                </Location>
             </Locations>
          </BreakpointContent>
