@@ -70,9 +70,11 @@ struct ISVPresetDataStr
         result.halfStretchX = this->halfStretchX - b.halfStretchX;
         result.halfStretchY = this->halfStretchY - b.halfStretchY;
         result.halfStretchZ = this->halfStretchZ - b.halfStretchZ;
+        
 
         result.transform = this->transform - b.transform;
-
+        result.intensity = this->intensity - b.intensity;
+        result.fineness = this->fineness - b.fineness;
         result.amount = this->amount - b.amount;
 
         
@@ -96,12 +98,12 @@ struct ISVPresetDataStr
         result.halfStretchZ = this->halfStretchZ * a;
         
         result.transform = this->transform * a;
+        result.intensity = this->intensity * a;
+        result.fineness = this->fineness * a;
         
         result.amount = this->amount * a;
 
-        
         return result;
-        
     }
     
     void show()
@@ -121,7 +123,6 @@ struct ISVPresetDataStr
 
         std::cout << "transform "; this->transform.show();
         std::cout << "amount " << this->amount << std::endl;
-
 
     }
     

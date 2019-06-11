@@ -27,12 +27,13 @@ public:
     
     void startAnimation()
     {
-        startTimerHz(this->fps);
+        if(!isTimerRunning())
+            startTimerHz(this->fps);
     }
     
     void stopAnimation()
     {
-        stopTimer();
+        if(isTimerRunning()) stopTimer();
     }
     virtual void updateAnimationFrame() = 0;
     

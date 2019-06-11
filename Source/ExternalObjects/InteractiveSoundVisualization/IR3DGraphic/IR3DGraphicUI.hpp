@@ -15,8 +15,7 @@
 
 
 class IR3DGraphicUI : public IRUIFoundation,
-public ChangeBroadcaster,
-private KeAnimationComponent
+public ChangeBroadcaster
 {
 public:
     //==============================================================================
@@ -28,7 +27,6 @@ public:
     
     void paint (Graphics&) override;
     void resized() override;
-    void updateAnimationFrame() override;
     
     //==============================================================================
     

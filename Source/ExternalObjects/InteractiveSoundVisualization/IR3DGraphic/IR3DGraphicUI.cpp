@@ -10,15 +10,12 @@
 IR3DGraphicUI::IR3DGraphicUI(IRNodeObject* parent) : IRUIFoundation(parent)
 {
     setSize(600, 400);
-    setFps(33);
-    startAnimation();
     
     vertexSetup();
 }
 
 IR3DGraphicUI::~IR3DGraphicUI()
 {
-    stopAnimation();
 }
 
 //==============================================================================
@@ -43,11 +40,6 @@ void IR3DGraphicUI::vertexSetup()
     this->vertex.setBounds(0, 0, getWidth(), getHeight());
     addAndMakeVisible(&this->vertex);
     
-}
-
-void IR3DGraphicUI::updateAnimationFrame()
-{
-   
 }
 
 void IR3DGraphicUI::OffsetXChanged(float x)

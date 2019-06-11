@@ -329,6 +329,7 @@ void ISVParameterSliders::setPreset1(ISVPresetDataStr newPreset)
     
     // initially, currentPreset is the same with preset1
     setCurrentPreset(newPreset);
+    calcDeltaPreset();
 
 }
 
@@ -350,59 +351,6 @@ void ISVParameterSliders::calcDeltaPreset()
     ISVPresetDataStr d = this->preset1;
     ISVPresetDataStr p = this->preset2;
     
-    //this->deltaPreset = this->preset1;
-    /*
-    d.lightPosition.setVal1(d.lightPosition.getVal1() - p.lightPosition.getVal1());
-    d.lightPosition.setVal2(d.lightPosition.getVal2() - p.lightPosition.getVal2());
-    d.lightPosition.setVal3(d.lightPosition.getVal3() - p.lightPosition.getVal3());
-    d.lightPosition.setVal4(d.lightPosition.getVal4() - p.lightPosition.getVal4());
-
-    d.materialColour = KVector<float>(d.materialColour.getVal1() - p.materialColour.getVal1(),
-                                      d.materialColour.getVal2() - p.materialColour.getVal2(),
-                                      d.materialColour.getVal3() - p.materialColour.getVal3(),
-                                      d.materialColour.getVal4() - p.materialColour.getVal4()
-                                      );
-    
-    d.lightingColour = KVector<float>(d.lightingColour.getVal1() - p.lightingColour.getVal1(),
-                                      d.lightingColour.getVal2() - p.lightingColour.getVal2(),
-                                      d.lightingColour.getVal3() - p.lightingColour.getVal3(),
-                                      d.lightingColour.getVal4() - p.lightingColour.getVal4()
-                                      );
-
-    
-    KVector<float> qx = d.quaterStretchX;
-    KVector<float> qx2 = p.quaterStretchX;
-    d.quaterStretchX = KVector<float> (qx.getVal1() - qx2.getVal1(),
-                                       qx.getVal2() - qx2.getVal2(),
-                                       qx.getVal3() - qx2.getVal3(),
-                                       qx.getVal4() - qx2.getVal4());
-    
-    KVector<float> qy = d.quaterStretchY;
-    KVector<float> qy2 = p.quaterStretchY;
-    d.quaterStretchY = KVector<float> (qy.getVal1() - qy2.getVal1(),
-                                       qy.getVal2() - qy2.getVal2(),
-                                       qy.getVal3() - qy2.getVal3(),
-                                       qy.getVal4() - qy2.getVal4());
-    
-    
-    d.halfStretchX = KVector<float> (d.halfStretchX.getVal1() - p.halfStretchX.getVal1(),
-                                   d.halfStretchX.getVal2() - p.halfStretchX.getVal2());
-    
-    d.halfStretchY = KVector<float> (d.halfStretchY.getVal1() - p.halfStretchY.getVal1(),
-                                   d.halfStretchY.getVal2() - p.halfStretchY.getVal2());
-    
-    d.halfStretchZ = KVector<float> (d.halfStretchZ.getVal1() - p.halfStretchZ.getVal1(),
-                                   d.halfStretchZ.getVal2() - p.halfStretchZ.getVal2());
-    
-    d.transform = KVector<float> (d.transform.getVal1() - p.transform.getVal1(),
-                                    d.transform.getVal2() - p.transform.getVal2(),
-                                    d.transform.getVal3() - p.transform.getVal3(),
-                                    0.0f );
-    
-    d.intensity = d.intensity - p.intensity;
-    d.fineness = d.fineness - p.fineness;
-    d.amount -= p.amount;
-    */
     this->deltaPreset = this->preset1 - this->preset2;
     
 }

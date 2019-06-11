@@ -109,25 +109,30 @@ t_json IRISVObject::saveThisToSaveData()
                 p.quaterStretchX.getVal1(),
                 p.quaterStretchX.getVal2(),
                 p.quaterStretchX.getVal3(),
-                p.quaterStretchX.getVal4()})},
+                p.quaterStretchX.getVal4()
+            })},
 
             {"quaterStretchY", t_json::array({
                 p.quaterStretchY.getVal1(),
                 p.quaterStretchY.getVal2(),
                 p.quaterStretchY.getVal3(),
-                p.quaterStretchY.getVal4()})},
+                p.quaterStretchY.getVal4()
+            })},
             
             {"halfStretchX", t_json::array({
                 p.halfStretchX.getVal1(),
-                p.halfStretchX.getVal2()})},
+                p.halfStretchX.getVal2()
+            })},
             
             {"halfStretchY", t_json::array({
                 p.halfStretchY.getVal1(),
-                p.halfStretchY.getVal2()})},
+                p.halfStretchY.getVal2()
+            })},
 
             {"halfStretchZ", t_json::array({
                 p.halfStretchZ.getVal1(),
-                p.halfStretchZ.getVal2()})},
+                p.halfStretchZ.getVal2()
+            })},
 
             {"intensity", p.intensity},
 
@@ -250,7 +255,7 @@ void IRISVObject::loadThisFromSaveData(t_json data)
         
         
         
-        this->UI->addPreset(loadedPresets);
+        this->UI->addPreset(loadedPresets, false);
         
         index ++;
     }

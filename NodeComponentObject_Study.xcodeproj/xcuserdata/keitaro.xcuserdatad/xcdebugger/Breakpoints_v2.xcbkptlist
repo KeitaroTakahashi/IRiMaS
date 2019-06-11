@@ -15,16 +15,16 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::AudioDeviceSettingsPanel::updateAllControls()"
+                  symbolName = "juce::OwnedArray&lt;juce::AudioIODeviceType, juce::DummyCriticalSection&gt;::operator[](int) const"
                   moduleName = "NodeComponentObject_Study"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Applications/JUCE/modules/juce_audio_utils/gui/juce_AudioDeviceSelectorComponent.cpp"
-                  timestampString = "581817566.4196219"
+                  urlString = "file:///Applications/JUCE/modules/juce_core/containers/juce_OwnedArray.h"
+                  timestampString = "581949097.693045"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "434"
-                  endingLineNumber = "434"
-                  offsetFromSymbolStart = "114">
+                  startingLineNumber = "150"
+                  endingLineNumber = "150"
+                  offsetFromSymbolStart = "2">
                </Location>
             </Locations>
          </BreakpointContent>

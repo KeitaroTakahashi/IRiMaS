@@ -24,6 +24,7 @@ public:
         
         this->openControllerButton.setButtonText("Open Controller");
         this->openControllerButton.onClick = [this] { openControllerAction(); };
+        this->openControllerButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.fundamental);
         addAndMakeVisible(&this->openControllerButton);
         
         

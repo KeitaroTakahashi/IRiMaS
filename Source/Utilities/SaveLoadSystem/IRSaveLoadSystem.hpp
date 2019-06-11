@@ -67,7 +67,8 @@ public:
     void writeSaveData(std::string filePath)
     {
         std::ofstream myFile;
-        myFile.open(filePath);
+        // trunc mode : discard previous data and write new save data
+        myFile.open(filePath, std::ofstream::trunc);
         myFile << this->saveData.dump();
         myFile.close();
     }

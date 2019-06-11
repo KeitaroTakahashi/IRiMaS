@@ -356,8 +356,6 @@ json11::Json IRProject::saveAction(std::string filePath)
         index++;
     }
     
-    //saveData = json11::Json { saveBuffer };
-    //json11::Json::object jo(buf.begin(), buf.end());
     json11::Json::object jo(buffer.begin(), buffer.end());
     
     saveData = jo;

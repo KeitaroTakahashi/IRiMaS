@@ -31,6 +31,8 @@ public:
         toPresetSelected,
         TransitionToInitialSphereChanged,
         TransitionBetweenPresetsChanged,
+        TransitionOperatePressed,
+        TransitionReversePressed,
         ClearAllPresets
     };
     
@@ -49,9 +51,15 @@ public:
     
     float getTransitionToInitialSphereValue() const { return this->transitionToInitialSphere.getValue(); }
     float getTransitionBetweenPresetsValue() const { return this->transitionBetweenPresets.getValue(); }
+    
+    float getTransitionDuration() const { return this->durationSlider.getValue(); }
+    
+    void setTransitionBetweenPresets(float newVal);
 
     // ==================================================
     void clearAllPresetsAction();
+    void operateTransitionAction();
+    void opearateReverseTransitionAction();
     
     // ==================================================
     ISVPreferenceStatus getStatus() const { return this->status; }
@@ -140,6 +148,15 @@ private:
     
     sliderUI1 transitionToInitialSphere;
     sliderUI1 transitionBetweenPresets;
+    
+    Label TransitionSpeedLabel;
+    Label durationLabel;
+    sliderUI1 durationSlider;
+    
+    TextButton TransitionButton;
+    TextButton TransitionReverseButton;
+    Label fpsLabel;
+    Label RenderingStatusLabel;
     
     
     TextButton clearAllPresetsButton;

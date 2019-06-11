@@ -108,6 +108,11 @@ public:
     // ==================================================
     
     bool isRendering() const { return this->isRenderingFlag; }
+    
+    // ==================================================
+    
+    unsigned long getCounter() const { return this->counter; }
+    
     // ==================================================
     
     Matrix3D<float> getProjectionMatrix() const;
@@ -196,12 +201,26 @@ private:
     float positionZ = -18.0;
 
     // ==============================
+    
     KVector<float> materialColour;
     KVector<float> lightingColour;
     
     // ==============================
-
     
+    // counter
+    // counter should not exceed the size of unsigned long which is 4,294,967,295
+    // in 33 fps, this counter can count more than 4.18 year duration after the rendering starts
+    unsigned long counter = 0;
+    
+    // measure pfs
+    double previousTime = 0.0;
+    double currentTime = 0.0;
+    double fps = 0.0;
+    
+    int swapInterval = 1;
+    
+    // ==============================
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OpenGLVertexNoise)
     
     

@@ -9,7 +9,8 @@
 
 ISVPreferenceUI::ISVPreferenceUI(String title) :
 transitionToInitialSphere       (this, "Transition to initial sphere", 0.0, 1.0, 1.0),
-transitionBetweenPresets        (this, "Transition between presets", 0.0, 1.0, 0.0)
+transitionBetweenPresets        (this, "Transition between presets", 0.0, 1.0, 0.0),
+durationSlider                  (this, "Transition Speed", 0.0, 10.0, 2.0, 0.1)
 
 {
     addAndMakeVisible(&this->LabelTitle);
@@ -56,8 +57,40 @@ transitionBetweenPresets        (this, "Transition between presets", 0.0, 1.0, 0
     // --------------------------------------------------
     this->clearAllPresetsButton.setButtonText("Clear All Presets");
     this->clearAllPresetsButton.onClick = [this] { clearAllPresetsAction(); };
+    this->clearAllPresetsButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.fundamental);
+
     addAndMakeVisible(&this->clearAllPresetsButton);
 
+    // --------------------------------------------------
+    this->TransitionSpeedLabel.setText("Automatic transition", dontSendNotification);
+    addAndMakeVisible(&this->TransitionLabel);
+    this->TransitionLabel.setColour(Label::textColourId, SYSTEMCOLOUR.titleText);
+    
+    // TransitionButton
+    this->TransitionButton.setButtonText("Forward");
+    this->TransitionButton.onClick = [this] { operateTransitionAction(); };
+    this->TransitionButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.fundamental);
+    addAndMakeVisible(&this->TransitionButton);
+    
+    // TransitionReverseButton
+    this->TransitionReverseButton.setButtonText("Reverse");
+    this->TransitionReverseButton.onClick = [this] { opearateReverseTransitionAction(); };
+    this->TransitionReverseButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.fundamental);
+    addAndMakeVisible(&this->TransitionReverseButton);
+    
+    // duration
+    
+    this->durationLabel.setText("Duration", dontSendNotification);
+    addAndMakeVisible(&this->durationLabel);
+    this->durationLabel.setColour(Label::textColourId, SYSTEMCOLOUR.titleText);
+
+    addAndMakeVisible(&this->durationSlider);
+
+    // --------------------------------------------------
+    this->fpsLabel.setText("0.0 fps", dontSendNotification);
+    this->fpsLabel.setColour(Label::textColourId, SYSTEMCOLOUR.titleText);
+
+    
     
     // --------------------------------------------------
     
@@ -87,13 +120,26 @@ void ISVPreferenceUI::resized()
     this->transitionToInitialSphere.setBounds  (20, y, getWidth() - 40, 70);
 
     y += 70;
-    this->toLabel.setBounds         (20, y, 100, 30);
-    this->toPreset.setBounds        (90, y, getWidth() - 100, 30);
+    this->toLabel.setBounds    (20, y, 100, 30);
+    this->toPreset.setBounds   (90, y, getWidth() - 100, 30);
     
     y+= 30;
     this->transitionBetweenPresets.setBounds   (20, y, getWidth() - 40, 70);
 
-    this->clearAllPresetsButton.setBounds      (20, 300, getWidth() - 40, 30);
+    y += 70;
+    this->TransitionSpeedLabel.setBounds(20, y, 100, 30);
+    
+    y+= 30;
+    this->durationLabel.setBounds            (20, y, 100, 30);
+    this->TransitionButton.setBounds         (130, y, 100, 30);
+    this->TransitionReverseButton.setBounds  (240, y, 100, 30);
+    
+    y+= 30;
+    this->durationSlider.setBounds(20, y, getWidth() - 40, 70);
+
+    y += 70;
+    
+    this->clearAllPresetsButton.setBounds      (20, y, getWidth() - 40, 30);
 
 }
 // ==================================================
@@ -104,6 +150,8 @@ void ISVPreferenceUI::paint(Graphics& g)
     g.setColour(Colours::black);
     g.drawLine(0,42.5,getWidth(),42.5);
     //g.drawLine(0,250, getWidth(), 250);
+    g.drawLine(0,260,getWidth(),260);
+
 }
 // ==================================================
 
@@ -153,6 +201,18 @@ void ISVPreferenceUI::clearAllPresetsAction()
     sendChangeMessage();
 }
 
+void ISVPreferenceUI::operateTransitionAction()
+{
+    this->status = TransitionOperatePressed;
+    sendChangeMessage();
+}
+
+void ISVPreferenceUI::opearateReverseTransitionAction()
+{
+    this->status = TransitionReversePressed;
+    sendChangeMessage();
+}
+
 void ISVPreferenceUI::sliderUIValueChanged(sliderUI1 *obj)
 {
     if(obj == &this->transitionToInitialSphere)
@@ -168,3 +228,8 @@ void ISVPreferenceUI::sliderUIValueChanged(sliderUI1 *obj)
     }
 }
 
+
+void ISVPreferenceUI::setTransitionBetweenPresets(float newVal)
+{
+    this->transitionBetweenPresets.setValue(newVal);
+}

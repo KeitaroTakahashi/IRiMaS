@@ -14,6 +14,8 @@ IR3DGraphicUIWithPreference::IR3DGraphicUIWithPreference(IRNodeObject* nodeObjec
     this->preference->setControllerUI(&this->controlUI);
     this->preference->getUI()->addChangeListener(this);
     
+    // animation
+    setFps(this->animationFps);
     
     // control UI
     this->controlUI.addChangeListener(this);
@@ -22,11 +24,12 @@ IR3DGraphicUIWithPreference::IR3DGraphicUIWithPreference(IRNodeObject* nodeObjec
     this->controlUI.saveAction = [this] { saveAction(); };
 
     std::cout << "IR3DGraphicUIWithPreference init done " << this->preference.get() << std::endl;
+
 }
 
 IR3DGraphicUIWithPreference::~IR3DGraphicUIWithPreference()
 {
-    
+    stopAnimation();
 }
 
 // ==================================================
@@ -71,33 +74,40 @@ void IR3DGraphicUIWithPreference::changeListenerCallback(ChangeBroadcaster* sour
             
         }else if(status == ISVPreferenceUI::ISVPreferenceStatus::TransitionBetweenPresetsChanged)
         {
-            
-            std::cout << "\n ---------- \n";
-            
             ISVPresetDataStr preset = this->controlUI.getPreset1();
             float amount = this->preference->getUI()->getTransitionBetweenPresetsValue();
-            
-            std::cout << "preset1 "; preset.show();
-            
-            std::cout << "preset2 "; this->controlUI.getPreset2().show();
-            
-            std::cout << "deltaPreset "; this->controlUI.getDeltaPreset().show();
-
-            
             ISVPresetDataStr deltaPreset = this->controlUI.getDeltaPreset() * amount;
             
             preset = preset - deltaPreset;
-            
-            std::cout << "transition between presets : amount = " << amount << " : " << deltaPreset.amount << std::endl;
-            
-            
-
 
             setSliderParams(preset);
             setColourParams(preset);
-            
-            std::cout << "\n ---------- \n";
 
+        }else if(status == ISVPreferenceUI::ISVPreferenceStatus::TransitionOperatePressed)
+        {
+            float duration = this->preference->getUI()->getTransitionDuration();
+            this->transitionIncrement = (1.0 / duration) / this->animationFps;
+            this->transitionVal = 0.0;
+            this->direction = FORWARD;
+            
+            // do opeartion
+            this->isOperatingTransitionFlag = true;
+            //start animation
+            startAnimation();
+            
+        }
+        else if(status == ISVPreferenceUI::ISVPreferenceStatus::TransitionReversePressed)
+        {
+            float duration = this->preference->getUI()->getTransitionDuration();
+            this->transitionIncrement = - (1.0 / duration) / this->animationFps;
+            this->transitionVal = 1.0;
+            this->direction = REVERSE;
+            
+            // do opeartion
+            this->isOperatingTransitionFlag = true;
+            //start animation
+            startAnimation();
+            
         }
     }
 }
@@ -193,12 +203,6 @@ void IR3DGraphicUIWithPreference::loadPreset(int index)
         ISVPresetDataStr preset = this->presetData[index - 1];
         setSliderParams(preset);
         setColourParams(preset);
-        
-        std::cout << "preset loaded! materialColour = " << preset.materialColour.getVal1() << ", " << preset.materialColour.getVal2() << std::endl;
-        
-        std::cout << "preset loaded! lightColour = " << preset.lightingColour.getVal1() << ", " << preset.lightingColour.getVal2() << std::endl;
-
-        
         this->controlUI.setPreset(preset);
     }
 }
@@ -234,7 +238,7 @@ void IR3DGraphicUIWithPreference::clearAllPresets()
 
 }
 
-void IR3DGraphicUIWithPreference::addPreset(ISVPresetDataStr newPreset)
+void IR3DGraphicUIWithPreference::addPreset(ISVPresetDataStr newPreset, bool isShowDialog)
 {
     String presetName = newPreset.presetTitle;
     int index = 0;
@@ -255,9 +259,44 @@ void IR3DGraphicUIWithPreference::addPreset(ISVPresetDataStr newPreset)
     
     std::cout << "preset name = " << presetName << " saved! " << std::endl;
     
-    AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon,
-                                      "Saved!",
-                                      presetName,
-                                      "OK");
+    if(isShowDialog)
+    {
+        AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon,
+                                          "Saved!",
+                                          presetName,
+                                          "OK");
+    }
     
+}
+
+void IR3DGraphicUIWithPreference::updateAnimationFrame()
+{
+    if(this->isOperatingTransitionFlag)
+    {
+        this->transitionVal += this->transitionIncrement;
+        
+        if(this->direction == FORWARD)
+        {
+            if(this->transitionVal >= 1.0)
+            {
+                this->transitionVal = 1.0;
+                // stop operation
+                this->isOperatingTransitionFlag = false;
+                //stop animation
+                stopAnimation();
+            }
+        }else if(this->direction == REVERSE)
+        {
+            if(this->transitionVal <= 0.0)
+            {
+                this->transitionVal = 0.0;
+                // stop operation
+                this->isOperatingTransitionFlag = false;
+                //stop animation
+                stopAnimation();
+            }
+        }
+        
+        this->preference->getUI()->setTransitionBetweenPresets(this->transitionVal);
+    }
 }

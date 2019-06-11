@@ -10,9 +10,11 @@
 
 #include "IR3DGraphicUI.hpp"
 #include "IRISVObjectPreference.h"
+#include "KeAnimationComponent.h"
 
 class IR3DGraphicUIWithPreference : public IR3DGraphicUI,
-private ChangeListener
+private ChangeListener,
+private KeAnimationComponent
 {
 public:
     IR3DGraphicUIWithPreference(IRNodeObject*nodeObject);
@@ -21,15 +23,25 @@ public:
 
     IRISVObjectPreference * getPreference() const { return this->preference.get(); }
     // ==================================================
+    void updateAnimationFrame() override;
 
     void resized() override;
     // ==================================================
 
     Array<ISVPresetDataStr> getPresetData() const { return this->presetData; }
     
-    void addPreset(ISVPresetDataStr newPreset);
+    void addPreset(ISVPresetDataStr newPreset, bool isShowDialog = true);
 
 private:
+    
+    enum TransitionDirection
+    {
+        FORWARD,
+        REVERSE
+    };
+    
+    TransitionDirection direction = FORWARD;
+    
     
     void loadPreset(int index);
     void loadToPreset(int index);
@@ -53,5 +65,10 @@ private:
     
     Array<ISVPresetDataStr> presetData;
     
+    bool isOperatingTransitionFlag = false;
+    float transitionIncrement = 0.0;
+    float transitionVal = 0.0;
+    
+    int animationFps = 50;
 };
 #endif /* IR3DGraphicUIWithPreference_hpp */

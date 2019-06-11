@@ -80,7 +80,11 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     projectWindow->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
     
     projectWindow->getProjectComponent()->addListener(this);
-    projectWindow->getProjectComponent()->setProjectPath(path);
+    // remove file name
+    File f(path);
+    std::string directoryPath = f.getParentDirectory().getFullPathName().toStdString();
+    std::cout << "create new project from save data  "<< directoryPath << std::endl;
+    projectWindow->getProjectComponent()->setProjectPath(directoryPath);
     projectWindow->setWindowTitle(header.projectName);
     
     this->projectLib.push_back(projectWindow);
@@ -175,7 +179,7 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     // initialize this Project
     projectWindow->getProjectComponent()->initProjectAfterLoading();
     // set project save path
-    projectWindow->getProjectComponent()->setProjectPath(path);
+    projectWindow->getProjectComponent()->setProjectPath(directoryPath);
     
 }
 

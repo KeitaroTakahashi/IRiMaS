@@ -27,7 +27,7 @@ lightingColour(0.71f, 1.0f, 0.77f, 1.0f)
     openGLContext.setRenderer (this);
     openGLContext.attachTo (*this);
     openGLContext.setContinuousRepainting (true);
-    openGLContext.setSwapInterval(33);
+    openGLContext.setSwapInterval(swapInterval);
     this->isRenderingFlag = true;
     
     stopRendering();
@@ -128,14 +128,15 @@ void OpenGLVertexNoise::renderOpenGL()
         uniforms->materialColour->set (this->materialColour.getVal1(),
                                        this->materialColour.getVal2(),
                                        this->materialColour.getVal3(),
-                                       this->materialColour.getVal4());
+                                       1.0f);
 
     
     if (uniforms->DiffuseColour.get() != nullptr)
         uniforms->DiffuseColour->set(this->lightingColour.getVal1(),
                                      this->lightingColour.getVal2(),
                                      this->lightingColour.getVal3(),
-                                     this->lightingColour.getVal4());
+                                     1.0f);
+    
     
     if (uniforms->SpecularColour.get() != nullptr)
         uniforms->SpecularColour->set (0.71f, 1.0f, 0.77f, 0.0f);
@@ -210,6 +211,12 @@ void OpenGLVertexNoise::renderOpenGL()
     //this->offsetZ += rotationSpeed;
     
     //this->lpy = (this->lpy + this->lightPositionYSpeed);
+    
+    
+    // add counter one every frame
+    this->counter ++;
+    // it may cause error but can't avoid it.
+    if(this->counter == ULONG_MAX) this->counter = 0;
 }
 
 Matrix3D<float> OpenGLVertexNoise::getProjectionMatrix() const
@@ -541,7 +548,6 @@ void OpenGLVertexNoise::setMaterialColour(KVector<float> colour)
                                           colour.getVal3(),
                                           colour.getVal4());
     
-    std::cout << "setMaterialColour = " << this->materialColour.getVal1() << ", " << this->materialColour.getVal2() << std::endl;
 }
 
 void OpenGLVertexNoise::setLightingColour(KVector<float> colour)
@@ -551,7 +557,6 @@ void OpenGLVertexNoise::setLightingColour(KVector<float> colour)
                                              colour.getVal3(),
                                              colour.getVal4());
     
-    std::cout << "setLightingColour = " << this->lightingColour.getVal1() << ", " << this->lightingColour.getVal2() << std::endl;
 
 }
 
