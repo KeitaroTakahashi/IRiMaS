@@ -67,23 +67,32 @@ bool IRAudio::loadFile(File file, bool threadSafe)
         this->path.swapWith(p);
         this->filePath.swapWith(p);
         
-        this->fileName.swapWith(p);
+        std::cout << "loadFile " << this->path << " : " << p << std::endl;
         
-        // start calling update func...
-        this->isFileLoadFailed = false;
-        this->isFileLoadCompleted = false;
-        startAnimation();
-
-        // go thread
-        if(threadSafe)
+        if(this->path.isNotEmpty())
         {
-            notify();
+            this->file = File(this->path);
+            this->fileName.swapWith(p);
+        
+            // start calling update func...
+            this->isFileLoadFailed = false;
+            this->isFileLoadCompleted = false;
+            startAnimation();
+
+            // go thread
+            if(threadSafe)
+            {
+                notify();
+            }else{
+                //simply load audio file
+                checkForPathToOpen();
+                checkForBuffersToFree();
+            }
             return true;
+
         }else{
-            //simply load audio file
-            checkForPathToOpen();
-            checkForBuffersToFree();
-            return true;
+            KLib().showErrorMessage("Error : Could not get file path properly. Please try again...");
+            return false;
         }
     }else return false;
 }
@@ -111,13 +120,19 @@ void IRAudio::run()
 
 void IRAudio::updateAnimationFrame()
 {
+    
+    std::cout << "animation " << this << " : " << std::endl;
     if(this->isFileLoadFailed)
     {
-        
+        std::cout << "audio file " << this->path << " load failed\n";
+        stopAnimation();
+        stopThread(4000);
+
     }else{
         if(this->isFileLoadCompleted)
         {
-            
+            stopThread(4000);
+
             std::cout<< "file Import Completed\n";
             callFileImportCompleted();
             callFileStatusChanged(this);
@@ -145,14 +160,10 @@ void IRAudio::checkForBuffersToFree()
 // ------------------------------------------------------------------
 void IRAudio::checkForPathToOpen()
 {
-    String pathToOpen;
-    pathToOpen.swapWith(this->path);
-    
-    if(pathToOpen.isNotEmpty())
+    if(this->path.isNotEmpty())
     {
         this->isFileOpened = true;
         
-        this->file = File(pathToOpen);
         if((this->reader = this->formatManager.createReaderFor(file)))
         {
             
@@ -167,7 +178,6 @@ void IRAudio::checkForPathToOpen()
                                true,
                                true);
             
-            //std::cout << "newBuffer " << newBuffer->getAudioSampleBuffer()->getNumSamples() << std::endl;
             this->buffer = newBuffer;
             this->buffers.add (newBuffer);
             
@@ -176,8 +186,6 @@ void IRAudio::checkForPathToOpen()
             this->numSamples = this->reader->lengthInSamples;
             this->bitsPerSample = this->reader->bitsPerSample;
             
-            //std::cout << "reading samples of "<<(int) reader->lengthInSamples<<std::endl;
-          
             this->isFileLoadCompleted = true;
             
         }else{

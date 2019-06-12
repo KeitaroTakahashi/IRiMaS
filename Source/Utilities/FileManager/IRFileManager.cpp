@@ -49,6 +49,7 @@ IRObjectPtr IRFileManager::createAudioFileData(File file, IRObjectPtr owner, std
     // set callback function to notify when importing audio file is successfuly completed.
     if(callback != nullptr)
         audio->getData()->onImportCompleted = callback;
+    else std::cout << "callBackFunction Null createAudioFileData" << std::endl;
     
     if(threadSafe)
     {
@@ -139,7 +140,12 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr ow
 
 void IRFileManager::getFilePtrWithCallBack(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback)
 {
-    std::cout << "IRFileManager ptr = " << this << std::endl;
+    std::cout << "IRFileManager ptr = " << this <<std::endl;
+    
+    if(callback == nullptr)
+    {
+        std::cout << "callBack function NULL" <<std::endl;
+    }
     
     if (isFileAlreadyRegistered(file))
     {

@@ -147,8 +147,8 @@ void IRWaveform::changeListenerCallback (ChangeBroadcaster* source)
 
 void IRWaveform::makeThumbnail(String path)
 {
-    {
-        const ScopedLock sl (this->callbackLock); // lock thread
+    //{
+      //  const ScopedLock sl (this->callbackLock); // lock thread
         File file (path);
         
         std::cout << "thumnail = " << path << std::endl;
@@ -160,7 +160,7 @@ void IRWaveform::makeThumbnail(String path)
         
         removeChildComponent(&this->openButton);
         //repaint();
-    }
+    //}
 }
 //==========================================================================
 // Callback functions
@@ -206,7 +206,7 @@ void IRWaveform::paint(Graphics& g)
                                     thumbnailBounds, // rounds rectangle
                                     this->start, // start in ms.
                                     this->start + this->duration, // end in ms.
-                                    1, // channel index
+                                    0, // channel index
                                     1.0f // zoom factor
                                     );
         

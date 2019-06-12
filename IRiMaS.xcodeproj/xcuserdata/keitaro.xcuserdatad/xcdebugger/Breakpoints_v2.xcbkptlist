@@ -15,16 +15,16 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::AudioDeviceSelectorComponent::updateMidiOutput()"
+                  symbolName = "std::__1::unique_ptr&lt;juce::Label, std::__1::default_delete&lt;juce::Label&gt; &gt;::~unique_ptr()"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Applications/JUCE/modules/juce_audio_utils/gui/juce_AudioDeviceSelectorComponent.cpp"
-                  timestampString = "581959051.2610919"
+                  urlString = "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory"
+                  timestampString = "582068959.578791"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1108"
-                  endingLineNumber = "1108"
-                  offsetFromSymbolStart = "98">
+                  startingLineNumber = "2602"
+                  endingLineNumber = "2602"
+                  offsetFromSymbolStart = "2">
                </Location>
             </Locations>
          </BreakpointContent>
