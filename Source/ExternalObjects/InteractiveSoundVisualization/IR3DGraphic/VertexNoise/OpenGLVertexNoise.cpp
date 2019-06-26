@@ -18,12 +18,9 @@ lightingColour(0.71f, 1.0f, 0.77f, 1.0f)
     
     if(auto* peer = getPeer())
         peer->setCurrentRenderingEngine(0);
-    
-    
+        
     setOpaque(true);
-    //this->controlsOverlay.reset(new DemoController());
-    //addAndMakeVisible (controlsOverlay.get());
-    
+
     openGLContext.setRenderer (this);
     openGLContext.attachTo (*this);
     openGLContext.setContinuousRepainting (true);
@@ -78,6 +75,8 @@ void OpenGLVertexNoise::freeAllContextObjects()
 void OpenGLVertexNoise::renderOpenGL()
 {
     jassert(OpenGLHelpers::isContextActive());
+    
+    
     
     auto desktopScale = (float) this->openGLContext.getRenderingScale();
     
@@ -258,15 +257,15 @@ void OpenGLVertexNoise::setShaderProgram (const String& vertexShader, const Stri
     newFragmentShader = fragmentShader;
 }
 
-void OpenGLVertexNoise::paint (Graphics&)  {}
+void OpenGLVertexNoise::paint (Graphics& g)
+{
+    
+}
 
 void OpenGLVertexNoise::resized()
 {
     //controlsOverlay->setBounds (getLocalBounds());
     draggableOrientation.setViewport (getLocalBounds());
-    
-    
-    
     
 }
 

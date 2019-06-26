@@ -129,6 +129,7 @@ void IRProject::closeProject()
 
 void IRProject::createNewWorkspace()
 {
+    std::cout << "createNewWorkspace() : " << std::endl;
     std::string title = this->projectName + "_" + std::to_string(this->workspaces.size()+1);
     
     Rectangle<int> frameSize(this->workspaceListWidth, 0,
@@ -562,7 +563,8 @@ void IRProject::initProjectAfterLoading()
     this->topSpace->toFront(true);
     getWorkspaceList()->setSelectedComponentIndex(0);
     
-    getWorkspaceList()->updateList();
+    // dont update here, it may cause crash
+    //getWorkspaceList()->updateList();
 }
 
 

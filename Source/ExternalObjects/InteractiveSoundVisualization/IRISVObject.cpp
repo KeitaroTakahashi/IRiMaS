@@ -36,6 +36,8 @@ void IRISVObject::paint(Graphics &g)
     //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
     g.drawRect(getLocalBounds().toFloat(), 1.0);
     
+    g.drawText("3D Graphics", getLocalBounds(), dontSendNotification);
+    
     
 }
 // ------------------------------------------------------------

@@ -138,7 +138,7 @@ void IRWaveform::changeListenerCallback (ChangeBroadcaster* source)
     else if (source == &this->thumbnail)
     {
         
-        std::cout << "thumbnail changeMessage chan = " << this->thumbnail.getNumChannels() << std::endl;
+        //std::cout << "thumbnail changeMessage chan = " << this->thumbnail.getNumChannels() << std::endl;
         this->drawWaveform = true;
 
         repaint();
@@ -210,7 +210,7 @@ void IRWaveform::paint(Graphics& g)
                                     1.0f // zoom factor
                                     );
         
-        std::cout<<"paint duration = " << this->duration << " : start = " << this->start << std::endl;
+        //std::cout<<"paint duration = " << this->duration << " : start = " << this->start << std::endl;
     }
 }
 

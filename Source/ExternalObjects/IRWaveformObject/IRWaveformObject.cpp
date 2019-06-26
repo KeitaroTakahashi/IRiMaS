@@ -7,6 +7,7 @@
 IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IRWaveform")
 {
     
+    std::cout << "IRWaveformObject " << this << std::endl;
     this->waveform = new IRWaveformObjectUI(this);
     this->waveform->addChangeListener(this);
     //this->waveform->addKeyListener(this);
@@ -43,6 +44,7 @@ IRWaveformObject::~IRWaveformObject()
     delete this->waveform;
     delete this->selector;
     
+    std::cout << "~IRWaveformObject()\n";
    
 }
 
@@ -50,6 +52,7 @@ IRWaveformObject::~IRWaveformObject()
 // copy constructor
 IRNodeObject* IRWaveformObject::copyThis()
 {
+    std::cout << "IRWaveformObject copyThis " << this << std::endl;
     return new IRWaveformObject(this->parent);
 }
 

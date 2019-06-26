@@ -15,16 +15,10 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "std::__1::unique_ptr&lt;juce::Label, std::__1::default_delete&lt;juce::Label&gt; &gt;::~unique_ptr()"
+                  symbolName = "juce::RenderingHelpers::EdgeTableFillers::Gradient&lt;juce::PixelRGB, juce::RenderingHelpers::GradientPixelIterators::Linear&gt;::handleEdgeTableLine(int, int, int) const"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/memory"
-                  timestampString = "582068959.578791"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "2602"
-                  endingLineNumber = "2602"
-                  offsetFromSymbolStart = "2">
+                  offsetFromSymbolStart = "354">
                </Location>
             </Locations>
          </BreakpointContent>

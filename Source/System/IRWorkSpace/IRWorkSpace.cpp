@@ -147,6 +147,7 @@ void IRWorkSpace::resized()
 void IRWorkSpace::mouseDown(const MouseEvent& e)
 {
     std::cout << "IRWorkSpace mouseDown" << std::endl;
+
     this->selector->mouseDownHandler(e);
     
     if(isEditMode())
@@ -181,6 +182,8 @@ void IRWorkSpace::mouseUp(const MouseEvent& e)
     {
         this->dummy.clear();
     }
+    //request updating the workspaceList
+    if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
 }
 
 

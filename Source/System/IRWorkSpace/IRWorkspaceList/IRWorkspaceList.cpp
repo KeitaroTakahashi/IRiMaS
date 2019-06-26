@@ -52,20 +52,28 @@ void IRWorkspaceList::updateAnimationFrame()
 
 void IRWorkspaceList::updateList()
 {
-    
+  
     std::cout << "IRWorkspaceList : updateList " << std::endl;
     // get index of the selected workspace
     int selectedIndex = -1;
     if (this->currentlySelectedSnap != nullptr)
     {
         selectedIndex = this->currentlySelectedSnap->getIndex() - 1;
+    }else
+    {
+        selectedIndex = 0;
+        std::cout << "Error IRWorkspaceList::updateList() : currentlySelectedSnap is NULL\n";
+        //return;
     }
     removeAllChildren();
+    /*
     for(auto snap : this->snapComponents)
     {
         delete snap;
-    }
-    this->snapComponents.clearQuick();
+    }*/
+    this->snapComponents.clear();
+    
+    std::cout << "snapComponent cleared\n";
     
     int index = 1;
     int doubleX = this->marginX_left + this->marginX_right;
@@ -73,6 +81,8 @@ void IRWorkspaceList::updateList()
     int w = getWidth() - doubleX;
     int h = w * 4 / 6 + this->marginY * 2; // 6:4
     
+    std::cout << "workspace size = " << this->workspaces.size() << std::endl;
+    /*
     for (auto space : this->workspaces)
     {
         
@@ -89,8 +99,10 @@ void IRWorkspaceList::updateList()
         
         index++;
         
-        std::cout << "spanshop taken for " << space << std::endl;
+        std::cout << "spanshop taken for " << space << "compoents size = "<< this->snapComponents.size() << std::endl;
     }
+    
+    
     
     if (selectedIndex >= 0)
     {
@@ -105,6 +117,8 @@ void IRWorkspaceList::updateList()
     std::cout << "workspaceListFocused done" << std::endl;
 
     repaint();
+    
+*/
 }
 
 
@@ -192,6 +206,8 @@ void IRWorkspaceList::callRemoveWorkspaceAction(IRWorkSpace* workspace)
 void IRWorkspaceList::addWorkspace(IRWorkSpace* space)
 {
     this->workspaces.add(space);
+    std::cout << "addWorkspace : " << this->workspaces.size() << std::endl;
+
     updateList();
 }
 

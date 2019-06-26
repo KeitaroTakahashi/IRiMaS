@@ -205,7 +205,7 @@ private:
     // allocate data by a given FileType
     IRObjectPtr createFileData(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback = nullptr);
     IRObjectPtr createImageFileData(File file, IRObjectPtr owner);
-    IRObjectPtr createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback, bool threadSafe = true);
+    IRObjectPtr createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback, bool threadSafe = false);
     
     // check if the new file is already imported or not
     bool isFileAlreadyRegistered(File newFile);
