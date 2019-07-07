@@ -275,7 +275,7 @@ void IRNodeComponent::mouseDragEvent(const MouseEvent& e)
 // CALLBACK FUNCTIONS
 void IRNodeComponent::statusChangedCallback(IRNodeComponentStatus status)
 {
-    
+   
 }
 
 

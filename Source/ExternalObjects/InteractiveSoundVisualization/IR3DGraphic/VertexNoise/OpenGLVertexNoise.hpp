@@ -18,6 +18,7 @@
 #include "KTextLoader.h"
 #include "KVector.h"
 
+
 class OpenGLVertexNoise : public Component,
 private OpenGLRenderer,
 private AsyncUpdater
