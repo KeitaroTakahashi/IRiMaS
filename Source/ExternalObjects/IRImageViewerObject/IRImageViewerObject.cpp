@@ -79,7 +79,7 @@ void IRImageViewerObject::resized()
 {
     std::cout << "IRImageViewerObject resized " << getWidth() << ", " << getHeight() << std::endl;
     
-    this->imageViewer->setBounds(5,5, getWidth()-10, getHeight()-10);
+    this->imageViewer->setBounds(0, 0, getWidth(), getHeight());
 }
 
 
@@ -87,9 +87,9 @@ void IRImageViewerObject::paint(Graphics& g)
 {
     if (isEditMode())
     {
-        auto area = getLocalBounds().reduced(2);
+        auto area = getLocalBounds();
         g.setColour(SYSTEMCOLOUR.contents);
-        g.drawRoundedRectangle(area.toFloat(), 5.0f, 2.0f);
+        g.drawRect(area.toFloat(), 1.0f);
     }
 }
 

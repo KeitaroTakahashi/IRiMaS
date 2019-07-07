@@ -61,13 +61,15 @@ public:
     {
         int i,j;
         this->maxPower.clear();
+        this->maxPower.reserve(getNumFrame());
         this->power.clear();
         this->phase.clear();
-    
+        std::cout << "FFT cartopol getNumFrame = " << getNumFrame() << std::endl;
         for(i=0;i<getNumFrame();i++)
         {
             fftw_complex* c = this->complexResult[i];
             std::vector<float>buf;
+            buf.reserve(this->ffthalfsize);
             float max = 0;
             for(j=0;j<this->ffthalfsize;j++){
                 buf.push_back(sqrt(c[j][0] * c[j][0] + c[j][1] * c[j][1]));
@@ -84,7 +86,7 @@ public:
     // ------------------------------------------------------------
     int getNumFrame() const { return (int)this->frameData.size(); }
     std::vector<fftw_complex*> getComplexResultList() { return this->complexResult; }
-    std::vector<std::vector<float>> getPower() { return this->power; }
+    std::vector<std::vector<float>> getPower() const { return this->power; }
     std::vector<float> getMaxPower() const { return this->maxPower; }
     
     bool hasFFTOperated()               const { return this->hasFFTOperatedFlag; }

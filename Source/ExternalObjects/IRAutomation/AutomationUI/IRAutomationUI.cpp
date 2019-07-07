@@ -203,7 +203,6 @@ void IRAutomationUI::getFilePtr(File file)
     // set a callback function which is called when file load is completed.
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
-    std::cout << "getFilePtrWithCallBack "<< getFileManager()<< std::endl;
     
     
     getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,

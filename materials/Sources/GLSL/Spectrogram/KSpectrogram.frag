@@ -41,8 +41,8 @@ vec3 hsb2rgb2(in vec3 c, in vec2 st)
     //float fadeOut = step(0.0, st.x - threshold) * (st.x - threshold);
     float fadeOut = step(0.0, c.x - threshold) * (c.x - threshold) * ratio;
     
-    vec3 colorA = hsb2rgb(vec3(c.x, 1.0, smoothstep(1.0, 0.0, fadeOut)));
-    vec3 colorB = hsb2rgb(vec3(c.x, 1.0, 1.0));
+    vec3 colorA = hsb2rgb(vec3(c.x, c.y, smoothstep(c.z, 0.0, fadeOut)));
+    vec3 colorB = hsb2rgb(vec3(c.x, c.y, c.z));
     
     float s = step(0.8, c.x);
     

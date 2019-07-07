@@ -1,8 +1,8 @@
 //
 //  KTextLoader.h
-//  NodeComponentObject_Study
+//  OpenGLProject
 //
-//  Created by Keitaro on 28/04/2019.
+//  Created by Keitaro on 26/06/2019.
 //
 
 #ifndef KTextLoader_h
@@ -19,15 +19,20 @@ public:
     {
         std::ifstream myFile (url);
         std::string line;
+        int numLine = 0;
         if(myFile.is_open())
         {
             while (getline(myFile, line))
             {
-                this->txtData += line;
+                this->txtData += (line + "\n");
+                numLine ++;
+                
             }
         }
         
         myFile.close();
+        
+        
     }
     ~IRTextLoader() {}
     

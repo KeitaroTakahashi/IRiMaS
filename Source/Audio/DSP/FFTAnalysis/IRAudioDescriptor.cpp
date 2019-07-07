@@ -97,6 +97,13 @@ void IRFFTDescriptor::calcDescriptor(FFTDescriptor descriptor)
             
         case FFT_BFCCS:
             break;
+            
+        case FFT_LinearPower:
+            calcLinearPower();
+            break;
+        case FFT_LogPower:
+            break;
+            
         default:
             break;
             
@@ -144,6 +151,12 @@ std::string IRFFTDescriptor::getDescriptorName(FFTDescriptor descriptor)
         case FFT_BFCCS:
             return "BFCCs";
             break;
+        case FFT_LinearPower:
+            return "LienarPower";
+            break;
+        case FFT_LogPower:
+            return "LogPower";
+            break;
         default:
             return "UNKNOWN";
             break;
@@ -152,6 +165,13 @@ std::string IRFFTDescriptor::getDescriptorName(FFTDescriptor descriptor)
 }
 
 // ==================================================
+
+void IRFFTDescriptor::calcLinearPower()
+{
+    if(hasLinearPowerCalculated()) return;
+    this->linearPower = getPower();
+    this->hasLinearPowerCalculatedFlag = true;
+}
 
 void IRFFTDescriptor::calcMagnitude()
 {
@@ -199,14 +219,11 @@ void IRFFTDescriptor::calcCentroid()
     auto power = getPower();
 
     // calc frequency per bin
-    //float* freq_per_bin = new float [this->ffthalfsize];
     std::vector<float> freq_per_bin;
     freq_per_bin.reserve(this->ffthalfsize);
     for(i=0;i<this->ffthalfsize;i++)
     {
         freq_per_bin.push_back(float(i) * freq_bin);
-        
-        //std::cout << i << " : freq_per_bin " << freq_per_bin[i] << std::endl;
     }
     
     std::vector<float> m;
@@ -224,15 +241,10 @@ void IRFFTDescriptor::calcCentroid()
         for(i=0;i<this->ffthalfsize;i++){
             freq_accum += (freq_per_bin[i] * power[f][i]);
             mag += power[f][i];
-            
-            //if(f == 0 || f == 1 || f == 2)
-                //std::cout << freq_per_bin[i] << "," << power[f][i] << ", " << freq_accum<<std::endl;
         }
     
         if(mag == 0.0) cent = 0;
         else cent = freq_accum / mag;
-
-        std::cout << f << " : freq_accum " << freq_accum << " : cent " << cent << " : " << mag << " : freq_per_bin "<< std::endl;
 
         m.push_back(mag);
         c.push_back(cent);

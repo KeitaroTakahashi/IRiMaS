@@ -236,15 +236,15 @@ void IRAudio::operateBasicDescriptors()
     this->analyzer->calcCentroid();
 
     IRAnalysisDataStr newMag (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
-    newMag.setRowDataAndNoamalize(this->analyzer->getMagnitude());
+    newMag.setRowDataAndNormalize(this->analyzer->getMagnitude());
     getDescriptor()->setMagnitude(newMag);
 
     IRAnalysisDataStr newCent (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
-    newCent.setRowDataAndNoamalize(this->analyzer->getCentroid());
+    newCent.setRowDataAndNormalize(this->analyzer->getCentroid());
     getDescriptor()->setCentroid(newCent);
 
     IRAnalysisDataStr newSp (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
-    newSp.setRowDataAndNoamalize(this->analyzer->getSpread());
+    newSp.setRowDataAndNormalize(this->analyzer->getSpread());
     getDescriptor()->setSpread(newSp);
 }
 // --------------------------------------------------
@@ -253,8 +253,18 @@ void IRAudio::operateFlatness()
     this->analyzer->calcFlatness();
  
     IRAnalysisDataStr newFlat (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
-    newFlat.setRowDataAndNoamalize(this->analyzer->getFlatness());
+    newFlat.setRowDataAndNormalize(this->analyzer->getFlatness());
     getDescriptor()->setFlatness(newFlat);
+}
+// --------------------------------------------------
+void IRAudio::operateLinearPower()
+{
+    this->analyzer->calcLinearPower();
+    IRAnalysisDataStr newLinearPower (this->analyzer->getFFTSize(),
+                                      this->analyzer->getHopSize());
+    newLinearPower.setRowDataAndNormalize(this->analyzer->getLinearPower());
+    getDescriptor()->setLinearPower(newLinearPower);
+    
 }
 // --------------------------------------------------
 
@@ -307,6 +317,9 @@ bool IRAudio::operateAnalysis(FFTDescriptor descriptor)
             
         case FFTDescriptor::FFT_BFCCS:
             return "BFCCs";
+            break;
+        case FFTDescriptor::FFT_LinearPower:
+            operateLinearPower();
             break;
         default:
             return "UNKNOWN";

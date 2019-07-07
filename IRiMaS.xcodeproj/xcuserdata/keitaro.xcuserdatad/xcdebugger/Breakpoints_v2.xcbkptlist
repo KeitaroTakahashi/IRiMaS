@@ -15,10 +15,10 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::RenderingHelpers::EdgeTableFillers::TransformedImageFill&lt;juce::PixelARGB, juce::PixelARGB, false&gt;::handleEdgeTableLine(int, int, int)"
+                  symbolName = "void juce::RenderingHelpers::EdgeTableFillers::TransformedImageFill&lt;juce::PixelARGB, juce::PixelARGB, true&gt;::generate&lt;juce::PixelARGB&gt;(juce::PixelARGB*, int, int)"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "66">
+                  offsetFromSymbolStart = "530">
                </Location>
             </Locations>
          </BreakpointContent>

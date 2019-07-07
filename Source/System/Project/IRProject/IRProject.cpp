@@ -762,6 +762,7 @@ bool IRProject::perform(const InvocationInfo& info)
             break;
         case CommandIDs::menuPreferenceWindow:
             this->preferenceWindow->setVisible(true);
+            this->preferenceWindow->toFront(true);
             break;
         default:
             return false;

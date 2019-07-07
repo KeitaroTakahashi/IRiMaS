@@ -195,9 +195,13 @@ void IRWaveform::paint(Graphics& g)
     {
         auto area = getLocalBounds();//.reduced (2);
         
-        g.setColour (SYSTEMCOLOUR.contents);
+        g.setColour (SYSTEMCOLOUR.background);
         //g.fillRoundedRectangle(area.toFloat(), 5.0f);
         g.fillRect(area.toFloat());
+        
+        g.setColour (SYSTEMCOLOUR.contents);
+        //g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
+        g.drawRect(area.toFloat(), 1.0);
         
         g.setColour(SYSTEMCOLOUR.fundamental);
         //small margin
@@ -210,7 +214,6 @@ void IRWaveform::paint(Graphics& g)
                                     1.0f // zoom factor
                                     );
         
-        //std::cout<<"paint duration = " << this->duration << " : start = " << this->start << std::endl;
     }
 }
 

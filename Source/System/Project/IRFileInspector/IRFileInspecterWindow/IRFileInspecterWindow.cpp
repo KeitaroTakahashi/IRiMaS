@@ -16,9 +16,7 @@ DocumentWindow(name,
     
     // show a title bar
     setUsingNativeTitleBar(true);
-    // setup systme colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    SYSTEMCOLOUR.set(IR::darkBrownSet());
+    
     
     setBounds(0, 0, getWidth(), getHeight());
     
@@ -47,6 +45,7 @@ void IRFileInspecterWindow::closeButtonPressed()
 void IRFileInspecterWindow::show()
 {
     addToDesktop();
+    toFront(true);
 }
 
 void IRFileInspecterWindow::updateInspecter()

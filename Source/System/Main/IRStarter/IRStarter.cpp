@@ -9,10 +9,7 @@
 
 IRStarter::IRStarter(Rectangle<int> frameRect)
 {
-    // setup systme colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    SYSTEMCOLOUR.set(IR::darkBrownSet());
-    
+   
     int w = frameRect.getWidth();
     int h = frameRect.getHeight();
     

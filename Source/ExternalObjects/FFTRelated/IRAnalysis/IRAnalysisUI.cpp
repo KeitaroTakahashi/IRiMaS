@@ -196,7 +196,7 @@ void IRAnalysisUI::executeAnalysis()
     
     this->magData = std::make_shared<IRAnalysisDataStr>();
     this->magData->setFFTSize(this->fftsize);
-    this->magData->setRowDataAndNoamalize(this->FFTSequence->getMagnitude());
+    this->magData->setRowDataAndNormalize(this->FFTSequence->getMagnitude());
     
     // register extracted descriptors to IRDescriptor through IRAudio
     // descriptors are stored in IRAudio class in the file manager

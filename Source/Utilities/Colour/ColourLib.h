@@ -36,9 +36,9 @@ namespace IR
         }
     };
     
-    struct darkMagenta : public colorPattern
+    struct darkMagentaSet : public colorPattern
     {
-        darkMagenta()
+        darkMagentaSet()
         {
             this->background = Colour(255,255,255);
             this->fundamental = Colour(61,7,35);
@@ -48,15 +48,27 @@ namespace IR
         }
     };
     
-    struct darkBlue : public colorPattern
+    struct darkBlueSet : public colorPattern
     {
-        darkBlue()
+        darkBlueSet()
         {
             this->background = Colour(255,255,255);
             this->fundamental = Colour(2,27,53);
             this->contents = Colour(71,88,116);
             this->titleText = Colour(0,0,0);
             this->text = Colour(255,255,255);
+        }
+    };
+    
+    struct whiteSet : public colorPattern
+    {
+        whiteSet()
+        {
+            this->background = Colour(255,255,255);
+            this->fundamental = Colour(255,255,255);
+            this->contents = Colour(220,220,220);
+            this->titleText = Colour(30,30,30);
+            this->text = Colour(30,30,30);
         }
     };
     

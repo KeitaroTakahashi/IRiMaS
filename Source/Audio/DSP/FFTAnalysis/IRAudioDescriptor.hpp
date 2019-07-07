@@ -53,7 +53,11 @@ public:
     void calcPitch();
     void calcNoisiness();
     
-    
+    void calcLinearPower();
+   // void calclogPower();
+
+    std::vector<std::vector<float>> getLinearPower() const { return this->linearPower; }
+
     std::vector<std::vector<float>> getMagnitude() const { return this->magnitude; }
     std::vector<std::vector<float>> getCentroid() const { return this->centroid; }
     std::vector<std::vector<float>> getSpread() const { return this->spread; }
@@ -81,14 +85,13 @@ public:
 
     bool hasNoisinessCalculated()       const { return this->hasNoisinessCalculatedFlag; }
 
+    bool hasLinearPowerCalculated()     const { return this->hasLinearPowerCalculatedFlag; }
     // ============================================================
 
 private:
     
     void calcDescriptor(FFTDescriptor descriptor);
 
-    
-    
     std::vector<FFTDescriptor> descriptorList;
     std::vector<std::string> descriptorNameList;
     
@@ -104,6 +107,9 @@ private:
     std::vector<std::vector<float>> BFCs;
     std::vector<std::vector<float>> BFCCs;
     
+    std::vector<std::vector<float>> linearPower;
+    std::vector<std::vector<float>> logPower;
+
     // ============================================================
     bool hasMagnitudeCalculatedFlag = false;
     bool hasCentroidCalculatedFlag = false;
@@ -111,6 +117,7 @@ private:
     bool hasFlatnessCalculatedFlag = false;
     bool hasPitchCalculatedFlag = false;
     bool hasNoisinessCalculatedFlag = false;
+    bool hasLinearPowerCalculatedFlag = false;
     // ============================================================
 
 };

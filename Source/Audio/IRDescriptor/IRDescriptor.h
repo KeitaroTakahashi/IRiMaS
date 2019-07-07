@@ -41,7 +41,7 @@ public:
         }
     }
     
-    void setRowDataAndNoamalize(std::vector<std::vector<float>> data)
+    void setRowDataAndNormalize(std::vector<std::vector<float>> data)
     {
         if(data.size() > 0)
         {

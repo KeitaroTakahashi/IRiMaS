@@ -106,6 +106,8 @@ public:
     
     void operateBasicDescriptors();
     void operateFlatness();
+    
+    void operateLinearPower();
 private:
     // ===========================================================================
     //thread related methods
