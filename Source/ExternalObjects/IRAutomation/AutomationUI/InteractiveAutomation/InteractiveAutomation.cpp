@@ -10,6 +10,7 @@
 InteractiveAutomation::InteractiveAutomation(IRNodeObject* nodeObject) :
 IRUIFoundation(nodeObject)
 {
+        
     this->verteces.clear();
     this->selector = std::make_shared<VertecesSelector>(&this->verteces, this);
     this->selector->setShiftConstrainsDirection(true);
@@ -48,6 +49,9 @@ void InteractiveAutomation::initAutomation()
 
 void InteractiveAutomation::paint(Graphics& g)
 {
+    
+    //std::cout << "+++++ InteractiveAutomation repaint() +++++ \n";
+
     g.fillAll(Colours::white);
     g.setColour(SYSTEMCOLOUR.fundamental);
     g.drawRect(0, 0, getWidth(), getHeight(), 1);

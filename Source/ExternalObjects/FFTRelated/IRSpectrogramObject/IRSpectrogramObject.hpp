@@ -8,7 +8,7 @@
 #ifndef IRSpectrogramObject_hpp
 #define IRSpectrogramObject_hpp
 
-#include "IRSpectrogram.hpp"
+#include "IRSpectrogramWithPreference.hpp"
 
 class IRSpectrogramObject : public IRNodeObject,
 IRNodeObject::Listener,
@@ -46,7 +46,7 @@ private:
 
     // ==================================================
 
-    std::shared_ptr<IRSpectrogram> spectrogram;
+    std::shared_ptr<IRSpectrogramWithPreference> UI;
     // ==================================================
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRSpectrogramObject)

@@ -9,6 +9,9 @@
 
 IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject)
 {
+    // to make it efficient to redrawn...
+    setOpaque(true);
+    
     this->nodeObject = nodeObject;
     this->nodeObject->statusChangeCompleted = [this](IRNodeComponentStatus status){ NodeObjectStatusChanged(status); };
 

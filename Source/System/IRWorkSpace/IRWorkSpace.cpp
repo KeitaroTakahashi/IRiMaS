@@ -9,6 +9,8 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     this->name = title;
     this->title = this->name + " (EDIT MODE)";
     setBounds(frameRect);
+    setOpaque(false);
+    //setBufferedToImage(false);
     loadBackgroundImageLink(); // for LinkMode
     
     //setSize (frameRect.getWidth(), frameRect.getHeight());
@@ -47,22 +49,20 @@ IRWorkSpace::~IRWorkSpace()
 
 void IRWorkSpace::paint (Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    //g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-    //g.fillAll(Colour(60, 7, 36));
+    std::cout << " ++++++ workspace repained! ++++++ \n";
     g.fillAll(SYSTEMCOLOUR.background);
     
     // draw shadows for the selected objects
     //drawShadows(g);
     
     // paint all of
+    /*
     for(auto obj : this->objects)
     {
         obj->initialPaintOnWorkspace(g, this);
-    }
+    }*/
     
-    if(isEditMode())
-        drawGrids(g);
+    if(isEditMode()) drawGrids(g);
     
     if(isLinkMode())
     {
@@ -70,7 +70,6 @@ void IRWorkSpace::paint (Graphics& g)
         float h = w;
         float x = w - w/2;
         float y = getHeight()/2 - h/2;
-        //g.drawImage(&this->background_image_link,Rectangle<float>(x,y,w,h));
         g.drawImage(this->background_image_link, Rectangle<float>(x,y,w,h));
     }
     
@@ -98,7 +97,6 @@ void IRWorkSpace::drawGrids(Graphics& g)
 {
     int w = getWidth();
     int h = getHeight();
-    const float myDashLength[] = { 1, 1 };
 
     g.setColour(Colours::lightgrey.brighter());
     int i = 0;

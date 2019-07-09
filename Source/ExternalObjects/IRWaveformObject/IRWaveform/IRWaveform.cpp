@@ -191,6 +191,7 @@ void IRWaveform::resized()
 
 void IRWaveform::paint(Graphics& g)
 {
+    //std::cout << "+++++ IRWaveform repaint() +++++ \n";
     if (this->drawWaveform)
     {
         auto area = getLocalBounds();//.reduced (2);

@@ -1,58 +1,49 @@
 //
-//  IRAutomation.cpp
-//  InteractiveAutomation - App
+//  IRSpectrogramUI.cpp
+//  IRiMaS
 //
-//  Created by Keitaro on 02/05/2019.
+//  Created by Keitaro on 08/07/2019.
 //
 
-#include "IRAutomationUI.hpp"
+#include "IRSpectrogramUI.hpp"
 
-IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeObject),
+IRSpectrogramUI::IRSpectrogramUI(IRNodeObject* nodeObject) :
+IRUIFoundation(nodeObject),
 verticalGrid(IRGridStr::IRMeasureGridType::VERTICAL),
 horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
 {
-    this->automation = std::make_shared<InteractiveAutomation>(nodeObject);
-    addAndMakeVisible(&this->automationView);
+    this->parent = nodeObject;
     
-    this->automation->zoomInClickedCallback = [this]{ zoomInClicked(); };
-    this->automation->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
-    this->automation->movableClickedCallback = [this](IRAutomation::movableStatus status){ movableClicked(status); };
+    addAndMakeVisible(&this->spectrogramView);
+    
+    this->spectrogram = std::make_shared<IRSpectrogram>(nodeObject);
     
     this->verticalGrid.setRange(0, 40);
     this->verticalGrid.addMouseListener(this, false);
     
     this->horizontalGrid.setRange(0, 40);
     this->horizontalGrid.addMouseListener(this, false);
-
     
-    this->componentForViewPort = std::make_shared<ComponentForViewPort>(this->automation.get(),
+    this->componentForViewPort = std::make_shared<ComponentForViewPort>(this->spectrogram.get(),
                                                                         &this->verticalGrid,
                                                                         &this->horizontalGrid,
                                                                         this->gridSize);
     
-    
-    // IRViewPort
-    //this->automationView.setViewedComponent(this->automation.get());
-    this->automationView.setViewedComponent(this->componentForViewPort.get());
+    this->spectrogramView.setViewedComponent(this->componentForViewPort.get());
+    this->spectrogramView.visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
 
-    this->automationView.visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
-    
-    
-   
-    
-    this->parent = nodeObject;
 }
 
-
-IRAutomationUI::~IRAutomationUI()
+IRSpectrogramUI::~IRSpectrogramUI()
 {
     if(this->audioData != nullptr)
         getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
 }
 
+
 // ==================================================
 
-void IRAutomationUI::paint(Graphics& g)
+void IRSpectrogramUI::paint(Graphics& g)
 {
     g.fillAll(SYSTEMCOLOUR.background);
     
@@ -62,77 +53,33 @@ void IRAutomationUI::paint(Graphics& g)
     
     
 }
-void IRAutomationUI::resized()
+void IRSpectrogramUI::resized()
 {
     int x = this->xMargin;
     int y = this->yMargin;
     int w = getWidth() - this->xMargin*2;
     int h = getHeight() - this->yMargin*2;
     
-    int automationMarginY = 20;
+    int spectrogramMarginY = 20;
     
-    this->automationView.setBounds(x, y, w, h);
-    this->automationView.setViewPosition(this->previousOffsetX, 0);
+    this->spectrogramView.setBounds(x, y, w, h);
+    this->spectrogramView.setViewPosition(this->previousOffsetX, 0);
     
-   
-   
+    
+    
     
     this->componentForViewPort->setBounds(0,
                                           0,
-                                          w * this->automation_width_ratio,
-                                          h - automationMarginY);
-   
+                                          w * this->spectrogram_width_ratio,
+                                          h - spectrogramMarginY);
     
-   
 
-    
 }
 // ==================================================
 
-void IRAutomationUI::zoomInClicked()
+void IRSpectrogramUI::setMovable(bool movable, bool verticalMovable, bool horizontalMovable)
 {
-    this->automation_width_ratio *= 2;
-    resized();
-    this->automation->reCalcPos();
-    this->verticalGrid.createGrids();
-}
-
-void IRAutomationUI::zoomOutClicked()
-{
-    this->automation_width_ratio /= 2;
-    resized();
-    this->automation->reCalcPos();
-    this->verticalGrid.createGrids();
-    
-}
-
-void IRAutomationUI::movableClicked(IRAutomation::movableStatus status)
-{
-    std::cout << "movableClicked : " << status << std::endl;
-    
-    switch(status)
-    {
-        case NOTMOVABLE:
-            setMovable(false, false, false);
-            break;
-        case HORIZONTALMOVABLE:
-            setMovable(true, false, true);
-            break;
-        case VERTICALMOVABLE:
-            setMovable(true, true, false);
-            break;
-        case CROSSMOVABLE:
-            setMovable(true, true, true);
-            break;
-        default:
-            break;
-            
-    }
-}
-
-void IRAutomationUI::setMovable(bool movable, bool verticalMovable, bool horizontalMovable)
-{
-    
+    /*
     Array<vertex*> vs = this->automation->getVerteces();
     
     for(auto v : vs)
@@ -141,14 +88,14 @@ void IRAutomationUI::setMovable(bool movable, bool verticalMovable, bool horizon
     }
     
     this->automation->setMovable(movable, verticalMovable, horizontalMovable);
-    
+ */
 }
 
 // ==================================================
 
-void IRAutomationUI::visibleAreaChanged(Rectangle<int> area)
+void IRSpectrogramUI::visibleAreaChanged(Rectangle<int> area)
 {
-    this->automation->setVisibleArea(area);
+    this->spectrogram->setVisibleArea(area);
     this->componentForViewPort->setVisibleArea(area);
     
     this->previousOffsetX = area.getX();
@@ -157,18 +104,7 @@ void IRAutomationUI::visibleAreaChanged(Rectangle<int> area)
 // ==================================================
 
 
-void IRAutomationUI::demoData(int num)
-{
-    this->automation->demoData(num);
-    //this->controller->setMovableStatus(IRAutomation::movableStatus::VERTICALMOVABLE);
-}
-
-void IRAutomationUI::setDescriptor(IRAnalysisDataStr& data)
-{
-    this->automation->setDescriptor(data);
-}
-
-void IRAutomationUI::openFile()
+void IRSpectrogramUI::openFile()
 {
     
     FileChooser chooser("Select an image file...",
@@ -191,7 +127,7 @@ void IRAutomationUI::openFile()
     }
 }
 
-void IRAutomationUI::openFile(String path)
+void IRSpectrogramUI::openFile(String path)
 {
     if(path.isNotEmpty())
     {
@@ -206,7 +142,7 @@ void IRAutomationUI::openFile(String path)
     }
 }
 
-void IRAutomationUI::getFilePtr(File file)
+void IRSpectrogramUI::getFilePtr(File file)
 {
     
     std::cout << "getFilePtr\n";
@@ -219,14 +155,13 @@ void IRAutomationUI::getFilePtr(File file)
                                              file,
                                              this->parent,
                                              callback);
-    std::cout << "notify!\n";
-
+    
     // notify changes to IRProject to update IRFileInspecter
     this->parent->notifyNodeObjectModification();
     
 }
 
-void IRAutomationUI::fileImportCompleted()
+void IRSpectrogramUI::fileImportCompleted()
 {
     this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
     
@@ -236,5 +171,5 @@ void IRAutomationUI::fileImportCompleted()
     fileImportCompletedAction();
     
     std::cout << "fileImportCompleted!\n";
-
+    
 }

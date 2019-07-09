@@ -75,7 +75,7 @@ void IRMeasureGrid::createGrids()
     int i;
     Line<float>line;
     
-    std::cout << "createGrids numGrid = " << numGrid << " : xIncrement " << xIncrement << " : yIncrement " << yIncrement << std::endl;
+    //std::cout << "createGrids numGrid = " << numGrid << " : xIncrement " << xIncrement << " : yIncrement " << yIncrement << std::endl;
 
     for(i=0;i<numGrid;i++)
     {

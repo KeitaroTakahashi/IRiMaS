@@ -40,6 +40,10 @@ public:
     
     void loadDrawData(IRAnalysisDataStr data);
     
+    void setVisibleArea(Rectangle<int> area);
+    
+    void setMagnitudeAmount(float val);
+    
 private:
     
     // ==================================================
@@ -54,6 +58,7 @@ private:
     
     DataAllocationManager<IRAudio>* audioData = nullptr;
     void fileImportCompleted();
+    virtual void fileImportCompletedAction() {};
     bool audioUpdated = false;
     
     void timerCallback() override
@@ -67,6 +72,8 @@ private:
     //Spectrogram
     int sp_w = 100;
     int sp_h = 1024;
+    
+    float magnitudeAmount = 1.0;
     
     // ==================================================
     //OpenGL

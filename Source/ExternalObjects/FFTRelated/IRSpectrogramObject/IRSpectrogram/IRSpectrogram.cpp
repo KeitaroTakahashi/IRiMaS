@@ -141,6 +141,8 @@ void IRSpectrogram::loadDrawData(IRAnalysisDataStr data)
     this->buffer = new float [this->sp_w * this->sp_h];
     int i, j;
     auto power = data.getData();
+    
+    float max = -9999;
     for(i = 0; i < this->sp_h; i ++)
     {
         for(j = 0; j < this->sp_w; j ++)
@@ -149,16 +151,39 @@ void IRSpectrogram::loadDrawData(IRAnalysisDataStr data)
             
             this->buffer[iw + j] = power[j][i];
             
+            if(power[j][i] > max) max = power[j][i];
+            
             //std::cout << "[" << i << "][" << j << "]" << " = " << data.getData()[j][i] << std::endl;
            
         }
     }
+  
+    for(i = 0; i < this->sp_h; i ++)
+    {
+        for(j = 0; j < this->sp_w; j ++)
+        {
+            int iw = i * this->sp_w;
+            
+            this->buffer[iw + j] /= max;
+        }
+    }
+    
     this->fragmentRefreshed = true;
     
-    std::cout << "loadDrawData complete\n";
+    std::cout << "loadDrawData complete : " << max << "\n";
     
 }
 
+void IRSpectrogram::setVisibleArea(Rectangle<int> area)
+{
+    
+}
+
+void IRSpectrogram::setMagnitudeAmount(float val)
+{
+    this->magnitudeAmount = val;
+    repaint();
+}
 // ==================================================
 
 void IRSpectrogram::mouseDown(const MouseEvent &e)
@@ -273,6 +298,8 @@ void IRSpectrogram::setUniform(OpenGLShaderProgram& program)
                        this->sp_w,
                        this->sp_h);
     
+    program.setUniform("mag", this->magnitudeAmount);
+    
     // we need to bind the texture every time.
     glBindTexture(GL_TEXTURE_2D, this->textureID);
     // pass the texture buffer to Shader
@@ -334,4 +361,7 @@ void IRSpectrogram::fileImportCompleted()
     this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
 
     this->audioUpdated = true;
+    
+    // call virtual function
+    fileImportCompletedAction();
 }

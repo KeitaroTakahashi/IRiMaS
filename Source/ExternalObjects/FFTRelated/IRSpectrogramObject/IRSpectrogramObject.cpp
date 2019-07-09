@@ -10,10 +10,11 @@
 IRSpectrogramObject::IRSpectrogramObject(Component* parent) :
 IRNodeObject(parent, "IRSpectrogram")
 {
-    this->spectrogram = std::make_shared<IRSpectrogram>(this);
-    addAndMakeVisible(this->spectrogram.get());
-    
-    childComponentManager(this->spectrogram.get());
+    this->UI = std::make_shared<IRSpectrogramWithPreference>(this);
+    addAndMakeVisible(this->UI.get());
+    this->UI->setEditMode(isEditMode());
+    this->UI->setBounds(0, 0, getWidth(), getHeight());
+    childComponentManager(this->UI.get());
 
     setSize(500,500);
 
@@ -36,8 +37,6 @@ IRNodeObject* IRSpectrogramObject::copyThis()
 IRNodeObject* IRSpectrogramObject::copyContents(IRNodeObject* object)
 {
     IRSpectrogramObject* obj = static_cast<IRSpectrogramObject*>(object);
-    
- 
     return obj;
 }
 
@@ -65,7 +64,7 @@ void IRSpectrogramObject::loadThisFromSaveData(t_json data)
 
 void IRSpectrogramObject::resized()
 {
-    this->spectrogram->setSize(getWidth(), getHeight());
+    this->UI->setBounds(0, 0, getWidth(), getHeight());
 }
 
 
@@ -110,8 +109,15 @@ void IRSpectrogramObject::mouseDownEvent(const MouseEvent& e)
 {
     std::cout << "IRSpectrogramObject Object mouse down\n";
     
-    IRNodeObject::mouseDownEvent(e);
+    //IRNodeObject::mouseDownEvent(e);
+    //change preference Window if not yet
+    IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
     
+    IRPreferenceObject* current = space->getPreferenceObj();
+        
+    if(current != this->UI->getPreference()){
+        space->setPreferenceObj(this->UI->getPreference());
+    }
 }
 
 

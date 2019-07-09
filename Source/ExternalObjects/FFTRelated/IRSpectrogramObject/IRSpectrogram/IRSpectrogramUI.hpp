@@ -1,80 +1,81 @@
 //
-//  IRAutomation.hpp
-//  InteractiveAutomation - App
+//  IRSpectrogramUI.hpp
+//  IRiMaS
 //
-//  Created by Keitaro on 02/05/2019.
+//  Created by Keitaro on 08/07/2019.
 //
 
-#ifndef IRAutomation_hpp
-#define IRAutomation_hpp
+#ifndef IRSpectrogramUI_hpp
+#define IRSpectrogramUI_hpp
 
-
-#include "IRUIFoundation.hpp"
-#include "InteractiveAutomation.hpp"
-#include "AutomationController.hpp"
+#include "IRSpectrogram.hpp"
 #include "IRViewPort.hpp"
-#include "IRFFTAnalysis.h"
+#include "IRMeasureGrid.hpp"
 
-class IRAutomationUI : public IRUIFoundation,
+
+class IRSpectrogramUI : public IRUIFoundation,
 public ChangeBroadcaster
 {
 public:
     
-    enum IRAutomationUIStatus
+    enum IRSpectrogramUIStatus
     {
         AudioFileImportCompleted,
         AudioFileChanged,
         DescriptorSelected
     };
     
-    IRAutomationUI(IRNodeObject* nodeObject);
-    ~IRAutomationUI();
+    IRSpectrogramUI(IRNodeObject* nodeObject);
+    ~IRSpectrogramUI();
     // ==================================================
     void resized() override;
     void paint(Graphics& g) override;
     // ==================================================
     
-    void demoData(int num);
-    
-    void setDescriptor(IRAnalysisDataStr& data);
-    
+    IRSpectrogramUIStatus getStatus() const { return this->status; }
+
     void openFile();
     void openFile(String path);
-        
+    
     String getFilePath() const { return this->path; }
     
-    IRAutomationUIStatus getStatus() const { return this->status; }
-    
+    // ==================================================
     virtual void fileImportCompletedAction() = 0;
-    
     DataAllocationManager<IRAudio>* getAudioData() { return this->audioData; }
     
+    // ==================================================
+
+    void setMagnitudeAmount(float val) { this->spectrogram->setMagnitudeAmount(val); }
+
+    
 private:
-    
-    IRAutomationUIStatus status;
-    
+    // ==================================================
+    //UI
+    IRSpectrogramUIStatus status;
     IRNodeObject* parent;
+
     
+    int gridSize = 30;
+    
+    IRMeasureGrid verticalGrid;
+    IRMeasureGrid horizontalGrid;
+    
+    // audio data
     void getFilePtr(File file);
     void fileImportCompleted();
-    
     DataAllocationManager<IRAudio>* audioData = nullptr;
-
-    
-    // ==================================================
-    
-    IRViewPort automationView;
-
-    void visibleAreaChanged(Rectangle<int> area);
-    
-    int previousOffsetX = 0;
-    
-    // ==================================================
+    File file;
+    String path;
+    //
+    IRViewPort spectrogramView;
     void zoomInClicked();
     void zoomOutClicked();
-    void movableClicked(IRAutomation::movableStatus status);
-    // ==================================================
+    void visibleAreaChanged(Rectangle<int> area);
 
+    int previousOffsetX = 0;
+    int xMargin = 5;
+    int yMargin = 1;
+    // ==================================================
     // setup
     bool isVerticalMovable = true;
     bool isHorizontalMovable = true;
@@ -83,53 +84,38 @@ private:
     void setMovable(bool movable, bool verticalMovable, bool horizontalMovable);
     
     // ==================================================
-    
-    std::shared_ptr<InteractiveAutomation> automation;
-    
-    float automation_width_ratio = 1.0;
-    
-    int xMargin = 5;
-    int yMargin = 1;
-    
-    int controllerWidth = 40;
-    
-    File file;
-    String path;
+    std::shared_ptr<IRSpectrogram> spectrogram;
+    float spectrogram_width_ratio = 1.0;
     
     // ==================================================
 
-    int gridSize = 30;
-    
-    IRMeasureGrid verticalGrid;
-    IRMeasureGrid horizontalGrid;
-    
     
     class ComponentForViewPort : public Component
     {
     public:
-        ComponentForViewPort(InteractiveAutomation* automation,
+        ComponentForViewPort(IRSpectrogram* spectrogram,
                              IRMeasureGrid* verticalGrid,
                              IRMeasureGrid* horizontalGrid,
                              int gridSize) : gridSize(gridSize)
         {
-            this->automation = automation;
+            this->spectrogram = spectrogram;
             this->verticalGrid = verticalGrid;
             this->horizontalGrid = horizontalGrid;
             
-            addAndMakeVisible(automation);
+            addAndMakeVisible(spectrogram);
             addAndMakeVisible(verticalGrid);
             addAndMakeVisible(horizontalGrid);
-
+            
         }
         
         ~ComponentForViewPort() {}
         
         void resized() override
         {
-            this->automation->setBounds(this->gridSize,
-                                        this->gridSize,
-                                        getWidth() - this->gridSize,
-                                        getHeight() - this->gridSize);
+            this->spectrogram->setBounds(this->gridSize,
+                                         this->gridSize,
+                                         getWidth() - this->gridSize,
+                                         getHeight() - this->gridSize);
             this->verticalGrid->setBounds(0,
                                           this->gridSize,
                                           this->gridSize,
@@ -150,7 +136,7 @@ private:
                                           getHeight() - this->gridSize);
         }
         
-        InteractiveAutomation* automation;
+        IRSpectrogram* spectrogram;
         IRMeasureGrid* verticalGrid;
         IRMeasureGrid* horizontalGrid;
         
@@ -158,10 +144,12 @@ private:
     };
     
     std::shared_ptr<ComponentForViewPort> componentForViewPort;
-    // ==================================================
 
+    // ==================================================
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRSpectrogramUI)
 
 };
 
-#endif /* IRAutomation_hpp */
+#endif /* IRSpectrogramUI_hpp */

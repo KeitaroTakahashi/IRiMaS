@@ -32,9 +32,6 @@ public:
         childComponentManager(this->UI);
         
         setSize(400, 160);
-        
-        
-
     }
     
     ~IRAutomationObject()
@@ -58,14 +55,10 @@ public:
     // ------------------------------------------------------------
     void paint(Graphics &g) override
     {
-        
+        g.fillAll(SYSTEMCOLOUR.contents);
         //auto area = getLocalBounds().reduced (2);
             
-        g.setColour (SYSTEMCOLOUR.contents);
-            //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
-        g.drawRect(getLocalBounds().toFloat(), 1.0);
-      
-        
+       
     }
     // ------------------------------------------------------------
     void resized() override
@@ -77,13 +70,10 @@ public:
     void mouseDownEvent(const MouseEvent& e) override
     {
         //change preference Window if not yet
-        
         IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
         
         IRPreferenceObject* current = space->getPreferenceObj();
-        
-        std::cout << "PreferenceOBject = " << preference << std::endl;
-        
+                
         if(current != this->UI->getPreference()){
             space->setPreferenceObj(this->UI->getPreference());
         }
