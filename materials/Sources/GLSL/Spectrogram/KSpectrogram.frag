@@ -2,7 +2,7 @@
 uniform vec2 resolution;
 uniform sampler2D buffer;
 uniform vec2 dataSize;
-
+uniform float mag;
 
 vec3 rgb2hsb( in vec3 c)
 {
@@ -93,7 +93,7 @@ void main()
                           f.x),
                       1.0);
     
-    color = vec4(hsb2rgb2(vec3(1.0 - color.r, 1.0, 1.0), st), 1.0);
+    color = vec4(hsb2rgb2(vec3((1.0 - color.r * mag), 1.0, 1.0), st), 1.0);
     
     vec4 colorTex = texture2D(buffer, st);
     gl_FragColor = color;

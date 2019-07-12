@@ -32,6 +32,7 @@ public:
                                    Colour((uint8)255, (uint8)255, (uint8)255, (uint8)255));
         this->openButton.onClick =[this] { openFile(); };
         addAndMakeVisible(this->openButton);
+
     }
     
     ~IRVideoPlayer()
@@ -47,6 +48,7 @@ public:
         this->player.setBounds(getLocalBounds());
         this->player_with_controller.setBounds(getLocalBounds());
         this->openButton.setBounds(getLocalBounds());
+        
     }
     void paint(Graphics &g) override
     {
@@ -170,7 +172,7 @@ private:
     
     // no idea how to switch Navi Controlelr on off, so that we prepare two objects, one is with and another is without.
     VideoComponent player_with_controller;
-    
+        
     Rectangle<int> videoSize;
     float aspectRatio = 0.0;
     bool isVideoLoaded = false;

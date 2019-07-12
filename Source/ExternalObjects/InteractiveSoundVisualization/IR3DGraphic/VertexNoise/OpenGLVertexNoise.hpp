@@ -222,7 +222,7 @@ private:
     int swapInterval = 1;
     
     // ==============================
-
+    TextButton test;
     // ==============================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OpenGLVertexNoise)
