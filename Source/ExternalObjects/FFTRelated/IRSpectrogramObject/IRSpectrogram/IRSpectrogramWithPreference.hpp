@@ -8,10 +8,10 @@
 #ifndef IRSpectrogramWithPreference_hpp
 #define IRSpectrogramWithPreference_hpp
 
-#include "IRSpectrogram.hpp"
+#include "IRSpectrogramUI.hpp"
 #include "IRSpectrogramObjectPreference.h"
 
-class IRSpectrogramWithPreference : public IRSpectrogram,
+class IRSpectrogramWithPreference : public IRSpectrogramUI,
 private KeAnimationComponent,
 private ChangeListener
 {

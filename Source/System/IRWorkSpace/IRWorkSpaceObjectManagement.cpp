@@ -322,6 +322,10 @@ void IRWorkSpace::openFileInspecter()
 {
     if(this->requestOpenFileInspecter != nullptr) requestOpenFileInspecter();
 }
+void IRWorkSpace::openPreferenceWindow()
+{
+    if(this->requestOpenPreferenceWindow != nullptr) requestOpenPreferenceWindow();
+}
 // ============================================================
 void IRWorkSpace::addObjectGlobal(IRObjectPtr ptr, String id)
 {

@@ -65,6 +65,8 @@ public:
     // windows
     
     void openFileInspecterWindow();
+    void openPreferenceWindow();
+
     void updateFileInspecterWindow();
     
     // ==================================================

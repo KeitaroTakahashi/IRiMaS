@@ -297,6 +297,14 @@ void IRNodeObject::callOpenFileInspecter()
     if(checker.shouldBailOut()) return;
 }
 
+void IRNodeObject::callOpenPreferenceWindow()
+{
+    Component::BailOutChecker checker(this);
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.openPreferenceWindow(); });
+    if(checker.shouldBailOut()) return;
+}
+
 void IRNodeObject::notifyNodeObjectModification()
 {
     

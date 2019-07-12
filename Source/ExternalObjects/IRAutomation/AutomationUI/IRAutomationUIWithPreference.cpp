@@ -14,9 +14,9 @@ IRAutomationUI(nodeObject)
     this->preference->getUI()->getOpenAudioUI()->setOpenAudioButtonCallback([this]{openAudioFileAction();});
     this->preference->getUI()->getOpenAudioUI()->addChangeListener(this);
 
-    
     setFps(33);
     std::cout << "IRAutomationUIWithPreference init\n";
+    
 }
 
 IRAutomationUIWithPreference::~IRAutomationUIWithPreference()

@@ -81,6 +81,7 @@ public:
     void createNewProject() override;
     void openProject() override;
     void openFileInspecter() override;
+    void openPreferenceWindow() override;
 
     // get to know when NodeObject is modified e.g. loading new file.
     void nodeObjectModifiedNotification(IRNodeObject* obj) override;
@@ -157,6 +158,7 @@ public:
     std::function<void()> requestCloseProject;
     std::function<void()> requestOpenProject;
     std::function<void()> requestOpenFileInspecter;
+    std::function<void()> requestOpenPreferenceWindow;
 
     std::function<void()> notifyEditModeChanged;
     std::function<void()> notifyLinkModeChanged;

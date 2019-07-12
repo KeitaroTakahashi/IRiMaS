@@ -28,6 +28,8 @@ IRiMaSMainComponent::~IRiMaSMainComponent()
     
     singleton<IRObjectFactory>::explicitlyDestroy(); // OK - THAT IS THE THING TO DO. THIS ULTIMATELY DESTROYS THE T_OBJECTs AND AVOIDS THE LEAK OF THE ENBEDDED IMAGES.
     
+    // finalize singlton
+    SingletonFinalizer::finalize();
     
     std::cout << "end call destructor IRiMaSMainComponent" << std::endl;
 }

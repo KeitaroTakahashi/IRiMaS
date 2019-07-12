@@ -7,7 +7,7 @@
 
 #include "IRSpectrogramWithPreference.hpp"
 
-IRSpectrogramWithPreference::IRSpectrogramWithPreference(IRNodeObject* nodeObject) : IRSpectrogram(nodeObject)
+IRSpectrogramWithPreference::IRSpectrogramWithPreference(IRNodeObject* nodeObject) : IRSpectrogramUI(nodeObject)
 {
     this->preference = std::make_shared<IRSpectrogramObjectPreference>("Spectrogram Preference", Rectangle<int>(400,720));
     

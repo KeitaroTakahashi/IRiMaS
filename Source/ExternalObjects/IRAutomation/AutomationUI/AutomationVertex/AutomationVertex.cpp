@@ -12,6 +12,7 @@ using namespace IRAutomation;
 vertex::vertex(Component* parent)
 {
     
+    setOpaque(false);
     // set how this vertex can be moved by users inputs
     // no move in horizontal way
     setMovable(true, true, false);

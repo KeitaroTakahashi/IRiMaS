@@ -99,6 +99,12 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
         return true;
     }
     
+    else if(key.getTextDescription() == "command + 9")
+    {
+        this->nodeObject->callOpenPreferenceWindow();
+        return true;
+    }
+    
     // user defined key commands
     this->pressedKeyCode = key.getKeyCode();
     this->pressedKeyText = key.getTextDescription();

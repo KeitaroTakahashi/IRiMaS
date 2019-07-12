@@ -15,10 +15,10 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "void juce::EdgeTable::iterate&lt;juce::RenderingHelpers::EdgeTableFillers::TransformedImageFill&lt;juce::PixelRGB, juce::PixelRGB, true&gt; &gt;(juce::RenderingHelpers::EdgeTableFillers::TransformedImageFill&lt;juce::PixelRGB, juce::PixelRGB, true&gt;&amp;) const"
+                  symbolName = "void juce::EdgeTable::iterate&lt;juce::RenderingHelpers::EdgeTableFillers::TransformedImageFill&lt;juce::PixelRGB, juce::PixelARGB, true&gt; &gt;(juce::RenderingHelpers::EdgeTableFillers::TransformedImageFill&lt;juce::PixelRGB, juce::PixelARGB, true&gt;&amp;) const"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "2706">
+                  offsetFromSymbolStart = "1266">
                </Location>
             </Locations>
          </BreakpointContent>

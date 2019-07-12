@@ -56,11 +56,13 @@ void InteractiveAutomation::paint(Graphics& g)
     g.setColour(SYSTEMCOLOUR.fundamental);
     g.drawRect(0, 0, getWidth(), getHeight(), 1);
     
+  
     if(isBezierShow()) paintBezierLines(g);
     else drawLinesBetweenVerteces(g);
     //drawVerteces(g);
     
     if(isCommentShow()) paintComment(g);
+  
     
 }
 
@@ -179,22 +181,38 @@ void InteractiveAutomation::setVisibleArea(Rectangle<int> area) {
 
 void InteractiveAutomation::reCalcPos()
 {
-    
+    std::cout << "reCalcPos\n";
     float boundsRatio_h;
     float boundsRatio_w;
-    if(this->previousBounds.getHeight() > 0.0 && getLocalBounds().getHeight() > 0.0) boundsRatio_h = (float)getLocalBounds().getHeight() / (float)this->previousBounds.getHeight();
+    
+    int v_size = this->verteces.size();
+    int w = getWidth();
+    int h = getHeight();
+    
+    // if there is no verteces, then add two verteces with 0 values.
+    if(v_size == 0)
+    {
+        createVertex(Point<float>(0, h), false);
+        createVertex(Point<float>(w, h), false);
+        
+        return;
+    }
+    int pw = this->previousBounds.getWidth();
+    int ph = this->previousBounds.getHeight();
+    
+    if(ph > 0.0 && h > 0.0) boundsRatio_h = (float)h / (float)ph;
     else boundsRatio_h = 1.0;
     
-    if(this->previousBounds.getWidth() > 0.0 && getLocalBounds().getWidth() > 0.0) boundsRatio_w = (float)getLocalBounds().getWidth() / (float)this->previousBounds.getWidth();
+    if(pw > 0.0 && pw > 0.0) boundsRatio_w = (float)pw / (float)pw;
     else boundsRatio_w = 1.0;
     
-    float increment = (float) getWidth() / (float) this->verteces.size();
+    float increment = (float) w / (float) v_size;
     // draw point on each Vertex if increment is larger than 1 pixel.
     bool isPoint = true;
     if(increment < 1.0) isPoint = false;
     
     
-    for(int i = 0; i < this->verteces.size(); i ++)
+    for(int i = 0; i < v_size; i ++)
     {
         float y = (this->verteces[i]->getPosition().getY()) * boundsRatio_h;
         float x = (this->verteces[i]->getPosition().getX()) * boundsRatio_w;
@@ -207,12 +225,7 @@ void InteractiveAutomation::reCalcPos()
         else this->verteces[i]->setPoint(false);
     }
     
-    // if there is no verteces, then add two verteces with 0 values.
-    if(this->verteces.size() == 0)
-    {
-        createVertex(Point<float>(0,getHeight()), false);
-        createVertex(Point<float>(getWidth(),getHeight()), false);
-    }
+    
     
     repaint();
 }
@@ -285,8 +298,7 @@ void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected, bool
     obj->addMouseListener(this, true);
     addAndMakeVisible(obj);
     this->verteces.add( obj );
-    
-   
+
     // sort
     if(shouldSort)
     {
@@ -301,9 +313,6 @@ void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected, bool
     {
         vertex* current = this->verteces[index];
         vertex* previous = this->verteces[index - 1];
-        
-        //vertex* b1 = new vertex (this);
-        //vertex* b2 = new vertex (this);
         
         std::shared_ptr<vertex> b1 = std::make_shared<vertex>(this);
         std::shared_ptr<vertex> b2 = std::make_shared<vertex>(this);
@@ -405,7 +414,7 @@ void InteractiveAutomation::demoData(int num)
     float increment = (float) getWidth() / (float) num;
     initAutomation();
     
-    std::cout << "vertex num = " << num << std::endl;
+    //std::cout << "vertex num = " << num << std::endl;
     
     for(int i = 0; i < num ; i++)
     {
@@ -448,7 +457,7 @@ void InteractiveAutomation::setDescriptor(IRAnalysisDataStr& data)
     {
         float value = height - (buffer[i] * height);
         
-        std::cout << i << " : " << buffer[i] << " , " << buffer2[i] <<std::endl;
+        //std::cout << i << " : " << buffer[i] << " , " << buffer2[i] <<std::endl;
         //float value = (rand() % 1000) / 1000.0 * getHeight();
 
         //std::cout << "value = " << value << std::endl;
@@ -459,7 +468,7 @@ void InteractiveAutomation::setDescriptor(IRAnalysisDataStr& data)
         if(value > this->MaxVertexValue) this->MaxVertexValue = value;
     }
     
-    std::cout << "setDescriptor done \n";
+    //std::cout << "setDescriptor done \n";
 
     deselectAllVerteces();
     

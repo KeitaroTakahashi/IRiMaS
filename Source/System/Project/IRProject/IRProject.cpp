@@ -143,6 +143,8 @@ void IRProject::createNewWorkspace()
     space->requestOpenProject = [this] { callOpenProjectAction(); };
     space->requestCloseProject = [this] { callCloseProjectAction(); };
     space->requestOpenFileInspecter = [this] { openFileInspecterWindow(); };
+    space->requestOpenPreferenceWindow = [this] { openPreferenceWindow(); };
+
     space->notifyEditModeChanged = [this] { notifyEditModeChange(); };
     space->notifyLinkModeChanged = [this] { notifyLinkModeChange(); };
 
@@ -605,6 +607,18 @@ void IRProject::openFileInspecterWindow()
     }
     this->fileInspecterWindow->show();
 }
+
+void IRProject::openPreferenceWindow()
+{
+    if(this->preferenceWindow == nullptr)
+    {
+        this->preferenceWindow = new PreferenceWindow("");
+    }
+    
+    this->preferenceWindow->setVisible(true);
+    this->preferenceWindow->toFront(true);
+}
+
 
 void IRProject::updateFileInspecterWindow()
 {

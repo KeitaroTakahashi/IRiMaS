@@ -37,7 +37,6 @@ horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
 
     this->automationView.visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
     
-    
    
     
     this->parent = nodeObject;

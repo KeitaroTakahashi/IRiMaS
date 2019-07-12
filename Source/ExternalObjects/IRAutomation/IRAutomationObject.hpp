@@ -30,7 +30,8 @@ public:
         this->UI->addChangeListener(this);
         addAndMakeVisible(this->UI);
         childComponentManager(this->UI);
-        
+        //this->UI->demoData(10000);
+
         setSize(400, 160);
     }
     

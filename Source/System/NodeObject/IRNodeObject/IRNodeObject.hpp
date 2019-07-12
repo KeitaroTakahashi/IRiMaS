@@ -72,7 +72,8 @@ public:
         virtual void createNewProject() {};
         
         virtual void openFileInspecter() {};
-        
+        virtual void openPreferenceWindow() {};
+
         // notification to IRWorkspace
         virtual void nodeObjectModifiedNotification(IRNodeObject* obj) {};
         
@@ -151,6 +152,8 @@ public:
     void callOpenProject();
     
     void callOpenFileInspecter();
+    void callOpenPreferenceWindow();
+
     
     void notifyNodeObjectModification();
     
