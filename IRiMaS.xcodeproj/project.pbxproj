@@ -1450,6 +1450,7 @@
 		821A5E6F212B006400BF593D /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				8289A0B222DF4F0E0088E156 /* IRDescriptors */,
 				82D8B1162298117F00940CD1 /* IRDescriptor */,
 				821A5A912249290300F11668 /* IRAudio */,
 				8210D9D7213D4B560042F646 /* DSP */,
@@ -1858,6 +1859,13 @@
 				8289A09A22D8C36C0088E156 /* IRViewUI.hpp */,
 			);
 			path = IRViewUI;
+			sourceTree = "<group>";
+		};
+		8289A0B222DF4F0E0088E156 /* IRDescriptors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = IRDescriptors;
 			sourceTree = "<group>";
 		};
 		829D036C22297641001FDE1D /* Visual */ = {

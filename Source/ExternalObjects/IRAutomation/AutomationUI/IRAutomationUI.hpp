@@ -12,7 +12,8 @@
 #include "IRUIFoundation.hpp"
 #include "InteractiveAutomation.hpp"
 #include "AutomationController.hpp"
-#include "IRViewPort.hpp"
+#include "IRViewUI.hpp"
+
 #include "IRFFTAnalysis.h"
 
 class IRAutomationUI : public IRUIFoundation,
@@ -63,7 +64,7 @@ private:
     
     // ==================================================
     
-    IRViewPort automationView;
+    std::shared_ptr<IRViewUI> automationView;
 
     void visibleAreaChanged(Rectangle<int> area);
     

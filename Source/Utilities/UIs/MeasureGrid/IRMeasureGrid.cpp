@@ -65,7 +65,7 @@ void IRMeasureGrid::createGrids()
     float xIncrement = (range / this->smallGridInterval);
     
     
-    int numGrid;
+    int numGrid = 0;
     if(this->type == IRGridStr::IRMeasureGridType::VERTICAL)
         numGrid = floor(range / this->smallGridInterval);
     else if(this->type == IRGridStr::IRMeasureGridType::HORIZONTAL)

@@ -32,3 +32,4 @@ void IRViewPort::viewedComponentChanged (Component *newComponent)
     if(this->viewedComponentChangedCallback != nullptr)
         this->viewedComponentChangedCallback();
 }
+

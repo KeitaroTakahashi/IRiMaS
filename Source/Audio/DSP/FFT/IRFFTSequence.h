@@ -36,6 +36,7 @@ public:
     void FFT()
     {
         this->complexResult.clear();
+        this->complexResult.reserve(getNumFrame());
         fftForwardSetup();
         for(int i=0; i<getNumFrame(); i++)
         {
@@ -63,20 +64,24 @@ public:
         this->maxPower.clear();
         this->maxPower.reserve(getNumFrame());
         this->power.clear();
+        this->power = std::vector<std::vector<float>>(getNumFrame(),
+                                                      std::vector<float>(this->ffthalfsize));
+        /*
         this->phase.clear();
+        this->phase = std::vector<std::vector<float>>(getNumFrame(),
+                                                      std::vector<float>(this->ffthalfsize));
+         */
+        
         std::cout << "FFT cartopol getNumFrame = " << getNumFrame() << std::endl;
+        float max = 0;
         for(i=0;i<getNumFrame();i++)
         {
             fftw_complex* c = this->complexResult[i];
-            std::vector<float>buf;
-            buf.reserve(this->ffthalfsize);
-            float max = 0;
+            max = 0;
             for(j=0;j<this->ffthalfsize;j++){
-                buf.push_back(sqrt(c[j][0] * c[j][0] + c[j][1] * c[j][1]));
-                if(buf[j] > max) max = buf[j];
+                this->power[i][j] = (sqrt(c[j][0] * c[j][0] + c[j][1] * c[j][1]));
+                if(this->power[i][j] > max) max = this->power[i][j];
             }
-            
-            this->power.push_back(buf);
             this->maxPower.push_back(max);
         }
     }

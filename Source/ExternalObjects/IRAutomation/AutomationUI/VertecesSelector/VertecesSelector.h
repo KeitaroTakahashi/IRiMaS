@@ -14,12 +14,12 @@
 
 using namespace IRAutomation;
 
-class VertecesSelector : public IRObjectSelection<vertex* >
+class VertecesSelector : public IRObjectSelection<IRAutomationVertexComponent* >
 {
     
 public:
     
-    VertecesSelector(Array<vertex* > *list, Component* parent)
+    VertecesSelector(Array<IRAutomationVertexComponent* > *list, Component* parent)
     {
         this->objectList = list;
         this->parent = parent;
@@ -30,7 +30,7 @@ public:
     {
         Point<int> pos = e.getEventRelativeTo(this->parent).getPosition();
         
-        vertex* nodeObj = nullptr;
+        IRAutomationVertexComponent* nodeObj = nullptr;
         for(auto obj : *this->objectList)
         {
             bool flag = obj->hitTest(Rectangle<float> (pos.getX(),
@@ -151,7 +151,7 @@ public:
             }
         }
     }
-    bool removeSelectedObject(vertex* removeObj)
+    bool removeSelectedObject(IRAutomationVertexComponent* removeObj)
     {
         int index = this->selectedObjectList.indexOf(removeObj);
         if (index >= 0)
@@ -166,7 +166,7 @@ public:
     {
         for (auto item : *this->objectList)
         {
-            vertex* obj = static_cast<vertex*>(item);
+            IRAutomationVertexComponent* obj = static_cast<IRAutomationVertexComponent*>(item);
             
             if (area.intersects(obj->getBounds().toNearestInt()))
             {
@@ -184,7 +184,7 @@ public:
         addSelectedObjects();
     }
     
-    Array<vertex* > getSelectedObjectList() const
+    Array<IRAutomationVertexComponent* > getSelectedObjectList() const
     {
         return this->selectedObjectList;
     }
@@ -209,8 +209,8 @@ private:
         
         return a;
     }
-    Array<vertex* > selectedObjectList;
-    Array<vertex* > *objectList;
+    Array<IRAutomationVertexComponent* > selectedObjectList;
+    Array<IRAutomationVertexComponent* > *objectList;
     bool multiSelectionFlag = false;
     bool isVerticalMovable = true;
     bool isHorizontalMovable = true;

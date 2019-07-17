@@ -76,7 +76,7 @@ public:
     void reCalcPos();
     
     // --------------------------------------------------
-    Array<vertex* > getVerteces() { return this->verteces; }
+    Array<IRAutomationVertexComponent* > getVerteces() { return this->verteces; }
     
     
     // --------------------------------------------------
@@ -114,13 +114,14 @@ public:
     
     // ==================================================
     
-    
+    void doReCalcPos() { this->isCalcPosFlag = true; }
+    void reCalcPosDone() { this->isCalcPosFlag = false; }
 private:
     
     class ascendingSorter
     {
     public:
-        static int compareElements (const vertex* first, const vertex* second)
+        static int compareElements (const IRAutomationVertexComponent* first, const IRAutomationVertexComponent* second)
         {
             if (first->getX() < second->getX())
                 return -1;
@@ -138,9 +139,11 @@ private:
     float automation_width_ratio = 1.0;
     float automation_height_ratio = 1.0;
     
-    Array<vertex* > dataBuffer;
-    Array<vertex* > verteces;
-    Array<vertex* > selectedVerteces;
+    void makeVertexBuffer();
+    
+    std::vector<IRAutomationVertexPos* > vertexBuffer;
+    Array<IRAutomationVertexComponent* > verteces;
+    Array<IRAutomationVertexComponent* > selectedVerteces;
     
     
     float MaxVertexValue = -999999;
@@ -179,6 +182,7 @@ private:
     // ==================================================
     
     
+    bool isCalcPosFlag = true;
 
     // ==================================================
 

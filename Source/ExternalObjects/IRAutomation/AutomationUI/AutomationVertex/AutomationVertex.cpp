@@ -9,7 +9,7 @@
 
 using namespace IRAutomation;
 
-vertex::vertex(Component* parent)
+IRAutomationVertexComponent::IRAutomationVertexComponent(Component* parent)
 {
     
     setOpaque(false);
@@ -18,12 +18,12 @@ vertex::vertex(Component* parent)
     setMovable(true, true, false);
 }
 
-vertex::~vertex()
+IRAutomationVertexComponent::~IRAutomationVertexComponent()
 {
     
 }
 
-void vertex::resized()
+void IRAutomationVertexComponent::resized()
 {
     
     this->constrainer.setMinimumOnscreenAmounts(getHeight(),
@@ -37,7 +37,7 @@ void vertex::resized()
     
 }
 
-void vertex::parentResized()
+void IRAutomationVertexComponent::parentResized()
 {
     auto newBounds = getBoundsInParent();
     this->constrainer.checkBounds(newBounds, getBoundsInParent(), newBounds, false, false, false, false);
@@ -50,7 +50,7 @@ void vertex::parentResized()
 
 // ==================================================
 
-void vertex::paint(Graphics& g)
+void IRAutomationVertexComponent::paint(Graphics& g)
 {
     if(this->isPointFlag)
     {
@@ -63,34 +63,34 @@ void vertex::paint(Graphics& g)
 
 // ==================================================
 // interaction
-void vertex::mouseDown(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseDown(const MouseEvent& e)
 {
     //mouseDownNodeEvent(e);
 }
 
-void vertex::mouseMove(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseMove(const MouseEvent& e)
 {
     //mouseUpNodeEvent(e);
 }
 
-void vertex::mouseUp(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseUp(const MouseEvent& e)
 {
     //mouseUpNodeEvent(e);
 }
 
-void vertex::mouseDoubleClick(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseDoubleClick(const MouseEvent& e)
 {
    // mouseDoubleClickNodeEvent(e);
 }
 
-void vertex::mouseDrag(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseDrag(const MouseEvent& e)
 {
     //mouseDragNodeEvent(e); // defines fundamental behavior
 }
 
 // ==================================================
 
-void vertex::mouseDownNodeEvent(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseDownNodeEvent(const MouseEvent& e)
 {
 
     if (this->isMovable())
@@ -103,69 +103,69 @@ void vertex::mouseDownNodeEvent(const MouseEvent& e)
     //toFront(true);
 }
 
-void vertex::mouseMoveNodeEvent(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseMoveNodeEvent(const MouseEvent& e)
 {
     
     //std::cout << "mouse moving : position = " << e.getPosition().x << ", " << e.getPosition().y << std::endl;
     //std::cout << "mouse moving : down position = " << e.getMouseDownX() << ", " << e.getMouseDownY() << std::endl;
 }
 
-void vertex::mouseDoubleClickNodeEvent(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseDoubleClickNodeEvent(const MouseEvent& e)
 {
     
 }
 
-void vertex::mouseDragNodeEvent(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseDragNodeEvent(const MouseEvent& e)
 {
     if (this->isMovable())
     {
         moveThisComponentEvent(e);
     }
 }
-void vertex::mouseUpNodeEvent(const MouseEvent& e)
+void IRAutomationVertexComponent::mouseUpNodeEvent(const MouseEvent& e)
 {
     recoverEventStatus();
     
 }
 
-void vertex::recoverEventStatus()
+void IRAutomationVertexComponent::recoverEventStatus()
 {
     if(this->isMoving()) this->movingFlag = false;
 }
 
 // ==================================================
 
-bool vertex::isMovable() const
+bool IRAutomationVertexComponent::isMovable() const
 {
     return this->isMovableFlag;
 }
 
 
-bool vertex::isVerticalMovable() const
+bool IRAutomationVertexComponent::isVerticalMovable() const
 {
     return this->isVerticalMovableFlag;
 }
 
 
-bool vertex::isHorizontalMovable() const
+bool IRAutomationVertexComponent::isHorizontalMovable() const
 {
     return this->isHorizontalMovableFlag;
 }
 
 
-bool vertex::isMoving() const
+bool IRAutomationVertexComponent::isMoving() const
 {
     return this->movingFlag;
 }
 
 
-bool vertex::isDragging() const
+bool IRAutomationVertexComponent::isDragging() const
 {
     return this->draggingFlag;
 }
 
 // all setter
-void vertex::setMovable(bool movable, bool verticalMovable, bool horizontalMovable)
+void IRAutomationVertexComponent::setMovable(bool movable, bool verticalMovable, bool horizontalMovable)
 {
     this->isMovableFlag = movable;
     this->isVerticalMovableFlag = verticalMovable;
@@ -173,13 +173,13 @@ void vertex::setMovable(bool movable, bool verticalMovable, bool horizontalMovab
 }
 
 
-void vertex::moveThisComponentEvent(const MouseEvent& e)
+void IRAutomationVertexComponent::moveThisComponentEvent(const MouseEvent& e)
 {
     if(isSelected()) this->dragger.dragComponent(this, e, &constrainer);
 }
 // ==================================================
 
-bool vertex::hitTest(Rectangle<float> area) const
+bool IRAutomationVertexComponent::hitTest(Rectangle<float> area) const
 {
     float x = getX() + getWidth() / 2.0;
     float y = getY() + getHeight() / 2.0;
@@ -195,7 +195,7 @@ bool vertex::hitTest(Rectangle<float> area) const
 
 // ==================================================
 
-void vertex::setSelected(bool flag)
+void IRAutomationVertexComponent::setSelected(bool flag)
 {
     if(flag){
         this->condition = uiSelected;
@@ -211,26 +211,26 @@ void vertex::setSelected(bool flag)
         setCentrePosition(c);
     }
 }
-bool vertex::isSelected() { if(this->condition == uiSelected) return true; else return false;}
+bool IRAutomationVertexComponent::isSelected() { if(this->condition == uiSelected) return true; else return false;}
 
-void vertex::setMouseDownPos(Point<int> pos) { this->mouseDownPos = pos; }
-Point<int> vertex::getMouseDownPos() const { return this->mouseDownPos; }
+void IRAutomationVertexComponent::setMouseDownPos(Point<int> pos) { this->mouseDownPos = pos; }
+Point<int> IRAutomationVertexComponent::getMouseDownPos() const { return this->mouseDownPos; }
 
 // ==================================================
 
-void vertex::setPosition(Point<float>pos)
+void IRAutomationVertexComponent::setPosition(Point<float>pos)
 {
     this->position = pos;
     setCentrePosition(pos.roundToInt());
 }
 
-void vertex::setPosition(Point<int>pos)
+void IRAutomationVertexComponent::setPosition(Point<int>pos)
 {
     this->position = pos.toFloat();
     setCentrePosition(pos);
 }
 
-void vertex::setPositionEx(Point<float>pos)
+void IRAutomationVertexComponent::setPositionEx(Point<float>pos)
 {
     this->position = pos;
     setTopLeftPosition(pos.roundToInt());
@@ -238,7 +238,7 @@ void vertex::setPositionEx(Point<float>pos)
 
 
 
-Point<float> vertex::getPosition()
+Point<float> IRAutomationVertexComponent::getPosition()
 {
     return this->position;
 }

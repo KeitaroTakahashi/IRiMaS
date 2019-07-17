@@ -12,7 +12,11 @@ verticalGrid(IRGridStr::IRMeasureGridType::VERTICAL),
 horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
 {
     this->automation = std::make_shared<InteractiveAutomation>(nodeObject);
-    addAndMakeVisible(&this->automationView);
+    
+    this->automationView = std::make_shared<IRViewUI>(this->automation.get(),
+                                                      0, 40,
+                                                      0, 40);
+    addAndMakeVisible(this->automationView.get());
     
     this->automation->zoomInClickedCallback = [this]{ zoomInClicked(); };
     this->automation->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
@@ -24,18 +28,18 @@ horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
     this->horizontalGrid.setRange(0, 40);
     this->horizontalGrid.addMouseListener(this, false);
 
-    
+    /*
     this->componentForViewPort = std::make_shared<ComponentForViewPort>(this->automation.get(),
                                                                         &this->verticalGrid,
                                                                         &this->horizontalGrid,
                                                                         this->gridSize);
+     */
     
     
     // IRViewPort
-    //this->automationView.setViewedComponent(this->automation.get());
-    this->automationView.setViewedComponent(this->componentForViewPort.get());
+    //this->automationView->setViewedComponent(this->componentForViewPort.get());
 
-    this->automationView.visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
+    this->automationView->visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
     
    
     
@@ -70,16 +74,20 @@ void IRAutomationUI::resized()
     
     int automationMarginY = 20;
     
-    this->automationView.setBounds(x, y, w, h);
-    this->automationView.setViewPosition(this->previousOffsetX, 0);
-    
+    this->automationView->setBounds(x, y, w, h);
+    this->automationView->setViewPosition(this->previousOffsetX, 0);
+    this->automationView->setComponentBounds(0,
+                                             0,
+                                             w * this->automation_width_ratio,
+                                             h - automationMarginY);
    
-   
     
+    /*
     this->componentForViewPort->setBounds(0,
                                           0,
                                           w * this->automation_width_ratio,
                                           h - automationMarginY);
+     */
    
     
    
@@ -132,7 +140,7 @@ void IRAutomationUI::movableClicked(IRAutomation::movableStatus status)
 void IRAutomationUI::setMovable(bool movable, bool verticalMovable, bool horizontalMovable)
 {
     
-    Array<vertex*> vs = this->automation->getVerteces();
+    Array<IRAutomationVertexComponent*> vs = this->automation->getVerteces();
     
     for(auto v : vs)
     {
@@ -148,7 +156,8 @@ void IRAutomationUI::setMovable(bool movable, bool verticalMovable, bool horizon
 void IRAutomationUI::visibleAreaChanged(Rectangle<int> area)
 {
     this->automation->setVisibleArea(area);
-    this->componentForViewPort->setVisibleArea(area);
+    //this->componentForViewPort->setVisibleArea(area);
+    this->automationView->setVisibleArea(area);
     
     this->previousOffsetX = area.getX();
 }

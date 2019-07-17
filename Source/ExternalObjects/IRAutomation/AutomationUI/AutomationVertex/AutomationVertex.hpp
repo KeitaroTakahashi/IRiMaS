@@ -34,15 +34,43 @@ namespace IRAutomation {
         BEZIER
     };
     
+    struct IRAutomationVertexPos
+    {
+        float x;
+        float y;
+        
+        Point<float> pos;
+        
+        uiCondition condition = uiOrdinary;
+        
+        IRAutomationVertexPos()
+        {
+            x = 0; y = 0;
+        }
+        
+        IRAutomationVertexPos(float x, float y, uiCondition condition = uiOrdinary)
+        {
+            this->x = x; this->y = y; this->condition = condition;
+        }
+        
+        IRAutomationVertexPos(float x, float y, Point<float> pos, uiCondition condition = uiOrdinary)
+        {
+            this->x = x; this->y = y;
+            this->pos = pos; this->condition = condition;
+        }
+        
+        void setPos(Point<float>pos) { this->pos = pos; }
+    };
     
-    class vertex : public Component
+    
+    class IRAutomationVertexComponent : public Component
     {
         
     public:
         // --------------------------------------------------
         
-        vertex(Component* parent);
-        ~vertex();
+        IRAutomationVertexComponent(Component* parent);
+        ~IRAutomationVertexComponent();
         
         // --------------------------------------------------
         
@@ -83,7 +111,7 @@ namespace IRAutomation {
         
         // --------------------------------------------------
         // operator for sorting vertex
-        bool operator < (const vertex& rhs) const {
+        bool operator < (const IRAutomationVertexComponent& rhs) const {
             return getX() < rhs.getX();
         }
         // utility
@@ -120,8 +148,8 @@ namespace IRAutomation {
         float getBezierRatio() const { return this->bezierRatio; }
         // --------------------------------------------------
         
-        void calcBezier(vertex* previous);
-        void setBezier(vertex* a, vertex* b)
+        void calcBezier(IRAutomationVertexComponent* previous);
+        void setBezier(IRAutomationVertexComponent* a, IRAutomationVertexComponent* b)
         {
             this->bezier1 = a;
             this->bezier2 = b;
@@ -153,8 +181,8 @@ namespace IRAutomation {
         
         // --------------------------------------------------
         
-        vertex* bezier1 = nullptr;
-        vertex* bezier2 = nullptr;
+        IRAutomationVertexComponent* bezier1 = nullptr;
+        IRAutomationVertexComponent* bezier2 = nullptr;
         // in case this object is used for bezier points.
         float bezierRatio = 0.5;
         // --------------------------------------------------

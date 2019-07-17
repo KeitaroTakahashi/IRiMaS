@@ -95,6 +95,7 @@ bool IRImageLoader::open(String pathToOpen)
     }
     
     sendChangeMessage();
+    return true;
 }
 
 

@@ -10,12 +10,13 @@
 
 #include "IRiMaSHeader.h"
 #include "IRUIFoundation.hpp"
+#include "IRViewPort.hpp"
 #include "IRMeasureGrid.hpp"
-
-class IRViewUI : public Component
+#include "InteractiveAutomation.hpp"
+class IRViewUI : public IRViewPort
 {
 public:
-    IRViewUI(Component* main,
+    IRViewUI(InteractiveAutomation* main,
              float vmin, float vmax,
              float hmin, float hmax);
     ~IRViewUI();
@@ -24,19 +25,28 @@ public:
     virtual void zoomInClicked() {};
     virtual void zoomOutClicked() {};
     // ==================================================
-
+    void setVisibleArea(Rectangle<int> area);
+    void setComponentBounds(int x, int y, int w, int h);
+    
+    Point<float> getDummyRatio() const   { return this->viewPort->dummyRatio; }
+    int getMaxViewWidth() const          { return this->viewPort->MaxViewWidth; }
+    int getMaxViewHeight() const         { return this->viewPort->MaxViewHeight; }
+    int getDummyWidth() const            { return this->viewPort->dummyWidth; }
+    int getDummyHeight() const           { return this->viewPort->dummyHeight; }
+    
 private:
     // ==================================================
 
     int gridSize = 30;
     IRMeasureGrid verticalGrid;
     IRMeasureGrid horizontalGrid;
+    
     // ==================================================
 
     class Component4ViewPort : public Component
     {
     public:
-          Component4ViewPort(Component* main,
+          Component4ViewPort(InteractiveAutomation* main,
                              IRMeasureGrid* vertical,
                              IRMeasureGrid* horizontal,
                              int gridSize) :
@@ -48,9 +58,28 @@ private:
             addAndMakeVisible(main);
             addAndMakeVisible(vertical);
             addAndMakeVisible(horizontal);
+            
         }
         
         ~Component4ViewPort() {}
+        
+        void setThisBounds(int x, int y, int w, int h)
+        {
+            int width = w;
+            if(width > this->MaxViewWidth) width = this->MaxViewWidth;
+            int height = h;
+            if(height > this->MaxViewHeight) height = this->MaxViewHeight;
+
+            this->dummyWidth = w;
+            this->dummyHeight = h;
+            
+            this->dummyRatio = Point<float>((float)w / (float)width,
+                                            (float)h / (float)height);
+            
+            
+            setBounds(x,y,width,height);
+        }
+        
         
         void resized() override
         {
@@ -66,6 +95,10 @@ private:
                                         0,
                                         getWidth() - this->gridSize,
                                         this->gridSize);
+            
+            this->vertical->createGrids();
+            this->horizontal->createGrids();
+
         }
         
         void setVisibleArea(Rectangle<int> area)
@@ -76,16 +109,27 @@ private:
                                       getHeight() - this->gridSize);
         }
         
+        // we use dummy size as it is very expensive if you use millions size of the view...
+        Point<float> dummyRatio;
+        const int MaxViewWidth = 10000;
+        const int MaxViewHeight = 10000;
+        int dummyWidth = 0;
+        int dummyHeight = 0;
+        
+        void setDummyWidth(int w)    { this->dummyWidth = w; }
+        void setDummyHeight(int h)   { this->dummyHeight = h; }
+        
     private:
-        Component* main;
+        InteractiveAutomation* main;
         IRMeasureGrid* vertical;
         IRMeasureGrid* horizontal;
-        
+
         int gridSize;
-        
     };
     
     std::shared_ptr<Component4ViewPort> viewPort;
+    
+    
     
     // ==================================================
     // ==================================================

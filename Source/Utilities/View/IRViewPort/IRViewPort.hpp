@@ -16,12 +16,21 @@ class IRViewPort : public Viewport
 public:
     IRViewPort();
     ~IRViewPort();
-    
+    // ==================================================
+
     std::function<void(Rectangle<int>)> visibleAreaChangedCallback;
     std::function<void()> viewedComponentChangedCallback;
     
+   
+
 private:
-    
+   
+    // ==================================================
+
+    // ==================================================
+
+    // ==================================================
+
     
     void visibleAreaChanged (const Rectangle< int > &newVisibleArea) override;
     void viewedComponentChanged (Component *newComponent) override;
