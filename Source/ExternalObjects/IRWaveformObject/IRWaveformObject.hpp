@@ -3,7 +3,7 @@
 #define IRWaveformObject_hpp
 
 #include "IRNodeObject.hpp"
-#include "IRWaveformObjectUI.hpp"
+#include "IRWaveformObjectUI2.hpp"
 #include "IRObjectSelection.hpp"
 
 class IRWaveformObject : public IRNodeObject,
@@ -46,7 +46,7 @@ public:
         return true;
     }*/
 
-    IRWaveformObjectUI* waveform;
+    IRWaveformObjectUI2* waveform;
 
     
 private:

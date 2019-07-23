@@ -207,7 +207,7 @@ private:
     int hopsize;
     int nframe;
     
-    FFTDescriptor type = FFTDescriptor::NONE;
+    FFTDescriptor type = FFTDescriptor::FFT_NONE;
     
     float min, max;
     // this data will be displayed on the object and can be manipulated

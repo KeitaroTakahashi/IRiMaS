@@ -7,9 +7,7 @@
 
 #include "IRAutomationUI.hpp"
 
-IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeObject),
-verticalGrid(IRGridStr::IRMeasureGridType::VERTICAL),
-horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
+IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeObject)
 {
     this->automation = std::make_shared<InteractiveAutomation>(nodeObject);
     
@@ -22,26 +20,7 @@ horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
     this->automation->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
     this->automation->movableClickedCallback = [this](IRAutomation::movableStatus status){ movableClicked(status); };
     
-    this->verticalGrid.setRange(0, 40);
-    this->verticalGrid.addMouseListener(this, false);
-    
-    this->horizontalGrid.setRange(0, 40);
-    this->horizontalGrid.addMouseListener(this, false);
-
-    /*
-    this->componentForViewPort = std::make_shared<ComponentForViewPort>(this->automation.get(),
-                                                                        &this->verticalGrid,
-                                                                        &this->horizontalGrid,
-                                                                        this->gridSize);
-     */
-    
-    
-    // IRViewPort
-    //this->automationView->setViewedComponent(this->componentForViewPort.get());
-
     this->automationView->visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
-    
-   
     
     this->parent = nodeObject;
 }
@@ -72,7 +51,7 @@ void IRAutomationUI::resized()
     int w = getWidth() - this->xMargin*2;
     int h = getHeight() - this->yMargin*2;
     
-    int automationMarginY = 20;
+    int automationMarginY = 10;
     
     this->automationView->setBounds(x, y, w, h);
     this->automationView->setViewPosition(this->previousOffsetX, 0);
@@ -101,7 +80,6 @@ void IRAutomationUI::zoomInClicked()
     this->automation_width_ratio *= 2;
     resized();
     this->automation->reCalcPos();
-    this->verticalGrid.createGrids();
 }
 
 void IRAutomationUI::zoomOutClicked()
@@ -109,7 +87,6 @@ void IRAutomationUI::zoomOutClicked()
     this->automation_width_ratio /= 2;
     resized();
     this->automation->reCalcPos();
-    this->verticalGrid.createGrids();
     
 }
 
@@ -171,7 +148,7 @@ void IRAutomationUI::demoData(int num)
     //this->controller->setMovableStatus(IRAutomation::movableStatus::VERTICALMOVABLE);
 }
 
-void IRAutomationUI::setDescriptor(IRAnalysisDataStr& data)
+void IRAutomationUI::setDescriptor(IRDescriptorStr* data)
 {
     this->automation->setDescriptor(data);
 }

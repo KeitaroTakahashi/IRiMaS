@@ -36,30 +36,36 @@ namespace IRAutomation {
     
     struct IRAutomationVertexPos
     {
-        float x;
-        float y;
+        int original_i;
+        float original_value;
         
-        Point<float> pos;
+        int current_i;
+        float current_value;
         
         uiCondition condition = uiOrdinary;
         
         IRAutomationVertexPos()
         {
-            x = 0; y = 0;
+            this->original_i = 0; this->original_value = 0;
+            this->current_i = 0; this->current_value = 0;
+
         }
         
-        IRAutomationVertexPos(float x, float y, uiCondition condition = uiOrdinary)
+       
+        
+        IRAutomationVertexPos(float original_i, float original_value,
+                              float current_i,
+                              float current_value,
+                              uiCondition condition = uiOrdinary)
         {
-            this->x = x; this->y = y; this->condition = condition;
+            
+            this->original_i = original_i;
+            this->original_value = original_value;
+            this->current_i = current_i;
+            this->current_value = current_value;
+            this->condition = condition;
         }
         
-        IRAutomationVertexPos(float x, float y, Point<float> pos, uiCondition condition = uiOrdinary)
-        {
-            this->x = x; this->y = y;
-            this->pos = pos; this->condition = condition;
-        }
-        
-        void setPos(Point<float>pos) { this->pos = pos; }
     };
     
     

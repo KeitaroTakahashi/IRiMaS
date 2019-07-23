@@ -16,7 +16,7 @@
 class IRViewUI : public IRViewPort
 {
 public:
-    IRViewUI(InteractiveAutomation* main,
+    IRViewUI(Component* main,
              float vmin, float vmax,
              float hmin, float hmax);
     ~IRViewUI();
@@ -33,6 +33,12 @@ public:
     int getMaxViewHeight() const         { return this->viewPort->MaxViewHeight; }
     int getDummyWidth() const            { return this->viewPort->dummyWidth; }
     int getDummyHeight() const           { return this->viewPort->dummyHeight; }
+    // ==================================================
+    void visibleAreaChangedAction(const Rectangle< int > &newVisibleArea) override;
+
+    // ==================================================
+
+    int getGridSize() const { return this->gridSize; }
     
 private:
     // ==================================================
@@ -46,7 +52,7 @@ private:
     class Component4ViewPort : public Component
     {
     public:
-          Component4ViewPort(InteractiveAutomation* main,
+          Component4ViewPort(Component* main,
                              IRMeasureGrid* vertical,
                              IRMeasureGrid* horizontal,
                              int gridSize) :
@@ -80,6 +86,15 @@ private:
             setBounds(x,y,width,height);
         }
         
+        void setHorizontalBounds(int x, int w)
+        {
+            Rectangle<int> p (this->gridSize + x,
+                              0,
+                              w - this->gridSize,
+                              this->gridSize);
+            this->horizontal->setBounds(p);
+        }
+        
         
         void resized() override
         {
@@ -111,7 +126,7 @@ private:
         
         // we use dummy size as it is very expensive if you use millions size of the view...
         Point<float> dummyRatio;
-        const int MaxViewWidth = 10000;
+        const int MaxViewWidth = 10000000;
         const int MaxViewHeight = 10000;
         int dummyWidth = 0;
         int dummyHeight = 0;
@@ -120,7 +135,7 @@ private:
         void setDummyHeight(int h)   { this->dummyHeight = h; }
         
     private:
-        InteractiveAutomation* main;
+        Component* main;
         IRMeasureGrid* vertical;
         IRMeasureGrid* horizontal;
 

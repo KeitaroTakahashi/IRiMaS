@@ -17,23 +17,36 @@ parent(nodeObject)
     addAndMakeVisible(&this->openButton);
     this->openButton.onClick = [this]{ openButtonClicked(); };
     
+    this->controller.setZoomInEvent([this]{zoomInClicked();});
+    this->controller.setZoomOutEvent([this]{zoomOutClicked();});
+    this->controller.setCommentEvent([this]{commentClicked();});
     //openFile();
 
 }
 
 IRSpectrogram::~IRSpectrogram()
 {
+    std::cout << "~IRSpectrogram\n";
+    stopTimer();
+
+    if(!this->isOpenGLComponentClosed)
+        closeOpenGLComponent();
+    
+    if(this->audioData != nullptr)
+        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+    
+    std::cout << "~IRSpectrogram ENDS\n";
+
+}
+
+void IRSpectrogram::closeOpenGLComponent()
+{
     // delete Texture
     glDeleteTextures(1, &this->textureID);
     openGLContext.detach();
     shader.reset();
     
-    stopTimer();
-    
-    if(this->buffer != nullptr) delete this->buffer;
-    
-    if(this->audioData != nullptr)
-        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+    this->isOpenGLComponentClosed = true;
 }
 
 void IRSpectrogram::init()
@@ -58,14 +71,23 @@ void IRSpectrogram::init()
     
     setSize(500,500);
     
-    createDemoTexture();
+   // createDemoTexture();
 }
 
 // ==================================================
 
 void IRSpectrogram::resized()
 {
+    if(getHeight() < 50) setBounds(getX(), getY(), getWidth(), 50);
+
     this->openButton.setBounds(0, 0, getWidth(), getHeight());
+    
+    
+    int s = getHeight();
+    if(s > 50) s = 50;
+    int y = getHeight() / 2 - s / 2;
+    this->controller.setBounds(this->visibleArea.getX(), y, getWidth(), s);
+
 }
 
 void IRSpectrogram::paint(Graphics& g)
@@ -128,36 +150,60 @@ void IRSpectrogram::update()
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, this->sp_w, this->sp_h, GL_DEPTH_COMPONENT, GL_FLOAT, this->buffer);
 }
 
-void IRSpectrogram::loadDrawData(IRAnalysisDataStr data)
+void IRSpectrogram::loadDrawData(IRDescriptorStr* data)
 {
     
-    this->sp_w = (int)data.getData().size();
-    this->sp_h = data.getFFTSize()/4;
+    int w = getWidth();
+    int h = getHeight();
     
-    std::cout << "loadDrawData : (w,h) = " << this->sp_w << ", " << this->sp_h << std::endl;
+    this->sp_w = data->getNumFrame();
+    this->sp_h = data->getFFTSize()/4;
+    int ffthalfsize = data->getFFTSize() / 2;
 
+    // use normalized data 0.0~1.0
+    const float* power = data->getNormalizedData();
     
+    //this->buffer = data;
+
+    std::cout << "loadDrawData : (w,h) = " << this->sp_w << ", " << this->sp_h << std::endl;
+  
     if(this->buffer != nullptr) delete this->buffer;
     this->buffer = new float [this->sp_w * this->sp_h];
     int i, j;
-    auto power = data.getData();
-    
     float max = -9999;
+    
+    float incrementX = this->sp_w / (float)w;
+    float incrementY = this->sp_h / (float)h;
+    
+    /*
+    for(i = 0; i < h; i ++)
+    {
+        for(j = 0; j < w; j ++)
+        {
+            
+            this->buffer[i*w+j] = power[];
+        }
+    }*/
+    
+  
     for(i = 0; i < this->sp_h; i ++)
     {
         for(j = 0; j < this->sp_w; j ++)
         {
             int iw = i * this->sp_w;
+            int jw = j * ffthalfsize;
+
+            this->buffer[iw + j] = power[jw + i];
             
-            this->buffer[iw + j] = power[j][i];
+            //if(power[j][i] > max) max = power[j][i];
             
-            if(power[j][i] > max) max = power[j][i];
-            
-            //std::cout << "[" << i << "][" << j << "]" << " = " << data.getData()[j][i] << std::endl;
-           
+        
         }
     }
+    
+    std::cout << "loadData done\n";
   
+    /*
     for(i = 0; i < this->sp_h; i ++)
     {
         for(j = 0; j < this->sp_w; j ++)
@@ -167,16 +213,27 @@ void IRSpectrogram::loadDrawData(IRAnalysisDataStr data)
             this->buffer[iw + j] /= max;
         }
     }
+ */
+    
     
     this->fragmentRefreshed = true;
     
-    std::cout << "loadDrawData complete : " << max << "\n";
     
 }
 
 void IRSpectrogram::setVisibleArea(Rectangle<int> area)
 {
+    this->visibleArea = area;
     
+    int s = getHeight();
+    if(s > 50) s = 50;
+    int y = getHeight() / 2 - s / 2;
+    this->visibleArea = area;
+    this->controller.setBounds(this->visibleArea.getX(), y, getWidth(), s);
+    
+    this->previousOffsetX = this->visibleArea.getX();
+    
+    std::cout << "w, h " << getWidth() << std::endl;
 }
 
 void IRSpectrogram::setMagnitudeAmount(float val)
@@ -193,18 +250,37 @@ void IRSpectrogram::mouseDown(const MouseEvent &e)
     
     if(this->audioUpdated)
     {
-        auto data = this->audioData->getData();
-        auto de = data->getDescriptor();
         
-        if(de->isLinearPower()) loadDrawData(de->getLinearPower());
-        else{
-            data->operateAnalysis(FFTDescriptor::FFT_LinearPower);
-            if(de->isLinearPower()) loadDrawData(de->getLinearPower());
-            else std::cout << "Error : IRSpectrogram() : Could not get LinearPower!\n";
+        std::cout << "audioUpdated true\n";
+        auto data = this->audioData->getData();
+        //auto de = data->operateAnalysis(FFTDescriptor::FFT_LinearPower, this->fftsize, this->hopsize);
+        
+        
+        if(!data->isCalculated(FFTDescriptor::FFT_LinearPower, this->fftsize))
+        {
+            std::cout << "do analysis \n";
+            if(!data->operateAnalysis(FFTDescriptor::FFT_LinearPower, this->fftsize, this->hopsize))
+            {
+                std::cout <<"ERROR : IRSpectrogram() : Could not operate FFT_LinearPower Analysis\n";
+                return;
+            }
         }
+        
+
+        loadDrawData(data->getDescriptor(FFTDescriptor::FFT_LinearPower,
+                                         this->fftsize));
+        
+        
+      
         
         this->audioUpdated = false;
         this->isTextureCreated = false;
+    }else{
+        auto data = this->audioData->getData();
+
+        loadDrawData(data->getDescriptor(FFTDescriptor::FFT_LinearPower,
+                                         this->fftsize));
+
     }
     
     updateFragment();
@@ -327,7 +403,7 @@ void IRSpectrogram::setUniform(OpenGLShaderProgram& program)
 
 
 // ==========
-
+/*
 void IRSpectrogram::createDemoTexture()
 {
     if(this->buffer != nullptr) delete this->buffer;
@@ -352,6 +428,7 @@ void IRSpectrogram::createDemoTexture()
         }
     }
 }
+ */
 
 // ==========
 

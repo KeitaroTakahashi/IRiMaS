@@ -10,6 +10,7 @@
 
 #include "IRUIAudioFoundation.hpp"
 #include "GLSLSpectrogram.hpp"
+#include "IRSpetrogramController.h"
 
 class IRSpectrogram : public IRUIAudioFoundation,
 private Timer
@@ -38,11 +39,13 @@ public:
     // redraw spectrogram
     void update();
     
-    void loadDrawData(IRAnalysisDataStr data);
+    void loadDrawData(IRDescriptorStr* data);
     
     void setVisibleArea(Rectangle<int> area);
     
     void setMagnitudeAmount(float val);
+    
+    void closeOpenGLComponent();
     
 private:
     
@@ -69,11 +72,24 @@ private:
     TextButton openButton;
     void openButtonClicked();
     // ==================================================
+    //controller
+    IRSpectrogramController controller;
+    int previousOffsetX = 0;
+    Rectangle<int> visibleArea;
+    
+    void zoomInClicked();
+    void zoomOutClicked();
+    void commentClicked();
+    
+    // ==================================================
     //Spectrogram
     int sp_w = 100;
     int sp_h = 1024;
     
     float magnitudeAmount = 1.0;
+    
+    int fftsize = 2048;
+    int hopsize = 1024;
     
     // ==================================================
     //OpenGL
@@ -83,6 +99,12 @@ private:
     GLuint textureID;
     bool isTextureCreated = false;
     float* buffer = nullptr;
+    
+    bool isOpenGLComponentClosed = false;
+    
+    //IRDescriptorStr* buffer = nullptr;
+    
+    
     String fragURL;
     
     bool fragmentRefreshed = false;
@@ -90,7 +112,7 @@ private:
 
     void shaderTask(Graphics& g);
     void createTexture();
-    void createDemoTexture();
+    //void createDemoTexture();
     void updateFragment();
     void setUniform(OpenGLShaderProgram& program);
 

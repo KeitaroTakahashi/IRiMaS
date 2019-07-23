@@ -21,7 +21,7 @@ public:
     std::function<void(Rectangle<int>)> visibleAreaChangedCallback;
     std::function<void()> viewedComponentChangedCallback;
     
-   
+    virtual void visibleAreaChangedAction(const Rectangle< int > &newVisibleArea) {}
 
 private:
    

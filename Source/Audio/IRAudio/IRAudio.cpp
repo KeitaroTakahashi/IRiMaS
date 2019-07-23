@@ -12,8 +12,6 @@ IRAudio::IRAudio():
 Thread("ImportAudioFile Background thread")
 {
     this->formatManager.registerBasicFormats();
-    this->descriptor = std::make_shared<IRDescriptor>();
-    this->analyzer = std::make_shared<IRFFTDescriptor>(2048, 1024);
     
     setFps(33);
     startThread();
@@ -233,52 +231,34 @@ void IRAudio::callFileStatusChanged(IRAudio* obj)
 // --------------------------------------------------
 void IRAudio::operateBasicDescriptors()
 {
-    this->analyzer->calcCentroid();
-
-    IRAnalysisDataStr newMag (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
-    newMag.setRowDataAndNormalize(this->analyzer->getMagnitude());
-    getDescriptor()->setMagnitude(newMag);
-
-    IRAnalysisDataStr newCent (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
-    newCent.setRowDataAndNormalize(this->analyzer->getCentroid());
-    getDescriptor()->setCentroid(newCent);
-
-    IRAnalysisDataStr newSp (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
-    newSp.setRowDataAndNormalize(this->analyzer->getSpread());
-    getDescriptor()->setSpread(newSp);
+    this->analyzer.calcBasicDescriptor();
 }
 // --------------------------------------------------
 void IRAudio::operateFlatness()
 {
-    this->analyzer->calcFlatness();
+    
+    std::cout <<"calcFlatness\n";
+    this->analyzer.calcFlatness();
  
-    IRAnalysisDataStr newFlat (this->analyzer->getFFTSize(), this->analyzer->getHopSize());
-    newFlat.setRowDataAndNormalize(this->analyzer->getFlatness());
-    getDescriptor()->setFlatness(newFlat);
-}
-// --------------------------------------------------
-void IRAudio::operateLinearPower()
-{
-    this->analyzer->calcLinearPower();
-    IRAnalysisDataStr newLinearPower (this->analyzer->getFFTSize(),
-                                      this->analyzer->getHopSize());
-    newLinearPower.setRowDataAndNormalize(this->analyzer->getLinearPower());
-    getDescriptor()->setLinearPower(newLinearPower);
     
 }
+// --------------------------------------------------
+void IRAudio::operateLinearPower(int fftsize, int hopsize)
+{
+    operateFFTAnalysis(fftsize, hopsize);
+}
+// --------------------------------------------------
+bool IRAudio::operateFFTAnalysis(int fftsize, int hopsize)
+{
+    this->analyzer.operateAnalysis(getAudioBuffer(), fftsize, hopsize);
+}
+
 // --------------------------------------------------
 
-bool IRAudio::operateAnalysis(FFTDescriptor descriptor)
+bool IRAudio::operateAnalysis(FFTDescriptor descriptor, int fftsize, int hopsize)
 {
-    
-    // if FFT is not yet operated, then do it.
-    if(!this->analyzer->hasFFTOperated()){
-        
-        if(this->analyzer->getNumFrame() == 0)
-            this->analyzer->setAudioData(this->getAudioBufferInVector());
-        this->analyzer->operateAnalysis();
-        
-    }
+   
+    this->analyzer.operateAnalysis(getAudioBuffer(), fftsize, hopsize);
     
     // calcCentroid calculates Magnitude, Centroid, and Spread
     switch (descriptor)
@@ -318,9 +298,9 @@ bool IRAudio::operateAnalysis(FFTDescriptor descriptor)
         case FFTDescriptor::FFT_BFCCS:
             return "BFCCs";
             break;
-        case FFTDescriptor::FFT_LinearPower:
-            operateLinearPower();
-            break;
+        //case FFTDescriptor::FFT_LinearPower:
+         //   operateLinearPower(fft);
+          //  break;
         default:
             return "UNKNOWN";
             break;
@@ -330,3 +310,13 @@ bool IRAudio::operateAnalysis(FFTDescriptor descriptor)
     return true;
 }
 // --------------------------------------------------
+
+bool IRAudio::isCalculated(FFTDescriptor d, int fftsize)
+{
+    return this->analyzer.isDescriptor(d, this->analyzer.getListFromFFTSize(fftsize));
+}
+
+IRDescriptorStr* IRAudio::getDescriptor(FFTDescriptor d, int fftsize)
+{
+    return this->analyzer.getDescriptor(d, fftsize);
+}

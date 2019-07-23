@@ -19,12 +19,15 @@ IRViewPort::~IRViewPort()
     
 }
 
+
 void IRViewPort::visibleAreaChanged (const Rectangle< int > &newVisibleArea)
 {
+    
+    visibleAreaChangedAction(newVisibleArea);
+
     if(this->visibleAreaChangedCallback != nullptr)
         this->visibleAreaChangedCallback(newVisibleArea);
-    
-    
+ 
 }
 
 void IRViewPort::viewedComponentChanged (Component *newComponent)

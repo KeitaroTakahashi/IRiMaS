@@ -9,26 +9,7 @@
 #define IRAudioDescriptor_hpp
 #include <stdarg.h>
 #include "IRFFTSequence.h"
-
-enum FFTDescriptor{
-    FFT_MAGNITUDE,
-    FFT_CENTROID,
-    FFT_SPREAD,
-    FFT_FLATNESS,
-    FFT_NOISINESS,
-    FFT_PITCH,
-    FFT_MFCS,
-    FFT_MFCCS,
-    FFT_BFCS,
-    FFT_BFCCS,
-    
-    FFT_LinearPower,
-    FFT_LogPower,
-    FFT_Phase,
-    
-    NONE
-};
-
+#include "IRDescriptorStr.h"
 
 class IRFFTDescriptor : public IRFFTSequence
 {
@@ -46,16 +27,13 @@ public:
     void operateAnalysis();
     
     
-    void calcMagnitude();
-    void calcCentroid(); // this also calculates magnitude
-    void calcSpread();
-    void calcFlatness();
-    void calcPitch();
-    void calcNoisiness();
-    
-    void calcLinearPower();
-   // void calclogPower();
+ 
+    // ============================================================
 
+    
+    
+    
+    
     std::vector<std::vector<float>> getLinearPower() const { return this->linearPower; }
 
     std::vector<std::vector<float>> getMagnitude() const { return this->magnitude; }
@@ -91,7 +69,6 @@ public:
 private:
     
     void calcDescriptor(FFTDescriptor descriptor);
-
     std::vector<FFTDescriptor> descriptorList;
     std::vector<std::string> descriptorNameList;
     

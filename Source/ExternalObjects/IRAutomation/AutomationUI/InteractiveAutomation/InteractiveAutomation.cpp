@@ -109,6 +109,20 @@ void InteractiveAutomation::drawLinesBetweenVerteces(Graphics& g)
     g.setColour(Colours::grey);
     
     Rectangle<int> v = this->visibleArea;
+    
+    for(int i=1;i<this->verteces.size();i++)
+    {
+        int wh = this->verteces[i-1]->getWidth()/2;
+        int wh2 = this->verteces[i]->getWidth()/2;
+        
+        g.drawLine(this->verteces[i-1]->getX() + wh,
+                   this->verteces[i-1]->getY() + wh,
+                   this->verteces[i]->getX() + wh2,
+                   this->verteces[i]->getY() + wh2,
+                   2);
+    }
+    
+    /*
     for(int i = 1; i < this->vertexBuffer.size(); i++)
     {
         float p_x = this->vertexBuffer[i-1]->pos.getX();
@@ -126,17 +140,20 @@ void InteractiveAutomation::drawLinesBetweenVerteces(Graphics& g)
                        2);
         }
         
-        /*
-        int wh = this->verteces[i-1]->getWidth()/2;
-        int wh2 = this->verteces[i]->getWidth()/2;
-        
-        g.drawLine(this->verteces[i-1]->getX() + wh,
-                   this->verteces[i-1]->getY() + wh,
-                   this->verteces[i]->getX() + wh2,
-                   this->verteces[i]->getY() + wh2,
-                   2);
-         */
+     
     }
+     */
+    
+    /*
+     int wh = this->verteces[i-1]->getWidth()/2;
+     int wh2 = this->verteces[i]->getWidth()/2;
+     
+     g.drawLine(this->verteces[i-1]->getX() + wh,
+     this->verteces[i-1]->getY() + wh,
+     this->verteces[i]->getX() + wh2,
+     this->verteces[i]->getY() + wh2,
+     2);
+     */
 }
 
 void InteractiveAutomation::paintBezierLines(Graphics& g)
@@ -145,7 +162,7 @@ void InteractiveAutomation::paintBezierLines(Graphics& g)
 
     for(int i = 1; i < this->verteces.size(); i++)
     {
-        
+        /*
         Path path;
         //i
         float x = this->vertexBuffer[i]->pos.getX();
@@ -162,6 +179,7 @@ void InteractiveAutomation::paintBezierLines(Graphics& g)
         Point<float> c1 (cx, p_y);
         Point<float> c2 (cx, y);
         Point<float> d (x, y);
+         */
         
         /*
         int wh = this->vertex[i-1]->getWidth()/2;
@@ -178,9 +196,13 @@ void InteractiveAutomation::paintBezierLines(Graphics& g)
         Point<float> d (this->verteces[i]->getX() + wh2,
                         this->verteces[i]->getY() + wh2);
         */
+        
+        /*
         path.cubicTo(c1, c2, d);
         
         g.strokePath(path, PathStrokeType(2));
+         
+         */
     }
 }
 
@@ -212,14 +234,17 @@ void InteractiveAutomation::setVisibleArea(Rectangle<int> area) {
     this->controller->setBounds(this->visibleArea.getX(), y, getWidth(), s);
     
     this->previousOffsetX = this->visibleArea.getX();
-    
-    std::cout << "w, h " << getWidth() << std::endl;
+        
+    doReCalcPos();
 }
 
 
 void InteractiveAutomation::reCalcPos()
 {
     std::cout << "reCalcPos\n";
+    
+    deleteAllVerteces();
+    
     float boundsRatio_h;
     float boundsRatio_w;
     
@@ -227,15 +252,18 @@ void InteractiveAutomation::reCalcPos()
     int w = getWidth();
     int h = getHeight();
     
+    int visible_w = this->visibleArea.getWidth();
+    int visible_h = this->visibleArea.getHeight();
+    int visible_x = this->visibleArea.getX();
+    int visible_y = this->visibleArea.getY();
+    
     // if there is no verteces, then add two verteces with 0 values.
     if(v_size == 0)
     {
-        this->vertexBuffer.push_back(new IRAutomationVertexPos(0, h/2, Point<float>(0, h/2)));
-        this->vertexBuffer.push_back(new IRAutomationVertexPos(w, h/2, Point<float>(w, h/2)));
-
         createVertex(Point<float>(0, h), false);
         createVertex(Point<float>(w, h), false);
-        
+        reCalcPosDone();
+
         return;
     }
     int pw = this->previousBounds.getWidth();
@@ -247,82 +275,84 @@ void InteractiveAutomation::reCalcPos()
     if(pw > 0.0 && w > 0.0) boundsRatio_w = (float)w / (float)pw;
     else boundsRatio_w = 1.0;
     
-    
     // ------------------------------------------------------------
-    float increment = (float) w / (float) v_size;
-    int startIndex = floor((float)this->visibleArea.getX() / increment);
-    int endIndex = floor((float)(this->visibleArea.getX() + this->visibleArea.getWidth()) / increment);
+    // how many values in each pixel.
+    // 1.0 means 1 data for each piexel, increment > 1.0 = more data in each pixel, so calculate average of them.
+    float increment = (float)v_size / (float)w;
+    float startIndex = (float)visible_x * increment;
+    if(startIndex > 0) startIndex -= 1;
+    float endIndex = (float)(visible_x + visible_w) * increment;
     if(endIndex < v_size) endIndex += 1;
     
     // draw point on each Vertex if increment is larger than 1 pixel.
     bool isPoint = true;
     if(increment < 1.0) isPoint = false;
     
-    float c_int = 0.0;
-    float p_int = 0.0;
-    float x,y;
-    int index = 0;
-    float accumY = 0.0;
-    int counter = 0;
-    for(int i = 0; i < v_size; i ++)
+    float currentIndex = startIndex;
+    int previousIndex = -1;
+    float accumVal = 0.0;
+    int interval = 0;
+    float max = -999999.9;
+    float min = 999999.9;
+    int i, j;
+    
+    int beginIndex = 0;
+    if(startIndex > 0) beginIndex = -1;
+    for(i=0;i<visible_w;i++)
     {
-        float fi = (float)i;
-        float value = h - (this->vertexBuffer[i]->y * h);
+        if(currentIndex >= v_size) break;
+        
+        int ci = floor(currentIndex);
+        interval =  ci - previousIndex;
 
-        if(i == 0)
+        if(interval > 0)
         {
-            createVertex(Point<float>(value * boundsRatio_h,
-                                      this->vertexBuffer[i]->x * increment * boundsRatio_w),
-                                      false);
-        }else{
-            float y = value * boundsRatio_h;
-            float x = this->vertexBuffer[i]->x * increment * boundsRatio_w;
-            
-            // if same index
-            if(floor(x) == index)
+            accumVal = 0;
+            max = -999999.9;
+            min = 999999.9;
+            // make average
+            for(j=0;j<interval;j++)
             {
-                accumY += y;
-            }else{
+                if(max < this->vertexBuffer[previousIndex + j + 1]->current_value)
+                    max = this->vertexBuffer[previousIndex + j + 1]->current_value;
+                if(min > this->vertexBuffer[previousIndex + j + 1]->current_value)
+                    min = this->vertexBuffer[previousIndex + j + 1]->current_value;
                 
-                createVertex(Point<float>(x, accumY/(float)counter), false);
-                index = floor(x);
-                counter = 0;
+                accumVal += this->vertexBuffer[previousIndex + j + 1]->current_value;
+                //std::cout << "vertexBuffer[" << previousIndex + j + 1 << "] = " << this->vertexBuffer[previousIndex + j + 1]->current_value << std::endl;
             }
+            //accumVal /= interval;
             
+            //accumVal = h - (accumVal * h);
+            accumVal = h - (max * h);
             
+            //std::cout << "vertex["<<visible_x + i << "] = " << max << " : min = " << min << " : accum = " << accumVal <<" by interval " << interval << std::endl;
             
-        }
+            createVertex(Point<float>(visible_x + i, accumVal), false, false);
+            
+            previousIndex = currentIndex;
 
-        //(this->verteces[i]->getPosition().getY()) * boundsRatio_h;
-        //(this->verteces[i]->getPosition().getX()) * boundsRatio_w;
-        
-        //std::cout << " x, y = " << this->vertexBuffer[i]->x << ", " << this->vertexBuffer[i]->y << " new x y = " << x << ", " << y << " : previous w = " << pw << " : current w = " << getWidth() << " : " << boundsRatio_w << ", " << boundsRatio_h <<std::endl;
-
-        this->vertexBuffer[i]->setPos(Point<float>(x, y));
-        //this->verteces[i]->setPosition(Point<float>(x, y));
-        
-        //if(isPoint) this->verteces[i]->setPoint(true);
-        //else this->verteces[i]->setPoint(false);
-        
-        if(isPoint)
-        {
-            
-            
-            
         }
+        currentIndex += increment;
     }
+        
+    
+    // sort
+    ascendingSorter sorter;
+    this->verteces.sort(sorter);
 
     // update previous bounds
     this->previousBounds = getLocalBounds();
 
     reCalcPosDone();
     repaint();
+    
+
 }
 
 void InteractiveAutomation::mouseDown(const MouseEvent& e)
 {
     this->currentMousePos = e.getEventRelativeTo(this).getPosition();
-    
     
     if(e.mods.isCtrlDown())
     {
@@ -332,8 +362,6 @@ void InteractiveAutomation::mouseDown(const MouseEvent& e)
         if(this->controller->isVisible())
             removeChildComponent(this->controller.get());
     }
-    
-    
     
     this->selector->mouseDownHandler(e);
     addAndMakeVisible(this->selector.get());
@@ -527,20 +555,18 @@ void InteractiveAutomation::demoData(int num)
     repaint();
 }
 
-void InteractiveAutomation::setDescriptor(IRAnalysisDataStr& data)
+void InteractiveAutomation::setDescriptor(IRDescriptorStr* data)
 {
     
-  
     std::cout << "setDescriptor \n";
     initAutomation();
 
-    int num = data.getNumFrame();
+    int num = data->getNumFrame();
     std::cout << "nframe = " << num << std::endl;
     float increment = (float) getWidth() / (float) num;
 
     //auto buffer = data.getNormalizedData()[0];
-    auto buffer = data.getScaledMaxData()[0];
-    auto buffer2 = data.getRowData()[0];
+    auto buffer = data->getNormalizedData();
     
     float height = (float)getHeight();
     
@@ -550,16 +576,16 @@ void InteractiveAutomation::setDescriptor(IRAnalysisDataStr& data)
     {
         float value = height - (buffer[i] * height);
         
-        std::cout << i << " : " << buffer[i] << " , " << buffer2[i] <<std::endl;
+        std::cout << i << " : " << buffer[i] << std::endl;
         //float value = (rand() % 1000) / 1000.0 * getHeight();
 
         //std::cout << "value = " << value << std::endl;
         
-        this->vertexBuffer.push_back(new IRAutomationVertexPos ((float)i,
-                                                                buffer[i],
-                                                                Point<float>((float)i * increment,
-                                                                             value))
-                                     );
+        this->vertexBuffer.emplace_back(new IRAutomationVertexPos (i,
+                                                                   buffer[i],
+                                                                   i,
+                                                                   buffer[i])
+                                        );
 
         //createVertex(Point<float>((float)i * increment, value), false, false);
     

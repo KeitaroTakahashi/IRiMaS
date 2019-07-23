@@ -11,6 +11,12 @@ IRWaveformObjectUI::IRWaveformObjectUI(IRNodeObject* parent) : IRWaveform(parent
     this->selector->setSelectionMode(true, false);
     this->selector->setParentSize(getWidth(), getHeight());
     
+    // controller
+    
+    this->controller.setZoomInEvent([this]{zoomInClicked();});
+    this->controller.setZoomOutEvent([this]{zoomOutClicked();});
+    this->controller.setCommentEvent([this]{commentClicked();});
+
     //addKeyListener(this);
 }
 
@@ -26,6 +32,9 @@ IRWaveformObjectUI::~IRWaveformObjectUI()
 void IRWaveformObjectUI::resized()
 {
     IRWaveform::resized();
+    
+    if(getHeight() < 50) setBounds(getX(), getY(), getWidth(), 50);
+
     this->selector->setParentSize(getWidth(), getHeight());
     
     //double wRatio = (double)getWidth() / (double)this->previousWidth;
@@ -36,6 +45,15 @@ void IRWaveformObjectUI::resized()
     }
     this->previousWidth = getWidth();
     this->previousHeight = getHeight();
+    
+    
+    int s = getHeight();
+    if(s > 50) s = 50;
+    int y = getHeight() / 2 - s / 2;
+    
+    this->controller.setBounds(this->visibleArea.getX(), y, getWidth(), s);
+
+    
 }
 
 
@@ -229,3 +247,37 @@ void IRWaveformObjectUI::audioPtrDelivery(IRAudio *obj)
 
     openFile(obj->getFile().getFullPathName());
 }
+// ==================================================
+// controller
+void IRWaveformObjectUI::zoomInClicked()
+{
+    // go to IRWaveformObjectUI2
+    if(this->zoomInClickedCallback != nullptr) this->zoomInClickedCallback();
+}
+void IRWaveformObjectUI::zoomOutClicked()
+{
+    if(this->zoomOutClickedCallback != nullptr) this->zoomOutClickedCallback();
+}
+void IRWaveformObjectUI::commentClicked()
+{
+    //show comment
+}
+
+// ==================================================
+void IRWaveformObjectUI::setVisibleArea(Rectangle<int> area)
+{
+    this->visibleArea = area;
+    
+    int s = getHeight();
+    if(s > 50) s = 50;
+    int y = getHeight() / 2 - s / 2;
+    this->visibleArea = area;
+    this->controller.setBounds(this->visibleArea.getX(), y, getWidth(), s);
+    
+    this->previousOffsetX = this->visibleArea.getX();
+    
+    std::cout << "w, h " << getWidth() << std::endl;
+    
+}
+
+// ==================================================

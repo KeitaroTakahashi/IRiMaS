@@ -112,7 +112,7 @@ private:
     
     ComboBox descriptorList;
 
-    FFTDescriptor selectedDescriptor = FFTDescriptor::NONE;
+    FFTDescriptor selectedDescriptor = FFTDescriptor::FFT_NONE;
     AutomationpreferenceOpenAudioUIStatus status;
     
     //===============================================================

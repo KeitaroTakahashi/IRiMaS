@@ -11,10 +11,11 @@
 #include "IRWaveformObjectUI.hpp"
 #include "IRViewPort.hpp"
 #include "IRMeasureGrid.hpp"
+#include "IRViewUI.hpp"
 
 
 
-class IRWaveformObjectUI2 : IRUIAudioFoundation
+class IRWaveformObjectUI2 : public IRUIFoundation
 {
 public:
     
@@ -25,10 +26,31 @@ public:
         DescriptorSelected
     };
     
+    IRWaveformObjectUI2(IRNodeObject* parent);
+    ~IRWaveformObjectUI2();
+    // ==================================================
+    void resized() override;
+    void paint(Graphics& g) override;
+    
+    // ==================================================
+
+
+    void setEditMode(bool newEditMode) override;
+
+    void visibleAreaChanged(Rectangle<int> area);
+    
+    IRWaveformObjectUI* getWaveformUI() { return this->waveform.get(); }
+    
+    int getGridSize() const { return this->gridSize; }
+    int getXMargin() const { return this->xMargin; }
+    int getYMargin() const { return this->yMargin; }
+    int getScrollSpace() const { return this->scrollSpace; }
 private:
     
     
     // ==================================================
+    std::shared_ptr<IRViewUI> waveformView;
+    
     
     std::shared_ptr<IRWaveformObjectUI> waveform;
     
@@ -36,65 +58,17 @@ private:
     
     int xMargin = 5;
     int yMargin = 1;
-    
+    int scrollSpace = 10;
+    int previousOffsetX = 0;
+
     // ==================================================
     
+    void zoomInClicked();
+    void zoomOutClicked();
+    
+    // ==================================================
+
     int gridSize = 30;
     
-    IRMeasureGrid verticalGrid;
-    IRMeasureGrid horizontalGrid;
-    
-    class ComponentForViewPort : public Component
-    {
-    public:
-        ComponentForViewPort(IRWaveformObjectUI* waveform,
-                             IRMeasureGrid* verticalGrid,
-                             IRMeasureGrid* horizontalGrid,
-                             int gridSize) : gridSize(gridSize)
-        {
-            this->waveform = waveform;
-            this->verticalGrid = verticalGrid;
-            this->horizontalGrid = horizontalGrid;
-            
-            addAndMakeVisible(waveform);
-            addAndMakeVisible(verticalGrid);
-            addAndMakeVisible(horizontalGrid);
-            
-        }
-        
-        ~ComponentForViewPort() {}
-        
-        void resized() override
-        {
-            this->waveform->setBounds(this->gridSize,
-                                        this->gridSize,
-                                        getWidth() - this->gridSize,
-                                        getHeight() - this->gridSize);
-            this->verticalGrid->setBounds(0,
-                                          this->gridSize,
-                                          this->gridSize,
-                                          getHeight() - this->gridSize);
-            this->verticalGrid->createGrids();
-            this->horizontalGrid->setBounds(this->gridSize,
-                                            0,
-                                            getWidth() - this->gridSize,
-                                            this->gridSize);
-            this->horizontalGrid->createGrids();
-        }
-        
-        void setVisibleArea(Rectangle<int> area)
-        {
-            this->verticalGrid->setBounds(area.getX(),
-                                          this->gridSize,
-                                          this->gridSize,
-                                          getHeight() - this->gridSize);
-        }
-        
-        IRWaveformObjectUI* waveform;
-        IRMeasureGrid* verticalGrid;
-        IRMeasureGrid* horizontalGrid;
-        
-        int gridSize;
-    };
 };
 #endif /* IRWaveformObjectUI2_hpp */

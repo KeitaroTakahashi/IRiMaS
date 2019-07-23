@@ -7,7 +7,7 @@
 
 #include "IRViewUI.hpp"
 
-IRViewUI::IRViewUI(InteractiveAutomation* main,
+IRViewUI::IRViewUI(Component* main,
                    float vmin, float vmax,
                    float hmin, float hmax) :
 verticalGrid(IRGridStr::IRMeasureGridType::VERTICAL),
@@ -41,4 +41,12 @@ void IRViewUI::setComponentBounds(int x, int y, int w, int h)
 void IRViewUI::setVisibleArea(Rectangle<int> area)
 {
     this->viewPort->setVisibleArea(area);
+}
+
+
+void IRViewUI::visibleAreaChangedAction(const Rectangle< int > &newVisibleArea)
+{
+    
+    this->viewPort->setHorizontalBounds(newVisibleArea.getX(),
+                                        newVisibleArea.getWidth());
 }

@@ -98,6 +98,9 @@
 		8289A08622D3F3A70088E156 /* IRSpectrogramWithPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A08422D3F3A70088E156 /* IRSpectrogramWithPreference.cpp */; };
 		8289A08922D3FED00088E156 /* IRSpectrogramUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A08722D3FED00088E156 /* IRSpectrogramUI.cpp */; };
 		8289A09B22D8C36C0088E156 /* IRViewUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A09922D8C36C0088E156 /* IRViewUI.cpp */; };
+		8289A0B822DF58B90088E156 /* IRDescriptorBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A0B622DF58B90088E156 /* IRDescriptorBank.cpp */; };
+		8289A0BE22E709A90088E156 /* libessentia.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 82D8B13C229FF9B500940CD1 /* libessentia.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		8289A0C322E7567A0088E156 /* IRSimpleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A0C122E7567A0088E156 /* IRSimpleController.cpp */; };
 		8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8293FBD1221451EA00C09BD5 /* KPixelDataConvertor.cpp */; };
 		829D0373222976B9001FDE1D /* IRImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D0371222976B9001FDE1D /* IRImage.cpp */; };
 		829D03762229798D001FDE1D /* IRVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D03742229798D001FDE1D /* IRVideo.cpp */; };
@@ -151,6 +154,20 @@
 		F4185137A2919DAD4283B05E /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D90C51515DD24053F9909284 /* AVKit.framework */; };
 		F78DDCCF76EF8CE87307EF77 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7EB610C177EFEBD5B509718 /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8289A0BF22E709A90088E156 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8289A0BE22E709A90088E156 /* libessentia.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0183A45967EBDB3B8E8362AA /* include_juce_audio_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_utils.mm; path = JuceLibraryCode/include_juce_audio_utils.mm; sourceTree = SOURCE_ROOT; };
@@ -546,6 +563,14 @@
 		8289A09922D8C36C0088E156 /* IRViewUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRViewUI.cpp; sourceTree = "<group>"; };
 		8289A09A22D8C36C0088E156 /* IRViewUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRViewUI.hpp; sourceTree = "<group>"; };
 		8289A09C22D8C39C0088E156 /* IRiMaSHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRiMaSHeader.h; sourceTree = "<group>"; };
+		8289A0B322DF4F4E0088E156 /* IRDescriptorBankFundation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRDescriptorBankFundation.h; sourceTree = "<group>"; };
+		8289A0B522DF4F660088E156 /* IRDescriptorStr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRDescriptorStr.h; sourceTree = "<group>"; };
+		8289A0B622DF58B90088E156 /* IRDescriptorBank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRDescriptorBank.cpp; sourceTree = "<group>"; };
+		8289A0B722DF58B90088E156 /* IRDescriptorBank.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRDescriptorBank.hpp; sourceTree = "<group>"; };
+		8289A0C122E7567A0088E156 /* IRSimpleController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSimpleController.cpp; sourceTree = "<group>"; };
+		8289A0C222E7567A0088E156 /* IRSimpleController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSimpleController.hpp; sourceTree = "<group>"; };
+		8289A0C522E758440088E156 /* IRWaveformController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRWaveformController.h; sourceTree = "<group>"; };
+		8289A0C722E766920088E156 /* IRSpectrogramController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSpectrogramController.h; sourceTree = "<group>"; };
 		8293FBB3220C3D6C00C09BD5 /* libavresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavresample.a; path = ../../../../../../../usr/local/Cellar/ffmpeg/4.1_3/lib/libavresample.a; sourceTree = "<group>"; };
 		8293FBB4220C3D6C00C09BD5 /* libpostproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpostproc.a; path = ../../../../../../../usr/local/Cellar/ffmpeg/4.1_3/lib/libpostproc.a; sourceTree = "<group>"; };
 		8293FBB5220C3D6C00C09BD5 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../../../../../../../usr/local/Cellar/ffmpeg/4.1_3/lib/libavutil.a; sourceTree = "<group>"; };
@@ -1383,6 +1408,7 @@
 		8210D9CD213D3D4D0042F646 /* IRSpectrogramObject */ = {
 			isa = PBXGroup;
 			children = (
+				8289A0C622E766860088E156 /* SpectrogramController */,
 				82D8AE9022C392340012D987 /* IRSpectrogram */,
 				82D8AE8D22C392300012D987 /* IRSpectrogramObject.cpp */,
 				82D8AE8E22C392300012D987 /* IRSpectrogramObject.hpp */,
@@ -1450,7 +1476,8 @@
 		821A5E6F212B006400BF593D /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				8289A0B222DF4F0E0088E156 /* IRDescriptors */,
+				8289A0B422DF4F520088E156 /* IRDescriptorStr */,
+				8289A0B222DF4F0E0088E156 /* IRDescriptorBank */,
 				82D8B1162298117F00940CD1 /* IRDescriptor */,
 				821A5A912249290300F11668 /* IRAudio */,
 				8210D9D7213D4B560042F646 /* DSP */,
@@ -1679,6 +1706,7 @@
 		823E7BCF213301140046512B /* IRWaveformObject */ = {
 			isa = PBXGroup;
 			children = (
+				8289A0C422E758380088E156 /* IRWaveformController */,
 				106588E522301C08005D6B38 /* IRWaveform */,
 				823E7BD12133012B0046512B /* IRWaveformObject.hpp */,
 				823E7BD02133012B0046512B /* IRWaveformObject.cpp */,
@@ -1861,11 +1889,47 @@
 			path = IRViewUI;
 			sourceTree = "<group>";
 		};
-		8289A0B222DF4F0E0088E156 /* IRDescriptors */ = {
+		8289A0B222DF4F0E0088E156 /* IRDescriptorBank */ = {
 			isa = PBXGroup;
 			children = (
+				8289A0B322DF4F4E0088E156 /* IRDescriptorBankFundation.h */,
+				8289A0B622DF58B90088E156 /* IRDescriptorBank.cpp */,
+				8289A0B722DF58B90088E156 /* IRDescriptorBank.hpp */,
 			);
-			path = IRDescriptors;
+			path = IRDescriptorBank;
+			sourceTree = "<group>";
+		};
+		8289A0B422DF4F520088E156 /* IRDescriptorStr */ = {
+			isa = PBXGroup;
+			children = (
+				8289A0B522DF4F660088E156 /* IRDescriptorStr.h */,
+			);
+			path = IRDescriptorStr;
+			sourceTree = "<group>";
+		};
+		8289A0C022E7566D0088E156 /* SimpleController */ = {
+			isa = PBXGroup;
+			children = (
+				8289A0C122E7567A0088E156 /* IRSimpleController.cpp */,
+				8289A0C222E7567A0088E156 /* IRSimpleController.hpp */,
+			);
+			path = SimpleController;
+			sourceTree = "<group>";
+		};
+		8289A0C422E758380088E156 /* IRWaveformController */ = {
+			isa = PBXGroup;
+			children = (
+				8289A0C522E758440088E156 /* IRWaveformController.h */,
+			);
+			path = IRWaveformController;
+			sourceTree = "<group>";
+		};
+		8289A0C622E766860088E156 /* SpectrogramController */ = {
+			isa = PBXGroup;
+			children = (
+				8289A0C722E766920088E156 /* IRSpectrogramController.h */,
+			);
+			path = SpectrogramController;
 			sourceTree = "<group>";
 		};
 		829D036C22297641001FDE1D /* Visual */ = {
@@ -2187,6 +2251,7 @@
 		82D8B16522A0179E00940CD1 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				8289A0C022E7566D0088E156 /* SimpleController */,
 				82D8B16622A017A200940CD1 /* MeasureGrid */,
 			);
 			path = UIs;
@@ -2420,6 +2485,7 @@
 				33891D3C3EEF6ADA78FA29D3 /* Resources */,
 				7E6C4AFFD659D8616B734AC8 /* Sources */,
 				546C1217FC489852A11ECB00 /* Frameworks */,
+				8289A0BF22E709A90088E156 /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -2542,6 +2608,7 @@
 				821A5E87212DAECE00BF593D /* IRNodeObjectSelector.cpp in Sources */,
 				10405817221AC96900E82FED /* IRFileManager.cpp in Sources */,
 				2DA77FA88E511A7404C673DF /* include_juce_audio_utils.mm in Sources */,
+				8289A0C322E7567A0088E156 /* IRSimpleController.cpp in Sources */,
 				61F9D2348AEE783393DFAD35 /* include_juce_core.mm in Sources */,
 				10F64769222703F600A26D7D /* IRObjectCreater.cpp in Sources */,
 				821A5A942249290F00F11668 /* IRAudio.cpp in Sources */,
@@ -2608,6 +2675,7 @@
 				BAC07B81710E9DE23503547C /* include_juce_gui_extra.mm in Sources */,
 				2E1EF2C4A310C35FE2553764 /* include_juce_opengl.mm in Sources */,
 				82C08ADF22752E8800938726 /* IRWorkSpaceLinkManager.cpp in Sources */,
+				8289A0B822DF58B90088E156 /* IRDescriptorBank.cpp in Sources */,
 				10405845221ADAF200E82FED /* Main.cpp in Sources */,
 				823E7BD22133012B0046512B /* IRWaveformObject.cpp in Sources */,
 				10F647442226C4E700A26D7D /* PreferenceWindow.cpp in Sources */,

@@ -11,6 +11,7 @@
 #include "JuceHeader.h"
 #include "IRAudioReader.hpp"
 #include "IRDescriptor.h"
+#include "IRDescriptorBank.hpp"
 #include "IRAudioDescriptor.hpp"
 #include "KLib.h"
 #include "KeAnimationComponent.h"
@@ -100,14 +101,28 @@ public:
     
     File getFile() const { return this->file; }
     
-    IRDescriptor* getDescriptor() { return this->descriptor.get(); }
-    
-    bool operateAnalysis(FFTDescriptor descriptor);
-    
+    //IRDescriptor* getDescriptor() { return this->descriptor.get(); }
+    // ===========================================================================
+
+    bool operateAnalysis(FFTDescriptor descriptor, int fftsize, int hopsize);
+    bool operateFFTAnalysis(int fftsize, int hopsize);
+    void operateLinearPower(int fftsize, int hopsize);
+
     void operateBasicDescriptors();
     void operateFlatness();
     
-    void operateLinearPower();
+    // bool
+    bool isCalculated(FFTDescriptor d, int fftsize = 2048);
+    
+    //get descriptor
+    IRDescriptorStr* getDescriptor(FFTDescriptor d, int fftsize);
+    
+    // descriptor list
+    Array<std::string> getDescriptorNameList() const { return this->analyzer.getDescriptorNameList(); }
+    
+    // ===========================================================================
+
+    
 private:
     // ===========================================================================
     //thread related methods
@@ -156,11 +171,13 @@ private:
     //thumbnail
     AudioThumbnail* thumbnail = nullptr;
     
-    std::shared_ptr<IRFFTDescriptor> analyzer;
+    //std::shared_ptr<IRFFTDescriptor> analyzer;
+    
+    IRDescriptorBank analyzer;
     
     // ===========================================================================
     // descriptor
-    std::shared_ptr<IRDescriptor> descriptor;
+    //std::shared_ptr<IRDescriptor> descriptor;
 
     // ===========================================================================
 

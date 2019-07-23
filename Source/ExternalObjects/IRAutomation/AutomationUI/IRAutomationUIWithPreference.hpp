@@ -43,6 +43,9 @@ private:
     // ==================================================
     bool isFileImportCompletedFlag = false;
     
+    
+    int fftsize = 2048;
+    int hopsize = 1024;
     // ==================================================
     
     std::shared_ptr<IRAutomationObjectPreference> preference;

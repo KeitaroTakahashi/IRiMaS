@@ -44,14 +44,13 @@ public:
                 buffer[i] *= this->window[i];
     }
     
-    std::vector<float> windowingVector(std::vector<float>buffer, int length = 0){
-        if(length == 0) { length = this->framesize; }
-        if(this->windowType != TYPE::NONE)
-            for(int i=0;i<length;i++)
-                buffer[i] *= this->window[i];
-
+    void windowingVector(float* src, float* dest, int len){
         
-        return buffer;
+        if(this->windowType == TYPE::NONE) return;
+        
+            for(int i=0;i<len;i++)
+                dest[i] = src[i] * this->window[i];
+
     }
     // ------------------------------------------------------------
     // reset framesize

@@ -6,3 +6,84 @@
 //
 
 #include "IRWaveformObjectUI2.hpp"
+
+IRWaveformObjectUI2::IRWaveformObjectUI2(IRNodeObject* parent) :
+IRUIFoundation(parent)
+{
+    this->waveform = std::make_shared<IRWaveformObjectUI>(parent);
+    this->waveformView = std::make_shared<IRViewUI>(this->waveform.get(),
+                                                    0, 40,
+                                                    0, 40);
+    
+    addAndMakeVisible(this->waveformView.get());
+    
+    this->waveformView->visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
+
+    
+    this->waveform->zoomInClickedCallback = [this]{ zoomInClicked(); };
+    this->waveform->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
+    
+}
+
+IRWaveformObjectUI2::~IRWaveformObjectUI2()
+{
+    this->waveform.reset();
+    this->waveformView.reset();
+}
+
+// ==================================================
+void IRWaveformObjectUI2::resized()
+{
+    int x = this->xMargin;
+    int y = this->yMargin;
+    int w = getWidth() - this->xMargin*2;
+    int h = getHeight() - this->yMargin*2;
+    
+    this->waveformView->setBounds(x, y, w, h);
+    this->waveformView->setViewPosition(this->previousOffsetX, 0);
+    this->waveformView->setComponentBounds(0,
+                                            0,
+                                            w * this->automation_width_ratio,
+                                            h - this->scrollSpace);
+}
+
+void IRWaveformObjectUI2::paint(Graphics& g)
+{
+    g.fillAll(SYSTEMCOLOUR.background);
+    
+    g.setColour (SYSTEMCOLOUR.contents);
+    //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
+    g.drawRect(getLocalBounds().toFloat(), 1.0);
+}
+
+// ==================================================
+
+
+void IRWaveformObjectUI2::visibleAreaChanged(Rectangle<int> area)
+{
+    this->waveform->setVisibleArea(area);
+    this->waveformView->setVisibleArea(area);
+    this->previousOffsetX = area.getX();
+}
+
+// ==================================================
+
+void IRWaveformObjectUI2::zoomInClicked()
+{
+    this->automation_width_ratio *= 2;
+    resized();
+    //this->waveform->reCalcPos();
+}
+
+void IRWaveformObjectUI2::zoomOutClicked()
+{
+    this->automation_width_ratio /= 2;
+    resized();
+    //this->automation->reCalcPos();
+    
+}
+
+void IRWaveformObjectUI2::setEditMode(bool newEditMode)
+{
+    this->waveform->setEditMode(newEditMode);
+}

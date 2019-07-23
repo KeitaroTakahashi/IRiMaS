@@ -14,6 +14,16 @@ void IRWaveformObjectUI::mouseDown(const MouseEvent& e)
     
     // play selected area
     playSelectedArea();
+    
+    // show controller
+    
+    if(e.mods.isCtrlDown())
+    {
+        addAndMakeVisible(&this->controller);
+    }else{
+        if(this->controller.isVisible())
+            removeChildComponent(&this->controller);
+    }
 }
 
 

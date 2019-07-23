@@ -37,7 +37,7 @@ public:
     
     void demoData(int num);
     
-    void setDescriptor(IRAnalysisDataStr& data);
+    void setDescriptor(IRDescriptorStr* data);
     
     void openFile();
     void openFile(String path);
@@ -99,66 +99,7 @@ private:
     
     // ==================================================
 
-    int gridSize = 30;
-    
-    IRMeasureGrid verticalGrid;
-    IRMeasureGrid horizontalGrid;
-    
-    
-    class ComponentForViewPort : public Component
-    {
-    public:
-        ComponentForViewPort(InteractiveAutomation* automation,
-                             IRMeasureGrid* verticalGrid,
-                             IRMeasureGrid* horizontalGrid,
-                             int gridSize) : gridSize(gridSize)
-        {
-            this->automation = automation;
-            this->verticalGrid = verticalGrid;
-            this->horizontalGrid = horizontalGrid;
-            
-            addAndMakeVisible(automation);
-            addAndMakeVisible(verticalGrid);
-            addAndMakeVisible(horizontalGrid);
 
-        }
-        
-        ~ComponentForViewPort() {}
-        
-        void resized() override
-        {
-            this->automation->setBounds(this->gridSize,
-                                        this->gridSize,
-                                        getWidth() - this->gridSize,
-                                        getHeight() - this->gridSize);
-            this->verticalGrid->setBounds(0,
-                                          this->gridSize,
-                                          this->gridSize,
-                                          getHeight() - this->gridSize);
-            this->verticalGrid->createGrids();
-            this->horizontalGrid->setBounds(this->gridSize,
-                                            0,
-                                            getWidth() - this->gridSize,
-                                            this->gridSize);
-            this->horizontalGrid->createGrids();
-        }
-        
-        void setVisibleArea(Rectangle<int> area)
-        {
-            this->verticalGrid->setBounds(area.getX(),
-                                          this->gridSize,
-                                          this->gridSize,
-                                          getHeight() - this->gridSize);
-        }
-        
-        InteractiveAutomation* automation;
-        IRMeasureGrid* verticalGrid;
-        IRMeasureGrid* horizontalGrid;
-        
-        int gridSize;
-    };
-    
-    std::shared_ptr<ComponentForViewPort> componentForViewPort;
     // ==================================================
 
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

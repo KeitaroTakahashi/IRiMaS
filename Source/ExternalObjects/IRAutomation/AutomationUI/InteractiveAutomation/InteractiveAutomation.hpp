@@ -4,13 +4,10 @@
 //
 //  Created by Keitaro on 29/04/2019.
 //
-
 #ifndef InteractiveAutomation_hpp
 #define InteractiveAutomation_hpp
-
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <algorithm>
-
 #include "IRUIFoundation.hpp"
 #include "AutomationVertex.hpp"
 #include "VertecesSelector.h"
@@ -18,17 +15,13 @@
 #include "IRMouseGrid.h"
 #include "IRMeasureGrid.hpp"
 
-
-
 using namespace IRAutomation;
-
 
 class InteractiveAutomation : public IRUIFoundation
 {
 public:
     
     // ==================================================
-    
     InteractiveAutomation(IRNodeObject* nodeObject);
     ~InteractiveAutomation();
     // ==================================================
@@ -78,7 +71,6 @@ public:
     // --------------------------------------------------
     Array<IRAutomationVertexComponent* > getVerteces() { return this->verteces; }
     
-    
     // --------------------------------------------------
     // ==================================================
     
@@ -109,9 +101,8 @@ public:
     // test
     void demoData(int num);
     
-    void setDescriptor(IRAnalysisDataStr& data);
+    void setDescriptor(IRDescriptorStr* data);
 
-    
     // ==================================================
     
     void doReCalcPos() { this->isCalcPosFlag = true; }
@@ -135,7 +126,6 @@ private:
     int previousOffsetX = 0;
     Rectangle<int> visibleArea;
     
-    
     float automation_width_ratio = 1.0;
     float automation_height_ratio = 1.0;
     
@@ -144,7 +134,6 @@ private:
     std::vector<IRAutomationVertexPos* > vertexBuffer;
     Array<IRAutomationVertexComponent* > verteces;
     Array<IRAutomationVertexComponent* > selectedVerteces;
-    
     
     float MaxVertexValue = -999999;
     float MinVertexValue = 999999;
@@ -162,13 +151,11 @@ private:
     // ==================================================
 
     bool isCommentShowFlag = false;
-    
     bool isBezierShowFlag = false;
     
     // ==================================================
     
     Point<int> currentMousePos {0, 0};
-    
     
     // ==================================================
     
@@ -181,12 +168,9 @@ private:
     void IRKeyPressed(int keyCode,String keyText) override;
     // ==================================================
     
-    
     bool isCalcPosFlag = true;
 
     // ==================================================
-
-    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InteractiveAutomation)
     

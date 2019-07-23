@@ -15,10 +15,16 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "void juce::EdgeTable::iterate&lt;juce::RenderingHelpers::EdgeTableFillers::TransformedImageFill&lt;juce::PixelRGB, juce::PixelARGB, false&gt; &gt;(juce::RenderingHelpers::EdgeTableFillers::TransformedImageFill&lt;juce::PixelRGB, juce::PixelARGB, false&gt;&amp;) const"
+                  symbolName = "std::__1::function&lt;juce::String (bool, int)&gt;::function&lt;juce::AudioParameterBool::AudioParameterBool(juce::String const&amp;, juce::String const&amp;, bool, juce::String const&amp;, std::__1::function&lt;juce::String (bool, int)&gt;, std::__1::function&lt;bool (juce::String const&amp;)&gt;)::$_10, void&gt;(juce::AudioParameterBool::AudioParameterBool(juce::String const&amp;, juce::String const&amp;, bool, juce::String const&amp;, std::__1::function&lt;juce::String (bool, int)&gt;, std::__1::function&lt;bool (juce::String const&amp;)&gt;)::$_10)"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "322">
+                  urlString = "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/functional"
+                  timestampString = "585590133.065766"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1760"
+                  endingLineNumber = "1760"
+                  offsetFromSymbolStart = "18">
                </Location>
             </Locations>
          </BreakpointContent>

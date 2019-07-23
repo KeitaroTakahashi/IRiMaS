@@ -52,6 +52,7 @@ public:
         fftw_execute(this->p);
     }
     // ------------------------------------------------------------
+    /*
     void setSamples(float* buffer, int begin, int length = -1)
     {
         if(length == -1) length = this->fftsize;
@@ -59,6 +60,15 @@ public:
         
         for(int i=0;i<length;i++){
             in[i][0] = buffer[begin + i];
+            in[i][1] = 0;
+        }
+    }*/
+    
+    void setSamples(float* buffer, int length)
+    {
+        for(int i=0;i<length;i++)
+        {
+            in[i][0] = buffer[i];
             in[i][1] = 0;
         }
     }

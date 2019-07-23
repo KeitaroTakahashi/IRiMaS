@@ -11,6 +11,8 @@
 #include "IRWaveform.hpp"
 #include "IRNodeObjectSelector.hpp"
 #include "IRGraphSelector.hpp"
+#include "IRViewUI.hpp"
+#include "IRWaveformController.h"
 
 class IRWaveformObjectUI : public IRWaveform
 {
@@ -77,12 +79,31 @@ public:
     virtual void audioPtrDelivery(IRAudio *obj) override;
     
     // ==================================================
+    void setVisibleArea(Rectangle<int> area);
     
+    std::function<void()> zoomInClickedCallback = nullptr;
+    std::function<void()> zoomOutClickedCallback = nullptr;
+    std::function<void()> commentClickedCallback = nullptr;
+
+    // ==================================================
+
 private:
+    // ==================================================
+    IRWaveformController controller;
+    int previousOffsetX = 0;
+    Rectangle<int> visibleArea;
+    
+    void zoomInClicked();
+    void zoomOutClicked();
+    void commentClicked();
+    // ==================================================
+
     
     IRGraphSelector* selector;
 
     IRNodeObject::Listener* parentListener;
+    
+    
 
     bool selectFlag = true;
     bool selectModeFlag = false;

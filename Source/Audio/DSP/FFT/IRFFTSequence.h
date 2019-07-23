@@ -24,74 +24,96 @@ public:
     windowLib(fftsize, windowType)
     {
     }
+    
+    IRFFTSequence() :
+    IRFFT(1024),
+    fftsize(1024),
+    hopsize(512),
+    windowType(IRWindow::TYPE::HANNING),
+    windowLib(fftsize, windowType)
+    {
+        
+    }
     // ------------------------------------------------------------
     ~IRFFTSequence() {}
     // ------------------------------------------------------------
-    void setAudioData(std::vector<float> data)
+    void setAudioData(float* data, unsigned long len)
     {
         this->data = data;
-        makeSegment();
+        this->len = len;
+        //makeSegment();
     }
 
     void FFT()
     {
+        int i, j;
+        unsigned long currentIndex = 0;
+        unsigned long numFrameSize = 0;
+
+        unsigned long hop = (unsigned long)this->hopsize;
+        
+        // store current frame
+        float* frame = new float [this->fftsize];
+        
         this->complexResult.clear();
-        this->complexResult.reserve(getNumFrame());
         fftForwardSetup();
-        for(int i=0; i<getNumFrame(); i++)
+        
+        // calc a number of frames
+        while(1)
         {
-            
-            setSamples(&this->frameData[i][0], 0, this->fftsize);
-            fftExecute();
-            this->complexResult.push_back(copyComplexData(getComplexResult()));
+            // check if there is enough data, if not, break this loop
+            if((currentIndex + this->fftsize) >= this->len) break;
+            currentIndex += hop;
+            numFrameSize ++;
         }
+        this->power.clear();
+        this->power = std::vector<float>(numFrameSize * this->ffthalfsize, 0.0);
+        currentIndex = 0;
+        // for each frame...
+        for(i=0;i<numFrameSize;i++)
+        {
+           
+            // windowing
+            this->windowLib.windowingVector(&this->data[currentIndex],
+                                            frame,
+                                            this->fftsize);
+            
+            setSamples(frame, this->fftsize);
+            fftExecute();
+            // cartopol
+            fftw_complex* c = getComplexResult();
+            unsigned long yIndex = i * this->ffthalfsize;
+            for(j=0;j<this->ffthalfsize;j++)
+            {
+                this->power[yIndex + j] = sqrt(c[j][0] * c[j][0] +
+                                               c[j][1] * c[j][1]);
+                
+            }
+            currentIndex += hop;
+        }
+        
+        this->nframe = numFrameSize;
+        
+        std::cout << "FFT analysis result numFrame = " << this->nframe << std::endl;
+        
         destroySetup();
-        
         this->hasFFTOperatedFlag = true;
-        
+        delete[] frame;
     }
     
     void IFFT()
     {
         fftBackwardSetup();
-        
         destroySetup();
     }
-    
-    void cartopol()
-    {
-        int i,j;
-        this->maxPower.clear();
-        this->maxPower.reserve(getNumFrame());
-        this->power.clear();
-        this->power = std::vector<std::vector<float>>(getNumFrame(),
-                                                      std::vector<float>(this->ffthalfsize));
-        /*
-        this->phase.clear();
-        this->phase = std::vector<std::vector<float>>(getNumFrame(),
-                                                      std::vector<float>(this->ffthalfsize));
-         */
-        
-        std::cout << "FFT cartopol getNumFrame = " << getNumFrame() << std::endl;
-        float max = 0;
-        for(i=0;i<getNumFrame();i++)
-        {
-            fftw_complex* c = this->complexResult[i];
-            max = 0;
-            for(j=0;j<this->ffthalfsize;j++){
-                this->power[i][j] = (sqrt(c[j][0] * c[j][0] + c[j][1] * c[j][1]));
-                if(this->power[i][j] > max) max = this->power[i][j];
-            }
-            this->maxPower.push_back(max);
-        }
-    }
+   
     
     void calcDescriptors();
     
     // ------------------------------------------------------------
-    int getNumFrame() const { return (int)this->frameData.size(); }
+    unsigned long getNumFrame() const { return this->nframe; }
     std::vector<fftw_complex*> getComplexResultList() { return this->complexResult; }
-    std::vector<std::vector<float>> getPower() const { return this->power; }
+    std::vector<float> getPower() const { return this->power; }
     std::vector<float> getMaxPower() const { return this->maxPower; }
     
     bool hasFFTOperated()               const { return this->hasFFTOperatedFlag; }
@@ -99,7 +121,7 @@ public:
     int getHopSize() const { return this->hopsize; }
     // ============================================================
 private:
-    
+    /*
     void makeSegment()
     {
         int currentIndex = 0;
@@ -135,16 +157,18 @@ private:
         
         std::cout << "audio segment for FFT made. nframe = " << this->frameData.size() << " : fftsize = " << getFFTSize() << " : hopsize = " << getHopSize() <<std::endl;
     }
-    
+    */
     int fftsize;
     int hopsize;
+    unsigned long nframe = 0;
     
-    std::vector<float> data;
+    float* data;
+    unsigned long len = 0;
     std::vector<std::vector<float>> frameData;
     std::vector<fftw_complex*> complexResult;
-    std::vector<std::vector<float>> power;
+    std::vector<float> power;
     std::vector<float> maxPower;
-    std::vector<std::vector<float>> phase;
+    std::vector<float> phase;
     
     IRWindow::TYPE windowType;
     

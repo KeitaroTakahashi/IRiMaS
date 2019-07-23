@@ -8,8 +8,8 @@ IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IR
 {
     
     std::cout << "IRWaveformObject " << this << std::endl;
-    this->waveform = new IRWaveformObjectUI(this);
-    this->waveform->addChangeListener(this);
+    this->waveform = new IRWaveformObjectUI2(this);
+    this->waveform->getWaveformUI()->addChangeListener(this);
     //this->waveform->addKeyListener(this);
     this->waveform->setBounds(this->xMargin,
                               this->yMargin,
@@ -26,9 +26,9 @@ IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IR
     this->selector = new IRObjectSelection<Component*>();
     
     // in case this object uses any AudioSources, we must register this to the internal mixer by this method.
-    addAudioComponent(this->waveform->getPlayer());
+    addAudioComponent(this->waveform->getWaveformUI()->getPlayer());
     
-    setSize(300,100);
+    setSize(400,150);
     
     clearLinkParam();
     addLinkParam(AudioLinkFlag);
@@ -37,7 +37,6 @@ IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IR
     
     
 }
-
 
 IRWaveformObject::~IRWaveformObject()
 {
@@ -48,14 +47,12 @@ IRWaveformObject::~IRWaveformObject()
    
 }
 
-
 // copy constructor
 IRNodeObject* IRWaveformObject::copyThis()
 {
     std::cout << "IRWaveformObject copyThis " << this << std::endl;
     return new IRWaveformObject(this->parent);
 }
-
 
 IRNodeObject* IRWaveformObject::copyContents(IRNodeObject* object)
 {
@@ -64,12 +61,12 @@ IRNodeObject* IRWaveformObject::copyContents(IRNodeObject* object)
     // temporary set the same bounds to calculate all other child components at the right positions.
     obj->setBounds(getLocalBounds());
     // open the same audio file
-    obj->waveform->openFile(this->waveform->getPath());
+    obj->waveform->getWaveformUI()->openFile(this->waveform->getWaveformUI()->getPath());
     // add all selectionSquares
-    for(auto o : this->waveform->selectionSquareObjects)
+    for(auto o : this->waveform->getWaveformUI()->selectionSquareObjects)
     {
         Rectangle<int>rect(o->getX(), o->getY(), o->getWidth(), o->getHeight());
-        obj->waveform->createSquareObject(rect);
+        obj->waveform->getWaveformUI()->createSquareObject(rect);
     }
     return obj;
 }
@@ -78,19 +75,28 @@ IRNodeObject* IRWaveformObject::copyDragDropContents(IRNodeObject* object)
 {
     IRWaveformObject* obj = static_cast<IRWaveformObject*>(object);
     
-    obj->waveform->openFile(this->waveform->getPath());
+    obj->waveform->getWaveformUI()->openFile(this->waveform->getWaveformUI()->getPath());
     
-    for(auto o : this->waveform->selectedSquareObjectList)
+    for(auto o : this->waveform->getWaveformUI()->selectedSquareObjectList)
     {
         //obj->setBounds(o->getX(), o->getY(), o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
         
-        obj->setSize(o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
+        //obj->setSize(o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
+        obj->setSize(o->getWidth() + // width
+                     this->waveform->getGridSize() +
+                     this->waveform->getXMargin()*2,
+                     o->getHeight() + // height
+                     this->waveform->getGridSize() +
+                     this->waveform->getYMargin()*2 +
+                     this->waveform->getScrollSpace());
+        
+
         
         Rectangle<float> bounds = o->getBoundsInRatio();
-        double startms = ((double)this->waveform->getStart() + (float)this->waveform->getDisplayDuration()*bounds.getX());
-        double durationms = ((double)this->waveform->getDisplayDuration() * bounds.getWidth());
-        obj->waveform->setStart(startms);
-        obj->waveform->setDisplayDuration(durationms);
+        double startms = ((double)this->waveform->getWaveformUI()->getStart() + (float)this->waveform->getWaveformUI()->getDisplayDuration()*bounds.getX());
+        double durationms = ((double)this->waveform->getWaveformUI()->getDisplayDuration() * bounds.getWidth());
+        obj->waveform->getWaveformUI()->setStart(startms);
+        obj->waveform->getWaveformUI()->setDisplayDuration(durationms);
     }
     
     return obj;
@@ -103,7 +109,7 @@ t_json IRWaveformObject::saveThisToSaveData()
  
     std::vector<t_json> selectionData;
     int index = 0;
-    for(auto o : this->waveform->selectionSquareObjects)
+    for(auto o : this->waveform->getWaveformUI()->selectionSquareObjects)
     {
         t_json d = t_json::object({
             {"rect_"+std::to_string(index), t_json::array({o->getX(), o->getY(), o->getWidth(), o->getHeight()})}
@@ -117,9 +123,9 @@ t_json IRWaveformObject::saveThisToSaveData()
     Rectangle<int> wb = this->waveform->getBounds();
     t_json save_waveform = t_json::object({
         {"bounds", t_json::array({wb.getX(), wb.getY(), wb.getWidth(), wb.getHeight()})},
-        {"start_ms",this->waveform->getStart()},
-        {"duration_ms", this->waveform->getDisplayDuration()},
-        {"filePath", this->waveform->getPath().toStdString()},
+        {"start_ms",this->waveform->getWaveformUI()->getStart()},
+        {"duration_ms", this->waveform->getWaveformUI()->getDisplayDuration()},
+        {"filePath", this->waveform->getWaveformUI()->getPath().toStdString()},
         {"selectionObj", selectionData}
     });
     
@@ -137,9 +143,9 @@ void IRWaveformObject::loadThisFromSaveData(t_json data)
     t_json w = data["waveform"];
     
     std::cout << "waveform : start ms = " << w["start_ms"].number_value() << std::endl;
-    this->waveform->setStart(w["start_ms"].number_value());
-    this->waveform->setDisplayDuration(w["duration_ms"].number_value());
-    this->waveform->openFile(w["filePath"].string_value());
+    this->waveform->getWaveformUI()->setStart(w["start_ms"].number_value());
+    this->waveform->getWaveformUI()->setDisplayDuration(w["duration_ms"].number_value());
+    this->waveform->getWaveformUI()->openFile(w["filePath"].string_value());
     t_json::array selectionData = w["selectionObj"].array_items();
     std::cout << "selectionData count = " << selectionData.size() << std::endl;
     int index = 0;
@@ -149,7 +155,7 @@ void IRWaveformObject::loadThisFromSaveData(t_json data)
         
         Rectangle<int>rect(s[0].int_value(), s[1].int_value(), s[2].int_value(), s[3].int_value());
         
-        this->waveform->createSquareObject(rect);
+        this->waveform->getWaveformUI()->createSquareObject(rect);
         
         index++;
     }
@@ -202,9 +208,9 @@ void IRWaveformObject::mouseDownEvent(const MouseEvent& e)
     std::cout << "IRWaveform Object mouse down\n";
     
     IRNodeObject::mouseDownEvent(e);
-    if(this->waveform->isWaveformPainted())
+    if(this->waveform->getWaveformUI()->isWaveformPainted())
     {
-        double displayedDuration = this->waveform->getDisplayDuration();
+        double displayedDuration = this->waveform->getWaveformUI()->getDisplayDuration();
         double mouseDownProportion = (double)e.getMouseDownX() / (double) getWidth();
         double startTime = displayedDuration * mouseDownProportion;
         //this->waveform->setStart(startTime);
@@ -215,9 +221,9 @@ void IRWaveformObject::mouseDownEvent(const MouseEvent& e)
 
 void IRWaveformObject::changeListenerCallback(ChangeBroadcaster* source)
 {
-    if(source == this->waveform)
+    if(source == this->waveform->getWaveformUI())
     {
-        switch(this->waveform->status)
+        switch(this->waveform->getWaveformUI()->status)
         {
             case IRWaveformObjectUI::DRAGOUT:
                 this->callDragOutNodeObjectFromParent();

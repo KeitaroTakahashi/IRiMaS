@@ -38,6 +38,10 @@ IRSpectrogramUI::~IRSpectrogramUI()
 {
     if(this->audioData != nullptr)
         getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+    
+    this->spectrogram->closeOpenGLComponent();
+    this->componentForViewPort.reset();
+    this->spectrogram.reset();
 }
 
 
