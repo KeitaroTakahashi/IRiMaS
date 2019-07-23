@@ -9,8 +9,9 @@
 #define IRSpectrogramUI_hpp
 
 #include "IRSpectrogram.hpp"
-#include "IRViewPort.hpp"
+#include "IRSpectrogramViewPort.hpp"
 #include "IRMeasureGrid.hpp"
+
 
 
 class IRSpectrogramUI : public IRUIFoundation,
@@ -53,12 +54,6 @@ private:
     //UI
     IRSpectrogramUIStatus status;
     IRNodeObject* parent;
-
-    
-    int gridSize = 30;
-    
-    IRMeasureGrid verticalGrid;
-    IRMeasureGrid horizontalGrid;
     
     // audio data
     void getFilePtr(File file);
@@ -66,8 +61,12 @@ private:
     DataAllocationManager<IRAudio>* audioData = nullptr;
     File file;
     String path;
-    //
-    IRViewPort spectrogramView;
+    // ==================================================
+    //ViewPort
+    std::shared_ptr<IRSpectrogramViewUI> spectrogramView;
+    std::shared_ptr<IRSpectrogram> spectrogram;
+    float spectrogram_width_ratio = 1.0;
+    
     void zoomInClicked();
     void zoomOutClicked();
     void visibleAreaChanged(Rectangle<int> area);
@@ -84,66 +83,9 @@ private:
     void setMovable(bool movable, bool verticalMovable, bool horizontalMovable);
     
     // ==================================================
-    std::shared_ptr<IRSpectrogram> spectrogram;
-    float spectrogram_width_ratio = 1.0;
+    
     
     // ==================================================
-
-    
-    class ComponentForViewPort : public Component
-    {
-    public:
-        ComponentForViewPort(IRSpectrogram* spectrogram,
-                             IRMeasureGrid* verticalGrid,
-                             IRMeasureGrid* horizontalGrid,
-                             int gridSize) : gridSize(gridSize)
-        {
-            this->spectrogram = spectrogram;
-            this->verticalGrid = verticalGrid;
-            this->horizontalGrid = horizontalGrid;
-            
-            addAndMakeVisible(spectrogram);
-            addAndMakeVisible(verticalGrid);
-            addAndMakeVisible(horizontalGrid);
-            
-        }
-        
-        ~ComponentForViewPort() {}
-        
-        void resized() override
-        {
-            this->spectrogram->setBounds(this->gridSize,
-                                         this->gridSize,
-                                         getWidth() - this->gridSize,
-                                         getHeight() - this->gridSize);
-            this->verticalGrid->setBounds(0,
-                                          this->gridSize,
-                                          this->gridSize,
-                                          getHeight() - this->gridSize);
-            this->verticalGrid->createGrids();
-            this->horizontalGrid->setBounds(this->gridSize,
-                                            0,
-                                            getWidth() - this->gridSize,
-                                            this->gridSize);
-            this->horizontalGrid->createGrids();
-        }
-        
-        void setVisibleArea(Rectangle<int> area)
-        {
-            this->verticalGrid->setBounds(area.getX(),
-                                          this->gridSize,
-                                          this->gridSize,
-                                          getHeight() - this->gridSize);
-        }
-        
-        IRSpectrogram* spectrogram;
-        IRMeasureGrid* verticalGrid;
-        IRMeasureGrid* horizontalGrid;
-        
-        int gridSize;
-    };
-    
-    std::shared_ptr<ComponentForViewPort> componentForViewPort;
 
     // ==================================================
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

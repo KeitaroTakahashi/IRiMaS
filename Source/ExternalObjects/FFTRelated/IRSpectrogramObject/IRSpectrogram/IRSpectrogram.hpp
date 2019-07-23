@@ -10,7 +10,7 @@
 
 #include "IRUIAudioFoundation.hpp"
 #include "GLSLSpectrogram.hpp"
-#include "IRSpetrogramController.h"
+#include "IRSpectrogramController.h"
 
 class IRSpectrogram : public IRUIAudioFoundation,
 private Timer
@@ -47,6 +47,13 @@ public:
     
     void closeOpenGLComponent();
     
+    // ==================================================
+
+    std::function<void()> zoomInClickedCallback = nullptr;
+    std::function<void()> zoomOutClickedCallback = nullptr;
+
+    // ==================================================
+
 private:
     
     // ==================================================

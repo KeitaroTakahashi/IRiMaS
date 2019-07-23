@@ -19,7 +19,6 @@ IRUIFoundation(parent)
     
     this->waveformView->visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
 
-    
     this->waveform->zoomInClickedCallback = [this]{ zoomInClicked(); };
     this->waveform->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
     

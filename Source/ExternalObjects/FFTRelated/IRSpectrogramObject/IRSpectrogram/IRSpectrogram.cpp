@@ -223,14 +223,13 @@ void IRSpectrogram::loadDrawData(IRDescriptorStr* data)
 
 void IRSpectrogram::setVisibleArea(Rectangle<int> area)
 {
-    this->visibleArea = area;
-    
     int s = getHeight();
     if(s > 50) s = 50;
     int y = getHeight() / 2 - s / 2;
     this->visibleArea = area;
-    this->controller.setBounds(this->visibleArea.getX(), y, getWidth(), s);
-    
+    //this->controller.setBounds(this->visibleArea.getX(), y, getWidth(), s);
+    //this->controller.setBounds(0, y, getWidth(), s);
+
     this->previousOffsetX = this->visibleArea.getX();
     
     std::cout << "w, h " << getWidth() << std::endl;
@@ -281,6 +280,14 @@ void IRSpectrogram::mouseDown(const MouseEvent &e)
         loadDrawData(data->getDescriptor(FFTDescriptor::FFT_LinearPower,
                                          this->fftsize));
 
+    }
+    
+    if(e.mods.isCtrlDown())
+    {
+        addAndMakeVisible(&this->controller);
+    }else{
+        if(this->controller.isVisible())
+            removeChildComponent(&this->controller);
     }
     
     updateFragment();
@@ -442,3 +449,23 @@ void IRSpectrogram::fileImportCompleted()
     // call virtual function
     fileImportCompletedAction();
 }
+// ==================================================
+//Controller
+
+void IRSpectrogram::zoomInClicked()
+{
+    if(this->zoomInClickedCallback != nullptr)
+        this->zoomInClickedCallback();
+}
+void IRSpectrogram::zoomOutClicked()
+{
+    if(this->zoomOutClickedCallback != nullptr)
+        this->zoomOutClickedCallback();
+}
+void IRSpectrogram::commentClicked()
+{
+    //showComment
+}
+
+
+// ==================================================

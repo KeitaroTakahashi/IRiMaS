@@ -8,29 +8,26 @@
 #include "IRSpectrogramUI.hpp"
 
 IRSpectrogramUI::IRSpectrogramUI(IRNodeObject* nodeObject) :
-IRUIFoundation(nodeObject),
-verticalGrid(IRGridStr::IRMeasureGridType::VERTICAL),
-horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
+IRUIFoundation(nodeObject)
 {
     this->parent = nodeObject;
     
-    addAndMakeVisible(&this->spectrogramView);
     
     this->spectrogram = std::make_shared<IRSpectrogram>(nodeObject);
     
-    this->verticalGrid.setRange(0, 40);
-    this->verticalGrid.addMouseListener(this, false);
+    this->spectrogramView = std::make_shared<IRSpectrogramViewUI>(this->spectrogram.get(),
+                                                       0, 40,
+                                                       0, 40);
     
-    this->horizontalGrid.setRange(0, 40);
-    this->horizontalGrid.addMouseListener(this, false);
+    addAndMakeVisible(this->spectrogramView.get());
+
+    this->spectrogramView->visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area);};
     
-    this->componentForViewPort = std::make_shared<ComponentForViewPort>(this->spectrogram.get(),
-                                                                        &this->verticalGrid,
-                                                                        &this->horizontalGrid,
-                                                                        this->gridSize);
+    this->spectrogram->zoomInClickedCallback = [this]{ zoomInClicked(); };
+    this->spectrogram->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
+
     
-    this->spectrogramView.setViewedComponent(this->componentForViewPort.get());
-    this->spectrogramView.visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
+    
 
 }
 
@@ -40,8 +37,8 @@ IRSpectrogramUI::~IRSpectrogramUI()
         getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
     
     this->spectrogram->closeOpenGLComponent();
-    this->componentForViewPort.reset();
     this->spectrogram.reset();
+    this->spectrogramView.reset();
 }
 
 
@@ -64,18 +61,16 @@ void IRSpectrogramUI::resized()
     int w = getWidth() - this->xMargin*2;
     int h = getHeight() - this->yMargin*2;
     
-    int spectrogramMarginY = 20;
+    int spectrogramMarginY = 10;
     
-    this->spectrogramView.setBounds(x, y, w, h);
-    this->spectrogramView.setViewPosition(this->previousOffsetX, 0);
+    this->spectrogramView->setBounds(x, y, w, h);
+    this->spectrogramView->setViewPosition(this->previousOffsetX, 0);
+    this->spectrogramView->setComponentBounds(0,
+                                              0,
+                                              w * this->spectrogram_width_ratio,
+                                              h - spectrogramMarginY);
     
-    
-    
-    
-    this->componentForViewPort->setBounds(0,
-                                          0,
-                                          w * this->spectrogram_width_ratio,
-                                          h - spectrogramMarginY);
+    std::cout << "IRSpectrogramUI resized \n";
     
 
 }
@@ -99,9 +94,9 @@ void IRSpectrogramUI::setMovable(bool movable, bool verticalMovable, bool horizo
 
 void IRSpectrogramUI::visibleAreaChanged(Rectangle<int> area)
 {
+    std::cout << "IRSpectrogramUI::visibleAreaChanged\n";
     this->spectrogram->setVisibleArea(area);
-    this->componentForViewPort->setVisibleArea(area);
-    
+    this->spectrogramView->setVisibleArea(area);
     this->previousOffsetX = area.getX();
 }
 
@@ -177,3 +172,19 @@ void IRSpectrogramUI::fileImportCompleted()
     std::cout << "fileImportCompleted!\n";
     
 }
+// ==================================================
+//controller
+
+void IRSpectrogramUI::zoomInClicked()
+{
+    std::cout << "IRSpectrogramUI zoomInClicked!!\n";
+    this->spectrogram_width_ratio *= 2;
+    resized();
+}
+void IRSpectrogramUI::zoomOutClicked()
+{
+    this->spectrogram_width_ratio /= 2;
+    resized();
+}
+
+// ==================================================

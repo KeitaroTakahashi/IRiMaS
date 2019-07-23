@@ -15,16 +15,16 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "std::__1::function&lt;juce::String (bool, int)&gt;::function&lt;juce::AudioParameterBool::AudioParameterBool(juce::String const&amp;, juce::String const&amp;, bool, juce::String const&amp;, std::__1::function&lt;juce::String (bool, int)&gt;, std::__1::function&lt;bool (juce::String const&amp;)&gt;)::$_10, void&gt;(juce::AudioParameterBool::AudioParameterBool(juce::String const&amp;, juce::String const&amp;, bool, juce::String const&amp;, std::__1::function&lt;juce::String (bool, int)&gt;, std::__1::function&lt;bool (juce::String const&amp;)&gt;)::$_10)"
+                  symbolName = "std::__1::tuple_element&lt;0ul, std::__1::tuple&lt;juce::AudioParameterBool::AudioParameterBool(juce::String const&amp;, juce::String const&amp;, bool, juce::String const&amp;, std::__1::function&lt;juce::String (bool, int)&gt;, std::__1::function&lt;bool (juce::String const&amp;)&gt;)::$_10&amp;&amp;&gt; &gt;::type&amp; std::__1::get&lt;0ul, juce::AudioParameterBool::AudioParameterBool(juce::String const&amp;, juce::String const&amp;, bool, juce::String const&amp;, std::__1::function&lt;juce::String (bool, int)&gt;, std::__1::function&lt;bool (juce::String const&amp;)&gt;)::$_10&amp;&amp;&gt;(std::__1::tuple&lt;juce::AudioParameterBool::AudioParameterBool(juce::String const&amp;, juce::String const&amp;, bool, juce::String const&amp;, std::__1::function&lt;juce::String (bool, int)&gt;, std::__1::function&lt;bool (juce::String const&amp;)&gt;)::$_10&amp;&amp;&gt;&amp;)"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/functional"
-                  timestampString = "585590133.065766"
+                  urlString = "file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/tuple"
+                  timestampString = "585606835.590044"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1760"
-                  endingLineNumber = "1760"
-                  offsetFromSymbolStart = "18">
+                  startingLineNumber = "954"
+                  endingLineNumber = "954"
+                  offsetFromSymbolStart = "2">
                </Location>
             </Locations>
          </BreakpointContent>

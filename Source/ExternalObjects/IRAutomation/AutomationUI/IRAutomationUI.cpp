@@ -133,7 +133,6 @@ void IRAutomationUI::setMovable(bool movable, bool verticalMovable, bool horizon
 void IRAutomationUI::visibleAreaChanged(Rectangle<int> area)
 {
     this->automation->setVisibleArea(area);
-    //this->componentForViewPort->setVisibleArea(area);
     this->automationView->setVisibleArea(area);
     
     this->previousOffsetX = area.getX();
