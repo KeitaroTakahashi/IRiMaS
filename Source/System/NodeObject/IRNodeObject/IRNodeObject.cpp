@@ -78,7 +78,6 @@ void IRNodeObject::mouseDoubleClickEvent(const MouseEvent& e)
     
 }
 
-
 void IRNodeObject::mouseDragEvent(const MouseEvent& e)
 {
     

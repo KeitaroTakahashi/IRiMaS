@@ -234,7 +234,7 @@ void InteractiveAutomation::setVisibleArea(Rectangle<int> area) {
     this->controller->setBounds(this->visibleArea.getX(), y, getWidth(), s);
     
     this->previousOffsetX = this->visibleArea.getX();
-        
+    
     doReCalcPos();
 }
 
@@ -295,9 +295,7 @@ void InteractiveAutomation::reCalcPos()
     float max = -999999.9;
     float min = 999999.9;
     int i, j;
-    
-    int beginIndex = 0;
-    if(startIndex > 0) beginIndex = -1;
+
     for(i=0;i<visible_w;i++)
     {
         if(currentIndex >= v_size) break;

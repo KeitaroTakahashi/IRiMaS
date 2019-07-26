@@ -9,7 +9,7 @@ IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindo
     this->name = title;
     this->title = this->name + " (EDIT MODE)";
     setBounds(frameRect);
-    setOpaque(false);
+    //setOpaque(false);
     //setBufferedToImage(false);
     loadBackgroundImageLink(); // for LinkMode
     
@@ -50,10 +50,10 @@ IRWorkSpace::~IRWorkSpace()
 void IRWorkSpace::paint (Graphics& g)
 {
     std::cout << " ++++++ workspace repained! ++++++ \n";
-    g.fillAll(SYSTEMCOLOUR.background);
+    g.fillAll(Colours::white);
     
     // draw shadows for the selected objects
-    //drawShadows(g);
+    drawShadows(g);
     
     // paint all of
     /*
@@ -78,63 +78,54 @@ void IRWorkSpace::paint (Graphics& g)
 
 void IRWorkSpace::drawShadows(Graphics& g)
 {
-    
-    std::cout << "drawing... shadow of " << this->selector->getSelectedObjectList().size() << " items" << std::endl;
+   // std::cout << "drawing... shadow of " << this->selector->getSelectedObjectList().size() << " items" << std::endl;
     auto list = this->selector->getSelectedObjectList();
     
     for(auto obj : list)
     {
-        DropShadow shadow(SYSTEMCOLOUR.contents, obj->getBounds().getWidth(), Point<int>(0,0));
+        DropShadow shadow(SYSTEMCOLOUR.contents, 30, Point<int>(0,0));
         
         Rectangle<int> b = obj->getBounds();
-        Rectangle<int> bounds(b.getX() + 20, b.getY() + 30, b.getWidth(), b.getHeight());
+        Rectangle<int> bounds(b.getX(), b.getY(), b.getWidth(), b.getHeight());
         
         shadow.drawForRectangle(g, bounds);
+        
+        // we need to explicitly repaint the area of shadow, otherwise it won't be erased.
+        repaint(b.getX()-50, b.getY()-50, b.getWidth()+100, b.getHeight()+100);
     }
 }
+
 
 void IRWorkSpace::drawGrids(Graphics& g)
 {
     int w = getWidth();
     int h = getHeight();
 
-    g.setColour(Colours::lightgrey.brighter());
+    g.setColour(Colours::lightgrey.brighter().brighter());
     int i = 0;
-    while(i < w)
+    
+    Path p;
+    for(i=0;i<=w;i+=this->thick_grids_interval)
     {
-        // draw thick line
-        if((i % this->thick_grids_interval) == 0)
-        {
-            g.drawLine(i, 0, i, h, this->grid_thickness);
-        }else // draw thin line
-        {
-            
-            g.drawLine(i, 0, i, h, this->grid_thickness2);
-
-            //g.drawDashedLine(Line<float>(i,0,i,h), &myDashLength[0], 2, this->grid_thickness);
-        }
+        p.startNewSubPath(i, 0);
+        p.lineTo(i, h);
         
-        i += this->thin_grids_pixel;
+        p.startNewSubPath(0, i);
+        p.lineTo(w, i);
     }
-    
-    i = 0;
-    while(i < h)
+    p.closeSubPath();
+    g.strokePath(p, PathStrokeType(this->grid_thickness));
+
+    for(i=0;i<=w;i+=this->thin_grids_pixel)
     {
-        // draw thick line
-        if((i % this->thick_grids_interval) == 0)
-        {
-            g.drawLine(0, i, w, i, this->grid_thickness);
-        }else // draw thin line
-        {
-            g.drawLine(0, i, w, i, this->grid_thickness2);
-
-            //g.drawDashedLine(Line<float>(0,i,w,i), &myDashLength[0], 2, this->grid_thickness);
-        }
+        p.startNewSubPath(i, 0);
+        p.lineTo(i, h);
         
-        i += this->thin_grids_pixel;
+        p.startNewSubPath(0, i);
+        p.lineTo(w, i);
     }
-    
-    
+    p.closeSubPath();
+    g.strokePath(p, PathStrokeType(this->grid_thickness2));
 }
 
 void IRWorkSpace::resized()
@@ -200,6 +191,7 @@ void IRWorkSpace::mouseDrag(const MouseEvent& e)
                                    this->currentMousePosition.getY());
         }
     }
+    
     
 }
 

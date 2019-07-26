@@ -39,6 +39,8 @@ void IRWorkSpace::deleteSelectedObjects()
     {
         deleteObject(obj);
     }
+    
+    repaint();
 }
 // ------------------------------------------------------------
 

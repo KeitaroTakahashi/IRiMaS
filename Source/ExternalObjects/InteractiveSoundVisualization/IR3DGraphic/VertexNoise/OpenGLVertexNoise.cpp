@@ -19,7 +19,7 @@ lightingColour(0.71f, 1.0f, 0.77f, 1.0f)
     if(auto* peer = getPeer())
         peer->setCurrentRenderingEngine(0);
         
-    setOpaque(true);
+    setOpaque(false);
 
     openGLContext.setRenderer (this);
     openGLContext.attachTo (*this);
@@ -364,7 +364,8 @@ void OpenGLVertexNoise::createShaders()
     //File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/lighting_vertex.txt");
     File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/multipleLights_vertex.vert");
     
-    IRTextLoader vertexText (file.getFullPathName().toStdString());
+    IRTextLoader vertexText;
+    vertexText.load(file.getFullPathName().toStdString());
     
     this->vertexShader = vertexText.getConstChar();
     
@@ -372,7 +373,8 @@ void OpenGLVertexNoise::createShaders()
     // File file2 = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/lighting_fragment.txt");
     File file2 = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Lighting/multipleLights_fragment.frag");
     
-    IRTextLoader fragmentText (file2.getFullPathName().toStdString());
+    IRTextLoader fragmentText;
+    fragmentText.load(file2.getFullPathName().toStdString());
     
     this->fragmentShader = fragmentText.getConstChar();
     

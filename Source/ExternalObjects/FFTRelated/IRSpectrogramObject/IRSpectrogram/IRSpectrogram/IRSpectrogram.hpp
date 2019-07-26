@@ -29,7 +29,9 @@ public:
 
     void openFile();
     void getFilePtr(File file);
-
+    
+    void loadDescriptor();
+    void reCalcDescriptor();
     // ==================================================
     void mouseDown(const MouseEvent &e) override;
     void mouseMove(const MouseEvent& e) override;
@@ -41,7 +43,8 @@ public:
     
     void loadDrawData(IRDescriptorStr* data);
     
-    void setVisibleArea(Rectangle<int> area);
+    void setVisibleArea(Rectangle<int> area, Point<int> parentSize);
+    void parentSizeChanged(int w, int h);
     
     void setMagnitudeAmount(float val);
     
@@ -53,6 +56,9 @@ public:
     std::function<void()> zoomOutClickedCallback = nullptr;
 
     // ==================================================
+    
+    void setZoomRatio(Point<float> r) { this->zoomRatio = r; }
+    Point<float> getZoomRatio() const { return this->zoomRatio; }
 
 private:
     
@@ -83,6 +89,7 @@ private:
     IRSpectrogramController controller;
     int previousOffsetX = 0;
     Rectangle<int> visibleArea;
+    Point<int>      parentSize;
     
     void zoomInClicked();
     void zoomOutClicked();
@@ -92,19 +99,31 @@ private:
     //Spectrogram
     int sp_w = 100;
     int sp_h = 1024;
+    // max size of w and h of Spectrogram
+    // 1024
+    int MAX_TEXTURE_SIZE = 1024;
+    
+    float ratio_x = 1.0;
+    float ratio_y = 1.0;
+    
+    void calcPixel(IRDescriptorStr* data);
     
     float magnitudeAmount = 1.0;
     
     int fftsize = 2048;
     int hopsize = 1024;
     
+    Point<float> zoomRatio;
+
     // ==================================================
     //OpenGL
     OpenGLContext openGLContext;
     std::unique_ptr<OpenGLGraphicsContextCustomShader> shader;
     String fragmentCode;
     GLuint textureID;
+    IRTextLoader fragmentText;
     bool isTextureCreated = false;
+    bool updateTexture = false;
     float* buffer = nullptr;
     
     bool isOpenGLComponentClosed = false;

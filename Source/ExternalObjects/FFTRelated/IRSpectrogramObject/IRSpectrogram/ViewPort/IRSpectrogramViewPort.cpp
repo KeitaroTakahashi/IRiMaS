@@ -8,7 +8,7 @@
 #include "IRSpectrogramViewPort.hpp"
 
 
-IRSpectrogramViewUI::IRSpectrogramViewUI(IRSpectrogram* main,
+IRSpectrogramViewUI::IRSpectrogramViewUI(IRSpectrogramComponent* main,
                                          float vmin, float vmax,
                                          float hmin, float hmax) :
 verticalGrid(IRGridStr::IRMeasureGridType::VERTICAL),
@@ -36,14 +36,17 @@ IRSpectrogramViewUI::~IRSpectrogramViewUI()
 void IRSpectrogramViewUI::resized()
 {
     
+    //setMainComponentBounds(0, 0, getWidth(), getHeight());
 }
+
+
 // ==================================================
 
 
 void IRSpectrogramViewUI::setComponentBounds(int x, int y, int w, int h)
 {
     std::cout << "xywh = " << x << ", " << y << ", " << w << ", "<< h << std::endl;
-    this->viewPort->setThisBounds(x, y, w, h);
+    this->viewPort->setBounds(x, y, w, h);
 }
 
 
@@ -56,12 +59,9 @@ void IRSpectrogramViewUI::setVisibleArea(Rectangle<int> area)
 
 void IRSpectrogramViewUI::visibleAreaChangedAction(const Rectangle< int > &newVisibleArea)
 {
+    
     this->viewPort->setHorizontalBounds(newVisibleArea.getX(),
                                         newVisibleArea.getWidth());
-    
-    // important, the size of OpenGLComponent is not changed!
-    // but need to inform it the size of its parent view
-    setMainComponentBounds(newVisibleArea.getX(), newVisibleArea.getY(), getWidth(), getHeight());
     
     
     if(this->visibleAreaChangedCallback != nullptr)

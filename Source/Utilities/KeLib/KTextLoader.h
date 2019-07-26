@@ -15,11 +15,17 @@
 class IRTextLoader
 {
 public:
-    IRTextLoader(std::string url)
+    IRTextLoader()
+    {
+    }
+    ~IRTextLoader() {}
+    
+    void load(std::string url)
     {
         std::ifstream myFile (url);
         std::string line;
         int numLine = 0;
+        this->txtData.clear();
         if(myFile.is_open())
         {
             while (getline(myFile, line))
@@ -31,10 +37,8 @@ public:
         }
         
         myFile.close();
-        
-        
     }
-    ~IRTextLoader() {}
+    
     
     const char* getConstChar()
     {

@@ -13,12 +13,12 @@
 #include "IRUIFoundation.hpp"
 #include "IRViewPort.hpp"
 #include "IRMeasureGrid.hpp"
-#include "IRSpectrogram.hpp"
+#include "IRSpectrogramComponent.hpp"
 
 class IRSpectrogramViewUI : public IRViewPort
 {
 public:
-    IRSpectrogramViewUI(IRSpectrogram* main,
+    IRSpectrogramViewUI(IRSpectrogramComponent* main,
                         float vmin, float vmax,
                         float hmin, float hmax);
     ~IRSpectrogramViewUI();
@@ -32,6 +32,7 @@ public:
     // ==================================================
     void setVisibleArea(Rectangle<int> area);
     void setComponentBounds(int x, int y, int w, int h);
+    Rectangle<int> getComponentBounds() { return this->viewPort->getBounds(); }
     
     Point<float> getDummyRatio() const   { return this->viewPort->dummyRatio; }
     int getMaxViewWidth() const          { return this->viewPort->MaxViewWidth; }
@@ -60,7 +61,7 @@ private:
     class Component4ViewPort : public Component
     {
     public:
-        Component4ViewPort(IRSpectrogram* main,
+        Component4ViewPort(IRSpectrogramComponent* main,
                            IRMeasureGrid* vertical,
                            IRMeasureGrid* horizontal,
                            int gridSize) :
@@ -92,6 +93,7 @@ private:
             
             
             setBounds(x,y,width,height);
+            //setMainComponentBounds(x,y,width,height);
         }
         
         void setHorizontalBounds(int x, int w)
@@ -114,6 +116,12 @@ private:
         
         void resized() override
         {
+            std::cout <<"IRSPectrogramViewPort w " << getWidth() << std::endl;
+            this->main->setBounds(this->gridSize,
+                                  this->gridSize,
+                                  getWidth() - this->gridSize,
+                                  getHeight() - this->gridSize - 10);
+             
             
             this->vertical->setBounds(0,
                                       this->gridSize,
@@ -148,7 +156,7 @@ private:
         void setDummyHeight(int h)   { this->dummyHeight = h; }
         
     private:
-        Component* main;
+        IRSpectrogramComponent* main;
         IRMeasureGrid* vertical;
         IRMeasureGrid* horizontal;
         

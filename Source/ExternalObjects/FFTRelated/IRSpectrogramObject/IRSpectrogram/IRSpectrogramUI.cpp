@@ -13,7 +13,7 @@ IRUIFoundation(nodeObject)
     this->parent = nodeObject;
     
     
-    this->spectrogram = std::make_shared<IRSpectrogram>(nodeObject);
+    this->spectrogram = std::make_shared<IRSpectrogramComponent>(nodeObject);
     
     this->spectrogramView = std::make_shared<IRSpectrogramViewUI>(this->spectrogram.get(),
                                                        0, 40,
@@ -23,8 +23,8 @@ IRUIFoundation(nodeObject)
 
     this->spectrogramView->visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area);};
     
-    this->spectrogram->zoomInClickedCallback = [this]{ zoomInClicked(); };
-    this->spectrogram->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
+    this->spectrogram->getComponent()->zoomInClickedCallback = [this]{ zoomInClicked(); };
+    this->spectrogram->getComponent()->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
 
     
     
@@ -36,7 +36,7 @@ IRSpectrogramUI::~IRSpectrogramUI()
     if(this->audioData != nullptr)
         getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
     
-    this->spectrogram->closeOpenGLComponent();
+    this->spectrogram->getComponent()->closeOpenGLComponent();
     this->spectrogram.reset();
     this->spectrogramView.reset();
 }
@@ -70,6 +70,9 @@ void IRSpectrogramUI::resized()
                                               w * this->spectrogram_width_ratio,
                                               h - spectrogramMarginY);
     
+    this->spectrogram->setMainComponentBounds(Rectangle<int>(0,0,w-30,h-40));
+    this->spectrogram->getComponent()->setZoomRatio(Point<float>(this->spectrogram_width_ratio, 1.0));
+    
     std::cout << "IRSpectrogramUI resized \n";
     
 
@@ -95,8 +98,9 @@ void IRSpectrogramUI::setMovable(bool movable, bool verticalMovable, bool horizo
 void IRSpectrogramUI::visibleAreaChanged(Rectangle<int> area)
 {
     std::cout << "IRSpectrogramUI::visibleAreaChanged\n";
-    this->spectrogram->setVisibleArea(area);
     this->spectrogramView->setVisibleArea(area);
+    this->spectrogram->setVisibleArea(area);
+
     this->previousOffsetX = area.getX();
 }
 
@@ -184,7 +188,10 @@ void IRSpectrogramUI::zoomInClicked()
 void IRSpectrogramUI::zoomOutClicked()
 {
     this->spectrogram_width_ratio /= 2;
+    if(this->spectrogram_width_ratio < 1.0)
+        this->spectrogram_width_ratio = 1.0;
     resized();
 }
+
 
 // ==================================================

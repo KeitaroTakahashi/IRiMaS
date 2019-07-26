@@ -10,7 +10,7 @@
 GLSLSpectrogram::GLSLSpectrogram(IRNodeObject* nodeObject) :
 IRUIAudioFoundation(nodeObject)
 {
-    setOpaque(true);
+    setOpaque(false);
     
     openGLContext.setRenderer (this);
     openGLContext.attachTo (*this);
@@ -53,13 +53,15 @@ void GLSLSpectrogram::createShaders()
 {
     File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Spectrogram/spectrogram.vert");
     
-    IRTextLoader vertexText (file.getFullPathName().toStdString());
+    IRTextLoader vertexText;
+    vertexText.load(file.getFullPathName().toStdString());
     
     this->vertexShader = vertexText.getConstChar();
     
     File file2 = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/materials/Sources/GLSL/Spectrogram/spectrogram.frag");
     
-    IRTextLoader fragmentText (file2.getFullPathName().toStdString());
+    IRTextLoader fragmentText;
+    fragmentText.load(file2.getFullPathName().toStdString());
     
     this->fragmentShader = fragmentText.getConstChar();
     
