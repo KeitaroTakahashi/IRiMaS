@@ -9,7 +9,9 @@
 
 // ------------------------------------------------------------------
 IRAudio::IRAudio():
-Thread("ImportAudioFile Background thread")
+Thread("ImportAudioFile Background thread"),
+zoomInfo(1.0, 1.0),
+viewPortPos(Point<int>(0,0))
 {
     this->formatManager.registerBasicFormats();
     
@@ -256,6 +258,18 @@ void IRAudio::callAudioPlayOperatedFromComponent()
     if(checker.shouldBailOut()) return;
 }
 
+void IRAudio::callViewPortPositionFromComponent()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    
+    // fire call back signal here!
+    this->ImportAudioListeners.callChecked(checker, [this] (Listener& l) {l.viewPortPositionFromComponent(this);});
+    //check again
+    if(checker.shouldBailOut()) return;
+}
 // --------------------------------------------------
 void IRAudio::operateBasicDescriptors()
 {
@@ -360,6 +374,12 @@ void IRAudio::linkAudioPlaywithSharedComponents(Component* comp)
 {
     this->emittingComponent = comp;
     callAudioPlayOperatedFromComponent();
+}
+void IRAudio::linkViewPortPositionWithSharedComponents(Component* comp)
+{
+    std::cout << "linkViewPort!\n";
+    this->emittingComponent = comp;
+    callViewPortPositionFromComponent();
 }
 // --------------------------------------------------
 

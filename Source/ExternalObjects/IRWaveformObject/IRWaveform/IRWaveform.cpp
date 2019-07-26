@@ -8,7 +8,8 @@
 IRWaveform::IRWaveform(IRNodeObject* parent) :
 IRUIAudioFoundation(parent),
 thumbnailCache(5),
-thumbnail(512, formatManager, thumbnailCache)
+thumbnail(512, formatManager, thumbnailCache),
+visiblePos(Point<int>(0,0))
 {
  
     this->parent = parent;
@@ -364,6 +365,18 @@ void IRWaveform::linkCurrentPlayedFrame(Component* comp)
     }
 }
 
+
+void IRWaveform::linkViewPosition(Component* comp)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        data->setViewPortPosition(this->visiblePos);
+        data->linkViewPortPositionWithSharedComponents(comp);
+    }
+}
+
+
 // --------------------------------------------------
 
 
@@ -375,13 +388,13 @@ void IRWaveform::zoomInOutOperatedFromComponent(IRAudio* obj)
     {
         
         setZoomInfo(obj->getZoomInfo());
-        std::cout << "zoominfo of "<< nodeObject << " = " << this->zoomInfo.getX() <<  " from " << comp << std::endl;
+        //std::cout << "zoominfo of "<< nodeObject << " = " << this->zoomInfo.getX() <<  " from " << comp << std::endl;
         
         this->status = zoomInfoShared;
         sendChangeMessage();
        
     }else{
-        std::cout <<"zoomInfo same \n";
+        //std::cout <<"zoomInfo same \n";
     }
 }
 void IRWaveform::audioPlayOperatedFromComponent(IRAudio* obj)
@@ -395,4 +408,17 @@ void IRWaveform::audioPlayOperatedFromComponent(IRAudio* obj)
         sendChangeMessage();
     }
 }
+
+void IRWaveform::viewPortPositionFromComponent(IRAudio *obj)
+{
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        this->visiblePos = obj->getViewPortPosition();
+        this->status = viewPosShared;
+        sendChangeMessage();
+    }
+}
+
 // --------------------------------------------------

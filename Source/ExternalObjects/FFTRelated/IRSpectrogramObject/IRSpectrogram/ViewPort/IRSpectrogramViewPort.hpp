@@ -143,6 +143,7 @@ private:
                                       this->gridSize,
                                       this->gridSize,
                                       getHeight() - this->gridSize);
+            
         }
         
         // we use dummy size as it is very expensive if you use millions size of the view...

@@ -23,7 +23,8 @@ public:
         EDITMODECHANGE,
         PROJECTSAVE,
         zoomInfoShared,
-        currentPlayedFrameShared
+        currentPlayedFrameShared,
+        viewPosShared
     };
     
     IRWaveform(IRNodeObject* parent);
@@ -94,6 +95,7 @@ public:
     }
     
     void linkZoomInfo(Component* comp);
+    void linkViewPosition(Component* comp);
     
     Point<float> getZoomInfo() const { return this->zoomInfo; }
     
@@ -102,10 +104,14 @@ public:
     
     void linkCurrentPlayedFrame(Component* comp);
     
+    void setVisiblePos(Point<int>pos) { this->visiblePos = pos; }
+    Point<int> getVisiblePos() const { return this->visiblePos; }
+    
     // called by IRAudio
     void zoomInOutOperatedFromComponent(IRAudio* obj) override;
     void audioPlayOperatedFromComponent(IRAudio* obj) override;
-    
+    void viewPortPositionFromComponent(IRAudio* obj) override;
+
     IRWaveformStatus getStatus() const { return this->status; }
     IRWaveformStatus status;
 
@@ -136,7 +142,7 @@ private:
     // sharedInformation
     
     int currentPlayedFrame = 0;
-    
+    Point<int>visiblePos;
     Point<float> zoomInfo;
     
     // ---------------------------------------------------------------------------

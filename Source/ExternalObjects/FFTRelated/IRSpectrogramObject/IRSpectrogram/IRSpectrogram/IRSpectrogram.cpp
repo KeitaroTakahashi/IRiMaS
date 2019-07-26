@@ -316,9 +316,20 @@ void IRSpectrogram::setVisibleArea(Rectangle<int> area, Point<int> parentSize)
     setBounds(this->visibleArea);
     
     this->parentSize = parentSize;
-    //this->controller.setBounds(this->visibleArea.getX(), y, getWidth(), s);
-    //this->controller.setBounds(0, y, getWidth(), s);
-
+    
+    
+    // link current view position to other objects
+    if(this->previousOffsetX != this->visibleArea.getX())
+    {
+        if(this->audioData != nullptr)
+        {
+            auto data = this->audioData->getData();
+            data->setViewPortPosition(this->visibleArea.getPosition());
+            data->linkViewPortPositionWithSharedComponents(nodeObject);
+        }
+        
+        
+    }
     this->previousOffsetX = this->visibleArea.getX();
     
     // just modify texture already created to save CUP usage
@@ -661,6 +672,29 @@ void IRSpectrogram::audioPlayOperatedFromComponent(IRAudio* obj)
         //sendChangeMessage();
         if(this->currentPlayedFrameSharedCallback != nullptr)
             this->currentPlayedFrameSharedCallback();
+    }
+}
+
+void IRSpectrogram::viewPortPositionFromComponent(IRAudio *obj)
+{
+    
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        
+        std::cout << "set new visible x " << obj->getViewPortPosition().getX() << " : previous = " << this->visibleArea.getX() << std::endl;
+        this->visibleArea.setX(obj->getViewPortPosition().getX());
+        this->visibleArea.setY(obj->getViewPortPosition().getY());
+        
+        // follow always to the visibla area
+        setBounds(this->visibleArea);
+        this->previousOffsetX = this->visibleArea.getX();
+        // just modify texture already created to save CUP usage
+        reCalcDescriptor();
+        
+        if(this->viewPortPositionSharedCallback != nullptr)
+            this->viewPortPositionSharedCallback();
     }
 }
 // --------------------------------------------------

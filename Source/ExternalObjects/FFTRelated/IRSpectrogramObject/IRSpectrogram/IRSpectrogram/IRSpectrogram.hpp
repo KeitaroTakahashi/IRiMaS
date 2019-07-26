@@ -58,6 +58,7 @@ public:
     void loadDrawData(IRDescriptorStr* data);
     
     void setVisibleArea(Rectangle<int> area, Point<int> parentSize);
+    Rectangle<int> getVisibleArea() const { return this->visibleArea; }
     void parentSizeChanged(int w, int h);
     
     // from Preference GUI
@@ -76,8 +77,8 @@ public:
     
     std::function<void()> zoomInOutSharedCallback = nullptr;
     std::function<void()> currentPlayedFrameSharedCallback = nullptr;
+    std::function<void()> viewPortPositionSharedCallback = nullptr;
 
-    
 
     // ==================================================
     
@@ -103,6 +104,7 @@ public:
     
     void linkZoomInfo(Component* comp);
     
+    
     Point<float> getZoomInfo() const { return this->zoomInfo; }
     
     void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
@@ -113,6 +115,7 @@ public:
     // called by IRAudio
     void zoomInOutOperatedFromComponent(IRAudio* obj) override;
     void audioPlayOperatedFromComponent(IRAudio* obj) override;
+    void viewPortPositionFromComponent(IRAudio* obj) override;
     
    
     

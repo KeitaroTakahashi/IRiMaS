@@ -16,6 +16,7 @@ IRUIFoundation(nodeObject)
     this->spectrogram->getComponent()->zoomInOutSharedCallback = [this]{ zoomInoutSharedAction(); };
     
     this->spectrogram->getComponent()->currentPlayedFrameSharedCallback = [this] { currentPlayedFrameSharedAction(); };
+    this->spectrogram->getComponent()->viewPortPositionSharedCallback = [this] { viewPortPositionSharedAction(); };
     
     this->spectrogramView = std::make_shared<IRSpectrogramViewUI>(this->spectrogram.get(),
                                                        0, 40,
@@ -212,6 +213,13 @@ void IRSpectrogramUI::zoomInoutSharedAction()
 void IRSpectrogramUI::currentPlayedFrameSharedAction()
 {
     
+}
+
+void IRSpectrogramUI::viewPortPositionSharedAction()
+{
+    auto viewPos = this->spectrogram->getComponent()->getVisibleArea();
+    this->spectrogramView->setViewPosition(viewPos.getX(), viewPos.getY());
+
 }
 
 void IRSpectrogramUI::changeListenerCallback (ChangeBroadcaster* source)

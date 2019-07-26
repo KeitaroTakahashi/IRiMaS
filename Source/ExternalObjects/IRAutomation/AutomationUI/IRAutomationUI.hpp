@@ -17,7 +17,8 @@
 #include "IRFFTAnalysis.h"
 
 class IRAutomationUI : public IRUIFoundation,
-public ChangeBroadcaster
+public ChangeBroadcaster,
+public IRAudio::Listener
 {
 public:
     
@@ -25,7 +26,10 @@ public:
     {
         AudioFileImportCompleted,
         AudioFileChanged,
-        DescriptorSelected
+        DescriptorSelected,
+        zoomInfoShared,
+        currentPlayedFrameShared,
+        viewPosShared
     };
     
     IRAutomationUI(IRNodeObject* nodeObject);
@@ -60,7 +64,46 @@ private:
     void fileImportCompleted();
     
     DataAllocationManager<IRAudio>* audioData = nullptr;
-
+    // ==================================================
+    
+    // called by IRAudio
+    void zoomInOutOperatedFromComponent(IRAudio* obj) override;
+    void audioPlayOperatedFromComponent(IRAudio* obj) override;
+    void viewPortPositionFromComponent(IRAudio* obj) override;
+    
+    void setZoomInfo(Point<float> zoom) {
+        this->zoomInfo = zoom;
+        if(this->audioData != nullptr)
+        {
+            auto data = this->audioData->getData();
+            data->setZoomInfo(this->zoomInfo);
+        }
+    }
+    
+    void setZoomInfo(float w, float h) {
+        this->zoomInfo = Point<float>(w, h);
+        setZoomInfo(this->zoomInfo);
+    }
+    
+    void linkZoomInfo(Component* comp);
+    void linkViewPosition(Component* comp);
+    
+    Point<float> getZoomInfo() const { return this->zoomInfo; }
+    
+    void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
+    int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
+    
+    void linkCurrentPlayedFrame(Component* comp);
+    
+    void setVisiblePos(Point<int>pos) { this->visiblePos = pos; }
+    Point<int> getVisiblePos() const { return this->visiblePos; }
+    
+    // ---------------------------------------------------------------------------
+    // sharedInformation
+    
+    int currentPlayedFrame = 0;
+    Point<int>visiblePos;
+    Point<float> zoomInfo;
     
     // ==================================================
     

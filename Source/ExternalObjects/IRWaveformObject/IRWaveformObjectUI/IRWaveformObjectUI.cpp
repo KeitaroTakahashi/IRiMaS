@@ -274,9 +274,15 @@ void IRWaveformObjectUI::setVisibleArea(Rectangle<int> area)
     this->visibleArea = area;
     this->controller.setBounds(this->visibleArea.getX(), y, getWidth(), s);
     
+    
+    setVisiblePos(area.getPosition());
+    linkViewPosition(nodeObject);
     this->previousOffsetX = this->visibleArea.getX();
     
-    std::cout << "w, h " << getWidth() << std::endl;
+    
+    std::cout << "waveform w, h " << getWidth() << std::endl;
+    
+    std::cout << "current pos " << area.getX() << std::endl;
     
 }
 

@@ -70,6 +70,7 @@ private:
     
     void zoomInoutSharedAction();
     void currentPlayedFrameSharedAction();
+    void viewPortPositionSharedAction();
 
     // ==================================================
     //UI

@@ -116,6 +116,10 @@ void IRWaveformObjectUI2::changeListenerCallback (ChangeBroadcaster* source)
         }else if(s == IRWaveform::IRWaveformStatus::currentPlayedFrameShared)
         {
             
+        }else if(s == IRWaveform::IRWaveformStatus::viewPosShared)
+        {
+            auto pos = this->waveform->getVisiblePos();
+            this->waveformView->setViewPosition(pos.getX(), pos.getY());
         }
     }
 }

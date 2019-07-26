@@ -92,6 +92,8 @@ public:
         
         virtual void audioPlayOperatedFromComponent(IRAudio* obj) {}
         
+        virtual void viewPortPositionFromComponent(IRAudio* obj) {}
+        
     };
     
     void addListener(Listener* newListener) { this->ImportAudioListeners.add(newListener); }
@@ -132,6 +134,7 @@ public:
     // shared Information
     void linkZoomInOutWithSharedComponents(Component* comp);
     void linkAudioPlaywithSharedComponents(Component* comp);
+    void linkViewPortPositionWithSharedComponents(Component* comp);
     Component* emittingComponent = nullptr;
     
     
@@ -140,6 +143,8 @@ public:
     Point<float> getZoomInfo() const { return this->zoomInfo; }
     void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
     int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
+    void setViewPortPosition(Point<int> pos) { this->viewPortPos = pos; }
+    Point<int> getViewPortPosition() const { return this->viewPortPos; }
     
     // ===========================================================================
 
@@ -167,11 +172,13 @@ private:
     
     void callZoomInOutOperatedFromComponent();
     void callAudioPlayOperatedFromComponent();
+    void callViewPortPositionFromComponent();
     
     // ---------------------------------------------------------------------------
     // sharedInformation
     
     int currentPlayedFrame = 0;
+    Point<int> viewPortPos;
     
     Point<float> zoomInfo;
     // ---------------------------------------------------------------------------

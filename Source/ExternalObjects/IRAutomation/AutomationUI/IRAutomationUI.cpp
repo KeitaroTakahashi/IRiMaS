@@ -9,6 +9,7 @@
 
 IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeObject)
 {
+    
     this->automation = std::make_shared<InteractiveAutomation>(nodeObject);
     
     this->automationView = std::make_shared<IRViewUI>(this->automation.get(),
@@ -29,7 +30,11 @@ IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeOb
 IRAutomationUI::~IRAutomationUI()
 {
     if(this->audioData != nullptr)
+    {
+        this->audioData->getData()->removeListener(this);
         getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+        
+    }
 }
 
 // ==================================================
@@ -80,6 +85,8 @@ void IRAutomationUI::zoomInClicked()
     this->automation_width_ratio *= 2;
     resized();
     this->automation->reCalcPos();
+    setZoomInfo(Point<float>(this->automation_width_ratio, 1.0));
+    linkZoomInfo(nodeObject);
 }
 
 void IRAutomationUI::zoomOutClicked()
@@ -87,7 +94,8 @@ void IRAutomationUI::zoomOutClicked()
     this->automation_width_ratio /= 2;
     resized();
     this->automation->reCalcPos();
-    
+    setZoomInfo(Point<float>(this->automation_width_ratio, 1.0));
+    linkZoomInfo(nodeObject);
 }
 
 void IRAutomationUI::movableClicked(IRAutomation::movableStatus status)
@@ -134,6 +142,9 @@ void IRAutomationUI::visibleAreaChanged(Rectangle<int> area)
 {
     this->automation->setVisibleArea(area);
     this->automationView->setVisibleArea(area);
+    
+    this->visiblePos = area.getPosition();
+    linkViewPosition(nodeObject);
     
     this->previousOffsetX = area.getX();
 }
@@ -214,6 +225,8 @@ void IRAutomationUI::fileImportCompleted()
 {
     this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
     
+    this->audioData->getData()->addListener(this);
+    
     this->status = AudioFileImportCompleted;
     sendChangeMessage();
     
@@ -221,4 +234,90 @@ void IRAutomationUI::fileImportCompleted()
     
     std::cout << "fileImportCompleted!\n";
 
+}
+// --------------------------------------------------
+
+void IRAutomationUI::linkZoomInfo(Component* comp)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        data->setZoomInfo(this->zoomInfo);
+        data->linkZoomInOutWithSharedComponents(comp);
+    }
+    
+    std::cout << "linkZoomInfo \n";
+}
+
+void IRAutomationUI::linkCurrentPlayedFrame(Component* comp)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        data->setCurrentPlayedFrame(this->getCurrentPlayedFrame());
+        data->linkAudioPlaywithSharedComponents(comp);
+    }
+}
+
+
+void IRAutomationUI::linkViewPosition(Component* comp)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        data->setViewPortPosition(this->visiblePos);
+        data->linkViewPortPositionWithSharedComponents(comp);
+    }
+}
+// --------------------------------------------------
+
+void IRAutomationUI::zoomInOutOperatedFromComponent(IRAudio* obj)
+{
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        
+        setZoomInfo(obj->getZoomInfo());
+        //std::cout << "zoominfo of "<< nodeObject << " = " << this->zoomInfo.getX() <<  " from " << comp << std::endl;
+        
+        this->automation_width_ratio = obj->getZoomInfo().getX();
+        
+        resized();
+        
+        this->status = zoomInfoShared;
+        sendChangeMessage();
+        
+        
+    }else{
+        //std::cout <<"zoomInfo same \n";
+    }
+}
+
+void IRAutomationUI::audioPlayOperatedFromComponent(IRAudio* obj)
+{
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        setCurrentPlayedFrame(obj->getCurrentPlayedFrame());
+        this->status = currentPlayedFrameShared;
+        sendChangeMessage();
+    }
+}
+
+void IRAutomationUI::viewPortPositionFromComponent(IRAudio *obj)
+{
+    
+    std::cout << "IRAutomationUI : viewPortPositionFromComponent\n";
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        this->visiblePos = obj->getViewPortPosition();
+        this->status = viewPosShared;
+        sendChangeMessage();
+        
+        this->automationView->setViewPosition(this->visiblePos.getX(), this->visiblePos.getY());
+    }
 }
