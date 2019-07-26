@@ -227,6 +227,34 @@ void IRAudio::callFileStatusChanged(IRAudio* obj)
     //check again
     if(checker.shouldBailOut()) return;
 }
+// --------------------------------------------------
+
+void IRAudio::callZoomInOutOperatedFromComponent()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    
+    // fire call back signal here!
+    this->ImportAudioListeners.callChecked(checker, [this] (Listener& l) {l.zoomInOutOperatedFromComponent(this);});
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+
+void IRAudio::callAudioPlayOperatedFromComponent()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    
+    // fire call back signal here!
+    this->ImportAudioListeners.callChecked(checker, [this] (Listener& l) {l.audioPlayOperatedFromComponent(this);});
+    //check again
+    if(checker.shouldBailOut()) return;
+}
 
 // --------------------------------------------------
 void IRAudio::operateBasicDescriptors()
@@ -319,4 +347,17 @@ bool IRAudio::isCalculated(FFTDescriptor d, int fftsize)
 IRDescriptorStr* IRAudio::getDescriptor(FFTDescriptor d, int fftsize)
 {
     return this->analyzer.getDescriptor(d, fftsize);
+}
+// --------------------------------------------------
+
+
+void IRAudio::linkZoomInOutWithSharedComponents(Component* comp)
+{
+    this->emittingComponent = comp;
+    callZoomInOutOperatedFromComponent();
+}
+void IRAudio::linkAudioPlaywithSharedComponents(Component* comp)
+{
+    this->emittingComponent = comp;
+    callAudioPlayOperatedFromComponent();
 }

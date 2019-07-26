@@ -72,6 +72,8 @@ public:
     // return audio buffer in vector<float> data type
     std::vector<float> getAudioBufferInVector();
     
+    // get component which eimit any events via Listener
+    Component* getEmittingComponent() { return this->emittingComponent; }
     // ===========================================================================
     // Listener
     class Listener
@@ -84,6 +86,12 @@ public:
         // called when file status changed (will be loaded, completed, deleted etc.)
         // give IRAudio* which is THIS object, in order to notify when this object is deallocated by giving nullptr. see deconstructer of this class
         virtual void fileStatusChanged(IRAudio *obj) = 0;
+        
+        // called when zoom in or out action operated in a component which holds IRAudio
+        virtual void zoomInOutOperatedFromComponent(IRAudio* obj) {}
+        
+        virtual void audioPlayOperatedFromComponent(IRAudio* obj) {}
+        
     };
     
     void addListener(Listener* newListener) { this->ImportAudioListeners.add(newListener); }
@@ -121,6 +129,20 @@ public:
     Array<std::string> getDescriptorNameList() const { return this->analyzer.getDescriptorNameList(); }
     
     // ===========================================================================
+    // shared Information
+    void linkZoomInOutWithSharedComponents(Component* comp);
+    void linkAudioPlaywithSharedComponents(Component* comp);
+    Component* emittingComponent = nullptr;
+    
+    
+    void setZoomInfo(float w, float h) { this->zoomInfo = Point<float>(w, h); }
+    void setZoomInfo(Point<float> zoom) { this->zoomInfo = zoom; }
+    Point<float> getZoomInfo() const { return this->zoomInfo; }
+    void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
+    int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
+    
+    // ===========================================================================
+
 
     
 private:
@@ -142,6 +164,16 @@ private:
     // ---------------------------------------------------------------------------
     void callFileImportCompleted();
     void callFileStatusChanged(IRAudio* obj);
+    
+    void callZoomInOutOperatedFromComponent();
+    void callAudioPlayOperatedFromComponent();
+    
+    // ---------------------------------------------------------------------------
+    // sharedInformation
+    
+    int currentPlayedFrame = 0;
+    
+    Point<float> zoomInfo;
     // ---------------------------------------------------------------------------
 
     File file;

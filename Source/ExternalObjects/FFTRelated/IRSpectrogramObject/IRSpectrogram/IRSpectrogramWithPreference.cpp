@@ -24,10 +24,23 @@ IRSpectrogramWithPreference::~IRSpectrogramWithPreference()
 
 void IRSpectrogramWithPreference::changeListenerCallback (ChangeBroadcaster* source)
 {
-    if(source == this->preference->getUI())
+    
+    auto pre = this->preference->getUI();
+    if(source == pre)
     {
-        std::cout << "magnitudeAmount = " << this->preference->getUI()->getMagnitudeAmount() << std::endl;
-        this->setMagnitudeAmount(this->preference->getUI()->getMagnitudeAmount());
+        
+        if(pre->getStatus() == IRSpectrogramPreferenceUI::PreferenceStatus::magnitudeAmountChanged)
+        {
+            std::cout << "magnitudeAmount = " << this->preference->getUI()->getMagnitudeAmount() << std::endl;
+            this->setMagnitudeAmount(this->preference->getUI()->getMagnitudeAmount());
+        }else if (pre->getStatus() == IRSpectrogramPreferenceUI::PreferenceStatus::verticalScaleChanged)
+        {
+            this->setVerticalScale(pre->getVerticalScale());
+        }
+        else if (pre->getStatus() == IRSpectrogramPreferenceUI::PreferenceStatus::horizontalScaleChanged)
+        {
+            this->setHorizontalScale(pre->getHorizontalScale());
+        }
     }
 }
 

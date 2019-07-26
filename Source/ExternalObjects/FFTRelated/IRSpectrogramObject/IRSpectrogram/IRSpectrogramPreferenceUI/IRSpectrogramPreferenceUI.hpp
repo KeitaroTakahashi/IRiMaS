@@ -18,7 +18,9 @@ public:
     
     enum PreferenceStatus
     {
-        magnitudeAmountChanged
+        magnitudeAmountChanged,
+        verticalScaleChanged,
+        horizontalScaleChanged
     };
     
     IRSpectrogramPreferenceUI(String title);
@@ -30,9 +32,12 @@ public:
     
     // --------------------------------------------------
     float getMagnitudeAmount() const { return this->magnitudeAmount.getValue(); }
+    float getVerticalScale()   const { return this->verticalScale.getValue(); }
+    float getHorizontalScale() const { return this->horizontalScale.getValue(); }
+
     // --------------------------------------------------
 
-    
+    PreferenceStatus getStatus() const { return this->status; }
 private:
     
     // slider component
@@ -100,6 +105,8 @@ private:
     
     Label LabelTitle;
     sliderUI1 magnitudeAmount;
+    sliderUI1 verticalScale;
+    sliderUI1 horizontalScale;
     // ==================================================
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 

@@ -46,6 +46,16 @@ public:
     // ==================================================
 
     void setMagnitudeAmount(float val) { this->spectrogram->getComponent()->setMagnitudeAmount(val); }
+    
+    void setVerticalScale(float val) {
+        this->spectrogram->getComponent()->setVerticalScale(val);
+    }
+    
+    void setHorizontalScale(float val) {
+        this->spectrogram_width_ratio = val;
+        //this->spectrogram->getComponent()->setHorizontalScale(val);
+        resized();
+    }
 
     void mouseDown(const MouseEvent& e) override
     {

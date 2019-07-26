@@ -11,6 +11,7 @@
 #include "IRUIAudioFoundation.hpp"
 #include "GLSLSpectrogram.hpp"
 #include "IRSpectrogramController.h"
+#include "Benchmark.h"
 
 class IRSpectrogram : public IRUIAudioFoundation,
 private Timer
@@ -46,8 +47,13 @@ public:
     void setVisibleArea(Rectangle<int> area, Point<int> parentSize);
     void parentSizeChanged(int w, int h);
     
+    // from Preference GUI
     void setMagnitudeAmount(float val);
-    
+    void setVerticalScale(float val);
+    void setHorizontalScale(float val);
+
+
+    //
     void closeOpenGLComponent();
     
     // ==================================================
@@ -101,7 +107,7 @@ private:
     int sp_h = 1024;
     // max size of w and h of Spectrogram
     // 1024
-    int MAX_TEXTURE_SIZE = 1024;
+    int MAX_TEXTURE_SIZE = 512;
     
     float ratio_x = 1.0;
     float ratio_y = 1.0;
@@ -109,6 +115,8 @@ private:
     void calcPixel(IRDescriptorStr* data);
     
     float magnitudeAmount = 1.0;
+    float verticalScale = 8.0;
+    float horizontalScale = 1.0;
     
     int fftsize = 2048;
     int hopsize = 1024;
@@ -145,6 +153,11 @@ private:
     // fps
     int fps_index = 0;
     int fps_previousTime = 0;
+    
+    StopWatch bench;
+    StopWatch bench2;
+    StopWatch bench3;
+
     // ==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRSpectrogram)

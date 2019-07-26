@@ -54,7 +54,7 @@ void IRSpectrogram::closeOpenGLComponent()
 
 void IRSpectrogram::init()
 {
-    setOpaque(false);
+    setOpaque(true);
     if (auto* peer = getPeer())
         peer->setCurrentRenderingEngine (0);
     
@@ -97,7 +97,9 @@ void IRSpectrogram::resized()
 
 void IRSpectrogram::paint(Graphics& g)
 {
+    bench.start();
     shaderTask(g);
+    std::cout << "shaderTask " << bench.stop() << std::endl;
 }
 
 // ==================================================
@@ -158,12 +160,11 @@ void IRSpectrogram::update()
 
 void IRSpectrogram::calcPixel(IRDescriptorStr* data)
 {
+    
     // data info
     int nframe = data->getNumFrame();
-    int fftsize = data->getFFTSize() / 8;
+    int fftsize = data->getFFTSize() / this->verticalScale;
     int ffthalfsize = data->getFFTSize() / 2;
-    
-    int powerSize = nframe * ffthalfsize;
     
     //visible area
     int w = this->visibleArea.getWidth();
@@ -171,6 +172,11 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     int x = this->visibleArea.getX();
     int y = this->visibleArea.getY();
     
+    float maxTex_w = (getWidth() < this->MAX_TEXTURE_SIZE)? getWidth() : this->MAX_TEXTURE_SIZE;
+    float maxTex_h = (getHeight() < this->MAX_TEXTURE_SIZE)? getHeight() : this->MAX_TEXTURE_SIZE;
+    
+    maxTex_w = this->MAX_TEXTURE_SIZE;
+    maxTex_h = this->MAX_TEXTURE_SIZE;
     // viewport size
     float parentW = (float)w * this->zoomRatio.getX();
     float parentH = (float)h * this->zoomRatio.getY();
@@ -182,17 +188,16 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     float startFFTSize =(float)y * (float)fftsize / parentH;
     float drawFFTSize = (float)(h) * (float)fftsize / parentH;
     
+    float texture_w = (drawFrameNum < maxTex_w)?
+    drawFrameNum : maxTex_w;
+    float texture_h = (drawFFTSize < maxTex_h)?
+    drawFFTSize : maxTex_h;
     
-    float texture_w = (drawFrameNum < this->MAX_TEXTURE_SIZE)?
-    drawFrameNum : this->MAX_TEXTURE_SIZE;
-    float texture_h = (drawFFTSize < this->MAX_TEXTURE_SIZE)?
-    drawFFTSize : this->MAX_TEXTURE_SIZE;
-    
-    float texRatioX = texture_w / drawFrameNum;
-    float texRatioY = texture_h / drawFFTSize;
+    float w_increment = texture_w / drawFrameNum;
+    float h_increment = texture_h / drawFFTSize;
     
     if(this->buffer != nullptr) delete[] this->buffer;
-    int texSize = floor(texture_w) * floor(texture_h);
+    int texSize = (int)(texture_w) * (int)(texture_h);
     this->buffer = new float [texSize];
     
     // use normalized data 0.0~1.0
@@ -202,13 +207,10 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     // initialize
     for(i=0;i<texSize;i++) this->buffer[i] = 0.0;
     
-    int currentX = floor(startFrame);
-    int currentY = floor(startFFTSize);
-
-    
-    int endX = floor(startFrame + drawFrameNum);
-    int endY = floor(startFFTSize + drawFFTSize);
-    
+    int currentX = (int)(startFrame);
+    int currentY = (int)(startFFTSize);
+    int endX = (int)(startFrame + drawFrameNum);
+    int endY = (int)(startFFTSize + drawFFTSize);
     
     if(endX >= nframe)
     {
@@ -228,17 +230,25 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     
     std::cout << "start x = " << currentX << " to " << endX << " of " << nframe << " : startY " << currentY << " to " << endY << " of "<< fftsize<<std::endl;
     */
-    this->sp_w = floor(texture_w);
-    this->sp_h = floor(texture_h);
-    //std::cout << "sp_w = " << this->sp_w << ", " << this->sp_h << " : texSize = "<< texSize << std::endl;
+    this->sp_w = (int)(texture_w);
+    this->sp_h = (int)(texture_h);
+    //std::cout << "sp_w = " << this->sp_w << ", " << this->sp_h << " : texSize = "<< texSize << " : nframe "<< nframe << " : fftsize = " << fftsize << std::endl;
+    //std::cout << "w_increment " << w_increment << " h_increment " << h_increment << std::endl;
 
-    int tex_x = 0;
-    int tex_y = 0;
+    float tex_x = 0;
+    float tex_y = 0;
     
     int texY_sp_w = 0;;
     
-    int int_startFrame = floor(startFrame);
+    int int_startFrame = (int)(startFrame);
+    
+    int bufferIndex = 0;
+    int pIndex = 0;
+    float p = 0.0;
     // texture
+    bench3.start();
+    
+
     while(1) // h
     {
         //std::cout << "y " << tex_y << " of " << endY << std::endl;
@@ -246,29 +256,38 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
         if(currentY >= endY) break;
         tex_x = 0;
         currentX = int_startFrame;
-        texY_sp_w = tex_y * this->sp_w;
-        
+        texY_sp_w = (int)(tex_y) * this->sp_w;
+        bench2.start();
+
         while(1) // w
         {
             if(tex_x >= this->sp_w) break;
             if(currentX >= endX) break;
             
-            int bufferIndex = texY_sp_w + tex_x;
-            int pIndex = (int)floor(currentX * ffthalfsize + currentY);
-            float p = power[pIndex];
+            bufferIndex = texY_sp_w + (int)(tex_x);
+            pIndex = (currentX * ffthalfsize + currentY);
+            //pIndex = currentX + currentY;
+            p = power[pIndex];
 
-            //std::cout << "currentX = " << currentX << " of " << floor(startFrame) << " : w =  " << this->sp_w <<std::endl;
+            //std::cout << "currentX = " << currentX << " of " << (int)(startFrame) << " : w =  " << this->sp_w <<std::endl;
             if(this->buffer[bufferIndex] < p) this->buffer[bufferIndex] = p;
-            
-            //std::cout << "buffer["<<bufferIndex <<"] = "<<this->buffer[tex_x] << " | " << (int)floor(tex_x * ffthalfsize + tex_y) << " power[" << currentX << "][" << currentY << "] = " << p << std::endl;
+            //std::cout << "buffer["<<bufferIndex <<"] = "<<this->buffer[(int)(int)(tex_x)] << " | " << (int)(int)(tex_x * ffthalfsize + tex_y) << " power[" << currentX << "][" << currentY << "] = " << p << std::endl;
 
-            tex_x += 1;
-            currentX += 1.0;
+            tex_x += w_increment;
+            currentX += 1;
+            //currentX += ffthalfsize;
+            
         }
-        
-        tex_y += 1;
-        currentY += 1.0;
+
+        tex_y += h_increment;
+        currentY += 1;
     }
+    bench3.result("while loop");
+    
+    std::cout << "finish x = " << currentX << " : y = " << currentY << std::endl;
+    
+    
+
 
 }
 
@@ -310,13 +329,26 @@ void IRSpectrogram::parentSizeChanged(int w, int h)
     loadDescriptor();
 }
 
-
+// ==================================================
+// from Preference GUI
 void IRSpectrogram::setMagnitudeAmount(float val)
 {
     this->magnitudeAmount = val;
     repaint();
 }
 
+void IRSpectrogram::setHorizontalScale(float val)
+{
+    this->horizontalScale = val;
+    loadDescriptor();
+}
+
+void IRSpectrogram::setVerticalScale(float val)
+{
+    this->verticalScale = val;
+    loadDescriptor();
+}
+// ==================================================
 void IRSpectrogram::loadDescriptor()
 {
     std::cout << "loadDescriptor\n";
@@ -332,10 +364,12 @@ void IRSpectrogram::loadDescriptor()
             }
         }
         
+        bench.start();
         calcPixel(data->getDescriptor(FFTDescriptor::FFT_LinearPower,
                                       this->fftsize));
-
+        std::cout << " ============== calc() : " << bench.stop() << " ms." << std::endl;
         
+       
         this->isTextureCreated = false;
         std::cout << "refresh texture\n";
         updateFragment();
@@ -349,9 +383,11 @@ void IRSpectrogram::reCalcDescriptor()
     if(this->audioUpdated)
     {
         auto data = this->audioData->getData();
+        bench.start();
+
         calcPixel(data->getDescriptor(FFTDescriptor::FFT_LinearPower,
                                       this->fftsize));
-        
+        std::cout << " ============== reCalcDescriptor() : " << bench.stop() << std::endl;
         this->updateTexture = true;
         updateFragment();
     }
@@ -435,11 +471,13 @@ void IRSpectrogram::createTexture()
 
 void IRSpectrogram::updateFragment()
 {
+    
     this->fragmentText.load (this->fragURL.toStdString());
 
     String newCode = fragmentText.getStdString();
     this->fragmentCode = newCode;
     this->fragmentRefreshed = true;
+    
 
     repaint();
 }

@@ -99,6 +99,7 @@ public:
     
     const float* getRawData() { return this->raw.data(); }
     const float* getNormalizedData() { return this->normalizedData.data(); }
+    std::vector<float> getNormalizedDataVector() { return this->normalizedData; }
     
 private:
     // --------------------------------------------------

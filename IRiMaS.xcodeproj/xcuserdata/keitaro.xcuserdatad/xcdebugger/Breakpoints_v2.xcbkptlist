@@ -15,10 +15,10 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "void juce::EdgeTable::iterate&lt;juce::RenderingHelpers::EdgeTableFillers::SolidColour&lt;juce::PixelAlpha, true&gt; &gt;(juce::RenderingHelpers::EdgeTableFillers::SolidColour&lt;juce::PixelAlpha, true&gt;&amp;) const"
+                  symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44c0_sm_p1_0"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "418">
+                  offsetFromSymbolStart = "35922">
                </Location>
             </Locations>
          </BreakpointContent>

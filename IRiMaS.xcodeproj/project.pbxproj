@@ -595,6 +595,7 @@
 		829D0379222D7F20001FDE1D /* IRUIFoundation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRUIFoundation.hpp; sourceTree = "<group>"; };
 		829EC3C122E92E3500964ACD /* IRSpectrogramComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramComponent.cpp; sourceTree = "<group>"; };
 		829EC3C222E92E3500964ACD /* IRSpectrogramComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSpectrogramComponent.hpp; sourceTree = "<group>"; };
+		829EC3C522EA919600964ACD /* Benchmark.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Benchmark.h; sourceTree = "<group>"; };
 		82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceList.cpp; sourceTree = "<group>"; };
 		82A98B292199B84B0077EAE6 /* IRWorkspaceList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkspaceList.hpp; sourceTree = "<group>"; };
 		82AB427D22208B3200F9184C /* DataAllocationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataAllocationManager.h; sourceTree = "<group>"; };
@@ -1729,6 +1730,7 @@
 		823E7BD82134073A0046512B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				829EC3C422EA918700964ACD /* Benchmark */,
 				82D8B16522A0179E00940CD1 /* UIs */,
 				82DEA55422943668004D3D9F /* Mouse */,
 				82DEA54F229423CE004D3D9F /* View */,
@@ -2040,6 +2042,14 @@
 				82D8AE9222C3923E0012D987 /* IRSpectrogram.hpp */,
 			);
 			path = IRSpectrogram;
+			sourceTree = "<group>";
+		};
+		829EC3C422EA918700964ACD /* Benchmark */ = {
+			isa = PBXGroup;
+			children = (
+				829EC3C522EA919600964ACD /* Benchmark.h */,
+			);
+			path = Benchmark;
 			sourceTree = "<group>";
 		};
 		82A98B272199B8070077EAE6 /* IRWorksplaceList */ = {
@@ -2748,7 +2758,7 @@
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				DEAD_CODE_STRIPPING = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_NDEBUG=1",

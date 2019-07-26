@@ -97,7 +97,7 @@ void IRSpectrogramUI::setMovable(bool movable, bool verticalMovable, bool horizo
 
 void IRSpectrogramUI::visibleAreaChanged(Rectangle<int> area)
 {
-    std::cout << "IRSpectrogramUI::visibleAreaChanged\n";
+    //std::cout << "IRSpectrogramUI::visibleAreaChanged\n";
     this->spectrogramView->setVisibleArea(area);
     this->spectrogram->setVisibleArea(area);
 
