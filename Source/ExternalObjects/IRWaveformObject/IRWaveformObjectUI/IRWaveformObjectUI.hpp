@@ -60,15 +60,8 @@ public:
     // IRUIAudioFoundation related method
     void IRKeyPressed (int keyCode, String keyText) override;
     
-    enum UISTATUS
-    {
-        DRAGOUT,
-        DROPOUT,
-        EDITMODECHANGE,
-        PROJECTSAVE
-    };
     
-    UISTATUS status;
+    
     
     Array<IRMultiPurposeObject* > selectionSquareObjects;
     Array<IRMultiPurposeObject* > selectedSquareObjectList;

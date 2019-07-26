@@ -12,22 +12,20 @@ IRUIFoundation(nodeObject)
 {
     this->parent = nodeObject;
     
-    
     this->spectrogram = std::make_shared<IRSpectrogramComponent>(nodeObject);
+    this->spectrogram->getComponent()->zoomInOutSharedCallback = [this]{ zoomInoutSharedAction(); };
+    
+    this->spectrogram->getComponent()->currentPlayedFrameSharedCallback = [this] { currentPlayedFrameSharedAction(); };
     
     this->spectrogramView = std::make_shared<IRSpectrogramViewUI>(this->spectrogram.get(),
                                                        0, 40,
                                                        0, 40);
-    
     addAndMakeVisible(this->spectrogramView.get());
 
     this->spectrogramView->visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area);};
     
     this->spectrogram->getComponent()->zoomInClickedCallback = [this]{ zoomInClicked(); };
     this->spectrogram->getComponent()->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
-
-    
-    
 
 }
 
@@ -56,6 +54,16 @@ void IRSpectrogramUI::paint(Graphics& g)
 }
 void IRSpectrogramUI::resized()
 {
+    zoomResize();
+    this->spectrogram->getComponent()->linkZoomInfo(nodeObject);
+
+}
+
+
+// ==================================================
+
+void IRSpectrogramUI::zoomResize()
+{
     int x = this->xMargin;
     int y = this->yMargin;
     int w = getWidth() - this->xMargin*2;
@@ -71,11 +79,8 @@ void IRSpectrogramUI::resized()
                                               h - spectrogramMarginY);
     
     this->spectrogram->setMainComponentBounds(Rectangle<int>(0,0,w-30,h-40));
-    this->spectrogram->getComponent()->setZoomRatio(Point<float>(this->spectrogram_width_ratio, 1.0));
-    
-    std::cout << "IRSpectrogramUI resized \n";
-    
 
+    this->spectrogram->getComponent()->setZoomInfo(Point<float>(this->spectrogram_width_ratio, 1.0));
 }
 // ==================================================
 
@@ -181,7 +186,7 @@ void IRSpectrogramUI::fileImportCompleted()
 
 void IRSpectrogramUI::zoomInClicked()
 {
-    std::cout << "IRSpectrogramUI zoomInClicked!!\n";
+    std::cout << "IRSpectrogramUI zoomInClicked!! " << spectrogram_width_ratio << std::endl;
     this->spectrogram_width_ratio *= 2;
     resized();
 }
@@ -195,3 +200,21 @@ void IRSpectrogramUI::zoomOutClicked()
 
 
 // ==================================================
+
+void IRSpectrogramUI::zoomInoutSharedAction()
+{
+    this->spectrogram_width_ratio = this->spectrogram->getComponent()->getZoomInfo().getX();
+    std::cout << "changeListenerCallback zoomInClicked!! " << spectrogram_width_ratio << std::endl;
+    
+    zoomResize();
+}
+
+void IRSpectrogramUI::currentPlayedFrameSharedAction()
+{
+    
+}
+
+void IRSpectrogramUI::changeListenerCallback (ChangeBroadcaster* source)
+{
+   
+}

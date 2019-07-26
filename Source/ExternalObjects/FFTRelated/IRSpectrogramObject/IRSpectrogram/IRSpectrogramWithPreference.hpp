@@ -12,8 +12,7 @@
 #include "IRSpectrogramObjectPreference.h"
 
 class IRSpectrogramWithPreference : public IRSpectrogramUI,
-private KeAnimationComponent,
-private ChangeListener
+private KeAnimationComponent
 {
 public:
     // ==================================================

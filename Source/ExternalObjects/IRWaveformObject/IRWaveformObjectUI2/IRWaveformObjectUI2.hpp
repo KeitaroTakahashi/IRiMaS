@@ -15,7 +15,8 @@
 
 
 
-class IRWaveformObjectUI2 : public IRUIFoundation
+class IRWaveformObjectUI2 : public IRUIFoundation,
+public ChangeListener
 {
 public:
     
@@ -47,6 +48,11 @@ public:
     int getScrollSpace() const { return this->scrollSpace; }
 private:
     
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+
+    
+    // ==================================================
+    void zoomResize();
     
     // ==================================================
     std::shared_ptr<IRViewUI> waveformView;

@@ -14,7 +14,8 @@
 
 
 class IRSpectrogramUI : public IRUIFoundation,
-public ChangeBroadcaster
+public ChangeBroadcaster,
+public ChangeListener
 {
 public:
     
@@ -29,6 +30,7 @@ public:
     ~IRSpectrogramUI();
     // ==================================================
     void resized() override;
+    void zoomResize();
     void paint(Graphics& g) override;
     // ==================================================
     
@@ -63,6 +65,12 @@ public:
     }
     
 private:
+    
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+    
+    void zoomInoutSharedAction();
+    void currentPlayedFrameSharedAction();
+
     // ==================================================
     //UI
     IRSpectrogramUIStatus status;

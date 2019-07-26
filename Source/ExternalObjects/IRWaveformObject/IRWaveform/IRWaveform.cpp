@@ -45,7 +45,10 @@ void IRWaveform::deinitializeAudioData()
     setDisplayDuration(0);
     
     if(this->audioData != nullptr)
+    {
+        this->audioData->getData()->removeListener(this);
         getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+    }
 }
 
 // OpenAudioFile
@@ -171,6 +174,9 @@ void IRWaveform::fileImportCompleted()
 
     std::cout << "IRWaveform : fileImportCompleted\n";
     this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+    
+    this->audioData->getData()->addListener(this);
+    
     //set audioBuffer to player
     std::vector<int>v = {0,1};
     this->player->setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
@@ -338,3 +344,55 @@ void IRWaveform::audioPtrDelivery(IRAudio *obj)
 }
 
 
+
+// --------------------------------------------------
+void IRWaveform::linkZoomInfo(Component* comp)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        data->linkZoomInOutWithSharedComponents(comp);
+    }
+}
+
+void IRWaveform::linkCurrentPlayedFrame(Component* comp)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        data->linkAudioPlaywithSharedComponents(comp);
+    }
+}
+
+// --------------------------------------------------
+
+
+void IRWaveform::zoomInOutOperatedFromComponent(IRAudio* obj)
+{
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        
+        setZoomInfo(obj->getZoomInfo());
+        std::cout << "zoominfo of "<< nodeObject << " = " << this->zoomInfo.getX() <<  " from " << comp << std::endl;
+        
+        this->status = zoomInfoShared;
+        sendChangeMessage();
+       
+    }else{
+        std::cout <<"zoomInfo same \n";
+    }
+}
+void IRWaveform::audioPlayOperatedFromComponent(IRAudio* obj)
+{
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        setCurrentPlayedFrame(obj->getCurrentPlayedFrame());
+        this->status = currentPlayedFrameShared;
+        sendChangeMessage();
+    }
+}
+// --------------------------------------------------

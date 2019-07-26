@@ -361,3 +361,17 @@ void IRAudio::linkAudioPlaywithSharedComponents(Component* comp)
     this->emittingComponent = comp;
     callAudioPlayOperatedFromComponent();
 }
+// --------------------------------------------------
+
+
+void IRAudio::setZoomInfo(float w, float h)
+{
+    this->zoomInfo = Point<float>(w, h);
+    setZoomInfo(this->zoomInfo);
+}
+
+void IRAudio::setZoomInfo(Point<float> zoom)
+{
+    this->zoomInfo = zoom;
+}
+// --------------------------------------------------

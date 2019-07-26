@@ -82,10 +82,10 @@ public:
         virtual ~Listener() {}
         
         // called when audio file has been loaded
-        virtual void fileImportCompleted(IRAudio *obj) = 0;
+        virtual void fileImportCompleted(IRAudio *obj) {};
         // called when file status changed (will be loaded, completed, deleted etc.)
         // give IRAudio* which is THIS object, in order to notify when this object is deallocated by giving nullptr. see deconstructer of this class
-        virtual void fileStatusChanged(IRAudio *obj) = 0;
+        virtual void fileStatusChanged(IRAudio *obj) {};
         
         // called when zoom in or out action operated in a component which holds IRAudio
         virtual void zoomInOutOperatedFromComponent(IRAudio* obj) {}
@@ -135,8 +135,8 @@ public:
     Component* emittingComponent = nullptr;
     
     
-    void setZoomInfo(float w, float h) { this->zoomInfo = Point<float>(w, h); }
-    void setZoomInfo(Point<float> zoom) { this->zoomInfo = zoom; }
+    void setZoomInfo(float w, float h);
+    void setZoomInfo(Point<float> zoom);
     Point<float> getZoomInfo() const { return this->zoomInfo; }
     void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
     int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }

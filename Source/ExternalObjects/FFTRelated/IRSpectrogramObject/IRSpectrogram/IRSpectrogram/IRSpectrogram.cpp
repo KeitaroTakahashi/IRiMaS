@@ -10,7 +10,7 @@
 IRSpectrogram::IRSpectrogram(IRNodeObject* nodeObject) :
 IRUIAudioFoundation(nodeObject),
 parent(nodeObject),
-zoomRatio(Point<float>(1.0,1.0))
+zoomInfo(Point<float>(1.0,1.0))
 {
     init();
     
@@ -36,7 +36,10 @@ IRSpectrogram::~IRSpectrogram()
         closeOpenGLComponent();
     
     if(this->audioData != nullptr)
+    {
+        this->audioData->getData()->removeListener(this);
         getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+    }
     
     std::cout << "~IRSpectrogram ENDS\n";
 
@@ -178,8 +181,8 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     maxTex_w = this->MAX_TEXTURE_SIZE;
     maxTex_h = this->MAX_TEXTURE_SIZE;
     // viewport size
-    float parentW = (float)w * this->zoomRatio.getX();
-    float parentH = (float)h * this->zoomRatio.getY();
+    float parentW = (float)w * this->zoomInfo.getX();
+    float parentH = (float)h * this->zoomInfo.getY();
     
     
     //std::cout << " >>>>>> visible area " << x << " of (" << w << ", " << h << ") : parent " << parentW << ", " << parentH << " <<<<<< " << std::endl;
@@ -567,6 +570,7 @@ void IRSpectrogram::fileImportCompleted()
 {
     std::cout << "fileImportCompleted\n";
     this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+    this->audioData->getData()->addListener(this);
 
     this->audioUpdated = true;
     
@@ -602,3 +606,61 @@ void IRSpectrogram::commentClicked()
 
 
 // ==================================================
+
+
+// --------------------------------------------------
+void IRSpectrogram::linkZoomInfo(Component* comp)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        data->linkZoomInOutWithSharedComponents(comp);
+    }
+}
+
+void IRSpectrogram::linkCurrentPlayedFrame(Component* comp)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        data->linkAudioPlaywithSharedComponents(comp);
+    }
+}
+
+// --------------------------------------------------
+
+
+void IRSpectrogram::zoomInOutOperatedFromComponent(IRAudio* obj)
+{
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        
+        setZoomInfo(obj->getZoomInfo());
+        std::cout << "zoominfo of "<< nodeObject << " = " << this->zoomInfo.getX() <<  " from " << comp << std::endl;
+        
+        /*
+        this->status = zoomInfoShared;
+        sendChangeMessage();
+         */
+        if(this->zoomInOutSharedCallback != nullptr) this->zoomInOutSharedCallback();
+        
+    }else{
+        std::cout <<"zoomInfo same \n";
+    }
+}
+void IRSpectrogram::audioPlayOperatedFromComponent(IRAudio* obj)
+{
+    auto comp = obj->getEmittingComponent();
+    // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    if(comp != nodeObject)
+    {
+        setCurrentPlayedFrame(obj->getCurrentPlayedFrame());
+        //this->status = currentPlayedFrameShared;
+        //sendChangeMessage();
+        if(this->currentPlayedFrameSharedCallback != nullptr)
+            this->currentPlayedFrameSharedCallback();
+    }
+}
+// --------------------------------------------------

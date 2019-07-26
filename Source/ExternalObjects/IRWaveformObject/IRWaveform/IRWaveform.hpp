@@ -10,10 +10,21 @@
 
 class IRWaveform : public IRUIAudioFoundation,
                    private ChangeListener,
-                   public ChangeBroadcaster
+                   public ChangeBroadcaster,
+public IRAudio::Listener
 {
     
 public:
+    
+    enum IRWaveformStatus
+    {
+        DRAGOUT,
+        DROPOUT,
+        EDITMODECHANGE,
+        PROJECTSAVE,
+        zoomInfoShared,
+        currentPlayedFrameShared
+    };
     
     IRWaveform(IRNodeObject* parent);
     ~IRWaveform();
@@ -64,6 +75,39 @@ public:
     // ==================================================
     // link system
     virtual void audioPtrDelivery(IRAudio *obj) override;
+    
+    // ==================================================
+    //sharedInfo
+    
+    void setZoomInfo(Point<float> zoom) {
+        this->zoomInfo = zoom;
+        if(this->audioData != nullptr)
+        {
+            auto data = this->audioData->getData();
+            data->setZoomInfo(this->zoomInfo);
+        }
+    }
+    
+    void setZoomInfo(float w, float h) {
+        this->zoomInfo = Point<float>(w, h);
+        setZoomInfo(this->zoomInfo);
+    }
+    
+    void linkZoomInfo(Component* comp);
+    
+    Point<float> getZoomInfo() const { return this->zoomInfo; }
+    
+    void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
+    int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
+    
+    void linkCurrentPlayedFrame(Component* comp);
+    
+    // called by IRAudio
+    void zoomInOutOperatedFromComponent(IRAudio* obj) override;
+    void audioPlayOperatedFromComponent(IRAudio* obj) override;
+    
+    IRWaveformStatus getStatus() const { return this->status; }
+    IRWaveformStatus status;
 
     // ==================================================
     
@@ -88,6 +132,15 @@ private:
     int channelIndex = 0;
     double zoomFactor = 1.0;
     
+    // ---------------------------------------------------------------------------
+    // sharedInformation
+    
+    int currentPlayedFrame = 0;
+    
+    Point<float> zoomInfo;
+    
+    // ---------------------------------------------------------------------------
+
     //thread lock
     CriticalSection callbackLock;
 

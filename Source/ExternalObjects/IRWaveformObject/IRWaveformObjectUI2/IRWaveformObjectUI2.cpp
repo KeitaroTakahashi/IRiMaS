@@ -14,6 +14,7 @@ IRUIFoundation(parent)
     this->waveformView = std::make_shared<IRViewUI>(this->waveform.get(),
                                                     0, 40,
                                                     0, 40);
+    this->waveform->addChangeListener(this);
     
     addAndMakeVisible(this->waveformView.get());
     
@@ -41,11 +42,13 @@ void IRWaveformObjectUI2::resized()
     this->waveformView->setBounds(x, y, w, h);
     this->waveformView->setViewPosition(this->previousOffsetX, 0);
     this->waveformView->setComponentBounds(0,
-                                            0,
-                                            w * this->automation_width_ratio,
-                                            h - this->scrollSpace);
+                                           0,
+                                           w * this->automation_width_ratio,
+                                           h - this->scrollSpace);
+    
+    this->waveform->setZoomInfo(this->automation_width_ratio, 1.0);
+    this->waveform->linkZoomInfo(nodeObject);
 }
-
 void IRWaveformObjectUI2::paint(Graphics& g)
 {
     g.fillAll(SYSTEMCOLOUR.background);
@@ -57,6 +60,18 @@ void IRWaveformObjectUI2::paint(Graphics& g)
 
 // ==================================================
 
+void IRWaveformObjectUI2::zoomResize()
+{
+    int w = getWidth() - this->xMargin*2;
+    int h = getHeight() - this->yMargin*2;
+    this->waveformView->setComponentBounds(0,
+                                           0,
+                                           w * this->automation_width_ratio,
+                                           h - this->scrollSpace);
+    
+    this->waveform->setZoomInfo(this->automation_width_ratio, 1.0);
+}
+// ==================================================
 
 void IRWaveformObjectUI2::visibleAreaChanged(Rectangle<int> area)
 {
@@ -85,4 +100,22 @@ void IRWaveformObjectUI2::zoomOutClicked()
 void IRWaveformObjectUI2::setEditMode(bool newEditMode)
 {
     this->waveform->setEditMode(newEditMode);
+}
+
+void IRWaveformObjectUI2::changeListenerCallback (ChangeBroadcaster* source)
+{
+    if(source == this->waveform.get())
+    {
+        
+        auto s = this->waveform->getStatus();
+        std::cout << "from waveform\n";
+        if(s == IRWaveform::IRWaveformStatus::zoomInfoShared)
+        {
+            this->automation_width_ratio = this->waveform->getZoomInfo().getX();
+            zoomResize();
+        }else if(s == IRWaveform::IRWaveformStatus::currentPlayedFrameShared)
+        {
+            
+        }
+    }
 }
