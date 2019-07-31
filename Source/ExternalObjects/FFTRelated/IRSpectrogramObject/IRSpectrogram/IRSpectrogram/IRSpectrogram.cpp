@@ -63,26 +63,26 @@ void IRSpectrogram::init()
         peer->setCurrentRenderingEngine (0);
     
     this->openGLContext.attachTo(*getTopLevelComponent());
-    /*
-    String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName() +
-    "/Contents/Resources/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag";*/
     
-    String url ;
+    String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName();
+    
 #if JUCE_MAC
-    
-    url = "/Contents/Resources/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag.frag";
-    
+    url += "/Contents/Resources/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag";
 #elif JUCE_IOS
-    
-    url = "/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag.frag");
-    
+    url += "/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag";
 #endif
+    
+    File f(url);
+    if(!f.exists()) std::cout << "Error : " << url << " does not exist!!\n";
+    
     
     
     this->fragURL = url;
     this->fragmentText.load (url.toStdString());
     this->fragmentCode = fragmentText.getStdString();
     this->fragmentRefreshed = true;
+    
+    std::cout << "fragmentCode = " << this->fragmentCode << std::endl;
     
     startTimer(100);
     

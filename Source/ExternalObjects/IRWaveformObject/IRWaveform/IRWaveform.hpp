@@ -105,7 +105,7 @@ public:
     Point<float> getZoomInfo() const { return this->zoomInfo; }
     
     void setCurrentPlayedFrame(int64 frame) { this->currentPlayedFrame = frame; }
-    int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
+    int64 getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
     
     void linkCurrentPlayedFrame(Component* comp);
     

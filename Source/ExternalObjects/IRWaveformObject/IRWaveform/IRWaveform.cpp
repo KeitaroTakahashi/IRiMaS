@@ -9,8 +9,8 @@ IRWaveform::IRWaveform(IRNodeObject* parent) :
 IRUIAudioFoundation(parent),
 thumbnailCache(5),
 thumbnail(512, formatManager, thumbnailCache),
-visiblePos(Point<int>(0,0)),
-playingLine(0,0,0,0)
+playingLine(0,0,0,0),
+visiblePos(Point<int>(0,0))
 {
  
     this->parent = parent;
