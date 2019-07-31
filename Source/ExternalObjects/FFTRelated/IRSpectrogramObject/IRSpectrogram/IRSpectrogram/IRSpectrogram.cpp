@@ -65,7 +65,6 @@ void IRSpectrogram::init()
     this->openGLContext.attachTo(*getTopLevelComponent());
     
     String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName();
-    
 #if JUCE_MAC
     url += "/Contents/Resources/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag";
 #elif JUCE_IOS
@@ -73,7 +72,11 @@ void IRSpectrogram::init()
 #endif
     
     File f(url);
-    if(!f.exists()) std::cout << "Error : " << url << " does not exist!!\n";
+    if(!f.exists())
+    {
+        std::cout << "Error : " << url << " does not exist!!\n";
+        AlertWindow::showOkCancelBox(AlertWindow::QuestionIcon, "Fatal Error", "IRSpectrogram : frag file " + url + "not found! Please contact a developer with this error message.");
+    }
     
     
     
@@ -82,10 +85,7 @@ void IRSpectrogram::init()
     this->fragmentCode = fragmentText.getStdString();
     this->fragmentRefreshed = true;
     
-    std::cout << "fragmentCode = " << this->fragmentCode << std::endl;
-    
     startTimer(100);
-    
     setSize(500,500);
     
    // createDemoTexture();
@@ -197,8 +197,6 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     int h = this->visibleArea.getHeight();
     int x = this->visibleArea.getX();
     int y = this->visibleArea.getY();
-    
-    std::cout << "w = " << w << " x " << x << std::endl;
     
     float maxTex_w = (getWidth() < this->MAX_TEXTURE_SIZE)? getWidth() : this->MAX_TEXTURE_SIZE;
     float maxTex_h = (getHeight() < this->MAX_TEXTURE_SIZE)? getHeight() : this->MAX_TEXTURE_SIZE;
@@ -318,13 +316,6 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     //std::cout << "finish current x = " << currentX << " : y = " << currentY << std::endl;
     //std::cout << "finish tex x = " << tex_x << " : y = " << tex_y << std::endl;
     
-    /*
-    String message = "nframe = " + String(nframe) + " : fftsize = " + String(fftsize) + " : wh = " + String(texture_w) + " : " + String(texture_h) + " : currentX Y = " + String(currentX) + " : " + String(currentY) + " : tex_xy " + String(tex_x) + " : " + String(tex_y);
-    AlertWindow::showOkCancelBox(AlertWindow::QuestionIcon, "Check", message);
-     */
-    
-
-
 }
 
 void IRSpectrogram::loadDrawData(IRDescriptorStr* data)
@@ -421,7 +412,6 @@ void IRSpectrogram::loadDescriptor()
         
        
         this->isTextureCreated = false;
-        std::cout << "refresh texture\n";
         updateFragment();
             
     }
