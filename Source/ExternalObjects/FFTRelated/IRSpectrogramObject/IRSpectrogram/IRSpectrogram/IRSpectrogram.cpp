@@ -67,7 +67,17 @@ void IRSpectrogram::init()
     String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName() +
     "/Contents/Resources/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag";*/
     
-    String url = "/Users/keitaro/program/JUCE/IRiMaS/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag";
+    String url ;
+#if JUCE_MAC
+    
+    url = "/Contents/Resources/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag.frag";
+    
+#elif JUCE_IOS
+    
+    url = "/materials/Sources/GLSL/Spectrogram/KSpectrogram.frag.frag");
+    
+#endif
+    
     
     this->fragURL = url;
     this->fragmentText.load (url.toStdString());
