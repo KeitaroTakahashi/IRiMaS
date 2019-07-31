@@ -67,8 +67,8 @@ private:
     bool analysisDone = false;
     
     int nframe = 0;
-    int fftsize = 4096;
-    int hopsize = 2048;
+    int fftsize = 2048;
+    int hopsize = 1024;
     
     // ==================================================
 

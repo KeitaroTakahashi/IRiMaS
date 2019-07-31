@@ -7,7 +7,9 @@
 
 #include "IRAutomationUI.hpp"
 
-IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeObject)
+IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeObject),
+visibleArea(0,0,0,0),
+playingLine(0,0,0,0)
 {
     
     this->automation = std::make_shared<InteractiveAutomation>(nodeObject);
@@ -46,6 +48,7 @@ void IRAutomationUI::paint(Graphics& g)
     g.setColour (SYSTEMCOLOUR.contents);
     //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
     g.drawRect(getLocalBounds().toFloat(), 1.0);
+    
     
     
 }
@@ -147,6 +150,8 @@ void IRAutomationUI::visibleAreaChanged(Rectangle<int> area)
     linkViewPosition(nodeObject);
     
     this->previousOffsetX = area.getX();
+    
+    this->visibleArea = area;
 }
 
 // ==================================================
@@ -301,6 +306,7 @@ void IRAutomationUI::audioPlayOperatedFromComponent(IRAudio* obj)
     if(comp != nodeObject)
     {
         setCurrentPlayedFrame(obj->getCurrentPlayedFrame());
+        createPlayingLine(obj->getCurrentPlayedFrame());
         this->status = currentPlayedFrameShared;
         sendChangeMessage();
     }
@@ -319,5 +325,33 @@ void IRAutomationUI::viewPortPositionFromComponent(IRAudio *obj)
         sendChangeMessage();
         
         this->automationView->setViewPosition(this->visiblePos.getX(), this->visiblePos.getY());
+    }
+}
+
+
+void IRAutomationUI::createPlayingLine(int64 currentFrame)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        double sampleRate = data->getSampleRate();
+        int64 nframe = data->getNumSamples();
+        
+        int width = this->visibleArea.getWidth() * this->zoomInfo.getX();
+        
+        double ratio = (double)currentFrame / (double)nframe;
+        
+        int currentX = floor((double)width * ratio);
+        
+        //std::cout << "spectrogram w " << width << " currentX " << currentX << " visibleX = " << this->visibleArea.getX() << std::endl;
+        
+        if(currentX < this->visibleArea.getX() + this->visibleArea.getWidth())
+        {
+            this->playingLine = Rectangle<int>( currentX, 0, currentX, getHeight());
+            
+        }
+        this->automation->setPlayingLine(this->playingLine);
+        //repaint();
+        
     }
 }

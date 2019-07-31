@@ -8,7 +8,7 @@
 #include "IRISVObject.hpp"
 
 IRISVObject::IRISVObject(Component* parent) :
-IRNodeObject(parent, "IRISV")
+IRNodeObject(parent, "IRISV", NodeObjectType(heavyWeightComponent))
 {
 
     this->UI = std::make_shared<IR3DGraphicUIWithPreference>(this);

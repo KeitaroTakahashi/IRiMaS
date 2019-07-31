@@ -158,6 +158,8 @@ void IRProject::createNewWorkspace()
     
     addAndMakeVisible(space);
     this->workspaces.push_back(space);
+    
+    std::cout << "new workspace created " << space << std::endl;
     if(this->workspaceList != nullptr)
     {
         // if there is already a topSpace, then treat heavy components
@@ -168,13 +170,19 @@ void IRProject::createNewWorkspace()
         }
         
         this->topSpace = space;
+        
         // bring the new workspace on top.
         this->topSpace->toFront(true);
-        // show heavey components on the current topSpace
         this->topSpace->manageHeavyWeightComponents(true);
+        space->toFront(true);
+        repaint();
+        // show heavey components on the current topSpace
         
         this->workspaceList->addWorkspace(space);
+        this->workspaceList->setSelectedComponentIndex(this->workspaceList->getWorkspaceCount()-1);
         
+        
+        std::cout << "top space=  " << this->topSpace << std::endl;
     }
     else
     {
@@ -185,7 +193,6 @@ void IRProject::createNewWorkspace()
 
 void IRProject::createWorkspaceList()
 {
- //   this->workspaceList = new IRWorkspaceList(Rectangle<int>(0, 0, this->workspaceListWidth, getHeight()));
     this->workspaceList = std::make_shared<IRWorkspaceList>(Rectangle<int>(0, 0, this->workspaceListWidth, getHeight()));
     this->workspaceList->addListener(this);
     this->workspaceList->addChangeListener(this);

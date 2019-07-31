@@ -60,6 +60,8 @@ public:
     // ------------------------------------------------------------
     //get next read position in audio data in sample
     int64 getNextReadPosition() const override { return static_cast<int>(this->playPosition); }
+    
+    int64 getStartPosition() const { return this->startPosition; }
     // ------------------------------------------------------------
     void setPlaySamples(int samples) { this->playSamples = samples; }
     // ------------------------------------------------------------
@@ -108,6 +110,7 @@ private:
     bool afterPausing = false;
     bool inputStreamEOF = false;
     bool isPrepared = false;
+    
     
     //other parameters
     float lastGrain = 1.0;

@@ -6,12 +6,14 @@
 #include "IRUIAudioFoundation.hpp"
 #include "IRAudioReader.hpp"
 #include "SoundPlayer.hpp"
+#include "KeAnimationComponent.h"
 
 
 class IRWaveform : public IRUIAudioFoundation,
                    private ChangeListener,
                    public ChangeBroadcaster,
-public IRAudio::Listener
+public IRAudio::Listener,
+public KeAnimationComponent
 {
     
 public:
@@ -72,7 +74,10 @@ public:
     //IRAudio audioFile;
     SoundPlayerClass *player;
     
-    
+    // ==================================================
+    void createPlayingLine(int64 currentFrame);
+
+
     // ==================================================
     // link system
     virtual void audioPtrDelivery(IRAudio *obj) override;
@@ -99,7 +104,7 @@ public:
     
     Point<float> getZoomInfo() const { return this->zoomInfo; }
     
-    void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
+    void setCurrentPlayedFrame(int64 frame) { this->currentPlayedFrame = frame; }
     int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
     
     void linkCurrentPlayedFrame(Component* comp);
@@ -116,6 +121,9 @@ public:
     IRWaveformStatus status;
 
     // ==================================================
+    
+    
+    
     
     void deinitializeAudioData();
 
@@ -138,13 +146,18 @@ private:
     int channelIndex = 0;
     double zoomFactor = 1.0;
     
+    Rectangle<int> playingLine;
+    
     // ---------------------------------------------------------------------------
     // sharedInformation
     
-    int currentPlayedFrame = 0;
+    int64 currentPlayedFrame = 0;
     Point<int>visiblePos;
     Point<float> zoomInfo;
     
+    // ---------------------------------------------------------------------------
+    
+    void updateAnimationFrame() override;
     // ---------------------------------------------------------------------------
 
     //thread lock

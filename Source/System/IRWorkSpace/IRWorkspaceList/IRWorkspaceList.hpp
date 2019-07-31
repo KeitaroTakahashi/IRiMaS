@@ -51,7 +51,8 @@ public:
     Component* getSelectedComponent();
     
     void setSelectedComponentIndex(int index);
-    
+    int getWorkspaceCount() const { return this->workspaces.size(); }
+
     class Listener
     {
     public:
@@ -157,6 +158,7 @@ private:
         }
         
         int getIndex() const { return this->index; }
+        
         // ========================================
         void mouseDown (const MouseEvent& event) override
         {

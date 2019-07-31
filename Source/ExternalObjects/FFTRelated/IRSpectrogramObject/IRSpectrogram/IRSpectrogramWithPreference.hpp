@@ -21,6 +21,7 @@ public:
     ~IRSpectrogramWithPreference();
     
     IRSpectrogramObjectPreference* getPreference() const { return this->preference.get(); }
+    
     // ==================================================
 
     

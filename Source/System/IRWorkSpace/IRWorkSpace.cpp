@@ -1,15 +1,18 @@
 
 #include "IRWorkSpace.hpp"
 
-
-
-
 IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindow* preferenceWindow)
 {
+    
+    
     this->name = title;
     this->title = this->name + " (EDIT MODE)";
     setBounds(frameRect);
-    //setOpaque(false);
+    
+    
+    setOpaque(true);
+    
+    
     //setBufferedToImage(false);
     loadBackgroundImageLink(); // for LinkMode
     
@@ -53,7 +56,7 @@ void IRWorkSpace::paint (Graphics& g)
     g.fillAll(Colours::white);
     
     // draw shadows for the selected objects
-    drawShadows(g);
+    if(isEditMode()) drawShadows(g);
     
     // paint all of
     /*
@@ -135,7 +138,7 @@ void IRWorkSpace::resized()
 
 void IRWorkSpace::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRWorkSpace mouseDown" << std::endl;
+    std::cout << "IRWorkSpace mouseDown " << this << std::endl;
 
     this->selector->mouseDownHandler(e);
     

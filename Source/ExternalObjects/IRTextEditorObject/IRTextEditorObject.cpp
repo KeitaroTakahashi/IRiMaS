@@ -96,6 +96,9 @@ void IRTextEditorObject::loadThisFromSaveData(t_json data)
                                (uint8)colour[3].int_value());
     
     this->textEditor.setColour(TextEditor::textColourId, textColour);
+    this->textEditor.setColour(TextEditor::outlineColourId, Colours::transparentWhite);
+
+    
     
     // set text contents
     this->textEditor.setText(String(data["textContents"].string_value()), dontSendNotification);
@@ -115,11 +118,11 @@ void IRTextEditorObject::paint(Graphics &g)
 {
     if (isEditMode())
     {
-        auto area = getLocalBounds().reduced (2);
+        auto area = getLocalBounds();
         
         g.setColour (SYSTEMCOLOUR.contents);
-        g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
-        
+       // g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
+        g.drawRect(area.toFloat(), 2.0);
     }
 }
 

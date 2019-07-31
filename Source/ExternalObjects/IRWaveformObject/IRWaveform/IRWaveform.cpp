@@ -9,7 +9,8 @@ IRWaveform::IRWaveform(IRNodeObject* parent) :
 IRUIAudioFoundation(parent),
 thumbnailCache(5),
 thumbnail(512, formatManager, thumbnailCache),
-visiblePos(Point<int>(0,0))
+visiblePos(Point<int>(0,0)),
+playingLine(0,0,0,0)
 {
  
     this->parent = parent;
@@ -29,6 +30,8 @@ visiblePos(Point<int>(0,0))
     
     this->player = new SoundPlayerClass(parent);
     this->player->addChangeListener(this);
+    
+    setFps(17);
     
 }
 
@@ -222,6 +225,14 @@ void IRWaveform::paint(Graphics& g)
                                     1.0f // zoom factor
                                     );
         
+        // line
+        g.setColour(Colours::red);
+        g.drawLine(this->playingLine.getX(),
+                   this->playingLine.getY(),
+                   this->playingLine.getWidth(),
+                   this->playingLine.getHeight(),
+                   3.0);
+        
     }
 }
 
@@ -312,6 +323,9 @@ void IRWaveform::play(int start, int duration, int offset, bool looping)
     this->player->setParameters(start, duration, offset, looping);
     this->player->setLooping(looping);
     this->player->start();
+    
+    
+    startAnimation();
 }
 
 
@@ -319,6 +333,8 @@ void IRWaveform::stop()
 {
     this->player->setLooping(false);
     this->player->stop();
+    
+    stopAnimation();
 }
 
 
@@ -399,11 +415,17 @@ void IRWaveform::zoomInOutOperatedFromComponent(IRAudio* obj)
 }
 void IRWaveform::audioPlayOperatedFromComponent(IRAudio* obj)
 {
+    
     auto comp = obj->getEmittingComponent();
     // check if the emmiting component is not this object otherwise we will face on the infinitive loop
     if(comp != nodeObject)
     {
+        // stop pther playing process in this case to avoid unneccesary lisk
+        if(this->player->isPlaying()) this->player->stop();
+        
+        
         setCurrentPlayedFrame(obj->getCurrentPlayedFrame());
+        createPlayingLine(obj->getCurrentPlayedFrame());
         this->status = currentPlayedFrameShared;
         sendChangeMessage();
     }
@@ -422,3 +444,48 @@ void IRWaveform::viewPortPositionFromComponent(IRAudio *obj)
 }
 
 // --------------------------------------------------
+
+void IRWaveform::updateAnimationFrame()
+{
+    if(this->audioData != nullptr)
+    {
+        if(this->player->isPlaying())
+        {
+            auto data = this->audioData->getData();
+            int64 playingPosition = this->player->getStartPosition() +
+            this->player->getNextReadPosition();
+            
+            data->setCurrentPlayedFrame(playingPosition);
+            
+            data->linkAudioPlaywithSharedComponents(nodeObject);
+            
+            createPlayingLine(playingPosition);
+        }
+    }
+}
+
+void IRWaveform::createPlayingLine(int64 currentFrame)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        double sampleRate = data->getSampleRate();
+        double duration = getDisplayDuration();
+        double start = getStart();
+        
+        double p = (double)currentFrame - (start * sampleRate);
+        
+        if(p > 0)
+        {
+            double w = sampleRate * duration;
+            
+            float ratio = p / w;
+            
+            int x_pos = floor((float)getWidth() * ratio);
+            
+            this->playingLine = Rectangle<int>(x_pos, 0, x_pos, getHeight());
+            repaint();
+
+        }
+    }
+}

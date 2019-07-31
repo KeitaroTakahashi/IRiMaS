@@ -28,6 +28,9 @@ public:
 
     void resized() override;
     void paint(Graphics& g) override;
+    
+    // refresh OpenGL when added
+    void heavyComponentRefreshed() override;
     // ==================================================
     void mouseUpEvent(const MouseEvent& e) override;
     

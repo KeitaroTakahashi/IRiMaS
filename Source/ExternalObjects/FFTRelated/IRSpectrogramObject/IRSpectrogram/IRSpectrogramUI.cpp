@@ -63,6 +63,14 @@ void IRSpectrogramUI::resized()
 
 // ==================================================
 
+void IRSpectrogramUI::heavyComponentRefreshed()
+{
+    this->spectrogram->getComponent()->heavyComponentRefreshed();
+}
+
+// ==================================================
+
+
 void IRSpectrogramUI::zoomResize()
 {
     int x = this->xMargin;
@@ -79,7 +87,7 @@ void IRSpectrogramUI::zoomResize()
                                               w * this->spectrogram_width_ratio,
                                               h - spectrogramMarginY);
     
-    this->spectrogram->setMainComponentBounds(Rectangle<int>(0,0,w-30,h-40));
+    this->spectrogram->setMainComponentBounds(Rectangle<int>(0,0,w-20,h-30));
 
     this->spectrogram->getComponent()->setZoomInfo(Point<float>(this->spectrogram_width_ratio, 1.0));
 }

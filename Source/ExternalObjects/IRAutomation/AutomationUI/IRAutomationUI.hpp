@@ -90,20 +90,24 @@ private:
     
     Point<float> getZoomInfo() const { return this->zoomInfo; }
     
-    void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
-    int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
+    void setCurrentPlayedFrame(int64 frame) { this->currentPlayedFrame = frame; }
+    int64 getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
     
     void linkCurrentPlayedFrame(Component* comp);
     
     void setVisiblePos(Point<int>pos) { this->visiblePos = pos; }
     Point<int> getVisiblePos() const { return this->visiblePos; }
     
+    Rectangle<int> visibleArea;
     // ---------------------------------------------------------------------------
     // sharedInformation
     
-    int currentPlayedFrame = 0;
+    int64 currentPlayedFrame = 0;
     Point<int>visiblePos;
     Point<float> zoomInfo;
+    Rectangle<int>playingLine;
+    
+    void createPlayingLine(int64 currentFrame);
     
     // ==================================================
     

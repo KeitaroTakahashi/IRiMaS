@@ -34,6 +34,9 @@ public:
     void paint(Graphics& g) override;
     // ==================================================
     
+    // called when this needs to be refreshed.
+    void heavyComponentRefreshed();
+    
     IRSpectrogramUIStatus getStatus() const { return this->status; }
 
     void openFile();

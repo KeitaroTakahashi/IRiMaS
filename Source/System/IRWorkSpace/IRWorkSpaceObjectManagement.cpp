@@ -147,6 +147,7 @@ void IRWorkSpace::manageHeavyWeightComponents(bool flag)
         {
             if(flag){
                 addAndMakeVisible(obj);
+                obj->heavyComponentRefreshed();
             }else{
                 removeChildComponent(obj);
             }

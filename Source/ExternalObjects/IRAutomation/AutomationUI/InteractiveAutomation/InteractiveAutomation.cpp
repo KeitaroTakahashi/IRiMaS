@@ -67,6 +67,13 @@ void InteractiveAutomation::paint(Graphics& g)
     if(isCommentShow()) paintComment(g);
   
     
+    g.setColour(Colours::red);
+    g.drawLine(this->playingLine.getX(),
+               this->playingLine.getY(),
+               this->playingLine.getWidth(),
+               this->playingLine.getHeight(),
+               3.0);
+    
 }
 
 void InteractiveAutomation::paintComment(Graphics& g)

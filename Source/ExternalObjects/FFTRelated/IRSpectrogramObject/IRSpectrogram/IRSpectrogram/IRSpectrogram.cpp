@@ -23,8 +23,9 @@ zoomInfo(Point<float>(1.0,1.0))
     this->controller.setCommentEvent([this]{commentClicked();});
     //openFile();
     
-    
+    //setFps(17);
 
+    setFps(100);
 }
 
 IRSpectrogram::~IRSpectrogram()
@@ -77,9 +78,14 @@ void IRSpectrogram::init()
     
     setSize(500,500);
     
-    
-    
    // createDemoTexture();
+}
+
+void IRSpectrogram::heavyComponentRefreshed()
+{
+    
+    std::cout << "heavyComponentRefreshed\n";
+    loadDescriptor();
 }
 
 // ==================================================
@@ -102,6 +108,13 @@ void IRSpectrogram::paint(Graphics& g)
 {
     bench.start();
     shaderTask(g);
+    
+    g.setColour(Colours::red);
+    g.drawLine(this->playingLine.getX(),
+               this->playingLine.getY(),
+               this->playingLine.getWidth(),
+               this->playingLine.getHeight(),
+               3.0);
     std::cout << "shaderTask " << bench.stop() << std::endl;
 }
 
@@ -175,6 +188,8 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     int x = this->visibleArea.getX();
     int y = this->visibleArea.getY();
     
+    std::cout << "w = " << w << " x " << x << std::endl;
+    
     float maxTex_w = (getWidth() < this->MAX_TEXTURE_SIZE)? getWidth() : this->MAX_TEXTURE_SIZE;
     float maxTex_h = (getHeight() < this->MAX_TEXTURE_SIZE)? getHeight() : this->MAX_TEXTURE_SIZE;
     
@@ -183,6 +198,8 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     // viewport size
     float parentW = (float)w * this->zoomInfo.getX();
     float parentH = (float)h * this->zoomInfo.getY();
+    
+    
     
     
     //std::cout << " >>>>>> visible area " << x << " of (" << w << ", " << h << ") : parent " << parentW << ", " << parentH << " <<<<<< " << std::endl;
@@ -227,12 +244,12 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
         currentY -= dis;
         endY -= dis;
     }
-    /*
-    std::cout << "==========\n";
-    std::cout <<"texture size = " << texture_w << " h " << texture_h << " : ratio = " << texRatioX << " : texSize = " << texSize << std::endl;
+   
+    //std::cout << "==========\n";
+    //std::cout <<"texture size = " << texture_w << " h " << texture_h << " : texSize = " << texSize << std::endl;
     
-    std::cout << "start x = " << currentX << " to " << endX << " of " << nframe << " : startY " << currentY << " to " << endY << " of "<< fftsize<<std::endl;
-    */
+    //std::cout << "start x = " << currentX << " to " << endX << " of " << nframe << " : startY " << currentY << " to " << endY << " of "<< fftsize<<std::endl;
+ 
     this->sp_w = (int)(texture_w);
     this->sp_h = (int)(texture_h);
     //std::cout << "sp_w = " << this->sp_w << ", " << this->sp_h << " : texSize = "<< texSize << " : nframe "<< nframe << " : fftsize = " << fftsize << std::endl;
@@ -250,6 +267,7 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     float p = 0.0;
     // texture
     bench3.start();
+    
     
 
     while(1) // h
@@ -272,9 +290,9 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
             //pIndex = currentX + currentY;
             p = power[pIndex];
 
-            //std::cout << "currentX = " << currentX << " of " << (int)(startFrame) << " : w =  " << this->sp_w <<std::endl;
+           // std::cout << "currentX = " << currentX << " of " << (int)(startFrame) << " : w =  " << this->sp_w <<std::endl;
             if(this->buffer[bufferIndex] < p) this->buffer[bufferIndex] = p;
-            //std::cout << "buffer["<<bufferIndex <<"] = "<<this->buffer[(int)(int)(tex_x)] << " | " << (int)(int)(tex_x * ffthalfsize + tex_y) << " power[" << currentX << "][" << currentY << "] = " << p << std::endl;
+           // std::cout << "buffer["<<bufferIndex <<"] = "<<this->buffer[(int)(int)(tex_x)] << " | " << (int)(int)(tex_x * ffthalfsize + tex_y) << " power[" << currentX << "][" << currentY << "] = " << p << std::endl;
 
             tex_x += w_increment;
             currentX += 1;
@@ -287,8 +305,13 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     }
     bench3.result("while loop");
     
-    std::cout << "finish x = " << currentX << " : y = " << currentY << std::endl;
+    //std::cout << "finish current x = " << currentX << " : y = " << currentY << std::endl;
+    //std::cout << "finish tex x = " << tex_x << " : y = " << tex_y << std::endl;
     
+    /*
+    String message = "nframe = " + String(nframe) + " : fftsize = " + String(fftsize) + " : wh = " + String(texture_w) + " : " + String(texture_h) + " : currentX Y = " + String(currentX) + " : " + String(currentY) + " : tex_xy " + String(tex_x) + " : " + String(tex_y);
+    AlertWindow::showOkCancelBox(AlertWindow::QuestionIcon, "Check", message);
+     */
     
 
 
@@ -309,8 +332,8 @@ void IRSpectrogram::setVisibleArea(Rectangle<int> area, Point<int> parentSize)
     // Subtract GridSize!! need to be fixed in smarter way
     this->visibleArea = Rectangle<int>(area.getX(),
                                        area.getY(),
-                                       area.getWidth() - 30,
-                                       area.getHeight() - 30);
+                                       area.getWidth() - 20,
+                                       area.getHeight() - 20);
     
     // follow always to the visibla area
     setBounds(this->visibleArea);
@@ -334,6 +357,9 @@ void IRSpectrogram::setVisibleArea(Rectangle<int> area, Point<int> parentSize)
     
     // just modify texture already created to save CUP usage
     reCalcDescriptor();
+    
+    createPlayingLine(getCurrentPlayedFrame());
+
     std::cout << "w, h " << getWidth() << std::endl;
 }
 
@@ -668,6 +694,7 @@ void IRSpectrogram::audioPlayOperatedFromComponent(IRAudio* obj)
     if(comp != nodeObject)
     {
         setCurrentPlayedFrame(obj->getCurrentPlayedFrame());
+        createPlayingLine(obj->getCurrentPlayedFrame());
         //this->status = currentPlayedFrameShared;
         //sendChangeMessage();
         if(this->currentPlayedFrameSharedCallback != nullptr)
@@ -695,6 +722,54 @@ void IRSpectrogram::viewPortPositionFromComponent(IRAudio *obj)
         
         if(this->viewPortPositionSharedCallback != nullptr)
             this->viewPortPositionSharedCallback();
+    }
+}
+// --------------------------------------------------
+
+void IRSpectrogram::updateAnimationFrame()
+{
+    if(this->audioData != nullptr)
+    {
+        /*
+        auto data = this->audioData->getData();
+        int64 playingPosition = this->player->getStartPosition() +
+        this->player->getNextReadPosition();
+        
+        data->setCurrentPlayedFrame(playingPosition);
+        
+        data->linkAudioPlaywithSharedComponents(nodeObject);
+        
+        createPlayingLine(playingPosition);
+         */
+    }
+}
+
+
+//receive only at this m
+void IRSpectrogram::createPlayingLine(int64 currentFrame)
+{
+    if(this->audioData != nullptr)
+    {
+        auto data = this->audioData->getData();
+        double sampleRate = data->getSampleRate();
+        int64 nframe = data->getNumSamples();
+        
+        int width = this->visibleArea.getWidth() * this->zoomInfo.getX();
+      
+        double ratio = (double)currentFrame / (double)nframe;
+        
+        int currentX = floor((double)width * ratio) - this->visibleArea.getX();
+        
+        //std::cout << "spectrogram w " << width << " currentX " << currentX << " visibleX = " << this->visibleArea.getX() << std::endl;
+        
+        if(currentX < this->visibleArea.getX() + this->visibleArea.getWidth())
+        {
+            this->playingLine = Rectangle<int>( currentX, 0, currentX, getHeight());
+
+        }
+        
+        repaint();
+    
     }
 }
 // --------------------------------------------------

@@ -192,7 +192,7 @@ private:
     // IRWorkspaceList *workspaceList = nullptr;
     std::shared_ptr<IRWorkspaceList> workspaceList { nullptr };
     
-    int workspaceListWidth = 150;
+    int workspaceListWidth = 100;
     
     PreferenceWindow* preferenceWindow;
     

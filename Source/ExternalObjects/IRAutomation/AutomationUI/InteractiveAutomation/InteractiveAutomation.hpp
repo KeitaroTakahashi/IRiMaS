@@ -102,6 +102,8 @@ public:
     void demoData(int num);
     
     void setDescriptor(IRDescriptorStr* data);
+    
+    void setPlayingLine(Rectangle<int> line) { this->playingLine = line; repaint(); }
 
     // ==================================================
     
@@ -152,6 +154,10 @@ private:
 
     bool isCommentShowFlag = false;
     bool isBezierShowFlag = false;
+    // ==================================================
+
+    Rectangle<int>playingLine;
+
     
     // ==================================================
     

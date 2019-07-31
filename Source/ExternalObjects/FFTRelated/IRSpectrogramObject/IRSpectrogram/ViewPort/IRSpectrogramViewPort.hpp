@@ -52,7 +52,7 @@ public:
 private:
     // ==================================================
     
-    int gridSize = 30;
+    int gridSize = 20;
     IRMeasureGrid verticalGrid;
     IRMeasureGrid horizontalGrid;
     

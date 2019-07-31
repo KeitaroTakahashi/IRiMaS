@@ -216,7 +216,7 @@ void FontGUI::fontSizeInputChanged()
     if (valFloat == 0.0f)
     {
         valFloat = 1.0f;
-        this->fontSizeInput.setText("1.0", dontSendNotification);
+        this->fontSizeInput.setText("16", dontSendNotification);
     }
     
     this->fontSize = valFloat;

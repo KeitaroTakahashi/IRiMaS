@@ -44,6 +44,7 @@
 // other object
 
 #include "ObjectGlobalTestObject.h"
+#include "IRShapeObject.hpp"
 
 // ------------------------------------------------------------
 //#include "IRObjectCreater.hpp"

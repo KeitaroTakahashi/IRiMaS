@@ -239,6 +239,9 @@ public:
     // object type
     NodeObjectType getObjectType() const;
     
+    // called when the object contains heavy component needs to be refreshed.
+    virtual void heavyComponentRefreshed() {}
+    
     // Save System
     
     /*

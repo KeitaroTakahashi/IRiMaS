@@ -12,11 +12,12 @@
 #include "GLSLSpectrogram.hpp"
 #include "IRSpectrogramController.h"
 #include "Benchmark.h"
+#include "KeAnimationComponent.h"
 
 class IRSpectrogram : public IRUIAudioFoundation,
 public IRAudio::Listener,
 public ChangeBroadcaster,
-private Timer
+private KeAnimationComponent
 {
 public:
     
@@ -46,6 +47,9 @@ public:
     
     void loadDescriptor();
     void reCalcDescriptor();
+    
+    // called when this object needs to be refreshed
+    void heavyComponentRefreshed();
     // ==================================================
     void mouseDown(const MouseEvent &e) override;
     void mouseMove(const MouseEvent& e) override;
@@ -107,8 +111,8 @@ public:
     
     Point<float> getZoomInfo() const { return this->zoomInfo; }
     
-    void setCurrentPlayedFrame(int frame) { this->currentPlayedFrame = frame; }
-    int getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
+    void setCurrentPlayedFrame(int64 frame) { this->currentPlayedFrame = frame; }
+    int64 getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
     
     void linkCurrentPlayedFrame(Component* comp);
     
@@ -117,7 +121,8 @@ public:
     void audioPlayOperatedFromComponent(IRAudio* obj) override;
     void viewPortPositionFromComponent(IRAudio* obj) override;
     
-   
+    void createPlayingLine(int64 currentFrame);
+
     
     // ==================================================
 private:
@@ -137,10 +142,7 @@ private:
     virtual void fileImportCompletedAction() {};
     bool audioUpdated = false;
     
-    void timerCallback() override
-    {
-        //repaint();
-    }
+
     
     TextButton openButton;
     void openButtonClicked();
@@ -180,9 +182,11 @@ private:
     // ---------------------------------------------------------------------------
     // sharedInformation
     
-    int currentPlayedFrame = 0;
+    int64 currentPlayedFrame = 0;
     
     Point<float> zoomInfo;
+    
+    Rectangle<int> playingLine;
     
     // ---------------------------------------------------------------------------
 
@@ -201,7 +205,8 @@ private:
     bool isOpenGLComponentClosed = false;
     
     //IRDescriptorStr* buffer = nullptr;
-    
+    void updateAnimationFrame() override;
+
     
     String fragURL;
     

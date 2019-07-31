@@ -8,7 +8,7 @@
 #include "IRSpectrogramObject.hpp"
 
 IRSpectrogramObject::IRSpectrogramObject(Component* parent) :
-IRNodeObject(parent, "IRSpectrogram")
+IRNodeObject(parent, "IRSpectrogram", NodeObjectType(heavyWeightComponent))
 {
     this->UI = std::make_shared<IRSpectrogramWithPreference>(this);
     addAndMakeVisible(this->UI.get());
@@ -78,6 +78,11 @@ void IRSpectrogramObject::paint(Graphics& g)
         //g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
         g.drawRect(area.toFloat(), 1.0);
     }
+}
+
+void IRSpectrogramObject::heavyComponentRefreshed()
+{
+    this->UI->heavyComponentRefreshed();
 }
 
 
