@@ -70,8 +70,6 @@
 		821A5E9D212EBF7300BF593D /* IRAudioReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E9B212EBF7300BF593D /* IRAudioReader.cpp */; };
 		821A5EA0212EBF7800BF593D /* SoundPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E9E212EBF7800BF593D /* SoundPlayer.cpp */; };
 		821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5EA3212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp */; };
-		821AA53E22EDCEA10035EC47 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D8B15B22A004F900940CD1 /* libfftw3.a */; };
-		821AA53F22EDCEB40035EC47 /* libfftw3.a in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 82D8B15B22A004F900940CD1 /* libfftw3.a */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		821C5EAC2134814B00187902 /* IRGraphSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821C5EAA2134814B00187902 /* IRGraphSelector.cpp */; };
 		821C5EB021348E6900187902 /* IRMultiPurposeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821C5EAE21348E6900187902 /* IRMultiPurposeObject.cpp */; };
 		821C5EB221357EDA00187902 /* IRWaveformObjectUIEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821C5EB121357EDA00187902 /* IRWaveformObjectUIEvents.cpp */; };
@@ -101,7 +99,6 @@
 		8289A08922D3FED00088E156 /* IRSpectrogramUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A08722D3FED00088E156 /* IRSpectrogramUI.cpp */; };
 		8289A09B22D8C36C0088E156 /* IRViewUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A09922D8C36C0088E156 /* IRViewUI.cpp */; };
 		8289A0B822DF58B90088E156 /* IRDescriptorBank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A0B622DF58B90088E156 /* IRDescriptorBank.cpp */; };
-		8289A0BE22E709A90088E156 /* libessentia.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 82D8B13C229FF9B500940CD1 /* libessentia.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8289A0C322E7567A0088E156 /* IRSimpleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A0C122E7567A0088E156 /* IRSimpleController.cpp */; };
 		8289A0CB22E76DB80088E156 /* IRSpectrogramViewPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A0C922E76DB80088E156 /* IRSpectrogramViewPort.cpp */; };
 		8289A0D022E7AFCB0088E156 /* IRWindowTitleBarUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A0CE22E7AFCB0088E156 /* IRWindowTitleBarUI.cpp */; };
@@ -113,6 +110,7 @@
 		829EC3CA22EBB0E000964ACD /* IRShapeUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829EC3C822EBB0E000964ACD /* IRShapeUI.cpp */; };
 		829EC3CD22EBB0EA00964ACD /* IRShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829EC3CB22EBB0EA00964ACD /* IRShapeObject.cpp */; };
 		829EC3D222EBB10700964ACD /* IRShapePreferenceUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829EC3D022EBB10700964ACD /* IRShapePreferenceUI.cpp */; };
+		82A8B5B922F1B6D200FF05B8 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A8B5B822F1B6D200FF05B8 /* libfftw3.a */; };
 		82A98B2A2199B84B0077EAE6 /* IRWorkspaceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */; };
 		82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB42802224291C00F9184C /* IRiMaSApplication.cpp */; };
 		82C08ADF22752E8800938726 /* IRWorkSpaceLinkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C08ADD22752E8800938726 /* IRWorkSpaceLinkManager.cpp */; };
@@ -169,8 +167,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				821AA53F22EDCEB40035EC47 /* libfftw3.a in Embed Libraries */,
-				8289A0BE22E709A90088E156 /* libessentia.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -401,6 +397,7 @@
 		829EC3CF22EBB0FC00964ACD /* IRShapePreference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRShapePreference.h; sourceTree = "<group>"; };
 		829EC3D022EBB10700964ACD /* IRShapePreferenceUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRShapePreferenceUI.cpp; sourceTree = "<group>"; };
 		829EC3D122EBB10700964ACD /* IRShapePreferenceUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRShapePreferenceUI.hpp; sourceTree = "<group>"; };
+		82A8B5B822F1B6D200FF05B8 /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = ../../../../../usr/local/Cellar/fftw/3.3.8_1/lib/libfftw3.a; sourceTree = "<group>"; };
 		82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceList.cpp; sourceTree = "<group>"; };
 		82A98B292199B84B0077EAE6 /* IRWorkspaceList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkspaceList.hpp; sourceTree = "<group>"; };
 		82AB427D22208B3200F9184C /* DataAllocationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataAllocationManager.h; sourceTree = "<group>"; };
@@ -455,8 +452,6 @@
 		82D8B120229D82EB00940CD1 /* VertecesSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VertecesSelector.h; sourceTree = "<group>"; };
 		82D8B122229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRAutomationUIWithPreference.cpp; sourceTree = "<group>"; };
 		82D8B123229D8DC700940CD1 /* IRAutomationUIWithPreference.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRAutomationUIWithPreference.hpp; sourceTree = "<group>"; };
-		82D8B13C229FF9B500940CD1 /* libessentia.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libessentia.dylib; path = "../../../../../usr/local/Cellar/essentia/HEAD-8c1d4f0/lib/libessentia.dylib"; sourceTree = "<group>"; };
-		82D8B15B22A004F900940CD1 /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = ../../../../../usr/local/Cellar/fftw/3.3.8_1/lib/libfftw3.a; sourceTree = "<group>"; };
 		82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRMeasureGrid.cpp; sourceTree = "<group>"; };
 		82D8B16822A017B000940CD1 /* IRMeasureGrid.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRMeasureGrid.hpp; sourceTree = "<group>"; };
 		82D8B16C22A01D4700940CD1 /* IRGridStr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRGridStr.h; sourceTree = "<group>"; };
@@ -512,6 +507,7 @@
 				0F4FD731348716F09241784F /* AudioToolbox.framework in Frameworks */,
 				C3534A3D69BF561D8F21D906 /* AVFoundation.framework in Frameworks */,
 				F4185137A2919DAD4283B05E /* AVKit.framework in Frameworks */,
+				82A8B5B922F1B6D200FF05B8 /* libfftw3.a in Frameworks */,
 				6481B42C94CD81374F0B2359 /* Carbon.framework in Frameworks */,
 				B7BC009897548A8778977581 /* Cocoa.framework in Frameworks */,
 				F78DDCCF76EF8CE87307EF77 /* CoreAudio.framework in Frameworks */,
@@ -522,7 +518,6 @@
 				7AA9BD6FC2BBE29E9C8B46AA /* OpenGL.framework in Frameworks */,
 				AF962BC3CB9B6914A2A66481 /* QuartzCore.framework in Frameworks */,
 				C8A2AE5DC63457796D1DBCB4 /* WebKit.framework in Frameworks */,
-				821AA53E22EDCEA10035EC47 /* libfftw3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -910,8 +905,7 @@
 		2D1F25B34F10551155A3CC5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				82D8B15B22A004F900940CD1 /* libfftw3.a */,
-				82D8B13C229FF9B500940CD1 /* libessentia.dylib */,
+				82A8B5B822F1B6D200FF05B8 /* libfftw3.a */,
 				1308CC6C3869E34E36491167 /* Accelerate.framework */,
 				24D9A56501CE16485BCC5B64 /* AudioToolbox.framework */,
 				98B229AF952D4C0264312F8D /* AVFoundation.framework */,
@@ -2414,7 +2408,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/Cellar/fftw/3.3.8_1/lib,
+					"/usr/local/Cellar/fftw/$(FFTW_VERSION)/lib",
 				);
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -2556,7 +2550,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/Cellar/fftw/3.3.8_1/lib,
+					"/usr/local/Cellar/fftw/$(FFTW_VERSION)/lib",
 				);
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;

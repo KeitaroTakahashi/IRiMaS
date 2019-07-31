@@ -468,7 +468,10 @@ void IRSpectrogram::shaderTask(Graphics& g)
         //shader.reset();
         if (fragmentCode.isNotEmpty() && this->fragmentRefreshed)
         {
+            std::cout << "shader reset\n";
             shader.reset (new OpenGLGraphicsContextCustomShader (fragmentCode));
+            std::cout << "shader activated\n";
+
             shader->onShaderActivated = [this](OpenGLShaderProgram& program){setUniform(program);};
             
             if(!this->isTextureCreated)
@@ -476,12 +479,17 @@ void IRSpectrogram::shaderTask(Graphics& g)
                 createTexture();
                 this->isTextureCreated = true;
             }
-    
+            std::cout << "shader compiled\n";
+
             auto result = shader->checkCompilation (g.getInternalContext());
             if (result.failed()) shader.reset();
             
             this->fragmentRefreshed = false;
+        }else{
+            std::cout << "fragmentCode empty and not refreshed\n";
         }
+    }else{
+        std::cout << "shader null or shaderCode not loaded\n";
     }
     
     if (shader.get() != nullptr)
