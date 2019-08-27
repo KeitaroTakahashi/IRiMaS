@@ -7,6 +7,8 @@
 #include "IRNodeComponent.hpp"
 //#include "IRUIFoundation.hpp"
 #include "IRFileManager.hpp"
+#include "IRNodeObjectType.h"
+
 
 class IRNodeObject : public IRNodeComponent,
 public IRLinkFoundation

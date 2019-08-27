@@ -7,6 +7,7 @@
 
 #include "IRProject.hpp"
 #include "IRProjectWindow.hpp"
+#include "IRProjectWindow2.hpp"
 #include "PreferenceWindow.hpp"
 #include "IRStartWindow.hpp"
 #include "IRSaveLoadSystem.hpp"
@@ -71,6 +72,7 @@ private:
     
     // storing a currently active project window
     IRProjectWindow* activeProjectWindow;
+    
     
     // PreferenceWindow* preferenceWindow;
     std::shared_ptr<PreferenceWindow> preferenceWindow;

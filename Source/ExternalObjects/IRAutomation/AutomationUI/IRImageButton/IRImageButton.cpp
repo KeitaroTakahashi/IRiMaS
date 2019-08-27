@@ -21,10 +21,15 @@ IRImageButton::~IRImageButton()
 
 void IRImageButton::paint(Graphics& g)
 {
+    
     g.setColour(Colours::transparentWhite);
     g.fillEllipse(0, 0, getWidth(), getHeight());
     g.setColour(Colours::white);
-    g.drawEllipse(1, 1, getWidth()-2, getHeight()-2, 2);
+
+    if(this->drawCircle)
+    {
+        g.drawEllipse(1, 1, getWidth()-2, getHeight()-2, 1);
+    }
     g.drawImage(this->buttonImage, getLocalBounds().toFloat());
 }
 

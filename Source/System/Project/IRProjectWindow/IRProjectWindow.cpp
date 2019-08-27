@@ -16,7 +16,7 @@ DocumentWindow (name,
     setUsingNativeTitleBar(true);
     // setup systme colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    SYSTEMCOLOUR.set(IR::darkBlueSet());
+    SYSTEMCOLOUR.set(IR::IRBlue());
     
     setBounds(0, 0, getWidth(), getHeight());
     

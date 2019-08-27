@@ -25,9 +25,13 @@ public:
     
     std::function<void()> onClick = nullptr;
     
+    void setDrawCircle(bool flag) { this->drawCircle = flag; }
+    
 private:
     
     Image buttonImage;
+    
+    bool drawCircle = true;
 
 };
 #endif /* IRImageButton_hpp */

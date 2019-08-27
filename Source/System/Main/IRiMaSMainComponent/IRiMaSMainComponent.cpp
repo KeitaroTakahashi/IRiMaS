@@ -48,6 +48,12 @@ void IRiMaSMainComponent::createNewProject()
 {
     std::cout << "Creating new project... projectWindow" << std::endl;
     IRProjectWindow* projectWindow = new IRProjectWindow("Untitled", this->preferenceWindow.get());
+    
+    IRProjectWindow2* projectWindow2 = new IRProjectWindow2("test");
+
+    
+    
+    
     // std::shared_ptr<IRProjectWindow> projectWindow = std::make_shared<IRProjectWindow>("Untitled", this->preferenceWindow.get());
     
     // create a Workspace as default

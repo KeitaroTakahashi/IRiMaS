@@ -39,6 +39,27 @@ public:
 
     IRIconImage loadImageAndReturn(String url);
     
+    
+    IRIconImage icon_addPage;
+    IRIconImage icon_addPage2;
+    IRIconImage icon_inspector;
+    IRIconImage icon_load;
+    IRIconImage icon_loop;
+    IRIconImage icon_newProject;
+    IRIconImage icon_object;
+    IRIconImage icon_preference;
+    IRIconImage icon_save;
+    IRIconImage icon_toNavigator;
+    IRIconImage icon_toObjectMenu;
+    
+    IRIconImage icon_text;
+    IRIconImage icon_chart;
+    IRIconImage icon_image;
+    IRIconImage icon_play;
+    IRIconImage icon_wav;
+    
+
+    
 private:
     
     IRIconImage loadImage(String url);
@@ -54,6 +75,9 @@ private:
     IRIconImage icon_bezier;
     IRIconImage icon_linear;
     
+    
+    
+
     
 };
 #endif /* IRIconBank_hpp */

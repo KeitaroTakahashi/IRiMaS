@@ -12,7 +12,7 @@ IRStartWindow::IRStartWindow(String name, Rectangle<int> frameRect) :
     
     // setup system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    SYSTEMCOLOUR.set(IR::whiteSet());
+    SYSTEMCOLOUR.set(IR::IRBlue());
     
     Rectangle<int> r = Desktop::getInstance().getDisplays().getMainDisplay().userArea;
     int x = r.getWidth();

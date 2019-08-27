@@ -22,6 +22,47 @@ namespace IR
         Colour contents = Colour(0,0,0);
         Colour titleText = Colour(0,0,0);
         Colour text = Colour(0,0,0);
+        Font f;
+    };
+    
+    struct IRBrown : public colorPattern
+    {
+        IRBrown()
+        {
+            this->background = Colour(255,255,255);
+            this->fundamental = Colour(61,31,6);
+            this->contents = Colour(138,120,104);
+            this->titleText = Colour(0,0,0);
+            this->text = Colour(148,82,0);
+            this->f = Font("Avenir Next",28, Font::plain);
+
+        }
+    };
+    
+    struct IRLightBrown : public colorPattern
+    {
+        IRLightBrown()
+        {
+            this->background = Colour(255,255,255);
+            this->fundamental = Colour(149,123,96);
+            this->contents = Colour(192,175,159);
+            this->titleText = Colour(0,0,0);
+            this->text = Colour(148,82,0);
+        }
+    };
+    
+    struct IRBlue : public colorPattern
+    {
+        IRBlue()
+        {
+            this->background = Colour(255,255,255);
+            this->fundamental = Colour(7,32,77);
+            this->contents = Colour(105,120,146);
+            this->titleText = Colour(0,0,0);
+            this->text = Colour(255, 255, 255);
+            
+            
+        }
     };
     
     struct darkBrownSet : public colorPattern
@@ -81,15 +122,21 @@ namespace IR
         Colour titleText;
         Colour text;
         
+        Font f;
+        
+        bool isWhiteBased = false;
+        
         IRColours() {}
         
-        IRColours(colorPattern pattern)
+        IRColours(colorPattern pattern, bool isWhiteBased = false)
         {
             this->background = pattern.background;
             this->fundamental = pattern.fundamental;
             this->contents = pattern.contents;
             this->titleText = pattern.titleText;
             this->text = pattern.text;
+            
+            this->isWhiteBased = isWhiteBased;
         }
         
         void set(colorPattern pattern)

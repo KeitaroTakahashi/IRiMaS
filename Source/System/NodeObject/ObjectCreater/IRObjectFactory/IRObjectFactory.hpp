@@ -17,6 +17,7 @@ public:
     {
         std::string id;
         std::string name;
+        objectCategory category;
         Image img;
         
         // IRObjectCreaterBase* obj;
@@ -26,11 +27,12 @@ public:
         ~t_object(){ printf("t_object deconstructor called\n");}
         
         // t_object(std::string id, std::string name, Image img, IRObjectCreaterBase* obj)
-        t_object(std::string id, std::string name, Image img, std::shared_ptr<IRObjectCreaterBase> obj)
+        t_object(std::string id, std::string name, objectCategory category, Image img, std::shared_ptr<IRObjectCreaterBase> obj)
         {
             printf("t_object constructor called\n");
             this->id = id;
             this->name = name;
+            this->category = category;
             this->img = img;
             this->obj = obj;
         }
@@ -44,7 +46,7 @@ public:
     };
     
     template<class T>
-    void registerObject(std::string id, std::string name, Image img);
+    void registerObject(std::string id, std::string name, objectCategory objectType, Image img);
     
     IRNodeObject* createObject(std::string id, Component* parent);
     
@@ -55,17 +57,22 @@ public:
         return this->list;
     }
     
-    
+    std::vector<t_object*> getRegisteredObjectOfCategory(objectCategory category)
+    {
+        return this->registeredObjectInfo[category];
+    }
 private:
     
     std::map<std::string, t_object> list;
+    
+    std::map<objectCategory, std::vector<t_object*>> registeredObjectInfo;
     
 };
 
 
 // template function should be written outside of the class - FD could not put this in .cpp - to investigate further once global file separation done
 template<class T>
-void IRObjectFactory::registerObject(std::string id, std::string name, Image img)
+void IRObjectFactory::registerObject(std::string id, std::string name, objectCategory objectType, Image img)
 {
     
     // now trying with shared pointer
@@ -76,7 +83,9 @@ void IRObjectFactory::registerObject(std::string id, std::string name, Image img
     std::shared_ptr<IRObjectCreater<T>> obj = std::make_shared<IRObjectCreater<T>>();
     // IRObjectCreater<T>* obj = new IRObjectCreater<T>();
     // std::cout << "hallo" << std::endl;
-    this->list[id] = IRObjectFactory::t_object(id, name, img, obj);
+    this->list[id] = IRObjectFactory::t_object(id, name, objectType, img, obj);
+    
+    this->registeredObjectInfo[objectType].push_back(&this->list[id]);
     
     std::cout<< id << " registered : size is " << this->list.size() << std::endl;
     
