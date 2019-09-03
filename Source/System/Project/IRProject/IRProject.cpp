@@ -134,7 +134,7 @@ void IRProject::createNewWorkspace()
     
     Rectangle<int> frameSize(this->workspaceListWidth, 0,
                              getWidth()-this->workspaceListWidth, getHeight());
-    IRWorkSpace* space = new IRWorkSpace(title, frameSize, this->preferenceWindow);
+    IRWorkSpace* space = new IRWorkSpace(title, nullptr, this->preferenceWindow);
     
     space->requestWorkspaceListUpdate = [this] { updateWorkspaceList(); };
     space->requestNewProject = [this] { callCreateNewProjectAction(); };
@@ -188,6 +188,8 @@ void IRProject::createNewWorkspace()
     {
         std::cout << "Error : createNewWorkspace() : could not add new workspace, workspaceList null" << std::endl;
     }
+    
+    resized();
 }
 
 

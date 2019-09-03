@@ -9,15 +9,17 @@
 #define IRTitleBar_hpp
 
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "IRwindowHeader.h"
+#include "IRStrComponent.hpp"
 
 class IRTitleBar : public Component,
+public IRStrComponent,
 public ChangeBroadcaster
 {
 public:
     //==================================================
-    IRTitleBar();
+    IRTitleBar(IRStr* str);
     ~IRTitleBar();
     
     //==================================================

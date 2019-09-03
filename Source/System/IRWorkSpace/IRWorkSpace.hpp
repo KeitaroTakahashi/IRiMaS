@@ -11,7 +11,7 @@
 #define IRWorkSpace_hpp
 
 #include <map>
-#include "JuceHeader.h"
+#include "IRStr.h"
 
 #include "PreferenceWindow.hpp"
 
@@ -39,7 +39,7 @@ class IRWorkSpace : public AudioAppComponent,
     
 public:
     
-    IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindow* preferenceWindow);
+    IRWorkSpace(String title, IRStr* str, PreferenceWindow* preferenceWindow);
     ~IRWorkSpace();
     
     void paint (Graphics&) override;
@@ -169,6 +169,8 @@ private:
     
     String name = "";
     String title = "";
+    
+    IRStr* ir_str;
     
     // grids
     int thin_grids_pixel = 10;

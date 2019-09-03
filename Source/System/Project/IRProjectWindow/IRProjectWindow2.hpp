@@ -18,7 +18,7 @@ public:
     ~IRProjectWindow2();
     
     
-    
+    void windowMoveToPos(Point<int>pos);
     
     
 private:
@@ -27,10 +27,10 @@ private:
     
     void closeButtonPressed() override;
     
+
     
     std::shared_ptr<IRWindowComponent> comp;
-    std::shared_ptr<IRTitleBar> bar;
-    std::shared_ptr<IRLeftBar> leftBar;
+   
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRProjectWindow2)
 

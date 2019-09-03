@@ -9,16 +9,16 @@
 
 IRProjectWindow2::IRProjectWindow2(String name) : IRMainWindow(name)
 {
-    this->comp.reset(new IRWindowComponent());
-    this->leftBar.reset(new IRLeftBar());
-    this->bar.reset(new IRTitleBar());
-    this->comp->setLeftBarComponent(this->leftBar.get());
     
-    this->comp->setWindowBar(this->bar.get());
+    Rectangle<int> frameRect (10, 10, 900, 700);
+    
+    
+    this->comp.reset(new IRWindowComponent(name, frameRect));
+    
     this->comp->setSize(900, 700);
     
-    this->bar->addChangeListener(this);
-    this->leftBar->addChangeListener(this);
+    this->comp->windowMoveAction = [this](Point<int>pos) { windowMoveToPos(pos); };
+
     setContentOwned (this->comp.get(), true);
     
 #if JUCE_IOS || JUCE_ANDROID
@@ -40,6 +40,8 @@ IRProjectWindow2::~IRProjectWindow2()
 
 void IRProjectWindow2::changeListenerCallback (ChangeBroadcaster* source)
 {
+    
+    /*
     if(source == this->bar.get())
     {
         if(this->bar->getStatus() == IRWindowBarActionStatus::MoveWindow)
@@ -50,6 +52,7 @@ void IRProjectWindow2::changeListenerCallback (ChangeBroadcaster* source)
         if(this->leftBar->getStatus() == IRWindowBarActionStatus::MoveWindow)
             setTopLeftPosition(this->leftBar->pos);
     }
+     */
 }
 // ==================================================
 
@@ -57,3 +60,11 @@ void IRProjectWindow2::closeButtonPressed()
 {
     
 }
+// ==================================================
+
+
+void IRProjectWindow2::windowMoveToPos(Point<int>pos)
+{
+    setTopLeftPosition(pos);
+}
+// ==================================================

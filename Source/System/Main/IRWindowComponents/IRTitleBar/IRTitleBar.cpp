@@ -8,7 +8,7 @@
 #include "IRTitleBar.hpp"
 
 //==============================================================================
-IRTitleBar::IRTitleBar()
+IRTitleBar::IRTitleBar(IRStr* str) : IRStrComponent(str)
 {
     
 }
@@ -46,7 +46,8 @@ void IRTitleBar::mouseDrag(const MouseEvent& e)
     
     this->status = MoveWindow;
     sendChangeMessage();
-    
+    std::cout<<"mouseDrag\n";
+
     this->prevPos = e.getScreenPosition();
 }
 void IRTitleBar::mouseUp(const MouseEvent& e)

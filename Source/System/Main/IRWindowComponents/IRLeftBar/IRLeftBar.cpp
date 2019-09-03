@@ -8,10 +8,10 @@
 #include "IRLeftBar.hpp"
 
 
-IRLeftBar::IRLeftBar()
+IRLeftBar::IRLeftBar(IRStr* str) : IRStrComponent(str)
 {
     setFps(60);
-    
+        
     this->objectMenuComponent.reset(new LeftBarObjectMenu(this->buttonSize,
                                                           this->topMarge,
                                                           this->leftMarge,
@@ -68,6 +68,7 @@ void IRLeftBar::mouseDrag(const MouseEvent& e)
     this->status = MoveWindow;
     sendChangeMessage();
     
+    
     this->prevPos = e.getScreenPosition();
 }
 void IRLeftBar::mouseUp(const MouseEvent& e)
@@ -107,7 +108,7 @@ void IRLeftBar::createButton(IRImageButton* button, IRIconBank::IRIconImage img)
 void IRLeftBar::addButtons()
 {
     
-    createButton(&this->toNavigatorButton, ImageBank.icon_toNavigator);
+    createButton(&this->toNavigatorButton, ICONBANK.icon_toNavigator);
     this->toNavigatorButton.onClick = [this]{ toNavigatorAction(); };
 }
 // ==================================================

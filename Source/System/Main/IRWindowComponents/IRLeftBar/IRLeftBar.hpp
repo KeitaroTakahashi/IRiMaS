@@ -11,17 +11,18 @@
 
 #include "JuceHeader.h"
 #include "IRWindowHeader.h"
-#include "IRIconBank.hpp"
+#include "IRStrComponent.hpp"
 #include "IRImageButton.hpp"
 #include "LeftBarObjectMenu.hpp"
 
 class IRLeftBar : public Component,
+public IRStrComponent,
 public ChangeBroadcaster,
 public ChangeListener,
 private KeAnimationComponent
 {
 public:
-    IRLeftBar();
+    IRLeftBar(IRStr* str);
     ~IRLeftBar();
     //==================================================
     void paint (Graphics&) override;
@@ -46,6 +47,7 @@ public:
     //==================================================
     
 private:
+    
     //==================================================
     void addButtons();
     void toNavigatorAction();
@@ -91,8 +93,8 @@ private:
     int openSpeed = 8;
     //==================================================
     
-    IRIconBank& ImageBank = singleton<IRIconBank>::get_instance();
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    //IRIconBank& ImageBank = singleton<IRIconBank>::get_instance();
+    //IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     //==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRLeftBar)

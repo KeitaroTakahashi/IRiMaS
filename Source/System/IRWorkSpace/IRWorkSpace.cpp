@@ -1,37 +1,38 @@
 
 #include "IRWorkSpace.hpp"
 
-IRWorkSpace::IRWorkSpace(String title, Rectangle<int> frameRect, PreferenceWindow* preferenceWindow)
+IRWorkSpace::IRWorkSpace(String title, IRStr* str, PreferenceWindow* preferenceWindow)
 {
-    
     
     this->name = title;
     this->title = this->name + " (EDIT MODE)";
-    setBounds(frameRect);
     
-    
+    this->ir_str = str;
     setOpaque(true);
-    
-    
+
     //setBufferedToImage(false);
     loadBackgroundImageLink(); // for LinkMode
     
-    //setSize (frameRect.getWidth(), frameRect.getHeight());
     setWantsKeyboardFocus(true);
     addKeyListener(this);
+    if(this->ir_str != nullptr)
+        addKeyListener(this->ir_str->key);
+    
     
     //object menu
     this->objectMenuComponent = new ObjectListMenu(this, Rectangle<int>(300,400));
     this->objectMenuComponent->addListener(this);
     
     // get a pointer of the preference window
-    this->preferenceWindow = preferenceWindow;
+    if(this->preferenceWindow != nullptr)
+        this->preferenceWindow = preferenceWindow;
     
     //give object lists to selector
     this->selector = new IRNodeObjectSelector(&this->objects, &this->linkModeFlag);
     
     this->selector->setShiftConstrainsDirection(true);
     this->selector->setConstrainBoundsToParent(true, {0,0,10,10});
+    
 }
 
 

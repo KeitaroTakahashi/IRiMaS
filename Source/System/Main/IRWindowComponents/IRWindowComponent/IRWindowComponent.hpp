@@ -9,171 +9,109 @@
 #define IRWindowComponent_hpp
 
 
-#include "JuceHeader.h"
+#include "IRStr.h"
 #include "IRTitleBar.hpp"
 #include "IRLeftBar.hpp"
+#include "IRMainSpace.hpp"
 
-class IRWindowComponent : public Component
+class IRWindowComponent : public Component,
+public ChangeListener,
+public KeyListener
 {
 public:
-    
-    IRWindowComponent()
-    {
-        
-    }
-    ~IRWindowComponent()
-    {
-        
-    }
-    // ==================================================
-    
-    void paint(Graphics& g) override
-    {
-        g.fillAll(Colours::white);
-        
-        
-    }
-    
-    void resized() override
-    {
-        int w = getWidth();
-        int h = getHeight();
-        
-        this->mainComponentHeight = h - this->barHeight;
-        
-        if(this->hasBar)
-            this->bar->setBounds(0, 0, w, this->barHeight);
-        if(this->hasMainComp)
-            this->mainComp->setBounds(0, this->barHeight,
-                                      w, this->mainComponentHeight);
-        
-        if(this->hasLeftBar)
-            this->leftBar->setBounds(0, this->barHeight,
-                                     this->leftBarWidth, h - this->barHeight);
-    }
-    // ==================================================
-    
-    void mouseDrag(const MouseEvent& e) override
-    {
-        auto pos = e.getPosition();
-        
-        if(this->isResizable)
-        {
-            Point<int> delta = pos - this->prevPos;
-            
-            int newW = getWidth() + delta.getX();
-            int newH = getHeight() + delta.getY();
-            if(newW < this->minWidth) newW = this->minWidth;
-            if(newH < this->minHeight) newH = this->minHeight;
-            
-            setSize(newW, newH);
-            
-            this->prevPos = pos;
-        }
-        
-    }
-    void mouseUp(const MouseEvent& e) override
-    {
-        
-    }
-    void mouseDown(const MouseEvent& e)override
-    {
-        auto pos = e.getPosition();
-        this->prevPos = pos;
-        
-        std::cout << pos.getX() << ", " << pos.getY() << std::endl;
-        
-        if(pos.getX() > getWidth() - this->resizableMargin &&
-           pos.getY() > getHeight() - this->resizableMargin)
-        {
-            this->isResizable = true;
-        }else this->isResizable = false;
-    }
-    void mouseMove(const MouseEvent& e)override
-    {
-        
-    }
-    // ==================================================
-    
-    void setComponentsHeight(int barHeight, int mainHeight)
-    {
-        this->barHeight = barHeight;
-        this->mainComponentHeight = mainHeight;
-    }
-    
+    IRWindowComponent(String projectName,
+                      Rectangle<int> frameRect);
+    ~IRWindowComponent();
     
     // ==================================================
-    void setWindowBar(IRTitleBar* bar)
-    {
-        this->bar = bar;
-        this->hasBar = true;
-        
-        addAndMakeVisible(this->bar);
-    }
     
-    void removeWinowBar()
-    {
-        removeChildComponent(this->bar);
-        this->hasBar = false;
-    }
+    void paint(Graphics& g) override;
+    void resized() override;
     
-    void setMainComponent(Component* mainComp)
-    {
-        this->mainComp = mainComp;
-        this->hasMainComp = true;
-        
-        addAndMakeVisible(this->mainComp);
-    }
+    // ==================================================
+    void mouseDrag(const MouseEvent& e) override;
+    void mouseUp(const MouseEvent& e) override;
+    void mouseDown(const MouseEvent& e)override;
+    void mouseMove(const MouseEvent& e)override;
+    // ==================================================
     
-    void removeMainComponent()
-    {
-        removeChildComponent(this->mainComp);
-        this->hasMainComp = false;
-    }
+    void setComponentsHeight(int barHeight, int mainHeight);
     
-    void setLeftBarComponent(IRLeftBar* leftBar)
-    {
-        this->leftBar = leftBar;
-        this->hasLeftBar = true;
-        
-        addAndMakeVisible(this->leftBar);
-        
-    }
-    
-    void removeLeftBar()
-    {
-        removeChildComponent(this->leftBar);
-        this->hasLeftBar = false;
-    }
+    // ==================================================
+    // ==================================================
+    // ==================================================
+    // ==================================================
+    // IRWorkspace
+    void createNewWorkspace();
+
+    std::vector<IRWorkSpace* > getWorkspaces() const { return this->workspaces; }
+    IRWorkSpace* getTopWorkspace() const { return this->topWorkspace; }
     
     // ==================================================
     Point<int> pos;
     Point<int> currentPos;
     Point<int> prevPos;
     
+    std::function<void(Point<int>)> windowMoveAction;
+    
     bool isResizable = false;
     int resizableMargin = 20;
 private:
     // ==================================================
+    // SYSTEM
+    void initialize();
+    void createComponents();
     
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+
+    // ==================================================
+
+    // Key Event
+    bool keyPressed(const KeyPress& key, Component* originatingComponent) override;
+    void modifierKeysChanged(const ModifierKeys &mod) override;
+
+    bool isShiftPressed = false;
+    bool isCommandPressed = false;
+    bool isControlPressed = false;
+    bool isAltPressed = false;
+    bool isOptionPressed = false;
+    
+    // ==================================================
+
     int barHeight = 50;
     int leftBarWidth = 70;
     int mainComponentHeight = 400;
+
+    // ==================================================
+    // Project
+    String projectName;
+    Rectangle<int> frameRect;
     
-    bool hasBar = false;
-    IRTitleBar* bar;
+    std::shared_ptr<IRStr> ir_str;
+
+    std::shared_ptr<IRMainSpace> mainSpace;
+    std::shared_ptr<IRTitleBar> bar;
+    std::shared_ptr<IRLeftBar> leftBar;
     
-    IRLeftBar* leftBar = nullptr;
-    bool hasLeftBar = false;
-    bool hasMainComp = false;
-    Component* mainComp;
+    // ==================================================
+
+    // workspace
+    std::vector<IRWorkSpace* > workspaces;
+    IRWorkSpace* topWorkspace = nullptr;
+    
+    
     
     // ==================================================
     
     // define the minimum size of the window
     int minWidth = 400;
     int minHeight = 700;
-    
+    // ==================================================
+
+    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+
+    // ==================================================
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRWindowComponent)
     
 };
