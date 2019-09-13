@@ -17,6 +17,20 @@
 typedef void* IRObjectPtr;
 
 
+enum IRDataType
+{
+    INT,
+    FLOAT,
+    
+    STRING,
+    FILEPATH,
+    
+    IMAGE,
+    MOVIE,
+    AUDIO,
+    
+    OBJECT
+};
 
 
 

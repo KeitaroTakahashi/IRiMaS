@@ -242,8 +242,8 @@ private:
         }
     };
     
-    static Shape* parseFaceGroup (const Mesh& srcMesh,
-                                  const Array<Face>& faceGroup,
+    static Shape* parseFaceGroup (Mesh& srcMesh,
+                                  Array<Face>& faceGroup, // no const
                                   const Material& material,
                                   const String& name)
     {
