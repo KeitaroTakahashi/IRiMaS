@@ -9,8 +9,11 @@
 
 IRViewPort::IRViewPort()
 {
-    ScrollBar& bar = getHorizontalScrollBar();
-    bar.setColour(ScrollBar::ColourIds::thumbColourId, SYSTEMCOLOUR.fundamental);
+    ScrollBar& bar1 = getHorizontalScrollBar();
+    bar1.setColour(ScrollBar::ColourIds::thumbColourId, SYSTEMCOLOUR.fundamental);
+    ScrollBar& bar2 = getVerticalScrollBar();
+    bar2.setColour(ScrollBar::ColourIds::thumbColourId, SYSTEMCOLOUR.fundamental);
+
 
 }
 

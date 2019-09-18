@@ -7,7 +7,8 @@
 
 #include "LeftBarObjectMenu.hpp"
 
-LeftBarObjectMenu::LeftBarObjectMenu(int buttonSize, int topMarge, int leftMarge, int yMarge, int menuSpace, int buttomSpace, Component* parent) :
+LeftBarObjectMenu::LeftBarObjectMenu(IRStr* str, int buttonSize, int topMarge, int leftMarge, int yMarge, int menuSpace, int buttomSpace, Component* parent) :
+IRStrComponent(str),
 buttonSize(buttonSize),
 topMarge(topMarge),
 menuSpace(menuSpace),
@@ -33,12 +34,6 @@ void LeftBarObjectMenu::resized()
     int y = this->topMarge;
     int s = this->buttonSize;
     
-    //y += s + this->yMarge * 2;
-    //this->toNavigatorButton.setBounds(x, y, s, s);
-    
-   // y += this->yMarge * 2;
-    
-    //y += s + this->yMarge * 2;
     this->textButton.setBounds(x, y, s, s);
     
     y += s + this->yMarge * 2;
@@ -62,8 +57,9 @@ void LeftBarObjectMenu::resized()
     y += s + this->yMarge * 2;
     this->preferenceButton.setBounds(x, y, s, s);
     
-    this->menuSpaceRect = Rectangle<int> (getWidth(), 0, this->menuSpace, getHeight());
-
+    
+    this->menuSpaceRect = Rectangle<int> (getWidth(), 0, this->menuSpace, getParentHeight());
+    
     if(this->currentMenu != nullptr)
     {
         this->currentMenu->setBounds(this->menuSpaceRect);
@@ -138,7 +134,7 @@ void LeftBarObjectMenu::textAction()
 {
     std::cout<< "textAction\n";
     showExtraMenu(TEXTMENU);
-    this->textMenu.reset(new TextMenuComponent(this->menuSpaceRect));
+    this->textMenu.reset(new TextMenuComponent(getStr(), this->menuSpaceRect));
     addAndMakeVisible(this->textMenu.get());
     replaceCurrentMenu(this->textMenu.get());
 
@@ -146,7 +142,7 @@ void LeftBarObjectMenu::textAction()
 void LeftBarObjectMenu::imageAction()
 {
     showExtraMenu(IMAGEMENU);
-    this->imageMenu.reset(new ImageMenuComponent(this->menuSpaceRect));
+    this->imageMenu.reset(new ImageMenuComponent(getStr(), this->menuSpaceRect));
     addAndMakeVisible(this->imageMenu.get());
     replaceCurrentMenu(this->imageMenu.get());
 
@@ -156,7 +152,7 @@ void LeftBarObjectMenu::audioAction()
 {
     showExtraMenu(AUDIOMENU);
     
-    this->audioMenu.reset(new AudioMenuComponent(this->menuSpaceRect));
+    this->audioMenu.reset(new AudioMenuComponent(getStr(), this->menuSpaceRect));
     addAndMakeVisible(this->audioMenu.get());
     replaceCurrentMenu(this->audioMenu.get());
    
@@ -222,10 +218,10 @@ void LeftBarObjectMenu::showExtraMenu(objectCategory type)
 
 void LeftBarObjectMenu::updateAnimationFrame()
 {
+    std::cout << "LeftBarObjectMenu::updateAnimationFrame\n";
     int max = (this->yMarge*2 + this->buttonSize + this->menuSpace);
     if(getWidth() < max)
     {
-        //setBounds(getX(), getY(), getWidth() + 1, getHeight());
         setSize(getWidth() + 1, getHeight());
     }else{
         setBounds(getX(), getY(), getWidth() + this->menuSpace, getHeight());
@@ -234,3 +230,16 @@ void LeftBarObjectMenu::updateAnimationFrame()
     repaint();
 }
 
+// ==================================================
+
+void LeftBarObjectMenu::toNavigatorAction()
+{
+    
+}
+
+void LeftBarObjectMenu::toObjectMenuAction()
+{
+    
+}
+
+// ==================================================

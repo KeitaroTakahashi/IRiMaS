@@ -14,6 +14,7 @@
 #include "IRStrComponent.hpp"
 #include "IRImageButton.hpp"
 #include "LeftBarObjectMenu.hpp"
+#include "LeftBarSlideMenu.hpp"
 
 class IRLeftBar : public Component,
 public IRStrComponent,
@@ -64,11 +65,11 @@ private:
     //==================================================
 
     std::shared_ptr<LeftBarObjectMenu> objectMenuComponent;
-    
+    std::shared_ptr<LeftBarSlideMenu> slideMenuComponent;
+
     objectCategory currentMenuType = objectCategory::NONE;
     // ==================================================
     void updateAnimationFrame() override;
-    
     
     //==================================================
 
@@ -83,7 +84,7 @@ private:
     int menuSpace = 150;
     int buttomSpace = 130;
     int yMarge = 6; // better to be even
-    int leftMarge = 10;
+    int leftMarge = 25;
     
     int maxWidth = 0;
     int ordinaryWidth = 0;
@@ -91,6 +92,8 @@ private:
     // ==================================================
     bool openMenuSpace = false;
     int openSpeed = 8;
+    bool isOpened = false; // if menu area is visible or not
+
     //==================================================
     
     //IRIconBank& ImageBank = singleton<IRIconBank>::get_instance();

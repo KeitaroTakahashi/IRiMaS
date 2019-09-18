@@ -81,6 +81,9 @@
 		823C181A2191B3F800AC9FC9 /* json11.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823C18182191B3F800AC9FC9 /* json11.cpp */; };
 		823C181E2191B4EE00AC9FC9 /* IRProject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823C181C2191B4EE00AC9FC9 /* IRProject.cpp */; };
 		823D65AA232BE1A0005DCBD6 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 823D65A9232BE1A0005DCBD6 /* CoreAudioKit.framework */; };
+		823D65AE23311E11005DCBD6 /* LeftBarSlideMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823D65AC23311E11005DCBD6 /* LeftBarSlideMenu.cpp */; };
+		823D65B223312237005DCBD6 /* SlideMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823D65B023312237005DCBD6 /* SlideMenu.cpp */; };
+		823D65B623313681005DCBD6 /* IRWorkspaceSlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823D65B423313681005DCBD6 /* IRWorkspaceSlide.cpp */; };
 		823E7BC521302C110046512B /* IRImageLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823E7BC321302C110046512B /* IRImageLoader.cpp */; };
 		823E7BD22133012B0046512B /* IRWaveformObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823E7BD02133012B0046512B /* IRWaveformObject.cpp */; };
 		823E7BD5213303260046512B /* IRWaveform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823E7BD3213303260046512B /* IRWaveform.cpp */; };
@@ -335,6 +338,12 @@
 		823C181D2191B4EE00AC9FC9 /* IRProject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRProject.hpp; sourceTree = "<group>"; };
 		823C18212193139C00AC9FC9 /* Menus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
 		823D65A9232BE1A0005DCBD6 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		823D65AC23311E11005DCBD6 /* LeftBarSlideMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LeftBarSlideMenu.cpp; sourceTree = "<group>"; };
+		823D65AD23311E11005DCBD6 /* LeftBarSlideMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LeftBarSlideMenu.hpp; sourceTree = "<group>"; };
+		823D65B023312237005DCBD6 /* SlideMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SlideMenu.cpp; sourceTree = "<group>"; };
+		823D65B123312237005DCBD6 /* SlideMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SlideMenu.hpp; sourceTree = "<group>"; };
+		823D65B423313681005DCBD6 /* IRWorkspaceSlide.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceSlide.cpp; sourceTree = "<group>"; };
+		823D65B523313681005DCBD6 /* IRWorkspaceSlide.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkspaceSlide.hpp; sourceTree = "<group>"; };
 		823E7BBF212F56830046512B /* IRSoundPlayerObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSoundPlayerObject.hpp; sourceTree = "<group>"; };
 		823E7BC1212F57750046512B /* ExternalObjectHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalObjectHeader.h; sourceTree = "<group>"; };
 		823E7BC321302C110046512B /* IRImageLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageLoader.cpp; sourceTree = "<group>"; };
@@ -1319,6 +1328,35 @@
 			path = Menu;
 			sourceTree = "<group>";
 		};
+		823D65AB23311DF5005DCBD6 /* LeftBarSlideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				823D65AF2331222E005DCBD6 /* SlideMenu */,
+				823D65AC23311E11005DCBD6 /* LeftBarSlideMenu.cpp */,
+				823D65AD23311E11005DCBD6 /* LeftBarSlideMenu.hpp */,
+			);
+			path = LeftBarSlideMenu;
+			sourceTree = "<group>";
+		};
+		823D65AF2331222E005DCBD6 /* SlideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				823D65B323313671005DCBD6 /* IRWorkspaceSlide */,
+				823D65B023312237005DCBD6 /* SlideMenu.cpp */,
+				823D65B123312237005DCBD6 /* SlideMenu.hpp */,
+			);
+			path = SlideMenu;
+			sourceTree = "<group>";
+		};
+		823D65B323313671005DCBD6 /* IRWorkspaceSlide */ = {
+			isa = PBXGroup;
+			children = (
+				823D65B423313681005DCBD6 /* IRWorkspaceSlide.cpp */,
+				823D65B523313681005DCBD6 /* IRWorkspaceSlide.hpp */,
+			);
+			path = IRWorkspaceSlide;
+			sourceTree = "<group>";
+		};
 		823E7BBD212F56590046512B /* IRSoundPlayerObject */ = {
 			isa = PBXGroup;
 			children = (
@@ -1798,6 +1836,7 @@
 			children = (
 				82A8B5D322FD9E6E00FF05B8 /* IRLeftBar.cpp */,
 				82A8B5D422FD9E6E00FF05B8 /* IRLeftBar.hpp */,
+				823D65AB23311DF5005DCBD6 /* LeftBarSlideMenu */,
 				82A8B5E322FF32A600FF05B8 /* LeftBarObjectMenu */,
 			);
 			path = IRLeftBar;
@@ -2591,6 +2630,7 @@
 				10658904223036B2005D6B38 /* IRWaveformObjectPreference.cpp in Sources */,
 				820AB79822A1762600FC7B46 /* IRISVObject.cpp in Sources */,
 				10F6476B22273FBD00A26D7D /* IRProjectWindow.cpp in Sources */,
+				823D65AE23311E11005DCBD6 /* LeftBarSlideMenu.cpp in Sources */,
 				82C08B01227663BC00938726 /* OpenGLVertexNoise.cpp in Sources */,
 				829EC3C322E92E3500964ACD /* IRSpectrogramComponent.cpp in Sources */,
 				821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */,
@@ -2719,9 +2759,11 @@
 				32360B59740CCC174CF75F0B /* include_juce_audio_basics.mm in Sources */,
 				A9D5694184653919C1A1BBB4 /* include_juce_audio_devices.mm in Sources */,
 				50936D63BE57464710DD09CD /* include_juce_audio_formats.mm in Sources */,
+				823D65B623313681005DCBD6 /* IRWorkspaceSlide.cpp in Sources */,
 				A356740963DB8BF888A6691C /* include_juce_audio_processors.mm in Sources */,
 				2DA77FA88E511A7404C673DF /* include_juce_audio_utils.mm in Sources */,
 				61F9D2348AEE783393DFAD35 /* include_juce_core.mm in Sources */,
+				823D65B223312237005DCBD6 /* SlideMenu.cpp in Sources */,
 				B130D4EB3FBB582FE9656C93 /* include_juce_cryptography.mm in Sources */,
 				5FBBE001D0CECE98C23C4ECF /* include_juce_data_structures.mm in Sources */,
 				26E01DBC708CB7E21971FAEF /* include_juce_dsp.mm in Sources */,

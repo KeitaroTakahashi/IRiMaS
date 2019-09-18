@@ -16,7 +16,10 @@ IRWorkSpace::IRWorkSpace(String title, IRStr* str, PreferenceWindow* preferenceW
     setWantsKeyboardFocus(true);
     addKeyListener(this);
     if(this->ir_str != nullptr)
+    {
         addKeyListener(this->ir_str->key);
+        addMouseListener(this->ir_str->mouse, false);
+    }
     
     
     //object menu
@@ -139,7 +142,7 @@ void IRWorkSpace::resized()
 
 void IRWorkSpace::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRWorkSpace mouseDown " << this << std::endl;
+    std::cout << "IRWorkSpace mouseDown " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
 
     this->selector->mouseDownHandler(e);
     
@@ -183,9 +186,10 @@ void IRWorkSpace::mouseUp(const MouseEvent& e)
 void IRWorkSpace::mouseDrag(const MouseEvent& e)
 {
     this->currentMousePosition = e.getEventRelativeTo(this).getPosition();
-    
-    //std::cout << "workspace e = " << e.getPosition().x << ", " << e.getPosition().y << std::endl;
-    this->selector->mouseDragHandler(e);
+    if(!this->isResizingFlag){
+        this->selector->mouseDragHandler(e);
+        std::cout << "draggingg.....\n";
+    }
     
     if(this->dummy.size() > 0)
     {
@@ -195,8 +199,6 @@ void IRWorkSpace::mouseDrag(const MouseEvent& e)
                                    this->currentMousePosition.getY());
         }
     }
-    
-    
 }
 
 

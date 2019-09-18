@@ -7,7 +7,7 @@
 
 #include "AudioMenuComponent.hpp"
 
-AudioMenuComponent::AudioMenuComponent(Rectangle<int> frameRect) : ObjectMenuComponent(frameRect)
+AudioMenuComponent::AudioMenuComponent(IRStr* str, Rectangle<int> frameRect) : ObjectMenuComponent(str, frameRect)
 {
     setTitleText("Audio");
 }

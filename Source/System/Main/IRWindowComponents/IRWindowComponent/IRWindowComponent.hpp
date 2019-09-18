@@ -56,6 +56,7 @@ public:
     
     bool isResizable = false;
     int resizableMargin = 20;
+    
 private:
     // ==================================================
     // SYSTEM
@@ -79,7 +80,7 @@ private:
     // ==================================================
 
     int barHeight = 50;
-    int leftBarWidth = 70;
+    int leftBarWidth = 100;
     int mainComponentHeight = 400;
 
     // ==================================================
@@ -106,6 +107,9 @@ private:
     // define the minimum size of the window
     int minWidth = 400;
     int minHeight = 700;
+    
+    // store window size before changing it.
+    Point<int> prevSize;
     // ==================================================
 
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

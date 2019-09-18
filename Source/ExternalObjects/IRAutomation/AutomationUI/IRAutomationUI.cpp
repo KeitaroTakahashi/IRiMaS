@@ -48,10 +48,8 @@ void IRAutomationUI::paint(Graphics& g)
     g.setColour (SYSTEMCOLOUR.contents);
     //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
     g.drawRect(getLocalBounds().toFloat(), 1.0);
-    
-    
-    
 }
+
 void IRAutomationUI::resized()
 {
     int x = this->xMargin;
@@ -67,18 +65,6 @@ void IRAutomationUI::resized()
                                              0,
                                              w * this->automation_width_ratio,
                                              h - automationMarginY);
-   
-    
-    /*
-    this->componentForViewPort->setBounds(0,
-                                          0,
-                                          w * this->automation_width_ratio,
-                                          h - automationMarginY);
-     */
-   
-    
-   
-
     
 }
 // ==================================================

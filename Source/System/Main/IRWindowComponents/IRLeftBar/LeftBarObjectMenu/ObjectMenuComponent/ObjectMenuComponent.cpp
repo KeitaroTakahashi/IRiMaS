@@ -7,7 +7,8 @@
 
 #include "ObjectMenuComponent.hpp"
 
-ObjectMenuComponent::ObjectMenuComponent(Rectangle<int> frameRect) :
+ObjectMenuComponent::ObjectMenuComponent(IRStr* str, Rectangle<int> frameRect) :
+IRStrComponent(str),
 frameRect(frameRect)
 {
     this->title.setColour(Label::textColourId, SYSTEMCOLOUR.text);
@@ -75,4 +76,10 @@ void ObjectMenuComponent::ObjectMenuItemClicked(ObjectMenuItem* item)
     
     //virtual function
     itemSelected(item->getObject());
+}
+
+void ObjectMenuComponent::ObjectMenuItemMouseUp(ObjectMenuItem* item)
+{
+    itemReleased(item->getObject());
+    
 }

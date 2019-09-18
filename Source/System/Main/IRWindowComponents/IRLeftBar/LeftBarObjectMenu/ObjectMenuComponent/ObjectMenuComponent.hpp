@@ -12,14 +12,16 @@
 #include "ColourLib.h"
 #include "KeAnimationComponent.h"
 #include "ExternalObjectHeader.h"
+#include "IRStrComponent.hpp"
 
 
 
 class ObjectMenuComponent : public Component,
+public IRStrComponent,
 private KeAnimationComponent
 {
 public:
-    ObjectMenuComponent(Rectangle<int> frameRect);
+    ObjectMenuComponent(IRStr* str, Rectangle<int> frameRect);
     ~ObjectMenuComponent();
     // ==================================================
     
@@ -29,6 +31,9 @@ public:
     
     void setTitleText(String text);
     // ==================================================
+    
+    bool isMenuOpened() const { return this->isOpened; }
+    void setMenuOpened(bool flag) { this->isOpened = flag; }
    
     // ==================================================
 
@@ -63,6 +68,7 @@ public:
         }
         void mouseUp(const MouseEvent &e) override
         {
+            this->parent->ObjectMenuItemMouseUp(this);
             setSelected(false);
         }
         
@@ -89,14 +95,18 @@ public:
     void createItem(IRObjectFactory::t_object* obj);
     
     virtual void itemSelected(IRObjectFactory::t_object* obj) {}
+    virtual void itemReleased(IRObjectFactory::t_object* obj) {}
     
 private:
     void updateAnimationFrame() override;
     // ==================================================
 
-    
+    // called when mouse down on an item
     void ObjectMenuItemClicked(ObjectMenuItem* item);
+    // called when mouse up on an item
+    void ObjectMenuItemMouseUp(ObjectMenuItem* item);
     
+    bool isOpened = false; // if menu area is visible or not
     
 
     // ==================================================

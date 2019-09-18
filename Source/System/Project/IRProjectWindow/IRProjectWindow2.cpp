@@ -12,11 +12,8 @@ IRProjectWindow2::IRProjectWindow2(String name) : IRMainWindow(name)
     
     Rectangle<int> frameRect (10, 10, 900, 700);
     
-    
     this->comp.reset(new IRWindowComponent(name, frameRect));
-    
     this->comp->setSize(900, 700);
-    
     this->comp->windowMoveAction = [this](Point<int>pos) { windowMoveToPos(pos); };
 
     setContentOwned (this->comp.get(), true);
@@ -40,7 +37,6 @@ IRProjectWindow2::~IRProjectWindow2()
 
 void IRProjectWindow2::changeListenerCallback (ChangeBroadcaster* source)
 {
-    
     /*
     if(source == this->bar.get())
     {

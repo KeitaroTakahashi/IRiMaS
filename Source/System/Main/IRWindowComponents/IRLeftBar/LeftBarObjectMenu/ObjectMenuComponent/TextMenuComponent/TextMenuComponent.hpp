@@ -13,7 +13,7 @@
 class TextMenuComponent : public ObjectMenuComponent
 {
 public:
-    TextMenuComponent(Rectangle<int> frameRect);
+    TextMenuComponent(IRStr* str, Rectangle<int> frameRect);
     ~TextMenuComponent();
     // ==================================================
 

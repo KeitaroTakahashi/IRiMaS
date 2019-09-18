@@ -20,13 +20,12 @@
 
 
 class LeftBarObjectMenu : public Component,
+public IRStrComponent,
 public ChangeBroadcaster,
 private KeAnimationComponent
 {
 public:
-
-
-    LeftBarObjectMenu(int buttonSize, int topMarge, int leftMarge, int yMarge, int menuSpace, int buttomSpace, Component* parent);
+    LeftBarObjectMenu(IRStr* str, int buttonSize, int topMarge, int leftMarge, int yMarge, int menuSpace, int buttomSpace, Component* parent);
     ~LeftBarObjectMenu();
     
     // ==================================================
@@ -45,6 +44,15 @@ public:
 
     ObjectMenuComponent* getCurrentMenuComponent() { return this->currentMenu; }
     
+    // ==================================================
+    void toNavigatorAction();
+    void toObjectMenuAction();
+
+    // ==================================================
+
+    bool isMenuOpened() const { return this->isOpened; }
+    void setMenuOpened(bool flag) { this->isOpened = flag; }
+    
 private:
     // ==================================================
     void createButton(IRImageButton* button, IRIconBank::IRIconImage img);
@@ -53,7 +61,6 @@ private:
     
     void replaceCurrentMenu(ObjectMenuComponent* obj);
     // ==================================================
-    void toNavigatorAction();
     
     void textAction();
     void imageAction();
@@ -103,6 +110,10 @@ private:
     
     int yMarge = 5;
     int leftMarge = 10;
+    // ==================================================
+
+    bool isOpened = false; // if menu area is visible or not
+
     // ==================================================
 
     Component* parent = nullptr;

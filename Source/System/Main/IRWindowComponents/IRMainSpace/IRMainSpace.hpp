@@ -36,8 +36,6 @@ public:
     IRWorkSpace* getTopWorkspace() const { return this->topWorkspace; }
     //==================================================
     void mouseDown(const MouseEvent& e) override;
-
-    
     
     //==================================================
     //==================================================

@@ -27,9 +27,6 @@ void IRMainSpace::paint(Graphics& g)
 void IRMainSpace::resized()
 {
     
-    
-    
-    
     for(auto space : this->workspaces)
     {
         space->setBounds(getLocalBounds());
@@ -56,17 +53,14 @@ void IRMainSpace::updateAnimationFrame()
 
 void IRMainSpace::createNewWorkspace()
 {
-    
-    std::cout << "create IRWOrkspace\n";
-    
-    String title = this->ir_str->projectName + "_" + String(this->workspaces.size() + 1);
-    std::cout << "create IRWOrkspace\n";
-    
-    //Rectangle<int> frameRect = this->mainComp->getBounds();
-    
-    std::cout << "create IRWOrkspace\n";
+    std::cout << "create IRWorkspace\n";
+    String title = this->ir_str->projectName + "_" + String(this->workspaces.size() + 1);    
     IRWorkSpace* space = new IRWorkSpace(title, this->ir_str, nullptr);
+    this->workspaces.push_back(space);
     
+    this->topWorkspace = space;
+    
+    addAndMakeVisible(space);
 }
 
 // ==================================================

@@ -114,6 +114,9 @@ public:
     void itemSelectionAction(ObjectListMenu* menu) override;
     void itemHasSelectedAction(ObjectListMenu* menu) override;
     
+    //resizing
+    void setResizing(bool flag) { this->isResizingFlag = flag; }
+    bool isResizing() const { return this->isResizingFlag; }
     
     // Link Menu
     void openLinkMenuOfSelectedObject();
@@ -171,6 +174,9 @@ private:
     String title = "";
     
     IRStr* ir_str;
+    
+    // resizing...
+    bool isResizingFlag = false;
     
     // grids
     int thin_grids_pixel = 10;

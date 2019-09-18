@@ -22,6 +22,9 @@ struct IRStr
     KeyListener* key;
     void setKeyListener(KeyListener* key) { this->key = key; }
     
+    MouseListener* mouse;
+    void setMouseListener(MouseListener* mouse) { this->mouse = mouse; }
+    
     // ==================================================
 
     String projectName;

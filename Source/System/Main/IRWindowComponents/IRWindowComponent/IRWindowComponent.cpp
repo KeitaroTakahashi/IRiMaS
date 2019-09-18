@@ -45,8 +45,12 @@ void IRWindowComponent::resized()
     this->mainSpace->setBounds(this->leftBarWidth, this->barHeight,
                                w - this->leftBarWidth, this->mainComponentHeight);
     
+    
     this->leftBar->setBounds(0, this->barHeight,
-                             this->leftBarWidth, h - this->barHeight);
+                             this->leftBarWidth,
+                             h - this->barHeight);
+    
+    
     
     
 }
@@ -54,8 +58,6 @@ void IRWindowComponent::resized()
 
 void IRWindowComponent::initialize()
 {
-    this->ir_str.reset(new IRStr());
-    
     
     //keyListener setup
     setWantsKeyboardFocus(true);
@@ -64,7 +66,9 @@ void IRWindowComponent::initialize()
     // create IRStr
     this->ir_str.reset(new IRStr());
     this->ir_str->setKeyListener(this);
+    this->ir_str->setMouseListener(this);
     this->ir_str->projectName = this->projectName;
+    this->ir_str->SYSTEMCOLOUR = IR::IRBlue();
 }
 // ----------------------------------------
 
@@ -77,9 +81,11 @@ void IRWindowComponent::createComponents()
     this->bar->addChangeListener(this);
     this->leftBar->addChangeListener(this);
     
-    addAndMakeVisible(this->leftBar.get());
-    addAndMakeVisible(this->bar.get());
+    // main space is back
     addAndMakeVisible(this->mainSpace.get());
+    addAndMakeVisible(this->bar.get());
+    addAndMakeVisible(this->leftBar.get());
+
     
 }
 // ----------------------------------------
@@ -96,7 +102,6 @@ void IRWindowComponent::changeListenerCallback (ChangeBroadcaster* source)
     }
     else if(source == this->leftBar.get())
     {
-        std::cout << "leftBar changed\n";
         if(this->leftBar->getStatus() == IRWindowBarActionStatus::MoveWindow)
         {
             if(this->windowMoveAction != nullptr)
@@ -201,20 +206,18 @@ void IRWindowComponent::modifierKeysChanged(const ModifierKeys &mod)
 
 void IRWindowComponent::mouseDrag(const MouseEvent& e)
 {
-    auto pos = e.getPosition();
+    auto pos = e.getEventRelativeTo(this).getPosition();
     
     if(this->isResizable)
     {
         Point<int> delta = pos - this->prevPos;
         
-        int newW = getWidth() + delta.getX();
-        int newH = getHeight() + delta.getY();
+        int newW = this->prevSize.getX() + delta.getX();
+        int newH = this->prevSize.getY() + delta.getY();
         if(newW < this->minWidth) newW = this->minWidth;
         if(newH < this->minHeight) newH = this->minHeight;
         
         setSize(newW, newH);
-        
-        this->prevPos = pos;
     }
     
 }
@@ -222,22 +225,38 @@ void IRWindowComponent::mouseDrag(const MouseEvent& e)
 
 void IRWindowComponent::mouseUp(const MouseEvent& e)
 {
-    
+    if(this->isResizable)
+    {
+        this->isResizable = false;
+        if(this->mainSpace->getTopWorkspace() != nullptr)
+            this->mainSpace->getTopWorkspace()->setResizing(true);
+    }
 }
 // ----------------------------------------
 
 void IRWindowComponent::mouseDown(const MouseEvent& e)
 {
-    auto pos = e.getPosition();
+    auto pos = e.getEventRelativeTo(this).getPosition();
     this->prevPos = pos;
     
-    std::cout << pos.getX() << ", " << pos.getY() << std::endl;
+    std::cout << "IRWindowComponent : " << pos.getX() << ", " << pos.getY() << std::endl;
+    std::cout << "resizable area x " << getWidth() - this->resizableMargin << " : " << getHeight() - this->resizableMargin << std::endl;
+ 
+    // store current window size
+    this->prevSize = Point<int> (getWidth(), getHeight());
     
     if(pos.getX() > getWidth() - this->resizableMargin &&
        pos.getY() > getHeight() - this->resizableMargin)
     {
         this->isResizable = true;
-    }else this->isResizable = false;
+        if(this->mainSpace->getTopWorkspace() != nullptr)
+            this->mainSpace->getTopWorkspace()->setResizing(true);
+    }else
+    {
+        this->isResizable = false;
+        if(this->mainSpace->getTopWorkspace() != nullptr)
+            this->mainSpace->getTopWorkspace()->setResizing(true);
+    }
 }
 // ----------------------------------------
 
@@ -271,10 +290,10 @@ void IRWindowComponent::createNewWorkspace()
     String title = this->projectName + "_" + String(this->workspaces.size() + 1);
     std::cout << "create IRWOrkspace\n";
 
-    //Rectangle<int> frameRect = this->mainComp->getBounds();
+    Rectangle<int> frameRect = this->mainSpace->getBounds();
     
     std::cout << "create IRWOrkspace\n";
-   IRWorkSpace* space = new IRWorkSpace(title, this->ir_str.get(), nullptr);
+   //IRWorkSpace* space = new IRWorkSpace(title, this->ir_str.get(), nullptr);
     
 }
 // ----------------------------------------

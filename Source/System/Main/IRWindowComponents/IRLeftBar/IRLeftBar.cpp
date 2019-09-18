@@ -11,8 +11,10 @@
 IRLeftBar::IRLeftBar(IRStr* str) : IRStrComponent(str)
 {
     setFps(60);
+    setOpaque(true);
         
-    this->objectMenuComponent.reset(new LeftBarObjectMenu(this->buttonSize,
+    this->objectMenuComponent.reset(new LeftBarObjectMenu(str,
+                                                          this->buttonSize,
                                                           this->topMarge,
                                                           this->leftMarge,
                                                           this->yMarge,
@@ -20,10 +22,15 @@ IRLeftBar::IRLeftBar(IRStr* str) : IRStrComponent(str)
                                                           this->buttomSpace,
                                                           this));
     
+    this->slideMenuComponent.reset(new LeftBarSlideMenu(str));
+    
     this->objectMenuComponent->addMouseListener(this, true);
     this->objectMenuComponent->addChangeListener(this);
+    this->slideMenuComponent->addMouseListener(this, true);
+    this->slideMenuComponent->addChangeListener(this);
+
     addAndMakeVisible(this->objectMenuComponent.get());
-    
+    //addAndMakeVisible(this->slideMenuComponent.get());
     addButtons();
     
     this->ordinaryWidth = this->leftMarge * 2 + this->buttonSize;
@@ -35,6 +42,7 @@ IRLeftBar::~IRLeftBar()
 {
     this->objectMenuComponent.reset();
 }
+
 //==================================================
 
 void IRLeftBar::resized()
@@ -42,8 +50,21 @@ void IRLeftBar::resized()
     int s = this->buttonSize;
     int y = this->topMarge;
     this->toNavigatorButton.setBounds(this->leftMarge, y, s, s);
+    this->toObjectMenuButton.setBounds(this->leftMarge, y, s, s);
+
     y += s + (this->yMarge * 2);
-    this->objectMenuComponent->setBounds(0, y, this->ordinaryWidth, getHeight() - y);
+    
+    this->objectMenuComponent->setBounds(0, y,
+                                         this->ordinaryWidth,
+                                         getHeight() - y);
+    
+    this->slideMenuComponent->setBounds(0, y,
+                                        this->ordinaryWidth,
+                                        getHeight() - y);
+    
+    if(this->isOpened)
+        setBounds(getX(), getY(), this->maxWidth, getHeight());
+    
 }
 
 void IRLeftBar::paint(Graphics& g)
@@ -54,7 +75,6 @@ void IRLeftBar::paint(Graphics& g)
 }
 
 //==================================================
-
 
 void IRLeftBar::mouseDrag(const MouseEvent& e)
 {
@@ -71,16 +91,19 @@ void IRLeftBar::mouseDrag(const MouseEvent& e)
     
     this->prevPos = e.getScreenPosition();
 }
+
 void IRLeftBar::mouseUp(const MouseEvent& e)
 {
     
 }
+
 void IRLeftBar::mouseDown(const MouseEvent& e)
 {
     auto pos = e.getScreenPosition();
     this->prevPos = pos;
     checkResizableFromMouseDownPosition(pos);
 }
+
 void IRLeftBar::mouseMove(const MouseEvent& e)
 {
     
@@ -107,19 +130,40 @@ void IRLeftBar::createButton(IRImageButton* button, IRIconBank::IRIconImage img)
 
 void IRLeftBar::addButtons()
 {
-    
     createButton(&this->toNavigatorButton, ICONBANK.icon_toNavigator);
     this->toNavigatorButton.onClick = [this]{ toNavigatorAction(); };
 }
+
 // ==================================================
 
 void IRLeftBar::toNavigatorAction()
 {
+    removeChildComponent(&this->toNavigatorButton);
+    createButton(&this->toObjectMenuButton, ICONBANK.icon_toObjectMenu);
+    this->toObjectMenuButton.onClick = [this] { toObjectMenuAction(); };
+    this->objectMenuComponent->toNavigatorAction();
     
+    removeChildComponent(this->objectMenuComponent.get());
+    addAndMakeVisible(this->slideMenuComponent.get());
 }
+
+void IRLeftBar::toObjectMenuAction()
+{
+    removeChildComponent(&this->toObjectMenuButton);
+    createButton(&this->toNavigatorButton, ICONBANK.icon_toNavigator);
+    this->toObjectMenuButton.onClick = [this] { toNavigatorAction(); };
+    this->objectMenuComponent->toObjectMenuAction();
+    
+    removeChildComponent(this->slideMenuComponent.get());
+    addAndMakeVisible(this->objectMenuComponent.get());
+
+}
+
+// ==================================================
 
 void IRLeftBar::updateAnimationFrame()
 {
+    
     // open menu space
     if(this->openMenuSpace)
     {
@@ -129,6 +173,7 @@ void IRLeftBar::updateAnimationFrame()
         }else{
             // stop animation when current width reaches the maxWidth
             setBounds(getX(), getY(), this->maxWidth, getHeight());
+            this->isOpened = true;
             stopAnimation();
         }
     }else{
@@ -139,6 +184,7 @@ void IRLeftBar::updateAnimationFrame()
         }else{
             
             setBounds(getX(), getY(), this->ordinaryWidth, getHeight());
+            this->isOpened = false;
             stopAnimation();
         }
     }
@@ -156,23 +202,18 @@ void IRLeftBar::changeListenerCallback (ChangeBroadcaster* source)
          {
              // if already opened, then close
              this->openMenuSpace = false;
+             this->isOpened = false;
              startAnimation();
              this->objectMenuComponent->resetSelection();
              this->currentMenuType = objectCategory::NONE;
-             
          }else{
-             
              this->currentMenuType = type;
-             
              // if menuSpace is not opened, then open it.
              if(!this->openMenuSpace)
              {
                  this->openMenuSpace = true;
                  startAnimation();
              }
-             
          }
-
-
      }
 }

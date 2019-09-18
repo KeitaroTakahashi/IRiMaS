@@ -14,7 +14,7 @@
 class ImageMenuComponent : public ObjectMenuComponent
 {
 public:
-    ImageMenuComponent(Rectangle<int> frameRect);
+    ImageMenuComponent(IRStr* str,Rectangle<int> frameRect);
     ~ImageMenuComponent();
     // ==================================================
     

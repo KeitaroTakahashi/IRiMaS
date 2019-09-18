@@ -7,8 +7,8 @@
 
 #include "TextMenuComponent.hpp"
 
-TextMenuComponent::TextMenuComponent(Rectangle<int> frameRect) :
-ObjectMenuComponent(frameRect)
+TextMenuComponent::TextMenuComponent(IRStr* str,Rectangle<int> frameRect) :
+ObjectMenuComponent(str, frameRect)
 {
     setTitleText("Text");
     

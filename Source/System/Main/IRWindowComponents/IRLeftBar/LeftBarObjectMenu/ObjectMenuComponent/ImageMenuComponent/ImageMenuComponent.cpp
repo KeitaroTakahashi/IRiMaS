@@ -8,8 +8,8 @@
 #include "ImageMenuComponent.hpp"
 
 
-ImageMenuComponent::ImageMenuComponent(Rectangle<int> frameRect) :
-ObjectMenuComponent(frameRect)
+ImageMenuComponent::ImageMenuComponent(IRStr* str, Rectangle<int> frameRect) :
+ObjectMenuComponent(str, frameRect)
 {
     setTitleText("Image");
 }

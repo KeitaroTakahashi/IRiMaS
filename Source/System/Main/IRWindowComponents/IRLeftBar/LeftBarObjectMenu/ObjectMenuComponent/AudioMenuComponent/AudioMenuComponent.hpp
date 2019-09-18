@@ -12,7 +12,7 @@
 class AudioMenuComponent : public ObjectMenuComponent
 {
 public:
-    AudioMenuComponent(Rectangle<int> frameRect);
+    AudioMenuComponent(IRStr* str, Rectangle<int> frameRect);
     ~AudioMenuComponent();
     // ==================================================
     
