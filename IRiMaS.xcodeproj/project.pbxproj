@@ -351,6 +351,7 @@
 		823D65B923327B56005DCBD6 /* IRWorkspace2.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkspace2.hpp; sourceTree = "<group>"; };
 		823D65BB23327BA6005DCBD6 /* IRWorkspaceObjectManagement2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceObjectManagement2.cpp; sourceTree = "<group>"; };
 		823D65BD23327BB3005DCBD6 /* IRWorkspaceKeyEvents2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceKeyEvents2.cpp; sourceTree = "<group>"; };
+		823D65C123351050005DCBD6 /* csv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = csv.h; sourceTree = "<group>"; };
 		823E7BBF212F56830046512B /* IRSoundPlayerObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSoundPlayerObject.hpp; sourceTree = "<group>"; };
 		823E7BC1212F57750046512B /* ExternalObjectHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalObjectHeader.h; sourceTree = "<group>"; };
 		823E7BC321302C110046512B /* IRImageLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageLoader.cpp; sourceTree = "<group>"; };
@@ -545,7 +546,6 @@
 		82DA55B6231E945600137004 /* IRSQLMaker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSQLMaker.cpp; sourceTree = "<group>"; };
 		82DA55B7231E945600137004 /* IRSQLMaker.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSQLMaker.hpp; sourceTree = "<group>"; };
 		82DA55BA231E95B100137004 /* SQLDataHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLDataHeader.h; sourceTree = "<group>"; };
-		82DA55BC231E970D00137004 /* csv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = csv.h; path = ../../../../CelloMAPP/Source/Utilities/CSV/csv.h; sourceTree = "<group>"; };
 		82DEA52F2292F9AF004D3D9F /* IRImageMovableButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageMovableButton.cpp; sourceTree = "<group>"; };
 		82DEA5302292F9AF004D3D9F /* IRImageMovableButton.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IRImageMovableButton.hpp; sourceTree = "<group>"; };
 		82DEA5322292F9B8004D3D9F /* IRImageButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageButton.cpp; sourceTree = "<group>"; };
@@ -2357,7 +2357,7 @@
 		82DA55BB231E970500137004 /* CSV */ = {
 			isa = PBXGroup;
 			children = (
-				82DA55BC231E970D00137004 /* csv.h */,
+				823D65C123351050005DCBD6 /* csv.h */,
 			);
 			path = CSV;
 			sourceTree = "<group>";
