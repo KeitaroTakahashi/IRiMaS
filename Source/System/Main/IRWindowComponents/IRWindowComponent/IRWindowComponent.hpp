@@ -44,8 +44,8 @@ public:
     // IRWorkspace
     void createNewWorkspace();
 
-    std::vector<IRWorkSpace* > getWorkspaces() const { return this->workspaces; }
-    IRWorkSpace* getTopWorkspace() const { return this->topWorkspace; }
+    std::vector<IRWorkspace* > getWorkspaces() const { return this->workspaces; }
+    IRWorkspace* getTopWorkspace() const { return this->topWorkspace; }
     
     // ==================================================
     Point<int> pos;
@@ -80,7 +80,7 @@ private:
     // ==================================================
 
     int barHeight = 50;
-    int leftBarWidth = 100;
+    int leftBarWidth = 135;
     int mainComponentHeight = 400;
 
     // ==================================================
@@ -97,8 +97,8 @@ private:
     // ==================================================
 
     // workspace
-    std::vector<IRWorkSpace* > workspaces;
-    IRWorkSpace* topWorkspace = nullptr;
+    std::vector<IRWorkspace* > workspaces;
+    IRWorkspace* topWorkspace = nullptr;
     
     
     

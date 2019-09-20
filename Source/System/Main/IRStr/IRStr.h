@@ -30,6 +30,8 @@ struct IRStr
     String projectName;
     String projectURL;
     
+    Component* TopWorkspace = nullptr;
+    
     // ==================================================
     UserSettingStr USERSETTING;
     IR::IRColours SYSTEMCOLOUR;

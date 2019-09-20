@@ -77,6 +77,14 @@ private:
     objectCategory selectedButtonType = NONE;
     // ==================================================
 
+    Label textLabel;
+    Label imageLabel;
+    Label audioLabel;
+    Label chartLabel;
+    Label playerLabel;
+    Label objectLabel;
+    Label inspectorLabel;
+    Label preferenceLabel;
     
     IRImageButton textButton;
     IRImageButton imageButton;

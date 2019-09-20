@@ -33,8 +33,8 @@ IRLeftBar::IRLeftBar(IRStr* str) : IRStrComponent(str)
     //addAndMakeVisible(this->slideMenuComponent.get());
     addButtons();
     
-    this->ordinaryWidth = this->leftMarge * 2 + this->buttonSize;
-    this->maxWidth = this->leftMarge * 2 + this->buttonSize + this->menuSpace;
+    this->ordinaryWidth = this->leftMarge + this->rightMarge + this->buttonSize;
+    this->maxWidth = this->leftMarge + this->rightMarge + this->buttonSize + this->menuSpace;
     
 }
 

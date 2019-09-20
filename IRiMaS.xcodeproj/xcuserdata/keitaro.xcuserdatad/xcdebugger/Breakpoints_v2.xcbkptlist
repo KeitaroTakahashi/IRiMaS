@@ -15,10 +15,10 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44c0_s_p8_1"
+                  symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44c0_s_p2_0"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "66">
+                  offsetFromSymbolStart = "1586">
                </Location>
             </Locations>
          </BreakpointContent>

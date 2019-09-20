@@ -19,6 +19,39 @@ parent(parent)
 {
     addButtons();
     setFps(60);
+    
+    this->textLabel.setText("Texts", dontSendNotification);
+    this->textLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    addAndMakeVisible(&this->textLabel);
+    
+    this->imageLabel.setText("Graphics", dontSendNotification);
+    this->imageLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    addAndMakeVisible(&this->imageLabel);
+    
+    this->audioLabel.setText("Audio", dontSendNotification);
+    this->audioLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    addAndMakeVisible(&this->audioLabel);
+    
+    this->chartLabel.setText("Charts", dontSendNotification);
+    this->chartLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    addAndMakeVisible(&this->chartLabel);
+    
+    this->playerLabel.setText("Players", dontSendNotification);
+    this->playerLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    addAndMakeVisible(&this->playerLabel);
+    
+    this->objectLabel.setText("Objects", dontSendNotification);
+    this->objectLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    addAndMakeVisible(&this->objectLabel);
+    
+    this->inspectorLabel.setText("Inspector", dontSendNotification);
+    this->inspectorLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    addAndMakeVisible(&this->inspectorLabel);
+    
+    this->preferenceLabel.setText("Preference", dontSendNotification);
+    this->preferenceLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    addAndMakeVisible(&this->preferenceLabel);
+    
 }
 
 LeftBarObjectMenu::~LeftBarObjectMenu()
@@ -34,29 +67,39 @@ void LeftBarObjectMenu::resized()
     int y = this->topMarge;
     int s = this->buttonSize;
     
+    int t_d = 5;
+    
     this->textButton.setBounds(x, y, s, s);
+    this->textLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
     y += s + this->yMarge * 2;
     this->imageButton.setBounds(x, y, s, s);
+    this->imageLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
+
     
     y += s + this->yMarge * 2;
     this->audioButton.setBounds(x, y, s, s);
+    this->audioLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
     y += s + this->yMarge * 2;
     this->chartButton.setBounds(x, y, s, s);
+    this->chartLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
     y += s + this->yMarge * 2;
     this->playerButton.setBounds(x, y, s, s);
+    this->playerLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
     y += s + this->yMarge * 2;
     this->objectButton.setBounds(x, y, s, s);
+    this->objectLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
     y = getHeight() - this->buttomSpace + this->yMarge * 2;
     this->inspectorButton.setBounds(x, y, s, s);
+    this->inspectorLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
     y += s + this->yMarge * 2;
     this->preferenceButton.setBounds(x, y, s, s);
-    
+    this->preferenceLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
     this->menuSpaceRect = Rectangle<int> (getWidth(), 0, this->menuSpace, getParentHeight());
     

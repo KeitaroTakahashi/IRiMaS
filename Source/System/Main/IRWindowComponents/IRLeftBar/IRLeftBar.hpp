@@ -77,14 +77,15 @@ private:
     IRImageButton toObjectMenuButton;
     //==================================================
     // layout
-    int buttonSize = 50;
+    int buttonSize = 40;
     
     int topMarge = 10;
     int switchSpace = 50;
     int menuSpace = 150;
     int buttomSpace = 130;
     int yMarge = 6; // better to be even
-    int leftMarge = 25;
+    int leftMarge = 10;
+    int rightMarge = 85;
     
     int maxWidth = 0;
     int ordinaryWidth = 0;

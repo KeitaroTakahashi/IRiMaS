@@ -55,10 +55,13 @@ void IRMainSpace::createNewWorkspace()
 {
     std::cout << "create IRWorkspace\n";
     String title = this->ir_str->projectName + "_" + String(this->workspaces.size() + 1);    
-    IRWorkSpace* space = new IRWorkSpace(title, this->ir_str, nullptr);
+    IRWorkspace* space = new IRWorkspace(title, this->ir_str, nullptr);
     this->workspaces.push_back(space);
     
     this->topWorkspace = space;
+    
+    // store a pointer of the current top workspace
+    this->ir_str->TopWorkspace = this->topWorkspace;
     
     addAndMakeVisible(space);
 }

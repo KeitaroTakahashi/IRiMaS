@@ -12,7 +12,7 @@
 #include "IRWindowHeader.h"
 #include "IRIconBank.hpp"
 #include "IRImageButton.hpp"
-#include "IRWorkSpace.hpp"
+#include "IRWorkspace2.hpp"
 #include "KeAnimationComponent.h"
 
 class IRMainSpace : public Component,
@@ -32,8 +32,8 @@ public:
     // IRWorkspace
     void createNewWorkspace();
     
-    std::vector<IRWorkSpace* > getWorkspaces() const { return this->workspaces; }
-    IRWorkSpace* getTopWorkspace() const { return this->topWorkspace; }
+    std::vector<IRWorkspace* > getWorkspaces() const { return this->workspaces; }
+    IRWorkspace* getTopWorkspace() const { return this->topWorkspace; }
     //==================================================
     void mouseDown(const MouseEvent& e) override;
     
@@ -53,8 +53,8 @@ private:
 
     //==================================================
     // Workspace
-    std::vector<IRWorkSpace*> workspaces;
-    IRWorkSpace* topWorkspace = nullptr;
+    std::vector<IRWorkspace*> workspaces;
+    IRWorkspace* topWorkspace = nullptr;
     //==================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRMainSpace)
 

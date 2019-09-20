@@ -52,7 +52,7 @@ public:
             if(this->isSelectedFlag) g.fillAll(SYSTEMCOLOUR.contents.brighter());
             
             g.setColour(SYSTEMCOLOUR.text);
-            g.drawEllipse(5, 5, this->buttonSize, this->buttonSize, 2);
+            g.drawEllipse(5, 5, this->buttonSize, this->buttonSize, 1);
             int s = this->buttonSize + 15;
             g.drawText(this->object->name, s, 0, getWidth() - s, getHeight(), Justification::left);
         }
