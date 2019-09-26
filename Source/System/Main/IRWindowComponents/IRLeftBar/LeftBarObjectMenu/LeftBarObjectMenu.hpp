@@ -11,6 +11,9 @@
 #include "TextMenuComponent.hpp"
 #include "ImageMenuComponent.hpp"
 #include "AudioMenuComponent.hpp"
+#include "ChartMenuComponent.hpp"
+#include "PlayerMenuComponent.hpp"
+#include "ObjectsMenuComponent.hpp"
 
 #include "IRIconBank.hpp"
 #include "ColourLib.h"
@@ -99,8 +102,8 @@ private:
     std::shared_ptr<TextMenuComponent> textMenu;
     std::shared_ptr<ImageMenuComponent> imageMenu;
     std::shared_ptr<AudioMenuComponent> audioMenu;
-    std::shared_ptr<ObjectMenuComponent> chartMenu;
-    std::shared_ptr<ObjectMenuComponent> playerMenu;
+    std::shared_ptr<ChartMenuComponent> chartMenu;
+    std::shared_ptr<PlayerMenuComponent> playerMenu;
     std::shared_ptr<ObjectMenuComponent> objectMenu;
     
     std::shared_ptr<ObjectMenuComponent> inspectorMenu;

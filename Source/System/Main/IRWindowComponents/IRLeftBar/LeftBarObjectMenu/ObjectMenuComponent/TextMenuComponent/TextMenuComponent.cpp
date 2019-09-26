@@ -10,9 +10,9 @@
 TextMenuComponent::TextMenuComponent(IRStr* str,Rectangle<int> frameRect) :
 ObjectMenuComponent(str, frameRect)
 {
-    setTitleText("Text");
+    setTitleText("Texts");
     
-    auto objects = IRFactory.getRegisteredObjectOfCategory(objectCategory::TEXTMENU);
+    auto objects = getStr()->OBJECTFACTORY.getRegisteredObjectOfCategory(objectCategory::TEXTMENU);
     
     for(auto o : objects)
     {
@@ -30,7 +30,7 @@ TextMenuComponent::~TextMenuComponent()
 // ==================================================
 void TextMenuComponent::paint(Graphics& g)
 {
-    g.fillAll(SYSTEMCOLOUR.contents);
+    g.fillAll(getStr()->SYSTEMCOLOUR.contents);
 }
 
 void TextMenuComponent::resized()
@@ -38,7 +38,24 @@ void TextMenuComponent::resized()
     ObjectMenuComponent::resized();
 }
 // ==================================================
+void TextMenuComponent::itemSelected(IRObjectFactory2::t_object* obj)
+{
+    
+}
 
+void TextMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
+{
+    
+    
+    auto topSpace = static_cast<IRWorkspace* >(getStr()->TopWorkspace);
+    
+    auto nodeObj = getStr()->OBJECTFACTORY.createObject(obj->id, topSpace);
+    nodeObj->setCentrePosition(topSpace->getWidth()/2,
+                               topSpace->getHeight()/2);
+    topSpace->createObject(nodeObj);
+    
+    
+}
 
 
 // ==================================================

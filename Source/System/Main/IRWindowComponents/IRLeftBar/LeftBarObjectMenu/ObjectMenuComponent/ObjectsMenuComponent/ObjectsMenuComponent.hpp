@@ -8,6 +8,31 @@
 #ifndef ObjectsMenuComponent_hpp
 #define ObjectsMenuComponent_hpp
 
-#include <stdio.h>
+#include "ObjectMenuComponent.hpp"
 
+class ObjectsMenuComponent : public ObjectMenuComponent
+{
+public:
+    ObjectsMenuComponent(IRStr* str, Rectangle<int> frameRect);
+    ~ObjectsMenuComponent();
+    // ==================================================
+    
+    void resized() override;
+    void paint(Graphics& g) override;
+    // ==================================================
+    // ==================================================
+    
+private:
+    // ==================================================
+    
+    void itemSelected(IRObjectFactory2::t_object* obj) override;
+    void itemReleased(IRObjectFactory2::t_object* obj) override;
+    
+    // ==================================================
+    
+    // ==================================================
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ObjectsMenuComponent)
+    
+};
 #endif /* ObjectsMenuComponent_hpp */

@@ -112,7 +112,7 @@ void LeftBarObjectMenu::paint(Graphics& g)
 {
     g.fillAll(SYSTEMCOLOUR.fundamental);
     
-    g.setColour(SYSTEMCOLOUR.text);
+    g.setColour(SYSTEMCOLOUR.contents);
     int y = this->topMarge + this->buttonSize * 2 + this->yMarge * 4;
     g.drawLine(0, 0, getWidth(), 0, 2);
     
@@ -203,23 +203,29 @@ void LeftBarObjectMenu::audioAction()
 void LeftBarObjectMenu::chartAction()
 {
     showExtraMenu(CHARTMENU);
-    
+    this->chartMenu.reset(new ChartMenuComponent(getStr(), this->menuSpaceRect));
+    addAndMakeVisible(this->chartMenu.get());
+    replaceCurrentMenu(this->chartMenu.get());
 
 }
 void LeftBarObjectMenu::playerAction()
 {
     showExtraMenu(PLAYERMENU);
-
+    this->playerMenu.reset(new PlayerMenuComponent(getStr(), this->menuSpaceRect));
+    addAndMakeVisible(this->playerMenu.get());
+    replaceCurrentMenu(this->playerMenu.get());
 }
 void LeftBarObjectMenu::objectAction()
 {
     showExtraMenu(OBJECTMENU);
-
+    this->objectMenu.reset(new ObjectsMenuComponent(getStr(), this->menuSpaceRect));
+    addAndMakeVisible(this->objectMenu.get());
+    replaceCurrentMenu(this->objectMenu.get());
 }
 
 void LeftBarObjectMenu::inspectorAction()
 {
-    
+
 }
 void LeftBarObjectMenu::preferenceAction()
 {

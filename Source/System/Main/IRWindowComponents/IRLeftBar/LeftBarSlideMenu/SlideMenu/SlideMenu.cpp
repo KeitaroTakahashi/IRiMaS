@@ -39,8 +39,8 @@ void SlideMenu::resized()
 
 void SlideMenu::paint(Graphics& g)
 {
-    g.fillAll(SYSTEMCOLOUR.fundamental);
-    g.setColour(SYSTEMCOLOUR.text);
+    g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
+    g.setColour(getStr()->SYSTEMCOLOUR.text);
     g.drawLine(0, 0, getWidth(), 0, 2);
     
 

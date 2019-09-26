@@ -116,12 +116,15 @@ void IRSpectrogramObject::mouseDownEvent(const MouseEvent& e)
     
     //IRNodeObject::mouseDownEvent(e);
     //change preference Window if not yet
-    IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
-    
-    IRPreferenceObject* current = space->getPreferenceObj();
+    if(getPreferenceWindow() != nullptr)
+    {
+        IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
         
-    if(current != this->UI->getPreference()){
-        space->setPreferenceObj(this->UI->getPreference());
+        IRPreferenceObject* current = space->getPreferenceObj();
+            
+        if(current != this->UI->getPreference()){
+            space->setPreferenceObj(this->UI->getPreference());
+        }
     }
 }
 

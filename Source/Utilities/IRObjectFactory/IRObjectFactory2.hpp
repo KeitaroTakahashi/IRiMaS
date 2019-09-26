@@ -1,17 +1,20 @@
+//
+//  IRObjectFactory2.hpp
+//  IRiMaS
+//
+//  Created by Keitaro on 20/09/2019.
+//
 
-#ifndef IRObjectFactory_hpp
-#define IRObjectFactory_hpp
-
+#ifndef IRObjectFactory2_hpp
+#define IRObjectFactory2_hpp
 
 #include "IRObjectCreater.hpp"
+#include "ExternalObjectHeader.h"
 
 
-
-
-class IRObjectFactory
+class IRObjectFactory2
 {
 public:
-    
     struct t_object
     {
         std::string id;
@@ -38,8 +41,8 @@ public:
     };
     
     
-    IRObjectFactory();
-    ~IRObjectFactory() // won't be called as is singleton?
+    IRObjectFactory2();
+    ~IRObjectFactory2() // won't be called as is singleton?
     {
         // std::cout << "destructor of IRObjectFactory called" << std::endl; // I NEED FOR THIS TO HAPPEN...
     };
@@ -71,18 +74,18 @@ private:
 
 // template function should be written outside of the class - FD could not put this in .cpp - to investigate further once global file separation done
 template<class T>
-void IRObjectFactory::registerObject(std::string id, std::string name, objectCategory objectType, Image img)
+void IRObjectFactory2::registerObject(std::string id, std::string name, objectCategory objectType, Image img)
 {
     
     // now trying with shared pointer
     
-    std::cout<< id << " registering : size is " << this->list.size() << std::endl;
-
+    std::cout << "ObjectFactory2 : "<< id << " registering : size is " << this->list.size() << std::endl;
+    
     
     std::shared_ptr<IRObjectCreater<T>> obj = std::make_shared<IRObjectCreater<T>>();
     // IRObjectCreater<T>* obj = new IRObjectCreater<T>();
     // std::cout << "hallo" << std::endl;
-    this->list[id] = IRObjectFactory::t_object(id, name, objectType, img, obj);
+    this->list[id] = IRObjectFactory2::t_object(id, name, objectType, img, obj);
     
     this->registeredObjectInfo[objectType].push_back(&this->list[id]);
     
@@ -90,4 +93,4 @@ void IRObjectFactory::registerObject(std::string id, std::string name, objectCat
     
 }
 
-#endif /* IRObjectFactory_hpp */
+#endif /* IRObjectFactory2_hpp */

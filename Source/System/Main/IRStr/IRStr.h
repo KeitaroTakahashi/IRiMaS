@@ -11,7 +11,8 @@
 #include "JuceHeader.h"
 #include "ColourLib.h"
 #include "IRIconBank.hpp"
-#include "IRObjectFactory.hpp"
+#include "IRObjectFactory2.hpp"
+#include "IRFileManager.hpp"
 #include "UserSettingStr.h"
 
 
@@ -33,10 +34,17 @@ struct IRStr
     Component* TopWorkspace = nullptr;
     
     // ==================================================
+    // callBack
+    std::function<void(IRFileManager*)> fileManagerUpdated;
+    
+    
+    
+    // ==================================================
     UserSettingStr USERSETTING;
     IR::IRColours SYSTEMCOLOUR;
     IRIconBank    ICONBANK;
-    IRObjectFactory OBJECTFACTORY;
+    IRObjectFactory2 OBJECTFACTORY;
+    IRFileManager FILEMANAGER;
     // ==================================================
 
 };

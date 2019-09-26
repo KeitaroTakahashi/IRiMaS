@@ -11,7 +11,7 @@ ObjectMenuComponent::ObjectMenuComponent(IRStr* str, Rectangle<int> frameRect) :
 IRStrComponent(str),
 frameRect(frameRect)
 {
-    this->title.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->title.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     this->title.setJustificationType(Justification::centred);
     addAndMakeVisible(&this->title);
 }
@@ -24,7 +24,7 @@ ObjectMenuComponent::~ObjectMenuComponent()
 // ==================================================
 void ObjectMenuComponent::paint(Graphics& g)
 {
-    g.fillAll(SYSTEMCOLOUR.contents);
+    g.fillAll(getStr()->SYSTEMCOLOUR.contents);
     
 }
 
@@ -56,7 +56,7 @@ void ObjectMenuComponent::setTitleText(String text)
 }
 // ==================================================
 
-void ObjectMenuComponent::createItem(IRObjectFactory::t_object* obj)
+void ObjectMenuComponent::createItem(IRObjectFactory2::t_object* obj)
 {
     this->objects.push_back(obj);
     this->items.push_back(new ObjectMenuItem(this, obj, this->buttonSize));
@@ -83,3 +83,4 @@ void ObjectMenuComponent::ObjectMenuItemMouseUp(ObjectMenuItem* item)
     itemReleased(item->getObject());
     
 }
+// ==================================================

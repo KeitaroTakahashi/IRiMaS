@@ -22,9 +22,13 @@ IRTitleBar::~IRTitleBar()
 void IRTitleBar::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll(Colours::white);
-    g.setColour(Colours::lightgrey);
-    g.drawLine(0, getHeight() - 1 , getWidth(), getHeight() - 1, 2);
+    g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
+    g.setColour(getStr()->SYSTEMCOLOUR.contents);
+    g.drawLine(0, getHeight() , getWidth(), getHeight(), 2);
+    g.setColour(getStr()->SYSTEMCOLOUR.text);
+    Font f("Avenir Next",34, Font::plain);
+    g.setFont(f);
+    g.drawText("TiAALS", 30, 5, 200, getHeight(), dontSendNotification);
     
 }
 
@@ -46,7 +50,6 @@ void IRTitleBar::mouseDrag(const MouseEvent& e)
     
     this->status = MoveWindow;
     sendChangeMessage();
-    std::cout<<"mouseDrag\n";
 
     this->prevPos = e.getScreenPosition();
 }

@@ -12,7 +12,7 @@ bool IRWorkspace::keyPressed (const KeyPress& key, Component* originatingCompone
 {
     std::cout << "IRWorkspace keyPressed() : " << key.getKeyCode() << " : " << key.getTextDescription() << ", " << key.getTextCharacter() <<   std::endl;
     
-    
+  // delete key
     if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
     {
         if(isEditMode())
@@ -46,7 +46,7 @@ bool IRWorkspace::keyPressed (const KeyPress& key, Component* originatingCompone
         }
         return true;
     }
-    
+      /*
     if(key.getTextDescription() == "command + E")
     {
         setEditMode(!this->editModeFlag);
@@ -67,7 +67,7 @@ bool IRWorkspace::keyPressed (const KeyPress& key, Component* originatingCompone
     }
     else {
         std::cout << "IRWorkspace : Unknown KeyEvent received." << std::endl;
-    }
+    }*/
     
     return false;
 }

@@ -55,7 +55,6 @@ public:
     
     void mouseDrag(const MouseEvent &e) override
     {
-        std::cout << "mouseDrag\n";
     }
     
     // ==================================================

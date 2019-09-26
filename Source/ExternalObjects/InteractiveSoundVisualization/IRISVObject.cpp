@@ -50,14 +50,17 @@ void IRISVObject::mouseDownEvent(const MouseEvent& e)
 {
     // stop OpenGL rendering when this is clicked in EditMode
     // restart OpenGL rendering if in EditMode
-    IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
-    
-    IRPreferenceObject* current = space->getPreferenceObj();
-    
-    std::cout << this->name << " : PreferenceObject = " << this->UI->getPreference() << std::endl;
-    
-    if(current != this->UI->getPreference()){
-        space->setPreferenceObj(this->UI->getPreference());
+    if(getPreferenceWindow() != nullptr)
+    {
+        IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
+        
+        IRPreferenceObject* current = space->getPreferenceObj();
+        
+        std::cout << this->name << " : PreferenceObject = " << this->UI->getPreference() << std::endl;
+        
+        if(current != this->UI->getPreference()){
+            space->setPreferenceObj(this->UI->getPreference());
+        }
     }
     
 }

@@ -38,6 +38,10 @@ public:
     void checkResizableFromMouseDownPosition(Point<int> pos);
     
     //==================================================
+    void openMenu(objectCategory type);
+    void closeMenu();
+    //==================================================
+
     
     IRWindowBarActionStatus getStatus() const { return this->status; }
     

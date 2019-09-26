@@ -38,14 +38,21 @@ public:
     void setComponentsHeight(int barHeight, int mainHeight);
     
     // ==================================================
+    
     // ==================================================
+    
     // ==================================================
+    
     // ==================================================
     // IRWorkspace
     void createNewWorkspace();
 
     std::vector<IRWorkspace* > getWorkspaces() const { return this->workspaces; }
     IRWorkspace* getTopWorkspace() const { return this->topWorkspace; }
+    
+    
+    bool isEditMode() const { return this->isEditModeFlag; }
+    void setEditMode(bool flag);
     
     // ==================================================
     Point<int> pos;
@@ -100,7 +107,7 @@ private:
     std::vector<IRWorkspace* > workspaces;
     IRWorkspace* topWorkspace = nullptr;
     
-    
+    bool isEditModeFlag = true;
     
     // ==================================================
     

@@ -69,12 +69,16 @@ void IRShapeObject::resized()
 
 void IRShapeObject::mouseDownEvent(const MouseEvent& e)
 {
-    IRPreferenceSpace *space = getPreferenceWindow()->getPreferenceSpace();
     
-    IRPreferenceObject* current = space->getPreferenceObj();
-    
-    if(current != this->UI->getPreference())
+    if(getPreferenceWindow() != nullptr)
     {
-        space->setPreferenceObj(this->UI->getPreference());
+        IRPreferenceSpace *space = getPreferenceWindow()->getPreferenceSpace();
+        
+        IRPreferenceObject* current = space->getPreferenceObj();
+        
+        if(current != this->UI->getPreference())
+        {
+            space->setPreferenceObj(this->UI->getPreference());
+        }
     }
 }

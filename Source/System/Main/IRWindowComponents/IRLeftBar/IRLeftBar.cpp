@@ -69,8 +69,8 @@ void IRLeftBar::resized()
 
 void IRLeftBar::paint(Graphics& g)
 {
-    g.fillAll(SYSTEMCOLOUR.contents);
-    g.setColour(SYSTEMCOLOUR.fundamental);
+    g.fillAll(getStr()->SYSTEMCOLOUR.contents);
+    g.setColour(getStr()->SYSTEMCOLOUR.fundamental);
     g.fillRect(0, 0, this->ordinaryWidth, getHeight());
 }
 
@@ -119,7 +119,7 @@ void IRLeftBar::checkResizableFromMouseDownPosition(Point<int> pos)
 
 void IRLeftBar::createButton(IRImageButton* button, IRIconBank::IRIconImage img)
 {
-    if(SYSTEMCOLOUR.isWhiteBased)
+    if(getStr()->SYSTEMCOLOUR.isWhiteBased)
         button->setImage(img.black);
     else
         button->setImage(img.white);
@@ -130,7 +130,7 @@ void IRLeftBar::createButton(IRImageButton* button, IRIconBank::IRIconImage img)
 
 void IRLeftBar::addButtons()
 {
-    createButton(&this->toNavigatorButton, ICONBANK.icon_toNavigator);
+    createButton(&this->toNavigatorButton, getStr()->ICONBANK.icon_toNavigator);
     this->toNavigatorButton.onClick = [this]{ toNavigatorAction(); };
 }
 
@@ -139,7 +139,7 @@ void IRLeftBar::addButtons()
 void IRLeftBar::toNavigatorAction()
 {
     removeChildComponent(&this->toNavigatorButton);
-    createButton(&this->toObjectMenuButton, ICONBANK.icon_toObjectMenu);
+    createButton(&this->toObjectMenuButton, getStr()->ICONBANK.icon_toObjectMenu);
     this->toObjectMenuButton.onClick = [this] { toObjectMenuAction(); };
     this->objectMenuComponent->toNavigatorAction();
     
@@ -150,7 +150,7 @@ void IRLeftBar::toNavigatorAction()
 void IRLeftBar::toObjectMenuAction()
 {
     removeChildComponent(&this->toObjectMenuButton);
-    createButton(&this->toNavigatorButton, ICONBANK.icon_toNavigator);
+    createButton(&this->toNavigatorButton, getStr()->ICONBANK.icon_toNavigator);
     this->toObjectMenuButton.onClick = [this] { toNavigatorAction(); };
     this->objectMenuComponent->toObjectMenuAction();
     
@@ -191,6 +191,8 @@ void IRLeftBar::updateAnimationFrame()
 
 }
 
+// ==================================================
+
 void IRLeftBar::changeListenerCallback (ChangeBroadcaster* source)
 {
      if(source == this->objectMenuComponent.get())
@@ -200,20 +202,34 @@ void IRLeftBar::changeListenerCallback (ChangeBroadcaster* source)
          
          if(this->currentMenuType == type)
          {
-             // if already opened, then close
-             this->openMenuSpace = false;
-             this->isOpened = false;
-             startAnimation();
-             this->objectMenuComponent->resetSelection();
-             this->currentMenuType = objectCategory::NONE;
+             closeMenu();
          }else{
-             this->currentMenuType = type;
-             // if menuSpace is not opened, then open it.
-             if(!this->openMenuSpace)
-             {
-                 this->openMenuSpace = true;
-                 startAnimation();
-             }
+             openMenu(type);
          }
      }
 }
+
+// ==================================================
+
+void IRLeftBar::openMenu(objectCategory type)
+{
+    this->currentMenuType = type;
+    // if menuSpace is not opened, then open it.
+    if(!this->openMenuSpace)
+    {
+        this->openMenuSpace = true;
+        startAnimation();
+    }
+}
+
+void IRLeftBar::closeMenu()
+{
+    // if already opened, then close
+    this->openMenuSpace = false;
+    this->isOpened = false;
+    startAnimation();
+    this->objectMenuComponent->resetSelection();
+    this->currentMenuType = objectCategory::NONE;
+}
+
+// ==================================================

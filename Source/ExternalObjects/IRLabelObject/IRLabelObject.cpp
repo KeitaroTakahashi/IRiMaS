@@ -143,15 +143,17 @@ void IRLabelObject::resized()
 void IRLabelObject::mouseDownEvent(const MouseEvent& e)
 {
     //change preference Window if not yet
-    
-    IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
-    
-    IRPreferenceObject* current = space->getPreferenceObj();
-    
-    std::cout << "PreferenceOBject = " << preference << std::endl;
-    
-    if (current != preference){
-        space->setPreferenceObj(preference);
+    if(getPreferenceWindow() != nullptr)
+    {
+        IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
+        
+        IRPreferenceObject* current = space->getPreferenceObj();
+        
+        std::cout << "PreferenceOBject = " << preference << std::endl;
+        
+        if (current != preference){
+            space->setPreferenceObj(preference);
+        }
     }
 }
 

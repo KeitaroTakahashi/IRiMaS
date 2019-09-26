@@ -13,8 +13,7 @@
 #include "KeAnimationComponent.h"
 #include "ExternalObjectHeader.h"
 #include "IRStrComponent.hpp"
-
-
+#include "IRWorkspace2.hpp"
 
 class ObjectMenuComponent : public Component,
 public IRStrComponent,
@@ -40,7 +39,7 @@ public:
     class ObjectMenuItem : public Component
     {
     public:
-        ObjectMenuItem(ObjectMenuComponent* parent, IRObjectFactory::t_object* object, int buttonSize) :
+        ObjectMenuItem(ObjectMenuComponent* parent, IRObjectFactory2::t_object* object, int buttonSize) :
         parent(parent), object(object), buttonSize(buttonSize)
         {
             
@@ -72,14 +71,14 @@ public:
             setSelected(false);
         }
         
-        IRObjectFactory::t_object* getObject() const { return this->object; }
+        IRObjectFactory2::t_object* getObject() const { return this->object; }
         
         bool isSelected() const { return this->isSelectedFlag; }
         void setSelected(bool flag) { this->isSelectedFlag = flag; repaint(); }
         
     private:
         ObjectMenuComponent* parent;
-        IRObjectFactory::t_object* object;
+        IRObjectFactory2::t_object* object;
         String title;
         Image img;
         int buttonSize;
@@ -92,10 +91,10 @@ public:
     
     // ==================================================
 
-    void createItem(IRObjectFactory::t_object* obj);
+    void createItem(IRObjectFactory2::t_object* obj);
     
-    virtual void itemSelected(IRObjectFactory::t_object* obj) {}
-    virtual void itemReleased(IRObjectFactory::t_object* obj) {}
+    virtual void itemSelected(IRObjectFactory2::t_object* obj) {}
+    virtual void itemReleased(IRObjectFactory2::t_object* obj) {}
     
 private:
     void updateAnimationFrame() override;
@@ -120,15 +119,9 @@ private:
     int yMarge = 5;
 
     // ==================================================
-    std::vector<IRObjectFactory::t_object* > objects;
+    std::vector<IRObjectFactory2::t_object* > objects;
     std::vector<ObjectMenuItem* > items;
     // ==================================================
-
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    
-public:
-    // IRObjectFactory
-    IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
     
 };
 #endif /* ObjectMenuComponent_hpp */

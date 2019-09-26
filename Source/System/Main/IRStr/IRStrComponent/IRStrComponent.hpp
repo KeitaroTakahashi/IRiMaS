@@ -20,14 +20,7 @@ public:
     IRStr* getStr() const { return this->ir_str; }
     void setStr(IRStr* str) { this->ir_str = str; }
     KeyListener* getMasterKey() const { return this->masterKey; }
-    
-protected:
-    // accessible from child classes
-    UserSettingStr USERSETTING;
-    IR::IRColours SYSTEMCOLOUR;
-    IRIconBank    ICONBANK;
-    IRObjectFactory OBJECTFACTORY;
-    
+ 
 private:
     IRStr* ir_str;
     KeyListener* masterKey;

@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
+   uuid = "F47C1C46-38B1-484A-9D8A-5DA081A37606"
    type = "1"
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.AddressBreakpoint">
          <BreakpointContent
+            uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             symbolName = "*0x10024b6f2">
             <Locations>
                <Location
+                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - 24c9ab530b3a922b"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44c0_s_p2_0"
+                  symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44c0_s_p1_0"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "1586">
+                  offsetFromSymbolStart = "28002">
                </Location>
             </Locations>
          </BreakpointContent>

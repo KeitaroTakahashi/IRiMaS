@@ -192,9 +192,9 @@ void IRWorkspace::mouseUp(const MouseEvent& e)
 void IRWorkspace::mouseDrag(const MouseEvent& e)
 {
     this->currentMousePosition = e.getEventRelativeTo(this).getPosition();
+    
     if(!this->isResizingFlag){
         this->selector->mouseDragHandler(e);
-        std::cout << "draggingg.....\n";
     }
     
     if(this->dummy.size() > 0)

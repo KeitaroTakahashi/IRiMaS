@@ -1,9 +1,6 @@
 
 #include "IRSoundPlayerObject.hpp"
 
-
-
-
 IRSoundPlayerObject::IRSoundPlayerObject(Component* parent)
 : IRNodeObject(parent, "IRSoundPlayer")
 {
@@ -16,7 +13,6 @@ IRSoundPlayerObject::IRSoundPlayerObject(Component* parent)
     setSize(100, 118);
 }
 
-
 IRSoundPlayerObject::~IRSoundPlayerObject()
 {
     // de la même manière que nous ajoutons addAudioComponent au mixeur du projet
@@ -25,12 +21,10 @@ IRSoundPlayerObject::~IRSoundPlayerObject()
      delete this->player;
 }
 
-
 IRNodeObject* IRSoundPlayerObject::copyThis()
 {
     return new IRSoundPlayerObject(this->parent);
 }
-
 
 void IRSoundPlayerObject::resized()
 {
@@ -47,7 +41,6 @@ void IRSoundPlayerObject::paint(Graphics& g)
         g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
     }
 }
-
 
 AudioPlayer_threadSafe* IRSoundPlayerObject::getAudioSource()
 {

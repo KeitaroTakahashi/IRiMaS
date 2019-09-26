@@ -60,8 +60,8 @@ void IRWindowComponent::initialize()
 {
     
     //keyListener setup
-    setWantsKeyboardFocus(true);
-    addKeyListener(this);
+    //setWantsKeyboardFocus(true);
+    //addKeyListener(this);
     
     // create IRStr
     this->ir_str.reset(new IRStr());
@@ -69,6 +69,8 @@ void IRWindowComponent::initialize()
     this->ir_str->setMouseListener(this);
     this->ir_str->projectName = this->projectName;
     this->ir_str->SYSTEMCOLOUR = IR::IRBlue();
+    this->ir_str->ICONBANK = IRIconBank();
+    
 }
 // ----------------------------------------
 
@@ -119,57 +121,17 @@ void IRWindowComponent::changeListenerCallback (ChangeBroadcaster* source)
 
 bool IRWindowComponent::keyPressed(const KeyPress& key, Component* originatingComponent)
 {
-    std::cout << "IRWorkSpace keyPressed() : " << key.getKeyCode() << " : " << key.getTextDescription() << ", " << key.getTextCharacter() <<   std::endl;
+    std::cout << "IRWindowComponent keyPressed() : " << key.getKeyCode() << " : " << key.getTextDescription() << ", " << key.getTextCharacter() <<   std::endl;
     
-    if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
-    {
-        
-        std::cout << "delete key\n";
-        //if(isEditMode())
-         //   deleteSelectedObjects();
-        return true;
-    }
-    
-    if(key.getTextDescription() == "command + C")
-    {
-        
-        std::cout << "command C\n";
-
-        /*
-        if(this->isEditMode())
-        {
-            copySelectedObjects();
-        }
-         */
-        return true;
-    }
-    
-    if(key.getTextDescription() == "command + V")
-    {
-        /*
-        if(this->isEditMode())
-        {
-            pasteSelectedObjects();
-        }
-         */
-        return true;
-    }
-    
-    if(key.getTextDescription() == "command + D")
-    {
-        /*
-        if(this->isEditMode())
-        {
-            duplicateSelectedObjects();
-        }*/
-        return true;
-    }
+   
     
     if(key.getTextDescription() == "command + E")
     {
-        /*
-        setEditMode(!this->editModeFlag);
         
+        std::cout << "Edit mode = " << !this->isEditMode() << std::endl;
+        setEditMode(!this->isEditModeFlag);
+        
+        /*
         // notify it to IRProject
         if(this->notifyEditModeChanged != nullptr)
         {
@@ -255,8 +217,11 @@ void IRWindowComponent::mouseDown(const MouseEvent& e)
     {
         this->isResizable = false;
         if(this->mainSpace->getTopWorkspace() != nullptr)
-            this->mainSpace->getTopWorkspace()->setResizing(true);
+            this->mainSpace->getTopWorkspace()->setResizing(false);
     }
+    
+    //close menu if it is opened
+    this->leftBar->closeMenu();
 }
 // ----------------------------------------
 
@@ -306,3 +271,15 @@ void IRWindowComponent::createNewWorkspace()
 // ==================================================
 // WORKSPACE
 // ==================================================
+
+void IRWindowComponent::setEditMode(bool flag)
+{
+    this->isEditModeFlag = flag;
+    
+    for(auto space : this->mainSpace->getWorkspaces())
+    {
+        space->setEditMode(flag);
+    }
+    
+    
+}
