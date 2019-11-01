@@ -9,7 +9,7 @@
 
 using namespace IRAutomation;
 
-IRAutomationVertexComponent::IRAutomationVertexComponent(Component* parent)
+IRAutomationVertexComponent::IRAutomationVertexComponent(IRStr* str, Component* parent) : IRStrComponent(str)
 {
     
     setOpaque(false);
@@ -54,8 +54,8 @@ void IRAutomationVertexComponent::paint(Graphics& g)
 {
     if(this->isPointFlag)
     {
-        if(getCondition() == uiSelected) g.setColour(Colours::red);
-        else g.setColour(Colours::orange);
+        if(getCondition() == uiSelected) g.setColour(getStr()->SYSTEMCOLOUR.fundamental);
+        else g.setColour(getStr()->SYSTEMCOLOUR.contents);
     
         g.fillEllipse(0, 0, getWidth(), getHeight());
     }

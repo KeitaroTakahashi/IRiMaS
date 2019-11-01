@@ -7,8 +7,9 @@
 
 #include "IRWorkspaceSlide.hpp"
 
-IRWorkspaceSlide::IRWorkspaceSlide(IRStr* str, int index) :
+IRWorkspaceSlide::IRWorkspaceSlide(IRStr* str, int index, IRWorkspace* space) :
 IRStrComponent(str),
+space(space),
 index(index)
 {
     
@@ -24,6 +25,8 @@ void IRWorkspaceSlide::paint(Graphics& g)
     if(isSelected())
     {
         g.fillAll(getStr()->SYSTEMCOLOUR.contents);
+        
+        //std::cout << "getStr()->SYSTEMCOLOUR.contents colour = " << getStr()->SYSTEMCOLOUR.colourName << std::endl;
     }else{
         g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     }
@@ -36,10 +39,9 @@ void IRWorkspaceSlide::paint(Graphics& g)
 void IRWorkspaceSlide::mouseDown(const MouseEvent& e)
 {
     
-    if(this->onClick != nullptr) this->onClick();
-    setSelectedFlag(true);
-    repaint();
+    if(this->onClick != nullptr) this->onClick(this);
+    
     std::cout <<"mouseDown\n";
-
+    
 }
 

@@ -72,7 +72,7 @@ void ISVParameterControlUI2::paint(Graphics& g)
 
 void ISVParameterControlUI2::resized()
 {
-    Rectangle<float> c = this->stretch_circle;
+    //Rectangle<float> c = this->stretch_circle;
     int w = 300;
     int h = 70;
     

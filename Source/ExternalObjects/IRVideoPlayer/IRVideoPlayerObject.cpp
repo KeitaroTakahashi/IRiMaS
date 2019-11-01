@@ -7,9 +7,38 @@
 
 #include "IRVideoPlayerObject.hpp"
 
+IRVideoPlayerObject::IRVideoPlayerObject(Component* parent, IRStr* str) :
+IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(orginaryIRComponent))
+{
+    
+    setOpaque(true);
+    
+    this->controller.reset( new IRVideoPlayerController(str) );
+    this->controller->addChangeListener(this);
+    setObjController(this->controller.get());
+       
+    // original function to give this ChangeListener to controller->UI
+    this->controller->addChangeListener(this);
+    
+    this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str);
+    this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
+    addAndMakeVisible(this->videoPlayer.get());
+    
+    setSize(300, 200);
+}
+
+IRVideoPlayerObject::~IRVideoPlayerObject()
+{
+    std::cout << "IRVideoPlayerObject deconstructing...\n";
+    this->controller.reset();
+    this->videoPlayer.reset();
+    std::cout << "IRVideoPlayerObject done...\n";
+
+}
+
 IRNodeObject* IRVideoPlayerObject::copyThis()
 {
-    return new IRVideoPlayerObject(this->parent);
+    return new IRVideoPlayerObject(this->parent, getStr());
 }
 // --------------------------------------------------
 IRNodeObject* IRVideoPlayerObject::copyContents(IRNodeObject* object)
@@ -24,7 +53,7 @@ IRNodeObject* IRVideoPlayerObject::copyContents(IRNodeObject* object)
 // --------------------------------------------------
 IRNodeObject* IRVideoPlayerObject::copyDragDropContents(IRNodeObject* object)
 {
-    IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent);
+    IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent, getStr());
     return obj;
 }
 // --------------------------------------------------
@@ -51,7 +80,7 @@ void IRVideoPlayerObject::loadThisFromSaveData(t_json data)
 // --------------------------------------------------
 void IRVideoPlayerObject::resized()
 {
-    this->videoPlayer->setBounds(getLocalBounds().reduced(5));
+   this->videoPlayer->setBounds(getLocalBounds().reduced(5));
 }
 // --------------------------------------------------
 void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
@@ -79,9 +108,13 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
             newWidth = (double) newHeight * this->videoPlayer->getAspectRatio();
         }
         setSize(newWidth, newHeight);
+        //callHeavyComponentCreated(this);
+
     }else{
         IRNodeComponent::resizeThisComponentEvent(e);
     }
+    
+    this->resizing = true;
 }
 // --------------------------------------------------
 void IRVideoPlayerObject::mouseUpEvent(const MouseEvent& e)
@@ -89,19 +122,69 @@ void IRVideoPlayerObject::mouseUpEvent(const MouseEvent& e)
     //recover event
     if(!this->videoPlayer->isNeedController() && this->videoPlayer->isVideoOpened())
         this->videoPlayer->setNeedController(true);
+    
+    if(this->resizing)
+    {
+        callHeavyComponentCreated(this);
+        this->resizing = false;
+    }
+    
 }
 // --------------------------------------------------
 void IRVideoPlayerObject::paint(Graphics& g)
 {
     IRNodeObject::paint(g);
-    auto area = getLocalBounds().reduced (10);
     
-    g.setColour (Colours::black);
-    g.fillRoundedRectangle (area.toFloat(), 5.0f);
+    auto area = getLocalBounds();
+    g.fillAll(getStr()->SYSTEMCOLOUR.background);
+    
+    if(isEditMode())
+        g.drawRoundedRectangle(area.toFloat(), 0, 2.0);
 }
 // --------------------------------------------------
 void IRVideoPlayerObject::videoLoadCompletedAction()
 {
-    setSize(this->videoPlayer->getWidth(), this->videoPlayer->getHeight());
+    int video_w = this->videoPlayer->getVideoSize().getWidth();
+    int video_h = this->videoPlayer->getVideoSize().getHeight();
+    
+    int w,h;
+   if(video_w > getWidth())
+   {
+       w = getWidth();
+       h = (int)((float)w / this->videoPlayer->getAspectRatio());
+   }else{
+       w = video_w;
+       h = video_h;
+
+   }
+    
+    setSize(w + 10, h + 10);    
+    // call reset Heavy-weight components
+    callHeavyComponentCreated(this);
 }
 // --------------------------------------------------
+
+void IRVideoPlayerObject::changeListenerCallback (ChangeBroadcaster* source)
+{
+    if(source == this->controller.get())
+    {
+    
+        using uiStatus = VideoController::VideoControllerStatus;
+        
+        switch(this->controller->getStatus())
+        {
+            case uiStatus::OpenMovieFile:
+                this->videoPlayer->openFile();
+                break;
+            default:
+                break;
+        }
+    }
+}
+// --------------------------------------------------
+
+void IRVideoPlayerObject::moveToFrontAction()
+{
+    this->videoPlayer->bringViewToFront();
+    
+}

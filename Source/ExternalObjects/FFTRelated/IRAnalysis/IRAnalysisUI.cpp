@@ -7,8 +7,8 @@
 
 #include "IRAnalysisUI.hpp"
 
-IRAnalysisUI::IRAnalysisUI(IRNodeObject* parent) :
-IRUIAudioFoundation(parent)
+IRAnalysisUI::IRAnalysisUI(IRNodeObject* parent, IRStr* str) :
+IRUIAudioFoundation(parent, str)
 {
     this->parent = parent;
     
@@ -31,7 +31,7 @@ IRUIAudioFoundation(parent)
 IRAnalysisUI::~IRAnalysisUI()
 {
     if(this->audioData != nullptr)
-        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+        getFileManager().discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
 }
 // --------------------------------------------------
 
@@ -49,7 +49,7 @@ void IRAnalysisUI::paint(Graphics& g)
 void IRAnalysisUI::deinitializeAudioData()
 {
     if(this->audioData != nullptr)
-        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+        getFileManager().discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
 }
 // --------------------------------------------------
 
@@ -100,7 +100,7 @@ void IRAnalysisUI::getFilePtr(File file)
     // set a callback function which is called when file load is completed.
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
-    getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+    getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                              file,
                                              this->parent,
                                              callback);
@@ -120,7 +120,7 @@ void IRAnalysisUI::fileImportCompleted()
 {
     
     std::cout << "fileImportCompleted \n";
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
     
     // copy audio data into vector format.
     //this->rawData.clear();

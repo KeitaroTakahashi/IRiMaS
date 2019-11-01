@@ -7,11 +7,12 @@
 
 #include "IRShapeUI.hpp"
 
-IRShapeUI::IRShapeUI(IRNodeObject* parent) : IRUIFoundation(parent),
+IRShapeUI::IRShapeUI(IRNodeObject* parent, IRStr* str) : IRUIFoundation(parent, str),
 colour(255,0, 0)
 {
-    this->preference = std::make_shared<IRShapePreference>("Shape Preference", Rectangle<int>(400, 720));
-    this->preference->getUI()->addChangeListener(this);
+    
+    this->controller = std::make_shared<IRShapeController>(str);
+    this->controller->addChangeListener(this);
 
 }
 
@@ -46,6 +47,7 @@ void IRShapeUI::paint(Graphics& g)
         default:
             break;
     }
+    
     
 }
 
@@ -100,13 +102,14 @@ void IRShapeUI::drawTriangle(Graphics& g)
 
 void IRShapeUI::changeListenerCallback(ChangeBroadcaster* source)
 {
-    auto gui = this->preference->getUI();
+    auto gui = this->controller.get();
+    using statusFlag = IRShapeController::IRShapeControllerStatus;
     
     if(source == gui)
     {
-        IRShapePreferenceUI::IRShapePreferenceUIStatus status = gui->getStatus();
+        statusFlag status = gui->getStatus();
         
-        if(status == IRShapePreferenceUI::IRShapePreferenceUIStatus::FillMenuSelected)
+        if(status == statusFlag::FillMenuSelected)
         {
             
             std::cout << "FillMenu = " << gui->getFillMenuIndex() << std::endl;
@@ -117,7 +120,7 @@ void IRShapeUI::changeListenerCallback(ChangeBroadcaster* source)
             {
                 this->isFill = false;
             }
-        }else if(status == IRShapePreferenceUI::IRShapePreferenceUIStatus::ShapeMenuSelected)
+        }else if(status == statusFlag::ShapeMenuSelected)
         {
             std::cout << "selected shape = " << gui->getSelectedShapeIndex() << std::endl;
             switch(gui->getSelectedShapeIndex())
@@ -134,10 +137,10 @@ void IRShapeUI::changeListenerCallback(ChangeBroadcaster* source)
                 default:
                     break;
             }
-        }else if(status == IRShapePreferenceUI::IRShapePreferenceUIStatus::ColourChanged)
+        }else if(status == statusFlag::ColourChanged)
         {
             this->colour = gui->getColour();
-        }else if(IRShapePreferenceUI::IRShapePreferenceUIStatus::BorderWidthChanged)
+        }else if(statusFlag::BorderWidthChanged)
         {
             this->lineWidth = gui->getLineWidth();
         }

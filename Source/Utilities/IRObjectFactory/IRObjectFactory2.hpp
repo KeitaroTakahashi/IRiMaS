@@ -26,12 +26,11 @@ public:
         std::shared_ptr<IRObjectCreaterBase> obj;
         
         t_object() {}
-        ~t_object(){ printf("t_object deconstructor called\n");}
+        ~t_object(){}
         
         // t_object(std::string id, std::string name, Image img, IRObjectCreaterBase* obj)
         t_object(std::string id, std::string name, objectCategory category, Image img, std::shared_ptr<IRObjectCreaterBase> obj)
         {
-            printf("t_object constructor called\n");
             this->id = id;
             this->name = name;
             this->category = category;
@@ -42,15 +41,15 @@ public:
     
     
     IRObjectFactory2();
-    ~IRObjectFactory2() // won't be called as is singleton?
+    ~IRObjectFactory2( )
     {
-        // std::cout << "destructor of IRObjectFactory called" << std::endl; // I NEED FOR THIS TO HAPPEN...
+        std::cout << "IRObjectFactory2 deinitialized!!\n";
     };
     
     template<class T>
     void registerObject(std::string id, std::string name, objectCategory objectType, Image img);
     
-    IRNodeObject* createObject(std::string id, Component* parent);
+    IRNodeObject* createObject(std::string id, Component* parent, IRStr* str);
     
     void showRegisteredObjectList();
     

@@ -7,8 +7,8 @@
 
 #include "IRSpectrogram.hpp"
 
-IRSpectrogram::IRSpectrogram(IRNodeObject* nodeObject) :
-IRUIAudioFoundation(nodeObject),
+IRSpectrogram::IRSpectrogram(IRNodeObject* nodeObject, IRStr* str) :
+IRUIAudioFoundation(nodeObject, str),
 parent(nodeObject),
 zoomInfo(Point<float>(1.0,1.0))
 {
@@ -26,7 +26,10 @@ zoomInfo(Point<float>(1.0,1.0))
     //setFps(17);
 
     setFps(100);
+  
+    
 }
+
 
 IRSpectrogram::~IRSpectrogram()
 {
@@ -39,7 +42,7 @@ IRSpectrogram::~IRSpectrogram()
     if(this->audioData != nullptr)
     {
         this->audioData->getData()->removeListener(this);
-        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+        getFileManager().discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
     }
     
     std::cout << "~IRSpectrogram ENDS\n";
@@ -106,7 +109,6 @@ void IRSpectrogram::resized()
 
     this->openButton.setBounds(0, 0, getWidth(), getHeight());
     
-    
     int s = getHeight();
     if(s > 50) s = 50;
     int y = getHeight() / 2 - s / 2;
@@ -160,7 +162,7 @@ void IRSpectrogram::getFilePtr(File file)
     std::function<void()> callback = [this]{fileImportCompleted();};
     
     
-    getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+    getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                              file,
                                              this->parent,
                                              callback);
@@ -328,7 +330,7 @@ void IRSpectrogram::setVisibleArea(Rectangle<int> area, Point<int> parentSize)
 {
     int s = getHeight();
     if(s > 50) s = 50;
-    int y = getHeight() / 2 - s / 2;
+    //int y = getHeight() / 2 - s / 2;
     
     // Subtract GridSize!! need to be fixed in smarter way
     this->visibleArea = Rectangle<int>(area.getX(),
@@ -462,6 +464,7 @@ void IRSpectrogram::mouseMove(const MouseEvent &e)
 
 void IRSpectrogram::shaderTask(Graphics& g)
 {
+  
     //std::cout << "shaderTask\n";
     if (shader.get() == nullptr || shader->getFragmentShaderCode() != fragmentCode)
     {
@@ -492,6 +495,7 @@ void IRSpectrogram::shaderTask(Graphics& g)
         std::cout << "shader null or shaderCode not loaded\n";
     }
     
+   
     if (shader.get() != nullptr)
     {
         shader->fillRect (g.getInternalContext(),
@@ -500,6 +504,7 @@ void IRSpectrogram::shaderTask(Graphics& g)
         
         
     }
+   
 }
 
 void IRSpectrogram::createTexture()
@@ -614,7 +619,7 @@ void IRSpectrogram::createDemoTexture()
 void IRSpectrogram::fileImportCompleted()
 {
     std::cout << "fileImportCompleted\n";
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
     this->audioData->getData()->addListener(this);
 
     this->audioUpdated = true;

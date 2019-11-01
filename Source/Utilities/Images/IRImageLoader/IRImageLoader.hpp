@@ -13,7 +13,7 @@ public ChangeBroadcaster
 {
 public:
     
-    IRImageLoader(IRNodeObject* parent);
+    IRImageLoader(IRNodeObject* parent, IRStr* str);
     ~IRImageLoader();
 
     bool open();

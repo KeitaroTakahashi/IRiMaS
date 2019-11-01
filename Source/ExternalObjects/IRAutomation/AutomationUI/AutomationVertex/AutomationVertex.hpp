@@ -9,7 +9,7 @@
 #define AutomationVertex_hpp
 
 #include "JuceHeader.h"
-
+#include "IRStrComponent.hpp"
 
 namespace IRAutomation {
     
@@ -69,13 +69,14 @@ namespace IRAutomation {
     };
     
     
-    class IRAutomationVertexComponent : public Component
+    class IRAutomationVertexComponent : public Component,
+    public IRStrComponent
     {
         
     public:
         // --------------------------------------------------
         
-        IRAutomationVertexComponent(Component* parent);
+        IRAutomationVertexComponent(IRStr* str, Component* parent);
         ~IRAutomationVertexComponent();
         
         // --------------------------------------------------

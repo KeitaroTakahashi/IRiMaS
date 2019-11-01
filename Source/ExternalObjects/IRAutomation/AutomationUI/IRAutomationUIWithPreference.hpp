@@ -21,7 +21,7 @@ private ChangeListener
 public:
     // ==================================================
 
-    IRAutomationUIWithPreference(IRNodeObject* nodeObject);
+    IRAutomationUIWithPreference(IRNodeObject* nodeObject, IRStr* str);
     ~IRAutomationUIWithPreference();
     
     IRAutomationObjectPreference* getPreference() const { return this->preference.get(); }

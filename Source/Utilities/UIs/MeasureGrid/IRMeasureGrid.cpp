@@ -7,7 +7,8 @@
 
 #include "IRMeasureGrid.hpp"
 
-IRMeasureGrid::IRMeasureGrid(IRGridStr::IRMeasureGridType type) :
+IRMeasureGrid::IRMeasureGrid(IRStr *str, IRGridStr::IRMeasureGridType type) :
+IRStrComponent(str),
 type(type)
 {
     
@@ -23,10 +24,10 @@ void IRMeasureGrid::paint(Graphics& g)
 {
     g.fillAll(Colours::white);
     
-    g.setColour(SYSTEMCOLOUR.titleText);
+    g.setColour(getStr()->SYSTEMCOLOUR.titleText);
     for(auto grid : gridBuffer)
     {
-        Line<float> l = grid.line;
+        //Line<float> l = grid.line;
         //std::cout << "grid draw : x y w h " << l.getStartX() << ", " << l.getStartY() << ", " << l.getEndX() << ", " << l.getEndY() << std::endl;
         g.drawLine(grid.line);
     }

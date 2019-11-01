@@ -4,36 +4,30 @@
 
 #include "JuceHeader.h"
 
-#include "ColourLib.h"
+#include "IRStrComponent.hpp"
 #include "singletonClass.hpp"
 
 
 
-
-
-enum FontGUIStatus
-{
-    FontChanged,
-    FontStyleChanged,
-    FontSizeChanged,
-    FontAlignChanged,
-    FontColourChanged,
-    BackgroundColourChanged
-};
-
-
-
-
-
 class FontGUI : public Component,
+public IRStrComponent,
 public ChangeBroadcaster,
 public ChangeListener,
 public ComboBox::Listener
 {
     
 public:
-    
-    FontGUI(String title);
+    enum FontGUIStatus
+    {
+        FontChanged,
+        FontStyleChanged,
+        FontSizeChanged,
+        FontAlignChanged,
+        FontColourChanged,
+        BackgroundColourChanged
+    };
+
+    FontGUI(String title, IRStr* str);
     ~FontGUI();
     
     void resized() override;
@@ -118,13 +112,12 @@ private:
     FontGUIStatus status;
     
     // system colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    //IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FontGUI)
     
 };
-
 
 
 

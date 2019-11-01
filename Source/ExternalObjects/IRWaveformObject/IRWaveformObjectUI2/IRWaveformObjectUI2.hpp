@@ -27,7 +27,7 @@ public:
         DescriptorSelected
     };
     
-    IRWaveformObjectUI2(IRNodeObject* parent);
+    IRWaveformObjectUI2(IRNodeObject* parent, IRStr* str);
     ~IRWaveformObjectUI2();
     // ==================================================
     void resized() override;
@@ -39,6 +39,9 @@ public:
     void setEditMode(bool newEditMode) override;
 
     void visibleAreaChanged(Rectangle<int> area);
+    
+    void setAutomationWidthRatio(float ratio);
+    float getAutomationWidthRatio() const { return this->automation_width_ratio; }
     
     IRWaveformObjectUI* getWaveformUI() { return this->waveform.get(); }
     

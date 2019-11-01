@@ -22,7 +22,7 @@ class InteractiveAutomation : public IRUIFoundation
 public:
     
     // ==================================================
-    InteractiveAutomation(IRNodeObject* nodeObject);
+    InteractiveAutomation(IRNodeObject* nodeObject, IRStr* str);
     ~InteractiveAutomation();
     // ==================================================
     

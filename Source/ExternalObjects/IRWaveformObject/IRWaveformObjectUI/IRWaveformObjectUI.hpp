@@ -19,7 +19,7 @@ class IRWaveformObjectUI : public IRWaveform
 
 public:
     
-    IRWaveformObjectUI(IRNodeObject* parent);
+    IRWaveformObjectUI(IRNodeObject* parent, IRStr* str);
     ~IRWaveformObjectUI();
     
     void resized() override;
@@ -49,9 +49,11 @@ public:
     void deleteSquareObject();
     void deselectAllSquareObject();
     void addSelectedObjects();
+    void deleteAllObjects();
     
     void playSelectedArea();
     void stopPlaying();
+    void playFromBegin();
     
     // listener IRNodeObject
     // This object takes an exclusive listener which is expected to be Workspace.
@@ -81,6 +83,10 @@ public:
     // ==================================================
 
 private:
+    // ==================================================
+
+    // called when file import completed!
+    void fileImportCompletedAction() override;
     // ==================================================
     IRWaveformController controller;
     int previousOffsetX = 0;

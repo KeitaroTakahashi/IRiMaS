@@ -13,6 +13,7 @@
 #include "IRSpectrogramController.h"
 #include "Benchmark.h"
 #include "KeAnimationComponent.h"
+#include "IROpenGLManager.hpp"
 
 class IRSpectrogram : public IRUIAudioFoundation,
 public IRAudio::Listener,
@@ -31,7 +32,7 @@ public:
         currentPlayedFrameShared
     };
     
-    IRSpectrogram(IRNodeObject* nodeObject);
+    IRSpectrogram(IRNodeObject* nodeObject, IRStr* str);
     ~IRSpectrogram();
     
     void init();
@@ -122,8 +123,14 @@ public:
     void viewPortPositionFromComponent(IRAudio* obj) override;
     
     void createPlayingLine(int64 currentFrame);
+    // ==================================================
 
-    
+    // bring the OpenGLContext to the top front of all other IRNodeObject on the workspace
+    void bringViewToFront() { //this->openGLContext.bringViewToFront();
+        IROpenGLManager manager(&this->openGLContext);
+        manager.bringOpenGLContextFront(this);
+        
+    }
     // ==================================================
 private:
     
@@ -226,6 +233,8 @@ private:
     StopWatch bench;
     StopWatch bench2;
     StopWatch bench3;
+    
+    TextButton test;
 
     // ==================================================
 

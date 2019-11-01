@@ -6,15 +6,11 @@
 
 #include "IRNodeObject.hpp"
 
-
-
-
-
 class IRMultiPurposeObject : public IRNodeObject
 {
     
 public:
-    IRMultiPurposeObject(Component* parent);
+    IRMultiPurposeObject(Component* parent, IRStr* str);
     ~IRMultiPurposeObject();
     
     IRNodeObject* copyContents(IRNodeObject* object) override;

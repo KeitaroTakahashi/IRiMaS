@@ -129,7 +129,6 @@ private:
         void updateImage()
         {
             
-            std::cout << "updateImage = " << this->parent << std::endl;
             IRWorkSpace* space = dynamic_cast<IRWorkSpace* >(this->parent);
             if(space != nullptr)
             {

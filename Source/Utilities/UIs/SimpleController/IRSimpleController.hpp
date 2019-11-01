@@ -15,6 +15,7 @@
 #include "IRImageMovableButton.hpp"
 #include "AutomationVertex.hpp"
 #include "IRImageLineButton.h"
+#include "ColourLib.h"
 
 class IRSimpleController : public Component
 {

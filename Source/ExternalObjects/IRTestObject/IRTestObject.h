@@ -16,8 +16,9 @@ class IRTestObject : public IRNodeObject
 public:
     // ------------------------------------------------------------
 
-    IRTestObject(Component* parent) : IRNodeObject(parent, "IRTest"),
-    ui(this)
+    IRTestObject(Component* parent, IRStr* str) :
+    IRNodeObject(parent, "IRTest", str),
+    ui(this, str)
     {
         setSize(100, 20);
         
@@ -52,7 +53,7 @@ public:
     
     IRNodeObject* copyThis() override
     {
-        return new IRTestObject(this->parent);
+        return new IRTestObject(this->parent, getStr());
     }
     // ------------------------------------------------------------
     void loadThisFromSaveData(t_json saveData) override
@@ -81,7 +82,7 @@ public:
         {
             auto area = getLocalBounds().reduced (2);
             
-            g.setColour (SYSTEMCOLOUR.contents);
+            g.setColour (getStr()->SYSTEMCOLOUR.contents);
             g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
         }
     }

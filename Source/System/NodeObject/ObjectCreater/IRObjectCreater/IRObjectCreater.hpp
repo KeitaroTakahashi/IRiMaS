@@ -16,13 +16,12 @@ public:
     IRObjectCreater() {}
     ~IRObjectCreater() {}
 
-    IRNodeObject* create(Component* parent) override
+    IRNodeObject* create(Component* parent, IRStr* str) override
     {
-        return new T(parent);
+        return new T(parent, str);
     }
     
 private:
-    
 };
 
 

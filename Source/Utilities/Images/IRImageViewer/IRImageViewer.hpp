@@ -14,7 +14,7 @@ public ChangeBroadcaster
     
 public:
     
-    IRImageViewer(IRNodeObject* parent);
+    IRImageViewer(IRNodeObject* parent, IRStr* str);
     ~IRImageViewer();
 
     void paint(Graphics& g) override;

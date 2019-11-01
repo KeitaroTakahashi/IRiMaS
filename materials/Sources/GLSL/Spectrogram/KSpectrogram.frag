@@ -52,6 +52,7 @@ vec3 hsb2rgb2(in vec3 c, in vec2 st)
 
 void main()
 {
+    // st x and y = 0.0 - 1.0
     vec2 st = gl_FragCoord.xy / resolution.xy;
     //vec4 color = texture2D(buffer, st);
     

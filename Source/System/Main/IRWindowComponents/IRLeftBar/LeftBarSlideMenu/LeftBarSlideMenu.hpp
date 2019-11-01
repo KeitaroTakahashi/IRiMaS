@@ -14,7 +14,6 @@
 #include "IRStrComponent.hpp"
 
 class LeftBarSlideMenu : public IRViewPort,
-public IRStrComponent,
 public ChangeBroadcaster
 {
 public:
@@ -22,16 +21,20 @@ public:
     ~LeftBarSlideMenu();
     //==================================================
 
-    
+    void paint(Graphics& g) override;
     void resized() override;
     //==================================================
-
+    void addNewWorkspaceSlide(IRWorkspace* space);
     //==================================================
+    std::function<void(IRWorkspace*)> workspaceSelectedCallback;
 
     //==================================================
 
     //==================================================
 private:
+    // callback from SlideMenu
+    void slideMenuUpdatedAction();
+    void slideHasSelectedAction(IRWorkspaceSlide* slide);
     
     void visibleAreaChangedAction(const Rectangle<int> &newVisibleArea) override;
     //==================================================
@@ -62,6 +65,11 @@ private:
     std::shared_ptr<Component4ViewPort> viewPort;
     
     std::shared_ptr<SlideMenu> slideMenu;
+    
+    //==================================================
+    int buttomMargin = 50;
+    TextButton addNewSlideButton;
+    TextButton deleteSlideButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LeftBarSlideMenu)
 

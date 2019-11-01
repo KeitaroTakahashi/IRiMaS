@@ -10,25 +10,18 @@
 
 #include "IRNodeObject.hpp"
 #include "IRVideoPlayer.hpp"
+#include "IRVideoPlayerController.hpp"
 
 
-class IRVideoPlayerObject : public IRNodeObject
+class IRVideoPlayerObject : public IRNodeObject,
+private ChangeListener
 {
     
 public:
     
-    IRVideoPlayerObject(Component* parent) : IRNodeObject(parent, "IRVideoPlayer", NodeObjectType(heavyWeightComponent))
-    {
-        // this->videoPlayer = new IRVideoPlayer();
-        this->videoPlayer = std::make_shared<IRVideoPlayer>(this);
-        this->videoPlayer->setBounds(getLocalBounds().reduced(5));
-        this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
-        addAndMakeVisible(this->videoPlayer.get());
-    }
-    ~IRVideoPlayerObject()
-    {
-        // delete this->videoPlayer;
-    }
+    IRVideoPlayerObject(Component* parent, IRStr* str);
+    ~IRVideoPlayerObject();
+    
     
     // --------------------------------------------------
     // copy related methods
@@ -70,8 +63,22 @@ public:
     IRVideoPlayer* getVideoPlayer() { return this->videoPlayer.get(); }
 
     // --------------------------------------------------
+    std::unique_ptr<IRVideoPlayerController> controller;
 
 private:
+    // --------------------------------------------------
+
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+
+    // --------------------------------------------------
+
+    // called when this object is brought to the most Front of all other objects
+    void moveToFrontAction() override;
+    
+    // --------------------------------------------------
+
+    
+    bool resizing = false;
     // IRVideoPlayer *videoPlayer;
     std::shared_ptr<IRVideoPlayer> videoPlayer;
     

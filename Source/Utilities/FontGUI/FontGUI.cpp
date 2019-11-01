@@ -3,9 +3,8 @@
 
 
 
-
-
-FontGUI::FontGUI(String title)
+FontGUI::FontGUI(String title, IRStr* str) :
+IRStrComponent(str)
 {
     
     addAndMakeVisible(this->labelTitle);
@@ -66,7 +65,7 @@ FontGUI::FontGUI(String title)
     this->labelBackgroundColour.setJustificationType(Justification::left);
     
     addAndMakeVisible(this->backgroundColour);
-    this->backgroundColour.setCurrentColour(SYSTEMCOLOUR.background);
+    this->backgroundColour.setCurrentColour(getStr()->SYSTEMCOLOUR.background);
     this->backgroundColour.addChangeListener(this);
     
 }
@@ -138,9 +137,9 @@ void FontGUI::makeFontMenu()
 {
     addAndMakeVisible(this->fontMenu);
     
-    this->fontMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
-    this->fontMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
-    this->fontMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
+    this->fontMenu.setColour(ComboBox::backgroundColourId, getStr()->SYSTEMCOLOUR.fundamental);
+    this->fontMenu.setColour(ComboBox::outlineColourId, getStr()->SYSTEMCOLOUR.contents);
+    this->fontMenu.setColour(ComboBox::focusedOutlineColourId, getStr()->SYSTEMCOLOUR.contents);
     int index = 1;
     for (auto family : this->fontFamilyList)
     {
@@ -160,9 +159,9 @@ void FontGUI::makeFontStyleMenu()
 {
     addAndMakeVisible(this->styleMenu);
     
-    this->styleMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
-    this->styleMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
-    this->styleMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
+    this->styleMenu.setColour(ComboBox::backgroundColourId, getStr()->SYSTEMCOLOUR.fundamental);
+    this->styleMenu.setColour(ComboBox::outlineColourId, getStr()->SYSTEMCOLOUR.contents);
+    this->styleMenu.setColour(ComboBox::focusedOutlineColourId, getStr()->SYSTEMCOLOUR.contents);
     int index = 1;
     for (auto style : this->fontStyleList)
     {
@@ -178,9 +177,9 @@ void FontGUI::makeFontStyleMenu()
 void FontGUI::makeAlignMenu()
 {
     addAndMakeVisible(this->alignMenu);
-    this->alignMenu.setColour(ComboBox::backgroundColourId, SYSTEMCOLOUR.fundamental);
-    this->alignMenu.setColour(ComboBox::outlineColourId, SYSTEMCOLOUR.contents);
-    this->alignMenu.setColour(ComboBox::focusedOutlineColourId, SYSTEMCOLOUR.contents);
+    this->alignMenu.setColour(ComboBox::backgroundColourId, getStr()->SYSTEMCOLOUR.fundamental);
+    this->alignMenu.setColour(ComboBox::outlineColourId, getStr()->SYSTEMCOLOUR.contents);
+    this->alignMenu.setColour(ComboBox::focusedOutlineColourId, getStr()->SYSTEMCOLOUR.contents);
     
     this->alignMenu.addItem("Left",1);
     this->alignMenu.addItem("Centre",2);
@@ -247,7 +246,7 @@ void FontGUI::backgroundColourMenuChanged()
 }
 
 
-FontGUIStatus FontGUI::getChangeStatus() const
+FontGUI::FontGUIStatus FontGUI::getChangeStatus() const
 {
     return this->status;
 }
@@ -349,7 +348,4 @@ void FontGUI::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 {
     std::cout << "comboBox selection changed" << std::endl;
 }
-
-
-
 

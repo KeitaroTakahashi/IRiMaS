@@ -8,7 +8,6 @@
 #ifndef IRFoundation_h
 #define IRFoundation_h
 
-#include "Preferences.h"
 #include "DataType.h"
 
 #include "IRComponents.hpp"

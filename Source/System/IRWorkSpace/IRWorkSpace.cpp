@@ -142,7 +142,7 @@ void IRWorkSpace::resized()
 
 void IRWorkSpace::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRWorkSpace mouseDown " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
+    //std::cout << "IRWorkSpace mouseDown " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
 
     this->selector->mouseDownHandler(e);
     
@@ -488,7 +488,6 @@ void IRWorkSpace::loadBackgroundImageLink()
     this->background_image_link = loadImage(url);
 #endif
     
-    std::cout << "background_image_link " << this->background_image_link.getWidth() << std::endl;
 }
 
 Image IRWorkSpace::loadImage(String url)

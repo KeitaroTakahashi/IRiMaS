@@ -19,10 +19,12 @@ IRLeftBar::IRLeftBar(IRStr* str) : IRStrComponent(str)
                                                           this->leftMarge,
                                                           this->yMarge,
                                                           this->menuSpace,
+                                                          this->preferenceMaxWidth,
                                                           this->buttomSpace,
                                                           this));
     
     this->slideMenuComponent.reset(new LeftBarSlideMenu(str));
+    this->slideMenuComponent->workspaceSelectedCallback = [this](IRWorkspace* space) { workspaceSelectedAction(space); };
     
     this->objectMenuComponent->addMouseListener(this, true);
     this->objectMenuComponent->addChangeListener(this);
@@ -30,17 +32,22 @@ IRLeftBar::IRLeftBar(IRStr* str) : IRStrComponent(str)
     this->slideMenuComponent->addChangeListener(this);
 
     addAndMakeVisible(this->objectMenuComponent.get());
-    //addAndMakeVisible(this->slideMenuComponent.get());
     addButtons();
     
     this->ordinaryWidth = this->leftMarge + this->rightMarge + this->buttonSize;
     this->maxWidth = this->leftMarge + this->rightMarge + this->buttonSize + this->menuSpace;
+    
+    
+    //OpenGL
+    this->openGLContext.setContinuousRepainting(false);
+    this->openGLContext.attachTo (*this);
     
 }
 
 IRLeftBar::~IRLeftBar()
 {
     this->objectMenuComponent.reset();
+    this->openGLContext.detach();
 }
 
 //==================================================
@@ -63,15 +70,34 @@ void IRLeftBar::resized()
                                         getHeight() - y);
     
     if(this->isOpened)
-        setBounds(getX(), getY(), this->maxWidth, getHeight());
+    {
+        if(this->openPrefernceSpace)
+        {
+            setBounds(getX(), getY(), this->preferenceMaxWidth, getHeight());
+            
+        }
+        else if(this->openMenuSpace)
+        {
+            setBounds(getX(), getY(), this->maxWidth, getHeight());
+        }
+        
+    }
     
 }
 
 void IRLeftBar::paint(Graphics& g)
 {
-    g.fillAll(getStr()->SYSTEMCOLOUR.contents);
+    //g.fillAll(getStr()->SYSTEMCOLOUR.contents);
+    g.fillAll(Colours::transparentWhite);
+
     g.setColour(getStr()->SYSTEMCOLOUR.fundamental);
     g.fillRect(0, 0, this->ordinaryWidth, getHeight());
+    
+    int y = this->topMarge + this->buttonSize + (this->yMarge * 2);
+
+    g.setColour(getStr()->SYSTEMCOLOUR.contents);
+    g.drawLine(0, (y - 2), getWidth(), (y - 2), 2);
+       
 }
 
 //==================================================
@@ -161,12 +187,26 @@ void IRLeftBar::toObjectMenuAction()
 
 // ==================================================
 
-void IRLeftBar::updateAnimationFrame()
+void IRLeftBar::openDefaultMenu()
 {
     
+    if(this->openMenuSpace)
+     {
+         // stop animation when current width reaches the maxWidth
+         setBounds(getX(), getY(), this->maxWidth, getHeight());
+         this->isOpened = true;
+     }else{
+       
+        setBounds(getX(), getY(), this->ordinaryWidth, getHeight());
+        this->isOpened = false;
+        this->previousMenuType = objectCategory::NONE;
+
+    }
+    /*
     // open menu space
     if(this->openMenuSpace)
     {
+        
         if(getWidth() < this->maxWidth)
         {
             setBounds(getX(), getY(), getWidth() + this->openSpeed, getHeight());
@@ -175,20 +215,53 @@ void IRLeftBar::updateAnimationFrame()
             setBounds(getX(), getY(), this->maxWidth, getHeight());
             this->isOpened = true;
             stopAnimation();
+            
         }
     }else{
-        // close menu space
-        if(getWidth() > this->ordinaryWidth)
-        {
-            setBounds(getX(), getY(), getWidth() - this->openSpeed, getHeight());
-        }else{
-            
-            setBounds(getX(), getY(), this->ordinaryWidth, getHeight());
-            this->isOpened = false;
-            stopAnimation();
-        }
-    }
+       // close menu space
+       if(getWidth() > this->ordinaryWidth)
+       {
+           setBounds(getX(), getY(), getWidth() - this->openSpeed, getHeight());
+       }else{
+           
+           setBounds(getX(), getY(), this->ordinaryWidth, getHeight());
+           this->isOpened = false;
+           stopAnimation();
+           this->previousMenuType = objectCategory::NONE;
 
+       }
+   }*/
+}
+void IRLeftBar::openPreferenceMenu()
+{
+        // open menu space
+     if(this->openPrefernceSpace)
+     {
+         // stop animation when current width reaches the maxWidth
+         setBounds(getX(), getY(), this->preferenceMaxWidth, getHeight());
+         this->isOpened = true;
+         stopAnimation();
+     }else{
+        setBounds(getX(), getY(), this->ordinaryWidth, getHeight());
+        this->isOpened = false;
+        stopAnimation();
+        this->previousMenuType = objectCategory::NONE;
+    }
+}
+
+void IRLeftBar::updateAnimationFrame()
+{
+        
+    switch(this->currentMenuType)
+   {
+       case objectCategory::INSPECTORMENU:
+       case objectCategory::PREFERENCEMENU:
+           openPreferenceMenu();
+           break;
+       default:
+           openDefaultMenu();
+           break;
+   }
 }
 
 // ==================================================
@@ -198,14 +271,16 @@ void IRLeftBar::changeListenerCallback (ChangeBroadcaster* source)
      if(source == this->objectMenuComponent.get())
      {
          auto type = this->objectMenuComponent->getSelectedButtonType();
-         std::cout << "textMENU callback : type " << type << std::endl;
-         
-         if(this->currentMenuType == type)
+         this->currentMenuType = type;
+
+         if(this->currentMenuType == this->previousMenuType)
          {
              closeMenu();
          }else{
              openMenu(type);
          }
+         
+         this->previousMenuType = type;
      }
 }
 
@@ -213,23 +288,37 @@ void IRLeftBar::changeListenerCallback (ChangeBroadcaster* source)
 
 void IRLeftBar::openMenu(objectCategory type)
 {
-    this->currentMenuType = type;
     // if menuSpace is not opened, then open it.
-    if(!this->openMenuSpace)
-    {
-        this->openMenuSpace = true;
-        startAnimation();
-    }
+    this->openMenuSpace = true;
+    this->openPrefernceSpace = true;
+    this->isOpened = false;
+    startAnimation();
+    
 }
 
 void IRLeftBar::closeMenu()
 {
     // if already opened, then close
     this->openMenuSpace = false;
+    this->openPrefernceSpace = false;
     this->isOpened = false;
     startAnimation();
     this->objectMenuComponent->resetSelection();
-    this->currentMenuType = objectCategory::NONE;
 }
 
+// ==================================================
+
+void IRLeftBar::addNewWorkspaceSlide(IRWorkspace* space)
+{
+    this->slideMenuComponent->addNewWorkspaceSlide(space);
+    // switch to slide emenu
+    toNavigatorAction();
+}
+
+// ==================================================
+void IRLeftBar::workspaceSelectedAction(IRWorkspace* space)
+{
+    if(this->workspaceSelectedCallback != nullptr)
+        this->workspaceSelectedCallback(space);
+}
 // ==================================================

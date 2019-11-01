@@ -9,8 +9,9 @@
 #define IRShapePreferenceUI_hpp
 
 #include "JuceHeader.h"
-#include "ColourLib.h"
+#include "IRStrComponent.hpp"
 class IRShapePreferenceUI : public Component,
+public IRStrComponent,
 public ChangeBroadcaster,
 public ChangeListener,
 private ComboBox::Listener
@@ -27,7 +28,7 @@ public:
         BorderWidthChanged
     };
     
-    IRShapePreferenceUI();
+    IRShapePreferenceUI(IRStr* str);
     
     ~IRShapePreferenceUI();
     // ==================================================

@@ -32,7 +32,7 @@ public:
         viewPosShared
     };
     
-    IRAutomationUI(IRNodeObject* nodeObject);
+    IRAutomationUI(IRNodeObject* nodeObject, IRStr* str);
     ~IRAutomationUI();
     // ==================================================
     void resized() override;
@@ -148,8 +148,6 @@ private:
 
 
     // ==================================================
-
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
 };
 

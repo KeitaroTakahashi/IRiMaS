@@ -15,7 +15,7 @@ private IRNodeObject::Listener,
 private ChangeListener
 {
 public:
-    IRAudioAnalysisObject(Component *parent);
+    IRAudioAnalysisObject(Component *parent, IRStr* str);
     ~IRAudioAnalysisObject();
     
     IRNodeObject* copyThis() override; // copy constructor

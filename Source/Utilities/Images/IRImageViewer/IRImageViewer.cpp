@@ -1,9 +1,9 @@
 
 #include "IRImageViewer.hpp"
 
-IRImageViewer::IRImageViewer(IRNodeObject* parent) :
-IRUIFoundation(parent),
-imgLoader(parent)
+IRImageViewer::IRImageViewer(IRNodeObject* parent, IRStr* str) :
+IRUIFoundation(parent, str),
+imgLoader(parent, str)
 {
     this->parent = parent;
     setSize(100,100);
@@ -12,8 +12,6 @@ imgLoader(parent)
     
     // ===========================================================================
     // system appearance
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    this->openButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.fundamental);
     this->setEnabled(true);
     this->openButton.onClick = [this]{ openFile(); };
     this->imgLoader.addChangeListener(this);

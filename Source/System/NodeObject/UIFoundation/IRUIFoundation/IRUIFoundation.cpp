@@ -7,7 +7,8 @@
 
 #include "IRUIFoundation.hpp"
 
-IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject)
+IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject, IRStr* str) :
+IRStrComponent(str)
 {
     // to make it efficient to redrawn...
     setOpaque(false);
@@ -15,8 +16,15 @@ IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject)
     this->nodeObject = nodeObject;
     this->nodeObject->statusChangeCompleted = [this](IRNodeComponentStatus status){ NodeObjectStatusChanged(status); };
 
+    // setup callback function for FileManager
+    // get to know when fileManager is updated 
+    
+    std::function<void(IRFileManager& )> callback = [this](IRFileManager& fileManager){ updateFileManager(fileManager); };
+    getStr()->addFileManagerUpdatedCallbackFunc(callback);
+    
     //this->nodeObject->fileManagerUpdated = [this](IRFileManager* fileManager) { updateFileManager(fileManager); };
     
+    std::cout << "component keyListener " << getStr()->key << std::endl;
     this->nodeObject->addListener(this);
     
     std::cout <<"==========" << nodeObject->name << " : IRUIFoundation inited\n";
@@ -57,6 +65,7 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
                                 Component* originatingComponent)
 {
     // reserved key commands
+   /*
     if(key.getTextDescription() == "command + E")
     {
         // inform parent the change of editMode
@@ -65,6 +74,7 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
         
         return true;
     }
+     
     // Link Mode
     else if(key.getTextDescription() == "command + L")
     {
@@ -103,7 +113,7 @@ bool IRUIFoundation::keyPressed(const KeyPress &key,
     {
         this->nodeObject->callOpenPreferenceWindow();
         return true;
-    }
+    }*/
     
     // user defined key commands
     this->pressedKeyCode = key.getKeyCode();
@@ -139,6 +149,7 @@ void IRUIFoundation::NodeObjectStatusChanged(IRNodeComponentStatus status)
 
 void IRUIFoundation::setEditModeBase(bool newEditMode)
 {
+    
     this->editModeFlag = newEditMode;
     
     // if not editMode, get keyboardFocus
@@ -146,24 +157,22 @@ void IRUIFoundation::setEditModeBase(bool newEditMode)
     {
         setWantsKeyboardFocus(true);
         addKeyListener(this);
+        addKeyListener(getStr()->key);
+
     }
     else
     {
         // otherwise out of keyboard Focus
         setWantsKeyboardFocus(false);
         removeKeyListener(this);
+        removeKeyListener(getStr()->key);
+
     }
     // call it for child class
     setEditMode(newEditMode);
 }
 // --------------------------------------------------
 
-void IRUIFoundation::updateIRFileManager(IRFileManager* fileManager)
-{
-    setIRFileManager(fileManager);
-    
-    std::cout << "IRUIFoundation : updateFileManager updated! for " << nodeObject->name << " : " << fileManager << std::endl;
-}
 
 // --------------------------------------------------
 
@@ -192,3 +201,4 @@ void IRUIFoundation::receiveVideoLink(IRNodeObject* obj)
     if(obj->getVideoLink() != nullptr) videoPtrDelivery(obj->getVideoLink());
 }
 // --------------------------------------------------
+                                             

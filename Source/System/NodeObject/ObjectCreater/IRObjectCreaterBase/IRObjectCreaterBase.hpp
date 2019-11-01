@@ -14,7 +14,7 @@ public:
     IRObjectCreaterBase();
     virtual ~IRObjectCreaterBase();
     
-    virtual IRNodeObject* create(Component* parent) = 0;
+    virtual IRNodeObject* create(Component* parent, IRStr* str) = 0;
     std::string objectName;
     
 };

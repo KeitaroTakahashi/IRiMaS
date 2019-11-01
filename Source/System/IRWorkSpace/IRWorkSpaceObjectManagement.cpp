@@ -74,7 +74,6 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     
     // use this function in order to also update file manger of all related UIs etc.
     obj->callUpdateIRFileManager(getFileManager());
-    std::cout << " IRFileManager in WorkSpace = " << getFileManager() << std::endl;
 
     //audiosource
     if (obj->isContainAudioSource())
@@ -223,7 +222,7 @@ void IRWorkSpace::itemHasSelectedAction(ObjectListMenu* menu)
     std::cout << "item has selected action " << menu->getSelectedIndex() << std::endl;
     std::cout << "item has selected action " << menu->getSelectedId() << std::endl;
     
-    auto* obj = IRFactory.createObject(menu->getSelectedId(), this);
+    auto* obj = IRFactory.createObject(menu->getSelectedId(), this, nullptr);
     obj->setCentrePosition(this->currentMousePosition.getX(),
                            this->currentMousePosition.getY());
     createObject(obj);
@@ -356,7 +355,7 @@ void IRWorkSpace::getObjectGlobal(IRNodeObject* obj)
 
 void IRWorkSpace::nodeObjectModifiedNotification(IRNodeObject* obj)
 {
-    if(this->notifyNodeObjectModification != nullptr)
-        this->notifyNodeObjectModification(obj);
+    //if(this->notifyNodeObjectModification != nullptr)
+     //   this->notifyNodeObjectModification(obj);
 }
 // ============================================================

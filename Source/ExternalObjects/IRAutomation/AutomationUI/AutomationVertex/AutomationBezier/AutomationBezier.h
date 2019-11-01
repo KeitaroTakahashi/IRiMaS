@@ -9,6 +9,5 @@
 #define AutomationBezier_h
 #include "JuceHeader.h"
 
-class AutomationBezier
 
 #endif /* AutomationBezier_h */

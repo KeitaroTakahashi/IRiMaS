@@ -26,7 +26,6 @@
 		10658904223036B2005D6B38 /* IRWaveformObjectPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10658902223036B2005D6B38 /* IRWaveformObjectPreference.cpp */; };
 		1065890722303713005D6B38 /* IRLabelObjectUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1065890522303713005D6B38 /* IRLabelObjectUI.cpp */; };
 		1065890A2230375E005D6B38 /* IRTextEditorObjectUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 106589082230375E005D6B38 /* IRTextEditorObjectUI.cpp */; };
-		1065890D2230379D005D6B38 /* IRImageViewerObjectUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1065890B2230379D005D6B38 /* IRImageViewerObjectUI.cpp */; };
 		10658910223037E1005D6B38 /* IRImageViewerObjectPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1065890E223037E1005D6B38 /* IRImageViewerObjectPreference.cpp */; };
 		1065891322303820005D6B38 /* IRSoundPlayerObjectUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1065891122303820005D6B38 /* IRSoundPlayerObjectUI.cpp */; };
 		1065891622303859005D6B38 /* IRSoundPlayerObjectPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1065891422303859005D6B38 /* IRSoundPlayerObjectPreference.cpp */; };
@@ -59,6 +58,7 @@
 		820D3BBE225F936200BDA679 /* FileManagerTUTORIAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820D3BBC225F936200BDA679 /* FileManagerTUTORIAL.cpp */; };
 		820D3BC22262A49700BDA679 /* IRComponents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820D3BC02262A49700BDA679 /* IRComponents.cpp */; };
 		820D3BC82268C99F00BDA679 /* IRUIAudioFoundation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 820D3BC62268C99F00BDA679 /* IRUIAudioFoundation.cpp */; };
+		821703BD2357264500AE1093 /* IRIVSRController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821703BB2357264500AE1093 /* IRIVSRController.cpp */; };
 		821A5A942249290F00F11668 /* IRAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5A922249290F00F11668 /* IRAudio.cpp */; };
 		821A5E62212ACD1800BF593D /* IRNodeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E60212ACD1800BF593D /* IRNodeObject.cpp */; };
 		821A5E65212ACD9400BF593D /* IRNodeComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821A5E63212ACD9400BF593D /* IRNodeComponent.cpp */; };
@@ -93,9 +93,9 @@
 		823E7BD5213303260046512B /* IRWaveform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823E7BD3213303260046512B /* IRWaveform.cpp */; };
 		823E7BDB2134075C0046512B /* singletonClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823E7BD92134075C0046512B /* singletonClass.cpp */; };
 		82435C5422393DE200E89E95 /* IRPropertyComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82435C5222393DE200E89E95 /* IRPropertyComponent.cpp */; };
+		824F5AD7234398A800875D09 /* IRTitleBarComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 824F5AD5234398A800875D09 /* IRTitleBarComponent.cpp */; };
 		8258AC31221C6B9300557661 /* materials in Resources */ = {isa = PBXBuildFile; fileRef = 8258AC30221C6B9300557661 /* materials */; };
 		825DC9CC21FF407000555CB8 /* IRVideoPlayerObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 825DC9CA21FF407000555CB8 /* IRVideoPlayerObject.cpp */; };
-		825DC9CF21FF408400555CB8 /* IRVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 825DC9CD21FF408400555CB8 /* IRVideoPlayer.cpp */; };
 		826056B2226FA8A000CAF8C5 /* IRLinkMenuObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 826056B0226FA8A000CAF8C5 /* IRLinkMenuObject.cpp */; };
 		826056B62271DC7900CAF8C5 /* IRLinkFoundation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 826056B42271DC7900CAF8C5 /* IRLinkFoundation.cpp */; };
 		826056BB22735FED00CAF8C5 /* IRText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 826056B922735FED00CAF8C5 /* IRText.cpp */; };
@@ -110,6 +110,8 @@
 		8289A0C322E7567A0088E156 /* IRSimpleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A0C122E7567A0088E156 /* IRSimpleController.cpp */; };
 		8289A0CB22E76DB80088E156 /* IRSpectrogramViewPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A0C922E76DB80088E156 /* IRSpectrogramViewPort.cpp */; };
 		8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8293FBD1221451EA00C09BD5 /* KPixelDataConvertor.cpp */; };
+		829542B623609AFA0015CC17 /* IRNodeComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 829542B523609AFA0015CC17 /* IRNodeComponent.mm */; };
+		829542C22361C1970015CC17 /* IRVideoPlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829542C02361C1970015CC17 /* IRVideoPlayerController.cpp */; };
 		829D0373222976B9001FDE1D /* IRImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D0371222976B9001FDE1D /* IRImage.cpp */; };
 		829D03762229798D001FDE1D /* IRVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D03742229798D001FDE1D /* IRVideo.cpp */; };
 		829D037A222D7F20001FDE1D /* IRUIFoundation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829D0378222D7F20001FDE1D /* IRUIFoundation.cpp */; };
@@ -117,7 +119,6 @@
 		829EC3CA22EBB0E000964ACD /* IRShapeUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829EC3C822EBB0E000964ACD /* IRShapeUI.cpp */; };
 		829EC3CD22EBB0EA00964ACD /* IRShapeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829EC3CB22EBB0EA00964ACD /* IRShapeObject.cpp */; };
 		829EC3D222EBB10700964ACD /* IRShapePreferenceUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 829EC3D022EBB10700964ACD /* IRShapePreferenceUI.cpp */; };
-		82A8B5B922F1B6D200FF05B8 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82A8B5B822F1B6D200FF05B8 /* libfftw3.a */; };
 		82A8B5CF22FD9E6100FF05B8 /* IRMainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8B5CD22FD9E6100FF05B8 /* IRMainWindow.cpp */; };
 		82A8B5D222FD9E6800FF05B8 /* IRTitleBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8B5D022FD9E6800FF05B8 /* IRTitleBar.cpp */; };
 		82A8B5D522FD9E6E00FF05B8 /* IRLeftBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8B5D322FD9E6E00FF05B8 /* IRLeftBar.cpp */; };
@@ -138,6 +139,11 @@
 		82A8B64B231800E400FF05B8 /* IRUserSettingComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8B649231800E400FF05B8 /* IRUserSettingComponent.cpp */; };
 		82A8B64E231800F700FF05B8 /* IRUserSettingWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8B64C231800F700FF05B8 /* IRUserSettingWindow.cpp */; };
 		82A8B65323180FD500FF05B8 /* IRStrComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8B65123180FD500FF05B8 /* IRStrComponent.cpp */; };
+		82A8E7712344D68900E12214 /* IRObjectController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8E76F2344D68900E12214 /* IRObjectController.cpp */; };
+		82A8E7752344D71B00E12214 /* IRShapeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8E7732344D71B00E12214 /* IRShapeController.cpp */; };
+		82A8E77E2345044100E12214 /* IRLabelController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8E77C2345044100E12214 /* IRLabelController.cpp */; };
+		82A8E783234547D700E12214 /* IRTextEditorController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8E781234547D700E12214 /* IRTextEditorController.cpp */; };
+		82A8E7872345654300E12214 /* IRImageViewerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8E7852345654300E12214 /* IRImageViewerController.cpp */; };
 		82A98B2A2199B84B0077EAE6 /* IRWorkspaceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */; };
 		82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB42802224291C00F9184C /* IRiMaSApplication.cpp */; };
 		82C08ADF22752E8800938726 /* IRWorkSpaceLinkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C08ADD22752E8800938726 /* IRWorkSpaceLinkManager.cpp */; };
@@ -153,11 +159,19 @@
 		82D0D28D22A433CA00C771B1 /* IRWaveformObjectUI2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D0D28B22A433CA00C771B1 /* IRWaveformObjectUI2.cpp */; };
 		82D0D29122A4560500C771B1 /* ISVParameterControlUI2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D0D28F22A4560500C771B1 /* ISVParameterControlUI2.cpp */; };
 		82D0D29422A5516F00C771B1 /* ISVParameterControlWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D0D29222A5516F00C771B1 /* ISVParameterControlWindow.cpp */; };
+		82D4A7C9234F533D00F89347 /* IRWaveformController2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D4A7C7234F533D00F89347 /* IRWaveformController2.cpp */; };
 		82D8AE8F22C392300012D987 /* IRSpectrogramObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8AE8D22C392300012D987 /* IRSpectrogramObject.cpp */; };
 		82D8AE9322C3923E0012D987 /* IRSpectrogram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8AE9122C3923E0012D987 /* IRSpectrogram.cpp */; };
 		82D8AE9722C392530012D987 /* GLSLSpectrogram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8AE9522C392530012D987 /* GLSLSpectrogram.cpp */; };
 		82D8B124229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B122229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp */; };
 		82D8B16922A017B000940CD1 /* IRMeasureGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */; };
+		82D97165236A5DE200A5AE89 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D97164236A5DE200A5AE89 /* libfftw3.a */; };
+		82D9717D236A6E7500A5AE89 /* libfftw3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D9717C236A6E7500A5AE89 /* libfftw3.3.dylib */; };
+		82D9717E236A6F5F00A5AE89 /* libfftw3.3.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 82D9717C236A6E7500A5AE89 /* libfftw3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		82D97187236B07E100A5AE89 /* IROpenGLManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D97185236B07E100A5AE89 /* IROpenGLManager.cpp */; };
+		82D97189236B07F500A5AE89 /* IROpenGLManager_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 82D97188236B07F500A5AE89 /* IROpenGLManager_mac.mm */; };
+		82D9718F236B1B3100A5AE89 /* IRNSViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D9718D236B1B3100A5AE89 /* IRNSViewManager.cpp */; };
+		82D97191236B1B3F00A5AE89 /* IRNSViewManager_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 82D97190236B1B3F00A5AE89 /* IRNSViewManager_mac.mm */; };
 		82DA55B4231E932400137004 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 82DA55B1231E932400137004 /* sqlite3.c */; };
 		82DA55B8231E945600137004 /* IRSQLMaker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DA55B6231E945600137004 /* IRSQLMaker.cpp */; };
 		82DEA5312292F9AF004D3D9F /* IRImageMovableButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82DEA52F2292F9AF004D3D9F /* IRImageMovableButton.cpp */; };
@@ -190,14 +204,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8289A0BF22E709A90088E156 /* Embed Libraries */ = {
+		822C6D5C236A5B52003471EB /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				82D9717E236A6F5F00A5AE89 /* libfftw3.3.dylib in Copy Files */,
 			);
-			name = "Embed Libraries";
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -229,8 +244,6 @@
 		1065890622303713005D6B38 /* IRLabelObjectUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRLabelObjectUI.hpp; sourceTree = "<group>"; };
 		106589082230375E005D6B38 /* IRTextEditorObjectUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRTextEditorObjectUI.cpp; sourceTree = "<group>"; };
 		106589092230375E005D6B38 /* IRTextEditorObjectUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRTextEditorObjectUI.hpp; sourceTree = "<group>"; };
-		1065890B2230379D005D6B38 /* IRImageViewerObjectUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageViewerObjectUI.cpp; sourceTree = "<group>"; };
-		1065890C2230379D005D6B38 /* IRImageViewerObjectUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRImageViewerObjectUI.hpp; sourceTree = "<group>"; };
 		1065890E223037E1005D6B38 /* IRImageViewerObjectPreference.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageViewerObjectPreference.cpp; sourceTree = "<group>"; };
 		1065890F223037E1005D6B38 /* IRImageViewerObjectPreference.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRImageViewerObjectPreference.hpp; sourceTree = "<group>"; };
 		1065891122303820005D6B38 /* IRSoundPlayerObjectUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSoundPlayerObjectUI.cpp; sourceTree = "<group>"; };
@@ -270,6 +283,7 @@
 		7907DFD219CED1867C25E057 /* include_juce_video.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_video.mm; path = JuceLibraryCode/include_juce_video.mm; sourceTree = SOURCE_ROOT; };
 		7C4D4D139E7E24147F3BF561 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		7E05BF71795BB3482E429F07 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		82078EF523587B67008455DC /* PreferenceGUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreferenceGUI.h; sourceTree = "<group>"; };
 		820963D622A7D2CE00723C81 /* ISVPresetDataStr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISVPresetDataStr.h; sourceTree = "<group>"; };
 		820963D822A7E6D100723C81 /* ISVParameterSliders.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ISVParameterSliders.cpp; sourceTree = "<group>"; };
 		820963D922A7E6D100723C81 /* ISVParameterSliders.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ISVParameterSliders.hpp; sourceTree = "<group>"; };
@@ -288,8 +302,12 @@
 		820D3BC12262A49700BDA679 /* IRComponents.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRComponents.hpp; sourceTree = "<group>"; };
 		820D3BC62268C99F00BDA679 /* IRUIAudioFoundation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRUIAudioFoundation.cpp; sourceTree = "<group>"; };
 		820D3BC72268C99F00BDA679 /* IRUIAudioFoundation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRUIAudioFoundation.hpp; sourceTree = "<group>"; };
+		820F7EDB234B5C0800679F56 /* IRMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMessage.h; sourceTree = "<group>"; };
+		820F7EDD234B816E00679F56 /* EditModeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditModeButton.h; sourceTree = "<group>"; };
 		8210422721F625760091CEEF /* ObjectFactoryInitializer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectFactoryInitializer.hpp; sourceTree = "<group>"; };
 		8210D9D9213D4B7C0042F646 /* IRFFT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFFT.h; sourceTree = "<group>"; };
+		821703BB2357264500AE1093 /* IRIVSRController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRIVSRController.cpp; sourceTree = "<group>"; };
+		821703BC2357264500AE1093 /* IRIVSRController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRIVSRController.hpp; sourceTree = "<group>"; };
 		821A5A922249290F00F11668 /* IRAudio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRAudio.cpp; sourceTree = "<group>"; };
 		821A5A932249290F00F11668 /* IRAudio.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRAudio.hpp; sourceTree = "<group>"; };
 		821A5E60212ACD1800BF593D /* IRNodeObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRNodeObject.cpp; sourceTree = "<group>"; };
@@ -368,16 +386,16 @@
 		823E7BD12133012B0046512B /* IRWaveformObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWaveformObject.hpp; sourceTree = "<group>"; };
 		823E7BD3213303260046512B /* IRWaveform.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveform.cpp; sourceTree = "<group>"; };
 		823E7BD4213303260046512B /* IRWaveform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWaveform.hpp; sourceTree = "<group>"; };
-		823E7BD62134064C0046512B /* Preferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
 		823E7BD92134075C0046512B /* singletonClass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = singletonClass.cpp; sourceTree = "<group>"; };
 		823E7BDA2134075C0046512B /* singletonClass.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = singletonClass.hpp; sourceTree = "<group>"; };
 		823E7BDC2134193E0046512B /* IRWaveformObjectUI.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRWaveformObjectUI.hpp; sourceTree = "<group>"; };
 		82435C5222393DE200E89E95 /* IRPropertyComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRPropertyComponent.cpp; sourceTree = "<group>"; };
 		82435C5322393DE200E89E95 /* IRPropertyComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRPropertyComponent.hpp; sourceTree = "<group>"; };
+		824F5AD5234398A800875D09 /* IRTitleBarComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRTitleBarComponent.cpp; sourceTree = "<group>"; };
+		824F5AD6234398A800875D09 /* IRTitleBarComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRTitleBarComponent.hpp; sourceTree = "<group>"; };
 		8258AC30221C6B9300557661 /* materials */ = {isa = PBXFileReference; lastKnownFileType = folder; path = materials; sourceTree = "<group>"; };
 		825DC9CA21FF407000555CB8 /* IRVideoPlayerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoPlayerObject.cpp; sourceTree = "<group>"; };
 		825DC9CB21FF407000555CB8 /* IRVideoPlayerObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoPlayerObject.hpp; sourceTree = "<group>"; };
-		825DC9CD21FF408400555CB8 /* IRVideoPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoPlayer.cpp; sourceTree = "<group>"; };
 		825DC9CE21FF408400555CB8 /* IRVideoPlayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoPlayer.hpp; sourceTree = "<group>"; };
 		826056B0226FA8A000CAF8C5 /* IRLinkMenuObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRLinkMenuObject.cpp; sourceTree = "<group>"; };
 		826056B1226FA8A000CAF8C5 /* IRLinkMenuObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRLinkMenuObject.hpp; sourceTree = "<group>"; };
@@ -416,12 +434,16 @@
 		8289A0B722DF58B90088E156 /* IRDescriptorBank.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRDescriptorBank.hpp; sourceTree = "<group>"; };
 		8289A0C122E7567A0088E156 /* IRSimpleController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSimpleController.cpp; sourceTree = "<group>"; };
 		8289A0C222E7567A0088E156 /* IRSimpleController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSimpleController.hpp; sourceTree = "<group>"; };
-		8289A0C522E758440088E156 /* IRWaveformController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRWaveformController.h; sourceTree = "<group>"; };
 		8289A0C722E766920088E156 /* IRSpectrogramController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSpectrogramController.h; sourceTree = "<group>"; };
 		8289A0C922E76DB80088E156 /* IRSpectrogramViewPort.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramViewPort.cpp; sourceTree = "<group>"; };
 		8289A0CA22E76DB80088E156 /* IRSpectrogramViewPort.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSpectrogramViewPort.hpp; sourceTree = "<group>"; };
 		8293FBD0220C727700C09BD5 /* KPixelDataConvertor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KPixelDataConvertor.h; sourceTree = "<group>"; };
 		8293FBD1221451EA00C09BD5 /* KPixelDataConvertor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KPixelDataConvertor.cpp; sourceTree = "<group>"; };
+		829542B523609AFA0015CC17 /* IRNodeComponent.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = IRNodeComponent.mm; sourceTree = "<group>"; };
+		829542C02361C1970015CC17 /* IRVideoPlayerController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoPlayerController.cpp; sourceTree = "<group>"; };
+		829542C12361C1970015CC17 /* IRVideoPlayerController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoPlayerController.hpp; sourceTree = "<group>"; };
+		829542C52361C4400015CC17 /* VideoController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoController.h; sourceTree = "<group>"; };
+		829542C72361F3E30015CC17 /* IRProjectOwnerBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRProjectOwnerBase.h; sourceTree = "<group>"; };
 		829D0371222976B9001FDE1D /* IRImage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImage.cpp; sourceTree = "<group>"; };
 		829D0372222976B9001FDE1D /* IRImage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRImage.hpp; sourceTree = "<group>"; };
 		829D03742229798D001FDE1D /* IRVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideo.cpp; sourceTree = "<group>"; };
@@ -438,7 +460,6 @@
 		829EC3CF22EBB0FC00964ACD /* IRShapePreference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRShapePreference.h; sourceTree = "<group>"; };
 		829EC3D022EBB10700964ACD /* IRShapePreferenceUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRShapePreferenceUI.cpp; sourceTree = "<group>"; };
 		829EC3D122EBB10700964ACD /* IRShapePreferenceUI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRShapePreferenceUI.hpp; sourceTree = "<group>"; };
-		82A8B5B822F1B6D200FF05B8 /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = ../../../../../usr/local/Cellar/fftw/3.3.8_1/lib/libfftw3.a; sourceTree = "<group>"; };
 		82A8B5CD22FD9E6100FF05B8 /* IRMainWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRMainWindow.cpp; sourceTree = "<group>"; };
 		82A8B5CE22FD9E6100FF05B8 /* IRMainWIndow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRMainWIndow.hpp; sourceTree = "<group>"; };
 		82A8B5D022FD9E6800FF05B8 /* IRTitleBar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRTitleBar.cpp; sourceTree = "<group>"; };
@@ -483,6 +504,20 @@
 		82A8B64F2318010D00FF05B8 /* UserSettingStr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserSettingStr.h; sourceTree = "<group>"; };
 		82A8B65123180FD500FF05B8 /* IRStrComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRStrComponent.cpp; sourceTree = "<group>"; };
 		82A8B65223180FD500FF05B8 /* IRStrComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRStrComponent.hpp; sourceTree = "<group>"; };
+		82A8E76F2344D68900E12214 /* IRObjectController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRObjectController.cpp; sourceTree = "<group>"; };
+		82A8E7702344D68900E12214 /* IRObjectController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRObjectController.hpp; sourceTree = "<group>"; };
+		82A8E7732344D71B00E12214 /* IRShapeController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRShapeController.cpp; sourceTree = "<group>"; };
+		82A8E7742344D71B00E12214 /* IRShapeController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRShapeController.hpp; sourceTree = "<group>"; };
+		82A8E7772344E8B500E12214 /* IRColourSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRColourSelector.h; sourceTree = "<group>"; };
+		82A8E77A2344F6E700E12214 /* LayoutStuff.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutStuff.h; sourceTree = "<group>"; };
+		82A8E77C2345044100E12214 /* IRLabelController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRLabelController.cpp; sourceTree = "<group>"; };
+		82A8E77D2345044100E12214 /* IRLabelController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRLabelController.hpp; sourceTree = "<group>"; };
+		82A8E77F2345051800E12214 /* FontController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontController.h; sourceTree = "<group>"; };
+		82A8E781234547D700E12214 /* IRTextEditorController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRTextEditorController.cpp; sourceTree = "<group>"; };
+		82A8E782234547D700E12214 /* IRTextEditorController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRTextEditorController.hpp; sourceTree = "<group>"; };
+		82A8E7852345654300E12214 /* IRImageViewerController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRImageViewerController.cpp; sourceTree = "<group>"; };
+		82A8E7862345654300E12214 /* IRImageViewerController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRImageViewerController.hpp; sourceTree = "<group>"; };
+		82A8E7892345706600E12214 /* ImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageController.h; sourceTree = "<group>"; };
 		82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWorkspaceList.cpp; sourceTree = "<group>"; };
 		82A98B292199B84B0077EAE6 /* IRWorkspaceList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWorkspaceList.hpp; sourceTree = "<group>"; };
 		82AB427D22208B3200F9184C /* DataAllocationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataAllocationManager.h; sourceTree = "<group>"; };
@@ -522,6 +557,10 @@
 		82D0D29022A4560500C771B1 /* ISVParameterControlUI2.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ISVParameterControlUI2.hpp; sourceTree = "<group>"; };
 		82D0D29222A5516F00C771B1 /* ISVParameterControlWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ISVParameterControlWindow.cpp; sourceTree = "<group>"; };
 		82D0D29322A5516F00C771B1 /* ISVParameterControlWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ISVParameterControlWindow.hpp; sourceTree = "<group>"; };
+		82D4A7C7234F533D00F89347 /* IRWaveformController2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformController2.cpp; sourceTree = "<group>"; };
+		82D4A7C8234F533D00F89347 /* IRWaveformController2.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWaveformController2.hpp; sourceTree = "<group>"; };
+		82D4A7CA234F551B00F89347 /* IRWaveformController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRWaveformController.h; sourceTree = "<group>"; };
+		82D4A7CF234F56F600F89347 /* AudioObjectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioObjectController.h; sourceTree = "<group>"; };
 		82D8AE8D22C392300012D987 /* IRSpectrogramObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramObject.cpp; sourceTree = "<group>"; };
 		82D8AE8E22C392300012D987 /* IRSpectrogramObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSpectrogramObject.hpp; sourceTree = "<group>"; };
 		82D8AE9122C3923E0012D987 /* IRSpectrogram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogram.cpp; sourceTree = "<group>"; };
@@ -543,6 +582,14 @@
 		82D9030E21A8486300E57471 /* KDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDictionary.h; sourceTree = "<group>"; };
 		82D9030F21A84B3300E57471 /* KLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLib.h; sourceTree = "<group>"; };
 		82D9031021A84FF500E57471 /* KRandomStringGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KRandomStringGenerator.h; sourceTree = "<group>"; };
+		82D97164236A5DE200A5AE89 /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = ../../../../../usr/local/Cellar/fftw/3.3.8_1/lib/libfftw3.a; sourceTree = "<group>"; };
+		82D9717C236A6E7500A5AE89 /* libfftw3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfftw3.3.dylib; path = Source/frameworks/libfftw3.3.dylib; sourceTree = "<group>"; };
+		82D97185236B07E100A5AE89 /* IROpenGLManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IROpenGLManager.cpp; sourceTree = "<group>"; };
+		82D97186236B07E100A5AE89 /* IROpenGLManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IROpenGLManager.hpp; sourceTree = "<group>"; };
+		82D97188236B07F500A5AE89 /* IROpenGLManager_mac.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = IROpenGLManager_mac.mm; sourceTree = "<group>"; };
+		82D9718D236B1B3100A5AE89 /* IRNSViewManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRNSViewManager.cpp; sourceTree = "<group>"; };
+		82D9718E236B1B3100A5AE89 /* IRNSViewManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRNSViewManager.hpp; sourceTree = "<group>"; };
+		82D97190236B1B3F00A5AE89 /* IRNSViewManager_mac.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = IRNSViewManager_mac.mm; sourceTree = "<group>"; };
 		82DA55B1231E932400137004 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
 		82DA55B2231E932400137004 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		82DA55B3231E932400137004 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3ext.h; sourceTree = "<group>"; };
@@ -568,6 +615,7 @@
 		82DEA55622943678004D3D9F /* IRMouseGrid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMouseGrid.h; sourceTree = "<group>"; };
 		82DEA55822944E98004D3D9F /* AutomationBezier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutomationBezier.h; sourceTree = "<group>"; };
 		82DEA55A22945925004D3D9F /* IRImageLineButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRImageLineButton.h; sourceTree = "<group>"; };
+		82E914EA235DE5D800A38C58 /* IRColourButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRColourButton.h; sourceTree = "<group>"; };
 		82FA8F0822089C7D0032983F /* IRVideoThumbnail.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoThumbnail.cpp; sourceTree = "<group>"; };
 		82FA8F0922089C7D0032983F /* IRVideoThumbnail.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoThumbnail.hpp; sourceTree = "<group>"; };
 		82FA8F11220A58AC0032983F /* IRFileManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRFileManager.hpp; sourceTree = "<group>"; };
@@ -599,7 +647,6 @@
 				0F4FD731348716F09241784F /* AudioToolbox.framework in Frameworks */,
 				C3534A3D69BF561D8F21D906 /* AVFoundation.framework in Frameworks */,
 				F4185137A2919DAD4283B05E /* AVKit.framework in Frameworks */,
-				82A8B5B922F1B6D200FF05B8 /* libfftw3.a in Frameworks */,
 				6481B42C94CD81374F0B2359 /* Carbon.framework in Frameworks */,
 				B7BC009897548A8778977581 /* Cocoa.framework in Frameworks */,
 				F78DDCCF76EF8CE87307EF77 /* CoreAudio.framework in Frameworks */,
@@ -610,6 +657,8 @@
 				7AA9BD6FC2BBE29E9C8B46AA /* OpenGL.framework in Frameworks */,
 				AF962BC3CB9B6914A2A66481 /* QuartzCore.framework in Frameworks */,
 				C8A2AE5DC63457796D1DBCB4 /* WebKit.framework in Frameworks */,
+				82D97165236A5DE200A5AE89 /* libfftw3.a in Frameworks */,
+				82D9717D236A6E7500A5AE89 /* libfftw3.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,6 +737,7 @@
 		106588E8223021B3005D6B38 /* IRLabelObject */ = {
 			isa = PBXGroup;
 			children = (
+				82A8E77B2345043700E12214 /* IRLabelController */,
 				823E7BCE2132E1A90046512B /* IRLabelObject.hpp */,
 				106588EE2230248D005D6B38 /* IRLabelObject.cpp */,
 				106588EB22302389005D6B38 /* IRLabelObjectUI */,
@@ -757,15 +807,6 @@
 				106588F822303042005D6B38 /* IRImageViewer.cpp */,
 			);
 			path = IRImageViewer;
-			sourceTree = "<group>";
-		};
-		106588FA22303151005D6B38 /* IRImageViewerObjectUI */ = {
-			isa = PBXGroup;
-			children = (
-				1065890C2230379D005D6B38 /* IRImageViewerObjectUI.hpp */,
-				1065890B2230379D005D6B38 /* IRImageViewerObjectUI.cpp */,
-			);
-			path = IRImageViewerObjectUI;
 			sourceTree = "<group>";
 		};
 		106588FB2230315E005D6B38 /* IRImageViewerObjectPreference */ = {
@@ -964,6 +1005,7 @@
 			children = (
 				821A5E64212ACD9400BF593D /* IRNodeComponent.hpp */,
 				821A5E63212ACD9400BF593D /* IRNodeComponent.cpp */,
+				829542B523609AFA0015CC17 /* IRNodeComponent.mm */,
 				821A5E66212AD6FE00BF593D /* IRNodeComponentEvents.cpp */,
 			);
 			path = IRNodeComponent;
@@ -1001,8 +1043,9 @@
 		2D1F25B34F10551155A3CC5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				82D97164236A5DE200A5AE89 /* libfftw3.a */,
+				82D9717C236A6E7500A5AE89 /* libfftw3.3.dylib */,
 				823D65A9232BE1A0005DCBD6 /* CoreAudioKit.framework */,
-				82A8B5B822F1B6D200FF05B8 /* libfftw3.a */,
 				1308CC6C3869E34E36491167 /* Accelerate.framework */,
 				24D9A56501CE16485BCC5B64 /* AudioToolbox.framework */,
 				98B229AF952D4C0264312F8D /* AVFoundation.framework */,
@@ -1028,6 +1071,14 @@
 				D56A3A08DEF2AEEF4D7B8A40 /* RecentFilesMenuTemplate.nib */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		82078EF423587B5D008455DC /* PreferenceGUI */ = {
+			isa = PBXGroup;
+			children = (
+				82078EF523587B67008455DC /* PreferenceGUI.h */,
+			);
+			path = PreferenceGUI;
 			sourceTree = "<group>";
 		};
 		820963D522A68E0F00723C81 /* ExternalLibraries */ = {
@@ -1091,6 +1142,22 @@
 			path = IRComponents;
 			sourceTree = "<group>";
 		};
+		820F7EDA234B5BFF00679F56 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				820F7EDB234B5C0800679F56 /* IRMessage.h */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
+		820F7EDC234B815D00679F56 /* EditModeButton */ = {
+			isa = PBXGroup;
+			children = (
+				820F7EDD234B816E00679F56 /* EditModeButton.h */,
+			);
+			path = EditModeButton;
+			sourceTree = "<group>";
+		};
 		8210D9CC213D3D3F0042F646 /* FFTRelated */ = {
 			isa = PBXGroup;
 			children = (
@@ -1133,6 +1200,15 @@
 			path = FFT;
 			sourceTree = "<group>";
 		};
+		821703BA2357262700AE1093 /* IRIVSRController */ = {
+			isa = PBXGroup;
+			children = (
+				821703BB2357264500AE1093 /* IRIVSRController.cpp */,
+				821703BC2357264500AE1093 /* IRIVSRController.hpp */,
+			);
+			path = IRIVSRController;
+			sourceTree = "<group>";
+		};
 		821A5A912249290300F11668 /* IRAudio */ = {
 			isa = PBXGroup;
 			children = (
@@ -1145,6 +1221,7 @@
 		821A5E5C212ACCF200BF593D /* NodeObject */ = {
 			isa = PBXGroup;
 			children = (
+				82A8E76E2344D67E00E12214 /* IRObjectController */,
 				829D037B222D7F27001FDE1D /* UIFoundation */,
 				826056B32271DC5E00CAF8C5 /* IRLinkFoundation */,
 				10F6475D2226EBD300A26D7D /* IRNodeObject */,
@@ -1263,6 +1340,7 @@
 			children = (
 				821ED19C217DF1380019CF54 /* FontGUI.hpp */,
 				106588E622301D8F005D6B38 /* FontGUI.cpp */,
+				82A8E77F2345051800E12214 /* FontController.h */,
 			);
 			path = FontGUI;
 			sourceTree = "<group>";
@@ -1402,6 +1480,7 @@
 		823E7BC221302BEA0046512B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				82A8E7882345705900E12214 /* ImageController */,
 				82DEA5422292FA82004D3D9F /* IRIconBank */,
 				106588F722302E8E005D6B38 /* IRImageViewer */,
 				106588F622302E72005D6B38 /* IRImageLoader */,
@@ -1412,25 +1491,18 @@
 		823E7BC62130472B0046512B /* IRImageViewerObject */ = {
 			isa = PBXGroup;
 			children = (
+				82A8E7842345651E00E12214 /* IRImageViewerController */,
 				823E7BC72130476A0046512B /* IRImageViewerObject.hpp */,
 				106588FC223031C8005D6B38 /* IRImageViewerObject.cpp */,
-				106588FA22303151005D6B38 /* IRImageViewerObjectUI */,
 				106588FB2230315E005D6B38 /* IRImageViewerObjectPreference */,
 			);
 			path = IRImageViewerObject;
 			sourceTree = "<group>";
 		};
-		823E7BC9213059DD0046512B /* Preferences */ = {
-			isa = PBXGroup;
-			children = (
-				823E7BD62134064C0046512B /* Preferences.h */,
-			);
-			path = Preferences;
-			sourceTree = "<group>";
-		};
 		823E7BCA213059E30046512B /* Colour */ = {
 			isa = PBXGroup;
 			children = (
+				82A8E7762344E8AA00E12214 /* ColourSelector */,
 				823E7BCB213059FA0046512B /* ColourLib.h */,
 			);
 			path = Colour;
@@ -1439,6 +1511,7 @@
 		823E7BCD2132E1980046512B /* IRTextEditorObject */ = {
 			isa = PBXGroup;
 			children = (
+				82A8E7802345477800E12214 /* IRTextEditorController */,
 				821ED19D217E6F420019CF54 /* IRTextEditorObject.hpp */,
 				106588F2223024B5005D6B38 /* IRTextEditorObject.cpp */,
 				106588EC2230239A005D6B38 /* IRTextEditorObjectUI */,
@@ -1464,6 +1537,9 @@
 		823E7BD82134073A0046512B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				82D97184236B07D100A5AE89 /* OpenGL */,
+				829542C32361C4330015CC17 /* Video */,
+				820F7EDA234B5BFF00679F56 /* Message */,
 				823D65C22335191D005DCBD6 /* IRObjectFactory */,
 				82DA55BB231E970500137004 /* CSV */,
 				82928CA3231E91EA00168952 /* SQL */,
@@ -1480,7 +1556,6 @@
 				82D9030D21A8484300E57471 /* KeLib */,
 				823C18142191B3AD00AC9FC9 /* SaveLoadSystem */,
 				8286CBF421431A5F00AAD437 /* DataType */,
-				823E7BC9213059DD0046512B /* Preferences */,
 				823E7BCA213059E30046512B /* Colour */,
 				823E7BD92134075C0046512B /* singletonClass.cpp */,
 				823E7BDA2134075C0046512B /* singletonClass.hpp */,
@@ -1498,12 +1573,21 @@
 			path = PropertyComponent;
 			sourceTree = "<group>";
 		};
+		824F5AD42343989A00875D09 /* IRTitleBarComponent */ = {
+			isa = PBXGroup;
+			children = (
+				824F5AD5234398A800875D09 /* IRTitleBarComponent.cpp */,
+				824F5AD6234398A800875D09 /* IRTitleBarComponent.hpp */,
+			);
+			path = IRTitleBarComponent;
+			sourceTree = "<group>";
+		};
 		825DC9C921FF405000555CB8 /* IRVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				829542BF2361C1700015CC17 /* IRVideoController */,
 				825DC9CA21FF407000555CB8 /* IRVideoPlayerObject.cpp */,
 				825DC9CB21FF407000555CB8 /* IRVideoPlayerObject.hpp */,
-				825DC9CD21FF408400555CB8 /* IRVideoPlayer.cpp */,
 				825DC9CE21FF408400555CB8 /* IRVideoPlayer.hpp */,
 				82FA8F0822089C7D0032983F /* IRVideoThumbnail.cpp */,
 				82FA8F0922089C7D0032983F /* IRVideoThumbnail.hpp */,
@@ -1667,7 +1751,9 @@
 		8289A0C422E758380088E156 /* IRWaveformController */ = {
 			isa = PBXGroup;
 			children = (
-				8289A0C522E758440088E156 /* IRWaveformController.h */,
+				82D4A7CA234F551B00F89347 /* IRWaveformController.h */,
+				82D4A7C7234F533D00F89347 /* IRWaveformController2.cpp */,
+				82D4A7C8234F533D00F89347 /* IRWaveformController2.hpp */,
 			);
 			path = IRWaveformController;
 			sourceTree = "<group>";
@@ -1721,6 +1807,39 @@
 				82DA55B3231E932400137004 /* sqlite3ext.h */,
 			);
 			path = SQLite;
+			sourceTree = "<group>";
+		};
+		829542BF2361C1700015CC17 /* IRVideoController */ = {
+			isa = PBXGroup;
+			children = (
+				829542C02361C1970015CC17 /* IRVideoPlayerController.cpp */,
+				829542C12361C1970015CC17 /* IRVideoPlayerController.hpp */,
+			);
+			path = IRVideoController;
+			sourceTree = "<group>";
+		};
+		829542C32361C4330015CC17 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				829542C42361C4380015CC17 /* VideoController */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		829542C42361C4380015CC17 /* VideoController */ = {
+			isa = PBXGroup;
+			children = (
+				829542C52361C4400015CC17 /* VideoController.h */,
+			);
+			path = VideoController;
+			sourceTree = "<group>";
+		};
+		829542C62361F3D20015CC17 /* ProjectOwnerBase */ = {
+			isa = PBXGroup;
+			children = (
+				829542C72361F3E30015CC17 /* IRProjectOwnerBase.h */,
+			);
+			path = ProjectOwnerBase;
 			sourceTree = "<group>";
 		};
 		829D036C22297641001FDE1D /* Visual */ = {
@@ -1818,6 +1937,7 @@
 		829EC3C622EBB0B300964ACD /* IRShape */ = {
 			isa = PBXGroup;
 			children = (
+				82A8E7722344D71000E12214 /* IRShapeController */,
 				829EC3CE22EBB0F000964ACD /* IRShapePreference */,
 				829EC3C722EBB0D300964ACD /* IRShapeUI */,
 				829EC3CB22EBB0EA00964ACD /* IRShapeObject.cpp */,
@@ -1857,6 +1977,7 @@
 		82A8B5C922FD9E1C00FF05B8 /* IRTitleBar */ = {
 			isa = PBXGroup;
 			children = (
+				824F5AD42343989A00875D09 /* IRTitleBarComponent */,
 				82A8B5D022FD9E6800FF05B8 /* IRTitleBar.cpp */,
 				82A8B5D122FD9E6800FF05B8 /* IRTitleBar.hpp */,
 			);
@@ -1886,6 +2007,7 @@
 		82A8B5CC22FD9E3400FF05B8 /* IRWindowComponent */ = {
 			isa = PBXGroup;
 			children = (
+				829542C62361F3D20015CC17 /* ProjectOwnerBase */,
 				82A8B5D922FD9E7B00FF05B8 /* IRWindowComponent.cpp */,
 				82A8B5DA22FD9E7B00FF05B8 /* IRWindowComponent.hpp */,
 			);
@@ -1993,6 +2115,7 @@
 		82A8B5F42300B8DC00FF05B8 /* PreferenceMenuComponent */ = {
 			isa = PBXGroup;
 			children = (
+				82078EF423587B5D008455DC /* PreferenceGUI */,
 				82A8B6372315565900FF05B8 /* PreferenceMenuComponent.cpp */,
 				82A8B6382315565900FF05B8 /* PreferenceMenuComponent.hpp */,
 			);
@@ -2062,6 +2185,75 @@
 			path = IRStrComponent;
 			sourceTree = "<group>";
 		};
+		82A8E76E2344D67E00E12214 /* IRObjectController */ = {
+			isa = PBXGroup;
+			children = (
+				82A8E76F2344D68900E12214 /* IRObjectController.cpp */,
+				82A8E7702344D68900E12214 /* IRObjectController.hpp */,
+			);
+			path = IRObjectController;
+			sourceTree = "<group>";
+		};
+		82A8E7722344D71000E12214 /* IRShapeController */ = {
+			isa = PBXGroup;
+			children = (
+				82A8E7732344D71B00E12214 /* IRShapeController.cpp */,
+				82A8E7742344D71B00E12214 /* IRShapeController.hpp */,
+			);
+			path = IRShapeController;
+			sourceTree = "<group>";
+		};
+		82A8E7762344E8AA00E12214 /* ColourSelector */ = {
+			isa = PBXGroup;
+			children = (
+				82A8E7772344E8B500E12214 /* IRColourSelector.h */,
+			);
+			path = ColourSelector;
+			sourceTree = "<group>";
+		};
+		82A8E7782344F6D600E12214 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				82A8E77A2344F6E700E12214 /* LayoutStuff.h */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		82A8E77B2345043700E12214 /* IRLabelController */ = {
+			isa = PBXGroup;
+			children = (
+				82A8E77C2345044100E12214 /* IRLabelController.cpp */,
+				82A8E77D2345044100E12214 /* IRLabelController.hpp */,
+			);
+			path = IRLabelController;
+			sourceTree = "<group>";
+		};
+		82A8E7802345477800E12214 /* IRTextEditorController */ = {
+			isa = PBXGroup;
+			children = (
+				82A8E781234547D700E12214 /* IRTextEditorController.cpp */,
+				82A8E782234547D700E12214 /* IRTextEditorController.hpp */,
+			);
+			path = IRTextEditorController;
+			sourceTree = "<group>";
+		};
+		82A8E7842345651E00E12214 /* IRImageViewerController */ = {
+			isa = PBXGroup;
+			children = (
+				82A8E7852345654300E12214 /* IRImageViewerController.cpp */,
+				82A8E7862345654300E12214 /* IRImageViewerController.hpp */,
+			);
+			path = IRImageViewerController;
+			sourceTree = "<group>";
+		};
+		82A8E7882345705900E12214 /* ImageController */ = {
+			isa = PBXGroup;
+			children = (
+				82A8E7892345706600E12214 /* ImageController.h */,
+			);
+			path = ImageController;
+			sourceTree = "<group>";
+		};
 		82A98B272199B8070077EAE6 /* IRWorksplaceList */ = {
 			isa = PBXGroup;
 			children = (
@@ -2128,6 +2320,7 @@
 		82C08AEC227660FF00938726 /* InteractiveSoundVisualization */ = {
 			isa = PBXGroup;
 			children = (
+				821703BA2357262700AE1093 /* IRIVSRController */,
 				820AB79B22A28DA100FC7B46 /* IRIVSRPreference */,
 				82C08AF32276627200938726 /* IR3DGraphic */,
 				820AB79622A1762600FC7B46 /* IRISVObject.cpp */,
@@ -2249,6 +2442,14 @@
 			path = ISVParameterControlU;
 			sourceTree = "<group>";
 		};
+		82D4A7CB234F568C00F89347 /* audioObjectController */ = {
+			isa = PBXGroup;
+			children = (
+				82D4A7CF234F56F600F89347 /* AudioObjectController.h */,
+			);
+			path = audioObjectController;
+			sourceTree = "<group>";
+		};
 		82D8AE9022C392340012D987 /* IRSpectrogram */ = {
 			isa = PBXGroup;
 			children = (
@@ -2311,6 +2512,8 @@
 		82D8B16522A0179E00940CD1 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				82D4A7CB234F568C00F89347 /* audioObjectController */,
+				82A8E7782344F6D600E12214 /* Layout */,
 				8289A0C022E7566D0088E156 /* SimpleController */,
 				82D8B16622A017A200940CD1 /* MeasureGrid */,
 			);
@@ -2350,6 +2553,26 @@
 			path = KeLib;
 			sourceTree = "<group>";
 		};
+		82D97184236B07D100A5AE89 /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				82D97185236B07E100A5AE89 /* IROpenGLManager.cpp */,
+				82D97186236B07E100A5AE89 /* IROpenGLManager.hpp */,
+				82D97188236B07F500A5AE89 /* IROpenGLManager_mac.mm */,
+			);
+			path = OpenGL;
+			sourceTree = "<group>";
+		};
+		82D9718C236B1B1D00A5AE89 /* NSViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				82D9718D236B1B3100A5AE89 /* IRNSViewManager.cpp */,
+				82D9718E236B1B3100A5AE89 /* IRNSViewManager.hpp */,
+				82D97190236B1B3F00A5AE89 /* IRNSViewManager_mac.mm */,
+			);
+			path = NSViewManager;
+			sourceTree = "<group>";
+		};
 		82DA55B5231E944600137004 /* SQLMaker */ = {
 			isa = PBXGroup;
 			children = (
@@ -2378,6 +2601,8 @@
 		82DEA52C2292F976004D3D9F /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				82E914E9235DE5CF00A38C58 /* IRColourButton */,
+				820F7EDC234B815D00679F56 /* EditModeButton */,
 				82DEA52D2292F995004D3D9F /* IRImageButton */,
 			);
 			path = Buttons;
@@ -2450,6 +2675,7 @@
 		82DEA54F229423CE004D3D9F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				82D9718C236B1B1D00A5AE89 /* NSViewManager */,
 				8289A09822D8C35C0088E156 /* IRViewUI */,
 				82DEA550229423D7004D3D9F /* IRViewPort */,
 			);
@@ -2495,6 +2721,14 @@
 				82DEA55A22945925004D3D9F /* IRImageLineButton.h */,
 			);
 			path = IRImageLineButton;
+			sourceTree = "<group>";
+		};
+		82E914E9235DE5CF00A38C58 /* IRColourButton */ = {
+			isa = PBXGroup;
+			children = (
+				82E914EA235DE5D800A38C58 /* IRColourButton.h */,
+			);
+			path = IRColourButton;
 			sourceTree = "<group>";
 		};
 		82FA8F0F220A58950032983F /* FileManager */ = {
@@ -2572,7 +2806,7 @@
 				33891D3C3EEF6ADA78FA29D3 /* Resources */,
 				7E6C4AFFD659D8616B734AC8 /* Sources */,
 				546C1217FC489852A11ECB00 /* Frameworks */,
-				8289A0BF22E709A90088E156 /* Embed Libraries */,
+				822C6D5C236A5B52003471EB /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -2589,7 +2823,7 @@
 		3D2FE96C0DEE0EF3730DFE5D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					76C41EF623EE254E47CDCA51 = {
@@ -2654,16 +2888,19 @@
 				82DEA5312292F9AF004D3D9F /* IRImageMovableButton.cpp in Sources */,
 				821C5EB021348E6900187902 /* IRMultiPurposeObject.cpp in Sources */,
 				821A5EA0212EBF7800BF593D /* SoundPlayer.cpp in Sources */,
+				82D4A7C9234F533D00F89347 /* IRWaveformController2.cpp in Sources */,
 				82A98B2A2199B84B0077EAE6 /* IRWorkspaceList.cpp in Sources */,
 				823D65BA23327B56005DCBD6 /* IRWorkspace2.cpp in Sources */,
 				821A5E65212ACD9400BF593D /* IRNodeComponent.cpp in Sources */,
 				820963DD22A7EC7400723C81 /* ISVParameterControlComponent.cpp in Sources */,
 				826056B62271DC7900CAF8C5 /* IRLinkFoundation.cpp in Sources */,
 				821A5E62212ACD1800BF593D /* IRNodeObject.cpp in Sources */,
+				82D97189236B07F500A5AE89 /* IROpenGLManager_mac.mm in Sources */,
 				10658904223036B2005D6B38 /* IRWaveformObjectPreference.cpp in Sources */,
 				820AB79822A1762600FC7B46 /* IRISVObject.cpp in Sources */,
 				10F6476B22273FBD00A26D7D /* IRProjectWindow.cpp in Sources */,
 				823D65AE23311E11005DCBD6 /* LeftBarSlideMenu.cpp in Sources */,
+				82A8E783234547D700E12214 /* IRTextEditorController.cpp in Sources */,
 				82C08B01227663BC00938726 /* OpenGLVertexNoise.cpp in Sources */,
 				829EC3C322E92E3500964ACD /* IRSpectrogramComponent.cpp in Sources */,
 				821A5EA4212ED31600BF593D /* IRWorkSpaceKeyEvents.cpp in Sources */,
@@ -2671,11 +2908,13 @@
 				82D8B16922A017B000940CD1 /* IRMeasureGrid.cpp in Sources */,
 				820963DA22A7E6D100723C81 /* ISVParameterSliders.cpp in Sources */,
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
+				824F5AD7234398A800875D09 /* IRTitleBarComponent.cpp in Sources */,
 				82DEA54C2292FD19004D3D9F /* IRAutomationUI.cpp in Sources */,
 				10F647572226DE7700A26D7D /* ObjectListMenu.cpp in Sources */,
 				82A8B5D222FD9E6800FF05B8 /* IRTitleBar.cpp in Sources */,
 				821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */,
 				82435C5422393DE200E89E95 /* IRPropertyComponent.cpp in Sources */,
+				829542C22361C1970015CC17 /* IRVideoPlayerController.cpp in Sources */,
 				821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */,
 				8289A08622D3F3A70088E156 /* IRSpectrogramWithPreference.cpp in Sources */,
 				106588FD223031C8005D6B38 /* IRImageViewerObject.cpp in Sources */,
@@ -2686,12 +2925,12 @@
 				82A8B6362315565200FF05B8 /* InspectorMenuComponent.cpp in Sources */,
 				820D3BBE225F936200BDA679 /* FileManagerTUTORIAL.cpp in Sources */,
 				82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */,
-				1065890D2230379D005D6B38 /* IRImageViewerObjectUI.cpp in Sources */,
 				10F647422226C06B00A26D7D /* IRStarter.cpp in Sources */,
 				106588E32230196D005D6B38 /* IRWaveformObjectUI.cpp in Sources */,
 				825DC9CC21FF407000555CB8 /* IRVideoPlayerObject.cpp in Sources */,
 				82D8AE9722C392530012D987 /* GLSLSpectrogram.cpp in Sources */,
 				8289A08322D290B20088E156 /* IRSpectrogramPreferenceUI.cpp in Sources */,
+				82A8E7752344D71B00E12214 /* IRShapeController.cpp in Sources */,
 				10F647632226F13F00A26D7D /* IRObjectCreaterBase.cpp in Sources */,
 				821A5E89212E2B9800BF593D /* IRWorkSpaceObjectManagement.cpp in Sources */,
 				820D3BC22262A49700BDA679 /* IRComponents.cpp in Sources */,
@@ -2701,6 +2940,7 @@
 				82A8B5FA2300EA2A00FF05B8 /* ImageMenuComponent.cpp in Sources */,
 				82A8B6302315562E00FF05B8 /* PlayerMenuComponent.cpp in Sources */,
 				10F64769222703F600A26D7D /* IRObjectCreater.cpp in Sources */,
+				821703BD2357264500AE1093 /* IRIVSRController.cpp in Sources */,
 				821A5A942249290F00F11668 /* IRAudio.cpp in Sources */,
 				823C181E2191B4EE00AC9FC9 /* IRProject.cpp in Sources */,
 				106588E722301D8F005D6B38 /* FontGUI.cpp in Sources */,
@@ -2715,13 +2955,16 @@
 				82FA8F0A22089C7D0032983F /* IRVideoThumbnail.cpp in Sources */,
 				8222D497220858A500E7FE63 /* IRVideoThumbnailObject.cpp in Sources */,
 				82DA55B4231E932400137004 /* sqlite3.c in Sources */,
+				82A8E7712344D68900E12214 /* IRObjectController.cpp in Sources */,
 				102DA9272244154100696F4A /* ObjectFactoryInitializer.cpp in Sources */,
 				10658910223037E1005D6B38 /* IRImageViewerObjectPreference.cpp in Sources */,
 				82A8B5EC23004F3F00FF05B8 /* ObjectMenuComponent.cpp in Sources */,
+				82D97187236B07E100A5AE89 /* IROpenGLManager.cpp in Sources */,
 				8289A0CB22E76DB80088E156 /* IRSpectrogramViewPort.cpp in Sources */,
 				82A8B5DB22FD9E7B00FF05B8 /* IRWindowComponent.cpp in Sources */,
 				829EC3CA22EBB0E000964ACD /* IRShapeUI.cpp in Sources */,
 				82C08AE4227643B000938726 /* IRAnalysisUI.cpp in Sources */,
+				82D9718F236B1B3100A5AE89 /* IRNSViewManager.cpp in Sources */,
 				106588DE222FFAA2005D6B38 /* EditCommandTarget.cpp in Sources */,
 				82D0D29422A5516F00C771B1 /* ISVParameterControlWindow.cpp in Sources */,
 				82DEA553229423E1004D3D9F /* IRViewPort.cpp in Sources */,
@@ -2731,8 +2974,8 @@
 				821A5E67212AD6FE00BF593D /* IRNodeComponentEvents.cpp in Sources */,
 				823C181A2191B3F800AC9FC9 /* json11.cpp in Sources */,
 				106588F922303042005D6B38 /* IRImageViewer.cpp in Sources */,
+				82A8E7872345654300E12214 /* IRImageViewerController.cpp in Sources */,
 				829EC3CD22EBB0EA00964ACD /* IRShapeObject.cpp in Sources */,
-				825DC9CF21FF408400555CB8 /* IRVideoPlayer.cpp in Sources */,
 				106588F3223024B5005D6B38 /* IRTextEditorObject.cpp in Sources */,
 				821C5EB221357EDA00187902 /* IRWaveformObjectUIEvents.cpp in Sources */,
 				82DEA5392292F9FF004D3D9F /* AutomationVertex.cpp in Sources */,
@@ -2750,6 +2993,7 @@
 				82A8B6392315565900FF05B8 /* PreferenceMenuComponent.cpp in Sources */,
 				821A5E6B212AF8B800BF593D /* IRWorkSpace.cpp in Sources */,
 				821A5E81212D799D00BF593D /* IRObjectSelection.cpp in Sources */,
+				829542B623609AFA0015CC17 /* IRNodeComponent.mm in Sources */,
 				820D3BC82268C99F00BDA679 /* IRUIAudioFoundation.cpp in Sources */,
 				821A5E9D212EBF7300BF593D /* IRAudioReader.cpp in Sources */,
 				82DEA5452292FA94004D3D9F /* IRIconBank.cpp in Sources */,
@@ -2779,6 +3023,7 @@
 				82A8B62A2315561D00FF05B8 /* AudioMenuComponent.cpp in Sources */,
 				82A8B5E622FF32D100FF05B8 /* LeftBarObjectMenu.cpp in Sources */,
 				8289A0B822DF58B90088E156 /* IRDescriptorBank.cpp in Sources */,
+				82A8E77E2345044100E12214 /* IRLabelController.cpp in Sources */,
 				10405845221ADAF200E82FED /* Main.cpp in Sources */,
 				823E7BD22133012B0046512B /* IRWaveformObject.cpp in Sources */,
 				10F647442226C4E700A26D7D /* PreferenceWindow.cpp in Sources */,
@@ -2793,6 +3038,7 @@
 				823D65C523351947005DCBD6 /* IRObjectFactory2.cpp in Sources */,
 				1065890722303713005D6B38 /* IRLabelObjectUI.cpp in Sources */,
 				32360B59740CCC174CF75F0B /* include_juce_audio_basics.mm in Sources */,
+				82D97191236B1B3F00A5AE89 /* IRNSViewManager_mac.mm in Sources */,
 				A9D5694184653919C1A1BBB4 /* include_juce_audio_devices.mm in Sources */,
 				50936D63BE57464710DD09CD /* include_juce_audio_formats.mm in Sources */,
 				823D65B623313681005DCBD6 /* IRWorkspaceSlide.cpp in Sources */,
@@ -2821,8 +3067,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				DEAD_CODE_STRIPPING = YES;
@@ -2852,10 +3100,13 @@
 				);
 				INFOPLIST_FILE = "Info-App.plist";
 				INFOPLIST_PREPROCESS = NO;
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/Cellar/fftw/$(FFTW_VERSION)/lib",
+					/usr/local/Cellar/fftw/3.3.8_1/lib,
+					"$(PROJECT_DIR)/Source/frameworks",
 				);
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -2910,6 +3161,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = NodeComponentObject_Study;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
 			};
@@ -2953,6 +3205,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PRODUCT_NAME = NodeComponentObject_Study;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
 			};
@@ -2964,8 +3217,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_LINK_OBJC_RUNTIME = NO;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
@@ -2994,10 +3249,13 @@
 				);
 				INFOPLIST_FILE = "Info-App.plist";
 				INFOPLIST_PREPROCESS = NO;
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/Cellar/fftw/$(FFTW_VERSION)/lib",
+					/usr/local/Cellar/fftw/3.3.8_1/lib,
+					"$(PROJECT_DIR)/Source/frameworks",
 				);
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;

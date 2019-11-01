@@ -5,7 +5,8 @@
 
 
 
-IRPreferenceObject::IRPreferenceObject(String title, Rectangle<int> frameRect)
+IRPreferenceObject::IRPreferenceObject(String title, Rectangle<int> frameRect, IRStr* str) :
+IRStrComponent(str)
 {
     this->frameRect = frameRect;
     //setBounds(frameRect.getX(), frameRect.getY(), frameRect.getWidth(), frameRect.getHeight());

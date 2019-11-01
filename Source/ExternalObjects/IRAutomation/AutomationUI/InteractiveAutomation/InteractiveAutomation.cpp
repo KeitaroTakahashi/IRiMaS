@@ -7,8 +7,8 @@
 
 #include "InteractiveAutomation.hpp"
 
-InteractiveAutomation::InteractiveAutomation(IRNodeObject* nodeObject) :
-IRUIFoundation(nodeObject)
+InteractiveAutomation::InteractiveAutomation(IRNodeObject* nodeObject, IRStr* str) :
+IRUIFoundation(nodeObject, str)
 {
         
     this->verteces.clear();
@@ -17,7 +17,7 @@ IRUIFoundation(nodeObject)
     this->selector->setConstrainBoundsToParent(true, {0,0,10,10});
     this->selector->setMovableDirection(true, false);
     
-    this->controller = std::make_shared<AutomationController>();
+    this->controller = std::make_shared<AutomationController>(str);
     this->controller->setZoomInEvent([this]{ zoomInClicked(); });
     this->controller->setZoomOutEvent([this]{ zoomOutClicked(); });
     this->controller->setMovableEvent([this](IRAutomation::movableStatus status){ movableClicked(status); });
@@ -56,7 +56,7 @@ void InteractiveAutomation::paint(Graphics& g)
     //std::cout << "+++++ InteractiveAutomation repaint() +++++ \n";
 
     g.fillAll(Colours::white);
-    g.setColour(SYSTEMCOLOUR.fundamental);
+    g.setColour(getStr()->SYSTEMCOLOUR.fundamental);
     g.drawRect(0, 0, getWidth(), getHeight(), 1);
     
   
@@ -78,7 +78,7 @@ void InteractiveAutomation::paint(Graphics& g)
 
 void InteractiveAutomation::paintComment(Graphics& g)
 {
-    g.setColour(SYSTEMCOLOUR.contents);
+    g.setColour(getStr()->SYSTEMCOLOUR.contents);
     g.setOpacity(0.8);
     g.drawLine(0, this->currentMousePos.getY(), getWidth(), this->currentMousePos.getY(), 2);
     g.drawLine(this->currentMousePos.getX(), 0, this->currentMousePos.getX(), getHeight(), 2);
@@ -95,7 +95,7 @@ void InteractiveAutomation::paintComment(Graphics& g)
     g.fillRect(Rectangle<int>(rectX, rectY, 50, 25));
     
     Font f("Avenir Next",20, Font::plain);
-    g.setColour(SYSTEMCOLOUR.text);
+    g.setColour(getStr()->SYSTEMCOLOUR.text);
     g.setFont(f);
     g.drawText("test", rectX, rectY, 50, 25, Justification::right,true);
 }
@@ -413,7 +413,7 @@ void InteractiveAutomation::mouseDrag(const MouseEvent& e)
 
 void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected, bool shouldSort)
 {
-    IRAutomationVertexComponent* obj = new IRAutomationVertexComponent (this);
+    IRAutomationVertexComponent* obj = new IRAutomationVertexComponent (getStr(), this);
     obj->setPosition(pos);
     obj->setSelected(isSelected);
     obj->addMouseListener(this, true);
@@ -435,8 +435,8 @@ void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected, bool
         IRAutomationVertexComponent* current = this->verteces[index];
         IRAutomationVertexComponent* previous = this->verteces[index - 1];
         
-        std::shared_ptr<IRAutomationVertexComponent> b1 = std::make_shared<IRAutomationVertexComponent>(this);
-        std::shared_ptr<IRAutomationVertexComponent> b2 = std::make_shared<IRAutomationVertexComponent>(this);
+        std::shared_ptr<IRAutomationVertexComponent> b1 = std::make_shared<IRAutomationVertexComponent>(getStr(), this);
+        std::shared_ptr<IRAutomationVertexComponent> b2 = std::make_shared<IRAutomationVertexComponent>(getStr(), this);
 
         int x_b1 = previous->getPosition().getX() +
                    (current->getPosition().getX() -

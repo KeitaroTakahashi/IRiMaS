@@ -7,7 +7,8 @@
 
 #include "IRImageButton.hpp"
 
-IRImageButton::IRImageButton()
+IRImageButton::IRImageButton() :
+drawColour(Colour(255, 255, 255))
 {
     
 }
@@ -21,16 +22,32 @@ IRImageButton::~IRImageButton()
 
 void IRImageButton::paint(Graphics& g)
 {
-    
-    g.setColour(Colours::transparentWhite);
-    g.fillEllipse(0, 0, getWidth(), getHeight());
-    g.setColour(Colours::white);
+    if(this->mouseDownFlag)
+        g.setColour(Colours::lightgrey);
+    else g.setColour(Colours::white);
+   // g.fillEllipse(0, 0, getWidth(), getHeight());
+    //g.setColour(Colours::white);
 
+    g.setColour(this->drawColour);
+    
     if(this->drawCircle)
     {
-        g.drawEllipse(1, 1, getWidth()-2, getHeight()-2, 1);
+        if(!this->mouseDownFlag)
+            g.drawEllipse(1, 1, getWidth()-2, getHeight()-2, 1);
+        else
+            g.fillEllipse(1, 1, getWidth()-2, getHeight()-2);
     }
+    
+    if(this->drawRoundedSquare)
+    {
+        if(!this->mouseDownFlag)
+            g.drawRoundedRectangle(1, 1, getWidth() - 2, getHeight() - 2, 4.0, 1);
+        else
+            g.fillRoundedRectangle(1, 1, getWidth() - 2, getHeight() - 2, 4.0);
+    }
+    
     g.drawImage(this->buttonImage, getLocalBounds().toFloat());
+    
 }
 
 void IRImageButton::resized()
@@ -41,12 +58,24 @@ void IRImageButton::resized()
 void IRImageButton::setImage(Image img)
 {
     this->buttonImage = img;
+    
+    this->w_h_ratio = (float)img.getHeight() / (float)img.getWidth();
+    
     repaint();
 }
 
 void IRImageButton::mouseDown(const MouseEvent& e)
 {
+    this->mouseDownFlag = true;
     if(this->onClick != nullptr) onClick();
+    repaint();
+    
 }
 
+
+void IRImageButton::mouseUp(const MouseEvent& e)
+{
+    this->mouseDownFlag = false;
+    repaint();
+}
 

@@ -11,9 +11,9 @@
 #include "JuceHeader.h"
 #include "ColourLib.h"
 #include "IRIconBank.hpp"
-#include "IRObjectFactory2.hpp"
 #include "IRFileManager.hpp"
 #include "UserSettingStr.h"
+#include "IRProjectOwnerBase.h"
 
 
 struct IRStr
@@ -31,20 +31,38 @@ struct IRStr
     String projectName;
     String projectURL;
     
+    // this flag is accessible by all objects inheriting IRStrComponent.
+    // it is ideal to give FALSE to isProjectSaved when user made any changes
+    bool isProjectSaved = true;
+    
+    // store currently active workspace
     Component* TopWorkspace = nullptr;
     
+    // store the project owner
+    IRProjectOwnerBase* projectOwner = nullptr;
     // ==================================================
     // callBack
-    std::function<void(IRFileManager*)> fileManagerUpdated;
+    std::vector<std::function<void(IRFileManager&)>> fileManagerUpdatedCallbackList;
+        
+    void addFileManagerUpdatedCallbackFunc(std::function<void(IRFileManager&)> callBack)
+    {
+        this->fileManagerUpdatedCallbackList.push_back(callBack);
+    }
     
-    
+    void notifyFileManagerUpdate()
+    {
+        for(int i = 0; i < this->fileManagerUpdatedCallbackList.size(); i ++ )
+        {
+            this->fileManagerUpdatedCallbackList[i](FILEMANAGER);
+        }
+    }
     
     // ==================================================
     UserSettingStr USERSETTING;
     IR::IRColours SYSTEMCOLOUR;
     IRIconBank    ICONBANK;
-    IRObjectFactory2 OBJECTFACTORY;
     IRFileManager FILEMANAGER;
+
     // ==================================================
 
 };

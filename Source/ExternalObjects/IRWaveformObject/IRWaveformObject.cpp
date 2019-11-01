@@ -4,29 +4,24 @@
 
 
 
-IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IRWaveform")
+IRWaveformObject::IRWaveformObject(Component* parent, IRStr* str) :
+IRNodeObject(parent, "IRWaveform", str, NodeObjectType(orginaryIRComponent))
 {
     
-    std::cout << "IRWaveformObject " << this << std::endl;
-    this->waveform = new IRWaveformObjectUI2(this);
-    this->waveform->getWaveformUI()->addChangeListener(this);
-    //this->waveform->addKeyListener(this);
-    this->waveform->setBounds(this->xMargin,
-                              this->yMargin,
-                              getWidth()-(this->xMargin*2),
-                              getHeight()-(this->yMargin*2));
-    this->waveform->setEditMode(isEditMode());
+    // opaque true so that its background won't be repainted
+    setOpaque(true);
+
+    this->controller.reset(new IRWaveformController2(str));
+    this->controller->audioController.addChangeListener(this);
+    setObjController(this->controller.get());
     
-    //IRFileManager
+    createWaveform();
+
     
-    //addKeyListener(this->waveform);
-    addAndMakeVisible(this->waveform);
-    childComponentManager(this->waveform);
     
     this->selector = new IRObjectSelection<Component*>();
     
-    // in case this object uses any AudioSources, we must register this to the internal mixer by this method.
-    addAudioComponent(this->waveform->getWaveformUI()->getPlayer());
+    
     
     setSize(400,150);
     
@@ -35,12 +30,11 @@ IRWaveformObject::IRWaveformObject(Component* parent) : IRNodeObject(parent, "IR
     addLinkParam(DataLinkFlag);
     addLinkParam(ConsoleLinkFlag);
     
-    
 }
 
 IRWaveformObject::~IRWaveformObject()
 {
-    delete this->waveform;
+    this->waveform.reset();
     delete this->selector;
     
     std::cout << "~IRWaveformObject()\n";
@@ -51,7 +45,7 @@ IRWaveformObject::~IRWaveformObject()
 IRNodeObject* IRWaveformObject::copyThis()
 {
     std::cout << "IRWaveformObject copyThis " << this << std::endl;
-    return new IRWaveformObject(this->parent);
+    return new IRWaveformObject(this->parent, getStr());
 }
 
 IRNodeObject* IRWaveformObject::copyContents(IRNodeObject* object)
@@ -73,6 +67,9 @@ IRNodeObject* IRWaveformObject::copyContents(IRNodeObject* object)
 
 IRNodeObject* IRWaveformObject::copyDragDropContents(IRNodeObject* object)
 {
+    //this->waveform->
+    
+    
     IRWaveformObject* obj = static_cast<IRWaveformObject*>(object);
     
     obj->waveform->getWaveformUI()->openFile(this->waveform->getWaveformUI()->getPath());
@@ -90,6 +87,7 @@ IRNodeObject* IRWaveformObject::copyDragDropContents(IRNodeObject* object)
                      this->waveform->getYMargin()*2 +
                      this->waveform->getScrollSpace());
         
+        obj->waveform->setAutomationWidthRatio(this->waveform->getAutomationWidthRatio());
 
         
         Rectangle<float> bounds = o->getBoundsInRatio();
@@ -163,7 +161,7 @@ void IRWaveformObject::loadThisFromSaveData(t_json data)
     
 }
 
-
+// ==================================================
 void IRWaveformObject::resized()
 {
     this->waveform->setSize(getWidth(), getHeight());
@@ -172,16 +170,44 @@ void IRWaveformObject::resized()
 
 void IRWaveformObject::paint(Graphics& g)
 {
+    
+    g.fillAll(getStr()->SYSTEMCOLOUR.background);
     if(isEditMode())
     {
         auto area = getLocalBounds();//.reduced (2);
         
-        g.setColour (SYSTEMCOLOUR.contents);
+        g.setColour (getStr()->SYSTEMCOLOUR.contents);
         //g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
         g.drawRect(area.toFloat(), 1.0);
     }
 }
+// ==================================================
 
+void IRWaveformObject::createWaveform()
+{
+    if(this->waveform.get() != nullptr)
+    {
+        removeAudioComponent(this->waveform->getWaveformUI()->getPlayer());
+        this->waveform->getWaveformUI()->removeChangeListener(this);
+        removeChildComponent(this->waveform.get());
+    }
+    
+    this->waveform.reset( new IRWaveformObjectUI2(this, getStr()) );
+    this->waveform->getWaveformUI()->addChangeListener(this);
+    this->waveform->setBounds(this->xMargin,
+                                this->yMargin,
+                                getWidth()-(this->xMargin*2),
+                                getHeight()-(this->yMargin*2));
+    this->waveform->setEditMode(isEditMode());
+    
+    addAndMakeVisible(this->waveform.get());
+    childComponentManager(this->waveform.get());
+    
+    // in case this object uses any AudioSources, we must register this to the internal mixer by this method.
+    addAudioComponent(this->waveform->getWaveformUI()->getPlayer());
+}
+
+// ==================================================
 
 // call back function automatically called when the status of this object changed by others.
 // write some tasks here
@@ -218,38 +244,82 @@ void IRWaveformObject::mouseDownEvent(const MouseEvent& e)
     
 }
 
+// ==================================================
+
+void IRWaveformObject::audioFileOpenAction()
+{
+    // recreate waveform to initialize
+    //createWaveform();
+    this->waveform->getWaveformUI()->openFile();
+    
+    std::cout << "OK!" << std::endl;
+
+    
+    String path = this->waveform->getWaveformUI()->getPath();
+    std::cout << path << std::endl;
+
+    this->controller->audioController.setLoadedAudioFilePath(path);
+    std::cout << "audio file opne\n";
+}
+
+// received from AudioController
+void IRWaveformObject::audioControllerChangeListener()
+{
+    auto status = this->controller->audioController.getStatus();
+    std::cout << "status = " << status << std::endl;
+    using s = AudioObjectController::AudioObjectControllerStatus;
+
+    switch(status)
+    {
+        case s::AudioFileOpen:
+            audioFileOpenAction();
+            break;
+        case s::PLAY:
+            this->waveform->getWaveformUI()->playFromBegin();
+            
+            break;
+        case s::PAUSE:
+            this->waveform->getWaveformUI()->pausing();
+            break;
+        case s::STOP:
+            this->waveform->getWaveformUI()->stop();
+            break;
+            
+        default:
+            break;
+    }
+}
+
+// ==================================================
 
 void IRWaveformObject::changeListenerCallback(ChangeBroadcaster* source)
 {
+    
     if(source == this->waveform->getWaveformUI())
     {
         switch(this->waveform->getWaveformUI()->status)
         {
             case IRWaveformObjectUI::DRAGOUT:
+                // stop playing audio
+                this->waveform->getWaveformUI()->stop();
                 this->callDragOutNodeObjectFromParent();
                 break;
             case IRWaveformObjectUI::DROPOUT:
                 this->callDropOutNodeObjectFromParent();
                 break;
-                
-                /*
-            case IRWaveformObjectUI::EDITMODECHANGE:
-                // first change its EditMode status
-                setEditMode(! isEditMode());
-                // then inform the new edit mode status by calling this
-                this->callEditModeChangedInNodeObject();
-                break;
-                
-            case IRWaveformObjectUI::PROJECTSAVE:
-                // request IRMAIN to save this project.
-                // IRNodeObject -> IRWorkspace -> IRProject -> IRMAIN
-                this->callSaveProject();
-                 */
+            
             default:
                 break;
         }
+    }else if(source == &this->controller->audioController)
+    {
+        
+        
+        audioControllerChangeListener();
+        
     }
 }
+// ==================================================
 
 
 int IRWaveformObject::getXMargin() const
@@ -272,5 +342,6 @@ bool IRWaveformObject::keyPressed(const KeyPress& key, Component* originatingCom
     return true;
 }
 */
+
 
 

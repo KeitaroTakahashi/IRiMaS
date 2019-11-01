@@ -5,26 +5,24 @@
 
 
 
-IRWaveform::IRWaveform(IRNodeObject* parent) :
-IRUIAudioFoundation(parent),
+IRWaveform::IRWaveform(IRNodeObject* parent, IRStr* str) :
+IRUIAudioFoundation(parent, str),
 thumbnailCache(5),
 thumbnail(512, formatManager, thumbnailCache),
 playingLine(0,0,0,0),
 visiblePos(Point<int>(0,0))
 {
- 
     this->parent = parent;
     // We need to add this to the ChangeListener of thumbnail to repaint() waveform
     // this process is important when thumbnail calls setSource() and replace the wavedara and paint it, otherwise it does not complete painting.
     // in the changeListenerCallback(), we need to call repaint()
     this->thumbnail.addChangeListener(this);
-    
     this->formatManager.registerBasicFormats();
     
     addAndMakeVisible(&this->openButton);
     this->openButton.setButtonText("open audio");
     
-    this->openButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.fundamental);
+    //this->openButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.fundamental);
     this->setEnabled(true);
     this->openButton.onClick = [this]{ openFile(); };
     
@@ -32,7 +30,6 @@ visiblePos(Point<int>(0,0))
     this->player->addChangeListener(this);
     
     setFps(17);
-    
 }
 
 
@@ -51,7 +48,7 @@ void IRWaveform::deinitializeAudioData()
     if(this->audioData != nullptr)
     {
         this->audioData->getData()->removeListener(this);
-        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+        getFileManager().discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
     }
 }
 
@@ -69,6 +66,12 @@ void IRWaveform::openFile()
 
 void IRWaveform::openFile()
 {
+    
+    // stop first
+    if(isPlaying()) stop();
+    
+    deinitializeAudioData();
+    
     
     FileChooser chooser("Select an image file...",
                         {},
@@ -92,6 +95,11 @@ void IRWaveform::openFile()
 
 void IRWaveform::openFile(String path)
 {
+    
+    if(isPlaying()) stop();
+    
+    deinitializeAudioData();
+
     if(path.isNotEmpty())
     {
         File f(path);
@@ -108,11 +116,10 @@ void IRWaveform::openFile(String path)
 void IRWaveform::getFilePtr(File file)
 {
     
-    std::cout << "getFilePtr\n";
     // set a callback function which is called when file load is completed.
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
-    getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+    getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                              file,
                                              this->parent,
                                              callback);
@@ -135,11 +142,11 @@ void IRWaveform::changeListenerCallback (ChangeBroadcaster* source)
         }
         else if (this->player->isPausing())
         {
-            
+            //pause();
         }
         else
         { // stop
-            
+            //stop();
         }
     }
     else if (source == &this->thumbnail)
@@ -175,9 +182,12 @@ void IRWaveform::makeThumbnail(String path)
 
 void IRWaveform::fileImportCompleted()
 {
+    this->duration = 0; // initialize
+    
+    // init selected
 
     std::cout << "IRWaveform : fileImportCompleted\n";
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
     
     this->audioData->getData()->addListener(this);
     
@@ -187,7 +197,11 @@ void IRWaveform::fileImportCompleted()
     
    // set received Ptr to the Link System
     this->parent->setAudioLink(this->audioData->getData());
+    
+    //
+    fileImportCompletedAction();
 
+    // make waveform thumbnail
     makeThumbnail(file.getFullPathName());
 
 }
@@ -196,6 +210,7 @@ void IRWaveform::fileImportCompleted()
 void IRWaveform::resized()
 {
     this->openButton.setBounds(0,0,getWidth(),getHeight());
+    updatePlayingLine();
 }
 
 
@@ -206,15 +221,15 @@ void IRWaveform::paint(Graphics& g)
     {
         auto area = getLocalBounds();//.reduced (2);
         
-        g.setColour (SYSTEMCOLOUR.background);
+        g.setColour (Colours::white);
         //g.fillRoundedRectangle(area.toFloat(), 5.0f);
         g.fillRect(area.toFloat());
         
-        g.setColour (SYSTEMCOLOUR.contents);
+        g.setColour (getStr()->SYSTEMCOLOUR.contents);
         //g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
         g.drawRect(area.toFloat(), 1.0);
         
-        g.setColour(SYSTEMCOLOUR.fundamental);
+        g.setColour(getStr()->SYSTEMCOLOUR.fundamental);
         //small margin
         Rectangle<int> thumbnailBounds (1,1, getWidth()-2, getHeight()-2);
         this->thumbnail.drawChannel(g,
@@ -320,27 +335,96 @@ void IRWaveform::releaseResources()
 // player control
 void IRWaveform::play(int start, int duration, int offset, bool looping)
 {
-    this->player->setParameters(start, duration, offset, looping);
-    this->player->setLooping(looping);
-    this->player->start();
-    
-    
-    startAnimation();
+    if(this->duration > 0)
+    {
+        if(this->segmentPlayerStatus == END_REACHED)
+        {
+            stop();
+        }
+        this->player->setParameters(start, duration, offset, looping);
+        this->player->setLooping(looping);
+        this->player->start();
+        this->segmentPlayerStatus = PLAYING;
+        startAnimation();
+    }
 }
 
+void IRWaveform::play()
+{
+    
+    if(this->duration > 0)
+    {
+        auto data = this->audioData->getData();
+        double sampleRate = data->getSampleRate();
+        double duration = ceil(getDisplayDuration() * sampleRate);
+        double start = floor(getStart() * sampleRate);
+        
+        //std::cout << "start before fixed " << start << " : currentPlayedFrame = " << getCurrentPlayedFrame() << std::endl;
+        
+        // if already reached the end of segment, then initialize first
+        if(getCurrentPlayedFrame() >= (start + duration))
+        {
+            stop();
+        }
+        
+        // if it is paused in the middle of audio data, then re-start from the paused location.
+        double fixLength = getCurrentPlayedFrame() - start;
+        if(fixLength > 0 &&
+           fixLength < duration)
+        {
+            start = getCurrentPlayedFrame();
+            duration -= fixLength;
+            
+        }else{
+            setCurrentPlayedFrame(start);
+        }
+    
+
+        play(start, duration, 0, false);
+        
+        //std::cout << "play : start " << start << ", duration " << duration << " current = "<< getCurrentPlayedFrame() << std::endl;
+      
+    }
+}
 
 void IRWaveform::stop()
 {
-    this->player->setLooping(false);
-    this->player->stop();
-    
-    stopAnimation();
+    if(this->duration > 0)
+    {
+        this->player->stop();
+        this->segmentPlayerStatus = STOPPED;
+        setCurrentPlayedFrame(getStart());
+        this->player->initializeParameters();
+        //update
+        updatePlayingLine();
+        
+        stopAnimation();
+        
+        
+    }
 }
 
 
 void IRWaveform::pausing()
 {
-    this->player->pause();
+    if(this->duration > 0)
+    {
+        if(this->segmentPlayerStatus == PLAYING)
+        {
+            setCurrentPlayedFrame(this->player->getNextReadPosition());
+            this->player->pause();
+            this->segmentPlayerStatus = PAUSED;
+            stopAnimation();
+        }
+    }else{
+        std::cout <<"pausing not operated, duration = 0\n";
+    }
+}
+
+bool IRWaveform::isPlaying() const
+{
+    if(this->player == nullptr) return false;
+    return this->player->isPlaying();
 }
 
 
@@ -352,7 +436,6 @@ SoundPlayerClass* IRWaveform::getPlayer() const
 
 void IRWaveform::audioPtrDelivery(IRAudio *obj)
 {
-    std::cout << "audioPtrDelivery filename = " << obj->getFile().getFullPathName() << std::endl;
     //makeThumbnail(obj->getFile().getFullPathName());
     
     this->file = obj->getFile();
@@ -413,16 +496,34 @@ void IRWaveform::zoomInOutOperatedFromComponent(IRAudio* obj)
         //std::cout <<"zoomInfo same \n";
     }
 }
+
 void IRWaveform::audioPlayOperatedFromComponent(IRAudio* obj)
 {
-    
     auto comp = obj->getEmittingComponent();
     // check if the emmiting component is not this object otherwise we will face on the infinitive loop
+    
+    //std::cout << "audioPlayOperatedFromComponent : comp = " << comp << " received in " << nodeObject << std::endl;
+    
+    // check if the received component is not this object
+    // the received component is MASTER and non-received object is SLAVE
     if(comp != nodeObject)
     {
-        // stop pther playing process in this case to avoid unneccesary lisk
-        if(this->player->isPlaying()) this->player->stop();
+        std::cout << "audioPlayOperatedFromComponent from " << comp << " to " << nodeObject << std::endl;
+
+        // Only LINKED
+               this->segmentPlayerStatus = PLAYPOSITION_SLAVED;
         
+        
+        // stop pther playing process in this case to avoid unneccesary lisk
+        //if(this->player->isPlaying()) this->player->stop();
+        if(this->segmentPlayerStatus == PLAYING ||
+           this->segmentPlayerStatus == PAUSED ||
+           this->segmentPlayerStatus == END_REACHED)
+        {
+            stop();
+        }
+        
+       
         
         setCurrentPlayedFrame(obj->getCurrentPlayedFrame());
         createPlayingLine(obj->getCurrentPlayedFrame());
@@ -445,47 +546,72 @@ void IRWaveform::viewPortPositionFromComponent(IRAudio *obj)
 
 // --------------------------------------------------
 
-void IRWaveform::updateAnimationFrame()
+void IRWaveform::updatePlayingLine()
 {
     if(this->audioData != nullptr)
     {
-        if(this->player->isPlaying())
+        auto data = this->audioData->getData();
+        int64 playingPosition = this->player->getNextReadPosition();
+        
+        createPlayingLine(playingPosition);
+
+        // if this object is HOST, then call linkAudioPlaywithSharedComponents()
+        if(this->segmentPlayerStatus != PLAYPOSITION_SLAVED)
         {
-            auto data = this->audioData->getData();
-            int64 playingPosition = this->player->getStartPosition() +
-            this->player->getNextReadPosition();
-            
             data->setCurrentPlayedFrame(playingPosition);
-            
             data->linkAudioPlaywithSharedComponents(nodeObject);
-            
-            createPlayingLine(playingPosition);
         }
     }
+}
+
+void IRWaveform::updateAnimationFrame()
+{
+    updatePlayingLine();
 }
 
 void IRWaveform::createPlayingLine(int64 currentFrame)
 {
     if(this->audioData != nullptr)
     {
+                
+        // in waveform
         auto data = this->audioData->getData();
         double sampleRate = data->getSampleRate();
-        double duration = getDisplayDuration();
-        double start = getStart();
+        double duration = ceil(getDisplayDuration() * sampleRate);
+        double start = floor(getStart() * sampleRate);
         
-        double p = (double)currentFrame - (start * sampleRate);
+        // in audio player in sample
+        double playSamples = this->player->getPlaySamples();
+        double playStart   = this->player->getStartPosition();
         
-        if(p > 0)
+        double p = (double)currentFrame - start;
+
+        if(p >= 0)
         {
-            double w = sampleRate * duration;
             
-            float ratio = p / w;
+            //std::cout << this << " : start " << start << ", duration " << duration << " : playStart " << playStart << ", playSamples " << playSamples << " :  current frame" << currentFrame <<std::endl;
             
+            float ratio = p / duration;
+                    
             int x_pos = floor((float)getWidth() * ratio);
+            
+            //std::cout << "createPlayingLine : xpos = " << x_pos << " : ratio = " << ratio << " : (p : " << p << " / playStart" << playStart << " from playSamples " << playSamples<< ") "<< std::endl;
             
             this->playingLine = Rectangle<int>(x_pos, 0, x_pos, getHeight());
             repaint();
+            
+            // reaches to the end
+            if((p + start - playStart) >= (playSamples-1))
+            {
+                //std::cout << "pausing... currentFrame = " << currentFrame << " : than " << (playStart + playSamples-1) << std::endl;
+
+                if(this->segmentPlayerStatus != PLAYPOSITION_SLAVED) pausing();
+                this->segmentPlayerStatus = END_REACHED;
+                
+                
+            }
 
         }
     }
 }
+// --------------------------------------------------

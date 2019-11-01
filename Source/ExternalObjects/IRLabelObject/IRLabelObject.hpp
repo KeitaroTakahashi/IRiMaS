@@ -3,10 +3,7 @@
 #define IRLabelObject_h
 
 #include "IRNodeObject.hpp"
-#include "IRLabelObjectPreference.hpp"
-
-
-
+#include "IRLabelController.hpp"
 
 class IRLabelObject : public IRNodeObject,
                       public ChangeListener
@@ -14,7 +11,7 @@ class IRLabelObject : public IRNodeObject,
     
 public:
     
-    IRLabelObject(Component* parent);
+    IRLabelObject(Component* parent, IRStr* str);
     ~IRLabelObject();
     
     IRNodeObject* copyThis() override;
@@ -38,7 +35,7 @@ public:
     Label label;
     
     // preference
-    IRLabelObjectPreference *preference;
+    std::unique_ptr<IRLabelController> controller;
 
 private:
     // ------------------------------------------------------------
@@ -47,7 +44,6 @@ private:
     void statusChangedCallback(IRNodeComponentStatus status) override;
     
     Font font;
-
     
 };
 

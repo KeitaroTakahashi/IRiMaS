@@ -20,7 +20,6 @@ IRPreferenceSpace::~IRPreferenceSpace()
 
 void IRPreferenceSpace::resized()
 {
-    std::cout << "preferenceSpace resized\n";
     if (this->isPreferenceObjAlreadySet == true)
     {
         preferenceObj->setBounds(0, 0, getWidth(), getHeight());
@@ -55,7 +54,7 @@ void IRPreferenceSpace::setPreferenceObj(IRPreferenceObject* preferenceObj)
     
     this->isPreferenceObjAlreadySet = true;
     
-    std::cout << "prefernece OBj set with " << getWidth() << " , " << getHeight() << std::endl;
+    //std::cout << "prefernece OBj set with " << getWidth() << " , " << getHeight() << std::endl;
 }
 
 

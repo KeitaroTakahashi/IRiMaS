@@ -26,10 +26,23 @@ public:
         PROJECTSAVE,
         zoomInfoShared,
         currentPlayedFrameShared,
-        viewPosShared
+        viewPosShared,
+        NONE
+        
     };
     
-    IRWaveform(IRNodeObject* parent);
+    enum IRWaveformPlayerStatus
+    {
+       // player
+        PLAYING,
+        PAUSED,
+        STOPPED,
+        END_REACHED,
+        PLAYPOSITION_SLAVED, // this represents the status that this object does not actually play any audio data, but its playing position cursor moves because its linked audiio object is playing the audio data.
+        NOACTION
+    };
+    
+    IRWaveform(IRNodeObject* parent, IRStr* str);
     ~IRWaveform();
     
     void openFile();
@@ -37,7 +50,8 @@ public:
 
     void changeListenerCallback (ChangeBroadcaster* source) override;
     
-    void fileImportCompleted();
+    // called when file import completed, and before re-drawn the waveform thumbnail
+    virtual void fileImportCompletedAction() {};
     void getFilePtr(File file);
     void makeThumbnail(String path);
     
@@ -61,9 +75,11 @@ public:
     virtual void releaseResources() override;
     // ==================================================
 
+    void play();
     void play(int start, int duration, int offset, bool looping);
     void stop();
     void pausing();
+    bool isPlaying() const;
     
     SoundPlayerClass* getPlayer() const;
 
@@ -77,6 +93,7 @@ public:
     // ==================================================
     void createPlayingLine(int64 currentFrame);
 
+    void updatePlayingLine();
 
     // ==================================================
     // link system
@@ -118,12 +135,12 @@ public:
     void viewPortPositionFromComponent(IRAudio* obj) override;
 
     IRWaveformStatus getStatus() const { return this->status; }
-    IRWaveformStatus status;
+    IRWaveformStatus status = NONE;
+    
+    IRWaveformPlayerStatus segmentPlayerStatus = NOACTION;
+    IRWaveformPlayerStatus getSegmentPlayerStatus() const { return this->segmentPlayerStatus; }
 
     // ==================================================
-    
-    
-    
     
     void deinitializeAudioData();
 
@@ -141,7 +158,9 @@ private:
     AudioThumbnail thumbnail;
     
     // parameters
+    // the beginning of the audio file in ms
     double start = 0.0;
+    // the duration of the audio file in ms
     double duration = 0.0;
     int channelIndex = 0;
     double zoomFactor = 1.0;
@@ -149,8 +168,13 @@ private:
     Rectangle<int> playingLine;
     
     // ---------------------------------------------------------------------------
+    // file import  USE fileImportCompletedAction(); for override
+    void fileImportCompleted();
+
+    // ---------------------------------------------------------------------------
     // sharedInformation
-    
+    // current playing frame in samples
+    // currentPlayedFrame counts from start value which represents the beginning of the audio file in ms
     int64 currentPlayedFrame = 0;
     Point<int>visiblePos;
     Point<float> zoomInfo;
@@ -163,8 +187,7 @@ private:
     //thread lock
     CriticalSection callbackLock;
 
-    // system appearance
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+   
 
 };
 

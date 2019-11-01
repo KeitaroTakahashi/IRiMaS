@@ -190,7 +190,6 @@ private:
     
     Array<IRNodeObject* > copiedObjects;
     
-    SelectedItemSet<IRNodeObject*> selectedItemList;
     AudioEngine mixer;
     
     // dummy object for drag drop action

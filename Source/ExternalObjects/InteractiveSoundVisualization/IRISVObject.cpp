@@ -7,11 +7,11 @@
 
 #include "IRISVObject.hpp"
 
-IRISVObject::IRISVObject(Component* parent) :
-IRNodeObject(parent, "IRISV", NodeObjectType(heavyWeightComponent))
+IRISVObject::IRISVObject(Component* parent, IRStr* str) :
+IRNodeObject(parent, "IR3DVisualizer", str, NodeObjectType(heavyWeightComponent))
 {
 
-    this->UI = std::make_shared<IR3DGraphicUIWithPreference>(this);
+    this->UI = std::make_shared<IR3DGraphicUIWithPreference>(this, str);
     
     this->UI->setBounds(0, 0, 600, 400);
     addAndMakeVisible(this->UI.get());
@@ -32,7 +32,7 @@ void IRISVObject::paint(Graphics &g)
 {
     
     //auto area = getLocalBounds().reduced (2);
-    g.setColour (SYSTEMCOLOUR.contents);
+    g.setColour (getStr()->SYSTEMCOLOUR.contents);
     //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
     g.drawRect(getLocalBounds().toFloat(), 1.0);
     

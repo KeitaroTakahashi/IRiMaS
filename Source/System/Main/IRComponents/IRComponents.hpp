@@ -13,6 +13,7 @@
 
 #include "JuceHeader.h"
 #include "IRFileManager.hpp"
+#include "ColourLib.h"
 
 class IRComponents
 {

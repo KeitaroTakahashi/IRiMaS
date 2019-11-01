@@ -7,12 +7,12 @@
 
 #include "IRViewPort.hpp"
 
-IRViewPort::IRViewPort()
+IRViewPort::IRViewPort(IRStr* str) : IRStrComponent(str)
 {
     ScrollBar& bar1 = getHorizontalScrollBar();
-    bar1.setColour(ScrollBar::ColourIds::thumbColourId, SYSTEMCOLOUR.fundamental);
+    bar1.setColour(ScrollBar::ColourIds::thumbColourId, getStr()->SYSTEMCOLOUR.contents);
     ScrollBar& bar2 = getVerticalScrollBar();
-    bar2.setColour(ScrollBar::ColourIds::thumbColourId, SYSTEMCOLOUR.fundamental);
+    bar2.setColour(ScrollBar::ColourIds::thumbColourId, getStr()->SYSTEMCOLOUR.contents);
 
 
 }

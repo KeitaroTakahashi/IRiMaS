@@ -7,7 +7,7 @@
 
 #include "AutomationController.hpp"
 
-AutomationController::AutomationController()
+AutomationController::AutomationController(IRStr* str) : IRStrComponent(str)
 {
     this->zoomInButton.setImage(this->ImageBank.getZoomIn().white);
     addAndMakeVisible(&this->zoomInButton);
@@ -54,7 +54,7 @@ void AutomationController::resized()
 }
 void AutomationController::paint(Graphics& g)
 {
-    g.setColour(SYSTEMCOLOUR.contents);
+    g.setColour(getStr()->SYSTEMCOLOUR.contents);
     g.setOpacity(0.6);
     g.fillRect(getLocalBounds());}
 

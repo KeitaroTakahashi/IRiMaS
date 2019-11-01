@@ -7,7 +7,8 @@
 
 #include "IRWorkspace2.hpp"
 
-IRWorkspace::IRWorkspace(String title, IRStr* str, PreferenceWindow* preferenceWindow)
+IRWorkspace::IRWorkspace(String title, IRStr* str, PreferenceWindow* preferenceWindow) :
+IRStrComponent(str), message(20, 30, this, str)
 {
     
     this->name = title;
@@ -17,7 +18,7 @@ IRWorkspace::IRWorkspace(String title, IRStr* str, PreferenceWindow* preferenceW
     setOpaque(true);
     
     //setBufferedToImage(false);
-    loadBackgroundImageLink(); // for LinkMode
+    //loadBackgroundImageLink(); // for LinkMode
     
     setWantsKeyboardFocus(true);
     addKeyListener(this);
@@ -26,7 +27,6 @@ IRWorkspace::IRWorkspace(String title, IRStr* str, PreferenceWindow* preferenceW
         addKeyListener(this->ir_str->key);
         addMouseListener(this->ir_str->mouse, false);
     }
-    
     
     //object menu
     this->objectMenuComponent = new ObjectListMenu(this, Rectangle<int>(300,400));
@@ -42,6 +42,7 @@ IRWorkspace::IRWorkspace(String title, IRStr* str, PreferenceWindow* preferenceW
     this->selector->setShiftConstrainsDirection(true);
     this->selector->setConstrainBoundsToParent(true, {0,0,10,10});
     
+    //openGLInit();
 }
 
 
@@ -62,11 +63,12 @@ IRWorkspace::~IRWorkspace()
 
 void IRWorkspace::paint (Graphics& g)
 {
-    std::cout << " ++++++ workspace repained! ++++++ \n";
+    this->bench.start();
+    //shaderTask(g);
     g.fillAll(Colours::white);
     
     // draw shadows for the selected objects
-    if(isEditMode()) drawShadows(g);
+    //if(isEditMode()) drawShadows(g);
     
     // paint all of
     /*
@@ -75,8 +77,9 @@ void IRWorkspace::paint (Graphics& g)
      obj->initialPaintOnWorkspace(g, this);
      }*/
     
-    if(isEditMode()) drawGrids(g);
+    //if(isEditMode()) drawGrids(g);
     
+    /*
     if(isLinkMode())
     {
         float w = getWidth() / 2;
@@ -84,7 +87,10 @@ void IRWorkspace::paint (Graphics& g)
         float x = w - w/2;
         float y = getHeight()/2 - h/2;
         g.drawImage(this->background_image_link, Rectangle<float>(x,y,w,h));
-    }
+    }*/
+    
+    std::cout << " ++++++ workspace repained! ++++++ " << this->bench.stop() << std::endl;
+
     
 }
 
@@ -96,7 +102,7 @@ void IRWorkspace::drawShadows(Graphics& g)
     
     for(auto obj : list)
     {
-        DropShadow shadow(SYSTEMCOLOUR.contents, 30, Point<int>(0,0));
+        DropShadow shadow(getStr()->SYSTEMCOLOUR.contents, 30, Point<int>(0,0));
         
         Rectangle<int> b = obj->getBounds();
         Rectangle<int> bounds(b.getX(), b.getY(), b.getWidth(), b.getHeight());
@@ -122,7 +128,10 @@ void IRWorkspace::drawGrids(Graphics& g)
     {
         p.startNewSubPath(i, 0);
         p.lineTo(i, h);
-        
+    }
+    
+    for(i=0;i<=h;i+=this->thick_grids_interval)
+    {
         p.startNewSubPath(0, i);
         p.lineTo(w, i);
     }
@@ -133,22 +142,29 @@ void IRWorkspace::drawGrids(Graphics& g)
     {
         p.startNewSubPath(i, 0);
         p.lineTo(i, h);
-        
-        p.startNewSubPath(0, i);
-        p.lineTo(w, i);
     }
+    
+    for(i=0;i<=h;i+=this->thin_grids_pixel)
+       {
+           p.startNewSubPath(0, i);
+           p.lineTo(w, i);
+       }
     p.closeSubPath();
     g.strokePath(p, PathStrokeType(this->grid_thickness2));
 }
 
 void IRWorkspace::resized()
 {
+    
+    this->message.setCentrePosition(getWidth()/2,
+                                    getHeight()/2);
+
 }
 
 
 void IRWorkspace::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRWorkspace mouseDown " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
+    //std::cout << "IRWorkspace mouseDown " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
     
     this->selector->mouseDownHandler(e);
     
@@ -164,6 +180,7 @@ void IRWorkspace::mouseDown(const MouseEvent& e)
 
 void IRWorkspace::mouseMove(const MouseEvent& e)
 {
+    
     this->currentMousePosition = e.getEventRelativeTo(this).getPosition();
     
     //std::cout << currentMousePosition.getX() << " , " << currentMousePosition.getY() << std::endl;
@@ -173,36 +190,47 @@ void IRWorkspace::mouseMove(const MouseEvent& e)
 
 void IRWorkspace::mouseUp(const MouseEvent& e)
 {
-    this->selector->mouseUpHandler(e);
-    if (this->isMultiSelectMode)
-    {
-        removeChildComponent(this->selector);
-        this->isMultiSelectMode = false;
-    }
     
-    if (this->dummy.size() > 0)
+    //std::cout << "IRWorkspace mouseUp " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
+    this->selector->mouseUpHandler(e);
+
+    if(isEditMode())
     {
-        this->dummy.clear();
+    
+        if (this->isMultiSelectMode)
+        {
+            removeChildComponent(this->selector);
+            this->isMultiSelectMode = false;
+        }
+        
+        if (this->dummy.size() > 0)
+        {
+            this->dummy.clear();
+        }
+        //request updating the workspaceList
+        if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
     }
-    //request updating the workspaceList
-    if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
 }
 
 
 void IRWorkspace::mouseDrag(const MouseEvent& e)
 {
-    this->currentMousePosition = e.getEventRelativeTo(this).getPosition();
-    
-    if(!this->isResizingFlag){
-        this->selector->mouseDragHandler(e);
-    }
-    
-    if(this->dummy.size() > 0)
+    if(isEditMode())
     {
-        for(auto obj : this->dummy)
+        
+        this->currentMousePosition = e.getEventRelativeTo(this).getPosition();
+        
+        if(!this->isResizingFlag){
+            this->selector->mouseDragHandler(e);
+        }
+        
+        if(this->dummy.size() > 0)
         {
-            obj->setCentrePosition(this->currentMousePosition.getX(),
-                                   this->currentMousePosition.getY());
+            for(auto obj : this->dummy)
+            {
+                obj->setCentrePosition(this->currentMousePosition.getX(),
+                                       this->currentMousePosition.getY());
+            }
         }
     }
 }
@@ -217,7 +245,7 @@ void IRWorkspace::mouseDoubleClick(const MouseEvent& e)
         std::cout << "Open menu window\n";
         
         // we need the screen position
-        openObjectListMenu(e.getScreenPosition());
+        //openObjectListMenu(e.getScreenPosition());
     }
 }
 
@@ -240,12 +268,15 @@ void IRWorkspace::modifierKeysChanged(const ModifierKeys &mod)
 
 void IRWorkspace::changeListenerCallback (ChangeBroadcaster* source)
 {
+    std::cout << "changeListenerCallback : " << source << std::endl;
     IRNodeObject* obj = dynamic_cast<IRNodeObject* >(source);
+
     if(obj != nullptr)
     {
+
         if(obj->isSelected())
         {
-            //std::cout << "selected reported!\n";
+            
         }
         
         // if resizing, deselect all objects and setSelect true only the resized object.
@@ -348,28 +379,54 @@ bool IRWorkspace::isEditMode() const
 }
 
 
-void IRWorkspace::setEditMode(bool flag)
+void IRWorkspace::setEditMode(bool flag, bool notification)
 {
     this->editModeFlag = flag;
     
+    // reset all selected objects
+    this->selector->deselectAllObjects();
+    
     if (flag)
     {
+        
+        this->message.setText("EDIT MODE");
+        this->message.toFront(true);
+        this->message.run();
+        this->message.addKeyListener(this);
+        
         this->title = this->name + " (EDIT MODE)";
         this->setInterceptsMouseClicks(true, true);
         setWantsKeyboardFocus(true);
+        
     }
     else
     {
+        
+        this->message.setText("CONTROL MODE");
+        this->message.toFront(true);
+        this->message.run();
+        this->message.addKeyListener(this);
+
+        setWantsKeyboardFocus(true);
+
         this->title = this->name;
         this->setInterceptsMouseClicks(true, false);
+
+        
     }
     
     //std::cout << "edit mode changed " << flag << " : " << this->title << std::endl;
     
+   
     for (auto obj : this->objects)
     {
         obj->setEditMode(flag);
     }
+  
+    // notify to IRMainSpace
+    if(notification) callEditModeChanged();
+    
+    
     // send change message to IRProject
     sendChangeMessage();
     
@@ -496,11 +553,135 @@ void IRWorkspace::loadBackgroundImageLink()
     this->background_image_link = loadImage(url);
 #endif
     
-    std::cout << "background_image_link " << this->background_image_link.getWidth() << std::endl;
 }
 
 Image IRWorkspace::loadImage(String url)
 {
     File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url);
     return ImageFileFormat::loadFrom(file);
+}
+
+// ==================================================
+// OpenGL
+
+void IRWorkspace::openGLInit()
+{
+    
+    std::cout<< "openGLInit\n";
+    if (auto* peer = getPeer())
+            peer->setCurrentRenderingEngine (0);
+        
+        this->openGLContext.attachTo(*getTopLevelComponent());
+        
+        String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName();
+    #if JUCE_MAC
+        url += "/Contents/Resources/materials/Sources/GLSL/grid/KGrid.frag";
+    #elif JUCE_IOS
+        url += "/materials/Sources/GLSL/grid/KGrid.frag";
+    #endif
+        
+        File f(url);
+        if(!f.exists())
+        {
+            std::cout << "Error : " << url << " does not exist!!\n";
+            AlertWindow::showOkCancelBox(AlertWindow::QuestionIcon, "Fatal Error", "IRSpectrogram : frag file " + url + "not found! Please contact a developer with this error message.");
+        }
+        
+        std::cout<< "frag loaded\n";
+
+        
+        this->fragURL = url;
+        this->fragmentText.load (url.toStdString());
+        this->fragmentCode = fragmentText.getStdString();
+        this->fragmentRefreshed = true;
+    
+    std::cout<< "init done\n";
+
+        
+}
+
+void IRWorkspace::shaderTask(Graphics& g)
+{
+    std::cout << "shaderTask\n";
+    //std::cout << "shaderTask\n";
+    
+    if (shader.get() == nullptr || shader->getFragmentShaderCode() != fragmentCode)
+    {
+       
+        //shader.reset();
+        if (fragmentCode.isNotEmpty() && this->fragmentRefreshed)
+        {
+            std::cout << "shader reset\n";
+            shader.reset (new OpenGLGraphicsContextCustomShader (fragmentCode));
+            std::cout << "shader activated\n";
+
+            shader->onShaderActivated = [this](OpenGLShaderProgram& program){setUniform(program);};
+            
+            if(!this->isTextureCreated)
+            {
+                createTexture();
+                this->isTextureCreated = true;
+            }
+            std::cout << "shader compiled\n";
+
+            auto result = shader->checkCompilation (g.getInternalContext());
+            if (result.failed()) shader.reset();
+            
+            this->fragmentRefreshed = false;
+        }else{
+            std::cout << "fragmentCode empty and not refreshed\n";
+        }
+    }else{
+        std::cout << "shader null or shaderCode not loaded\n";
+    }
+    
+    if (shader.get() != nullptr)
+    {
+        shader->fillRect (g.getInternalContext(),
+                          getLocalBounds()
+                          );
+        
+        
+    }
+}
+
+void IRWorkspace::setUniform(OpenGLShaderProgram& program)
+{
+    
+    // IMPORTANT : get the actual scale of the screen because MacOSX uses Retina display which has double piexles
+    int scale = Desktop::getInstance().getDisplays().getMainDisplay().scale;
+    int w = getWidth() * scale;
+    int h = getHeight() * scale;
+    
+    program.setUniform("resolution", w, h);
+    
+    // we need to bind the texture every time.
+    glBindTexture(GL_TEXTURE_2D, this->textureID);
+    if(this->updateTexture) update();
+    // pass the texture buffer to Shader
+    GLint bufIndex = glGetUniformLocation(program.getProgramID(), "buffer");
+    glUniform1i(bufIndex, 0);
+      
+}
+
+void IRWorkspace::update()
+{
+    
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, this->sp_w, this->sp_h, GL_DEPTH_COMPONENT, GL_FLOAT, this->buffer);
+    this->updateTexture = false;
+}
+
+void IRWorkspace::createTexture()
+{
+    glDeleteTextures(1, &this->textureID);
+
+    this->textureID = 0;
+    glGenTextures(1, &this->textureID);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, this->sp_w, this->sp_h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, this->buffer);
+    
 }

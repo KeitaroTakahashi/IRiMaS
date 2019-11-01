@@ -19,13 +19,13 @@ private ChangeListener, IRAudio::Listener
     
 public:
     
-    AudioPlayer_threadSafe(IRNodeObject* parent);
+    AudioPlayer_threadSafe(IRNodeObject* parent, IRStr* str);
     
     ~AudioPlayer_threadSafe()
     {
         // remove pointer
         if(this->audioData != nullptr)
-            getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+            getFileManager().discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
     }
     
     void changeListenerCallback (ChangeBroadcaster* source) override
@@ -116,7 +116,7 @@ public:
             // set a callback function which is called when file load is completed.
             // get a pointer of the audio file
             std::function<void()> callback = [this]{fileImportCompleted();};
-            getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+            getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                                file,
                                                this->parent,
                                                callback);
@@ -194,7 +194,7 @@ public:
     void fileImportCompleted()
     {
         
-        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
         //set audioBuffer to player
         std::vector<int>v = {0,1};
         this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
@@ -209,7 +209,7 @@ public:
     {
         
         std::cout << "fileImportCompleted object \n";
-        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
         //set audioBuffer to player
         std::vector<int>v = {0,1};
         this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);

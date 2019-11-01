@@ -42,6 +42,9 @@ void IRWorkspace::deleteSelectedObjects()
         deleteObject(obj);
     }
     
+    // initialize the focuses on any NodeObject
+    nodeObjectGetFocused(nullptr);
+    
     repaint();
 }
 // ------------------------------------------------------------
@@ -75,15 +78,27 @@ void IRWorkspace::createObject(IRNodeObject *obj)
     this->objects.add(obj);
     
     // use this function in order to also update file manger of all related UIs etc.
-    obj->callUpdateIRFileManager(getFileManager());
-    std::cout << " IRFileManager in WorkSpace = " << getFileManager() << std::endl;
+    obj->updateFileManager(this->ir_str->FILEMANAGER);
+    obj->callUpdateIRFileManager(&this->ir_str->FILEMANAGER);
     
     //audiosource
-    if (obj->isContainAudioSource())
+    if (obj->isContainAudioSource()){
         this->mixer.addAudioSource(obj->getAudioSource());
+    }
+    
+    // setup openGL Context if it has. This should be called adter addAndMakeVisible
+    obj->initOpenGLContext();
+    
+    // check if the created object is Heavy-weight Component
+    if(obj->getObjectType().componentType == IRNodeComponentType::heavyWeightComponent ||
+       obj->getObjectType().componentType == IRNodeComponentType::orginaryIRComponent)
+    {
+        callHeavyObjectCreated(obj);
+    }
     
     //request updating the workspaceList
     if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
+    
     
     repaint();
 }
@@ -145,7 +160,7 @@ void IRWorkspace::manageHeavyWeightComponents(bool flag)
     {
         auto objType = obj->getObjectType();
         // check if this object contains any HEAVY weights
-        if(objType.componentType == heavyWeightComponent)
+        if(objType.componentType == heavyWeightComponent || objType.componentType == orginaryIRComponent)
         {
             if(flag){
                 addAndMakeVisible(obj);
@@ -225,7 +240,7 @@ void IRWorkspace::itemHasSelectedAction(ObjectListMenu* menu)
     std::cout << "item has selected action " << menu->getSelectedIndex() << std::endl;
     std::cout << "item has selected action " << menu->getSelectedId() << std::endl;
     
-    auto* obj = IRFactory.createObject(menu->getSelectedId(), this);
+    auto* obj = IRFactory.createObject(menu->getSelectedId(), this, nullptr);
     obj->setCentrePosition(this->currentMousePosition.getX(),
                            this->currentMousePosition.getY());
     createObject(obj);
@@ -246,7 +261,10 @@ void IRWorkspace::itemHasSelectedAction(ObjectListMenu* menu)
 void IRWorkspace::dragoutNodeObjectFromParent(IRNodeObject* obj)
 {
     std::cout << "workspace : dragoutNodeObject" << std::endl;
-    setEditMode(true);
+    
+    // change edit mode and notify its change
+    // because dragoutNodeObjectFromParent is called from IRNodeObject and not the up down order.
+    setEditMode(true, true);
     // notify the change of editMode to IRProject
     if (this->notifyEditModeChanged != nullptr)
     {
@@ -358,8 +376,71 @@ void IRWorkspace::getObjectGlobal(IRNodeObject* obj)
 
 void IRWorkspace::nodeObjectModifiedNotification(IRNodeObject* obj)
 {
+    
     if(this->notifyNodeObjectModification != nullptr)
         this->notifyNodeObjectModification(obj);
+
 }
+
+void IRWorkspace::nodeObjectSelectionChange(IRNodeObject* obj)
+{
+    //std::cout << "IRWorkspace nodeObjectSelectionChange " << obj << std::endl;
+    callNodeObjectSelectionChange(obj);
+    
+}
+
+void IRWorkspace::nodeObjectGetFocused(IRNodeObject* obj)
+{
+    //std::cout << "IRWorkspace nodeObjectSelectionChange " << obj << std::endl;
+    callNodeObjectGetFocused(obj);
+    
+}
+
+void IRWorkspace::heavyComponentCreated(IRNodeObject* obj)
+{
+    callHeavyObjectCreated(obj);
+}
+
+void IRWorkspace::callNodeObjectSelectionChange(IRNodeObject* obj)
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [obj](Listener& l){ l.nodeObjectSelectionChange(obj); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+void IRWorkspace::callNodeObjectGetFocused(IRNodeObject* obj)
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [obj](Listener& l){ l.nodeObjectGetFocused(obj); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+void IRWorkspace::callEditModeChanged()
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.editModeChanged(this); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+void IRWorkspace::callHeavyObjectCreated(IRNodeObject* obj)
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [obj](Listener& l){ l.heavyObjectCreated(obj); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+
 // ============================================================
 

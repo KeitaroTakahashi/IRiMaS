@@ -14,10 +14,10 @@
 class IRSpectrogramObjectPreference : public IRPreferenceObject
 {
 public:
-    IRSpectrogramObjectPreference(String title, Rectangle<int> frameRect) :
-    IRPreferenceObject(title, frameRect)
+    IRSpectrogramObjectPreference(String title, Rectangle<int> frameRect, IRStr* str) :
+    IRPreferenceObject(title, frameRect, str)
     {
-        this->UI = std::make_shared<IRSpectrogramPreferenceUI>(title);
+        this->UI = std::make_shared<IRSpectrogramPreferenceUI>(title, str);
         addAndMakeVisible(this->UI.get());
     }
 

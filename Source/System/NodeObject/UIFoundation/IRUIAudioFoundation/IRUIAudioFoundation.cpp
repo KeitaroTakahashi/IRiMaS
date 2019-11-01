@@ -8,15 +8,15 @@
 
 #include "IRUIAudioFoundation.hpp"
 
-IRUIAudioFoundation::IRUIAudioFoundation(IRNodeObject* nodeObject, AudioDeviceManager& dm) :
-IRUIFoundation(nodeObject),
+IRUIAudioFoundation::IRUIAudioFoundation(IRNodeObject* nodeObject, IRStr* str,  AudioDeviceManager& dm) :
+IRUIFoundation(nodeObject, str),
 deviceManager (dm),
 usingCustomDeviceManager (true)
 {
 }
 
-IRUIAudioFoundation::IRUIAudioFoundation(IRNodeObject* nodeObject) :
-IRUIFoundation(nodeObject),
+IRUIAudioFoundation::IRUIAudioFoundation(IRNodeObject* nodeObject, IRStr* str) :
+IRUIFoundation(nodeObject, str),
 deviceManager (defaultDeviceManager),
 usingCustomDeviceManager (false)
 {

@@ -15,12 +15,10 @@ class IRShapeObject : public IRNodeObject,
 public ChangeListener
 {
 public:
-    IRShapeObject(Component* parent);
+    IRShapeObject(Component* parent, IRStr* str);
     ~IRShapeObject();
     
     IRNodeObject* copyThis() override;
-    
-    
     
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json data) override;

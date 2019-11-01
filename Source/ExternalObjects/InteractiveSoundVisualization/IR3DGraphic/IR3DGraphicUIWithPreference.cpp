@@ -7,9 +7,9 @@
 
 #include "IR3DGraphicUIWithPreference.hpp"
 
-IR3DGraphicUIWithPreference::IR3DGraphicUIWithPreference(IRNodeObject* nodeObject) : IR3DGraphicUI(nodeObject)
+IR3DGraphicUIWithPreference::IR3DGraphicUIWithPreference(IRNodeObject* nodeObject, IRStr* str) : IR3DGraphicUI(nodeObject, str)
 {
-    this->preference = std::make_shared<IRISVObjectPreference>("ISV Preference", Rectangle<int>(400,720));
+    this->preference = std::make_shared<IRISVObjectPreference>("ISV Preference", Rectangle<int>(400,720), str);
     
     this->preference->setControllerUI(&this->controlUI);
     this->preference->getUI()->addChangeListener(this);

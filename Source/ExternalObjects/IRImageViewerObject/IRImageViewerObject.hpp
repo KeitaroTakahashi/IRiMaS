@@ -4,13 +4,15 @@
 
 #include "IRImageViewer.hpp"
 #include "IRNodeObject.hpp"
+#include "IRImageViewerController.hpp"
 
-class IRImageViewerObject : public IRNodeObject, private ChangeListener
+class IRImageViewerObject : public IRNodeObject,
+private ChangeListener
 {
     
 public:
     
-    IRImageViewerObject(Component* parent);
+    IRImageViewerObject(Component* parent, IRStr* str);
     ~IRImageViewerObject();
     
     // copy constructor
@@ -24,6 +26,8 @@ public:
     
     void resizeThisComponentEvent(const MouseEvent& e) override;
     
+    std::unique_ptr<IRImageViewerController> controller;
+
 private:
     
     // ------------------------------------------------------------
@@ -33,6 +37,8 @@ private:
     void changeListenerCallback (ChangeBroadcaster* source) override;
 
     std::shared_ptr<IRImageViewer> imageViewer { nullptr };
+    
+    
 };
 
 #endif /* IRImageViwerObject_h */

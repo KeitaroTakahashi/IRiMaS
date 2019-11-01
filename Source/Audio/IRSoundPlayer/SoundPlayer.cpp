@@ -111,7 +111,7 @@ void SoundPlayerClass::getNextAudioBlock(const AudioSourceChannelInfo &bufferToF
             // if the next NextReadPosition is beyond a total length of the audio data
             // and looping mode is false, do the following process.
             // This process operated when the input stream of data runs out.
-                if(this->getNextReadPosition() >= this->playSamples && ! this->looping)
+                if(this->playPosition >= this->playSamples && ! this->looping)
                 {
                     this->playing = false;
                     this->inputStreamEOF = true;
@@ -158,6 +158,18 @@ void SoundPlayerClass::setParameters(int startPosition, int playSamples, int off
     jassert(playSamples >= 0);
     this->playSamples = playSamples;
     this->looping = shouldLoop;
+}
+
+void SoundPlayerClass::initializeParameters()
+{
+    if(this->buffer != nullptr)
+    {
+        setNextReadPosition(0);
+        this->playSamples = this->buffer->getNumSamples();
+
+        jassert(this->playSamples >= 0);
+        this->looping = false;
+    }
 }
 // ----------------------------------------------------------------------------------------------------
 void SoundPlayerClass::setOutputChannels(std::vector<int>outputChannels)
@@ -233,7 +245,7 @@ void SoundPlayerClass::pause()
             Thread::sleep(2);
         
         //inform the status change
-        sendChangeMessage();
+        //sendChangeMessage();
     }
 }
 // ----------------------------------------------------------------------------------------------------

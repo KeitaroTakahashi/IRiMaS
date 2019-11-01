@@ -51,19 +51,24 @@ public:
     // @param3 wait samples time of playing audio data
     // @param4 shouldLoop true = loop mode
     void setParameters(int startPosition, int playSamples, int offset, bool shouldLoop);
+    
+    // startPosition = 0; playSamples = this->buffer->getNumSamples(); offset = 0; shouldLoop = false;
+    void initializeParameters();
     // -----------------------------------------------------------
     // set outputChannels e.g. {0, 1} = 1 and 2 outputs
     void setOutputChannels(std::vector<int>outputChannels);
     // -----------------------------------------------------------
     // set position to play
+    // Note this newPosition should not include "startPosition"
     void setNextReadPosition(int64 newPosition) override;
     // ------------------------------------------------------------
     //get next read position in audio data in sample
-    int64 getNextReadPosition() const override { return static_cast<int>(this->playPosition); }
+    int64 getNextReadPosition() const override { return static_cast<int>( this->startPosition + this->playPosition ); }
     
     int64 getStartPosition() const { return this->startPosition; }
     // ------------------------------------------------------------
     void setPlaySamples(int samples) { this->playSamples = samples; }
+    int getPlaySamples() const { return this->playSamples; }
     // ------------------------------------------------------------
     //get total length of the audio data in sample
     int64 getTotalLength() const override { return static_cast<int64> (this->buffer->getNumSamples()); }

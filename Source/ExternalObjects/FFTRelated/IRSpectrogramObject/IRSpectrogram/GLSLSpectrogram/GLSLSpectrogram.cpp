@@ -7,8 +7,8 @@
 
 #include "GLSLSpectrogram.hpp"
 
-GLSLSpectrogram::GLSLSpectrogram(IRNodeObject* nodeObject) :
-IRUIAudioFoundation(nodeObject)
+GLSLSpectrogram::GLSLSpectrogram(IRNodeObject* nodeObject, IRStr* str) :
+IRUIAudioFoundation(nodeObject, str)
 {
     setOpaque(false);
     

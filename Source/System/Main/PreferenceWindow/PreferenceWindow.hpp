@@ -5,7 +5,6 @@
 
 #include "JuceHeader.h"
 #include "IRPreferenceSpace.hpp"
-#include "Preferences.h"
 
 class PreferenceWindow : public DocumentWindow,
                          public IRComponents,

@@ -14,11 +14,11 @@ frameRect(frameRect)
     this->title.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     this->title.setJustificationType(Justification::centred);
     addAndMakeVisible(&this->title);
+    
 }
 
 ObjectMenuComponent::~ObjectMenuComponent()
 {
-    
 }
 
 // ==================================================
@@ -26,15 +26,16 @@ void ObjectMenuComponent::paint(Graphics& g)
 {
     g.fillAll(getStr()->SYSTEMCOLOUR.contents);
     
+    
 }
 
 void ObjectMenuComponent::resized()
 {
-    int y = 30;
+    int y = 10;
     int x = getWidth() / 2;
-    this->title.setBounds(0, 0, 100, 30);
-    this->title.setCentrePosition(x, y);
-    
+    this->title.setBounds(0, y, 100, 30);
+    //this->title.setCentrePosition(x, y);
+    y += 20;
     for(auto item : this->items)
     {
         int s = this->buttonSize + yMarge*2;
@@ -81,6 +82,19 @@ void ObjectMenuComponent::ObjectMenuItemClicked(ObjectMenuItem* item)
 void ObjectMenuComponent::ObjectMenuItemMouseUp(ObjectMenuItem* item)
 {
     itemReleased(item->getObject());
+    
+}
+
+void ObjectMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
+{
+    IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
+
+    auto topSpace = static_cast<IRWorkspace* >(getStr()->TopWorkspace);
+    
+    auto nodeObj = factory.createObject(obj->id, topSpace, getStr());
+    nodeObj->setCentrePosition(topSpace->getWidth()/2,
+                               topSpace->getHeight()/2);
+    topSpace->createObject(nodeObj);
     
 }
 // ==================================================

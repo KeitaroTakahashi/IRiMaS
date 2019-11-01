@@ -11,14 +11,17 @@
 #include "JuceHeader.h"
 #include "IRNodeObject.hpp"
 #include "IRFileManager.hpp"
+#include "IRIconBank.hpp"
+#include "UserSettingStr.h"
+
 
 class IRUIFoundation : public Component,
-public IRComponents,
+public IRStrComponent,
 public KeyListener,
 private IRNodeObject::Listener
 {
 public:
-    IRUIFoundation(IRNodeObject* nodeObject);
+    IRUIFoundation(IRNodeObject* nodeObject, IRStr* str);
     ~IRUIFoundation();
     
     // --------------------------------------------------
@@ -41,17 +44,24 @@ public:
     virtual void videoPtrDelivery(IRVideo* obj) {};
     // --------------------------------------------------
     // ==================================================
+    // when file manager of this Object is updated, then all objects of IRUIFoundation
+    // will share the file manger automatically.
+    virtual void updateFileManager(IRFileManager& fileManager) {}
+    // callback informing fileManager changes
+    //std::function<void(IRFileManager*)> fileManagerUpdated;
     
+    void setFileManagerUpdateCallback(std::function<void(IRFileManager&)> callback);
+    
+    IRFileManager& getFileManager() { return getStr()->FILEMANAGER; }
     // ==================================================
-
     // object
     IRNodeObject* nodeObject;
     // --------------------------------------------------
+    
 private:
     bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override;
     bool keyPressed(const KeyPress &key,
                     Component* originatingComponent) override;
-    
     // ==================================================
     // get signal from IRNodeComponent when IRNodeObject status changed.
     void NodeObjectStatusChanged(IRNodeComponentStatus status);
@@ -64,10 +74,7 @@ private:
     void receiveDataLink(IRNodeObject* obj) override;
     void receiveVideoLink(IRNodeObject* obj) override;
     
-    // called when IRFileManager is given or updated in IRNodeObject
-    void updateIRFileManager(IRFileManager* fileManager) override;
     // --------------------------------------------------
-    
     
 
     // --------------------------------------------------
@@ -75,8 +82,11 @@ private:
     void setEditModeBase(bool newEditMode);
     
     // ==================================================
-    
-
+    protected:
+        UserSettingStr USERSETTING;
+        IR::IRColours SYSTEMCOLOUR;
+        IRIconBank    ICONBANK;
+        IRFileManager FILEMANAGER;
 private:
     
     //key event

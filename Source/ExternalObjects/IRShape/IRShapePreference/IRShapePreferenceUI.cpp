@@ -7,7 +7,8 @@
 
 #include "IRShapePreferenceUI.hpp"
 
-IRShapePreferenceUI::IRShapePreferenceUI()
+IRShapePreferenceUI::IRShapePreferenceUI(IRStr* str) :
+IRStrComponent(str)
 {
     
     addAndMakeVisible(&this->LabelTitle);

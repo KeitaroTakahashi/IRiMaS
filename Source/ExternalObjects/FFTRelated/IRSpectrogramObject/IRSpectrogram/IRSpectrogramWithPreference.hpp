@@ -17,7 +17,7 @@ private KeAnimationComponent
 public:
     // ==================================================
 
-    IRSpectrogramWithPreference(IRNodeObject* nodeObject);
+    IRSpectrogramWithPreference(IRNodeObject* nodeObject, IRStr* str);
     ~IRSpectrogramWithPreference();
     
     IRSpectrogramObjectPreference* getPreference() const { return this->preference.get(); }

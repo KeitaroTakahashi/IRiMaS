@@ -20,7 +20,7 @@ public ChangeBroadcaster
 public:
     //==============================================================================
 
-    IR3DGraphicUI(IRNodeObject* parent);
+    IR3DGraphicUI(IRNodeObject* parent, IRStr* str);
     ~IR3DGraphicUI();
     
     //==============================================================================

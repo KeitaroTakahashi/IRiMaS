@@ -1,9 +1,14 @@
 
 #include "IRNodeComponent.hpp"
 
-IRNodeComponent::IRNodeComponent(Component* parent, String name, NodeObjectType objectType) :
+IRNodeComponent::IRNodeComponent(Component* parent,
+                                 String name,
+                                 IRStr* str,
+                                 NodeObjectType objectType) :
+IRStrComponent(str),
 resizingArea(25, 25)
 {
+    
     this->objectType = objectType;
     //default size
     setSize(100, 100);
@@ -22,15 +27,38 @@ resizingArea(25, 25)
     this->menu.addItem(5, "Paste");
     this->menu.addItem(6, "Duplicate");
     
+    
+    
 }
 
 
 IRNodeComponent::~IRNodeComponent()
 {
+    std::cout << "IRNodeComponent ...\n";
+
     delete this->mixer;
     
+    std::cout << "openGL despatching...\n";
+    if(this->objectType.componentType == orginaryIRComponent)
+        this->openGLContext.detach();
+
     std::cout << "~IRNODECOMPONENT DESTRUCTOR CALLED" << std::endl;
     
+}
+
+void IRNodeComponent::initOpenGLContext()
+{
+    //if this object contains heavy weight component, then connect to OpenGLContext
+       if(this->objectType.componentType == orginaryIRComponent)
+       {
+           this->openGLContext.setRenderer(this);
+           this->openGLContext.setContinuousRepainting(false);
+           
+           this->openGLContext.attachTo(*this);
+           IROpenGLManager manager(&this->openGLContext);
+           manager.setOpenGLContextAlpha(0);
+    
+       }
 }
 
 
@@ -98,20 +126,24 @@ PreferenceWindow* IRNodeComponent::getPreferenceWindow()
     return this->preferenceWindow;
 }
 
-void IRNodeComponent::updateFileManager(IRFileManager* fileManager)
+
+void IRNodeComponent::updateFileManager(IRFileManager& fileManager)
 {
-    setIRFileManager(fileManager);
-    if(this->fileManagerUpdated != nullptr) this->fileManagerUpdated(fileManager);
+    FILEMANAGER = &fileManager;
+    //setIRFileManager(fileManager);
+    if(this->fileManagerUpdated != nullptr) this->fileManagerUpdated(&fileManager);
 }
 
 // paint
 void IRNodeComponent::paint(Graphics& g)
 {
+    g.fillAll(Colours::transparentBlack);
+
     auto area = getLocalBounds();//.reduced (0);
 
     if (isEditMode())
     {
-        g.setColour (SYSTEMCOLOUR.contents);
+        g.setColour (getStr()->SYSTEMCOLOUR.contents);
         g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
     }
     
@@ -177,7 +209,8 @@ void IRNodeComponent::mouseDown(const MouseEvent& e)
 
 void IRNodeComponent::mouseMove(const MouseEvent& e)
 {
-    mouseUpNodeEvent(e);
+    //mouseUpNodeEvent(e);
+    mouseMoveNodeEvent(e);
     mouseMoveEvent(e);
 }
 
@@ -421,6 +454,7 @@ void IRNodeComponent::statusChangedWrapper(IRNodeComponentStatus status)
         case EditModeStatus:
             // cancel selection
             setSelected(false);
+            
             if(isEditMode())
             {
                 if(! this->mouseListenerFlag)
@@ -433,6 +467,8 @@ void IRNodeComponent::statusChangedWrapper(IRNodeComponentStatus status)
                 {
                     comp->setInterceptsMouseClicks(false, false);
                 }
+                
+                
             }else{
                 
                 if(this->mouseListenerFlag)
@@ -445,6 +481,8 @@ void IRNodeComponent::statusChangedWrapper(IRNodeComponentStatus status)
                 {
                     comp->setInterceptsMouseClicks(true, true);
                 }
+                
+               
             }
             
             break;
@@ -461,9 +499,13 @@ void IRNodeComponent::statusChangedWrapper(IRNodeComponentStatus status)
 }
 
 
+// =============================================
+
+
 void param_register(std::string id, int data)
 {
     t_json save = t_json::object({
         {id, data}
     });
 }
+

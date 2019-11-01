@@ -105,7 +105,7 @@ ISVPreferenceUI::~ISVPreferenceUI()
 
 void ISVPreferenceUI::resized()
 {
-    int marginX = 20;
+    //int marginX = 20;
     int y = 10;
     // margin 10
     this->LabelTitle.setBounds           (20, y, 300, 30);

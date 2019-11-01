@@ -17,11 +17,11 @@ class IRAutomationObject : public IRNodeObject,
                            public ChangeListener
 {
 public:
-    IRAutomationObject(Component *parent) :
-    IRNodeObject(parent, "IRAutomation")
+    IRAutomationObject(Component *parent, IRStr* str) :
+    IRNodeObject(parent, "IRAutomation", str, NodeObjectType(orginaryIRComponent))
     {
 
-        this->UI = new IRAutomationUIWithPreference(this);
+        this->UI = new IRAutomationUIWithPreference(this, str);
         this->UI->setEditMode(isEditMode());
         this->UI->setBounds(this->xMargin,
                             this->yMargin,
@@ -44,7 +44,7 @@ public:
     // ------------------------------------------------------------
     IRNodeObject* copyThis() override
     {
-        IRAutomationObject* newObj = new IRAutomationObject(this->parent);
+        IRAutomationObject* newObj = new IRAutomationObject(this->parent, getStr());
         return newObj;
     }
     // ------------------------------------------------------------
@@ -56,7 +56,7 @@ public:
     // ------------------------------------------------------------
     void paint(Graphics &g) override
     {
-        g.fillAll(SYSTEMCOLOUR.contents);
+        g.fillAll(getStr()->SYSTEMCOLOUR.contents);
         //auto area = getLocalBounds().reduced (2);
             
        

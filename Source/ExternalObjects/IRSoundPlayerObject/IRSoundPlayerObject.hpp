@@ -14,7 +14,7 @@ class IRSoundPlayerObject : public IRNodeObject
     
 public:
     
-    IRSoundPlayerObject(Component* parent);
+    IRSoundPlayerObject(Component* parent, IRStr* str);
     ~IRSoundPlayerObject();
 
     IRNodeObject* copyThis() override;

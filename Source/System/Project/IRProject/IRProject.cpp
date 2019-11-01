@@ -159,7 +159,6 @@ void IRProject::createNewWorkspace()
     addAndMakeVisible(space);
     this->workspaces.push_back(space);
     
-    std::cout << "new workspace created " << space << std::endl;
     if(this->workspaceList != nullptr)
     {
         // if there is already a topSpace, then treat heavy components

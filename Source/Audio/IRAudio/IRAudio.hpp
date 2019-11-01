@@ -80,7 +80,6 @@ public:
     {
     public:
         virtual ~Listener() {}
-        
         // called when audio file has been loaded
         virtual void fileImportCompleted(IRAudio *obj) {};
         // called when file status changed (will be loaded, completed, deleted etc.)
@@ -89,14 +88,13 @@ public:
         
         // called when zoom in or out action operated in a component which holds IRAudio
         virtual void zoomInOutOperatedFromComponent(IRAudio* obj) {}
-        
         virtual void audioPlayOperatedFromComponent(IRAudio* obj) {}
-        
         virtual void viewPortPositionFromComponent(IRAudio* obj) {}
-        
     };
     
-    void addListener(Listener* newListener) { this->ImportAudioListeners.add(newListener); }
+    void addListener(Listener* newListener) { this->ImportAudioListeners.add(newListener);
+        std::cout << "IRAudio listener " << this->ImportAudioListeners.size() << std::endl;
+    }
     void removeListener(Listener* listener) { this->ImportAudioListeners.remove(listener); }
     
     // ---------------------------------------------------------------------------

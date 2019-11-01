@@ -8,7 +8,10 @@
 #ifndef AutomationPreference_OpenAudioUI_h
 #define AutomationPreference_OpenAudioUI_h
 
+#include "IRStrComponent.hpp"
+
 class AutomationPreferenceOpenAudioUI : public Component,
+public IRStrComponent,
 public ChangeBroadcaster
 {
 public:
@@ -20,7 +23,8 @@ public:
 
     };
     
-    AutomationPreferenceOpenAudioUI()
+    AutomationPreferenceOpenAudioUI(IRStr* str) :
+    IRStrComponent(str)
     {
         
         this->openAudioButton.setButtonText("open audio file");

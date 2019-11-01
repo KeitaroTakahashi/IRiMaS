@@ -1,10 +1,10 @@
 
 #include "IRSoundPlayerObject.hpp"
 
-IRSoundPlayerObject::IRSoundPlayerObject(Component* parent)
-: IRNodeObject(parent, "IRSoundPlayer")
+IRSoundPlayerObject::IRSoundPlayerObject(Component* parent, IRStr* str)
+: IRNodeObject(parent, "IRSoundPlayer", str, NodeObjectType(orginaryIRComponent))
 {
-    this->player = new AudioPlayer_threadSafe(this); // FOR SOME UNCLEAR REASON THIS DOES NOT LEAK (FD)
+    this->player = new AudioPlayer_threadSafe(this, str); // FOR SOME UNCLEAR REASON THIS DOES NOT LEAK (FD)
     addAndMakeVisible(this->player);
     childComponentManager(this->player);
     // in case we use any AudioSources, we must add them to the internal mixer via this method.
@@ -23,7 +23,7 @@ IRSoundPlayerObject::~IRSoundPlayerObject()
 
 IRNodeObject* IRSoundPlayerObject::copyThis()
 {
-    return new IRSoundPlayerObject(this->parent);
+    return new IRSoundPlayerObject(this->parent, getStr());
 }
 
 void IRSoundPlayerObject::resized()
@@ -37,7 +37,7 @@ void IRSoundPlayerObject::paint(Graphics& g)
     {
         auto area = getLocalBounds().reduced (2);
         
-        g.setColour (SYSTEMCOLOUR.contents);
+        g.setColour (getStr()->SYSTEMCOLOUR.contents);
         g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
     }
 }

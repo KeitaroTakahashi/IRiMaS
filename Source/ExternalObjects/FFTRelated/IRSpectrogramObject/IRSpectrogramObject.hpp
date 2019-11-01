@@ -15,7 +15,7 @@ IRNodeObject::Listener,
 private ChangeListener
 {
 public:
-    IRSpectrogramObject(Component* parent);
+    IRSpectrogramObject(Component* parent, IRStr* str);
     ~IRSpectrogramObject();
     // ==================================================
 
@@ -47,6 +47,8 @@ private:
     
     bool isBeingResized = false;
 
+    // from IRNodeObject
+    void moveToFrontAction() override;
     // ==================================================
 
     std::shared_ptr<IRSpectrogramWithPreference> UI;

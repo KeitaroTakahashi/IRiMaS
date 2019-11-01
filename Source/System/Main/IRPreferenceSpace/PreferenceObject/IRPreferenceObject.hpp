@@ -5,16 +5,17 @@
 
 #include "JuceHeader.h"
 #include "IRComponents.hpp"
+#include "IRStrComponent.hpp"
 
 class IRPreferenceObject : public Component,
-public IRComponents,
+public IRStrComponent,
 public ChangeBroadcaster,
 public ChangeListener
 {
     
 public:
     
-    IRPreferenceObject(String title, Rectangle<int> frameRect);
+    IRPreferenceObject(String title, Rectangle<int> frameRect, IRStr* str);
     ~IRPreferenceObject();
     
     virtual void resized() override;

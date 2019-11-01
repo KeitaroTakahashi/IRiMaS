@@ -7,7 +7,8 @@
 
 #include "IRSpectrogramPreferenceUI.hpp"
 
-IRSpectrogramPreferenceUI::IRSpectrogramPreferenceUI(String title) :
+IRSpectrogramPreferenceUI::IRSpectrogramPreferenceUI(String title, IRStr* str) :
+IRStrComponent(str),
 magnitudeAmount(this, "magnitude", 0.0, 10.0, 1.0, 0.1),
 verticalScale  (this, "vertical scale", 0.1, 50.0, 8.0, 1.0),
 horizontalScale  (this, "horizontal scale", 1.0, 32.0, 1.0, 1.0)

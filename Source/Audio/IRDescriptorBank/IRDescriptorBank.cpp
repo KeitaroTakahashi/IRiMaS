@@ -133,7 +133,7 @@ void IRDescriptorBank::calcFlatness()
     float multi_accum = 1.0;
     float mag = 0;
     
-    float limits = std::numeric_limits<float>::min();
+    //float limits = std::numeric_limits<float>::min();
     
     IRDescriptorStr* powerStr = getDescriptor(FFT_LinearPower,
                                               fftsize);

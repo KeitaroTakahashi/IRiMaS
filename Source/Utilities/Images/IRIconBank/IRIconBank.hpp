@@ -20,6 +20,14 @@ public:
     {
         Image white;
         Image black;
+        Image gray;
+    };
+    
+    struct IRLogoImage
+    {
+        Image small; // 177 x 345
+        Image medium; // 355 x 690
+        Image large; // 710 x 1380
     };
     
     IRIconBank();
@@ -42,23 +50,44 @@ public:
     
     IRIconImage icon_addPage;
     IRIconImage icon_addPage2;
+    IRIconImage icon_newSlide_noFrame;
+    IRIconImage icon_newSlide;
     IRIconImage icon_inspector;
     IRIconImage icon_load;
     IRIconImage icon_loop;
-    IRIconImage icon_newProject;
+    IRIconImage icon_newProject; // used
     IRIconImage icon_object;
     IRIconImage icon_preference;
     IRIconImage icon_save;
+    IRIconImage icon_save_noFrame;
     IRIconImage icon_toNavigator;
     IRIconImage icon_toObjectMenu;
+    IRIconImage icon_saveProject_noFrame;
+    IRIconImage icon_openProject_noFrame;
+    IRIconImage icon_saveasProject_noFrame;
+    IRIconImage icon_saveProject_arrow;
+    IRIconImage icon_saveasProject_arrow;
+    IRIconImage icon_openProject_arrow; // used
+    IRIconImage icon_close;
     
     IRIconImage icon_text;
     IRIconImage icon_chart;
     IRIconImage icon_image;
     IRIconImage icon_play;
+    IRIconImage icon_pause;
+    IRIconImage icon_stop;
     IRIconImage icon_wav;
     
-
+    IRIconImage icon_rightBar;
+    IRIconImage icon_leftBar;
+    
+    
+    // logo
+    IRLogoImage logo_darkMagenta;
+    IRLogoImage logo_darkBlue;
+    IRLogoImage logo_darkGreen;
+    
+    IRLogoImage loadLogoImage(String url);
     
 private:
     

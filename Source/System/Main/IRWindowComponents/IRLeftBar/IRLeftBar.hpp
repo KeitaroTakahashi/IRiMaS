@@ -15,6 +15,7 @@
 #include "IRImageButton.hpp"
 #include "LeftBarObjectMenu.hpp"
 #include "LeftBarSlideMenu.hpp"
+#include "IROpenGLManager.hpp"
 
 class IRLeftBar : public Component,
 public IRStrComponent,
@@ -41,8 +42,13 @@ public:
     void openMenu(objectCategory type);
     void closeMenu();
     //==================================================
-
+    void addNewWorkspaceSlide(IRWorkspace* space);
     
+    void workspaceSelectedAction(IRWorkspace* space);
+    std::function<void(IRWorkspace*)> workspaceSelectedCallback;
+    
+    //==================================================
+
     IRWindowBarActionStatus getStatus() const { return this->status; }
     
     Point<int> pos;
@@ -50,13 +56,31 @@ public:
     Point<int> prevPos;
     
     //==================================================
+    void toNavigatorAction();
+    void toObjectMenuAction();
     
+    //==================================================
+
+    // update Z-Order?
+    void bringThisToFront() {
+        //this->openGLContext.bringViewToFront();
+        IROpenGLManager manager(&this->openGLContext);
+        manager.bringOpenGLContextFront(this);
+    }
+   
 private:
     
     //==================================================
+    //OpenGL
+    OpenGLContext openGLContext;
+    bool isOpenGLComponentClosed = false;
+    
+   
+
+    
+    //==================================================
     void addButtons();
-    void toNavigatorAction();
-    void toObjectMenuAction();
+
     void createButton(IRImageButton* button, IRIconBank::IRIconImage img);
     //==================================================
     void changeListenerCallback (ChangeBroadcaster* source) override;
@@ -72,13 +96,18 @@ private:
     std::shared_ptr<LeftBarSlideMenu> slideMenuComponent;
 
     objectCategory currentMenuType = objectCategory::NONE;
+    objectCategory previousMenuType = objectCategory::NONE;
     // ==================================================
     void updateAnimationFrame() override;
-    
+    // ==================================================
+
     //==================================================
 
     IRImageButton toNavigatorButton;
     IRImageButton toObjectMenuButton;
+    
+    TextButton addNewSlideButton;
+    TextButton deleteSlideButton;
     //==================================================
     // layout
     int buttonSize = 40;
@@ -90,14 +119,21 @@ private:
     int yMarge = 6; // better to be even
     int leftMarge = 10;
     int rightMarge = 85;
+    int slideMenuButtomMargin = 50;
     
     int maxWidth = 0;
+    int preferenceMaxWidth = 600;
     int ordinaryWidth = 0;
     
     // ==================================================
     bool openMenuSpace = false;
-    int openSpeed = 8;
+    bool openPrefernceSpace = false;
+    int openPreferenceSpeed = 24;
+    int openSpeed = 12;
     bool isOpened = false; // if menu area is visible or not
+    
+    void openDefaultMenu();
+    void openPreferenceMenu();
 
     //==================================================
     

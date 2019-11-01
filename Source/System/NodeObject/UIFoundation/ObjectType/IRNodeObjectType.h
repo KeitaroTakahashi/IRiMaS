@@ -16,6 +16,8 @@ enum objectCategory
     CHARTMENU,
     PLAYERMENU,
     OBJECTMENU,
+    INSPECTORMENU,
+    PREFERENCEMENU,
     NONE
 };
 

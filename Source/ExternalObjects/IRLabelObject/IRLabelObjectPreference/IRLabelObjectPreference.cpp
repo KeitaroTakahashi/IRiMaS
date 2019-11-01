@@ -4,14 +4,14 @@
 
 
 
-IRLabelObjectPreference::IRLabelObjectPreference(String title, Rectangle<int> frameRect) :
-IRPreferenceObject(title,frameRect)
+IRLabelObjectPreference::IRLabelObjectPreference(String title, Rectangle<int> frameRect, IRStr* str) :
+IRPreferenceObject(title,frameRect, str)
 {
     std::cout << "IRLABELOBJECTPREFERENCE CONSTRUCTOR" << std::endl;
-    // this->fontGUI = new FontGUI(title);
-    this->fontGUI = std::make_unique<FontGUI>(title);
+    this->fontGUI = std::make_unique<FontGUI>(title, str);
     addAndMakeVisible(this->fontGUI.get());
     this->fontGUI->addChangeListener(this);
+
 }
 
 
@@ -35,15 +35,15 @@ void IRLabelObjectPreference::changeListenerCallback (ChangeBroadcaster* source)
     {
         switch (this->fontGUI->getChangeStatus())
         {
-            case FontChanged:
+            case FontGUI::FontChanged:
                 break;
-            case FontStyleChanged:
+            case FontGUI::FontStyleChanged:
                 break;
-            case FontSizeChanged:
+            case FontGUI::FontSizeChanged:
                 break;
-            case FontAlignChanged:
+            case FontGUI::FontAlignChanged:
                 break;
-            case FontColourChanged:
+            case FontGUI::FontColourChanged:
                 break;
             default:
                 break;

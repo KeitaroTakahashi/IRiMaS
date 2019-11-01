@@ -4,6 +4,7 @@
 
 #include "IRNodeObject.hpp"
 #include "IRWaveformObjectUI2.hpp"
+#include "IRWaveformController2.hpp"
 #include "IRObjectSelection.hpp"
 
 class IRWaveformObject : public IRNodeObject,
@@ -13,7 +14,7 @@ class IRWaveformObject : public IRNodeObject,
     
 public:
     
-    IRWaveformObject(Component* parent);
+    IRWaveformObject(Component* parent, IRStr* str);
     ~IRWaveformObject();
     
     
@@ -37,19 +38,20 @@ public:
     int getXMargin() const;
     int getYMargin() const;
 
-    /*
-    bool keyPressed (const KeyPress& key,
-                             Component* originatingComponent) override
-    {
-     
-        IRNodeObject::keyPressed(key, originatingComponent);
-        return true;
-    }*/
+    std::shared_ptr<IRWaveformObjectUI2> waveform;
+    void createWaveform();
 
-    IRWaveformObjectUI2* waveform;
+    //preference
+    std::unique_ptr<IRWaveformController2> controller;
 
-    
 private:
+    // ==================================================
+    // for audioControllerChangeListener
+    void audioFileOpenAction();
+    // ==================================================
+
+    // ==================================================
+
     
     IRObjectSelection<Component* >* selector;
     bool selectFlag = true;
@@ -58,7 +60,12 @@ private:
     int xMargin = 0;
     int yMargin = 0;
     
+    // ==================================================
+
+    void audioControllerChangeListener();
     
+    // ==================================================
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWaveformObject)
 };
 

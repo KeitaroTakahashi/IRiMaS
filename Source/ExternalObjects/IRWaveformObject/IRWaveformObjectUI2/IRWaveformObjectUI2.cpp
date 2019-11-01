@@ -7,22 +7,19 @@
 
 #include "IRWaveformObjectUI2.hpp"
 
-IRWaveformObjectUI2::IRWaveformObjectUI2(IRNodeObject* parent) :
-IRUIFoundation(parent)
+IRWaveformObjectUI2::IRWaveformObjectUI2(IRNodeObject* parent, IRStr* str) :
+IRUIFoundation(parent, str)
 {
-    this->waveform = std::make_shared<IRWaveformObjectUI>(parent);
-    this->waveformView = std::make_shared<IRViewUI>(this->waveform.get(),
+    this->waveform = std::make_shared<IRWaveformObjectUI>(parent, str);
+    this->waveformView = std::make_shared<IRViewUI>(str,
+                                                    this->waveform.get(),
                                                     0, 40,
                                                     0, 40);
     this->waveform->addChangeListener(this);
-    
     addAndMakeVisible(this->waveformView.get());
-    
     this->waveformView->visibleAreaChangedCallback = [this](Rectangle<int> area){ visibleAreaChanged(area); };
-
     this->waveform->zoomInClickedCallback = [this]{ zoomInClicked(); };
     this->waveform->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
-    
 }
 
 IRWaveformObjectUI2::~IRWaveformObjectUI2()
@@ -108,7 +105,6 @@ void IRWaveformObjectUI2::changeListenerCallback (ChangeBroadcaster* source)
     {
         
         auto s = this->waveform->getStatus();
-        std::cout << "from waveform\n";
         if(s == IRWaveform::IRWaveformStatus::zoomInfoShared)
         {
             this->automation_width_ratio = this->waveform->getZoomInfo().getX();
@@ -122,4 +118,10 @@ void IRWaveformObjectUI2::changeListenerCallback (ChangeBroadcaster* source)
             this->waveformView->setViewPosition(pos.getX(), pos.getY());
         }
     }
+}
+
+void IRWaveformObjectUI2::setAutomationWidthRatio(float ratio)
+{
+    this->automation_width_ratio = ratio;
+    resized();
 }

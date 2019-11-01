@@ -7,13 +7,16 @@
 
 #ifndef AutomationPreferenceUI_h
 #define AutomationPreferenceUI_h
+#include "IRStrComponent.hpp"
 
 #include "AutomationPreference_OpenAudioUI.h"
 
-class AutomationPreferenceUI : public Component
+class AutomationPreferenceUI : public Component,
+public IRStrComponent
 {
 public:
-    AutomationPreferenceUI(String title)
+    AutomationPreferenceUI(String title, IRStr* str) :
+    IRStrComponent(str)
     {
         addAndMakeVisible(this->LabelTitle);
         this->LabelTitle.setText(title, dontSendNotification);
@@ -53,7 +56,7 @@ public:
         addAndMakeVisible(&this->descriptorList);
         // --------------------------------------------------
         
-        this->openAudioUI = std::make_shared<AutomationPreferenceOpenAudioUI>();
+        this->openAudioUI = std::make_shared<AutomationPreferenceOpenAudioUI>(getStr());
         addAndMakeVisible(this->openAudioUI.get());
 
     }

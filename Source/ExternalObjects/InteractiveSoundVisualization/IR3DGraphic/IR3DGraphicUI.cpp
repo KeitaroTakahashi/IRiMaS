@@ -7,7 +7,8 @@
 
 #include "IR3DGraphicUI.hpp"
 
-IR3DGraphicUI::IR3DGraphicUI(IRNodeObject* parent) : IRUIFoundation(parent)
+IR3DGraphicUI::IR3DGraphicUI(IRNodeObject* parent, IRStr* str) :
+IRUIFoundation(parent, str)
 {
     setSize(600, 400);
     
@@ -26,7 +27,7 @@ void IR3DGraphicUI::paint (Graphics& g)
     
     g.setFont (Font (16.0f));
     g.setColour (Colours::white);
-    g.drawText ("Hello World!", getLocalBounds(), Justification::centred, true);
+    //g.drawText ("Hello World!", getLocalBounds(), Justification::centred, true);
 }
 
 void IR3DGraphicUI::resized()

@@ -16,7 +16,7 @@ class IRLabelObjectPreference : public IRPreferenceObject
     
 public:
     
-    IRLabelObjectPreference(String title, Rectangle<int> frameRect);
+    IRLabelObjectPreference(String title, Rectangle<int> frameRect, IRStr* str);
     ~IRLabelObjectPreference();
 
     void resized() override;

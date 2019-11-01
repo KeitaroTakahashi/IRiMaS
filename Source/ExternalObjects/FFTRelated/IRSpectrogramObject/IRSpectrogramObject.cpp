@@ -7,10 +7,12 @@
 
 #include "IRSpectrogramObject.hpp"
 
-IRSpectrogramObject::IRSpectrogramObject(Component* parent) :
-IRNodeObject(parent, "IRSpectrogram", NodeObjectType(heavyWeightComponent))
+IRSpectrogramObject::IRSpectrogramObject(Component* parent, IRStr* str) :
+IRNodeObject(parent, "IRSpectrogram", str, NodeObjectType(heavyWeightComponent))
 {
-    this->UI = std::make_shared<IRSpectrogramWithPreference>(this);
+    
+    setOpaque(true);
+    this->UI = std::make_shared<IRSpectrogramWithPreference>(this, str);
     addAndMakeVisible(this->UI.get());
     this->UI->setEditMode(isEditMode());
     this->UI->setBounds(0, 0, getWidth(), getHeight());
@@ -30,7 +32,7 @@ IRSpectrogramObject::~IRSpectrogramObject()
 IRNodeObject* IRSpectrogramObject::copyThis()
 {
     std::cout << "IRSpectrogramObject copyThis " << this << std::endl;
-    return new IRSpectrogramObject(this->parent);
+    return new IRSpectrogramObject(this->parent, getStr());
 }
 
 
@@ -70,11 +72,13 @@ void IRSpectrogramObject::resized()
 
 void IRSpectrogramObject::paint(Graphics& g)
 {
+    
+    g.fillAll(getStr()->SYSTEMCOLOUR.background);
     if(isEditMode())
     {
         auto area = getLocalBounds();//.reduced (2);
         
-        g.setColour (SYSTEMCOLOUR.contents);
+        g.setColour (getStr()->SYSTEMCOLOUR.contents);
         //g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
         g.drawRect(area.toFloat(), 1.0);
     }
@@ -144,3 +148,8 @@ void IRSpectrogramObject::mouseUpEvent(const MouseEvent& e)
     }
 }
 
+
+void IRSpectrogramObject::moveToFrontAction()
+{    
+    this->UI->getSpectrogramComponent()->getComponent()->bringViewToFront();
+}

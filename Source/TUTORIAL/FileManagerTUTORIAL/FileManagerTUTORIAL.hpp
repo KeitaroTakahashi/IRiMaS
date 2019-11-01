@@ -28,7 +28,7 @@
 class FileManagerTUTORIAL : public IRUIFoundation
 {
 public:
-    FileManagerTUTORIAL(IRNodeObject* parent);
+    FileManagerTUTORIAL(IRNodeObject* parent, IRStr* str);
     ~FileManagerTUTORIAL();
     
     

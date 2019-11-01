@@ -18,7 +18,7 @@ private ChangeListener,
 public ChangeBroadcaster
 {
 public:
-    IRAnalysisUI(IRNodeObject* parent);
+    IRAnalysisUI(IRNodeObject* parent, IRStr* str);
     ~IRAnalysisUI();
     
     void openFile();

@@ -14,10 +14,10 @@
 class IRShapePreference : public IRPreferenceObject
 {
 public:
-    IRShapePreference(String title, Rectangle<int> frameRect) :
-    IRPreferenceObject(title, frameRect)
+    IRShapePreference(String title, Rectangle<int> frameRect, IRStr* str) :
+    IRPreferenceObject(title, frameRect, str)
     {
-        this->UI = std::make_shared<IRShapePreferenceUI>();
+        this->UI = std::make_shared<IRShapePreferenceUI>(str);
         addAndMakeVisible(this->UI.get());
     }
     ~IRShapePreference()
@@ -33,7 +33,7 @@ public:
     
     void paint(Graphics& g) override
     {
-        g.fillAll(SYSTEMCOLOUR.contents.brighter());
+        g.fillAll(getStr()->SYSTEMCOLOUR.contents.brighter());
     }
     
     IRShapePreferenceUI* getUI() const { return this->UI.get(); }

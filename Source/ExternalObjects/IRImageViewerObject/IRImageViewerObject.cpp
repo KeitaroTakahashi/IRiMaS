@@ -1,18 +1,25 @@
 
 #include "IRImageViewerObject.hpp"
 
-IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(parent, "IRImageViewer")
+IRImageViewerObject::IRImageViewerObject(Component* parent, IRStr* str) :
+IRNodeObject(parent, "IRImageViewer", str, NodeObjectType(orginaryIRComponent))
 {
     
+    this->controller.reset( new IRImageViewerController(str) );
+    this->controller->addChangeListener(this);
+    setObjController(this->controller.get());
+    
+    // original function to give this ChangeListener to controller->UI
+    this->controller->addChangeListener(this);
+    
     std::cout << "IRImageViewerObject" << std::endl;
-    this->imageViewer = std::make_shared<IRImageViewer>(this);
+    this->imageViewer = std::make_shared<IRImageViewer>(this, str);
 
     this->imageViewer->setBounds(5, 5, getWidth() - 10, getHeight() - 10);
     addAndMakeVisible(this->imageViewer.get());
     childComponentManager(this->imageViewer.get());
     this->imageViewer->addChangeListener(this);
 
-    std::cout << " IRFileManager in IRImageViewerObject = " << getFileManager() << std::endl;
 
     setSize(150, 150);
     
@@ -24,14 +31,14 @@ IRImageViewerObject::IRImageViewerObject(Component* parent) : IRNodeObject(paren
 
 IRImageViewerObject::~IRImageViewerObject()
 {
-
+    this->controller.reset();
 }
 
 
 // copy constructor
 IRNodeObject* IRImageViewerObject::copyThis()
 {
-    return new IRImageViewerObject(this->parent);
+    return new IRImageViewerObject(this->parent, getStr());
 }
 
 
@@ -88,7 +95,7 @@ void IRImageViewerObject::paint(Graphics& g)
     if (isEditMode())
     {
         auto area = getLocalBounds();
-        g.setColour(SYSTEMCOLOUR.contents);
+        g.setColour(getStr()->SYSTEMCOLOUR.contents);
         g.drawRect(area.toFloat(), 1.0f);
     }
 }
@@ -157,6 +164,22 @@ void IRImageViewerObject::changeListenerCallback (ChangeBroadcaster* source)
     if (source == this->imageViewer.get())
     {
         setSize(this->imageViewer->getWidth(), this->imageViewer->getHeight());
+    }
+    else if(source == this->controller.get())
+    {
+        
+        std::cout << "changeListenerCallback\n";
+
+        using uiStatus = ImageController::ImageControllerStatus;
+        
+        switch(this->controller->getStatus())
+        {
+            case uiStatus::OpenImageFile:
+                this->imageViewer->openFile();
+                break;
+            default:
+                break;
+        }
     }
 }
 

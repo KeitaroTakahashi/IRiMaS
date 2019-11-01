@@ -11,8 +11,8 @@ IRStartWindow::IRStartWindow(String name, Rectangle<int> frameRect) :
     setTitleBarHeight(0);
     
     // setup system colour
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    SYSTEMCOLOUR.set(IR::IRBlue());
+    //IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    //SYSTEMCOLOUR.set(IR::IRBlue());
     
     Rectangle<int> r = Desktop::getInstance().getDisplays().getMainDisplay().userArea;
     int x = r.getWidth();

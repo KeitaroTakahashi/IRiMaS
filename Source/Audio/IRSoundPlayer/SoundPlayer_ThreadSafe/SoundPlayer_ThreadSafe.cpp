@@ -10,8 +10,8 @@
 // =============================================================
 //# AudioPlayer_threadSafe
 // =============================================================
-AudioPlayer_threadSafe::AudioPlayer_threadSafe(IRNodeObject* parent) :
-IRUIAudioFoundation(parent),
+AudioPlayer_threadSafe::AudioPlayer_threadSafe(IRNodeObject* parent, IRStr* str) :
+IRUIAudioFoundation(parent, str),
 player(parent)
 {
     this->parent = parent;

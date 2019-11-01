@@ -16,7 +16,7 @@ void IRWaveformObjectUI::mouseDown(const MouseEvent& e)
     playSelectedArea();
     
     // show controller
-    
+  
     if(e.mods.isCtrlDown())
     {
         addAndMakeVisible(&this->controller);
@@ -158,12 +158,17 @@ void IRWaveformObjectUI::playSelectedArea()
     }
 }
 
+void IRWaveformObjectUI::playFromBegin()
+{
+    play();
+}
+
 
 void IRWaveformObjectUI::stopPlaying()
 {
    if (this->player->isPlaying())
    {
-       this->player->stop();
+       stop();
    }
 }
 

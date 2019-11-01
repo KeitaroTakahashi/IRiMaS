@@ -10,13 +10,7 @@
 SlideMenu::SlideMenu(IRStr* str) :
 IRStrComponent(str)
 {
-    addSlide();
-    addSlide();
-    addSlide();
-    addSlide();
-    addSlide();
-
-
+    
 }
 
 SlideMenu::~SlideMenu()
@@ -41,25 +35,47 @@ void SlideMenu::paint(Graphics& g)
 {
     g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     g.setColour(getStr()->SYSTEMCOLOUR.text);
-    g.drawLine(0, 0, getWidth(), 0, 2);
+    //g.drawLine(0, 0, getWidth(), 0, 2);
     
 
 }
 
-void SlideMenu::addSlide()
+void SlideMenu::addSlide(IRWorkspace* space)
 {
     int i = (int)this->slides.size() + 1;
-    this->slides.push_back(new IRWorkspaceSlide(getStr(), i));
+    this->slides.push_back(new IRWorkspaceSlide(getStr(), i, space));
     addAndMakeVisible(this->slides[i-1]);
-    this->slides[i-1]->onClick = [this]{ slideSelectedAction(); };
+    this->slides[i-1]->onClick = [this](IRWorkspaceSlide* slide){ slideSelectedAction(slide); };
+    
+    slideSelectedAction(this->slides[i-1]);
+    
+    resized();
+
 }
 
-void SlideMenu::slideSelectedAction()
+void SlideMenu::slideSelectedAction(IRWorkspaceSlide* slide)
 {
     for(auto item : this->slides)
     {
         item->setSelectedFlag(false);
     }
     
-    std::cout <<"slideSelectedAction\n";
+    slide->setSelectedFlag(true);
+    
+    if(this->slideHasSelected != nullptr)
+        this->slideHasSelected(slide);
+    
 }
+
+void SlideMenu::addNewWorkspaceSlide(IRWorkspace* space)
+{
+    std::cout << "SlideMenu::addNewWorkspaceSlide : " << space << std::endl;
+    addSlide(space);
+    int v_space = this->yMargin + (this->itemHeight * (int)this->slides.size());
+    
+    setSize(getWidth(), v_space);
+    
+    if(this->slideMenuUpdated != nullptr)
+        this->slideMenuUpdated();
+}
+

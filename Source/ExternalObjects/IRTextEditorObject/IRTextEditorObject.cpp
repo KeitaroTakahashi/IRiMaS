@@ -4,10 +4,13 @@
 
 
 
-IRTextEditorObject::IRTextEditorObject(Component* parent) : IRNodeObject(parent, "IRTextEditor")
+IRTextEditorObject::IRTextEditorObject(Component* parent, IRStr* str) :
+IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(orginaryIRComponent))
 {
-    this->preference = new IRTextEditorObjectPreference("TextEditor Preference", Rectangle<int>(400,720));
-    this->preference->getFontGUI()->addChangeListener(this);
+    this->controller.reset(new IRTextEditorController(str));
+    this->controller->getFontController()->addChangeListener(this);
+    
+    setObjController(this->controller.get());
     
     this->font.setTypefaceName("Arial");
     this->font.setTypefaceStyle("Regular");
@@ -20,8 +23,8 @@ IRTextEditorObject::IRTextEditorObject(Component* parent) : IRNodeObject(parent,
     this->textEditor.setText("text...", dontSendNotification);
     //this->label.setEditable(false); // not editable initially...
     // this->textEditor.setColour(TextEditor::textColourId, SYSTEMCOLOUR.titleText);
-    this->textEditor.setColour(TextEditor::backgroundColourId, SYSTEMCOLOUR.background);
-    this->textEditor.applyColourToAllText(SYSTEMCOLOUR.titleText, true);
+    this->textEditor.setColour(TextEditor::backgroundColourId, getStr()->SYSTEMCOLOUR.background);
+    this->textEditor.applyColourToAllText(getStr()->SYSTEMCOLOUR.titleText, true);
     
     // set editable condition
     
@@ -38,13 +41,13 @@ IRTextEditorObject::IRTextEditorObject(Component* parent) : IRNodeObject(parent,
 
 IRTextEditorObject::~IRTextEditorObject()
 {
-    delete this->preference;
+    this->controller.reset();
 }
 
 
 IRNodeObject* IRTextEditorObject::copyThis()
 {
-    IRTextEditorObject* newObj = new IRTextEditorObject(this->parent);
+    IRTextEditorObject* newObj = new IRTextEditorObject(this->parent, getStr());
     newObj->setFont(this->font);
     newObj->setTextColour(this->textColour);
     newObj->setAlign(this->alignId);
@@ -55,7 +58,7 @@ IRNodeObject* IRTextEditorObject::copyThis()
 
 t_json IRTextEditorObject::saveThisToSaveData()
 {
-    FontGUI* gui = this->preference->getFontGUI();
+    FontController* gui = this->controller->getFontController();
     Colour c = gui->getTextColour();
     
     std::string align = std::to_string(gui->getAlign());
@@ -104,7 +107,7 @@ void IRTextEditorObject::loadThisFromSaveData(t_json data)
     this->textEditor.setText(String(data["textContents"].string_value()), dontSendNotification);
     
     // gui
-    FontGUI* gui = this->preference->getFontGUI();
+    FontController* gui = this->controller->getFontController();
     gui->setTypefaceName(String(data["fontTypefaceName"].string_value()));
     gui->setTypefaceStyle(String(data["fontTypefaceStyle"].string_value()));
     gui->setHeight(data["textHeight"].int_value());
@@ -116,11 +119,12 @@ void IRTextEditorObject::loadThisFromSaveData(t_json data)
 
 void IRTextEditorObject::paint(Graphics &g)
 {
+    g.fillAll(getStr()->SYSTEMCOLOUR.background);
     if (isEditMode())
     {
         auto area = getLocalBounds();
         
-        g.setColour (SYSTEMCOLOUR.contents);
+        g.setColour (getStr()->SYSTEMCOLOUR.contents);
        // g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
         g.drawRect(area.toFloat(), 2.0);
     }
@@ -137,7 +141,7 @@ void IRTextEditorObject::resized()
 void IRTextEditorObject::mouseDownEvent(const MouseEvent& e)
 {
     //change preference Window if not yet
-    
+    /*
     if(getPreferenceWindow() != nullptr)
     {
         IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
@@ -149,14 +153,14 @@ void IRTextEditorObject::mouseDownEvent(const MouseEvent& e)
         if(current != preference){
             space->setPreferenceObj(preference);
         }
-    }
+    }*/
     
 }
 
 
 void IRTextEditorObject::changeListenerCallback (ChangeBroadcaster* source)
 {
-    FontGUI* fontGUI = this->preference->getFontGUI();
+    FontController* fontGUI = this->controller->getFontController();
     
     if(source == fontGUI)
     {
@@ -253,9 +257,11 @@ void IRTextEditorObject::statusChangedCallback(IRNodeComponentStatus status)
         case EditModeStatus:
             if(isEditMode()){
                 this->textEditor.setCaretVisible(false);
+                this->textEditor.setReadOnly(true);
             }
             else{
                 this->textEditor.setCaretVisible(true);
+                this->textEditor.setReadOnly(false);
             }
             break;
         case SelectableStatus:

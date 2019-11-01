@@ -17,7 +17,7 @@ private ChangeListener,
 private KeAnimationComponent
 {
 public:
-    IR3DGraphicUIWithPreference(IRNodeObject*nodeObject);
+    IR3DGraphicUIWithPreference(IRNodeObject*nodeObject, IRStr* str);
     ~IR3DGraphicUIWithPreference();
     // ==================================================
 

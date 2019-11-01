@@ -14,10 +14,10 @@
 class IRAutomationObjectPreference : public IRPreferenceObject
 {
 public:
-    IRAutomationObjectPreference(String title, Rectangle<int> frameRect) :
-    IRPreferenceObject(title,frameRect)
+    IRAutomationObjectPreference(String title, Rectangle<int> frameRect, IRStr* str) :
+    IRPreferenceObject(title,frameRect, str)
     {
-        this->UI = new AutomationPreferenceUI(title);
+        this->UI = new AutomationPreferenceUI(title, str);
         addAndMakeVisible(this->UI);
         
        

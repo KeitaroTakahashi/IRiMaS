@@ -40,7 +40,7 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
             else nodeObj->setLinkActivation(true);
         }
         
-        std::cout << "*this->linkModeFlag = " << *this->linkModeFlag << " : " << nodeObj->isLinkActivated() << std::endl;
+        //std::cout << "*this->linkModeFlag = " << *this->linkModeFlag << " : " << nodeObj->isLinkActivated() << std::endl;
         
         //repaint obj graphics
         nodeObj->repaint();
@@ -62,7 +62,7 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
     }
     else
     {
-        std::cout << "workSpace mouseDowned "<< "*this->linkModeFlag = " << *this->linkModeFlag << " : " << std::endl;
+        //std::cout << "workSpace mouseDowned "<< "*this->linkModeFlag = " << *this->linkModeFlag << " : " << std::endl;
 
         if (! e.mods.isShiftDown() && ! e.mods.isCommandDown())
         {

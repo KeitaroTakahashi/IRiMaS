@@ -23,12 +23,11 @@ public:
         std::shared_ptr<IRObjectCreaterBase> obj;
         
         t_object() {}
-        ~t_object(){ printf("t_object deconstructor called\n");}
+        ~t_object(){}
         
         // t_object(std::string id, std::string name, Image img, IRObjectCreaterBase* obj)
         t_object(std::string id, std::string name, objectCategory category, Image img, std::shared_ptr<IRObjectCreaterBase> obj)
         {
-            printf("t_object constructor called\n");
             this->id = id;
             this->name = name;
             this->category = category;
@@ -45,9 +44,18 @@ public:
     };
     
     template<class T>
-    void registerObject(std::string id, std::string name, objectCategory objectType, Image img);
+    void registerObject(std::string id, std::string name, objectCategory objectType, Image img)
+    {
+        
+        // now trying with shared pointer
+        std::shared_ptr<IRObjectCreater<T>> obj = std::make_shared<IRObjectCreater<T>>();
+        this->list[id] = IRObjectFactory::t_object(id, name, objectType, img, obj);
+        
+        this->registeredObjectInfo[objectType].push_back(&this->list[id]);
+        std::cout<< id << " registered : size is " << this->list.size() << std::endl;
+    }
     
-    IRNodeObject* createObject(std::string id, Component* parent);
+    IRNodeObject* createObject(std::string id, Component* parent, IRStr* str);
     
     void showRegisteredObjectList();
     
@@ -68,7 +76,7 @@ private:
     
 };
 
-
+/*
 // template function should be written outside of the class - FD could not put this in .cpp - to investigate further once global file separation done
 template<class T>
 void IRObjectFactory::registerObject(std::string id, std::string name, objectCategory objectType, Image img)
@@ -88,6 +96,6 @@ void IRObjectFactory::registerObject(std::string id, std::string name, objectCat
     
     std::cout<< id << " registered : size is " << this->list.size() << std::endl;
     
-}
+}*/
 
 #endif /* IRObjectFactory_hpp */

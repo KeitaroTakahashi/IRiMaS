@@ -14,6 +14,8 @@
 #include "json11.hpp"
 #include "singletonClass.hpp"
 #include "IRObjectFactory.hpp"
+#include "IRObjectFactory2.hpp"
+
 #include "ColourLib.h"
 
 /*
@@ -37,7 +39,8 @@ IRMAIN class operates
 
 class IRiMaSMainComponent : public Component,
                             public ChangeListener,
-                            public IRProject::Listener
+                            public IRProject::Listener,
+public IRProjectWindow2::Listener
 {
     
 public:
@@ -59,20 +62,20 @@ public:
     void saveProjectAction(IRProject* project) override;
     void saveAsProjectAction(IRProject* project) override;
     
-    
 private:
     
     void changeListenerCallback(ChangeBroadcaster* source) override;
+    
+    void closeThisWindow(IRMainWindow* closeWindow) override;
     
     String applicationName;
     std::string saveDataPath { "" };
     
     // storing all project windows
-    std::vector<IRProjectWindow* >projectLib;
+    std::vector<IRProjectWindow2* >projectLib;
     
     // storing a currently active project window
     IRProjectWindow* activeProjectWindow;
-    
     
     // PreferenceWindow* preferenceWindow;
     std::shared_ptr<PreferenceWindow> preferenceWindow;
@@ -85,7 +88,8 @@ private:
     json11::Json saveData;
     
     IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
-    
+    IRObjectFactory2& IRFactory2 = singleton<IRObjectFactory2>::get_instance();
+
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
     
     

@@ -6,8 +6,11 @@
 
 void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
 {
+    
     //fire message
-    sendChangeMessage();
+    //sendChangeMessage();
+    
+    //setSelected(true);
     
     //std::cout << this->name << " : mouseDown\n";
     if (e.mods.isCtrlDown())
@@ -26,6 +29,9 @@ void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
            e.getMouseDownY() > (getHeight() - this->resizingArea.y) &&
            this->isResizable() && this->isEditMode())
         {
+            
+            std::cout << "resize\n";
+
             // Resize this Node Object
             this->isMovableFlag = false;
             this->resizingFlag = true;
@@ -45,6 +51,9 @@ void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
         }
     }
     //toFront(true);
+    
+    // call virtual function
+    thisObjectGetFocused();
 }
 
 
@@ -64,14 +73,18 @@ void IRNodeComponent::mouseDoubleClickNodeEvent(const MouseEvent& e)
 
 void IRNodeComponent::mouseDragNodeEvent(const MouseEvent& e)
 {
-    if (this->isMovable())
+    if(isEditMode())
     {
-        moveThisComponentEvent(e);
-        
-    }
-    else if (this->isResizable())
-    {
-        resizeThisComponentEvent(e);
+    
+        if (this->isMovable())
+        {
+            moveThisComponentEvent(e);
+            
+        }
+        else if (this->isResizable())
+        {
+            resizeThisComponentEvent(e);
+        }
     }
 }
 
@@ -154,6 +167,16 @@ void IRNodeComponent::defaultPopupMenuEvents()
     {
         case 1:
             toFront(true);
+            
+            if(this->objectType.componentType == orginaryIRComponent ||
+               this->objectType.componentType == heavyWeightComponent)
+            {
+                IROpenGLManager manager(&this->openGLContext);
+                manager.bringOpenGLContextFront(this);
+                //this->openGLContext.bringViewToFront();
+            }
+            
+            moveToFrontEvent();
             break;
         case 2:
             toBack();

@@ -8,15 +8,19 @@
 #ifndef IRWindowComponent_hpp
 #define IRWindowComponent_hpp
 
-
 #include "IRStr.h"
 #include "IRTitleBar.hpp"
 #include "IRLeftBar.hpp"
+#include "IRRightBar.hpp"
 #include "IRMainSpace.hpp"
+#include "IRSaveLoadSystem.hpp"
+#include "IRProjectOwnerBase.h"
+#include "json11.hpp"
 
-class IRWindowComponent : public Component,
+class IRWindowComponent : public IRProjectOwnerBase,
 public ChangeListener,
-public KeyListener
+public KeyListener,
+private IRMainSpace::Listener
 {
 public:
     IRWindowComponent(String projectName,
@@ -38,8 +42,17 @@ public:
     void setComponentsHeight(int barHeight, int mainHeight);
     
     // ==================================================
+    void openProject();
+    void closeProject(DocumentWindow* closingWindow);
+    
+    void createNewProject();
+    void loadProjectFromSavedData(std::string path);
+    
     
     // ==================================================
+    // AudioApp Component
+    AudioSource& getMixer() { return this->mixer.getAudioSource(); }
+    
     
     // ==================================================
     
@@ -47,9 +60,8 @@ public:
     // IRWorkspace
     void createNewWorkspace();
 
-    std::vector<IRWorkspace* > getWorkspaces() const { return this->workspaces; }
-    IRWorkspace* getTopWorkspace() const { return this->topWorkspace; }
-    
+    //std::vector<IRWorkspace* > getWorkspaces() const { return this->workspaces; }
+    //IRWorkspace* getTopWorkspace() const { return this->topWorkspace; }
     
     bool isEditMode() const { return this->isEditModeFlag; }
     void setEditMode(bool flag);
@@ -60,6 +72,10 @@ public:
     Point<int> prevPos;
     
     std::function<void(Point<int>)> windowMoveAction;
+    std::function<void()> closeProjectCallback;
+    
+    std::function<void()> newProjectCallback;
+
     
     bool isResizable = false;
     int resizableMargin = 20;
@@ -71,7 +87,40 @@ private:
     void createComponents();
     
     void changeListenerCallback (ChangeBroadcaster* source) override;
-
+    
+    // SAVE AND LOAD
+    IRSaveLoadSystem saveLoadClass;
+    json11::Json saveData;
+    
+    //AudioAppComponent
+    AudioEngine mixer;
+    void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
+    void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
+    void releaseResources() override;
+    
+    // AudioAppComponent
+    void audioSetup();
+    void closeAudioSetup();
+    
+    // project
+    void closeButtonClicked();
+    void closeProject();
+    void titleDoubleClicked();
+    
+    void editModeButtonClicked();
+    
+    void newSlideButtonClicked();
+    void newProjectButtonClicked();
+    void saveButtonClicked();
+    void saveasButtonClicked();
+    void openButtonClicked();
+    
+    //components
+    void createBarComponent();
+    void createLeftComponent();
+    
+    // called from IRLeftBar
+    void workspaceSelected(IRWorkspace* space);
     // ==================================================
 
     // Key Event
@@ -86,7 +135,7 @@ private:
     
     // ==================================================
 
-    int barHeight = 50;
+    int barHeight = 70;
     int leftBarWidth = 135;
     int mainComponentHeight = 400;
 
@@ -100,29 +149,40 @@ private:
     std::shared_ptr<IRMainSpace> mainSpace;
     std::shared_ptr<IRTitleBar> bar;
     std::shared_ptr<IRLeftBar> leftBar;
+    std::shared_ptr<IRRightBar> rightBar;
     
+    //IRMainSpace Listener
+    void nodeObjectSelectionChange(IRNodeObject* obj) override;
+    void nodeObjectGetFocused(IRNodeObject* obj) override;
+    void newWorkspaceCreated(IRWorkspace* space) override;
+    void workspaceEditModeChanged(IRWorkspace* changedSpace) override;
+    void heavyObjectCreated(IRNodeObject* obj) override;
     // ==================================================
 
-    // workspace
-    std::vector<IRWorkspace* > workspaces;
-    IRWorkspace* topWorkspace = nullptr;
+    void rebindOpenGLContents() override;
+    void updateAppearance() override;
+
+    Point<int> previousSize;
+    // ==================================================
+
     
     bool isEditModeFlag = true;
     
     // ==================================================
     
     // define the minimum size of the window
-    int minWidth = 400;
+    int minWidth = 800;
     int minHeight = 700;
     
     // store window size before changing it.
     Point<int> prevSize;
     // ==================================================
 
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    //IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
     // ==================================================
-
+   // LookAndFeel_V4 c;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRWindowComponent)
     
 };

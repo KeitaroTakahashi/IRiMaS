@@ -5,9 +5,10 @@
 #include "JuceHeader.h"
 
 #include "IRNodeComponent.hpp"
-//#include "IRUIFoundation.hpp"
 #include "IRFileManager.hpp"
 #include "IRNodeObjectType.h"
+#include "IRPreferenceObject.hpp"
+#include "IRObjectController.hpp"
 
 
 class IRNodeObject : public IRNodeComponent,
@@ -16,9 +17,11 @@ public IRLinkFoundation
     
 public:
     
-    IRNodeObject(Component* parent, String name, NodeObjectType objectType = NodeObjectType());
+    IRNodeObject(Component* parent,
+                 String name,
+                 IRStr* str,
+                 NodeObjectType objectType = NodeObjectType());
     ~IRNodeObject();
-    
     
     // something should be painted on the workspace.
     // @param1 Graphics from the workspace
@@ -50,6 +53,16 @@ public:
     void editModeChangedEvent() override;
     void linkModeChangedEvent() override;
     
+    void thisObjectGetFocused() override;
+    
+    // ==================================================
+    void setObjController(IRObjectController* objCtl) { this->objController = objCtl; }
+    IRObjectController* getObjController() const { return this->objController; }
+    
+    // ==================================================
+    // move to Front action
+    void moveToFrontEvent() override;
+    virtual void moveToFrontAction() {} // for its Child component
     // ==================================================
 
     class Listener
@@ -75,6 +88,10 @@ public:
         
         virtual void openFileInspecter() {};
         virtual void openPreferenceWindow() {};
+        
+        //object selection
+        virtual void nodeObjectSelectionChange(IRNodeObject* obj) {};
+        virtual void nodeObjectGetFocused(IRNodeObject* obj) {}
 
         // notification to IRWorkspace
         virtual void nodeObjectModifiedNotification(IRNodeObject* obj) {};
@@ -101,6 +118,10 @@ public:
         // add object to a global space in Workspace
         virtual void addObjectGlobal(IRObjectPtr obj, String id) {};
         virtual void getObjectGlobal(IRNodeObject *obj) {};
+        
+        
+        //heavy
+        virtual void heavyComponentCreated(IRNodeObject* obj) {};
     };
     
     virtual void addListener(Listener* newListener) { this->listeners.add(newListener); }
@@ -132,6 +153,8 @@ public:
     void callDropOutNodeObjectFromParent();
     // fire editModeChangedInNodeObject() methods in Listener
     void callEditModeChangedInNodeObject();
+    // fire heavyComponentCreated
+    void callHeavyComponentCreated(IRNodeObject* obj);
     
     void callLinkModeChangedInNodeObject();
     void receiveSelectedLinkMenuItemEvent() override;// from IRLinkFoundation
@@ -152,6 +175,9 @@ public:
     void callCloseProject();
     void callCreateNewProject();
     void callOpenProject();
+    
+    void callNodeObjectSelectionChange();
+    void callNodeObjectGetFocused();
     
     void callOpenFileInspecter();
     void callOpenPreferenceWindow();
@@ -213,6 +239,9 @@ private:
     
     ListenerList<Listener> listeners;
     
+    
+    // ObjectController
+    IRObjectController* objController = nullptr;
 
     
     //link System

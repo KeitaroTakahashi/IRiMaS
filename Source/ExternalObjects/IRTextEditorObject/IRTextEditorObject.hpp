@@ -11,8 +11,7 @@
 #define IRTextEditorObject_h
 
 #include "IRNodeObject.hpp"
-#include "IRTextEditorObjectPreference.hpp"
-
+#include "IRTextEditorController.hpp"
 
 
 
@@ -23,7 +22,7 @@ public ChangeListener
     
 public:
     
-    IRTextEditorObject(Component* parent);
+    IRTextEditorObject(Component* parent, IRStr* str);
     ~IRTextEditorObject();
     
     IRNodeObject* copyThis() override;
@@ -50,7 +49,7 @@ public:
     TextEditor textEditor;
     
     // preference
-    IRTextEditorObjectPreference *preference;
+    std::unique_ptr<IRTextEditorController> controller;
     
     
 private:

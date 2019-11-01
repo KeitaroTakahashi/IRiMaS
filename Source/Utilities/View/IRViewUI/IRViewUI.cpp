@@ -7,11 +7,11 @@
 
 #include "IRViewUI.hpp"
 
-IRViewUI::IRViewUI(Component* main,
+IRViewUI::IRViewUI(IRStr* str, Component* main,
                    float vmin, float vmax,
-                   float hmin, float hmax) :
-verticalGrid(IRGridStr::IRMeasureGridType::VERTICAL),
-horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
+                   float hmin, float hmax) : IRViewPort(str),
+verticalGrid(str, IRGridStr::IRMeasureGridType::VERTICAL),
+horizontalGrid(str, IRGridStr::IRMeasureGridType::HORIZONTAL)
 {
     this->verticalGrid.setRange(vmin, vmax);
     this->horizontalGrid.setRange(hmin, hmax);

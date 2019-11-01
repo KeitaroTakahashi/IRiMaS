@@ -9,10 +9,10 @@
 
 
 
-IRAudioAnalysisObject::IRAudioAnalysisObject(Component* parent) : IRNodeObject(parent, "IRAudioAnalysis")
+IRAudioAnalysisObject::IRAudioAnalysisObject(Component* parent, IRStr* str) : IRNodeObject(parent, "IRAudioAnalysis", str)
 {
     
-    this->analysisUI = std::make_shared<IRAnalysisUI>(this);
+    this->analysisUI = std::make_shared<IRAnalysisUI>(this, str);
     this->analysisUI->addChangeListener(this);
     //this->waveform->addKeyListener(this);
     this->analysisUI->setBounds(this->xMargin,
@@ -49,7 +49,7 @@ IRAudioAnalysisObject::~IRAudioAnalysisObject()
 // copy constructor
 IRNodeObject* IRAudioAnalysisObject::copyThis()
 {
-    return new IRAudioAnalysisObject(this->parent);
+    return new IRAudioAnalysisObject(this->parent, getStr());
 }
 
 
@@ -117,7 +117,7 @@ void IRAudioAnalysisObject::paint(Graphics& g)
     {
         auto area = getLocalBounds();//.reduced (2);
         
-        g.setColour (SYSTEMCOLOUR.contents);
+        g.setColour (getStr()->SYSTEMCOLOUR.contents);
         g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
     }
 }

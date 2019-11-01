@@ -9,12 +9,12 @@
 #define IRViewPort_hpp
 
 #include "JuceHeader.h"
-#include "ColourLib.h"
-
-class IRViewPort : public Viewport
+#include "IRStrComponent.hpp"
+class IRViewPort : public Viewport,
+public IRStrComponent
 {
 public:
-    IRViewPort();
+    IRViewPort(IRStr* str);
     ~IRViewPort();
     // ==================================================
 

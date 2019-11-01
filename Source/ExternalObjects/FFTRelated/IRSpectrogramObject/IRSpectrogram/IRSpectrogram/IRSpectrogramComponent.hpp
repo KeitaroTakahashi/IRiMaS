@@ -13,7 +13,7 @@
 class IRSpectrogramComponent : public Component
 {
 public:
-    IRSpectrogramComponent(IRNodeObject* nodeObject);
+    IRSpectrogramComponent(IRNodeObject* nodeObject, IRStr* str);
     ~IRSpectrogramComponent();
     
     // ==================================================

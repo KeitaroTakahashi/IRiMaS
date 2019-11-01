@@ -4,7 +4,6 @@
 
 
 #include "JuceHeader.h"
-#include "Preferences.h"
 #include "IRPreferenceObject.hpp"
 
 class IRPreferenceSpace : public Component,

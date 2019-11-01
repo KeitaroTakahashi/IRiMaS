@@ -7,49 +7,57 @@
 
 #include "LeftBarObjectMenu.hpp"
 
-LeftBarObjectMenu::LeftBarObjectMenu(IRStr* str, int buttonSize, int topMarge, int leftMarge, int yMarge, int menuSpace, int buttomSpace, Component* parent) :
+LeftBarObjectMenu::LeftBarObjectMenu(IRStr* str,
+                                     int buttonSize,
+                                     int topMarge,
+                                     int leftMarge,
+                                     int yMarge,
+                                     int menuSpace,
+                                     int preferenceMenuSpace,
+                                     int buttomSpace,
+                                     Component* parent) :
 IRStrComponent(str),
 buttonSize(buttonSize),
 topMarge(topMarge),
 menuSpace(menuSpace),
+preferenceMenuSpace(preferenceMenuSpace),
 buttomSpace(buttomSpace),
 yMarge(yMarge),
 leftMarge(leftMarge),
 parent(parent)
 {
     addButtons();
-    setFps(60);
     
     this->textLabel.setText("Texts", dontSendNotification);
-    this->textLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->textLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->textLabel);
     
     this->imageLabel.setText("Graphics", dontSendNotification);
-    this->imageLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->imageLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->imageLabel);
     
     this->audioLabel.setText("Audio", dontSendNotification);
-    this->audioLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->audioLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->audioLabel);
     
     this->chartLabel.setText("Charts", dontSendNotification);
-    this->chartLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->chartLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->chartLabel);
     
     this->playerLabel.setText("Players", dontSendNotification);
-    this->playerLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->playerLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->playerLabel);
     
     this->objectLabel.setText("Objects", dontSendNotification);
-    this->objectLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->objectLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->objectLabel);
     
     this->inspectorLabel.setText("Inspector", dontSendNotification);
-    this->inspectorLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->inspectorLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->inspectorLabel);
     
     this->preferenceLabel.setText("Preference", dontSendNotification);
-    this->preferenceLabel.setColour(Label::textColourId, SYSTEMCOLOUR.text);
+    this->preferenceLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->preferenceLabel);
     
 }
@@ -101,7 +109,13 @@ void LeftBarObjectMenu::resized()
     this->preferenceButton.setBounds(x, y, s, s);
     this->preferenceLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
-    this->menuSpaceRect = Rectangle<int> (getWidth(), 0, this->menuSpace, getParentHeight());
+    if(this->selectedButtonType != PREFERENCEMENU || this->selectedButtonType != INSPECTORMENU)
+    {
+        this->menuSpaceRect = Rectangle<int> (getWidth(), 0, this->preferenceMenuSpace, getParentHeight());
+    }else
+    {
+        this->menuSpaceRect = Rectangle<int> (getWidth(), 0, this->menuSpace, getParentHeight());
+    }
     
     if(this->currentMenu != nullptr)
     {
@@ -110,11 +124,11 @@ void LeftBarObjectMenu::resized()
 }
 void LeftBarObjectMenu::paint(Graphics& g)
 {
-    g.fillAll(SYSTEMCOLOUR.fundamental);
+    g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     
-    g.setColour(SYSTEMCOLOUR.contents);
+    g.setColour(getStr()->SYSTEMCOLOUR.contents);
     int y = this->topMarge + this->buttonSize * 2 + this->yMarge * 4;
-    g.drawLine(0, 0, getWidth(), 0, 2);
+    //g.drawLine(0, 0, getWidth(), 0, 2);
     
     y = getHeight() - this->buttomSpace;
     g.drawLine(0, y, getWidth(), y, 2);
@@ -126,10 +140,12 @@ void LeftBarObjectMenu::paintSelectedItem(Graphics& g)
 {
     if(this->selectedButtonType != NONE)
     {
-        g.setColour(SYSTEMCOLOUR.contents);
+        g.setColour(getStr()->SYSTEMCOLOUR.contents);
         int index = (int)this->selectedButtonType;
         int x = this->leftMarge / 2;
-        int y = this->topMarge + index * (this->buttonSize + this->yMarge*2) - this->yMarge/2;
+        //int y = this->topMarge + index * (this->buttonSize + this->yMarge*2) - this->yMarge/2;
+        int y = getButtonFromType().getBounds().getY() - this->yMarge/2;
+        
         // width should be bigger to hide the right side rounded corner
         int w = getWidth() * 1.2;
         g.fillRoundedRectangle(x, y, w, this->buttonSize + this->yMarge, 5);
@@ -140,7 +156,7 @@ void LeftBarObjectMenu::paintSelectedItem(Graphics& g)
 
 void LeftBarObjectMenu::createButton(IRImageButton* button, IRIconBank::IRIconImage img)
 {
-    if(SYSTEMCOLOUR.isWhiteBased)
+    if(getStr()->SYSTEMCOLOUR.isWhiteBased)
         button->setImage(img.black);
     else
         button->setImage(img.white);
@@ -151,22 +167,22 @@ void LeftBarObjectMenu::createButton(IRImageButton* button, IRIconBank::IRIconIm
 
 void LeftBarObjectMenu::addButtons()
 {
-    createButton(&this->textButton, ImageBank.icon_text);
+    createButton(&this->textButton, getStr()->ICONBANK.icon_text);
     this->textButton.onClick = [this]{ textAction(); };
-    createButton(&this->imageButton, ImageBank.icon_image);
+    createButton(&this->imageButton, getStr()->ICONBANK.icon_image);
     this->imageButton.onClick = [this]{ imageAction(); };
-    createButton(&this->audioButton, ImageBank.icon_wav);
+    createButton(&this->audioButton, getStr()->ICONBANK.icon_wav);
     this->audioButton.onClick = [this]{ audioAction(); };
-    createButton(&this->chartButton, ImageBank.icon_chart);
+    createButton(&this->chartButton, getStr()->ICONBANK.icon_chart);
     this->chartButton.onClick = [this]{ chartAction(); };
-    createButton(&this->playerButton, ImageBank.icon_play);
+    createButton(&this->playerButton, getStr()->ICONBANK.icon_play);
     this->playerButton.onClick = [this]{ playerAction(); };
-    createButton(&this->objectButton, ImageBank.icon_object);
+    createButton(&this->objectButton, getStr()->ICONBANK.icon_object);
     this->objectButton.onClick = [this]{ objectAction(); };
 
-    createButton(&this->inspectorButton, ImageBank.icon_inspector);
+    createButton(&this->inspectorButton, getStr()->ICONBANK.icon_inspector);
     this->inspectorButton.onClick = [this] { inspectorAction(); };
-    createButton(&this->preferenceButton, ImageBank.icon_preference);
+    createButton(&this->preferenceButton, getStr()->ICONBANK.icon_preference);
     this->preferenceButton.onClick = [this] { preferenceAction(); };
 
 
@@ -175,9 +191,10 @@ void LeftBarObjectMenu::addButtons()
 
 void LeftBarObjectMenu::textAction()
 {
-    std::cout<< "textAction\n";
     showExtraMenu(TEXTMENU);
+    
     this->textMenu.reset(new TextMenuComponent(getStr(), this->menuSpaceRect));
+
     addAndMakeVisible(this->textMenu.get());
     replaceCurrentMenu(this->textMenu.get());
 
@@ -225,11 +242,19 @@ void LeftBarObjectMenu::objectAction()
 
 void LeftBarObjectMenu::inspectorAction()
 {
+    showExtraMenu(INSPECTORMENU);
 
+    this->inspectorMenu.reset(new InspectorMenuComponent(getStr(), this->menuSpaceRect));
+    addAndMakeVisible(this->inspectorMenu.get());
+    replaceCurrentMenu(this->inspectorMenu.get());
 }
 void LeftBarObjectMenu::preferenceAction()
 {
-    
+    showExtraMenu(PREFERENCEMENU);
+
+    this->preferenceMenu.reset(new PreferenceMenuComponent(getStr(), this->menuSpaceRect));
+    addAndMakeVisible(this->preferenceMenu.get());
+    replaceCurrentMenu(this->preferenceMenu.get());
 }
 // ==================================================
 
@@ -239,6 +264,7 @@ void LeftBarObjectMenu::replaceCurrentMenu(ObjectMenuComponent* obj)
         this->parent->removeChildComponent(this->currentMenu);
     
     this->currentMenu = obj;
+    this->currentMenu->toFront(true);
     this->parent->addAndMakeVisible(this->currentMenu);
     
     resized();
@@ -265,20 +291,6 @@ void LeftBarObjectMenu::showExtraMenu(objectCategory type)
 
 // ==================================================
 
-void LeftBarObjectMenu::updateAnimationFrame()
-{
-    std::cout << "LeftBarObjectMenu::updateAnimationFrame\n";
-    int max = (this->yMarge*2 + this->buttonSize + this->menuSpace);
-    if(getWidth() < max)
-    {
-        setSize(getWidth() + 1, getHeight());
-    }else{
-        setBounds(getX(), getY(), getWidth() + this->menuSpace, getHeight());
-        stopAnimation();
-    }
-    repaint();
-}
-
 // ==================================================
 
 void LeftBarObjectMenu::toNavigatorAction()
@@ -292,3 +304,37 @@ void LeftBarObjectMenu::toObjectMenuAction()
 }
 
 // ==================================================
+
+IRImageButton& LeftBarObjectMenu::getButtonFromType()
+{
+    switch(this->selectedButtonType)
+    {
+        case TEXTMENU:
+            return this->textButton;
+            break;
+        case IMAGEMENU:
+            return this->imageButton;
+            break;
+        case AUDIOMENU:
+            return this->audioButton;
+            break;
+        case CHARTMENU:
+            return this->chartButton;
+            break;
+        case PLAYERMENU:
+            return this->playerButton;
+            break;
+        case OBJECTMENU:
+            return this->objectButton;
+            break;
+        case INSPECTORMENU:
+            return this->inspectorButton;
+            break;
+        case PREFERENCEMENU:
+            return this->preferenceButton;
+            break;
+        default:
+            return this->preferenceButton;
+            break;
+    }
+}

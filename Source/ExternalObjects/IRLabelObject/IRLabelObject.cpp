@@ -1,26 +1,30 @@
 
 #include "IRLabelObject.hpp"
 
-IRLabelObject::IRLabelObject(Component* parent) : IRNodeObject(parent, "IRLabel")
+IRLabelObject::IRLabelObject(Component* parent, IRStr* str) :
+IRNodeObject(parent, "IRLabel", str, NodeObjectType(orginaryIRComponent))
 {
-    // initialize preference
-    this->preference = new IRLabelObjectPreference("Label Preference", Rectangle<int>(400,720));
-    this->preference->getFontGUI()->addChangeListener(this);
+    
+    // initialize controller
+    this->controller.reset( new IRLabelController(str) );
+    
+    this->controller->getFontController()->addChangeListener(this);
+    
+    setObjController(this->controller.get());
     
     this->font.setTypefaceName("Arial");
     this->font.setTypefaceStyle("Regular");
-    this->font.setHeight(16.0);
+    this->font.setHeight(20);
     
-    setSize(100,25);
+    setSize(100,40);
     addAndMakeVisible(&this->label);
     this->label.setFont(this->font);
-    //this->label.setFont(
-    
+
     this->label.setText("text...", dontSendNotification);
     this->label.setJustificationType(Justification::left);
-    this->label.setColour(Label::textColourId, SYSTEMCOLOUR.titleText);
-    this->label.setColour(Label::textWhenEditingColourId, SYSTEMCOLOUR.titleText);
-    
+    this->label.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.titleText);
+    this->label.setColour(Label::textWhenEditingColourId, getStr()->SYSTEMCOLOUR.titleText);
+
     this->label.setMinimumHorizontalScale(1.0);
     // set editable condition
     this->label.setEditable(false, // edit on single click
@@ -29,7 +33,7 @@ IRLabelObject::IRLabelObject(Component* parent) : IRNodeObject(parent, "IRLabel"
                             );
     
     childComponentManager(&this->label);
-    
+        
     // Link Menu
     clearLinkParam();
     addLinkParam(TextLinkFlag);
@@ -44,13 +48,13 @@ IRLabelObject::IRLabelObject(Component* parent) : IRNodeObject(parent, "IRLabel"
 IRLabelObject::~IRLabelObject()
 {
     // std::cout << "~IRLABELOBJECT DESTRUCTOR" << std::endl;
-    delete this->preference;
+    this->controller.reset();
 }
 
 
 IRNodeObject* IRLabelObject::copyThis()
 {
-    IRLabelObject* newObj = new IRLabelObject(this->parent);
+    IRLabelObject* newObj = new IRLabelObject(this->parent, getStr());
     newObj->setFont(this->font);
     newObj->label.setText(label.getText(true) ,dontSendNotification);
     return newObj;
@@ -59,7 +63,7 @@ IRNodeObject* IRLabelObject::copyThis()
 
 t_json IRLabelObject::saveThisToSaveData()
 {
-    FontGUI* gui = this->preference->getFontGUI();
+    FontController* gui = this->controller->getFontController();
     Colour c = gui->getTextColour();
     
     std::string align = std::to_string(gui->getAlign());
@@ -105,7 +109,7 @@ void IRLabelObject::loadThisFromSaveData(t_json data)
     this->label.setText(String(data["textContents"].string_value()), dontSendNotification);
     
     // gui
-    FontGUI* gui = this->preference->getFontGUI();
+    FontController* gui = this->controller->getFontController();
     gui->setTypefaceName(String(data["fontTypefaceName"].string_value()));
     gui->setTypefaceStyle(String(data["fontTypefaceStyle"].string_value()));
     gui->setHeight(data["textHeight"].int_value());
@@ -117,14 +121,13 @@ void IRLabelObject::loadThisFromSaveData(t_json data)
 
 void IRLabelObject::paint(Graphics &g)
 {
+    g.fillAll(Colours::transparentBlack);
     if (isEditMode())
     {
-        auto area = getLocalBounds().reduced (2);
-        
-        g.setColour (SYSTEMCOLOUR.contents);
-        g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
+        auto area = getLocalBounds();
+        g.setColour (Colours::grey);
+        g.drawRect (area, 1.0);
     }
-
 }
 
 void IRLabelObject::paintOnWorkspace(Graphics& g, Component* workspace)
@@ -143,6 +146,7 @@ void IRLabelObject::resized()
 void IRLabelObject::mouseDownEvent(const MouseEvent& e)
 {
     //change preference Window if not yet
+    /*
     if(getPreferenceWindow() != nullptr)
     {
         IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
@@ -154,13 +158,13 @@ void IRLabelObject::mouseDownEvent(const MouseEvent& e)
         if (current != preference){
             space->setPreferenceObj(preference);
         }
-    }
+    }*/
 }
 
 
 void IRLabelObject::changeListenerCallback (ChangeBroadcaster* source)
 {
-    FontGUI* fontGUI = this->preference->getFontGUI();
+    FontController* fontGUI = this->controller->getFontController();
     
     
     if(source == fontGUI)

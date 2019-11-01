@@ -14,6 +14,8 @@
 #include "ChartMenuComponent.hpp"
 #include "PlayerMenuComponent.hpp"
 #include "ObjectsMenuComponent.hpp"
+#include "InspectorMenuComponent.hpp"
+#include "PreferenceMenuComponent.hpp"
 
 #include "IRIconBank.hpp"
 #include "ColourLib.h"
@@ -24,11 +26,10 @@
 
 class LeftBarObjectMenu : public Component,
 public IRStrComponent,
-public ChangeBroadcaster,
-private KeAnimationComponent
+public ChangeBroadcaster
 {
 public:
-    LeftBarObjectMenu(IRStr* str, int buttonSize, int topMarge, int leftMarge, int yMarge, int menuSpace, int buttomSpace, Component* parent);
+    LeftBarObjectMenu(IRStr* str, int buttonSize, int topMarge, int leftMarge, int yMarge, int menuSpace, int preferenceMenuSpace, int buttomSpace, Component* parent);
     ~LeftBarObjectMenu();
     
     // ==================================================
@@ -56,12 +57,12 @@ public:
     bool isMenuOpened() const { return this->isOpened; }
     void setMenuOpened(bool flag) { this->isOpened = flag; }
     
+    IRImageButton& getButtonFromType();
+    
 private:
     // ==================================================
     void createButton(IRImageButton* button, IRIconBank::IRIconImage img);
-    
-    void updateAnimationFrame() override;
-    
+        
     void replaceCurrentMenu(ObjectMenuComponent* obj);
     // ==================================================
     
@@ -106,8 +107,8 @@ private:
     std::shared_ptr<PlayerMenuComponent> playerMenu;
     std::shared_ptr<ObjectMenuComponent> objectMenu;
     
-    std::shared_ptr<ObjectMenuComponent> inspectorMenu;
-    std::shared_ptr<ObjectMenuComponent> preferenceMenu;
+    std::shared_ptr<InspectorMenuComponent> inspectorMenu;
+    std::shared_ptr<PreferenceMenuComponent> preferenceMenu;
     
     ObjectMenuComponent* currentMenu = nullptr;
 
@@ -117,6 +118,7 @@ private:
     int topMarge = 10;
     int switchSpace = 50;
     int menuSpace = 200;
+    int preferenceMenuSpace = 600;
     int buttomSpace = 110;
     
     int yMarge = 5;
@@ -133,7 +135,7 @@ private:
     // ==================================================
 
     IRIconBank& ImageBank = singleton<IRIconBank>::get_instance();
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+    //IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LeftBarObjectMenu)
 

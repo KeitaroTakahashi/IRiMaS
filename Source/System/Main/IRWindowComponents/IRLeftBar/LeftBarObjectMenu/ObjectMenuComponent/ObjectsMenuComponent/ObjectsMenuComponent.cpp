@@ -10,8 +10,9 @@
 ObjectsMenuComponent::ObjectsMenuComponent(IRStr* str, Rectangle<int> frameRect) : ObjectMenuComponent(str, frameRect)
 {
     setTitleText("Objects");
-    auto objects = getStr()->OBJECTFACTORY.getRegisteredObjectOfCategory(objectCategory::OBJECTMENU);
-    
+    IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
+    auto objects = factory.getRegisteredObjectOfCategory(objectCategory::OBJECTMENU);
+
     for(auto o : objects)
     {
         std::cout << o->name << std::endl;
@@ -43,10 +44,11 @@ void ObjectsMenuComponent::itemSelected(IRObjectFactory2::t_object* obj)
 void ObjectsMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
 {
     
-    
+    IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
+
     auto topSpace = static_cast<IRWorkspace* >(getStr()->TopWorkspace);
     
-    auto nodeObj = getStr()->OBJECTFACTORY.createObject(obj->id, topSpace);
+    auto nodeObj = factory.createObject(obj->id, topSpace, getStr());
     nodeObj->setCentrePosition(topSpace->getWidth()/2,
                                topSpace->getHeight()/2);
     topSpace->createObject(nodeObj);

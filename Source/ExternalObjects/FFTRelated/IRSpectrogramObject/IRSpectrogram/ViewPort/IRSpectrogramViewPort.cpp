@@ -9,10 +9,12 @@
 
 
 IRSpectrogramViewUI::IRSpectrogramViewUI(IRSpectrogramComponent* main,
+                                         IRStr* str,
                                          float vmin, float vmax,
                                          float hmin, float hmax) :
-verticalGrid(IRGridStr::IRMeasureGridType::VERTICAL),
-horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
+IRViewPort(str),
+verticalGrid(str, IRGridStr::IRMeasureGridType::VERTICAL),
+horizontalGrid(str, IRGridStr::IRMeasureGridType::HORIZONTAL)
 {
     
     this->verticalGrid.setRange(vmin, vmax);
@@ -22,8 +24,6 @@ horizontalGrid(IRGridStr::IRMeasureGridType::HORIZONTAL)
                                                           &this->horizontalGrid,
                                                           this->gridSize);
     setViewedComponent(this->viewPort.get());
-    
-    
 }
 
 IRSpectrogramViewUI::~IRSpectrogramViewUI()

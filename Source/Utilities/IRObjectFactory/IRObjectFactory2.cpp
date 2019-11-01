@@ -13,7 +13,7 @@ IRObjectFactory2::IRObjectFactory2()
 {
     Image img; // dummy
     registerObject<IRAutomationObject>("IRAutomation",
-                                       "Automation Graph",
+                                       "Graph",
                                        objectCategory::CHARTMENU,
                                        img);
     
@@ -30,7 +30,7 @@ IRObjectFactory2::IRObjectFactory2()
                                                 img);
     
     registerObject<IRISVObject>("IRISV",
-                                              "Interactive Sound Visualizer",
+                                              "3D Visualizer",
                                               objectCategory::OBJECTMENU,
                                               img);
     
@@ -66,12 +66,17 @@ IRObjectFactory2::IRObjectFactory2()
                                                 img); // leak videocomp
     
     //registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
+    
+    
+  
+    std::cout << "IRFactory2 initialized\n";
 }
 
 
-IRNodeObject* IRObjectFactory2::createObject(std::string id, Component* parent)
+IRNodeObject* IRObjectFactory2::createObject(std::string id, Component* parent, IRStr* str)
 {
-    return this->list[id].obj->create(parent);
+    
+    return this->list[id].obj->create(parent, str);
 }
 
 

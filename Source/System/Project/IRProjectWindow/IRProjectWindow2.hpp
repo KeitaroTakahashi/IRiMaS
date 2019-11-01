@@ -14,11 +14,27 @@ class IRProjectWindow2 : public IRMainWindow,
 public ChangeListener
 {
 public:
-    IRProjectWindow2(String name);
+    IRProjectWindow2(String name, Rectangle<int> frameRect);
     ~IRProjectWindow2();
     
     
     void windowMoveToPos(Point<int>pos);
+    
+    class Listener
+    {
+    public:
+        virtual ~Listener() {}
+        
+        virtual void closeThisWindow(IRMainWindow* window) = 0;
+    };
+    
+    virtual void addListener(Listener* newListener) { this->listeners.add(newListener); }
+    virtual void removeListener(Listener* listener) { this->listeners.remove(listener); }
+    ListenerList<Listener> listeners;
+    
+    void callCloseThisWindow();
+    
+    void setNewProjectCallbackFunc(std::function<void()> callback);
     
     
 private:
@@ -27,11 +43,15 @@ private:
     
     void closeButtonPressed() override;
     
-
+    // ==================================================
+    
+    void newProjectCallbackAction();
+    std::function<void()> newProjectCallback;
     
     std::shared_ptr<IRWindowComponent> comp;
    
-    
+    // ==================================================
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRProjectWindow2)
 
 };

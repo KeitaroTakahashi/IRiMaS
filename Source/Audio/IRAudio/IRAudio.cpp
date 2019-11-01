@@ -10,8 +10,8 @@
 // ------------------------------------------------------------------
 IRAudio::IRAudio():
 Thread("ImportAudioFile Background thread"),
-zoomInfo(1.0, 1.0),
-viewPortPos(Point<int>(0,0))
+viewPortPos(Point<int>(0,0)),
+zoomInfo(1.0, 1.0)
 {
     this->formatManager.registerBasicFormats();
     
@@ -121,7 +121,6 @@ void IRAudio::run()
 void IRAudio::updateAnimationFrame()
 {
     
-    std::cout << "animation " << this << " : " << std::endl;
     if(this->isFileLoadFailed)
     {
         std::cout << "audio file " << this->path << " load failed\n";
@@ -133,7 +132,6 @@ void IRAudio::updateAnimationFrame()
         {
             stopThread(4000);
 
-            std::cout<< "file Import Completed\n";
             callFileImportCompleted();
             callFileStatusChanged(this);
             
@@ -293,6 +291,7 @@ void IRAudio::operateLinearPower(int fftsize, int hopsize)
 bool IRAudio::operateFFTAnalysis(int fftsize, int hopsize)
 {
     this->analyzer.operateAnalysis(getAudioBuffer(), fftsize, hopsize);
+    return true;
 }
 
 // --------------------------------------------------

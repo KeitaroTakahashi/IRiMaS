@@ -63,7 +63,6 @@ public:
                 this->owners.add(owner);
             }
         
-            std::cout << "DataAllocationManager : addReferencer count = " << this->owners.size() << std::endl;
             for(auto ref : this->owners)
             {
                 std::cout<< ref << std::endl;
@@ -74,10 +73,8 @@ public:
     // return if any owner holding the object remains
     bool removeReferencingObject(IRObjectPtr owner)
     {
-        
         // remove from the list
         int index = this->owners.indexOf(owner);
-        std::cout << "removing owner " << owner << " of index " << index << std::endl;
 
         if(index >= 0) // in case the owner is found
         {
@@ -86,12 +83,10 @@ public:
             if(owners.size() == 0)
             {
                 deallocate();
-                std::cout << "removeReferencingObject() deleted object\n";
                 return false;
             }
         }
         
-        std::cout << "DataAllocationManager : remove Referencer count = " << this->owners.size() << std::endl;
         for(auto ref : this->owners)
         {
             std::cout<< ref << std::endl;
@@ -120,8 +115,6 @@ public:
     
     // ==================================================
 
-    
-     
 private:
     
     T* data;

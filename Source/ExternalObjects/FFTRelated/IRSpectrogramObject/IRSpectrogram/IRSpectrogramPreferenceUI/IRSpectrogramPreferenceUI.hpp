@@ -8,9 +8,10 @@
 #ifndef IRSpectrogramPreferenceUI_hpp
 #define IRSpectrogramPreferenceUI_hpp
 #include "JuceHeader.h"
-#include "ColourLib.h"
+#include "IRStrComponent.hpp"
 
 class IRSpectrogramPreferenceUI : public Component,
+public IRStrComponent,
 public ChangeBroadcaster,
 private ChangeListener
 {
@@ -23,7 +24,7 @@ public:
         horizontalScaleChanged
     };
     
-    IRSpectrogramPreferenceUI(String title);
+    IRSpectrogramPreferenceUI(String title, IRStr* str);
     ~IRSpectrogramPreferenceUI();
     
     void resized() override;

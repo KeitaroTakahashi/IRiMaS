@@ -8,14 +8,20 @@
 #include "LeftBarSlideMenu.hpp"
 
 LeftBarSlideMenu::LeftBarSlideMenu(IRStr* str) :
-IRStrComponent(str)
+IRViewPort(str)
 {
     this->slideMenu = std::make_shared<SlideMenu>(str);
+    this->slideMenu->slideMenuUpdated = [this]{ slideMenuUpdatedAction(); };
+    this->slideMenu->slideHasSelected = [this] (IRWorkspaceSlide* slide){ slideHasSelectedAction(slide); };
     this->viewPort = std::make_shared<Component4ViewPort>(this->slideMenu.get());
     
     //addAndMakeVisible(this->viewPort.get());
     
     setViewedComponent(this->viewPort.get());
+    
+    this->addNewSlideButton.setButtonText("+");
+    this->deleteSlideButton.setButtonText("-");
+    
 }
 
 LeftBarSlideMenu::~LeftBarSlideMenu()
@@ -24,14 +30,18 @@ LeftBarSlideMenu::~LeftBarSlideMenu()
 }
 
 // ==================================================
+void LeftBarSlideMenu::paint(Graphics& g)
+{
+   
+}
 
 void LeftBarSlideMenu::resized()
 {
-    this->viewPort->setBounds(0,0,getWidth()-10, 2000);
-    this->slideMenu->setBounds(0, 0, getWidth()-10, 2000);
+    this->viewPort->setBounds(0,0,getWidth()-10, getHeight());
+    this->slideMenu->setBounds(0, 0, getWidth()-10, getHeight());
+    
     
 }
-
 
 // ==================================================
 
@@ -39,4 +49,26 @@ void LeftBarSlideMenu::visibleAreaChangedAction(const Rectangle<int> &newVisible
 {
 
 }
+// ==================================================
+
+void LeftBarSlideMenu::addNewWorkspaceSlide(IRWorkspace* space)
+{
+    this->slideMenu->addNewWorkspaceSlide(space);
+}
+// ==================================================
+
+void LeftBarSlideMenu::slideMenuUpdatedAction()
+{
+    this->viewPort->setSize(getWidth() - 10, this->slideMenu->getHeight());
+}
+
+void LeftBarSlideMenu::slideHasSelectedAction(IRWorkspaceSlide* slide)
+{
+    if(this->workspaceSelectedCallback != nullptr)
+        this->workspaceSelectedCallback(slide->getWorkspace());
+}
+
+// ==================================================
+
+// ==================================================
 // ==================================================

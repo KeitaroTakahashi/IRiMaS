@@ -14,8 +14,8 @@ class IRUIAudioFoundation : public IRUIFoundation,
 public AudioSource
 {
 public:
-    IRUIAudioFoundation(IRNodeObject* nodeObject);
-    IRUIAudioFoundation(IRNodeObject* nodeObject, AudioDeviceManager& dm);
+    IRUIAudioFoundation(IRNodeObject* nodeObject, IRStr* str);
+    IRUIAudioFoundation(IRNodeObject* nodeObject, IRStr* str, AudioDeviceManager& dm);
     ~IRUIAudioFoundation();
     
     void init();

@@ -15,8 +15,8 @@
 class IRISVObjectPreference : public IRPreferenceObject
 {
 public:
-    IRISVObjectPreference(String title, Rectangle<int> frameRect) :
-    IRPreferenceObject(title, frameRect)
+    IRISVObjectPreference(String title, Rectangle<int> frameRect, IRStr* str) :
+    IRPreferenceObject(title, frameRect, str)
     {
 
         this->UI = std::make_shared<ISVPreferenceUI>(title);

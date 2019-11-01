@@ -26,7 +26,7 @@ public:
         DescriptorSelected
     };
     
-    IRSpectrogramUI(IRNodeObject* nodeObject);
+    IRSpectrogramUI(IRNodeObject* nodeObject, IRStr* str);
     ~IRSpectrogramUI();
     // ==================================================
     void resized() override;
@@ -66,6 +66,8 @@ public:
     {
         zoomInClicked();
     }
+    
+    IRSpectrogramComponent* getSpectrogramComponent() { return this->spectrogram.get(); }
     
 private:
     

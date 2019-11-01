@@ -15,10 +15,11 @@
 #include "IRWorkspace2.hpp"
 #include "KeAnimationComponent.h"
 
-class IRMainSpace : public Component,
+class IRMainSpace : public AudioAppComponent,
 public ChangeBroadcaster,
 public ChangeListener,
-private KeAnimationComponent
+private KeAnimationComponent,
+private IRWorkspace::Listener
 {
 public:
     //==================================================
@@ -34,18 +35,67 @@ public:
     
     std::vector<IRWorkspace* > getWorkspaces() const { return this->workspaces; }
     IRWorkspace* getTopWorkspace() const { return this->topWorkspace; }
+    void setTopWorkspace(IRWorkspace* topSpace);
+    
     //==================================================
     void mouseDown(const MouseEvent& e) override;
     
     //==================================================
     //==================================================
     //==================================================
+    // ==================================================
+    // AudioApp Component
+    AudioSource& getMixer() { return this->mixer.getAudioSource(); }
+    // ==================================================
 
+    //Listener
+    class Listener
+    {
+    public:
+        virtual ~Listener() {}
+        
+        virtual void nodeObjectSelectionChange(IRNodeObject* obj) {};
+        virtual void nodeObjectGetFocused(IRNodeObject* obj) {};
+        
+        virtual void newWorkspaceCreated(IRWorkspace* space) {};
+        virtual void workspaceEditModeChanged(IRWorkspace* changedSpace) {};
+        virtual void heavyObjectCreated(IRNodeObject* obj) {};
+
+    };
     
+    ListenerList<Listener> listeners;
+    
+    virtual void addListener(Listener* newListener);
+    virtual void removeListener(Listener* listener);
+    
+    void callNodeObjectSelectionChange(IRNodeObject* obj);
+    void callNodeObjectGetFocused(IRNodeObject* obj);
+    void callnewWorkspaceCreated(IRWorkspace* space);
+    void callWorkspaceEditModeChanged(IRWorkspace* space);
+    void callHeavyObjectCreated(IRNodeObject* obj);
+
+    // ==================================================
+
 private:
     // ==================================================
 
     IRStr* ir_str;
+    // ==================================================
+    //IRWorkspace
+    // getting to know when the selection status of a NodeObject has been changed.
+    // This function is called when an object is either selected or unselected.
+    // this function is, for instance, used to update the Object Controller in the IRRightBar
+    void nodeObjectSelectionChange(IRNodeObject* obj) override;
+    void nodeObjectGetFocused(IRNodeObject* obj)override;
+    void editModeChanged(IRWorkspace* changedSpace) override;
+    void heavyObjectCreated(IRNodeObject* obj) override;
+
+    // ==================================================
+    //AudioAppComponent
+    AudioEngine mixer;
+    void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
+    void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
+    void releaseResources() override;
 
     //==================================================
     void changeListenerCallback (ChangeBroadcaster* source) override;

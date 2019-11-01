@@ -7,18 +7,19 @@
 
 #include "IRSpectrogramUI.hpp"
 
-IRSpectrogramUI::IRSpectrogramUI(IRNodeObject* nodeObject) :
-IRUIFoundation(nodeObject)
+IRSpectrogramUI::IRSpectrogramUI(IRNodeObject* nodeObject, IRStr* str) :
+IRUIFoundation(nodeObject, str)
 {
     this->parent = nodeObject;
     
-    this->spectrogram = std::make_shared<IRSpectrogramComponent>(nodeObject);
+    this->spectrogram = std::make_shared<IRSpectrogramComponent>(nodeObject, str);
     this->spectrogram->getComponent()->zoomInOutSharedCallback = [this]{ zoomInoutSharedAction(); };
     
     this->spectrogram->getComponent()->currentPlayedFrameSharedCallback = [this] { currentPlayedFrameSharedAction(); };
     this->spectrogram->getComponent()->viewPortPositionSharedCallback = [this] { viewPortPositionSharedAction(); };
     
     this->spectrogramView = std::make_shared<IRSpectrogramViewUI>(this->spectrogram.get(),
+                                                                  str,
                                                        0, 40,
                                                        0, 40);
     addAndMakeVisible(this->spectrogramView.get());
@@ -33,7 +34,7 @@ IRUIFoundation(nodeObject)
 IRSpectrogramUI::~IRSpectrogramUI()
 {
     if(this->audioData != nullptr)
-        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+        getFileManager().discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
     
     this->spectrogram->getComponent()->closeOpenGLComponent();
     this->spectrogram.reset();
@@ -168,7 +169,7 @@ void IRSpectrogramUI::getFilePtr(File file)
     std::function<void()> callback = [this]{fileImportCompleted();};
     
     
-    getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+    getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                              file,
                                              this->parent,
                                              callback);
@@ -180,7 +181,7 @@ void IRSpectrogramUI::getFilePtr(File file)
 
 void IRSpectrogramUI::fileImportCompleted()
 {
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
     
     this->status = AudioFileImportCompleted;
     sendChangeMessage();

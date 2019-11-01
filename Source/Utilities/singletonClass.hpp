@@ -11,7 +11,6 @@
 
 #include <stdio.h>
 #include <iostream>
-#include "Preferences.h"
 
 class SingletonFinalizer
 {

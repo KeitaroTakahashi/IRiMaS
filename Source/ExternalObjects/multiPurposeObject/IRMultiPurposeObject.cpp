@@ -2,8 +2,8 @@
 #include "IRMultiPurposeObject.hpp"
 
 
-IRMultiPurposeObject::IRMultiPurposeObject(Component* parent)
-: IRNodeObject(parent, "IRMultiPurposeObject")
+IRMultiPurposeObject::IRMultiPurposeObject(Component* parent, IRStr* str)
+: IRNodeObject(parent, "IRMultiPurposeObject", str)
 {
     setSize(100, 20);
 }
@@ -17,7 +17,7 @@ IRMultiPurposeObject::~IRMultiPurposeObject()
 
 IRNodeObject* IRMultiPurposeObject::copyContents(IRNodeObject *object)
 {
-    IRMultiPurposeObject* obj = new IRMultiPurposeObject(this->parent);
+    IRMultiPurposeObject* obj = new IRMultiPurposeObject(this->parent, getStr());
     obj->setBoundsInRatio(this->xRatio, this->yRatio, this->wRatio, this->hRatio);
     obj->setSelected(this->isSelected());
     obj->setBoundsRatio(this->isBoundsRatio());
@@ -34,7 +34,7 @@ void IRMultiPurposeObject::resized()
 
 void IRMultiPurposeObject::paint(Graphics& g)
 {
-    if (isSelected()) g.setColour(Colours::lightgreen);
+    if (isSelected()) g.setColour(getStr()->SYSTEMCOLOUR.contents);
     else g.setColour(Colours::lightgrey);
     g.setOpacity(0.3);
     g.fillAll();
@@ -114,6 +114,8 @@ void IRMultiPurposeObject::statusChangedWrapper(IRNodeComponentStatus status)
                 {
                     comp->setInterceptsMouseClicks(true, true);
                 }
+                
+                
             }else{
                 if(! isMouseListenerFlag())
                 {
@@ -124,6 +126,8 @@ void IRMultiPurposeObject::statusChangedWrapper(IRNodeComponentStatus status)
                 {
                     comp->setInterceptsMouseClicks(false, false);
                 }
+                
+                
             }
             break;
         case SelectableStatus:

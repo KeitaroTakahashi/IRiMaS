@@ -10,14 +10,15 @@
 
 #include "JuceHeader.h"
 #include "IRGridStr.h"
-#include "ColourLib.h"
+#include "IRStrComponent.hpp"
 
-class IRMeasureGrid : public Component
+class IRMeasureGrid : public Component,
+public IRStrComponent
 {
 public:
 
     
-    IRMeasureGrid(IRGridStr::IRMeasureGridType type);
+    IRMeasureGrid(IRStr* str, IRGridStr::IRMeasureGridType type);
     ~IRMeasureGrid();
     // ==================================================
     
@@ -107,7 +108,6 @@ private:
     
     // ==================================================
 
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 };
 
 #endif /* IRMeasureGrid_hpp */

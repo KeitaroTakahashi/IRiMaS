@@ -16,7 +16,8 @@
 class IRViewUI : public IRViewPort
 {
 public:
-    IRViewUI(Component* main,
+    IRViewUI(IRStr* str,
+             Component* main,
              float vmin, float vmax,
              float hmin, float hmax);
     ~IRViewUI();

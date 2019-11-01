@@ -4,7 +4,7 @@
 
 
 
-IRWaveformObjectUI::IRWaveformObjectUI(IRNodeObject* parent) : IRWaveform(parent)
+IRWaveformObjectUI::IRWaveformObjectUI(IRNodeObject* parent, IRStr* str) : IRWaveform(parent, str)
 {
     this->selector = new IRGraphSelector();
     // only horizontal axis is movable and height follows the object height.
@@ -123,7 +123,7 @@ void IRWaveformObjectUI::createSquareObject(Rectangle<int> rect)
 {
     if(rect.getWidth() > 1)
     {
-        IRMultiPurposeObject* obj = new IRMultiPurposeObject(this);
+        IRMultiPurposeObject* obj = new IRMultiPurposeObject(this, getStr());
         //obj->addListener(this->parentListener);
         obj->setEditMode(isEditMode());
         obj->setBoundsRatio(true);
@@ -161,7 +161,9 @@ void IRWaveformObjectUI::addSquareObject(IRMultiPurposeObject* obj)
 
 void IRWaveformObjectUI::deleteSquareObject()
 {
-    std::cout << "delete\n";
+    // stop playing
+    stopPlaying();
+    
     for(auto obj : this->selectedSquareObjectList)
     {
         
@@ -170,16 +172,24 @@ void IRWaveformObjectUI::deleteSquareObject()
         removeChildComponent(obj);
     }
     this->selectedSquareObjectList.clear();
-    
-    // stop playing
-    stopPlaying();
-    
 }
 
+void IRWaveformObjectUI::deleteAllObjects()
+{
+    stopPlaying();
+    for(auto obj : this->selectionSquareObjects)
+    {
+        int index = this->selectionSquareObjects.indexOf(obj);
+        if(index >= 0) this->selectionSquareObjects.remove(index);
+        removeChildComponent(obj);
+    }
+    
+    this->selectedSquareObjectList.clear();
+    this->selectionSquareObjects.clear();
+}
 
 void IRWaveformObjectUI::deselectAllSquareObject()
 {
-    std::cout << "deselected all square object\n";
     for(auto obj : this->selectionSquareObjects)
     {
         if(obj->isSelected()) obj->setSelected(false);
@@ -279,11 +289,13 @@ void IRWaveformObjectUI::setVisibleArea(Rectangle<int> area)
     linkViewPosition(nodeObject);
     this->previousOffsetX = this->visibleArea.getX();
     
-    
-    std::cout << "waveform w, h " << getWidth() << std::endl;
-    
-    std::cout << "current pos " << area.getX() << std::endl;
+   
     
 }
 
 // ==================================================
+
+void IRWaveformObjectUI::fileImportCompletedAction()
+{
+    deleteAllObjects();
+}

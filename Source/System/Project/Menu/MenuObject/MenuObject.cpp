@@ -8,8 +8,8 @@
 MenuObject::MenuObject(Component* parent)
 {
     
-    int w = getWidth();
-    int h = getHeight();
+    //int w = getWidth();
+    //int h = getHeight();
     
     
     this->parent = parent;

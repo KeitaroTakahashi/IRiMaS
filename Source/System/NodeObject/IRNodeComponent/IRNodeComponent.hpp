@@ -8,13 +8,15 @@
 #ifndef NodeComponent_hpp
 #define NodeComponent_hpp
 
+
 #include "JuceHeader.h"
-// #include "juce_audio_utils/juce_audio_utils.h"
 #include "json11.hpp"
 #include "IRFoundation.h"
+#include "IRStrComponent.hpp"
 #include "IRSaveLoadSystem.hpp"
 #include "IRLinkFoundation.hpp"
 
+#include "IROpenGLManager.hpp"
 
 enum IRNodeComponentSetUp
 {
@@ -67,7 +69,10 @@ enum IRNodeComponentType
     // juce oriented component
     lightWeightComponent,
     // os oriented object such as VideoComponent, embbed component, OpenGL etc.
-    heavyWeightComponent
+    heavyWeightComponent,
+    
+    // this is basically the heavyWeightComponent but does not contain any other heavy Weight component
+    orginaryIRComponent
 };
 
 
@@ -90,11 +95,15 @@ struct NodeObjectType
 // ===========================================================================
 
 class IRNodeComponent : public Component,
-                        public IRComponents,
+                        public IRStrComponent,
+public OpenGLRenderer,
                         public ChangeBroadcaster
 {
 public:
-    IRNodeComponent(Component *parent, String name, NodeObjectType objectType = NodeObjectType());
+    IRNodeComponent(Component *parent,
+                    String name,
+                    IRStr* str,
+                    NodeObjectType objectType = NodeObjectType());
     ~IRNodeComponent();
     
     // basics
@@ -103,6 +112,9 @@ public:
     
     void setEnableParameters(IRNodeComponentSetUp id...);
     void setDisableParameters(IRNodeComponentSetUp id...);
+    
+    // managing its OpenGL context This should be called after addAndMakeVisible() of this object;
+    void initOpenGLContext();
     
     int getPreviousWidth() const;
     int getPreviousHeight() const;
@@ -192,11 +204,15 @@ public:
     // callback informing
     std::function<void(IRNodeComponentStatus)> statusChangeCompleted;
     
+    //called when this object is focused which means this is clicked.
+    virtual void thisObjectGetFocused() {};
+    
     // when file manager of this Object is updated, then all objects of IRUIFoundation
     // will share the file manger automatically.
-    void updateFileManager(IRFileManager* fileManager);
+    void updateFileManager(IRFileManager& fileManager);
     // callback informing fileManager changes
     std::function<void(IRFileManager*)> fileManagerUpdated;
+    IRFileManager* getFileManager() { return FILEMANAGER; }
 
     
     // change status
@@ -242,6 +258,9 @@ public:
     // called when the object contains heavy component needs to be refreshed.
     virtual void heavyComponentRefreshed() {}
     
+    // called when this object is moved to Front of all other objects
+    virtual void moveToFrontEvent() {}
+    
     // Save System
     
     /*
@@ -270,8 +289,13 @@ public:
     Component* parent;
     
     // ============================================================
-    // Link System
-    
+
+
+    protected:
+        UserSettingStr *USERSETTING;
+        IR::IRColours *SYSTEMCOLOUR;
+        IRIconBank    *ICONBANK;
+        IRFileManager *FILEMANAGER;
     
     
     // ============================================================
@@ -338,6 +362,24 @@ private:
     bool editModeFlag = true;
     PreferenceWindow* preferenceWindow;
     
+    // ----------
+    //OpenGL
+    OpenGLContext openGLContext;
+    void setOpenGLContextSurfaceOpacityToZero();
+    
+    void newOpenGLContextCreated()override
+    {
+    }
+       
+        virtual void renderOpenGL()override
+    {
+        OpenGLHelpers::clear(Colours::transparentBlack);
+    }
+    
+    virtual void openGLContextClosing() override
+    {
+        
+    }
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeComponent)

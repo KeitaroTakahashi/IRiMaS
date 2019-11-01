@@ -10,26 +10,17 @@
 
 // opencv for getting a video frame
 #include "IRUIFoundation.hpp"
-
 #include "IRFoundation.h"
-
+#include "IRNSViewManager.hpp"
 
 class IRVideoPlayer : public IRUIFoundation,
                       public DragAndDropContainer
 {
 public:
-    IRVideoPlayer(IRNodeObject* parent) :
-    IRUIFoundation(parent),
-    player(false),
-    player_with_controller(true)
+    IRVideoPlayer(IRNodeObject* parent, IRStr* str) :
+    IRUIFoundation(parent, str)
     {
         this->openButton.setButtonText("open a movie file");
-        this->openButton.setColour(TextButton::buttonColourId,
-                                   SYSTEMCOLOUR.fundamental);
-        this->openButton.setColour(TextButton::textColourOffId,
-                                   Colour((uint8)255, (uint8)255, (uint8)255, (uint8)255));
-        this->openButton.setColour(TextButton::textColourOnId,
-                                   Colour((uint8)255, (uint8)255, (uint8)255, (uint8)255));
         this->openButton.onClick =[this] { openFile(); };
         addAndMakeVisible(this->openButton);
 
@@ -37,7 +28,12 @@ public:
     
     ~IRVideoPlayer()
     {
+        //this->player->closeVideo();
+        //this->player_with_controller->closeVideo();
         
+        this->player.reset();
+        this->player_with_controller.reset();
+
     }
     // --------------------------------------------------
 
@@ -45,13 +41,17 @@ public:
     
     void resized() override
     {
-        this->player.setBounds(getLocalBounds());
-        this->player_with_controller.setBounds(getLocalBounds());
-        this->openButton.setBounds(getLocalBounds());
+        if(this->player.get() != nullptr)
+            this->player->setBounds(getLocalBounds());
+        if(this->player_with_controller.get() != nullptr)
+            this->player_with_controller->setBounds(getLocalBounds());
         
+        this->openButton.setBounds(getLocalBounds());        
     }
+    
     void paint(Graphics &g) override
     {
+        g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     }
     
     // --------------------------------------------------
@@ -74,9 +74,7 @@ public:
             this->path.swapWith(path);
             
             loadVideo(url);
-            
-            // register file
-            
+                        
         }
     }
     
@@ -90,41 +88,43 @@ public:
 
     void loadVideo(URL url)
     {
-        this->player.load(url);
-        this->player_with_controller.loadAsync(url, [this] (const URL& u, Result r) { videoLoadingFinished (u, r); });
+        
+        this->player.reset(new VideoComponent(false));
+        this->player->load(url);
+        this->player_with_controller.reset(new VideoComponent(true));
+
+        this->player_with_controller->loadAsync(url, [this] (const URL& u, Result r) { videoLoadingFinished (u, r); });
     }
-    
-    // just for test
-    void registerFileToManager();
+
     
     // --------------------------------------------------
     // call back function for video loader
     void videoLoadingFinished (const URL& url, Result result)
     {
+        
         ignoreUnused (url);
         
         if(result.wasOk()){
-            this->videoSize = this->player_with_controller.getVideoNativeSize();
+            this->videoSize = this->player_with_controller->getVideoNativeSize();
             KLib().showRectangle<int>(this->videoSize);
             this->aspectRatio = (float)this->videoSize.getWidth() / (float)this->videoSize.getHeight();
-            setNeedController(true);
+           
+            setNeedController(false);
             
             int w,h;
-            if(this->videoSize.getWidth() > 320)
+            if(this->videoSize.getWidth() > getWidth())
             {
-                w = 320;
+                w = getWidth();
                 h = (int)((float)w / this->aspectRatio);
             }else{
                 w = this->videoSize.getWidth();
                 h = this->videoSize.getHeight();
 
             }
-            this->player.setBounds(0,0,w,h);
-            this->player_with_controller.setBounds(0,0,w,h);
-            addAndMakeVisible(this->player_with_controller);
+            this->player->setBounds(0,0,w,h);
+            this->player_with_controller->setBounds(0,0,w,h);
+            addAndMakeVisible(this->player_with_controller.get());
             removeChildComponent(&this->openButton);
-            
-            setSize(w,h);
             
             this->isVideoOpenedFlag = true;
             
@@ -134,8 +134,8 @@ public:
             }
         }else{
             this->isVideoOpenedFlag = false;
-            removeChildComponent(&this->player);
-            removeChildComponent(&this->player_with_controller);
+            removeChildComponent(this->player.get());
+            removeChildComponent(this->player_with_controller.get());
             KLib().showConnectionErrorMessage("Could not load the video file of "+url.getSubPath());
         }
     }
@@ -145,11 +145,11 @@ public:
     {
         this->isController = flag;
         if(flag){
-            removeChildComponent(&this->player);
-            addAndMakeVisible(this->player_with_controller);
+            removeChildComponent(this->player.get());
+            addAndMakeVisible(this->player_with_controller.get());
         }else{
-            removeChildComponent(&this->player_with_controller);
-            addAndMakeVisible(this->player);
+            removeChildComponent(this->player_with_controller.get());
+            addAndMakeVisible(this->player.get());
         }
     }
     
@@ -166,12 +166,29 @@ public:
     // --------------------------------------------------
     
     std::function<void()> videoLoadCompleted;
+    // --------------------------------------------------
+
+    void bringViewToFront()
+    {
+        
+#if JUCE_MAC
+        NSViewComponent* view = static_cast<NSViewComponent*>(this->player_with_controller->getPimpl());
+        if(view == nullptr) return;
+        
+        IRNSViewManager manager;
+        manager.bringOpenGLContextFront(this, view);
+        
+#endif
+        
+    }
+    
+    
     
 private:
-    VideoComponent player;
+    std::shared_ptr<VideoComponent> player;
     
     // no idea how to switch Navi Controlelr on off, so that we prepare two objects, one is with and another is without.
-    VideoComponent player_with_controller;
+    std::shared_ptr<VideoComponent> player_with_controller;
         
     Rectangle<int> videoSize;
     float aspectRatio = 0.0;
@@ -184,11 +201,8 @@ private:
     
     TextButton openButton;
     
-    // system appearance
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    
-    // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
-    JUCE_LEAK_DETECTOR (IRVideoPlayer)
+     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
+    //JUCE_LEAK_DETECTOR (IRVideoPlayer)
     
 };
 #endif /* IRVideoPlayer_hpp */

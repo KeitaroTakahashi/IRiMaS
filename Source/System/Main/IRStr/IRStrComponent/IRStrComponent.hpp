@@ -9,18 +9,39 @@
 #define IRStrComponent_hpp
 
 #include "IRStr.h"
+#include "LayoutStuff.h"
 
-class IRStrComponent
+class IRStrComponent : public LayoutStuff
 {
  
 public:
     IRStrComponent(IRStr* str);
     ~IRStrComponent();
-    
+    // ==================================================
+
     IRStr* getStr() const { return this->ir_str; }
     void setStr(IRStr* str) { this->ir_str = str; }
     KeyListener* getMasterKey() const { return this->masterKey; }
- 
+    
+    
+    // ==================================================
+
+    void setUIColour(IR::colorPattern pattern)
+    {
+        getStr()->SYSTEMCOLOUR = pattern;
+        getStr()->projectOwner->resized();
+        getStr()->projectOwner->repaint();
+        getStr()->projectOwner->updateAppearance();
+
+        getStr()->projectOwner->rebindOpenGLContents();
+    }
+    
+    // ==================================================
+    
+    
+
+ // ==================================================
+
 private:
     IRStr* ir_str;
     KeyListener* masterKey;

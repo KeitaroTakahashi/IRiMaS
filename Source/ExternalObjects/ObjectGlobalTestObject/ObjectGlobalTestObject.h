@@ -11,13 +11,13 @@
 class ObjectGlobalTestObject : public IRNodeObject
 {
 public:
-    ObjectGlobalTestObject(Component* parent) : IRNodeObject(parent, "ObjectGlobal")
+    ObjectGlobalTestObject(Component* parent, IRStr* str) : IRNodeObject(parent, "ObjectGlobal", str)
     {
         setSize(100, 100);
         
         addAndMakeVisible(&this->addButton);
         this->addButton.setButtonText("addObject");
-        this->addButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.contents);
+        this->addButton.setColour(TextButton::buttonColourId, getStr()->SYSTEMCOLOUR.contents);
         this->addButton.onClick = [this] {addButtonClicked();};
         
         if(isEditMode()) this->addButton.setEnabled(false);
@@ -29,7 +29,7 @@ public:
         
         addAndMakeVisible(&this->getButton);
         this->getButton.setButtonText("getButton");
-        this->getButton.setColour(TextButton::buttonColourId, SYSTEMCOLOUR.contents);
+        this->getButton.setColour(TextButton::buttonColourId, getStr()->SYSTEMCOLOUR.contents);
         this->getButton.onClick = [this] {getButtonClicked();};
         
         if(isEditMode()) this->getButton.setEnabled(false);

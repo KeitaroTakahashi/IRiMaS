@@ -23,10 +23,14 @@
 #include "IRSaveLoadSystem.hpp"
 
 #include "KLib.h"
+#include "IRMessage.h"
+
+#include "Benchmark.h"
 
 
 class IRWorkspace : public AudioAppComponent,
 public IRComponents,
+public IRStrComponent,
 public ChangeBroadcaster,
 public ChangeListener,
 public IRNodeObject::Listener,
@@ -82,6 +86,11 @@ public:
     
     // get to know when NodeObject is modified e.g. loading new file.
     void nodeObjectModifiedNotification(IRNodeObject* obj) override;
+    void nodeObjectSelectionChange(IRNodeObject* obj) override;
+    void nodeObjectGetFocused(IRNodeObject* obj) override;
+    void heavyComponentCreated(IRNodeObject* obj)override;
+
+
     
     void addObjectGlobal(IRObjectPtr obj, String id) override;
     void getObjectGlobal(IRNodeObject* obj) override;
@@ -95,6 +104,8 @@ public:
     // manage the heavy weight components which are always drown on the top of all other components
     // the heavy weights components will be hidden or shown according to this workspace status
     void manageHeavyWeightComponents(bool flag);
+
+
     
     // object management
     void createObject(IRNodeObject* obj);
@@ -127,7 +138,7 @@ public:
     
     //flag
     bool isEditMode() const;
-    void setEditMode(bool flag);
+    void setEditMode(bool flag, bool notification = false);
     
     bool isLinkMode() const;
     void setLinkMode(bool flag);
@@ -142,6 +153,12 @@ public:
     public:
         virtual ~Listener() {}
         
+        virtual void nodeObjectSelectionChange(IRNodeObject* obj) {};
+        virtual void nodeObjectGetFocused(IRNodeObject* obj) {};
+        
+        virtual void editModeChanged(IRWorkspace* changedSpace) = 0;
+        
+        virtual void heavyObjectCreated(IRNodeObject* obj) {};
         
     };
     
@@ -150,6 +167,11 @@ public:
     virtual void addListener(Listener* newListener);
     virtual void removeListener(Listener* listener);
     
+    void callNodeObjectSelectionChange(IRNodeObject* obj);
+    void callNodeObjectGetFocused(IRNodeObject* obj);
+    void callEditModeChanged();
+    void callHeavyObjectCreated(IRNodeObject* obj);
+
     // Callback
     std::function<void()> requestWorkspaceListUpdate;
     std::function<void()> requestNewProject;
@@ -187,7 +209,6 @@ private:
     
     Array<IRNodeObject* > copiedObjects;
     
-    SelectedItemSet<IRNodeObject*> selectedItemList;
     AudioEngine mixer;
     
     // dummy object for drag drop action
@@ -211,6 +232,9 @@ private:
     // workspace status
     bool editModeFlag = true;
     bool linkModeFlag = false;
+    
+    // message
+    IRMessage message;
     // snapshot
     Image snap;
     
@@ -228,6 +252,44 @@ private:
     void loadBackgroundImageLink();
     Image loadImage(String url);
     
+// ==================================================
+   //OpenGL
+   OpenGLContext openGLContext;
+   std::unique_ptr<OpenGLGraphicsContextCustomShader> shader;
+   String fragmentCode;
+   GLuint textureID;
+   IRTextLoader fragmentText;
+   bool isTextureCreated = false;
+   bool updateTexture = false;
+   float* buffer = nullptr;
+   
+   bool isOpenGLComponentClosed = false;
+   
+   String fragURL;
+   
+   bool fragmentRefreshed = false;
+    
+    void openGLInit();
+    void shaderTask(Graphics& g);
+    void update();
+   void createTexture();
+   //void createDemoTexture();
+   void updateFragment();
+   void setUniform(OpenGLShaderProgram& program);
+    
+    int sp_w = 100;
+    int sp_h = 100;
+    // max size of w and h of Spectrogram
+    // 1024
+    int MAX_TEXTURE_SIZE = 512;
+    
+    float ratio_x = 1.0;
+    float ratio_y = 1.0;
+// ==================================================
+    //benchmark
+    StopWatch bench;
+    // ==================================================
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkspace)
 };
 

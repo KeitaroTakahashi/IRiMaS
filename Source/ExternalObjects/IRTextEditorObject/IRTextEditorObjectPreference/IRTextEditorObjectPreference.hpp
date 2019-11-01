@@ -10,7 +10,7 @@ class IRTextEditorObjectPreference : public IRPreferenceObject
     
 public:
     
-    IRTextEditorObjectPreference(String title, Rectangle<int> frameRect);
+    IRTextEditorObjectPreference(String title, Rectangle<int> frameRect, IRStr* str);
     ~IRTextEditorObjectPreference();
     
     void resized() override;

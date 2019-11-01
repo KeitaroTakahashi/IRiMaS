@@ -10,6 +10,8 @@
 
 #include "JuceHeader.h"
 
+#include "IRStrComponent.hpp"
+
 #include "IRIconBank.hpp"
 #include "IRImageButton.hpp"
 #include "IRImageMovableButton.hpp"
@@ -17,12 +19,13 @@
 #include "IRImageLineButton.h"
 
 
-class AutomationController : public Component
+class AutomationController : public Component,
+public IRStrComponent
 {
 public:
     
    
-    AutomationController();
+    AutomationController(IRStr* str);
     ~AutomationController();
     
     void resized() override;
@@ -72,8 +75,6 @@ private:
     int buttonSize = 40;
     int buttonInterval = 5;
     
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-
 };
 
 #endif /* AutomationController_hpp */

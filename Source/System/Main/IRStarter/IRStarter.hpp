@@ -6,10 +6,7 @@
 
 #include "Menus.h"
 #include "EditCommandTarget.hpp"
-
-
-
-
+#include "IRIconBank.hpp"
 
 class IRStarter : public Component,
                   public ApplicationCommandTarget,
@@ -38,6 +35,7 @@ public:
     ~IRStarter();
     
     void paint(Graphics& g) override;
+    void resized() override;
 
     void init();
     
@@ -69,6 +67,18 @@ private:
     Image logo;
     Rectangle<float> logoPos;
     Image title;
+    
+    IRIconBank::IRIconImage loadImageAndReturn(String url);
+    IRIconBank::IRIconImage loadIconImage(String url);
+    void createButton(IRImageButton* button, IRIconBank::IRIconImage img);
+
+
+    IRIconBank::IRIconImage icon_newProject;
+    IRIconBank::IRIconImage icon_openProject_arrow;
+    IRImageButton newProjectButton;
+    IRImageButton openProjectButton;
+    Label newProjectLabel;
+    Label openProjectLabel;
     
     // system colour
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

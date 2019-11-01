@@ -13,6 +13,8 @@ IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
     ObjectFactoryInitializer(); // this will create a singleton and initialise the object palette
     
     this->initialise();
+    
+    std::cout << "IRFactory2 = " << &IRFactory2 << std::endl;
 }
 
 
@@ -26,6 +28,7 @@ IRiMaSMainComponent::~IRiMaSMainComponent()
     
     this->projectLib.clear();
     
+    singleton<IRObjectFactory2>::explicitlyDestroy();
     singleton<IRObjectFactory>::explicitlyDestroy(); // OK - THAT IS THE THING TO DO. THIS ULTIMATELY DESTROYS THE T_OBJECTs AND AVOIDS THE LEAK OF THE ENBEDDED IMAGES.
     
     // finalize singlton
@@ -47,14 +50,9 @@ void IRiMaSMainComponent::initialise()
 void IRiMaSMainComponent::createNewProject()
 {
     std::cout << "Creating new project... projectWindow" << std::endl;
+    
+    /*
     IRProjectWindow* projectWindow = new IRProjectWindow("Untitled", this->preferenceWindow.get());
-    
-    IRProjectWindow2* projectWindow2 = new IRProjectWindow2("test");
-
-    
-    
-    
-    // std::shared_ptr<IRProjectWindow> projectWindow = std::make_shared<IRProjectWindow>("Untitled", this->preferenceWindow.get());
     
     // create a Workspace as default
     projectWindow->getProjectComponent()->createNewWorkspace(); // DISABLED NEW WORKSPACE FOR NOW
@@ -69,11 +67,26 @@ void IRiMaSMainComponent::createNewProject()
     // startWindow only appears when no project window stays opened.
     this->startWindow->setVisible(false);
     this->preferenceWindow->setVisible(true);
+     */
+    
+    int size = (int)this->projectLib.size();
+    Rectangle<int> frameRect (0,
+                              0,
+                              1280,
+                              800);
+    IRProjectWindow2* projectWindow2 = new IRProjectWindow2("test", frameRect);
+    projectWindow2->setTopLeftPosition(10 * size, 10 * size);
+    projectWindow2->addListener(this);
+    std::function<void()> callback = [this] { createNewProject(); };
+    projectWindow2->setNewProjectCallbackFunc(callback);
+    this->projectLib.push_back(projectWindow2);
+
 }
 
 
 void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
 {
+    /*
     std::cout << "========== createNewProjectFromSaveData ==========" << std::endl;
     IRSaveLoadSystem::dataStr data = this->saveLoadClass.getSaveDataStr();
     IRSaveLoadSystem::headerStr header = data.header;
@@ -163,13 +176,13 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
                 obj->loadThisFromSaveData(it->second["ObjectDefined"]);
                 
                 // ===== END =====
-                /*
+              
                  for(auto it2 = it->second["ObjectDefined"].object_items().cbegin(); it2 != it->second.object_items().cend(); ++it2)
                  {
                  std::cout << it2->first << std::endl;
                  
                  }*/
-                
+                /*
                 //std::cout << it->first["ObjectType"].string_value() << std::endl;
                 std::cout << objectArray[i][it->first]["ObjectType"].string_value() << std::endl;
                 
@@ -189,6 +202,7 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     // set project save path
     projectWindow->getProjectComponent()->setProjectPath(directoryPath);
     
+    */
 }
 
 
@@ -219,6 +233,7 @@ void IRiMaSMainComponent::openProject()
 
 void IRiMaSMainComponent::closeProject(DocumentWindow* closingWindow)
 {
+    /*
     auto it = std::find(this->projectLib.begin(), this->projectLib.end(), closingWindow);
     if (it != this->projectLib.end())
     {
@@ -233,7 +248,7 @@ void IRiMaSMainComponent::closeProject(DocumentWindow* closingWindow)
     if (this->projectLib.size() == 0)
     {
         this->startWindow->setVisible(true);
-    }
+    }*/
 }
 
 
@@ -321,7 +336,6 @@ void IRiMaSMainComponent::saveAsProjectAction(IRProject* project)
 
 void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 {
-    std::cout << "changeListener" << std::endl;
     if (this->startWindow.get() == source)
     {
         if (this->startWindow->getMenuActionStatus() == IRStarter::MenuActionStatus::CreateNewProjectAction)
@@ -342,3 +356,29 @@ void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 
 
 
+
+void IRiMaSMainComponent::closeThisWindow(IRMainWindow* closeWindow)
+{
+    std::cout << "IRiMaSMainComponent::closeThisWindow\n";
+    
+    auto it = std::find(this->projectLib.begin(), this->projectLib.end(), closeWindow);
+    if (it != this->projectLib.end())
+    {
+        
+        this->projectLib.erase(it);
+        delete closeWindow;
+        
+    }
+    else
+    {
+        std::cout << "IRiMaSMainComponent : closeThisWindow : Could not find window of " << closeWindow << std::endl;
+    }
+    
+    std::cout << "deleted projectLib size = " << this->projectLib.size() << std::endl;
+    if (this->projectLib.size() == 0)
+    {
+        this->startWindow->setVisible(true);
+    }
+    
+    std::cout << "closeThisWindow comp\n";
+}

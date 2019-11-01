@@ -12,8 +12,10 @@
 #include "ColourLib.h"
 #include "KeAnimationComponent.h"
 #include "ExternalObjectHeader.h"
+#include "IRObjectFactory2.hpp"
 #include "IRStrComponent.hpp"
 #include "IRWorkspace2.hpp"
+
 
 class ObjectMenuComponent : public Component,
 public IRStrComponent,
@@ -39,7 +41,9 @@ public:
     class ObjectMenuItem : public Component
     {
     public:
-        ObjectMenuItem(ObjectMenuComponent* parent, IRObjectFactory2::t_object* object, int buttonSize) :
+        ObjectMenuItem(ObjectMenuComponent* parent,
+                       IRObjectFactory2::t_object* object,
+                       int buttonSize) :
         parent(parent), object(object), buttonSize(buttonSize)
         {
             
@@ -48,9 +52,9 @@ public:
         
         void paint(Graphics& g) override
         {
-            if(this->isSelectedFlag) g.fillAll(SYSTEMCOLOUR.contents.brighter());
+            if(this->isSelectedFlag) g.fillAll(this->parent->getStr()->SYSTEMCOLOUR.contents.brighter());
             
-            g.setColour(SYSTEMCOLOUR.text);
+            g.setColour(this->parent->getStr()->SYSTEMCOLOUR.text);
             g.drawEllipse(5, 5, this->buttonSize, this->buttonSize, 1);
             int s = this->buttonSize + 15;
             g.drawText(this->object->name, s, 0, getWidth() - s, getHeight(), Justification::left);
@@ -85,8 +89,6 @@ public:
         
         bool isSelectedFlag = false;
 
-        IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-
     };
     
     // ==================================================
@@ -94,7 +96,7 @@ public:
     void createItem(IRObjectFactory2::t_object* obj);
     
     virtual void itemSelected(IRObjectFactory2::t_object* obj) {}
-    virtual void itemReleased(IRObjectFactory2::t_object* obj) {}
+    virtual void itemReleased(IRObjectFactory2::t_object* obj);
     
 private:
     void updateAnimationFrame() override;
@@ -106,7 +108,8 @@ private:
     void ObjectMenuItemMouseUp(ObjectMenuItem* item);
     
     bool isOpened = false; // if menu area is visible or not
-    
+    // ==================================================
+
 
     // ==================================================
 
@@ -122,6 +125,11 @@ private:
     std::vector<IRObjectFactory2::t_object* > objects;
     std::vector<ObjectMenuItem* > items;
     // ==================================================
+    
+protected:
+    IRObjectFactory2& OBJECTFACTORY = singleton<IRObjectFactory2>::get_instance();
+
+
     
 };
 #endif /* ObjectMenuComponent_hpp */

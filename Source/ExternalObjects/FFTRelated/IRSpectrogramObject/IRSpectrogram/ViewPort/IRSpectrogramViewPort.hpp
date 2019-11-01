@@ -19,6 +19,7 @@ class IRSpectrogramViewUI : public IRViewPort
 {
 public:
     IRSpectrogramViewUI(IRSpectrogramComponent* main,
+                        IRStr* str,
                         float vmin, float vmax,
                         float hmin, float hmax);
     ~IRSpectrogramViewUI();

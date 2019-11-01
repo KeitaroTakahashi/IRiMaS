@@ -16,23 +16,39 @@ public IRStrComponent
 public:
     SlideMenu(IRStr* str);
     ~SlideMenu();
-    
+    // ==================================================
+
     void resized() override;
-    
     void paint(Graphics& g) override;
+    // ==================================================
+
+    void addSlide(IRWorkspace* space);
+    void slideSelectedAction(IRWorkspaceSlide* slide);
     
-    void addSlide();
-    void slideSelectedAction();
+    // ==================================================
+
+    void addNewWorkspaceSlide(IRWorkspace* space);
     
+    // ==================================================
+
+    std::function<void()> slideMenuUpdated;
+    std::function<void(IRWorkspaceSlide*)> slideHasSelected;
+    // ==================================================
+
 private:
-    
+    // ==================================================
+
     std::vector<IRWorkspaceSlide* > slides;
-    
+    // ==================================================
+
     int yMargin = 10;
-    
+    // ==================================================
+
     int sceneHeight = 60;
     int itemHeight = 80;
     
-    
+    // ==================================================
+    // ==================================================
+
 };
 #endif /* SlideMenu_hpp */

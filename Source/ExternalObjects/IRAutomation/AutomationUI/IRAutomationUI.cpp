@@ -7,14 +7,15 @@
 
 #include "IRAutomationUI.hpp"
 
-IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject) : IRUIFoundation(nodeObject),
+IRAutomationUI::IRAutomationUI(IRNodeObject* nodeObject, IRStr* str) : IRUIFoundation(nodeObject, str),
 visibleArea(0,0,0,0),
 playingLine(0,0,0,0)
 {
     
-    this->automation = std::make_shared<InteractiveAutomation>(nodeObject);
+    this->automation = std::make_shared<InteractiveAutomation>(nodeObject, str);
     
-    this->automationView = std::make_shared<IRViewUI>(this->automation.get(),
+    this->automationView = std::make_shared<IRViewUI>(str,
+                                                      this->automation.get(),
                                                       0, 40,
                                                       0, 40);
     addAndMakeVisible(this->automationView.get());
@@ -34,7 +35,7 @@ IRAutomationUI::~IRAutomationUI()
     if(this->audioData != nullptr)
     {
         this->audioData->getData()->removeListener(this);
-        getFileManager()->discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
+        getFileManager().discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
         
     }
 }
@@ -43,9 +44,9 @@ IRAutomationUI::~IRAutomationUI()
 
 void IRAutomationUI::paint(Graphics& g)
 {
-    g.fillAll(SYSTEMCOLOUR.background);
+    g.fillAll(getStr()->SYSTEMCOLOUR.background);
     
-    g.setColour (SYSTEMCOLOUR.contents);
+    g.setColour (getStr()->SYSTEMCOLOUR.contents);
     //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
     g.drawRect(getLocalBounds().toFloat(), 1.0);
 }
@@ -201,7 +202,7 @@ void IRAutomationUI::getFilePtr(File file)
     std::function<void()> callback = [this]{fileImportCompleted();};
     
     
-    getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
+    getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                              file,
                                              this->parent,
                                              callback);
@@ -214,7 +215,7 @@ void IRAutomationUI::getFilePtr(File file)
 
 void IRAutomationUI::fileImportCompleted()
 {
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager()->getFileObject());
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
     
     this->audioData->getData()->addListener(this);
     

@@ -8,18 +8,19 @@
 #ifndef IRTitleBar_hpp
 #define IRTitleBar_hpp
 
-
-#include "JuceHeader.h"
+#include "IRTitleBarComponent.hpp"
 #include "IRwindowHeader.h"
-#include "IRStrComponent.hpp"
+#include "IROpenGLManager.hpp"
 
 class IRTitleBar : public Component,
 public IRStrComponent,
-public ChangeBroadcaster
+public ChangeBroadcaster,
+public OpenGLRenderer,
+public ChangeListener
 {
 public:
     //==================================================
-    IRTitleBar(IRStr* str);
+    IRTitleBar(IRStr* str, String title);
     ~IRTitleBar();
     
     //==================================================
@@ -30,6 +31,10 @@ public:
     void mouseUp(const MouseEvent& e) override;
     void mouseDown(const MouseEvent& e)override;
     void mouseMove(const MouseEvent& e)override;
+    void mouseDoubleClick(const MouseEvent& e) override;
+    //==================================================
+
+    std::function<void()> titleDoubleClickedCallback;
     
     //==================================================
     void checkResizableFromMouseDownPosition(Point<int> pos);
@@ -42,13 +47,45 @@ public:
     Point<int> currentPos;
     Point<int> prevPos;
     
-private:
     //==================================================
-    // Your private member variables go here...
+    // acceccible from outside of this class
+    IRTitleBarComponent comp;
+
+    //==================================================
+
+private:
     
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+    //==================================================
+    
+    //==================================================
+
     IRWindowBarActionStatus status;
     bool isResizable = true;
+public:
+    //==================================================
+    //OpenGL
+    OpenGLContext openGLContext;
+    void bringThisToFront() {
+        //this->openGLContext.bringViewToFront();
+        IROpenGLManager manager(&this->openGLContext);
+        manager.bringOpenGLContextFront(this);
+    }
     
+    void newOpenGLContextCreated()override
+    {
+    }
+       
+        virtual void renderOpenGL()override
+    {
+        OpenGLHelpers::clear(Colours::transparentBlack);
+    }
+    
+    virtual void openGLContextClosing() override
+    {
+        
+    }
+
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRTitleBar)
 };

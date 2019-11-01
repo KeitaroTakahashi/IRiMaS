@@ -16,13 +16,13 @@ class IRISVObject : public IRNodeObject,
 public ChangeListener
 {
 public:
-    IRISVObject(Component* parent);
+    IRISVObject(Component* parent, IRStr* str);
     ~IRISVObject();
     
     // ------------------------------------------------------------
     IRNodeObject* copyThis() override
     {
-        IRISVObject* newObj = new IRISVObject(this->parent);
+        IRISVObject* newObj = new IRISVObject(this->parent, getStr());
         return newObj;
     }
     // ------------------------------------------------------------

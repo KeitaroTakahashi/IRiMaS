@@ -66,7 +66,6 @@ IRObjectPtr IRFileManager::createAudioFileData(File file, IRObjectPtr owner, std
 
 bool IRFileManager::isFileAlreadyRegistered(File newFile)
 {
-    printf("isalready?\n");
     return this->list.isFile(newFile);
 }
 

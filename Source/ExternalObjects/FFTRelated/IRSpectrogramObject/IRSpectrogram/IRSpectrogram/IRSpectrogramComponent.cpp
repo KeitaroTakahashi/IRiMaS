@@ -7,9 +7,9 @@
 
 #include "IRSpectrogramComponent.hpp"
 
-IRSpectrogramComponent::IRSpectrogramComponent(IRNodeObject* nodeObject)
+IRSpectrogramComponent::IRSpectrogramComponent(IRNodeObject* nodeObject, IRStr* str)
 {
-    this->spectrogram = std::make_shared<IRSpectrogram>(nodeObject);
+    this->spectrogram = std::make_shared<IRSpectrogram>(nodeObject, str);
     addAndMakeVisible(this->spectrogram.get());
 }
 

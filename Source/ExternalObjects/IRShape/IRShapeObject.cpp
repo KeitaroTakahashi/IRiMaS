@@ -7,14 +7,19 @@
 
 #include "IRShapeObject.hpp"
 
-IRShapeObject::IRShapeObject(Component* parent) :
-IRNodeObject(parent, "IRShape")
+IRShapeObject::IRShapeObject(Component* parent, IRStr* str) :
+IRNodeObject(parent, "IRShape", str, NodeObjectType(orginaryIRComponent))
 {
+    setOpaque(false);
     
-    
-    this->UI = std::make_shared<IRShapeUI>(this);
+    this->UI = std::make_shared<IRShapeUI>(this, str);
     addAndMakeVisible(this->UI.get());
+    childComponentManager(this->UI.get());
     
+    setObjController(this->UI->getController());
+    
+   
+
     setSize(200,200);
 }
 
@@ -24,7 +29,7 @@ IRShapeObject::~IRShapeObject()
 }
 IRNodeObject* IRShapeObject::copyThis()
 {
-    IRShapeObject* newObj = new IRShapeObject(this->parent);
+    IRShapeObject* newObj = new IRShapeObject(this->parent, getStr());
     
     newObj->UI->setColour(this->UI->getColour());
     newObj->UI->setStatus(this->UI->getStatus());
@@ -56,7 +61,15 @@ void IRShapeObject::loadThisFromSaveData(t_json data)
 // ------------------------------------------------------------
 void IRShapeObject::paint(Graphics &g)
 {
-    
+    //guide
+    if(isEditMode())
+    {
+        g.setColour(Colours::grey);
+        g.drawRect(getLocalBounds(), 1.0);
+    }
+
+    g.fillAll(Colours::transparentBlack);
+
 }
 
 void IRShapeObject::resized()
@@ -75,10 +88,10 @@ void IRShapeObject::mouseDownEvent(const MouseEvent& e)
         IRPreferenceSpace *space = getPreferenceWindow()->getPreferenceSpace();
         
         IRPreferenceObject* current = space->getPreferenceObj();
-        
+        /*
         if(current != this->UI->getPreference())
         {
             space->setPreferenceObj(this->UI->getPreference());
-        }
+        }*/
     }
 }

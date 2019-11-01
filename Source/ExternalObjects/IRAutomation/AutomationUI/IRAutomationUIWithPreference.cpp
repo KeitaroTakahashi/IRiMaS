@@ -7,10 +7,10 @@
 
 #include "IRAutomationUIWithPreference.hpp"
 
-IRAutomationUIWithPreference::IRAutomationUIWithPreference(IRNodeObject* nodeObject) :
-IRAutomationUI(nodeObject)
+IRAutomationUIWithPreference::IRAutomationUIWithPreference(IRNodeObject* nodeObject, IRStr* str) :
+IRAutomationUI(nodeObject, str)
 {
-    this->preference = std::make_shared<IRAutomationObjectPreference>("Automation Preference", Rectangle<int>(400,720));
+    this->preference = std::make_shared<IRAutomationObjectPreference>("Automation Preference", Rectangle<int>(400,720), str);
     this->preference->getUI()->getOpenAudioUI()->setOpenAudioButtonCallback([this]{openAudioFileAction();});
     this->preference->getUI()->getOpenAudioUI()->addChangeListener(this);
 

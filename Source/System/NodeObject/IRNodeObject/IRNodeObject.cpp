@@ -1,8 +1,11 @@
 
 #include "IRNodeObject.hpp"
 
-IRNodeObject::IRNodeObject(Component* parent, String name, NodeObjectType objectType)
-: IRNodeComponent(parent, name, objectType),
+IRNodeObject::IRNodeObject(Component* parent,
+                           String name,
+                           IRStr* str,
+                           NodeObjectType objectType)
+: IRNodeComponent(parent, name, str, objectType),
   IRLinkFoundation(parent, 60)
 {
     this->parent = parent;
@@ -11,28 +14,31 @@ IRNodeObject::IRNodeObject(Component* parent, String name, NodeObjectType object
 
 IRNodeObject::~IRNodeObject()
 {
+    
+    std::cout << "IRNodeObject deconstrucing" << std::endl;
+
     //notify any modification
     notifyNodeObjectModification();
-    std::cout << "~IRNODEOBJECT DESTRUCTOR CALLED" << std::endl;
+    std::cout << "IRNodeObject deoconstructing done" << std::endl;
 }
 
 
 //copy constructor
 IRNodeObject* IRNodeObject::copyThis()
 {
-    return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
+    return new IRNodeObject(this->parent, "IRNodeObject", getStr(), NodeObjectType());
 }
 
 
 // copy constructor with contents
 IRNodeObject* IRNodeObject::copyContents(IRNodeObject* object)
 {
-    return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
+    return new IRNodeObject(this->parent, "IRNodeObject", getStr(), NodeObjectType());
 }
 
 IRNodeObject* IRNodeObject::copyDragDropContents(IRNodeObject* object)
 {
-    return new IRNodeObject(this->parent, "IRNodeObject", NodeObjectType());
+    return new IRNodeObject(this->parent, "IRNodeObject", getStr(), NodeObjectType());
 }
 
 
@@ -114,6 +120,10 @@ ListenerList<IRNodeObject::Listener>& IRNodeObject::getListenerList()
 void IRNodeObject::callDragOutNodeObjectFromParent()
 {
     Component::BailOutChecker checker(this);
+    
+    setSelected(false); // IMPORTANT
+    
+    
     //==========
     // check if the objects are not deleted, if deleted, return
     if(checker.shouldBailOut()) return;
@@ -149,6 +159,17 @@ void IRNodeObject::callEditModeChangedInNodeObject()
     if(checker.shouldBailOut()) return;
     //std::function
     if(this->editModeChangedCompleted != nullptr) this->editModeChangedCompleted();
+}
+
+void IRNodeObject::callHeavyComponentCreated(IRNodeObject* obj)
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [obj](Listener& l){ l.heavyComponentCreated(obj); });
+    //check again
+    if(checker.shouldBailOut()) return;
 }
 
 void IRNodeObject::callLinkModeChangedInNodeObject()
@@ -306,9 +327,9 @@ void IRNodeObject::callOpenPreferenceWindow()
 
 void IRNodeObject::notifyNodeObjectModification()
 {
-    
     Component::BailOutChecker checker(this);
     if(checker.shouldBailOut()) return;
+
     this->listeners.callChecked(checker, [this](Listener& l){ l.nodeObjectModifiedNotification(this); });
     if(checker.shouldBailOut()) return;
     
@@ -373,7 +394,7 @@ void IRNodeObject::callReceiveVideoLink(IRVideo* obj)
 void IRNodeObject::callUpdateIRFileManager(IRFileManager* fileManager)
 {
     
-    setIRFileManager(fileManager);
+    //setIRFileManager(fileManager);
     Component::BailOutChecker checker(this);
     if(checker.shouldBailOut()) return;
     this->listeners.callChecked(checker, [this](Listener& l){ l.updateIRFileManager(getFileManager()); });
@@ -393,10 +414,18 @@ void IRNodeObject::loadObjectContents()
 }
 
 // ==================================================
-
+// called from IRNodeComponent
 void IRNodeObject::selectedChangeEvent()
 {
-    
+    //call callNodeObjectSelectionChange() in Workspace
+    callNodeObjectSelectionChange();
+}
+
+void IRNodeObject::thisObjectGetFocused()
+{
+    //std::cout << "IRNodeObject::thisObjectGetFocused\n";
+    // for IRWorkspace Event
+    callNodeObjectGetFocused();
 }
 
 void IRNodeObject::setLinkActivationEvent()
@@ -438,3 +467,40 @@ void IRNodeObject::initialPaintOnWorkspace(Graphics& g, Component* workspace)
     paintOnWorkspace(g, workspace);
     workspace->repaint();
 }
+
+// ==================================================
+
+void IRNodeObject::callNodeObjectSelectionChange()
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.nodeObjectSelectionChange(this); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+
+void IRNodeObject::callNodeObjectGetFocused()
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.nodeObjectGetFocused(this); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+
+// ==================================================
+// move to Front
+
+void IRNodeObject::moveToFrontEvent()
+{
+    
+    moveToFrontAction();
+    
+    callHeavyComponentCreated(this);
+}
+
+// ==================================================

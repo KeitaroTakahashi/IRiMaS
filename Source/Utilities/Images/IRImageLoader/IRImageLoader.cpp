@@ -1,8 +1,8 @@
 
 #include "IRImageLoader.hpp"
 
-IRImageLoader::IRImageLoader(IRNodeObject* parent) :
-IRUIFoundation(parent)
+IRImageLoader::IRImageLoader(IRNodeObject* parent, IRStr* str) :
+IRUIFoundation(parent, str)
 {
     this->parent = parent;
 }
@@ -11,7 +11,7 @@ IRImageLoader::~IRImageLoader()
 {
     // remove pointer
     if(this->imgData != nullptr)
-        getFileManager()->discardFilePtr(IRFileType::IRIMAGE, this->imgData, this->parent, this->file);
+        getFileManager().discardFilePtr(IRFileType::IRIMAGE, this->imgData, this->parent, this->file);
 }
 
 
@@ -38,18 +38,14 @@ bool IRImageLoader::open()
             //loadImage(pathToOpen);
             
             
-            if(getFileManager() != nullptr)
-            {
-                this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager()->getFilePtr(IRFileType::IRIMAGE, file, this->parent));
-                this->isFileLoadCompleted = true;
+        
+            this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager().getFilePtr(IRFileType::IRIMAGE, file, this->parent));
+            this->isFileLoadCompleted = true;
+        
+            // notify modification
+            this->parent->notifyNodeObjectModification();
             
-                // notify modification
-                this->parent->notifyNodeObjectModification();
-                
-            }else{
-                this->imgData = nullptr;
-                this->isFileOpened = false;
-            }
+        
         }else{
             
             if(!this->isFileOpened)
@@ -78,16 +74,12 @@ bool IRImageLoader::open(String pathToOpen)
         
         File file(this->path);
         
-        if(getFileManager() != nullptr)
-        {
-            this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager()->getFilePtr(IRFileType::IRIMAGE, file, this->parent));
-            this->isFileLoadCompleted = true;
-            // notify
-            this->parent->notifyNodeObjectModification();
-        }else{
-            this->imgData = nullptr;
-            this->isFileOpened = false;
-        }
+        
+        this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager().getFilePtr(IRFileType::IRIMAGE, file, this->parent));
+        this->isFileLoadCompleted = true;
+        // notify
+        this->parent->notifyNodeObjectModification();
+       
 
     }else{
         this->isFileOpened = false;

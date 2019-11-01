@@ -20,7 +20,7 @@ private OpenGLRenderer,
 private AsyncUpdater
 {
 public:
-    GLSLSpectrogram(IRNodeObject* nodeObject);
+    GLSLSpectrogram(IRNodeObject* nodeObject, IRStr* str);
     ~GLSLSpectrogram();
     // ==================================================
 
