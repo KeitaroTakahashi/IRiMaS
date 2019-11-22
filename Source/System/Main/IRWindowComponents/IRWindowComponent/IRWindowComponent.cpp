@@ -17,13 +17,17 @@ projectName(projectName), frameRect(frameRect)
 {
     initialize();
     createComponents();
-    createNewWorkspace();
+    
+    //createNewWorkspace();
     
     
     //initially set object menu on t
-    this->leftBar->toObjectMenuAction();
+    this->leftBar->toObjectMenuAction(true);
     
     audioSetup();
+    
+    //init Z order
+    rebindOpenGLContents();
 }
 // ----------------------------------------
 
@@ -100,6 +104,12 @@ void IRWindowComponent::initialize()
     updateAppearance();
     
 }
+
+void IRWindowComponent::initializeUI()
+{
+    rebindOpenGLContents();
+}
+
 // ----------------------------------------
 // should be called after rightBar created
 void IRWindowComponent::createBarComponent()
@@ -120,15 +130,15 @@ void IRWindowComponent::createBarComponent()
     this->bar->comp.rightBarButtonCallback = [this](bool flag){
         this->rightBar->openSpaceAction(flag);
     };
+    this->bar->comp.editModeButtonCallback = [this] { editModeButtonClicked(); };
 
     // connect to the title component callbacks
-    this->bar->comp.closeButtonCallback = [this] { closeButtonClicked(); };
-    this->bar->comp.editModeButtonCallback = [this] { editModeButtonClicked(); };
-    this->bar->comp.newSlideButtonCallback = [this] { newSlideButtonClicked(); };
-    this->bar->comp.newProjectButtonCallback = [this] { newProjectButtonClicked(); };
-    this->bar->comp.saveButtonCallback = [this] { saveButtonClicked(); };
-    this->bar->comp.saveasButtonCallback = [this] { saveasButtonClicked(); };
-    this->bar->comp.openButtonCallback = [this] { openButtonClicked(); };
+    this->bar->getProjectButtonComponent()->closeButtonCallback = [this] { closeButtonClicked(); };
+    this->bar->getProjectButtonComponent()->newSlideButtonCallback = [this] { newSlideButtonClicked(); };
+    this->bar->getProjectButtonComponent()->newProjectButtonCallback = [this] { newProjectButtonClicked(); };
+    this->bar->getProjectButtonComponent()->saveButtonCallback = [this] { saveButtonClicked(); };
+    this->bar->getProjectButtonComponent()->saveasButtonCallback = [this] { saveasButtonClicked(); };
+    this->bar->getProjectButtonComponent()->openButtonCallback = [this] { openButtonClicked(); };
     
     //currently this is not active
     this->bar->titleDoubleClickedCallback = [this] { titleDoubleClicked(); };
@@ -207,37 +217,17 @@ bool IRWindowComponent::keyPressed(const KeyPress& key, Component* originatingCo
 {
     std::cout << "IRWindowComponent keyPressed() : " << key.getKeyCode() << " : " << key.getTextDescription() << ", " << key.getTextCharacter() <<   std::endl;
     
-   
+    if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
+    {
+        DeleteKeyPressed();
+    }
     
     if(key.getTextDescription() == "command + E")
     {
-        
-        
-        // we need to get TopWorkspace first and get its EditMode status
-       // bool EditModeOfTopWorkspace = getTopWorkspace()->isEditMode();
-        // and then,
-        setEditMode(!this->isEditMode());
-        
-        /*
-        // notify it to IRProject
-        if(this->notifyEditModeChanged != nullptr)
-        {
-            this->notifyEditModeChanged();
-        }
-        */
+        CommandEPressed();
         return true;
     }
-    
-    // in case no key
-    /*
-    if(! this->isEditMode())
-    {
-        std::cout << "IRWworkspace : The workspace can not receive any key event because it is in Control Mode, if you want to control Object interface, please click an object you want to control and give a KeyEventFocus on it." << std::endl;
-    }
-    else {
-        std::cout << "IRWorkspace : Unknown KeyEvent received." << std::endl;
-    }
-    */
+ 
     return false;
 }
 // ----------------------------------------
@@ -378,10 +368,7 @@ void IRWindowComponent::createNewProject()
 {
     
 }
-void IRWindowComponent::loadProjectFromSavedData(std::string path)
-{
-    
-}
+
 // ==================================================
 //IRMainSpace Listener
 void IRWindowComponent::nodeObjectSelectionChange(IRNodeObject* obj)
@@ -477,9 +464,16 @@ void IRWindowComponent::closeProject()
 
 void IRWindowComponent::editModeButtonClicked()
 {
-    bool em = this->mainSpace->getTopWorkspace()->isEditMode();
-    this->mainSpace->getTopWorkspace()->setEditMode(!em);
-    this->bar->comp.setEditMode(!em);
+    if(this->mainSpace->getWorkspaces().size() > 0)
+    {
+        /*
+        bool em = this->mainSpace->getTopWorkspace()->isEditMode();
+        this->mainSpace->getTopWorkspace()->setEditMode(!em);
+        this->bar->comp.setEditMode(!em);
+         */
+        
+        setEditMode(!isEditMode());
+    }
 }
 
 void IRWindowComponent::titleDoubleClicked()
@@ -512,14 +506,16 @@ void IRWindowComponent::newProjectButtonClicked()
 }
 void IRWindowComponent::saveButtonClicked()
 {
-    
+    saveProject();
 }
 void IRWindowComponent::saveasButtonClicked()
 {
-    
+    saveAsProject();
 }
 void IRWindowComponent::openButtonClicked()
 {
+    if(this->openProjectCallback != nullptr)
+        this->openProjectCallback();
     
 }
 // ==================================================
@@ -536,12 +532,14 @@ void IRWindowComponent::workspaceSelected(IRWorkspace* space)
 void IRWindowComponent::rebindOpenGLContents()
 {
     
+    std::cout << "rebindOpenGLContents\n";
     if(this->leftBar->getWidth() > 0 && this->leftBar->getHeight() > 0)
            this->leftBar->bringThisToFront();
        if(this->rightBar->getWidth() > 0 && this->rightBar->getHeight() > 0)
            this->rightBar->bringThisToFront();
        if(this->bar->getWidth() > 0 && this->bar->getHeight() > 0)
            this->bar->bringThisToFront();
+       else std::cout << "bar not yet\n";
     
     // make sure to update
     resized();
@@ -588,5 +586,204 @@ void IRWindowComponent::updateAppearance()
     }
     
     repaint();
+    
+}
+
+// ==================================================
+// save
+json11::Json IRWindowComponent::saveAction(String projectPath, String projectTitle)
+{
+    if(projectPath.length() == 0)
+    {
+        std::cout << "Error : wrong projectPath : empty path\n";
+        return json11::Json();
+    }
+    
+    if(projectTitle.length() == 0)
+    {
+        std::cout << "Error : wrong projectTitle : empty title\n";
+        return json11::Json();
+    }
+    
+    this->projectPath = projectPath;
+    this->projectTitle = projectTitle;
+    
+    if(!this->saveLoadClass.createProjectDirectory(projectPath.toStdString()))
+    {
+        std::cout << "Error : could not create a project directory of " << projectPath << std::endl;
+        return json11::Json();
+    }
+    
+    Rectangle<int> b = getBounds();
+    
+    // creat header data
+    t_json header = json11::Json::object({
+           {"Project", json11::Json::object({
+               {"projectName",     projectTitle.toStdString()},
+               {"author",          "Keitaro Takahashi"},
+               {"date",            "20.04.1986"},
+               {"osType",          "macOS"},
+               {"osVersion",       "10.13.6"},
+               {"IRVersion",       "0.0.1"},
+               {"bounds",          json11::Json::array({0, 0, b.getWidth(), b.getHeight()})},
+           })},
+       });
+       
+    this->saveLoadClass.setHeader(header);
+    
+    json11::Json::object buffer;
+    auto workspaces = this->mainSpace->getWorkspaces();
+    int index = 1;
+    
+    for(auto space : workspaces)
+    {
+        buffer["workspace-" + std::to_string(index)] = space->makeSaveDataOfThis();
+        index++;
+    }
+    // unify all json data
+    json11::Json::object jo(buffer.begin(), buffer.end());
+    
+    json11::Json saveData = jo;
+    
+    
+    
+    
+    this->saveLoadClass.createWorkspaces(jo);
+
+    auto sb = KLib().StringSplit(projectPath.toStdString(), '/');
+    std::string filename = sb[sb.size()-1] + ".irimas"; // same to the project name
+    filename = projectPath.toStdString() + "/" + projectTitle.toStdString() + ".irimas";
+    std::cout << "save file name = " << filename << std::endl;
+    this->saveLoadClass.writeSaveData(filename);
+    
+    
+    return jo;
+    
+}
+
+void IRWindowComponent::saveProject()
+{
+    // if this is the first time to save, then open the dialog window
+    // else simply goes to the save action with the same project path.
+    if (this->projectPath.length() == 0)
+    {
+        OpenDialogToSaveProject();
+    }else{
+        saveAction(this->projectPath, this->projectTitle);
+    }
+}
+
+void IRWindowComponent::saveAsProject()
+{
+    //No matter if this proejct directory has been already created,
+    // it operates the full save process.
+    OpenDialogToSaveProject();
+}
+
+void IRWindowComponent::OpenDialogToSaveProject()
+{
+    // create new save data file with an extension of ".irimas by default
+    FileChooser chooser("Save project...",
+                        {},
+                        "");
+
+    if (chooser.browseForFileToSave(true))
+    {
+        auto file = chooser.getResult();
+        auto path = file.getFullPathName();
+        auto filename = file.getFileName();
+        std::cout << "file path = " << path << std::endl;
+        this->projectPath = path.toStdString();
+        this->projectTitle = filename.toStdString();
+        
+        saveAction(this->projectPath, this->projectTitle);
+        this->bar->comp.setTitle(this->projectTitle);
+        
+    } else { // in case cancelled
+        std::cout << "Could not open any files." << std::endl;
+    }
+   
+}
+// ==================================================
+
+void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
+{
+   
+    std::cout << "========== loadWorkspaces ==========" << std::endl;
+    
+    for (auto it = saveData["Workspaces"].object_items().cbegin(); it != saveData["Workspaces"].object_items().cend(); ++it)
+    {
+        std::string id = static_cast<std::string>(it->first);
+        std::cout << id << std::endl;
+        
+        // ===== create worksapce =====
+        createNewWorkspace();
+        // get created workspace
+        IRWorkspace* currentSpace = this->mainSpace->getTopWorkspace();
+        
+        // retrieve save data of the workspace
+        json11::Json data = saveData["Workspaces"][id].object_items();
+        
+        // retrieve save data of worksapce appearance
+        json11::Json appearance = data["Appearance"];
+        std::cout << "Appearance : backgroundColour = " << appearance["backgroundColour"].string_value() << std::endl;
+        
+        // retrieve save data of objects on the workspace
+        json11::Json Objects = data["Objects"];
+        // the object data is stored in array
+        json11::Json::array objectArray = Objects.array_items();
+        
+        std::cout << "array count = " << objectArray.size() << std::endl;
+        
+        
+        for (int i = 0; i < objectArray.size(); i++) // for each item of the array...
+        {
+            for (auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
+            {
+                
+                std::cout << " ===== " << it->first << " ===== " << std::endl;
+                std::cout << "object type= " << it->second["objectType"].string_value() << std::endl;
+                std::cout << "object uniqueID= " << it->second["objectUniqueID"].string_value() << std::endl;
+                std::cout << "object status= " << it->second["status"].string_value() << std::endl;
+                
+                
+                // ===== create object =====
+                std::string objectTypeId = it->second["objectType"].string_value();
+                auto* obj = factory.createObject(objectTypeId, currentSpace, this->ir_str.get());
+                
+                json11::Json::array b = it->second["bounds"].array_items();
+                obj->setBounds(b[0].int_value(), b[1].int_value(),
+                               b[2].int_value(), b[3].int_value());
+                
+                std::cout << "object bounds = " << obj->getWidth() << ", " << obj->getHeight() << std::endl;
+                
+                obj->setUniqueID(it->second["objectUniqueID"].string_value());
+                //
+                
+                // currently no status implemented!
+                
+                currentSpace->createObject(obj);
+                
+                // load save dada
+                obj->loadThisFromSaveData(it->second["ObjectDefined"]);
+                
+                // ===== END =====
+            }
+            
+        }
+        
+        //as default, a workspace is in control mode
+        //currentSpace->setEditMode(false);
+        
+    }
+    
+    // initialize this Project
+    initProjectAfterLoading();
+    // set project save path
+    //projectWindow->getProjectComponent()->setProjectPath(directoryPath);
+}
+
+void IRWindowComponent::initProjectAfterLoading()
+{
     
 }

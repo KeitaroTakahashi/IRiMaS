@@ -8,16 +8,13 @@ IRWaveformObject::IRWaveformObject(Component* parent, IRStr* str) :
 IRNodeObject(parent, "IRWaveform", str, NodeObjectType(orginaryIRComponent))
 {
     
-    // opaque true so that its background won't be repainted
-    setOpaque(true);
+    setOpaque(false);
 
     this->controller.reset(new IRWaveformController2(str));
     this->controller->audioController.addChangeListener(this);
     setObjController(this->controller.get());
     
     createWaveform();
-
-    
     
     this->selector = new IRObjectSelection<Component*>();
     

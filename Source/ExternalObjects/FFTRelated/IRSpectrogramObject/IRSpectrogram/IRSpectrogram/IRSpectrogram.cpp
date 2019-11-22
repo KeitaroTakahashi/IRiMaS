@@ -9,6 +9,7 @@
 
 IRSpectrogram::IRSpectrogram(IRNodeObject* nodeObject, IRStr* str) :
 IRUIAudioFoundation(nodeObject, str),
+IRHeavyWeightComponent(this),
 parent(nodeObject),
 zoomInfo(Point<float>(1.0,1.0))
 {
@@ -53,7 +54,7 @@ void IRSpectrogram::closeOpenGLComponent()
 {
     // delete Texture
     glDeleteTextures(1, &this->textureID);
-    openGLContext.detach();
+    //openGLContext.detach();
     shader.reset();
     
     this->isOpenGLComponentClosed = true;
@@ -61,11 +62,11 @@ void IRSpectrogram::closeOpenGLComponent()
 
 void IRSpectrogram::init()
 {
-    setOpaque(true);
+    //setOpaque(true);
     if (auto* peer = getPeer())
         peer->setCurrentRenderingEngine (0);
     
-    this->openGLContext.attachTo(*getTopLevelComponent());
+    //this->openGLContext.attachTo(*getTopLevelComponent());
     
     String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName();
 #if JUCE_MAC

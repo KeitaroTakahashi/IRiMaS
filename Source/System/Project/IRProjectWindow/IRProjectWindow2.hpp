@@ -16,9 +16,19 @@ public ChangeListener
 public:
     IRProjectWindow2(String name, Rectangle<int> frameRect);
     ~IRProjectWindow2();
+    // ==================================================
+    void createInitialWorkspace();
+    // ==================================================
     
+    void initializeUI();
+    // ==================================================
+    void loadProjectFromSaveData(t_json saveData);
+    // ==================================================
+
     
     void windowMoveToPos(Point<int>pos);
+    
+    // ==================================================
     
     class Listener
     {
@@ -35,7 +45,11 @@ public:
     void callCloseThisWindow();
     
     void setNewProjectCallbackFunc(std::function<void()> callback);
+    void setOpenProjectCallbackFunc(std::function<void()> callback);
+
     
+    // ==================================================
+
     
 private:
     
@@ -47,6 +61,8 @@ private:
     
     void newProjectCallbackAction();
     std::function<void()> newProjectCallback;
+    void openProjectCallbackAction();
+    std::function<void()> openProjectCallback;
     
     std::shared_ptr<IRWindowComponent> comp;
    

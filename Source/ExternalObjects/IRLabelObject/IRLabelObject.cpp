@@ -86,26 +86,40 @@ t_json IRLabelObject::saveThisToSaveData()
 void IRLabelObject::loadThisFromSaveData(t_json data)
 {
     // example : string value
+    std::cout << "setTypefaceName "<< String(data["fontTypefaceName"].string_value()) << std::endl;
     this->font.setTypefaceName(String(data["fontTypefaceName"].string_value()));
+    std::cout << "setTypefaceName "<< String(data["fontTypefaceStyle"].string_value()) << std::endl;
+
     this->font.setTypefaceStyle(String(data["fontTypefaceStyle"].string_value()));
     // example : int value
     this->font.setHeight(data["fontHeight"].int_value());
+    std::cout << "setTypefaceName "<< data["fontHeight"].int_value() << std::endl;
+
     // set align
     setAlign(data["textAlign"].int_value());
     
     // set font
     setFont(this->font);
-    
+
     // example : array
-    json11::Json::array colour = data["textColour"].array_items();
-    Colour textColour = Colour((uint8)colour[0].int_value(),
-                               (uint8)colour[1].int_value(),
-                               (uint8)colour[2].int_value(),
-                               (uint8)colour[3].int_value());
+    json11::Json::array c = data["textColour"].array_items();
+    int r = c[0].int_value();
+    int g = c[1].int_value();
+    int b = c[2].int_value();
+    int a = c[3].int_value();
     
+    Colour textColour = Colour((uint8)r,
+                               (uint8)g,
+                               (uint8)b,
+                               (uint8)a);
+    
+    std::cout << "colour : " << c[0].int_value() << ", " << c[1].int_value() << ", " << c[2].int_value() << ", " <<c[3].int_value() << std::endl;
+
     this->label.setColour(Label::textColourId, textColour);
     
     // set text contents
+    std::cout << "textContents : " << String(data["textContents"].string_value())<< std::endl;
+
     this->label.setText(String(data["textContents"].string_value()), dontSendNotification);
     
     // gui
@@ -115,6 +129,8 @@ void IRLabelObject::loadThisFromSaveData(t_json data)
     gui->setHeight(data["textHeight"].int_value());
     gui->setAlign(data["textAlign"].int_value());
     gui->setTextColour(textColour);
+    
+    std::cout << "all done\n";
     
 }
 

@@ -125,7 +125,7 @@ void IRStarter::init()
     
 #elif JUCE_IOS
     
-    loadClef("/materials/scores/clefs/F-clef.png");
+    String url = "/materials/Images/Logo/logo_" + index + ".png";
     
 #endif
     

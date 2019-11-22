@@ -13,7 +13,7 @@
 class IRImageButton : public Component
 {
 public:
-    IRImageButton();
+    IRImageButton(String name = "");
     ~IRImageButton();
     
     void paint(Graphics& g) override;
@@ -40,9 +40,14 @@ public:
     void setSelected(bool flag) { this->isSelectedFlag = flag; }
     
     // --------------------------------------------------
+    // VISUAL
+    void mouseDownVisual() { this->mouseDownFlag = true; repaint(); }
+    void mouseUpVisual() { this->mouseDownFlag = false; repaint(); }
+    // --------------------------------------------------
+
 
 private:
-    
+    String name;
     bool isSelectedFlag = false;
     
     

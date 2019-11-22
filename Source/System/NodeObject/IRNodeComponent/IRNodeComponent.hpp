@@ -255,12 +255,17 @@ public:
     // object type
     NodeObjectType getObjectType() const;
     
+    // ==================================================
     // called when the object contains heavy component needs to be refreshed.
-    virtual void heavyComponentRefreshed() {}
-    
+    virtual void heavyComponentRefreshed();
+    // ==================================================
+
     // called when this object is moved to Front of all other objects
     virtual void moveToFrontEvent() {}
     
+    void bringThisToFront();
+    // ==================================================
+
     // Save System
     
     /*
@@ -289,7 +294,11 @@ public:
     Component* parent;
     
     // ============================================================
-
+    // ==================================================
+    // for algorithm
+    
+    // sorting...
+    int sortIndex = 0;
 
     protected:
         UserSettingStr *USERSETTING;
@@ -299,7 +308,7 @@ public:
     
     
     // ============================================================
-    
+
     
     // ============================================================
 
@@ -371,7 +380,7 @@ private:
     {
     }
        
-        virtual void renderOpenGL()override
+    virtual void renderOpenGL()override
     {
         OpenGLHelpers::clear(Colours::transparentBlack);
     }

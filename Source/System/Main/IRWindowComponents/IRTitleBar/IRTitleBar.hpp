@@ -10,12 +10,12 @@
 
 #include "IRTitleBarComponent.hpp"
 #include "IRwindowHeader.h"
-#include "IROpenGLManager.hpp"
+#include "IRHeavyWeightComponent.h"
 
 class IRTitleBar : public Component,
 public IRStrComponent,
 public ChangeBroadcaster,
-public OpenGLRenderer,
+public IRHeavyWeightComponent,
 public ChangeListener
 {
 public:
@@ -39,6 +39,18 @@ public:
     //==================================================
     void checkResizableFromMouseDownPosition(Point<int> pos);
     
+    void bringToFrontCompleted() override
+    {
+        std::cout << "bringToFrontCompleted\n";
+        this->comp.bringAllButtonsToFront();
+    }
+    
+    void componentCreated() override
+    {
+        std::cout << "componentCreated\n";
+        //this->comp.bringAllButtonsToFront();
+
+    }
     //==================================================
     
     IRWindowBarActionStatus getStatus() const { return this->status; }
@@ -50,6 +62,7 @@ public:
     //==================================================
     // acceccible from outside of this class
     IRTitleBarComponent comp;
+    IRTitleBarProjectButtonArea* getProjectButtonComponent() { return comp.getProjectButtonComponent(); }
 
     //==================================================
 
@@ -63,28 +76,7 @@ private:
     IRWindowBarActionStatus status;
     bool isResizable = true;
 public:
-    //==================================================
-    //OpenGL
-    OpenGLContext openGLContext;
-    void bringThisToFront() {
-        //this->openGLContext.bringViewToFront();
-        IROpenGLManager manager(&this->openGLContext);
-        manager.bringOpenGLContextFront(this);
-    }
     
-    void newOpenGLContextCreated()override
-    {
-    }
-       
-        virtual void renderOpenGL()override
-    {
-        OpenGLHelpers::clear(Colours::transparentBlack);
-    }
-    
-    virtual void openGLContextClosing() override
-    {
-        
-    }
 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRTitleBar)

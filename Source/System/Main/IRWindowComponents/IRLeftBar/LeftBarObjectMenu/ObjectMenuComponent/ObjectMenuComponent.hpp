@@ -8,7 +8,6 @@
 #ifndef ObjectMenuComponent_hpp
 #define ObjectMenuComponent_hpp
 
-#include "JuceHeader.h"
 #include "ColourLib.h"
 #include "KeAnimationComponent.h"
 #include "ExternalObjectHeader.h"

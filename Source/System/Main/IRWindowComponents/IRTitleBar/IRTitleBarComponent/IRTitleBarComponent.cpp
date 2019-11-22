@@ -7,23 +7,24 @@
 
 #include "IRTitleBarComponent.hpp"
 
-IRTitleBarComponent::IRTitleBarComponent(IRStr* str, String title) : IRStrComponent(str),
+IRTitleBarComponent::IRTitleBarComponent(IRStr* str, String title) :
+IRStrComponent(str),
 title(title), editModeButton("to Control")
 {
-    
+    setOpaque(false);
     this->titleLabel.setText(title, dontSendNotification);
     this->titleLabel.setJustificationType(Justification::centred);
     this->titleLabel.setFont(getStr()->SYSTEMCOLOUR.h4);
     this->titleLabel.addMouseListener(this, true);
     addAndMakeVisible(&this->titleLabel);
     
+    /*
     createButton(&this->closeButton, getStr()->ICONBANK.icon_close);
     this->closeButton.onClick = [this] { closeButtonAction(); };
     this->closeButton.setDrawCircle(false);
     this->closeButton.setDrawRoundedSquare(false);
     addAndMakeVisible(&this->closeButton);
-    
-    
+     */
     
     createButton(&this->rightBarButton, getStr()->ICONBANK.icon_rightBar);
     this->rightBarButton.onClick = [this]{ rightBarButtonAction(); };
@@ -36,8 +37,10 @@ title(title), editModeButton("to Control")
     this->rightBarLabel.setJustificationType(Justification::centred);
     this->rightBarLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
 
-    //this->rightBarLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
-    //addAndMakeVisible(&this->rightBarLabel);
+    this->projectButtonComponent.reset( new IRTitleBarProjectButtonArea(getStr()) );
+    addAndMakeVisible(this->projectButtonComponent.get());
+
+    /*
     
     createButton(&this->newProjectButton, getStr()->ICONBANK.icon_newProject);
     this->newProjectButton.onClick = [this]{ newProjectButtonAction(); };
@@ -50,12 +53,13 @@ title(title), editModeButton("to Control")
     this->newProjectLabel.setJustificationType(Justification::centred);
     this->newProjectLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
     
-    createButton(&this->newSlideButton, getStr()->ICONBANK.icon_newSlide);
-    this->newSlideButton.onClick = [this]{ newSlideButtonAction(); };
-    this->newSlideButton.setDrawRoundedSquare(true);
-    addAndMakeVisible(&this->newSlideButton);
-    this->newSlideButton.setDrawCircle(false);
-    
+    this->newSlideButton.reset(new IRImageButton("newSlide"));
+    createButton(this->newSlideButton.get(), getStr()->ICONBANK.icon_newSlide);
+    this->newSlideButton->onClick = [this]{ newSlideButtonAction(); };
+    this->newSlideButton->setDrawRoundedSquare(true);
+    addAndMakeVisible(this->newSlideButton.get());
+    this->newSlideButton->setDrawCircle(false);
+   
     this->newSlideLabel.setText("Add", dontSendNotification);
     addAndMakeVisible(&this->newSlideLabel);
     this->newSlideLabel.setJustificationType(Justification::centred);
@@ -94,14 +98,13 @@ title(title), editModeButton("to Control")
     this->openProjectLabel.setJustificationType(Justification::centred);
     this->openProjectLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
 
-    
+      */
     addAndMakeVisible(&this->editModeButton);
     this->editModeButton.onClick = [this]{ editModeButtonAction(); };
     this->editModeLabel.setText("Mode", dontSendNotification);
     addAndMakeVisible(&this->editModeLabel);
     this->editModeLabel.setJustificationType(Justification::centred);
     this->editModeLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
-    
 
 }
 
@@ -115,6 +118,7 @@ IRTitleBarComponent::~IRTitleBarComponent()
 void IRTitleBarComponent::paint (Graphics& g)
 {
     g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
+    /*
     g.setColour(getStr()->SYSTEMCOLOUR.contents);
     g.drawLine(0, getHeight() , getWidth(), getHeight(), 2);
     g.setColour(getStr()->SYSTEMCOLOUR.text);
@@ -125,16 +129,17 @@ void IRTitleBarComponent::paint (Graphics& g)
     g.setColour(getStr()->SYSTEMCOLOUR.contents);
     g.drawLine(135, getHeight(), 135, 0, 2);
     g.drawLine(304, getHeight(), 304, 0, 2);
-    
+    */
     
     //g.drawImage(getStr()->ICONBANK.icon_newSlide.white, Rectangle<int> (0, 0, 100,100));
     
     //g.drawImage(getStr()->ICONBANK.icon_newProject.white, Rectangle<float> (0, 0, 100,100));
     
     paintSelectedItem(g);
+
     
     std::cout << " ++++++++ IRTitleBarComponent repainted! ++++++++\n";
-    
+
 }
 
 void IRTitleBarComponent::resized()
@@ -149,7 +154,7 @@ void IRTitleBarComponent::resized()
     //this->buttonSize = Point<int> (w, (float)w * this->rightBarButton.getAspectRatio());
     this->buttonSize = Point<int> (((float)h / this->rightBarButton.getAspectRatio()) * 1.2, h);
     
-    this->closeButton.setBounds(5, 5, 20, 20);
+    //this->closeButton.setBounds(5, 5, 20, 20);
 
     x = getWidth();
     x -= (this->buttonSize.getX() + marginX);
@@ -180,9 +185,12 @@ void IRTitleBarComponent::resized()
                                   labelHeight);
     
     x = 145; // leftBar width + 10
-    Point<int> bs = Point<int> ((float)h / this->newProjectButton.getAspectRatio(), h);
-
-    this->newSlideButton.setBounds(x, marginY, bs.getX(), bs.getY());
+    //Point<int> bs = Point<int> ((float)h / this->newProjectButton.getAspectRatio(), h);
+    
+    this->projectButtonComponent->setBounds(0, 0, 600, getHeight());
+    
+    /*
+    this->newSlideButton->setBounds(x, marginY, bs.getX(), bs.getY());
     this->newSlideLabel.setBounds(x, labelY, bs.getX(), labelHeight);
     x += bs.getX() + 10;
     this->saveProjectButton.setBounds(x, marginY, bs.getX(), bs.getY());
@@ -200,7 +208,9 @@ void IRTitleBarComponent::resized()
     x += bs.getX() + 10;
     this->openProjectButton.setBounds(x, marginY, bs.getX(), bs.getY());
     this->openProjectLabel.setBounds(x, labelY, bs.getX(), labelHeight);
-    
+    */
+    std::cout << " ========== IRTitleBarComponent resized\n";
+
 }
 
 
@@ -252,17 +262,19 @@ void IRTitleBarComponent::rightBarButtonAction()
     repaint();
 }
 
+void IRTitleBarComponent::editModeButtonAction()
+{
+    if(this->editModeButtonCallback != nullptr)
+        this->editModeButtonCallback();
+}
+/*
 void IRTitleBarComponent::closeButtonAction()
 {
     if(this->closeButtonCallback != nullptr)
         this->closeButtonCallback();
 }
 
-void IRTitleBarComponent::editModeButtonAction()
-{
-    if(this->editModeButtonCallback != nullptr)
-        this->editModeButtonCallback();
-}
+
 
 void IRTitleBarComponent::saveProjectButtonAction()
 {
@@ -293,7 +305,7 @@ void IRTitleBarComponent::openProjectButtonAction()
     if(this->openButtonCallback != nullptr)
            this->openButtonCallback();
 }
-
+*/
 //==================================================
 
 
@@ -308,5 +320,12 @@ void IRTitleBarComponent::setEditMode(bool flag)
     }
 }
 
+//==================================================
 
 
+void IRTitleBarComponent::setTitle(String newTitle)
+{
+    this->title = newTitle;
+    this->titleLabel.setText(newTitle, dontSendNotification);
+    repaint();
+}

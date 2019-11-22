@@ -12,6 +12,7 @@
 #include "IRStrComponent.hpp"
 #include "IRImageButton.hpp"
 #include "EditModeButton.h"
+#include "IRTitleBarProjectButtonArea.h"
 
 class IRTitleBarComponent : public Component,
 public IRStrComponent,
@@ -34,6 +35,10 @@ public:
     void resized() override;
     
     //==================================================
+
+    void setTitle(String newTitle);
+    
+    //==================================================
     SelectedButtonType getSelectedButtonType() const { return this->selectedButtonType; }
     //==================================================
     // callback
@@ -49,13 +54,27 @@ public:
     std::function<void()> openButtonCallback;
 
 
+    std::function<void()> repaintedCallback;
 
 
 
     bool getLeftBarButtonSelected() const { return this->leftBarButton.isSelected(); }
     
     void setEditMode(bool flag);
+    //==================================================
 
+    
+    void bringAllButtonsToFront()
+    {
+        
+       //this->newSlideButton->bringThisToFront();
+        this->projectButtonComponent->bringAllButtonsToFront();
+    }
+
+    //==================================================
+
+    IRTitleBarProjectButtonArea* getProjectButtonComponent() { return this->projectButtonComponent.get(); }
+    
 private:
     //==================================================
 
@@ -71,6 +90,7 @@ private:
         
     //==================================================
 
+    std::shared_ptr<IRTitleBarProjectButtonArea> projectButtonComponent;
 
     SelectedButtonType selectedButtonType = NONE;
     
@@ -83,6 +103,7 @@ private:
     Label rightBarLabel;
     void rightBarButtonAction();
     
+    /*
     IRImageButton newProjectButton;
     Label newProjectLabel;
     void newProjectButtonAction();
@@ -101,9 +122,10 @@ private:
     IRImageButton closeButton;
     void closeButtonAction();
     
-    IRImageButton newSlideButton;
+    std::shared_ptr<IRImageButton> newSlideButton;
     void newSlideButtonAction();
     Label newSlideLabel;
+     */
     
     EditModeButton editModeButton;
     Label editModeLabel;

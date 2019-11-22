@@ -491,16 +491,30 @@ void IRNodeObject::callNodeObjectGetFocused()
     if(checker.shouldBailOut()) return;
 }
 
+void IRNodeObject::callNodeObjectMoveToFront()
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.nodeObjectMoveToFront(this); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
 
 // ==================================================
 // move to Front
 
 void IRNodeObject::moveToFrontEvent()
 {
-    
+    // to inform IRNodeObject
     moveToFrontAction();
     
+    // to inform IRWorksapce
     callHeavyComponentCreated(this);
+    
+    // to inform IRWorkspace that this object is moved to the front top of others.
+    callNodeObjectMoveToFront();
 }
 
 // ==================================================

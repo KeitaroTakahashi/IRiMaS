@@ -16,9 +16,11 @@
 #include "LeftBarObjectMenu.hpp"
 #include "LeftBarSlideMenu.hpp"
 #include "IROpenGLManager.hpp"
+#include "ObjectSlideSwitchSpace.h"
 
 class IRLeftBar : public Component,
 public IRStrComponent,
+public IRHeavyWeightComponent,
 public ChangeBroadcaster,
 public ChangeListener,
 private KeAnimationComponent
@@ -37,6 +39,9 @@ public:
     //==================================================
     
     void checkResizableFromMouseDownPosition(Point<int> pos);
+    //==================================================
+
+    void bringToFrontCompleted() override;
     
     //==================================================
     void openMenu(objectCategory type);
@@ -56,17 +61,12 @@ public:
     Point<int> prevPos;
     
     //==================================================
-    void toNavigatorAction();
-    void toObjectMenuAction();
     
-    //==================================================
-
-    // update Z-Order?
-    void bringThisToFront() {
-        //this->openGLContext.bringViewToFront();
-        IROpenGLManager manager(&this->openGLContext);
-        manager.bringOpenGLContextFront(this);
-    }
+    // @param1 : notify the action to objectSlideSwitchButton or not
+    void toNavigatorAction(bool notify = false);
+    void toObjectMenuAction(bool notify = false);
+    
+    //==================================================   
    
 private:
     
@@ -106,6 +106,8 @@ private:
     IRImageButton toNavigatorButton;
     IRImageButton toObjectMenuButton;
     
+    std::shared_ptr<ObjectSlideSwitchSpace> objectSlideSwitchButton;
+    
     TextButton addNewSlideButton;
     TextButton deleteSlideButton;
     //==================================================
@@ -134,6 +136,11 @@ private:
     
     void openDefaultMenu();
     void openPreferenceMenu();
+    
+    void attachObjectMenu();
+    void removeObjectMenu();
+    void attachPreferenceMenu();
+    void removePreferenceMenu();
 
     //==================================================
     

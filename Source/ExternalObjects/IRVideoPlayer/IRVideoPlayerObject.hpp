@@ -64,6 +64,11 @@ public:
 
     // --------------------------------------------------
     std::unique_ptr<IRVideoPlayerController> controller;
+    // --------------------------------------------------
+
+    // refresh OpenGL when added
+    void heavyComponentRefreshed() override;
+
 
 private:
     // --------------------------------------------------

@@ -106,6 +106,14 @@ private:
     std::vector<IRWorkspace*> workspaces;
     IRWorkspace* topWorkspace = nullptr;
     //==================================================
+    // for Reference manual
+    Image loadImage(String url);
+    Image getReferenceOfIndex(int index);
+    Image referenceImage;
+    //==================================================
+
+    
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRMainSpace)
 
 

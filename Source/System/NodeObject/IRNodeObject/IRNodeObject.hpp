@@ -92,6 +92,9 @@ public:
         //object selection
         virtual void nodeObjectSelectionChange(IRNodeObject* obj) {};
         virtual void nodeObjectGetFocused(IRNodeObject* obj) {}
+        
+        //Front
+        virtual void nodeObjectMoveToFront(IRNodeObject* obj) {}
 
         // notification to IRWorkspace
         virtual void nodeObjectModifiedNotification(IRNodeObject* obj) {};
@@ -178,6 +181,8 @@ public:
     
     void callNodeObjectSelectionChange();
     void callNodeObjectGetFocused();
+    
+    void callNodeObjectMoveToFront();
     
     void callOpenFileInspecter();
     void callOpenPreferenceWindow();

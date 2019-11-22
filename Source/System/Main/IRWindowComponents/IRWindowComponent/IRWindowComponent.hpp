@@ -31,23 +31,31 @@ public:
     
     void paint(Graphics& g) override;
     void resized() override;
-    
+    void setComponentsHeight(int barHeight, int mainHeight);
+    void initializeUI();
     // ==================================================
+    // MOUSE EVENT
     void mouseDrag(const MouseEvent& e) override;
     void mouseUp(const MouseEvent& e) override;
     void mouseDown(const MouseEvent& e)override;
     void mouseMove(const MouseEvent& e)override;
     // ==================================================
     
-    void setComponentsHeight(int barHeight, int mainHeight);
     
     // ==================================================
     void openProject();
     void closeProject(DocumentWindow* closingWindow);
-    
     void createNewProject();
-    void loadProjectFromSavedData(std::string path);
+    void loadProjectFromSavedData(t_json saveData);
+    // ----- save action
+    void saveProject();
+    void saveAsProject();
     
+    void OpenDialogToSaveProject();
+    json11::Json saveAction(String projectPath, String projectTitle);
+    String projectPath;
+    String projectTitle;
+    // -----
     
     // ==================================================
     // AudioApp Component
@@ -67,18 +75,24 @@ public:
     void setEditMode(bool flag);
     
     // ==================================================
+    // for the window size change
     Point<int> pos;
     Point<int> currentPos;
     Point<int> prevPos;
     
+    // ==================================================
+    // to inform IRProjectWIndow and IRiMaSMainComponent the behavior of the project
     std::function<void(Point<int>)> windowMoveAction;
     std::function<void()> closeProjectCallback;
-    
     std::function<void()> newProjectCallback;
+    std::function<void()> openProjectCallback;
+
 
     
     bool isResizable = false;
     int resizableMargin = 20;
+    
+    
     
 private:
     // ==================================================
@@ -102,7 +116,8 @@ private:
     void audioSetup();
     void closeAudioSetup();
     
-    // project
+    // ==================================================
+    // PROJECT BUTTON ACTION
     void closeButtonClicked();
     void closeProject();
     void titleDoubleClicked();
@@ -115,12 +130,17 @@ private:
     void saveasButtonClicked();
     void openButtonClicked();
     
-    //components
+    // ==================================================
+
+    // CREATE COMPONENTS
     void createBarComponent();
     void createLeftComponent();
     
     // called from IRLeftBar
     void workspaceSelected(IRWorkspace* space);
+    
+    //initialize after loading savedata
+    void initProjectAfterLoading();
     // ==================================================
 
     // Key Event
@@ -133,11 +153,12 @@ private:
     bool isAltPressed = false;
     bool isOptionPressed = false;
     
+    void DeleteKeyPressed();
+    void CommandEPressed();
+    void CommandAPressed();
+    
     // ==================================================
 
-    int barHeight = 70;
-    int leftBarWidth = 135;
-    int mainComponentHeight = 400;
 
     // ==================================================
     // Project
@@ -170,18 +191,21 @@ private:
     
     // ==================================================
     
-    // define the minimum size of the window
-    int minWidth = 800;
-    int minHeight = 700;
+   
     
     // store window size before changing it.
     Point<int> prevSize;
     // ==================================================
+   
+    // ==================================================
 
-    //IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
+
+    IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
 
     // ==================================================
    // LookAndFeel_V4 c;
+    
+    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRWindowComponent)
     

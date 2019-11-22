@@ -16,6 +16,7 @@ IRProjectWindow2::IRProjectWindow2(String name, Rectangle<int> frameRect) : IRMa
     this->comp->windowMoveAction = [this](Point<int>pos) { windowMoveToPos(pos); };
     this->comp->newProjectCallback = [this] { newProjectCallbackAction(); };
     this->comp->closeProjectCallback = [this]{ closeButtonPressed(); };
+    this->comp->openProjectCallback = [this] { openProjectCallbackAction(); };
 
     setContentOwned (this->comp.get(), true);
     
@@ -34,6 +35,22 @@ IRProjectWindow2::~IRProjectWindow2()
     this->comp.reset();
 }
 
+// ==================================================
+void IRProjectWindow2::createInitialWorkspace()
+{
+    if(this->comp.get() != nullptr)
+    {
+        this->comp->createNewWorkspace();
+    }
+}
+
+void IRProjectWindow2::initializeUI()
+{
+    if(this->comp.get() != nullptr)
+       {
+           this->comp->initializeUI();
+       }
+}
 // ==================================================
 
 void IRProjectWindow2::changeListenerCallback (ChangeBroadcaster* source)
@@ -74,8 +91,27 @@ void IRProjectWindow2::setNewProjectCallbackFunc(std::function<void()> callback)
     this->newProjectCallback = callback;
 }
 
+void IRProjectWindow2::setOpenProjectCallbackFunc(std::function<void()> callback)
+{
+    this->openProjectCallback = callback;
+}
+
 void IRProjectWindow2::newProjectCallbackAction()
 {
     if(this->newProjectCallback != nullptr)
         this->newProjectCallback();
+}
+
+void IRProjectWindow2::openProjectCallbackAction()
+{
+    if(this->openProjectCallback != nullptr)
+        this->openProjectCallback();
+}
+
+
+// ==================================================
+
+void IRProjectWindow2::loadProjectFromSaveData(t_json saveData)
+{
+    this->comp->loadProjectFromSavedData(saveData);
 }

@@ -60,6 +60,7 @@ void IRWorkspace::createObject(IRNodeObject *obj)
 {
     std::cout << "==================================================\n ";
     std::cout << "creating " << obj->getName() << std::endl;
+    
     obj->setEditMode(isEditMode());
     obj->setLinkMode(isLinkMode());
     
@@ -88,6 +89,7 @@ void IRWorkspace::createObject(IRNodeObject *obj)
     
     // setup openGL Context if it has. This should be called adter addAndMakeVisible
     obj->initOpenGLContext();
+    std::cout << "initOpenGLContext done\n" << std::endl;
     
     // check if the created object is Heavy-weight Component
     if(obj->getObjectType().componentType == IRNodeComponentType::heavyWeightComponent ||
@@ -99,7 +101,13 @@ void IRWorkspace::createObject(IRNodeObject *obj)
     //request updating the workspaceList
     if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
     
+    // register this object to the first place of ZOrder list
+    //insertObjectAtTopZOrder(obj);
     
+    std::cout << "createObject done\n" << std::endl;
+    
+   
+
     repaint();
 }
 // ------------------------------------------------------------
@@ -108,6 +116,7 @@ void IRWorkspace::copyObject(IRNodeObject *obj, bool clearCopied)
     if(clearCopied) this->copiedObjects.clear();
     this->copiedObjects.add(obj);
 }
+
 void IRWorkspace::pasteObject(IRNodeObject *obj, bool addToSelected)
 {
     IRNodeObject* newObj = obj->copyThis();
@@ -396,6 +405,12 @@ void IRWorkspace::nodeObjectGetFocused(IRNodeObject* obj)
     
 }
 
+void IRWorkspace::nodeObjectMoveToFront(IRNodeObject* obj)
+{
+    // bring obj to the top front Z order
+    insertObjectAtTopZOrder(obj);
+}
+
 void IRWorkspace::heavyComponentCreated(IRNodeObject* obj)
 {
     callHeavyObjectCreated(obj);
@@ -444,3 +459,23 @@ void IRWorkspace::callHeavyObjectCreated(IRNodeObject* obj)
 
 // ============================================================
 
+
+void IRWorkspace::insertObjectAtTopZOrder(IRNodeObject* obj)
+{
+    
+    // check if inserted obj is already registered and remove it.
+    auto it = std::find(this->ObjectZorder.begin(), this->ObjectZorder.end(), obj);
+    if(it != this->ObjectZorder.end())
+    {
+        this->ObjectZorder.erase(it);
+    }
+    
+    it = this->ObjectZorder.begin();
+    this->ObjectZorder.insert(it, obj);
+    
+    for(int i = 0; i < this->ObjectZorder.size(); i ++)
+    {
+        this->ObjectZorder[i]->sortIndex = i;
+        std::cout << this->ObjectZorder[i]->name << " : " << this->ObjectZorder[i]->sortIndex << std::endl;
+    }
+}

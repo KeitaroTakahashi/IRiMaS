@@ -64,8 +64,8 @@ bool IRAudio::loadFile(File file, bool threadSafe)
     if(file.exists())
     {
         String p = file.getFullPathName();
-        this->path.swapWith(p);
-        this->filePath.swapWith(p);
+        this->path = p;
+        this->filePath = p;
         
         std::cout << "loadFile " << this->path << " : " << p << std::endl;
         
@@ -131,6 +131,13 @@ void IRAudio::updateAnimationFrame()
         if(this->isFileLoadCompleted)
         {
             stopThread(4000);
+            
+            this->sampleRate = this->reader->sampleRate;
+            this->numChannels = this->reader->numChannels;
+            this->numSamples = this->reader->lengthInSamples;
+            this->bitsPerSample = this->reader->bitsPerSample;
+            std::cout << "file load completed\n";
+            std::cout << "sampleRate " << this->sampleRate << " : numChannel " << this->numChannels << " : length (sample) " << this->numSamples << std::endl;
 
             callFileImportCompleted();
             callFileStatusChanged(this);

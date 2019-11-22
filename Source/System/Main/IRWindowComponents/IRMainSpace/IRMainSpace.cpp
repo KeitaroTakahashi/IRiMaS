@@ -10,6 +10,8 @@
 IRMainSpace::IRMainSpace(IRStr* str)
 {
     this->ir_str = str;
+    this->referenceImage = getReferenceOfIndex(1);
+    
 }
 
 IRMainSpace::~IRMainSpace()
@@ -23,6 +25,10 @@ IRMainSpace::~IRMainSpace()
 
 void IRMainSpace::paint(Graphics& g)
 {
+    if(this->workspaces.size() == 0)
+    {
+        g.drawImage(this->referenceImage, getLocalBounds().toFloat());
+    }
 }
 
 void IRMainSpace::resized()
@@ -223,4 +229,24 @@ void IRMainSpace::removeListener(Listener* listener)
 }
 
 // ==================================================
+
+Image IRMainSpace::loadImage(String url)
+{
+    File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url);
+    return ImageFileFormat::loadFrom(file);
+}
+
+Image IRMainSpace::getReferenceOfIndex(int index)
+{
+#if JUCE_MAC
+    String url = "/Contents/Resources/materials/Images/Reference/TiAALS_Reference" + String(index) + ".png";
+    return loadImage(url);
+#elif JUCE_IOS
+    String url = "/materials/Images/Reference/TiAALS_Reference" + String(index) + ".png";
+    return loadImage(url);
+#endif
+    
+    
+}
+
 // ==================================================

@@ -8,7 +8,6 @@
 #ifndef LeftBarSlideMenu_hpp
 #define LeftBarSlideMenu_hpp
 
-#include "JuceHeader.h"
 #include "IRViewPort.hpp"
 #include "SlideMenu.hpp"
 #include "IRStrComponent.hpp"

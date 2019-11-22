@@ -7,10 +7,13 @@
 
 #include "IRImageButton.hpp"
 
-IRImageButton::IRImageButton() :
+IRImageButton::IRImageButton(String name) :
+name(name),
 drawColour(Colour(255, 255, 255))
 {
+    setOpaque(false);
     
+    //setHeavyWeightBackgroundAlpha(0.0);
 }
 
 IRImageButton::~IRImageButton()
@@ -21,12 +24,14 @@ IRImageButton::~IRImageButton()
 // ==================================================
 
 void IRImageButton::paint(Graphics& g)
+
 {
+    g.fillAll(Colours::transparentBlack);
+
+    
     if(this->mouseDownFlag)
         g.setColour(Colours::lightgrey);
     else g.setColour(Colours::white);
-   // g.fillEllipse(0, 0, getWidth(), getHeight());
-    //g.setColour(Colours::white);
 
     g.setColour(this->drawColour);
     
@@ -75,6 +80,7 @@ void IRImageButton::mouseDown(const MouseEvent& e)
 
 void IRImageButton::mouseUp(const MouseEvent& e)
 {
+    std::cout << "IRImageButton::mouseUp\n";
     this->mouseDownFlag = false;
     repaint();
 }

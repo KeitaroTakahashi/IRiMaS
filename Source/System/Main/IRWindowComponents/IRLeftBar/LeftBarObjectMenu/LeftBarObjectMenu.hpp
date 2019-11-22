@@ -22,6 +22,8 @@
 #include "IRImageButton.hpp"
 #include "KeAnimationComponent.h"
 #include "IRNodeObjectType.h"
+#include "ObjectMenuIconArea.h"
+#include "ObjectMenuSpaceArea.h"
 
 
 class LeftBarObjectMenu : public Component,
@@ -29,6 +31,9 @@ public IRStrComponent,
 public ChangeBroadcaster
 {
 public:
+    
+   
+    
     LeftBarObjectMenu(IRStr* str, int buttonSize, int topMarge, int leftMarge, int yMarge, int menuSpace, int preferenceMenuSpace, int buttomSpace, Component* parent);
     ~LeftBarObjectMenu();
     
@@ -58,12 +63,18 @@ public:
     void setMenuOpened(bool flag) { this->isOpened = flag; }
     
     IRImageButton& getButtonFromType();
+   
+    // ==================================================
+    // for any HeavyWeightComponent
+    void bringToFrontCompleted();
     
 private:
     // ==================================================
     void createButton(IRImageButton* button, IRIconBank::IRIconImage img);
         
     void replaceCurrentMenu(ObjectMenuComponent* obj);
+    
+    void bindObjectMenuOnParent(ObjectMenuComponent* obj);
     // ==================================================
     
     void textAction();
@@ -112,6 +123,8 @@ private:
     
     ObjectMenuComponent* currentMenu = nullptr;
 
+    std::shared_ptr<ObjectMenuIconArea> objectMenuIconArea;
+    std::shared_ptr<ObjectMenuSpaceArea> objectMenuSpaceArea;
     // ==================================================
     // marge
     

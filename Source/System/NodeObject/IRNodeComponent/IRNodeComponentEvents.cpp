@@ -50,7 +50,6 @@ void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
             this->movingFlag = true;
         }
     }
-    //toFront(true);
     
     // call virtual function
     thisObjectGetFocused();
@@ -171,9 +170,7 @@ void IRNodeComponent::defaultPopupMenuEvents()
             if(this->objectType.componentType == orginaryIRComponent ||
                this->objectType.componentType == heavyWeightComponent)
             {
-                IROpenGLManager manager(&this->openGLContext);
-                manager.bringOpenGLContextFront(this);
-                //this->openGLContext.bringViewToFront();
+                bringThisToFront();
             }
             
             moveToFrontEvent();

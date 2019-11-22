@@ -11,7 +11,7 @@ IRSpectrogramObject::IRSpectrogramObject(Component* parent, IRStr* str) :
 IRNodeObject(parent, "IRSpectrogram", str, NodeObjectType(heavyWeightComponent))
 {
     
-    setOpaque(true);
+    setOpaque(false);
     this->UI = std::make_shared<IRSpectrogramWithPreference>(this, str);
     addAndMakeVisible(this->UI.get());
     this->UI->setEditMode(isEditMode());
@@ -151,5 +151,5 @@ void IRSpectrogramObject::mouseUpEvent(const MouseEvent& e)
 
 void IRSpectrogramObject::moveToFrontAction()
 {    
-    this->UI->getSpectrogramComponent()->getComponent()->bringViewToFront();
+    this->UI->getSpectrogramComponent()->getComponent()->bringThisToFront();
 }

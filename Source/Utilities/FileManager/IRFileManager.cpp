@@ -43,7 +43,6 @@ IRObjectPtr IRFileManager::createImageFileData(File file, IRObjectPtr owner)
 IRObjectPtr IRFileManager::createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback, bool threadSafe)
 {
     DataAllocationManager<IRAudio>* audio = new DataAllocationManager<IRAudio>();
-    std::cout << "allocate IRAudio \n";
     audio->addReferencingObject(owner);
     
     // set callback function to notify when importing audio file is successfuly completed.

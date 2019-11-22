@@ -13,11 +13,12 @@
 #include "IRSpectrogramController.h"
 #include "Benchmark.h"
 #include "KeAnimationComponent.h"
-#include "IROpenGLManager.hpp"
-
+//#include "IROpenGLManager.hpp"
+#include "IRHeavyWeightComponent.h"
 class IRSpectrogram : public IRUIAudioFoundation,
 public IRAudio::Listener,
 public ChangeBroadcaster,
+public IRHeavyWeightComponent,
 private KeAnimationComponent
 {
 public:
@@ -125,12 +126,13 @@ public:
     void createPlayingLine(int64 currentFrame);
     // ==================================================
 
+    /*
     // bring the OpenGLContext to the top front of all other IRNodeObject on the workspace
     void bringViewToFront() { //this->openGLContext.bringViewToFront();
         IROpenGLManager manager(&this->openGLContext);
         manager.bringOpenGLContextFront(this);
         
-    }
+    }*/
     // ==================================================
 private:
     
@@ -200,7 +202,7 @@ private:
 
     // ==================================================
     //OpenGL
-    OpenGLContext openGLContext;
+    //OpenGLContext openGLContext;
     std::unique_ptr<OpenGLGraphicsContextCustomShader> shader;
     String fragmentCode;
     GLuint textureID;

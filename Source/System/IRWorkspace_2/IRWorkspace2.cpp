@@ -42,7 +42,9 @@ IRStrComponent(str), message(20, 30, this, str)
     this->selector->setShiftConstrainsDirection(true);
     this->selector->setConstrainBoundsToParent(true, {0,0,10,10});
     
-    //openGLInit();
+    openGLInit();
+    
+    
 }
 
 
@@ -64,8 +66,8 @@ IRWorkspace::~IRWorkspace()
 void IRWorkspace::paint (Graphics& g)
 {
     this->bench.start();
-    //shaderTask(g);
-    g.fillAll(Colours::white);
+    shaderTask(g);
+    //g.fillAll(Colours::white);
     
     // draw shadows for the selected objects
     //if(isEditMode()) drawShadows(g);
@@ -91,9 +93,7 @@ void IRWorkspace::paint (Graphics& g)
     
     std::cout << " ++++++ workspace repained! ++++++ " << this->bench.stop() << std::endl;
 
-    
 }
-
 
 void IRWorkspace::drawShadows(Graphics& g)
 {
@@ -361,13 +361,13 @@ json11::Json IRWorkspace::makeSaveDataOfThis()
     });
     
     //test
-    
+    /*
     std::string jsonString =  obj.dump();
     std::ofstream myfile2;
     myfile2.open("/Users/keitaro/Desktop/IRiMaS2018.txt");
     myfile2 << jsonString;
     myfile2.close();
-    
+    */
     
     return obj;
 }
@@ -383,9 +383,13 @@ void IRWorkspace::setEditMode(bool flag, bool notification)
 {
     this->editModeFlag = flag;
     
+    
     // reset all selected objects
     this->selector->deselectAllObjects();
     
+    
+    
+    /*
     if (flag)
     {
         
@@ -413,7 +417,7 @@ void IRWorkspace::setEditMode(bool flag, bool notification)
         this->setInterceptsMouseClicks(true, false);
 
         
-    }
+    }*/
     
     //std::cout << "edit mode changed " << flag << " : " << this->title << std::endl;
     
@@ -567,13 +571,13 @@ Image IRWorkspace::loadImage(String url)
 void IRWorkspace::openGLInit()
 {
     
-    std::cout<< "openGLInit\n";
     if (auto* peer = getPeer())
             peer->setCurrentRenderingEngine (0);
         
-        this->openGLContext.attachTo(*getTopLevelComponent());
+        this->openGLContext.attachTo(*this);
         
         String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName();
+    
     #if JUCE_MAC
         url += "/Contents/Resources/materials/Sources/GLSL/grid/KGrid.frag";
     #elif JUCE_IOS
@@ -587,7 +591,6 @@ void IRWorkspace::openGLInit()
             AlertWindow::showOkCancelBox(AlertWindow::QuestionIcon, "Fatal Error", "IRSpectrogram : frag file " + url + "not found! Please contact a developer with this error message.");
         }
         
-        std::cout<< "frag loaded\n";
 
         
         this->fragURL = url;
@@ -595,15 +598,14 @@ void IRWorkspace::openGLInit()
         this->fragmentCode = fragmentText.getStdString();
         this->fragmentRefreshed = true;
     
-    std::cout<< "init done\n";
+    //std::cout << this->fragmentCode << std::endl;
+    
 
         
 }
 
 void IRWorkspace::shaderTask(Graphics& g)
 {
-    std::cout << "shaderTask\n";
-    //std::cout << "shaderTask\n";
     
     if (shader.get() == nullptr || shader->getFragmentShaderCode() != fragmentCode)
     {
@@ -611,28 +613,29 @@ void IRWorkspace::shaderTask(Graphics& g)
         //shader.reset();
         if (fragmentCode.isNotEmpty() && this->fragmentRefreshed)
         {
-            std::cout << "shader reset\n";
             shader.reset (new OpenGLGraphicsContextCustomShader (fragmentCode));
-            std::cout << "shader activated\n";
 
             shader->onShaderActivated = [this](OpenGLShaderProgram& program){setUniform(program);};
-            
+            /*
             if(!this->isTextureCreated)
             {
                 createTexture();
                 this->isTextureCreated = true;
-            }
-            std::cout << "shader compiled\n";
+            }*/
+            std::cout << "shader compiling...\n";
 
             auto result = shader->checkCompilation (g.getInternalContext());
-            if (result.failed()) shader.reset();
+            if (result.failed()){ shader.reset();
+                std::cout << "Error : shader compile error\n";
+                std::cout << result.getErrorMessage() << std::endl;
+            }
             
             this->fragmentRefreshed = false;
         }else{
-            std::cout << "fragmentCode empty and not refreshed\n";
+           // std::cout << "fragmentCode empty and not refreshed\n";
         }
     }else{
-        std::cout << "shader null or shaderCode not loaded\n";
+       // std::cout << "shader null or shaderCode not loaded\n";
     }
     
     if (shader.get() != nullptr)
@@ -640,8 +643,6 @@ void IRWorkspace::shaderTask(Graphics& g)
         shader->fillRect (g.getInternalContext(),
                           getLocalBounds()
                           );
-        
-        
     }
 }
 
@@ -654,13 +655,11 @@ void IRWorkspace::setUniform(OpenGLShaderProgram& program)
     int h = getHeight() * scale;
     
     program.setUniform("resolution", w, h);
+    program.setUniform("gridInterval", this->thin_grids_pixel * scale, this->thick_grids_interval * scale);
+    program.setUniform("sw", (float)isEditMode());
     
-    // we need to bind the texture every time.
-    glBindTexture(GL_TEXTURE_2D, this->textureID);
-    if(this->updateTexture) update();
-    // pass the texture buffer to Shader
-    GLint bufIndex = glGetUniformLocation(program.getProgramID(), "buffer");
-    glUniform1i(bufIndex, 0);
+    //std::cout << "setUniform " << w << ", " << h << " : scale = " << scale << " : thinGrid = " << this->thin_grids_pixel * scale <<std::endl;
+   
       
 }
 

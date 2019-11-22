@@ -341,6 +341,9 @@ void IRWaveform::play(int start, int duration, int offset, bool looping)
         {
             stop();
         }
+        
+        std::cout << "IRWaveform : play() start " << start << " : duration " << duration << std::endl;
+        
         this->player->setParameters(start, duration, offset, looping);
         this->player->setLooping(looping);
         this->player->start();

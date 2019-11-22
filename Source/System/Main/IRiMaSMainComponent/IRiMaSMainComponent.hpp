@@ -5,27 +5,25 @@
 #include "JuceHeader.h"
 
 
-#include "IRProject.hpp"
-#include "IRProjectWindow.hpp"
 #include "IRProjectWindow2.hpp"
-#include "PreferenceWindow.hpp"
 #include "IRStartWindow.hpp"
 #include "IRSaveLoadSystem.hpp"
 #include "json11.hpp"
 #include "singletonClass.hpp"
-#include "IRObjectFactory.hpp"
 #include "IRObjectFactory2.hpp"
 
 #include "ColourLib.h"
 
 /*
- IRMAIN
+ IRiMaSMainComponent -----------------
  |                  |
- IRStartWindow      IRProjectWindow
+ IRStartWindow      IRProjectWindow2
  |                  |
- IRStarter          IRProject
-                    |
-                    IRWorkspace
+ IRStarter          IRWindowComponent -----------------------------------------------------------
+                    |                       |                    |               |
+                    IRMainSpace             IRTitleBar           IRLeftBar       IRRightBar
+                    |                       |                    |
+                    IRWorkspace             IRTitleBarComponent
 
 IRMAIN class operates
     creating new project
@@ -35,37 +33,30 @@ IRMAIN class operates
 
 
 
-
-
 class IRiMaSMainComponent : public Component,
                             public ChangeListener,
-                            public IRProject::Listener,
 public IRProjectWindow2::Listener
 {
     
 public:
-    
     IRiMaSMainComponent(const String applicationName);
     ~IRiMaSMainComponent();
-    
+    // =======================================================
     void initialise();
-    
+    // =======================================================
+    // System
+    // Save Action is managed by each project
     void createNewProject();
     void createNewProjectFromSaveData(std::string path);
-    
     void openProject();
     void closeProject(DocumentWindow* closingWindow);
-    
-    void createNewProjectAction() override;
-    void openProjectAction() override;
-    void closeProjectAction(DocumentWindow* closingWindow) override;
-    void saveProjectAction(IRProject* project) override;
-    void saveAsProjectAction(IRProject* project) override;
+
     
 private:
     
     void changeListenerCallback(ChangeBroadcaster* source) override;
     
+    // from IRProjectWindow2 Listener method
     void closeThisWindow(IRMainWindow* closeWindow) override;
     
     String applicationName;
@@ -73,10 +64,7 @@ private:
     
     // storing all project windows
     std::vector<IRProjectWindow2* >projectLib;
-    
-    // storing a currently active project window
-    IRProjectWindow* activeProjectWindow;
-    
+ 
     // PreferenceWindow* preferenceWindow;
     std::shared_ptr<PreferenceWindow> preferenceWindow;
     
@@ -87,11 +75,7 @@ private:
     IRSaveLoadSystem saveLoadClass;
     json11::Json saveData;
     
-    IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
     IRObjectFactory2& IRFactory2 = singleton<IRObjectFactory2>::get_instance();
-
-    IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRiMaSMainComponent)
     

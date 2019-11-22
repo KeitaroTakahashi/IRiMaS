@@ -10,7 +10,7 @@
 GLSLSpectrogram::GLSLSpectrogram(IRNodeObject* nodeObject, IRStr* str) :
 IRUIAudioFoundation(nodeObject, str)
 {
-    setOpaque(false);
+    //setOpaque(false);
     
     openGLContext.setRenderer (this);
     openGLContext.attachTo (*this);

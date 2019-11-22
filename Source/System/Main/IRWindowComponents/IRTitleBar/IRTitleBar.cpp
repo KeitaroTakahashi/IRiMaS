@@ -8,20 +8,21 @@
 #include "IRTitleBar.hpp"
 
 //==============================================================================
-IRTitleBar::IRTitleBar(IRStr* str, String title) : IRStrComponent(str),
+IRTitleBar::IRTitleBar(IRStr* str, String title) :
+IRStrComponent(str),
+IRHeavyWeightComponent(this),
 comp(str, title)
 {
+    setOpaque(false);
+
     this->comp.addMouseListener(this, true);
     addAndMakeVisible(&this->comp);
     
-    this->openGLContext.setRenderer(this);
-    this->openGLContext.setContinuousRepainting(false);
-    this->openGLContext.attachTo(*this);
+    
 }
 
 IRTitleBar::~IRTitleBar()
 {
-    this->openGLContext.detach();
 }
 
 //==============================================================================
@@ -36,13 +37,18 @@ void IRTitleBar::paint (Graphics& g)
     g.setFont(f);
     g.drawText("TiAALS", 30, 5, 200, getHeight(), dontSendNotification);
      */
-    //this->openGLContext.triggerRepaint();
-
+    heavyWeightRepaint();
+    std::cout << " ========== IRTitlebar repaint\n";
+    
+    
 }
 
 void IRTitleBar::resized()
 {
-    this->comp.setBounds(getLocalBounds());
+    
+    std::cout << " ========== IRTitlebar resized\n";
+    heavyWeightRepaint();
+	    this->comp.setBounds(getLocalBounds());
 }
 
 void IRTitleBar::mouseDrag(const MouseEvent& e)

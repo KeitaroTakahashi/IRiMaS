@@ -11,7 +11,7 @@ IRVideoPlayerObject::IRVideoPlayerObject(Component* parent, IRStr* str) :
 IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(orginaryIRComponent))
 {
     
-    setOpaque(true);
+    setOpaque(false);
     
     this->controller.reset( new IRVideoPlayerController(str) );
     this->controller->addChangeListener(this);
@@ -187,4 +187,11 @@ void IRVideoPlayerObject::moveToFrontAction()
 {
     this->videoPlayer->bringViewToFront();
     
+}
+
+// --------------------------------------------------
+
+void IRVideoPlayerObject::heavyComponentRefreshed()
+{
+    moveToFrontAction();
 }

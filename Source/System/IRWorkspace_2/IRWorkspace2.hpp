@@ -35,6 +35,7 @@ public ChangeBroadcaster,
 public ChangeListener,
 public IRNodeObject::Listener,
 public ObjectListMenu::Listener,
+public OpenGLRenderer,
 private KeyListener
 {
     
@@ -88,6 +89,7 @@ public:
     void nodeObjectModifiedNotification(IRNodeObject* obj) override;
     void nodeObjectSelectionChange(IRNodeObject* obj) override;
     void nodeObjectGetFocused(IRNodeObject* obj) override;
+    void nodeObjectMoveToFront(IRNodeObject* obj) override;
     void heavyComponentCreated(IRNodeObject* obj)override;
 
 
@@ -104,9 +106,11 @@ public:
     // manage the heavy weight components which are always drown on the top of all other components
     // the heavy weights components will be hidden or shown according to this workspace status
     void manageHeavyWeightComponents(bool flag);
+    // ==================================================
 
 
-    
+    // ==================================================
+
     // object management
     void createObject(IRNodeObject* obj);
     // void createObject(std::string objName);
@@ -114,39 +118,47 @@ public:
     void pasteObject(IRNodeObject *obj, bool addToSelected);
     void duplicateObject(IRNodeObject *obj);
     void deleteObject(IRNodeObject *obj);
-    
+    // ==================================================
+
     // object menu
     void openObjectListMenu(Point<int>Pos);
     void closeObjectListMenu();
-    
+    // ==================================================
+
     void itemSelectionAction(ObjectListMenu* menu) override;
     void itemHasSelectedAction(ObjectListMenu* menu) override;
-    
+    // ==================================================
+
     //resizing
     void setResizing(bool flag) { this->isResizingFlag = flag; }
     bool isResizing() const { return this->isResizingFlag; }
-    
+    // ==================================================
+
     // Link Menu
     void openLinkMenuOfSelectedObject();
     void openAllLinkMenu();
     void closeLinkMenu();
     void closeLinkMenu(IRNodeObject* obj);
     
-    
+    // ==================================================
+
     // save load
     json11::Json makeSaveDataOfThis();
-    
+    // ==================================================
+
     //flag
     bool isEditMode() const;
     void setEditMode(bool flag, bool notification = false);
     
     bool isLinkMode() const;
     void setLinkMode(bool flag);
-    
+    // ==================================================
+
     // getter
     Array<IRNodeObject*> getObjectList();
     Image getSnap();
-    
+    // ==================================================
+
     //Listener
     class Listener
     {
@@ -187,8 +199,12 @@ public:
     
     std::function<void(IRNodeObject*)> notifyNodeObjectModification;
     
-private:
     
+
+    
+private:
+    // ==================================================
+
     String name = "";
     String title = "";
     
@@ -196,14 +212,16 @@ private:
     
     // resizing...
     bool isResizingFlag = false;
-    
+    // ==================================================
+
     // grids
     int thin_grids_pixel = 10;
     int thick_grids_interval = 50;
     float grid_thickness = 1.0;
     float grid_thickness2 = 0.5;
     
-    
+    // ==================================================
+
     Array<IRNodeObject* > objects;
     IRNodeObjectSelector *selector;
     
@@ -216,7 +234,8 @@ private:
     
     // IRObjectPtr for Global values between objects binded in Workspace
     std::map<String, IRObjectPtr> p_obj;
-    
+    // ==================================================
+
     bool isMultiSelectMode = false;
     bool isPointAlreadySelected = false;
     bool isNewSelectedObjectFound = false;
@@ -226,7 +245,8 @@ private:
     bool isControlPressed = false;
     bool isAltPressed = false;
     bool isOptionPressed = false;
-    
+    // ==================================================
+
     Point<int> currentMousePosition {0, 0};
     
     // workspace status
@@ -237,17 +257,27 @@ private:
     IRMessage message;
     // snapshot
     Image snap;
-    
+    // ==================================================
+
     // Window for the preference
     PreferenceWindow* preferenceWindow;
-    
+    // ==================================================
+
     // Object list menu
     ObjectListMenu* objectMenuComponent;
     std::unique_ptr<ObjectMenuWindow> objMenuwindow;
-    
+    // ==================================================
+
     // IRObjectFactory
     IRObjectFactory& IRFactory = singleton<IRObjectFactory>::get_instance();
     
+    //Z-order of the objects
+    std::vector<IRNodeObject* > ObjectZorder;
+    void insertObjectAtTopZOrder(IRNodeObject* obj);
+
+    
+    // ==================================================
+
     Image background_image_link;
     void loadBackgroundImageLink();
     Image loadImage(String url);
@@ -289,8 +319,27 @@ private:
     //benchmark
     StopWatch bench;
     // ==================================================
+    
+    // ----------
+    //OpenGL
+    //void setOpenGLContextSurfaceOpacityToZero();
+    
+    void newOpenGLContextCreated()override
+    {
+    }
+       
+    virtual void renderOpenGL()override
+    {
+        OpenGLHelpers::clear(Colours::transparentBlack);
+    }
+    
+    virtual void openGLContextClosing() override
+    {
+        
+    }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkspace)
+        
 };
 
 

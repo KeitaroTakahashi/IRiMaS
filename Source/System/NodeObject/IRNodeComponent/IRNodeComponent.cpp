@@ -48,6 +48,8 @@ IRNodeComponent::~IRNodeComponent()
 
 void IRNodeComponent::initOpenGLContext()
 {
+    
+    std::cout << "initOpenGLContext\n";
     //if this object contains heavy weight component, then connect to OpenGLContext
        if(this->objectType.componentType == orginaryIRComponent)
        {
@@ -509,3 +511,23 @@ void param_register(std::string id, int data)
     });
 }
 
+// =============================================
+
+
+void IRNodeComponent::bringThisToFront()
+{
+    IROpenGLManager manager(&this->openGLContext);
+    manager.bringOpenGLContextFront(this);
+    manager.setOpenGLContextAlpha(0);
+    
+
+}
+
+void IRNodeComponent::heavyComponentRefreshed()
+{
+    IROpenGLManager manager(&this->openGLContext);
+    manager.setOpenGLContextAlpha(0);
+
+}
+
+// =============================================

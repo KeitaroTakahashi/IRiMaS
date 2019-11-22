@@ -6,7 +6,6 @@
 //
 
 #import <AppKit/AppKit.h>
-
 #include "IRNSViewManager.cpp"
 
 void IRNSViewManager::bringOpenGLContextFront(juce::Component* owner, NSViewComponent* view)

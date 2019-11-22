@@ -28,6 +28,7 @@ parent(parent)
 {
     addButtons();
     
+    /*
     this->textLabel.setText("Texts", dontSendNotification);
     this->textLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->textLabel);
@@ -51,6 +52,7 @@ parent(parent)
     this->objectLabel.setText("Objects", dontSendNotification);
     this->objectLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->objectLabel);
+     */
     
     this->inspectorLabel.setText("Inspector", dontSendNotification);
     this->inspectorLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
@@ -60,11 +62,22 @@ parent(parent)
     this->preferenceLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     addAndMakeVisible(&this->preferenceLabel);
     
+    
+    this->objectMenuIconArea.reset( new ObjectMenuIconArea(str, this->buttonSize, this->leftMarge) );
+    addAndMakeVisible(this->objectMenuIconArea.get());
+    this->objectMenuIconArea->textActionCallback = [this]{ textAction(); };
+    this->objectMenuIconArea->imageActionCallback = [this]{ imageAction(); };
+    this->objectMenuIconArea->audioActionCallback = [this]{ audioAction(); };
+    this->objectMenuIconArea->chartActionCallback = [this]{ chartAction(); };
+    this->objectMenuIconArea->playerActionCallback = [this]{ playerAction(); };
+    this->objectMenuIconArea->objectActionCallback = [this]{ objectAction(); };
+
 }
 
 LeftBarObjectMenu::~LeftBarObjectMenu()
 {
-    
+    this->objectMenuIconArea.reset();
+    this->objectMenuSpaceArea.reset();
 }
 // ==================================================
 
@@ -77,6 +90,17 @@ void LeftBarObjectMenu::resized()
     
     int t_d = 5;
     
+    this->objectMenuIconArea->setBounds(0, 0, getWidth(), 350);
+    
+    // objectMenuSpaceArea is added on the IRWindowComponent
+    if(this->objectMenuSpaceArea.get() != nullptr)
+        this->objectMenuSpaceArea->setBounds(getWidth(),
+                                             getStr()->projectOwner->barHeight,
+                                             150,
+                                             getHeight() + getStr()->projectOwner->barHeight);
+
+    
+    /*
     this->textButton.setBounds(x, y, s, s);
     this->textLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
     
@@ -100,7 +124,7 @@ void LeftBarObjectMenu::resized()
     y += s + this->yMarge * 2;
     this->objectButton.setBounds(x, y, s, s);
     this->objectLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
-    
+    */
     y = getHeight() - this->buttomSpace + this->yMarge * 2;
     this->inspectorButton.setBounds(x, y, s, s);
     this->inspectorLabel.setBounds(x + this->buttonSize + t_d, y + 8, 80, 24);
@@ -131,7 +155,7 @@ void LeftBarObjectMenu::paint(Graphics& g)
     //g.drawLine(0, 0, getWidth(), 0, 2);
     
     y = getHeight() - this->buttomSpace;
-    g.drawLine(0, y, getWidth(), y, 2);
+    //g.drawLine(0, y, getWidth(), y, 2);
     
     paintSelectedItem(g);
 }
@@ -161,6 +185,7 @@ void LeftBarObjectMenu::createButton(IRImageButton* button, IRIconBank::IRIconIm
     else
         button->setImage(img.white);
     
+    std::cout << "addButton \n";
     //button->setDrawCircle(false);
     addAndMakeVisible(button);
 }
@@ -194,17 +219,21 @@ void LeftBarObjectMenu::textAction()
     showExtraMenu(TEXTMENU);
     
     this->textMenu.reset(new TextMenuComponent(getStr(), this->menuSpaceRect));
-
-    addAndMakeVisible(this->textMenu.get());
-    replaceCurrentMenu(this->textMenu.get());
+    this->textMenu->setBounds(0, 0, 150, 600);
+    //addAndMakeVisible(this->textMenu.get());
+    //replaceCurrentMenu(this->textMenu.get());
+    bindObjectMenuOnParent(this->textMenu.get());
 
 }
 void LeftBarObjectMenu::imageAction()
 {
     showExtraMenu(IMAGEMENU);
     this->imageMenu.reset(new ImageMenuComponent(getStr(), this->menuSpaceRect));
-    addAndMakeVisible(this->imageMenu.get());
-    replaceCurrentMenu(this->imageMenu.get());
+    //addAndMakeVisible(this->imageMenu.get());
+    //replaceCurrentMenu(this->imageMenu.get());
+    
+    bindObjectMenuOnParent(this->imageMenu.get());
+
 
 
 }
@@ -213,16 +242,20 @@ void LeftBarObjectMenu::audioAction()
     showExtraMenu(AUDIOMENU);
     
     this->audioMenu.reset(new AudioMenuComponent(getStr(), this->menuSpaceRect));
-    addAndMakeVisible(this->audioMenu.get());
-    replaceCurrentMenu(this->audioMenu.get());
+   // addAndMakeVisible(this->audioMenu.get());
+   // replaceCurrentMenu(this->audioMenu.get());
+    
+    bindObjectMenuOnParent(this->audioMenu.get());
+
    
 }
 void LeftBarObjectMenu::chartAction()
 {
     showExtraMenu(CHARTMENU);
     this->chartMenu.reset(new ChartMenuComponent(getStr(), this->menuSpaceRect));
-    addAndMakeVisible(this->chartMenu.get());
-    replaceCurrentMenu(this->chartMenu.get());
+   // addAndMakeVisible(this->chartMenu.get());
+    //replaceCurrentMenu(this->chartMenu.get());
+    bindObjectMenuOnParent(this->chartMenu.get());
 
 }
 void LeftBarObjectMenu::playerAction()
@@ -270,6 +303,26 @@ void LeftBarObjectMenu::replaceCurrentMenu(ObjectMenuComponent* obj)
     resized();
     repaint();
 
+}
+
+void LeftBarObjectMenu::bindObjectMenuOnParent(ObjectMenuComponent* obj)
+{
+    if(this->objectMenuSpaceArea.get() != nullptr)
+    {
+        if(this->currentMenu == obj)
+        {
+            this->objectMenuSpaceArea->removeChildComponent(obj);
+            getStr()->projectOwner->removeChildComponent(this->objectMenuSpaceArea.get());
+        }
+        this->objectMenuSpaceArea.reset();
+    }else{
+        this->objectMenuSpaceArea.reset(new ObjectMenuSpaceArea(getStr()) );
+        this->objectMenuSpaceArea->addAndMakeVisible(obj);
+        
+        // resize
+        getStr()->projectOwner->addAndMakeVisible(this->objectMenuSpaceArea.get());
+    }
+        resized();
 }
 
 // ==================================================
@@ -337,4 +390,9 @@ IRImageButton& LeftBarObjectMenu::getButtonFromType()
             return this->preferenceButton;
             break;
     }
+}
+
+void LeftBarObjectMenu::bringToFrontCompleted()
+{
+    this->objectMenuIconArea->bringThisToFront();
 }
