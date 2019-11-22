@@ -1822,7 +1822,6 @@
 				82A8B5CC22FD9E3400FF05B8 /* IRWindowComponent */,
 				82A8B5CB22FD9E2A00FF05B8 /* IRRightBar */,
 				82A8B5CA22FD9E2100FF05B8 /* IRLeftBar */,
-				82A8B5C922FD9E1C00FF05B8 /* IRTitleBar */,
 				82A8B5C822FD9E0F00FF05B8 /* IRWindow */,
 			);
 			path = IRWindowComponents;
@@ -2068,6 +2067,7 @@
 				82A8B5E923004F3400FF05B8 /* ObjectMenuComponent */,
 				82A8B5E422FF32D100FF05B8 /* LeftBarObjectMenu.cpp */,
 				82A8B5E522FF32D100FF05B8 /* LeftBarObjectMenu.hpp */,
+				82A8B5C922FD9E1C00FF05B8 /* IRTitleBar */,
 			);
 			path = LeftBarObjectMenu;
 			sourceTree = "<group>";
