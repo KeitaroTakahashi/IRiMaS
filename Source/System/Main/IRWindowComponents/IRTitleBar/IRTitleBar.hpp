@@ -41,7 +41,6 @@ public:
     
     void bringToFrontCompleted() override
     {
-        std::cout << "bringToFrontCompleted\n";
         this->comp.bringAllButtonsToFront();
     }
     

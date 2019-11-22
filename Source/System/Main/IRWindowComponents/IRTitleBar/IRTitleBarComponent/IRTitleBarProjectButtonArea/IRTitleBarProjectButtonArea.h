@@ -115,7 +115,7 @@ public:
         g.drawLine(135, getHeight(), 135, 0, 2);
         g.drawLine(304, getHeight(), 304, 0, 2);
         
-        //heavyWeightRepaint();
+        heavyWeightRepaint("----------- IRTitleBarProjectButtonArea repaint");
     }
     
     void resized() override
@@ -174,15 +174,7 @@ public:
     //==================================================
     void bringAllButtonsToFront()
     {
-        bringThisToFront();
-        std::cout << "IRTItleBArProjectbutton toFront\n";
-        /*
-        this->newSlideButton->bringThisToFront();
-        this->newProjectButton->bringThisToFront();
-        this->saveProjectButton->bringThisToFront();
-        this->saveasProjectButton->bringThisToFront();
-        this->openProjectButton->bringThisToFront();
-         */
+        bringThisToFront("IRTItleBArProjectbutton bring to Front");
 
     }
     //==================================================

@@ -169,8 +169,6 @@
 		82D8B124229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B122229D8DC700940CD1 /* IRAutomationUIWithPreference.cpp */; };
 		82D8B16922A017B000940CD1 /* IRMeasureGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D8B16722A017B000940CD1 /* IRMeasureGrid.cpp */; };
 		82D97165236A5DE200A5AE89 /* libfftw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D97164236A5DE200A5AE89 /* libfftw3.a */; };
-		82D9717D236A6E7500A5AE89 /* libfftw3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D9717C236A6E7500A5AE89 /* libfftw3.3.dylib */; };
-		82D9717E236A6F5F00A5AE89 /* libfftw3.3.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 82D9717C236A6E7500A5AE89 /* libfftw3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		82D97187236B07E100A5AE89 /* IROpenGLManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D97185236B07E100A5AE89 /* IROpenGLManager.cpp */; };
 		82D97189236B07F500A5AE89 /* IROpenGLManager_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 82D97188236B07F500A5AE89 /* IROpenGLManager_mac.mm */; };
 		82D9718F236B1B3100A5AE89 /* IRNSViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82D9718D236B1B3100A5AE89 /* IRNSViewManager.cpp */; };
@@ -213,7 +211,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				82D9717E236A6F5F00A5AE89 /* libfftw3.3.dylib in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -594,7 +591,6 @@
 		82D9030F21A84B3300E57471 /* KLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KLib.h; sourceTree = "<group>"; };
 		82D9031021A84FF500E57471 /* KRandomStringGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KRandomStringGenerator.h; sourceTree = "<group>"; };
 		82D97164236A5DE200A5AE89 /* libfftw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfftw3.a; path = ../../../../../usr/local/Cellar/fftw/3.3.8_1/lib/libfftw3.a; sourceTree = "<group>"; };
-		82D9717C236A6E7500A5AE89 /* libfftw3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfftw3.3.dylib; path = Source/frameworks/libfftw3.3.dylib; sourceTree = "<group>"; };
 		82D97185236B07E100A5AE89 /* IROpenGLManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IROpenGLManager.cpp; sourceTree = "<group>"; };
 		82D97186236B07E100A5AE89 /* IROpenGLManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IROpenGLManager.hpp; sourceTree = "<group>"; };
 		82D97188236B07F500A5AE89 /* IROpenGLManager_mac.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = IROpenGLManager_mac.mm; sourceTree = "<group>"; };
@@ -669,7 +665,6 @@
 				AF962BC3CB9B6914A2A66481 /* QuartzCore.framework in Frameworks */,
 				C8A2AE5DC63457796D1DBCB4 /* WebKit.framework in Frameworks */,
 				82D97165236A5DE200A5AE89 /* libfftw3.a in Frameworks */,
-				82D9717D236A6E7500A5AE89 /* libfftw3.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1055,7 +1050,6 @@
 			isa = PBXGroup;
 			children = (
 				82D97164236A5DE200A5AE89 /* libfftw3.a */,
-				82D9717C236A6E7500A5AE89 /* libfftw3.3.dylib */,
 				823D65A9232BE1A0005DCBD6 /* CoreAudioKit.framework */,
 				1308CC6C3869E34E36491167 /* Accelerate.framework */,
 				24D9A56501CE16485BCC5B64 /* AudioToolbox.framework */,
@@ -1820,6 +1814,7 @@
 				82A8B63C2315705E00FF05B8 /* IRMainSpace */,
 				82A8B5DC22FD9E7E00FF05B8 /* IRWIndowHeader */,
 				82A8B5CC22FD9E3400FF05B8 /* IRWindowComponent */,
+				82A8B5C922FD9E1C00FF05B8 /* IRTitleBar */,
 				82A8B5CB22FD9E2A00FF05B8 /* IRRightBar */,
 				82A8B5CA22FD9E2100FF05B8 /* IRLeftBar */,
 				82A8B5C822FD9E0F00FF05B8 /* IRWindow */,
@@ -2067,7 +2062,6 @@
 				82A8B5E923004F3400FF05B8 /* ObjectMenuComponent */,
 				82A8B5E422FF32D100FF05B8 /* LeftBarObjectMenu.cpp */,
 				82A8B5E522FF32D100FF05B8 /* LeftBarObjectMenu.hpp */,
-				82A8B5C922FD9E1C00FF05B8 /* IRTitleBar */,
 			);
 			path = LeftBarObjectMenu;
 			sourceTree = "<group>";

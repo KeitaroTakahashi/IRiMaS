@@ -534,11 +534,11 @@ void IRWindowComponent::rebindOpenGLContents()
     
     std::cout << "rebindOpenGLContents\n";
     if(this->leftBar->getWidth() > 0 && this->leftBar->getHeight() > 0)
-           this->leftBar->bringThisToFront();
+           this->leftBar->bringThisToFront("LeftBar bringThisToFront : from IRWindowComponent");
        if(this->rightBar->getWidth() > 0 && this->rightBar->getHeight() > 0)
            this->rightBar->bringThisToFront();
        if(this->bar->getWidth() > 0 && this->bar->getHeight() > 0)
-           this->bar->bringThisToFront();
+           this->bar->bringThisToFront("IRTitleBar bringThisToFront : from IRWindowComponent");
        else std::cout << "bar not yet\n";
     
     // make sure to update

@@ -45,14 +45,17 @@ public:
     //OpenGL
     OpenGLContext ctx;
     
-    void bringThisToFront() {
+    void bringThisToFront(String flag = "") {
+        std::cout << flag << std::endl;
         bringToFront(this->component);
         //callback
         bringToFrontCompleted();
     }
     
-    void heavyWeightRepaint()
+    void heavyWeightRepaint(String flag = "")
     {
+        
+        std::cout << flag << std::endl;
         this->ctx.triggerRepaint();
     }
     

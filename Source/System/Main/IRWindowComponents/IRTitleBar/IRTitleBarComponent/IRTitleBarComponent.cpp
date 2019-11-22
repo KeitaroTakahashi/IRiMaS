@@ -137,7 +137,8 @@ void IRTitleBarComponent::paint (Graphics& g)
     
     paintSelectedItem(g);
 
-    
+    //heavyWeightRepaint("----------- IRTitleBarComponent repaint");
+
     std::cout << " ++++++++ IRTitleBarComponent repainted! ++++++++\n";
 
 }
