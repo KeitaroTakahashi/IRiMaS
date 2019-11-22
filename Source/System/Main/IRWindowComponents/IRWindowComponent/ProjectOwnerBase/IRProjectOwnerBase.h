@@ -18,11 +18,22 @@ public:
     }
     
     ~IRProjectOwnerBase() {}
-    
+    // ==================================================
+
     
     virtual void rebindOpenGLContents() {}
     
     virtual void updateAppearance() {}
+    
+    // ==================================================
+    
+    // define the minimum size of the window
+    int minWidth = 800;
+    int minHeight = 700;
+    
+    int barHeight = 70;
+    int leftBarWidth = 135;
+    int mainComponentHeight = 400;
 };
 
 #endif /* IRProjectOwnerBase_h */
