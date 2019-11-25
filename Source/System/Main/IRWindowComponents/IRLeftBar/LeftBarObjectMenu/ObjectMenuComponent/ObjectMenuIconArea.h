@@ -273,13 +273,7 @@ private:
     ObjectButton playerButton;
     ObjectButton objectButton;
 
-    std::shared_ptr<TextMenuComponent> textMenu;
-    std::shared_ptr<ImageMenuComponent> imageMenu;
-    std::shared_ptr<AudioMenuComponent> audioMenu;
-    std::shared_ptr<ChartMenuComponent> chartMenu;
-    std::shared_ptr<PlayerMenuComponent> playerMenu;
-    std::shared_ptr<ObjectMenuComponent> objectMenu;
-    
+  
     // ==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ObjectMenuIconArea)

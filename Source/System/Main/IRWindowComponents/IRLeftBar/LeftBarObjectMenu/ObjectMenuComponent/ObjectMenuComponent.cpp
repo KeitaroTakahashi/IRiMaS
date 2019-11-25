@@ -9,6 +9,7 @@
 
 ObjectMenuComponent::ObjectMenuComponent(IRStr* str, Rectangle<int> frameRect) :
 IRStrComponent(str),
+IRHeavyWeightComponent(this, "ObjectMenuComponent"),
 frameRect(frameRect)
 {
     this->title.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
@@ -19,6 +20,11 @@ frameRect(frameRect)
 
 ObjectMenuComponent::~ObjectMenuComponent()
 {
+    for(auto item : this->items)
+    {
+        delete item;
+    }
+    this->items.clear();
 }
 
 // ==================================================

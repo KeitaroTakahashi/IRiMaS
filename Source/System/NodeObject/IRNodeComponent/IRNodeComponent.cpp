@@ -34,7 +34,6 @@ resizingArea(25, 25)
 
 IRNodeComponent::~IRNodeComponent()
 {
-    std::cout << "IRNodeComponent ...\n";
 
     delete this->mixer;
     

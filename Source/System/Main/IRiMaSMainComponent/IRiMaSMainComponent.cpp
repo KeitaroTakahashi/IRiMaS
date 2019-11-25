@@ -8,6 +8,10 @@
 
 IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 {
+    
+    // OS version Check
+    IRSystemStatus().isValidOS();
+    
     this->applicationName = applicationName;
     
     ObjectFactoryInitializer(); // this will create a singleton and initialise the object palette
@@ -39,7 +43,6 @@ IRiMaSMainComponent::~IRiMaSMainComponent()
 
 void IRiMaSMainComponent::initialise()
 {
-    this->preferenceWindow = std::make_shared<PreferenceWindow>(applicationName);
     
     this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640, 480)));
     this->startWindow->addChangeListener(this);
@@ -64,6 +67,7 @@ void IRiMaSMainComponent::createNewProject()
     projectWindow2->setOpenProjectCallbackFunc(openCallback);
     this->projectLib.push_back(projectWindow2);
     projectWindow2->initializeUI();
+    projectWindow2->toFront(true);
     projectWindow2->createInitialWorkspace();
 }
 
@@ -71,6 +75,8 @@ void IRiMaSMainComponent::createNewProject()
 void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
 {
     std::cout << "========== createNewProjectFromSaveData ==========" << std::endl;
+    
+    
     IRSaveLoadSystem::dataStr data = this->saveLoadClass.getSaveDataStr();
     IRSaveLoadSystem::headerStr header = data.header;
     
@@ -83,6 +89,7 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
                               0,
                               bounds.getWidth(),
                               bounds.getHeight());
+    
     IRProjectWindow2* projectWin = new IRProjectWindow2(header.projectName, frameRect);
     
     // when loaded, the position of the proejct window is initialized to (0, 0)
@@ -90,9 +97,14 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     projectWin->addListener(this);
     std::function<void()> callback = [this] { createNewProject(); };
     projectWin->setNewProjectCallbackFunc(callback);
+    std::function<void()> openCallback  = [this] { openProject(); };
+    projectWin->setOpenProjectCallbackFunc(openCallback);
     this->projectLib.push_back(projectWin);
+    projectWin->initializeUI();
     projectWin->toFront(true);
     projectWin->loadProjectFromSaveData(saveData);
+    File f (path);
+    projectWin->setProjectPath(f.getParentDirectory().getFullPathName());
     
     this->startWindow->setVisible(false);
 }
@@ -116,8 +128,7 @@ void IRiMaSMainComponent::openProject()
         this->saveLoadClass.readSaveData(p);
         createNewProjectFromSaveData(p);
         
-    }
-    else
+    }else
     {
         std::cout << "Could not open any files." << std::endl;
     }
@@ -164,9 +175,6 @@ void IRiMaSMainComponent::changeListenerCallback (ChangeBroadcaster* source)
 }
 
 
-
-
-
 void IRiMaSMainComponent::closeThisWindow(IRMainWindow* closeWindow)
 {
     std::cout << "IRiMaSMainComponent::closeThisWindow\n";
@@ -184,7 +192,6 @@ void IRiMaSMainComponent::closeThisWindow(IRMainWindow* closeWindow)
         std::cout << "IRiMaSMainComponent : closeThisWindow : Could not find window of " << closeWindow << std::endl;
     }
     
-    std::cout << "deleted projectLib size = " << this->projectLib.size() << std::endl;
     if (this->projectLib.size() == 0)
     {
         this->startWindow->setVisible(true);

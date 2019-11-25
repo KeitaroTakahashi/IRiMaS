@@ -29,10 +29,8 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(orginaryIRComponent))
 
 IRVideoPlayerObject::~IRVideoPlayerObject()
 {
-    std::cout << "IRVideoPlayerObject deconstructing...\n";
     this->controller.reset();
     this->videoPlayer.reset();
-    std::cout << "IRVideoPlayerObject done...\n";
 
 }
 
@@ -108,7 +106,6 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
             newWidth = (double) newHeight * this->videoPlayer->getAspectRatio();
         }
         setSize(newWidth, newHeight);
-        //callHeavyComponentCreated(this);
 
     }else{
         IRNodeComponent::resizeThisComponentEvent(e);
@@ -161,6 +158,8 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
     setSize(w + 10, h + 10);    
     // call reset Heavy-weight components
     callHeavyComponentCreated(this);
+    // and bring this obejct to the top of objectZOrder on the workspace
+    callAddHeavyComponentToTopZOrder(this);
 }
 // --------------------------------------------------
 
@@ -185,7 +184,8 @@ void IRVideoPlayerObject::changeListenerCallback (ChangeBroadcaster* source)
 
 void IRVideoPlayerObject::moveToFrontAction()
 {
-    this->videoPlayer->bringViewToFront();
+    if(this->videoPlayer->hsaVideo())
+        this->videoPlayer->bringViewToFront();
     
 }
 

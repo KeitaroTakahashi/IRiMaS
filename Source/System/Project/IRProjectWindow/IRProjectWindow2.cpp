@@ -17,6 +17,10 @@ IRProjectWindow2::IRProjectWindow2(String name, Rectangle<int> frameRect) : IRMa
     this->comp->newProjectCallback = [this] { newProjectCallbackAction(); };
     this->comp->closeProjectCallback = [this]{ closeButtonPressed(); };
     this->comp->openProjectCallback = [this] { openProjectCallbackAction(); };
+    
+    
+    std::cout << "projectTitle = " << name << std::endl;
+    this->comp->projectTitle = name;
 
     setContentOwned (this->comp.get(), true);
     
@@ -104,6 +108,8 @@ void IRProjectWindow2::newProjectCallbackAction()
 
 void IRProjectWindow2::openProjectCallbackAction()
 {
+    
+    std::cout << "openProjectCallbackAction\n";
     if(this->openProjectCallback != nullptr)
         this->openProjectCallback();
 }
@@ -114,4 +120,14 @@ void IRProjectWindow2::openProjectCallbackAction()
 void IRProjectWindow2::loadProjectFromSaveData(t_json saveData)
 {
     this->comp->loadProjectFromSavedData(saveData);
+}
+
+void IRProjectWindow2::setProjectTitle(String title)
+{
+    this->comp->projectTitle = title;
+}
+
+void IRProjectWindow2::setProjectPath(String path)
+{
+    this->comp->projectPath = path;
 }

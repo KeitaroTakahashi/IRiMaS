@@ -54,6 +54,16 @@ public:
         }
     }
     
+    void showInvalidSystemStatsMessage(const String& messageText)
+    {
+        AlertWindow::showMessageBox (AlertWindow::WarningIcon,
+                                     "OS update required!",
+                                     messageText,
+                                     "OK");
+        
+        juce::JUCEApplicationBase::quit();
+    }
+    
     template<typename T>
     void showRectangle(Rectangle<T> rect){
         std::cout << "x = " << rect.getX() << " : y = " << rect.getY() << " : w = " << rect.getWidth() << " : h = " << rect.getHeight() << std::endl;

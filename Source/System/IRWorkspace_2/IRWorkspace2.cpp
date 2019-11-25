@@ -65,7 +65,6 @@ IRWorkspace::~IRWorkspace()
 
 void IRWorkspace::paint (Graphics& g)
 {
-    this->bench.start();
     shaderTask(g);
     //g.fillAll(Colours::white);
     
@@ -332,8 +331,13 @@ json11::Json IRWorkspace::makeSaveDataOfThis()
     std::cout << "makeSaveDataOfThis" << std::endl;
     std::vector<json11::Json::object> objectList;
     
+    // to save objects, we need to reverse the order of ObjectZorder
+    // The top object is stored the begining of the vector but it needs to be at the end in order to be created at last.
+    std::vector<IRNodeObject*> reversedZorder = this->ObjectZorder;
+    std::reverse(std::begin(reversedZorder), std::end(reversedZorder));
+
     int index = 0;
-    for(auto item : this->objects)
+    for(auto item : reversedZorder)
     {
         json11::Json::object ob = json11::Json::object({
             {"object-" + std::to_string(index), json11::Json::object({
@@ -359,15 +363,7 @@ json11::Json IRWorkspace::makeSaveDataOfThis()
         })},
         {"Objects", obList},
     });
-    
-    //test
-    /*
-    std::string jsonString =  obj.dump();
-    std::ofstream myfile2;
-    myfile2.open("/Users/keitaro/Desktop/IRiMaS2018.txt");
-    myfile2 << jsonString;
-    myfile2.close();
-    */
+
     
     return obj;
 }

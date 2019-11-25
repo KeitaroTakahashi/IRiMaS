@@ -62,9 +62,6 @@ void IRShapeObject::loadThisFromSaveData(t_json data)
 // ------------------------------------------------------------
 void IRShapeObject::paint(Graphics &g)
 {
-    
-    std::cout << "IRShapeObject paint\n";
-
     //guide
     if(isEditMode())
     {
@@ -73,8 +70,6 @@ void IRShapeObject::paint(Graphics &g)
     }
 
     g.fillAll(Colours::transparentBlack);
-
-    std::cout << "IRShapeObject done\n";
 }
 
 void IRShapeObject::resized()

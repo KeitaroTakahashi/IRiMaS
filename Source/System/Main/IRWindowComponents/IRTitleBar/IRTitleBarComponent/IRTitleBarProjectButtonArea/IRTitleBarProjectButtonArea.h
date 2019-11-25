@@ -115,7 +115,7 @@ public:
         g.drawLine(135, getHeight(), 135, 0, 2);
         g.drawLine(304, getHeight(), 304, 0, 2);
         
-        heavyWeightRepaint("----------- IRTitleBarProjectButtonArea repaint");
+        //heavyWeightRepaint("----------- IRTitleBarProjectButtonArea repaint");
     }
     
     void resized() override

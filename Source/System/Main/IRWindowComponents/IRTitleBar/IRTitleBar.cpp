@@ -37,8 +37,8 @@ void IRTitleBar::paint (Graphics& g)
     g.setFont(f);
     g.drawText("TiAALS", 30, 5, 200, getHeight(), dontSendNotification);
      */
-    heavyWeightRepaint("----------- IRTitleBar repaint");
-    std::cout << " ========== IRTitlebar repaint\n";
+    //heavyWeightRepaint("----------- IRTitleBar repaint");
+    //std::cout << " ========== IRTitlebar repaint\n";
     
     
 }
@@ -46,8 +46,6 @@ void IRTitleBar::paint (Graphics& g)
 void IRTitleBar::resized()
 {
     
-    std::cout << " ========== IRTitlebar resized\n";
-    //heavyWeightRepaint();
 	    this->comp.setBounds(getLocalBounds());
 }
 

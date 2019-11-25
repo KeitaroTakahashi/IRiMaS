@@ -102,7 +102,7 @@ void IRWorkspace::createObject(IRNodeObject *obj)
     if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
     
     // register this object to the first place of ZOrder list
-    //insertObjectAtTopZOrder(obj);
+    insertObjectAtTopZOrder(obj);
     
     std::cout << "createObject done\n" << std::endl;
     
@@ -143,6 +143,8 @@ void IRWorkspace::deleteObject(IRNodeObject *obj)
 {
     if(this->selector->removeSelectedObject(obj))
     {
+        
+        removeObjectFromZOrder(obj);
         removeChildComponent(obj);
         
         int index = this->objects.indexOf(obj);
@@ -165,7 +167,14 @@ void IRWorkspace::deleteObject(IRNodeObject *obj)
 void IRWorkspace::manageHeavyWeightComponents(bool flag)
 {
     // check if any components contain HEAVY weight components
-    for(auto obj: this->objects)
+    
+    // to save objects, we need to reverse the order of ObjectZorder
+    // The top object is stored the begining of the vector but it needs to be at the end in order to be created at last.
+    std::vector<IRNodeObject*> reversedZorder = this->ObjectZorder;
+    std::reverse(std::begin(reversedZorder), std::end(reversedZorder));
+    
+    
+    for(auto obj: reversedZorder)
     {
         auto objType = obj->getObjectType();
         // check if this object contains any HEAVY weights
@@ -416,6 +425,12 @@ void IRWorkspace::heavyComponentCreated(IRNodeObject* obj)
     callHeavyObjectCreated(obj);
 }
 
+void IRWorkspace::addHeavyCopmonentToTopZOrder(IRNodeObject* obj)
+{
+    insertObjectAtTopZOrder(obj);
+    
+}
+
 void IRWorkspace::callNodeObjectSelectionChange(IRNodeObject* obj)
 {
     Component::BailOutChecker checker(this);
@@ -459,10 +474,9 @@ void IRWorkspace::callHeavyObjectCreated(IRNodeObject* obj)
 
 // ============================================================
 
-
 void IRWorkspace::insertObjectAtTopZOrder(IRNodeObject* obj)
 {
-    
+    std::cout << "insertObjectAtTopZOrder : " << obj << std::endl;
     // check if inserted obj is already registered and remove it.
     auto it = std::find(this->ObjectZorder.begin(), this->ObjectZorder.end(), obj);
     if(it != this->ObjectZorder.end())
@@ -479,3 +493,22 @@ void IRWorkspace::insertObjectAtTopZOrder(IRNodeObject* obj)
         std::cout << this->ObjectZorder[i]->name << " : " << this->ObjectZorder[i]->sortIndex << std::endl;
     }
 }
+
+void IRWorkspace::removeObjectFromZOrder(IRNodeObject* obj)
+{
+    
+    std::cout << "removeObjectFromZOrder : " << obj << std::endl;
+
+    auto it = std::find(this->ObjectZorder.begin(), this->ObjectZorder.end(), obj);
+    if(it != this->ObjectZorder.end())
+    {
+        this->ObjectZorder.erase(it);
+    }
+    
+    for(int i = 0; i < this->ObjectZorder.size(); i ++)
+       {
+           this->ObjectZorder[i]->sortIndex = i;
+           std::cout << this->ObjectZorder[i]->name << " : " << this->ObjectZorder[i]->sortIndex << std::endl;
+       }
+}
+

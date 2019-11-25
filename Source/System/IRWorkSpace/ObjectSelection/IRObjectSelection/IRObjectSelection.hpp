@@ -9,14 +9,16 @@
 #define IRObjectSelection_hpp
 
 #include "JuceHeader.h"
+#include "IRHeavyWeightComponent.h"
 
 template <class SelectableItemType>
-class IRObjectSelection : public Component
+class IRObjectSelection : public Component,
+public IRHeavyWeightComponent
 {
 public:
     //==============================================================================
 
-    IRObjectSelection()
+    IRObjectSelection() : IRHeavyWeightComponent(this)
     {
         setShiftConstrainsDirection(true);
         setConstrainBoundsToParent(true, {0,0,10,10});
@@ -125,7 +127,7 @@ public:
     {
         g.setColour(Colours::lightgrey);
         g.setOpacity(0.3);
-        g.fillAll();
+        g.fillAll();        
     }
     
     // ------------------------------------------------------------

@@ -80,7 +80,7 @@ void IRImageButton::mouseDown(const MouseEvent& e)
 
 void IRImageButton::mouseUp(const MouseEvent& e)
 {
-    std::cout << "IRImageButton::mouseUp\n";
+    //std::cout << "IRImageButton::mouseUp\n";
     this->mouseDownFlag = false;
     repaint();
 }

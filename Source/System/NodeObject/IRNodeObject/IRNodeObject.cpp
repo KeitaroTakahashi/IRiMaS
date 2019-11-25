@@ -15,11 +15,11 @@ IRNodeObject::IRNodeObject(Component* parent,
 IRNodeObject::~IRNodeObject()
 {
     
-    std::cout << "IRNodeObject deconstrucing" << std::endl;
+    //std::cout << "IRNodeObject deconstrucing" << std::endl;
 
     //notify any modification
     notifyNodeObjectModification();
-    std::cout << "IRNodeObject deoconstructing done" << std::endl;
+   // std::cout << "IRNodeObject deoconstructing done" << std::endl;
 }
 
 
@@ -168,6 +168,17 @@ void IRNodeObject::callHeavyComponentCreated(IRNodeObject* obj)
     // check if the objects are not deleted, if deleted, return
     if(checker.shouldBailOut()) return;
     this->listeners.callChecked(checker, [obj](Listener& l){ l.heavyComponentCreated(obj); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+void IRNodeObject::callAddHeavyComponentToTopZOrder(IRNodeObject* obj)
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [obj](Listener& l){ l.addHeavyCopmonentToTopZOrder(obj); });
     //check again
     if(checker.shouldBailOut()) return;
 }

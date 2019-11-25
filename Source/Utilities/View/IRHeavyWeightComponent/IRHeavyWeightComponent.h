@@ -17,14 +17,12 @@
     Keitaro 2019 Nov
  */
 
-class IRHeavyWeightComponent : OpenGLRenderer,
-ComponentMovementWatcher
+class IRHeavyWeightComponent : OpenGLRenderer
 {
 public:
     IRHeavyWeightComponent(juce::Component* component, String name = "") :
-    ComponentMovementWatcher(component),
-    name(name),
-    component ( component )
+    component ( component ),
+    name(name)
     {
         this->ctx.attachTo(*component);
         this->ctx.setRenderer(this);
@@ -47,6 +45,7 @@ public:
     
     void bringThisToFront(String flag = "") {
         std::cout << flag << std::endl;
+        this->component->repaint();
         bringToFront(this->component);
         //callback
         bringToFrontCompleted();
@@ -81,36 +80,23 @@ private:
     //==================================================
     void newOpenGLContextCreated()override
     {
+        std::cout << "newOpenGLContextCreated : " << this->name << std::endl;
         setComponentAlpha(this->alpha);
         componentCreated();
+        
     }
     
     virtual void renderOpenGL()override
     {
         
-        std::cout << " ==================== rendering..\n";
+        //std::cout << " ==================== rendering..\n";
         // transparent background
         OpenGLHelpers::clear(Colours::transparentBlack);
     }
     
     virtual void openGLContextClosing() override {}
     
-    // ComponentMovementWatcher
-    virtual void componentMovedOrResized(bool wasMoved, bool wasResized) override
-    {
-        //setComponentAlpha(this->alpha);
-    }
-    
-    // here we need to set the Alpha of NSOpenGLView
-    virtual void componentVisibilityChanged() override
-    {
-        std::cout << "componentVisibilityChanged : " << this->name << std::endl;
-        //setComponentAlpha(this->alpha);
-    }
-    
-    virtual void componentPeerChanged() override {
-        //setComponentAlpha(this->alpha);
-    }
+
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRHeavyWeightComponent)
 

@@ -68,13 +68,17 @@ public:
     // for any HeavyWeightComponent
     void bringToFrontCompleted();
     
+    // ==================================================
+    void bindObjectMenuOnParent(ObjectMenuComponent* obj);
+    void closeObjectMenu();
+    
 private:
     // ==================================================
     void createButton(IRImageButton* button, IRIconBank::IRIconImage img);
         
     void replaceCurrentMenu(ObjectMenuComponent* obj);
     
-    void bindObjectMenuOnParent(ObjectMenuComponent* obj);
+    void createObjectMenuAreaAndShow(ObjectMenuComponent* obj);
     // ==================================================
     
     void textAction();
@@ -131,7 +135,7 @@ private:
     int topMarge = 10;
     int switchSpace = 50;
     int menuSpace = 200;
-    int preferenceMenuSpace = 600;
+    int preferenceMenuSpace = 450;
     int buttomSpace = 110;
     
     int yMarge = 5;
@@ -141,6 +145,11 @@ private:
     bool isOpened = false; // if menu area is visible or not
 
     // ==================================================
+    
+    bool objectMenuSpaceAreaBringToFrontFlag = false;
+    
+    // ==================================================
+
 
     Component* parent = nullptr;
     

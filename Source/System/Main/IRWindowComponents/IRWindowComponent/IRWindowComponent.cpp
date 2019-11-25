@@ -298,7 +298,7 @@ void IRWindowComponent::mouseDown(const MouseEvent& e)
     }
     
     //close menu if it is opened
-    this->leftBar->closeMenu();
+    this->leftBar->closeObjectMenu();
 }
 // ----------------------------------------
 
@@ -620,12 +620,12 @@ json11::Json IRWindowComponent::saveAction(String projectPath, String projectTit
     t_json header = json11::Json::object({
            {"Project", json11::Json::object({
                {"projectName",     projectTitle.toStdString()},
-               {"author",          "Keitaro Takahashi"},
-               {"date",            "20.04.1986"},
+               {"author",          "test"},
+               {"date",            "26.11.2019"},
                {"osType",          "macOS"},
-               {"osVersion",       "10.13.6"},
-               {"IRVersion",       "0.0.1"},
-               {"bounds",          json11::Json::array({0, 0, b.getWidth(), b.getHeight()})},
+               {"osVersion",       "10.15.1"},
+               {"IRVersion",       "0.0.2"},
+               {"bounds",          json11::Json::array({0, 0, b.getWidth(), b.getHeight()})}
            })},
        });
        

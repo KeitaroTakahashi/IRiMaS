@@ -85,6 +85,8 @@ public:
         loadVideo(url);
     }
     // --------------------------------------------------
+    
+    bool hsaVideo() const { return this->isVideoLoaded; }
 
     void loadVideo(URL url)
     {
@@ -101,10 +103,12 @@ public:
     // call back function for video loader
     void videoLoadingFinished (const URL& url, Result result)
     {
-        
         ignoreUnused (url);
         
         if(result.wasOk()){
+            
+            this->isVideoLoaded = true;
+            
             this->videoSize = this->player_with_controller->getVideoNativeSize();
             KLib().showRectangle<int>(this->videoSize);
             this->aspectRatio = (float)this->videoSize.getWidth() / (float)this->videoSize.getHeight();
@@ -133,6 +137,7 @@ public:
                 videoLoadCompleted();
             }
         }else{
+            this->isVideoLoaded = false;
             this->isVideoOpenedFlag = false;
             removeChildComponent(this->player.get());
             removeChildComponent(this->player_with_controller.get());

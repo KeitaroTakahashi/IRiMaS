@@ -91,7 +91,7 @@ public:
     void nodeObjectGetFocused(IRNodeObject* obj) override;
     void nodeObjectMoveToFront(IRNodeObject* obj) override;
     void heavyComponentCreated(IRNodeObject* obj)override;
-
+    void addHeavyCopmonentToTopZOrder(IRNodeObject* obj) override;
 
     
     void addObjectGlobal(IRObjectPtr obj, String id) override;
@@ -274,7 +274,7 @@ private:
     //Z-order of the objects
     std::vector<IRNodeObject* > ObjectZorder;
     void insertObjectAtTopZOrder(IRNodeObject* obj);
-
+    void removeObjectFromZOrder(IRNodeObject* obj);
     
     // ==================================================
 

@@ -139,7 +139,7 @@ void IRTitleBarComponent::paint (Graphics& g)
 
     //heavyWeightRepaint("----------- IRTitleBarComponent repaint");
 
-    std::cout << " ++++++++ IRTitleBarComponent repainted! ++++++++\n";
+    //std::cout << " ++++++++ IRTitleBarComponent repainted! ++++++++\n";
 
 }
 

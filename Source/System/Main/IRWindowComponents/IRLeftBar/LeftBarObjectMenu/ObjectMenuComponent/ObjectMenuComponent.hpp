@@ -14,10 +14,12 @@
 #include "IRObjectFactory2.hpp"
 #include "IRStrComponent.hpp"
 #include "IRWorkspace2.hpp"
+#include "IRHeavyWeightComponent.h"
 
 
 class ObjectMenuComponent : public Component,
 public IRStrComponent,
+public IRHeavyWeightComponent,
 private KeAnimationComponent
 {
 public:

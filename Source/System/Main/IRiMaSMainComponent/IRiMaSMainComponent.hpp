@@ -1,16 +1,17 @@
 
 #ifndef IRiMaSMain_hpp
 #define IRiMaSMain_hpp
-
+#include <filesystem>
 #include "JuceHeader.h"
 
-
+#include "IRSystemStatus.h"
 #include "IRProjectWindow2.hpp"
 #include "IRStartWindow.hpp"
 #include "IRSaveLoadSystem.hpp"
 #include "json11.hpp"
 #include "singletonClass.hpp"
 #include "IRObjectFactory2.hpp"
+
 
 #include "ColourLib.h"
 

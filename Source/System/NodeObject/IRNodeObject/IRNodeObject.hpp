@@ -124,7 +124,13 @@ public:
         
         
         //heavy
+        // used for example by IRVideoPlayer when it completes loading a movie file and avoid overlapping with
+        // the menu bars because VideoComponent automatically comes foreground when it loads any movie files.
+        // It emit the recreation of Bars and thus bring them foreground to IRVideoPlayer and other possible IRNodeObjects.
+        // NOTE : this function does not change objectZOrder and if you need then use addHeavyComponentToTopZOrder
         virtual void heavyComponentCreated(IRNodeObject* obj) {};
+        // Invoke an action to move IRNodeObject to the top of objectZOrder on the workspace.
+        virtual void addHeavyCopmonentToTopZOrder(IRNodeObject* obj) {};
     };
     
     virtual void addListener(Listener* newListener) { this->listeners.add(newListener); }
@@ -158,6 +164,9 @@ public:
     void callEditModeChangedInNodeObject();
     // fire heavyComponentCreated
     void callHeavyComponentCreated(IRNodeObject* obj);
+    
+    void callAddHeavyComponentToTopZOrder(IRNodeObject* obj);
+
     
     void callLinkModeChangedInNodeObject();
     void receiveSelectedLinkMenuItemEvent() override;// from IRLinkFoundation

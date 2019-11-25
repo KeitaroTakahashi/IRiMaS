@@ -23,6 +23,9 @@ public:
     void initializeUI();
     // ==================================================
     void loadProjectFromSaveData(t_json saveData);
+    
+    void setProjectTitle(String title);
+    void setProjectPath(String path);
     // ==================================================
 
     

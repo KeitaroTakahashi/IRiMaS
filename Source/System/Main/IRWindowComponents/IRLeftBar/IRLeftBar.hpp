@@ -44,8 +44,8 @@ public:
     void bringToFrontCompleted() override;
     
     //==================================================
-    void openMenu(objectCategory type);
-    void closeMenu();
+
+    void closeObjectMenu();
     //==================================================
     void addNewWorkspaceSlide(IRWorkspace* space);
     
@@ -98,13 +98,10 @@ private:
     objectCategory currentMenuType = objectCategory::NONE;
     objectCategory previousMenuType = objectCategory::NONE;
     // ==================================================
-    void updateAnimationFrame() override;
+    void updateAnimationFrame() override {};
     // ==================================================
 
     //==================================================
-
-    IRImageButton toNavigatorButton;
-    IRImageButton toObjectMenuButton;
     
     std::shared_ptr<ObjectSlideSwitchSpace> objectSlideSwitchButton;
     
@@ -124,19 +121,11 @@ private:
     int slideMenuButtomMargin = 50;
     
     int maxWidth = 0;
-    int preferenceMaxWidth = 600;
+    int preferenceMaxWidth = 450;
     int ordinaryWidth = 0;
     
     // ==================================================
-    bool openMenuSpace = false;
-    bool openPrefernceSpace = false;
-    int openPreferenceSpeed = 24;
-    int openSpeed = 12;
-    bool isOpened = false; // if menu area is visible or not
-    
-    void openDefaultMenu();
-    void openPreferenceMenu();
-    
+
     void attachObjectMenu();
     void removeObjectMenu();
     void attachPreferenceMenu();

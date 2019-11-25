@@ -290,6 +290,7 @@
 		8206B53B23843D860088767D /* ObjectMenuIconArea.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectMenuIconArea.h; sourceTree = "<group>"; };
 		8206B53D23858BC90088767D /* ObjectSlideSwitchSpace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectSlideSwitchSpace.h; sourceTree = "<group>"; };
 		8206B53E2385A5E20088767D /* ObjectMenuSpaceArea.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectMenuSpaceArea.h; sourceTree = "<group>"; };
+		8206B540238993BB0088767D /* IRSystemStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSystemStatus.h; sourceTree = "<group>"; };
 		82078EF523587B67008455DC /* PreferenceGUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreferenceGUI.h; sourceTree = "<group>"; };
 		820963D622A7D2CE00723C81 /* ISVPresetDataStr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISVPresetDataStr.h; sourceTree = "<group>"; };
 		820963D822A7E6D100723C81 /* ISVParameterSliders.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ISVParameterSliders.cpp; sourceTree = "<group>"; };
@@ -1104,6 +1105,14 @@
 			path = ObjectSlideSwitchSpace;
 			sourceTree = "<group>";
 		};
+		8206B53F238993B20088767D /* SystemStatus */ = {
+			isa = PBXGroup;
+			children = (
+				8206B540238993BB0088767D /* IRSystemStatus.h */,
+			);
+			path = SystemStatus;
+			sourceTree = "<group>";
+		};
 		82078EF423587B5D008455DC /* PreferenceGUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1569,6 +1578,7 @@
 		823E7BD82134073A0046512B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				8206B53F238993B20088767D /* SystemStatus */,
 				82D97184236B07D100A5AE89 /* OpenGL */,
 				829542C32361C4330015CC17 /* Video */,
 				820F7EDA234B5BFF00679F56 /* Message */,
