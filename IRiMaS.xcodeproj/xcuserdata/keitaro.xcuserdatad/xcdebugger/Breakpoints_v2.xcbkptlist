@@ -14,14 +14,14 @@
             symbolName = "*0x10024b6f2">
             <Locations>
                <Location
-                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - 7a65df8e60ab3985"
+                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - 24c9ab530b3a922b"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44c0_sm_p1_0"
+                  symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44c0_s_p1_0"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "33538">
+                  offsetFromSymbolStart = "29330">
                </Location>
             </Locations>
          </BreakpointContent>

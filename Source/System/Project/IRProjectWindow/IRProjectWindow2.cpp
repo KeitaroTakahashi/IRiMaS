@@ -124,7 +124,7 @@ void IRProjectWindow2::loadProjectFromSaveData(t_json saveData)
 
 void IRProjectWindow2::setProjectTitle(String title)
 {
-    this->comp->projectTitle = title;
+    this->comp->setProjectTitle(title);
 }
 
 void IRProjectWindow2::setProjectPath(String path)

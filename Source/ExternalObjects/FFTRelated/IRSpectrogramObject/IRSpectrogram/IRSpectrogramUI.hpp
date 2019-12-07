@@ -42,12 +42,12 @@ public:
     void openFile();
     void openFile(String path);
     
-    String getFilePath() const { return this->path; }
-    
+    String getFilePath() { return getSpectrogram()->getFilePath();  }
     // ==================================================
-    virtual void fileImportCompletedAction() = 0;
     DataAllocationManager<IRAudio>* getAudioData() { return this->audioData; }
     
+    void audioFileImportCompleted();
+    std::function<void()> audioFileImportCompletedCallback = nullptr;
     // ==================================================
 
     void setMagnitudeAmount(float val) { this->spectrogram->getComponent()->setMagnitudeAmount(val); }
@@ -67,7 +67,9 @@ public:
         zoomInClicked();
     }
     
-    IRSpectrogramComponent* getSpectrogramComponent() { return this->spectrogram.get(); }
+    IRSpectrogram* getSpectrogram() { return this->spectrogram->getComponent(); }
+    
+    
     
 private:
     
@@ -83,11 +85,7 @@ private:
     IRNodeObject* parent;
     
     // audio data
-    void getFilePtr(File file);
-    void fileImportCompleted();
     DataAllocationManager<IRAudio>* audioData = nullptr;
-    File file;
-    String path;
     // ==================================================
     //ViewPort
     std::shared_ptr<IRSpectrogramViewUI> spectrogramView;
@@ -110,8 +108,10 @@ private:
     void setMovable(bool movable, bool verticalMovable, bool horizontalMovable);
     
     // ==================================================
-    
+    TextButton openButton;
+    void openButtonClicked();
    
+    
     // ==================================================
 
     // ==================================================

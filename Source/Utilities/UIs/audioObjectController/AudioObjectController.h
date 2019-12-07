@@ -9,6 +9,7 @@
 #define AudioObjectController_h
 #include "JuceHeader.h"
 #include "IRStrComponent.hpp"
+#include "IRImageButton.hpp"
 
 class AudioObjectController :public Component,
 public IRStrComponent,
@@ -47,11 +48,13 @@ public:
         this->pauseButton.onClick = [this]{ pauseButtonClickedAction(); };
         
         addAndMakeVisible(&this->modeLabel);
-        this->modeLabel.setText("Mode", dontSendNotification);
+        this->modeLabel.setText("Cursor Mode", dontSendNotification);
         
         addAndMakeVisible(&this->modeBox);
         this->modeBox.addItem("Position", 1);
-        this->modeBox.addItem("Selection", 2);
+        this->modeBox.addItem("Horizontal Selection", 2);
+        this->modeBox.addItem("vertical Selection", 3);
+        this->modeBox.addItem("Advanced Selection", 4);
         this->modeBox.setSelectedId(1, dontSendNotification);
         //this->shapeMenu.addListener(this);
 
@@ -122,6 +125,7 @@ public:
         this->AudioURLLabel.setText(path, dontSendNotification);
     }
     // ==================================================
+    
     // ==================================================
     
     AudioObjectControllerStatus getStatus() const{ return this->status; }

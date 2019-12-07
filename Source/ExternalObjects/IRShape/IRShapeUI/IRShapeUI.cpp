@@ -7,18 +7,17 @@
 
 #include "IRShapeUI.hpp"
 
-IRShapeUI::IRShapeUI(IRNodeObject* parent, IRStr* str) : IRUIFoundation(parent, str),
+IRShapeUI::IRShapeUI(IRNodeObject* parent, IRStr* str) :
+IRUIFoundation(parent, str),
 colour(255,0, 0)
 {
-    
     this->controller = std::make_shared<IRShapeController>(str);
     this->controller->addChangeListener(this);
-
 }
 
 IRShapeUI::~IRShapeUI()
 {
-    
+    this->controller.reset();
 }
 
 //========================================================

@@ -23,7 +23,7 @@ IRNodeObject(parent, "IRLabel", str, NodeObjectType(orginaryIRComponent))
     this->label.setText("text...", dontSendNotification);
     this->label.setJustificationType(Justification::left);
     this->label.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.titleText);
-    this->label.setColour(Label::textWhenEditingColourId, getStr()->SYSTEMCOLOUR.titleText);
+    this->label.setColour(Label::textWhenEditingColourId, Colours::lightgrey);
 
     this->label.setMinimumHorizontalScale(1.0);
     // set editable condition
@@ -35,13 +35,14 @@ IRNodeObject(parent, "IRLabel", str, NodeObjectType(orginaryIRComponent))
     childComponentManager(&this->label);
         
     // Link Menu
+    /*
     clearLinkParam();
     addLinkParam(TextLinkFlag);
     addLinkParam(ConsoleLinkFlag);
     addLinkParam(AudioLinkFlag);
     addLinkParam(ImageLinkFlag);
     addLinkParam(DataLinkFlag);
-
+*/
 }
 
 
@@ -57,6 +58,7 @@ IRNodeObject* IRLabelObject::copyThis()
     IRLabelObject* newObj = new IRLabelObject(this->parent, getStr());
     newObj->setFont(this->font);
     newObj->label.setText(label.getText(true) ,dontSendNotification);
+    //newObj->label.setColour(this->controller->getFontController()->getTextColour());
     return newObj;
 }
 

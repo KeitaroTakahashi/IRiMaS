@@ -5,8 +5,7 @@ IRNodeObject::IRNodeObject(Component* parent,
                            String name,
                            IRStr* str,
                            NodeObjectType objectType)
-: IRNodeComponent(parent, name, str, objectType),
-  IRLinkFoundation(parent, 60)
+: IRNodeComponent(parent, name, str, objectType)
 {
     this->parent = parent;
 }
@@ -182,7 +181,7 @@ void IRNodeObject::callAddHeavyComponentToTopZOrder(IRNodeObject* obj)
     //check again
     if(checker.shouldBailOut()) return;
 }
-
+/*
 void IRNodeObject::callLinkModeChangedInNodeObject()
 {
     Component::BailOutChecker checker(this);
@@ -199,7 +198,7 @@ void IRNodeObject::callLinkModeChangedInNodeObject()
 void IRNodeObject::receiveSelectedLinkMenuItemEvent()
 {
     callGetSelectedLinkSystemFlag();
-}
+}*/
 
 void IRNodeObject::callGetSelectedLinkSystemFlag()
 {
@@ -346,7 +345,7 @@ void IRNodeObject::notifyNodeObjectModification()
     
 }
 // ==================================================
-
+/*
 void IRNodeObject::callReceiveAudioLink(IRAudio* obj)
 {
     printf("callReceiveAudioLink\n");
@@ -401,7 +400,7 @@ void IRNodeObject::callReceiveVideoLink(IRVideo* obj)
     this->listeners.callChecked(checker, [this](Listener& l){ l.receiveVideoLink(this); });
     if(checker.shouldBailOut()) return;
 }
-
+*/
 void IRNodeObject::callUpdateIRFileManager(IRFileManager* fileManager)
 {
     
@@ -438,7 +437,7 @@ void IRNodeObject::thisObjectGetFocused()
     // for IRWorkspace Event
     callNodeObjectGetFocused();
 }
-
+/*
 void IRNodeObject::setLinkActivationEvent()
 {
     if(isLinkMode())
@@ -448,12 +447,12 @@ void IRNodeObject::setLinkActivationEvent()
     }
     //repaint();
 }
-
+*/
 void IRNodeObject::editModeChangedEvent()
 {
     
 }
-
+/*
 void IRNodeObject::linkModeChangedEvent()
 {
     if(isLinkMode())
@@ -465,7 +464,7 @@ void IRNodeObject::linkModeChangedEvent()
     
     statusChangedWrapper(IRNodeComponentStatus::LinkModeStatus);
     repaint();
-}
+}*/
 
 
 // ==================================================
@@ -473,8 +472,8 @@ void IRNodeObject::linkModeChangedEvent()
 void IRNodeObject::initialPaintOnWorkspace(Graphics& g, Component* workspace)
 {
 
-    this->setLinkMenuCentrePosition(getX() + getWidth()/2,
-                                    getY() + getHeight()/2);
+    //this->setLinkMenuCentrePosition(getX() + getWidth()/2,
+                                    //getY() + getHeight()/2);
     paintOnWorkspace(g, workspace);
     workspace->repaint();
 }

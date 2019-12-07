@@ -9,9 +9,10 @@
 #define IRStrComponent_hpp
 
 #include "IRStr.h"
-#include "LayoutStuff.h"
+#include "Benchmark.h"
 
-class IRStrComponent : public LayoutStuff
+
+class IRStrComponent
 {
  
 public:

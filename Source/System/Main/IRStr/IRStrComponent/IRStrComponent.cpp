@@ -7,11 +7,9 @@
 
 #include "IRStrComponent.hpp"
 
-IRStrComponent::IRStrComponent(IRStr* str) : LayoutStuff(str)
+IRStrComponent::IRStrComponent(IRStr* str) :
+ir_str(str)
 {
-    this->ir_str = str;
-    
-   
 
 }
 

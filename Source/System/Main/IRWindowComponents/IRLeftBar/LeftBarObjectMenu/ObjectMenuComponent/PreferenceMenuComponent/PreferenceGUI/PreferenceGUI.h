@@ -89,6 +89,7 @@ public:
         this->colourButtons.push_back(new IRColourButton(IR::darkBlueSet()));
         this->colourButtons.push_back(new IRColourButton(IR::darkBrownSet()));
         this->colourButtons.push_back(new IRColourButton(IR::blackSet()));
+        this->colourButtons.push_back(new IRColourButton(IR::darkGraySet()));
         this->colourButtons.push_back(new IRColourButton(IR::silverSet()));
 
         this->colourButtons.push_back(new IRColourButton(IR::bronzeSet()));

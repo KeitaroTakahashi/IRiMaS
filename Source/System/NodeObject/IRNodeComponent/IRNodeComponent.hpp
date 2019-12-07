@@ -15,6 +15,8 @@
 #include "IRStrComponent.hpp"
 #include "IRSaveLoadSystem.hpp"
 #include "IRLinkFoundation.hpp"
+#include "Benchmark.h"
+#include "IRResizeSquare.h"
 
 #include "IROpenGLManager.hpp"
 
@@ -96,7 +98,7 @@ struct NodeObjectType
 
 class IRNodeComponent : public Component,
                         public IRStrComponent,
-public OpenGLRenderer,
+                        public OpenGLRenderer,
                         public ChangeBroadcaster
 {
 public:
@@ -256,6 +258,16 @@ public:
     NodeObjectType getObjectType() const;
     
     // ==================================================
+    // create small square on each corner of the object square which enables to resize this object
+    bool isResizingSquareInitialized = false;
+    void initResizingSquare();
+    void showResizingSquare();
+    void hideResizingSquare();
+    void resizingObjectSizeByResizingSquare();
+    
+    std::vector<IRResizeSquare* > resizingSquare;
+    
+    // ==================================================
     // called when the object contains heavy component needs to be refreshed.
     virtual void heavyComponentRefreshed();
     // ==================================================
@@ -300,7 +312,7 @@ public:
     // sorting...
     int sortIndex = 0;
 
-    protected:
+protected:
         UserSettingStr *USERSETTING;
         IR::IRColours *SYSTEMCOLOUR;
         IRIconBank    *ICONBANK;
@@ -308,7 +320,6 @@ public:
     
     
     // ============================================================
-
     
     // ============================================================
 
@@ -327,6 +338,8 @@ private:
     MixerAudioSource *mixer;
     // if this object contains any AudioSource
     bool containAudioSourceFlag = false;
+    
+   
     
     // Object appearance setup
     float minWidth = 50;

@@ -26,7 +26,7 @@ visiblePos(Point<int>(0,0))
     this->setEnabled(true);
     this->openButton.onClick = [this]{ openFile(); };
     
-    this->player = new SoundPlayerClass(parent);
+    this->player.reset( new SoundPlayerClass(parent) );
     this->player->addChangeListener(this);
     
     setFps(17);
@@ -35,6 +35,7 @@ visiblePos(Point<int>(0,0))
 
 IRWaveform::~IRWaveform()
 {
+    this->player.reset();
     // delete this->player; // leave it - the owner will delete it.
     // remove pointer
     deinitializeAudioData();
@@ -119,9 +120,15 @@ void IRWaveform::getFilePtr(File file)
     // set a callback function which is called when file load is completed.
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
+    
+    // create random ID to identify the retrieved ptr.
+    KeRandomStringGenerator a;
+    this->randomIDForPtr = a.createStrings(10);
+    
     getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                              file,
                                              this->parent,
+                                            this->randomIDForPtr,
                                              callback);
     
 
@@ -134,7 +141,7 @@ void IRWaveform::getFilePtr(File file)
 
 void IRWaveform::changeListenerCallback (ChangeBroadcaster* source)
 {
-   if (source == this->player)
+   if (source == this->player.get())
     {
         if (this->player->isPlaying())
         {
@@ -187,8 +194,8 @@ void IRWaveform::fileImportCompleted()
     // init selected
 
     std::cout << "IRWaveform : fileImportCompleted\n";
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
-    
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObjectAndRemoveFromBuffer(this->randomIDForPtr));
+
     this->audioData->getData()->addListener(this);
     
     //set audioBuffer to player
@@ -196,7 +203,7 @@ void IRWaveform::fileImportCompleted()
     this->player->setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
     
    // set received Ptr to the Link System
-    this->parent->setAudioLink(this->audioData->getData());
+    //this->parent->setAudioLink(this->audioData->getData());
     
     //
     fileImportCompletedAction();
@@ -433,17 +440,7 @@ bool IRWaveform::isPlaying() const
 
 SoundPlayerClass* IRWaveform::getPlayer() const
 {
-    return this->player;
-}
-
-
-void IRWaveform::audioPtrDelivery(IRAudio *obj)
-{
-    //makeThumbnail(obj->getFile().getFullPathName());
-    
-    this->file = obj->getFile();
-
-    getFilePtr(this->file);    
+    return this->player.get();
 }
 
 

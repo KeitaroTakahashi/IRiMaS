@@ -11,8 +11,7 @@
 #include "IRSpectrogramUI.hpp"
 #include "IRSpectrogramObjectPreference.h"
 
-class IRSpectrogramWithPreference : public IRSpectrogramUI,
-private KeAnimationComponent
+class IRSpectrogramWithPreference : public IRSpectrogramUI
 {
 public:
     // ==================================================
@@ -35,11 +34,8 @@ private:
     void changeListenerCallback (ChangeBroadcaster* source) override;
     // ==================================================
 
-    void openAudioFileAction();
-    void fileImportCompletedAction() override;
     void updateAudioPreferenceUI();
     
-    void updateAnimationFrame() override;
     // ==================================================
     bool isFileImportCompletedFlag = false;
     // ==================================================

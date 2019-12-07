@@ -435,6 +435,7 @@ void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected, bool
         IRAutomationVertexComponent* current = this->verteces[index];
         IRAutomationVertexComponent* previous = this->verteces[index - 1];
         
+        //deallocate by IRAutomationVertecComponent
         std::shared_ptr<IRAutomationVertexComponent> b1 = std::make_shared<IRAutomationVertexComponent>(getStr(), this);
         std::shared_ptr<IRAutomationVertexComponent> b2 = std::make_shared<IRAutomationVertexComponent>(getStr(), this);
 

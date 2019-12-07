@@ -58,9 +58,14 @@ public:
         // set a callback function which is called when file load is completed.
         // get a pointer of the audio file
         std::function<void()> callback = [this]{fileImportCompleted();};
+        // create random ID to identify the retrieved ptr.
+        KeRandomStringGenerator a;
+        this->randomIDForPtr = a.createStrings(10);
+        
         getFileManager()->getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                                  file,
                                                  this->parent,
+                                                 this->randomIDForPtr,
                                                  callback);
     
         this->hasFileLoaded = true;
@@ -78,6 +83,8 @@ private:
     IRNodeObject* parent;
     File file;
     String p;
+    
+    std::string randomIDForPtr;
     
     bool hasFileLoaded = false;
     

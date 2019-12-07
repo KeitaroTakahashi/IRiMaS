@@ -35,11 +35,10 @@ bool IRImageLoader::open()
         if(pathToOpen.isNotEmpty())
         {
             this->isFileOpened = true;
-            //loadImage(pathToOpen);
-            
-            
-        
-            this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager().getFilePtr(IRFileType::IRIMAGE, file, this->parent));
+
+            this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager().getFilePtr(IRFileType::IRIMAGE,
+                                                                                                     file,
+                                                                                                    this->parent));
             this->isFileLoadCompleted = true;
         
             // notify modification
@@ -74,11 +73,16 @@ bool IRImageLoader::open(String pathToOpen)
         
         File file(this->path);
         
+        if(file.exists())
+        {
         
-        this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager().getFilePtr(IRFileType::IRIMAGE, file, this->parent));
-        this->isFileLoadCompleted = true;
-        // notify
-        this->parent->notifyNodeObjectModification();
+            this->imgData = static_cast<DataAllocationManager<IRImage>*>(getFileManager().getFilePtr(IRFileType::IRIMAGE, file, this->parent));
+            this->isFileLoadCompleted = true;
+            // notify
+            this->parent->notifyNodeObjectModification();
+        }else{
+            KLib().showErrorMessage("Image data " + pathToOpen + " does not exist!");
+        }
        
 
     }else{

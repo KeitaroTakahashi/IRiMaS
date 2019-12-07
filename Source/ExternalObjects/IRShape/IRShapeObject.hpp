@@ -11,6 +11,8 @@
 #include "IRNodeObject.hpp"
 #include "IRShapeUI.hpp"
 
+#include "Benchmark.h"
+
 class IRShapeObject : public IRNodeObject,
 public ChangeListener
 {
@@ -34,7 +36,7 @@ public:
 private:
     
     std::shared_ptr<IRShapeUI> UI;
-    
+
     void changeListenerCallback (ChangeBroadcaster* source) override
     {
         
@@ -53,9 +55,8 @@ private:
         }
     
     }
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRShapeObject)
-
     
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRShapeObject)
 };
 
 

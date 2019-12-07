@@ -22,13 +22,26 @@ void IRWorkspace::copySelectedObjects()
 void IRWorkspace::pasteSelectedObjects()
 {
     std::cout << "paste\n";
+
+    bench2.start();
     
     for (auto obj: this->copiedObjects)
     {
         pasteObject(obj,false);
     }
     this->selector->addSelectedObjects();
+    bench2.result("x x x x x x x x : pasteSelectedObjects");
+    bench2.start();
+
     copySelectedObjects();
+    bench2.result("x x x x x x x x : copySelectedObjects");
+
+    bench2.start();
+
+    resortHeavyObject();
+    bench2.result("x x x x x x x x : resortHeavyObject");
+
+    
 }
 // ------------------------------------------------------------
 
@@ -53,16 +66,18 @@ void IRWorkspace::duplicateSelectedObjects()
 {
     copySelectedObjects();
     pasteSelectedObjects();
+    
+    resortHeavyObject();
 }
 
 
-void IRWorkspace::createObject(IRNodeObject *obj)
+void IRWorkspace::createObject(IRNodeObject *obj, bool shouldSort)
 {
     std::cout << "==================================================\n ";
     std::cout << "creating " << obj->getName() << std::endl;
     
     obj->setEditMode(isEditMode());
-    obj->setLinkMode(isLinkMode());
+    //obj->setLinkMode(isLinkMode());
     
     // make uniqueID
     KeRandomStringGenerator a;
@@ -89,26 +104,29 @@ void IRWorkspace::createObject(IRNodeObject *obj)
     
     // setup openGL Context if it has. This should be called adter addAndMakeVisible
     obj->initOpenGLContext();
-    std::cout << "initOpenGLContext done\n" << std::endl;
-    
+   
     // check if the created object is Heavy-weight Component
-    if(obj->getObjectType().componentType == IRNodeComponentType::heavyWeightComponent ||
-       obj->getObjectType().componentType == IRNodeComponentType::orginaryIRComponent)
+    if(shouldSort)
     {
-        callHeavyObjectCreated(obj);
+        if(obj->getObjectType().componentType == IRNodeComponentType::heavyWeightComponent ||
+           obj->getObjectType().componentType == IRNodeComponentType::orginaryIRComponent)
+        {
+            callHeavyObjectCreated(obj);
+        }
     }
-    
     //request updating the workspaceList
     if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
     
     // register this object to the first place of ZOrder list
     insertObjectAtTopZOrder(obj);
-    
-    std::cout << "createObject done\n" << std::endl;
-    
-   
 
     repaint();
+}
+
+void IRWorkspace::resortHeavyObject()
+{
+    callHeavyObjectCreated(nullptr);
+
 }
 // ------------------------------------------------------------
 void IRWorkspace::copyObject(IRNodeObject *obj, bool clearCopied)
@@ -122,8 +140,10 @@ void IRWorkspace::pasteObject(IRNodeObject *obj, bool addToSelected)
     IRNodeObject* newObj = obj->copyThis();
     newObj->setBounds(obj->getPosition().x-20, obj->getPosition().y-20,
                       obj->getWidth(), obj->getHeight());
-    createObject(newObj);
-    
+   
+    // do not initialize heavy weight component here but later
+    createObject(newObj, false);
+
     obj->setSelected(false);
     this->selector->removeSelectedObject(obj);
     newObj->setSelected(true);
@@ -170,9 +190,21 @@ void IRWorkspace::manageHeavyWeightComponents(bool flag)
     
     // to save objects, we need to reverse the order of ObjectZorder
     // The top object is stored the begining of the vector but it needs to be at the end in order to be created at last.
+    
+
     std::vector<IRNodeObject*> reversedZorder = this->ObjectZorder;
     std::reverse(std::begin(reversedZorder), std::end(reversedZorder));
     
+    for(auto obj: reversedZorder)
+    {
+        if(flag)
+        {
+            obj->bringThisToFront();
+        }
+    }
+    
+
+    /*
     
     for(auto obj: reversedZorder)
     {
@@ -187,7 +219,7 @@ void IRWorkspace::manageHeavyWeightComponents(bool flag)
                 removeChildComponent(obj);
             }
         }
-    }
+    }*/
 }
 // ------------------------------------------------------------
 void IRWorkspace::openObjectListMenu(Point<int>Pos)
@@ -331,7 +363,7 @@ void IRWorkspace::editModeChangedInNodeObject(bool editMode)
 
 void IRWorkspace::linkModeChangedInNodeObject(bool linkMode)
 {
-    setLinkMode(linkMode);
+    //setLinkMode(linkMode);
     // notify it to IRProject
     if(this->notifyLinkModeChanged != nullptr)
     {
@@ -476,7 +508,7 @@ void IRWorkspace::callHeavyObjectCreated(IRNodeObject* obj)
 
 void IRWorkspace::insertObjectAtTopZOrder(IRNodeObject* obj)
 {
-    std::cout << "insertObjectAtTopZOrder : " << obj << std::endl;
+    //std::cout << "insertObjectAtTopZOrder : " << obj << std::endl;
     // check if inserted obj is already registered and remove it.
     auto it = std::find(this->ObjectZorder.begin(), this->ObjectZorder.end(), obj);
     if(it != this->ObjectZorder.end())
@@ -490,8 +522,10 @@ void IRWorkspace::insertObjectAtTopZOrder(IRNodeObject* obj)
     for(int i = 0; i < this->ObjectZorder.size(); i ++)
     {
         this->ObjectZorder[i]->sortIndex = i;
-        std::cout << this->ObjectZorder[i]->name << " : " << this->ObjectZorder[i]->sortIndex << std::endl;
+        //std::cout << this->ObjectZorder[i]->name << " : " << this->ObjectZorder[i]->sortIndex << std::endl;
     }
+    
+
 }
 
 void IRWorkspace::removeObjectFromZOrder(IRNodeObject* obj)

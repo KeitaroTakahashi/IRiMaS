@@ -20,7 +20,8 @@ IRAutomationVertexComponent::IRAutomationVertexComponent(IRStr* str, Component* 
 
 IRAutomationVertexComponent::~IRAutomationVertexComponent()
 {
-    
+    if(this->bezier1 != nullptr) delete this->bezier1;
+    if(this->bezier2 != nullptr) delete this->bezier2;
 }
 
 void IRAutomationVertexComponent::resized()

@@ -10,14 +10,14 @@
 IRShapeController::IRShapeController(IRStr* str) : IRObjectController(str),
 comboBoxFont(str)
 {
-    
-    
+
     addAndMakeVisible(&this->LabelTitle);
     this->LabelTitle.setText("Shape", dontSendNotification);
     this->LabelTitle.setFont(getStr()->SYSTEMCOLOUR.h3);
     this->LabelTitle.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
     this->LabelTitle.setJustificationType(Justification::left);
 
+    
     addAndMakeVisible(&this->shapeMenuLabel);
     this->shapeMenuLabel.setText("Shape", dontSendNotification);
     this->shapeMenuLabel.setFont(getStr()->SYSTEMCOLOUR.h4);
@@ -26,9 +26,6 @@ comboBoxFont(str)
     
     addAndMakeVisible(&this->shapeMenu);
     this->shapeMenu.setColour(ComboBox::focusedOutlineColourId, getStr()->SYSTEMCOLOUR.contents);
-    //this->shapeMenu.setLookAndFeel(&comboBoxFont);
-    //comboBoxLayout(&this->shapeMenu);
-    //this->shapeMenu.setColour(ComboBox::textColourId, getStr()->SYSTEMCOLOUR.text);
     this->shapeMenu.addItem("Square", 1);
     this->shapeMenu.addItem("Circle", 2);
     this->shapeMenu.addItem("Triangle", 3);
@@ -71,6 +68,7 @@ comboBoxFont(str)
     
     this->shapeColour.setCurrentColour(Colours::red);
     this->shapeColour.addChangeListener(this);
+    
 }
 
 IRShapeController::~IRShapeController()

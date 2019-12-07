@@ -8,7 +8,7 @@ IRNodeComponent::IRNodeComponent(Component* parent,
 IRStrComponent(str),
 resizingArea(25, 25)
 {
-    
+    StopWatch bench; bench.start();
     this->objectType = objectType;
     //default size
     setSize(100, 100);
@@ -26,8 +26,7 @@ resizingArea(25, 25)
     this->menu.addItem(4, "Copy");
     this->menu.addItem(5, "Paste");
     this->menu.addItem(6, "Duplicate");
-    
-    
+    bench.result("x x x x x x x xx x : IRNodeComponent");
     
 }
 
@@ -515,11 +514,13 @@ void param_register(std::string id, int data)
 
 void IRNodeComponent::bringThisToFront()
 {
+    toFront(true);
+
     IROpenGLManager manager(&this->openGLContext);
     manager.bringOpenGLContextFront(this);
     manager.setOpenGLContextAlpha(0);
     
-
+    moveToFrontEvent();
 }
 
 void IRNodeComponent::heavyComponentRefreshed()

@@ -132,8 +132,8 @@ public:
     bool isEditMode() const;
     void setEditMode(bool flag);
     
-    bool isLinkMode() const;
-    void setLinkMode(bool flag);
+    //bool isLinkMode() const;
+    //void setLinkMode(bool flag);
     
     // getter
     Array<IRNodeObject*> getObjectList();

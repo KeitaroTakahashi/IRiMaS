@@ -88,17 +88,14 @@ public:
     DataAllocationManager<IRAudio>* audioData = nullptr;
 
     //IRAudio audioFile;
-    SoundPlayerClass *player;
+    std::shared_ptr<SoundPlayerClass> player;
     
     // ==================================================
     void createPlayingLine(int64 currentFrame);
 
     void updatePlayingLine();
 
-    // ==================================================
-    // link system
-    virtual void audioPtrDelivery(IRAudio *obj) override;
-    
+   
     // ==================================================
     //sharedInfo
     
@@ -182,6 +179,9 @@ private:
     // ---------------------------------------------------------------------------
     
     void updateAnimationFrame() override;
+    // ---------------------------------------------------------------------------
+    std::string randomIDForPtr;
+    
     // ---------------------------------------------------------------------------
 
     //thread lock

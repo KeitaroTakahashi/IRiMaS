@@ -155,11 +155,16 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
 
    }
     
-    setSize(w + 10, h + 10);    
+    setSize(w + 10, h + 10);
+    
+
+    bringThisToFront();
     // call reset Heavy-weight components
     callHeavyComponentCreated(this);
+    
     // and bring this obejct to the top of objectZOrder on the workspace
-    callAddHeavyComponentToTopZOrder(this);
+    //callAddHeavyComponentToTopZOrder(this);
+    
 }
 // --------------------------------------------------
 
@@ -184,6 +189,7 @@ void IRVideoPlayerObject::changeListenerCallback (ChangeBroadcaster* source)
 
 void IRVideoPlayerObject::moveToFrontAction()
 {
+    std::cout << "IRVideoPlayerObject::moveToFrontAction\n";
     if(this->videoPlayer->hsaVideo())
         this->videoPlayer->bringViewToFront();
     

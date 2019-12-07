@@ -21,9 +21,8 @@ zoomInfo(1.0, 1.0)
 // ------------------------------------------------------------------
 IRAudio::~IRAudio()
 {
-    if (this->reader){
+    if (this->reader != nullptr){
         delete this->reader;
-        
         // because this class is about to deleted, notify all objects using this object that this object is null.
         callFileStatusChanged(nullptr);
     }
@@ -138,6 +137,11 @@ void IRAudio::updateAnimationFrame()
             this->bitsPerSample = this->reader->bitsPerSample;
             std::cout << "file load completed\n";
             std::cout << "sampleRate " << this->sampleRate << " : numChannel " << this->numChannels << " : length (sample) " << this->numSamples << std::endl;
+            
+            if(this->sampleRate != 44100)
+            {
+                KLib().showErrorMessage("Error : Invalid sampling rate of " + String(this->sampleRate) + ". TiAALS only support 44.1kh at this moment! However we are working hard to support other sampling rates!! Thank you for your patience. ");
+            }
 
             callFileImportCompleted();
             callFileStatusChanged(this);

@@ -105,6 +105,7 @@ void IRiMaSMainComponent::createNewProjectFromSaveData(std::string path)
     projectWin->loadProjectFromSaveData(saveData);
     File f (path);
     projectWin->setProjectPath(f.getParentDirectory().getFullPathName());
+    projectWin->setProjectTitle(f.getFileName());
     
     this->startWindow->setVisible(false);
 }

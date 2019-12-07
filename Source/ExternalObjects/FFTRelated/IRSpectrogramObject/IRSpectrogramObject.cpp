@@ -8,16 +8,22 @@
 #include "IRSpectrogramObject.hpp"
 
 IRSpectrogramObject::IRSpectrogramObject(Component* parent, IRStr* str) :
-IRNodeObject(parent, "IRSpectrogram", str, NodeObjectType(heavyWeightComponent))
+IRNodeObject(parent, "IRSpectrogram", str, NodeObjectType(orginaryIRComponent)),
+IRHeavyWeightComponent(this)
 {
     
     setOpaque(false);
     this->UI = std::make_shared<IRSpectrogramWithPreference>(this, str);
     addAndMakeVisible(this->UI.get());
+    this->UI->audioFileImportCompletedCallback = [this]{ audioFileImportCompleted(); };
     this->UI->setEditMode(isEditMode());
     this->UI->setBounds(0, 0, getWidth(), getHeight());
     childComponentManager(this->UI.get());
-
+    
+    this->controller.reset(new IRSpectrogramController2(str));
+    this->controller->audioController.addChangeListener(this);
+    setObjController(this->controller.get());
+    
     setSize(500,500);
 
 }
@@ -47,22 +53,38 @@ IRNodeObject* IRSpectrogramObject::copyContents(IRNodeObject* object)
 
 t_json IRSpectrogramObject::saveThisToSaveData()
 {
-
     
-    t_json save = t_json::object({
-        {"waveform", "ok"}
+    std::string p = this->UI->getSpectrogram()->getFilePath().toStdString();
+    t_json sp = t_json::object({
+        {"bounds", t_json::array({getX(), getY(), getWidth(), getHeight()})},
+        //{"start_ms",this->waveform->getWaveformUI()->getStart()},
+        //{"duration_ms", this->waveform->getWaveformUI()->getDisplayDuration()},
+        {"filePath", p}
+        //{"selectionObj", selectionData}
     });
     
+    t_json save = t_json::object({
+        {"spectrogram", sp}
+    });
+    
+
     return save;
 }
 
 
 void IRSpectrogramObject::loadThisFromSaveData(t_json data)
 {
+    t_json s = data["spectrogram"];
+    String path = s["filePath"].string_value();
+    if(path.length() > 0)
+    {
+        this->UI->getSpectrogram()->openFile(path);
+    }
     
-    
+    this->UI->getSpectrogram()->repaint();
 }
 
+// ==================================================
 
 void IRSpectrogramObject::resized()
 {
@@ -83,12 +105,16 @@ void IRSpectrogramObject::paint(Graphics& g)
         g.drawRect(area.toFloat(), 1.0);
     }
 }
+// ==================================================
 
 void IRSpectrogramObject::heavyComponentRefreshed()
 {
+    
+    std::cout << "Spectrogram refreshed\n";
     this->UI->heavyComponentRefreshed();
 }
 
+// ==================================================
 
 // call back function automatically called when the status of this object changed by others.
 // write some tasks here
@@ -113,6 +139,9 @@ void IRSpectrogramObject::statusChangedCallback(IRNodeComponentStatus status)
 }
 
 
+// ==================================================
+
+
 // events
 void IRSpectrogramObject::mouseDownEvent(const MouseEvent& e)
 {
@@ -132,12 +161,47 @@ void IRSpectrogramObject::mouseDownEvent(const MouseEvent& e)
     }
 }
 
+// ==================================================
 
 void IRSpectrogramObject::changeListenerCallback(ChangeBroadcaster* source)
 {
-   
+   if(source == &this->controller->audioController)
+   {
+       audioControllerChangeListener();
+
+   }
 }
 
+void IRSpectrogramObject::audioFileImportCompleted()
+{
+    callHeavyComponentCreated(this);
+}
+
+// received from AudioController
+void IRSpectrogramObject::audioControllerChangeListener()
+{
+    auto status = this->controller->audioController.getStatus();
+    std::cout << "status = " << status << std::endl;
+    using s = AudioObjectController::AudioObjectControllerStatus;
+
+    switch(status)
+    {
+        case s::AudioFileOpen:
+            audioFileOpenAction();
+            break;
+        case s::PLAY:
+            
+            break;
+        case s::PAUSE:
+            break;
+        case s::STOP:
+            break;
+            
+        default:
+            break;
+    }
+}
+// ==================================================
 
 void IRSpectrogramObject::mouseUpEvent(const MouseEvent& e)
 {
@@ -147,9 +211,22 @@ void IRSpectrogramObject::mouseUpEvent(const MouseEvent& e)
         this->isBeingResized = false;
     }
 }
+// ==================================================
 
 
 void IRSpectrogramObject::moveToFrontAction()
 {    
-    this->UI->getSpectrogramComponent()->getComponent()->bringThisToFront();
+    this->UI->getSpectrogram()->bringThisToFront();
 }
+// ==================================================
+
+void IRSpectrogramObject::audioFileOpenAction()
+{
+    this->UI->openFile();
+    String path = this->UI->getFilePath();
+    this->controller->audioController.setLoadedAudioFilePath(path);
+}
+
+// ==================================================
+// ==================================================
+// ==================================================

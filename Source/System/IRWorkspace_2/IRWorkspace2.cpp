@@ -8,7 +8,8 @@
 #include "IRWorkspace2.hpp"
 
 IRWorkspace::IRWorkspace(String title, IRStr* str, PreferenceWindow* preferenceWindow) :
-IRStrComponent(str), message(20, 30, this, str)
+IRStrComponent(str), message(20, 30, this, str),
+IRHeavyWeightComponent(this)
 {
     
     this->name = title;
@@ -432,7 +433,7 @@ void IRWorkspace::setEditMode(bool flag, bool notification)
     
     repaint();
 }
-
+/*
 bool IRWorkspace::isLinkMode() const
 {
     return this->linkModeFlag;
@@ -455,7 +456,7 @@ void IRWorkspace::setLinkMode(bool flag)
     }
     
     repaint();
-}
+}*/
 
 Array<IRNodeObject*> IRWorkspace::getObjectList()
 {
@@ -483,6 +484,7 @@ void IRWorkspace::removeListener(Listener* listener)
 
 // ==================================================
 // Link Menu
+/*
 void IRWorkspace::openLinkMenuOfSelectedObject()
 {
     for (auto obj : this->selector->getActivatedLinkingObjectList())
@@ -515,11 +517,11 @@ void IRWorkspace::closeLinkMenu(IRNodeObject* obj)
     {
         obj->closeLinkMenu();
     }
-}
+}*/
 
 void IRWorkspace::getSelectedLinkSystemFlag(IRNodeObject* obj)
 {
-    std::cout << obj << " : ws getSelected flag = " <<  obj->selectedLinkSystemFlag << std::endl;
+    //std::cout << obj << " : ws getSelected flag = " <<  obj->selectedLinkSystemFlag << std::endl;
     
     // if shift is pressed, then link this flag with the previously selected Flag
     
@@ -569,9 +571,7 @@ void IRWorkspace::openGLInit()
     
     if (auto* peer = getPeer())
             peer->setCurrentRenderingEngine (0);
-        
-        this->openGLContext.attachTo(*this);
-        
+                
         String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName();
     
     #if JUCE_MAC

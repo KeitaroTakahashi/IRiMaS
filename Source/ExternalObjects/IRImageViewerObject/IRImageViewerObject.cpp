@@ -22,10 +22,11 @@ IRNodeObject(parent, "IRImageViewer", str, NodeObjectType(orginaryIRComponent))
 
 
     setSize(150, 150);
-    
+    /*
     clearLinkParam();
     addLinkParam(ImageLinkFlag);
-    addLinkParam(ConsoleLinkFlag);  
+    addLinkParam(ConsoleLinkFlag);
+     */
 }
 
 
@@ -68,7 +69,10 @@ void IRImageViewerObject::loadThisFromSaveData(t_json saveData)
 {
     t_json data = saveData["imageViewer"];
     
-    this->imageViewer->openFile(String(data["imgPath"].string_value()));
+    String imgPath = String(data["imgPath"].string_value());
+    
+    if(imgPath.length() > 0)
+        this->imageViewer->openFile(imgPath);
     
     t_json::array b = data["bounds"].array_items();
     this->imageViewer->setBounds(b[0].int_value(),

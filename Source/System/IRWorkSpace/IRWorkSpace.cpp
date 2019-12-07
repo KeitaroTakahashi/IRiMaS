@@ -71,6 +71,7 @@ void IRWorkSpace::paint (Graphics& g)
     
     if(isEditMode()) drawGrids(g);
     
+    /*
     if(isLinkMode())
     {
         float w = getWidth() / 2;
@@ -79,7 +80,7 @@ void IRWorkSpace::paint (Graphics& g)
         float y = getHeight()/2 - h/2;
         g.drawImage(this->background_image_link, Rectangle<float>(x,y,w,h));
     }
-    
+    */
 }
 
 
@@ -269,12 +270,10 @@ void IRWorkSpace::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
     this->mixer.getAudioSource().prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 
-
 void IRWorkSpace::getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill)
 {
     this->mixer.getAudioSource().getNextAudioBlock(bufferToFill);
 }
-
 
 void IRWorkSpace::releaseResources()
 {
@@ -368,7 +367,7 @@ void IRWorkSpace::setEditMode(bool flag)
     
     repaint();
 }
-
+/*
 bool IRWorkSpace::isLinkMode() const
 {
     return this->linkModeFlag;
@@ -392,7 +391,7 @@ void IRWorkSpace::setLinkMode(bool flag)
     
     repaint();
 }
-
+*/
 Array<IRNodeObject*> IRWorkSpace::getObjectList()
 {
     return this->objects;
@@ -419,6 +418,7 @@ void IRWorkSpace::removeListener(Listener* listener)
 
 // ==================================================
 // Link Menu
+/*
 void IRWorkSpace::openLinkMenuOfSelectedObject()
 {
     for (auto obj : this->selector->getActivatedLinkingObjectList())
@@ -475,7 +475,7 @@ void IRWorkSpace::getSelectedLinkSystemFlag(IRNodeObject* obj)
     
     showLinkingObjects();
   
-}
+}*/
 
 // ==================================================
 

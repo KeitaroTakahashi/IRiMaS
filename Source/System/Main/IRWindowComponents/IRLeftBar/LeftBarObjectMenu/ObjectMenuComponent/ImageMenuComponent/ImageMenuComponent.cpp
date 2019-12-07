@@ -48,7 +48,9 @@ void ImageMenuComponent::itemSelected(IRObjectFactory2::t_object* obj)
 
 void ImageMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
 {
-    
+    StopWatch bench;
+    bench.start();
+
     IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
 
     auto topSpace = dynamic_cast<IRWorkspace* >(getStr()->TopWorkspace);
@@ -63,7 +65,7 @@ void ImageMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
         std::cout << "Error : ImageMenuComponent::() topSpace nil\n";
     }
     
-    
+    bench.result("x x x x x x x xx x x x  item released");
 }
 
 // ==================================================

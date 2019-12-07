@@ -45,7 +45,9 @@ public:
     // ==================================================
 
     void openFile();
+    void openFile(String path);
     void getFilePtr(File file);
+    String getFilePath() { return this->path; }
     
     void loadDescriptor();
     void reCalcDescriptor();
@@ -85,6 +87,7 @@ public:
     std::function<void()> currentPlayedFrameSharedCallback = nullptr;
     std::function<void()> viewPortPositionSharedCallback = nullptr;
 
+    std::function<void()> audioFileImportCompletedCallback = nullptr;
 
     // ==================================================
     
@@ -210,6 +213,14 @@ private:
     bool isTextureCreated = false;
     bool updateTexture = false;
     float* buffer = nullptr;
+    void deleteBuffer()
+    {
+        if(this->buffer != nullptr)
+        {
+            delete[] this->buffer;
+            this->buffer = nullptr;
+        }
+    }
     
     bool isOpenGLComponentClosed = false;
     
@@ -237,7 +248,10 @@ private:
     StopWatch bench3;
     
     TextButton test;
-
+    
+    // ==================================================
+    std::string randomIDForPtr;
+    
     // ==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRSpectrogram)

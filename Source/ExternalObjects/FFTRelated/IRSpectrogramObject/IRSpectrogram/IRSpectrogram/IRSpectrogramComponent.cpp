@@ -11,6 +11,7 @@ IRSpectrogramComponent::IRSpectrogramComponent(IRNodeObject* nodeObject, IRStr* 
 {
     this->spectrogram = std::make_shared<IRSpectrogram>(nodeObject, str);
     addAndMakeVisible(this->spectrogram.get());
+    
 }
 
 IRSpectrogramComponent::~IRSpectrogramComponent()
@@ -60,9 +61,6 @@ void IRSpectrogramComponent::paint(Graphics& g)
 
     
 }
-
-
-
 
 
 void IRSpectrogramComponent::setMainComponentBounds(Rectangle<int> area)

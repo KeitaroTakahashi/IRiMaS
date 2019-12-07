@@ -7,6 +7,7 @@
 #include "Menus.h"
 #include "EditCommandTarget.hpp"
 #include "IRIconBank.hpp"
+#include "IRImageButton.hpp"
 
 class IRStarter : public Component,
                   public ApplicationCommandTarget,

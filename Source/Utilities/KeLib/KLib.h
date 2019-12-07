@@ -41,7 +41,7 @@ public:
     void showErrorMessage (const String& messageText)
     {
         AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
-                                          "Connection error",
+                                          "TiAALS ERROR",
                                           messageText,
                                           "OK");
     }

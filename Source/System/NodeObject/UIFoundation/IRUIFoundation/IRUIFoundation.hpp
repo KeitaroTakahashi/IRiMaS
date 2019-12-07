@@ -37,11 +37,6 @@ public:
     virtual void setEditMode(bool newEditMode) {};
     // --------------------------------------------------
 
-    virtual void audioPtrDelivery(IRAudio* obj) {};
-    virtual void textPtrDelivery(IRText* obj) {};
-    virtual void imagePtrDelivery(IRImage* obj) {};
-    virtual void dataPtrDelivery(IRData* obj) {};
-    virtual void videoPtrDelivery(IRVideo* obj) {};
     // --------------------------------------------------
     // ==================================================
     // when file manager of this Object is updated, then all objects of IRUIFoundation
@@ -65,15 +60,7 @@ private:
     // ==================================================
     // get signal from IRNodeComponent when IRNodeObject status changed.
     void NodeObjectStatusChanged(IRNodeComponentStatus status);
-    
-    // ==================================================
-    // NodeObject Listener
-    void receiveAudioLink(IRNodeObject* obj) override;
-    void receiveTextLink(IRNodeObject* obj) override;
-    void receiveImageLink(IRNodeObject* obj) override;
-    void receiveDataLink(IRNodeObject* obj) override;
-    void receiveVideoLink(IRNodeObject* obj) override;
-    
+
     // --------------------------------------------------
     
 
@@ -82,11 +69,7 @@ private:
     void setEditModeBase(bool newEditMode);
     
     // ==================================================
-    protected:
-        UserSettingStr USERSETTING;
-        IR::IRColours SYSTEMCOLOUR;
-        IRIconBank    ICONBANK;
-        IRFileManager FILEMANAGER;
+
 private:
     
     //key event

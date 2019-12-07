@@ -188,7 +188,7 @@ public:
     
     // with callback function,
     // note that we are using pointer of IRObjectPtr means double pointer in order to modify the pointer itself inside of this function and keep the results in the outside
-    void getFilePtrWithCallBack(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback = nullptr);
+    void getFilePtrWithCallBack(IRFileType type, File file, IRObjectPtr owner, std::string keyword, std::function<void()>callback = nullptr);
 
     
     IRObjectPtr discardFilePtr(IRFileType type, IRObjectPtr obj, IRObjectPtr owner, File file);
@@ -197,13 +197,27 @@ public:
     
     FILEMAP* getObjctList() { return &this->list; }
     
-    IRObjectPtr getFileObject() { return this->dummy; }
+    IRObjectPtr getFileObject(std::string keyword) { return this->temporalBuffer[keyword]; }
+    // get a pointer which has the corresponding keyword and then remove it from temporalBuffer.
+    // note that the pointer is not deallocated!
+    IRObjectPtr getFileObjectAndRemoveFromBuffer(std::string keyword)
+    {
+        IRObjectPtr obj = this->temporalBuffer[keyword];
+        std::map<std::string,IRObjectPtr>::iterator it;
+        it= this->temporalBuffer.find(keyword);
+        this->temporalBuffer.erase (it);
+        
+        return obj;
+        
+    }
+
 
 private:
     
     //==================================================
     // allocate data by a given FileType
     IRObjectPtr createFileData(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback = nullptr);
+    void createFileDataCallback();
     IRObjectPtr createImageFileData(File file, IRObjectPtr owner);
     IRObjectPtr createAudioFileData(File file, IRObjectPtr owner, std::function<void()>callback, bool threadSafe = false);
     
@@ -232,6 +246,10 @@ private:
     
     // dummy pointer for fileImport process with callback
     IRObjectPtr dummy;
+    
+    // temporalBuffer is used to store the retrieved pointer and store into distinguish memory region.
+    // A keyword is given so that any objects requesting the pointer should have the correct pointer.
+    std::map<std::string, IRObjectPtr > temporalBuffer;
 };
 
 

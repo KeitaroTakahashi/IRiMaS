@@ -116,9 +116,14 @@ public:
             // set a callback function which is called when file load is completed.
             // get a pointer of the audio file
             std::function<void()> callback = [this]{fileImportCompleted();};
+            
+            // create random ID to identify the retrieved ptr.
+            KeRandomStringGenerator a;
+            this->randomIDForPtr = a.createStrings(10);
             getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                                file,
                                                this->parent,
+                                                    this->randomIDForPtr,
                                                callback);
             
             this->parent->notifyNodeObjectModification();
@@ -186,7 +191,6 @@ public:
         changeState(Pausing);
     }
     
-    
     //==========================================================================
     // Callback functions
     //==========================================================================
@@ -194,7 +198,7 @@ public:
     void fileImportCompleted()
     {
         
-        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
+        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObjectAndRemoveFromBuffer(this->randomIDForPtr));
         //set audioBuffer to player
         std::vector<int>v = {0,1};
         this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
@@ -209,7 +213,7 @@ public:
     {
         
         std::cout << "fileImportCompleted object \n";
-        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
+        this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObjectAndRemoveFromBuffer(this->randomIDForPtr));
         //set audioBuffer to player
         std::vector<int>v = {0,1};
         this->player.setAudioBuffer(this->audioData->getData()->getAudioBuffer(), false, this->audioData->getData()->getSampleRate(),v);
@@ -301,7 +305,8 @@ private:
     int yMargin = 4;
     
     DataAllocationManager<IRAudio>* audioData = nullptr;
-    
+    // ===========================================================================
+    std::string randomIDForPtr;
     // ===========================================================================
     // system appearance
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();

@@ -11,8 +11,7 @@
 #include "IRObjectController.hpp"
 
 
-class IRNodeObject : public IRNodeComponent,
-public IRLinkFoundation
+class IRNodeObject : public IRNodeComponent
 {
     
 public:
@@ -51,7 +50,7 @@ public:
     // selected event from IRNodeComponent
     void selectedChangeEvent() override;
     void editModeChangedEvent() override;
-    void linkModeChangedEvent() override;
+    //void linkModeChangedEvent() override;
     
     void thisObjectGetFocused() override;
     
@@ -107,12 +106,13 @@ public:
         
         virtual void getSelectedLinkSystemFlag(IRNodeObject* obj) {};
         // overriden by IRUIFoundation
+        /*
         virtual void receiveAudioLink(IRNodeObject* obj) {};
         virtual void receiveTextLink(IRNodeObject* obj) {};
         virtual void receiveImageLink(IRNodeObject* obj) {};
         virtual void receiveDataLink(IRNodeObject* obj) {};
         virtual void receiveVideoLink(IRNodeObject* obj) {};
-
+         */
         //
         // give its IRFileManager when it is given or modified.
         // this is used for IRUIFoundation to receive IRFileManager
@@ -169,11 +169,12 @@ public:
 
     
     void callLinkModeChangedInNodeObject();
+    /*
     void receiveSelectedLinkMenuItemEvent() override;// from IRLinkFoundation
     void setLinkModeEvent() override {};
     void setLinkActivationEvent() override;
     
-    void setLinkedEvent() override {};
+    void setLinkedEvent() override {};*/
     void callGetSelectedLinkSystemFlag();
     
     // fire addObjectGlobal() method in Listener
@@ -199,12 +200,13 @@ public:
     
     void notifyNodeObjectModification();
     
-    
+    /*
     void callReceiveAudioLink(IRAudio *obj);
     void callReceiveTextLink(IRText *obj);
     void callReceiveImageLink(IRImage* obj);
     void callReceiveDataLink(IRData *obj);
     void callReceiveVideoLink(IRVideo *obj);
+     */
     
     void callUpdateIRFileManager(IRFileManager* fileManager);
 

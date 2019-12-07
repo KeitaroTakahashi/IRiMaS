@@ -8,6 +8,7 @@
 #ifndef TextMenuComponent_hpp
 #define TextMenuComponent_hpp
 #include "ObjectMenuComponent.hpp"
+#include "Benchmark.h"
 
 class TextMenuComponent : public ObjectMenuComponent
 {

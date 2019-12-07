@@ -10,7 +10,7 @@
 
 
 #include "ObjectMenuComponent.hpp"
-
+#include "Benchmark.h"
 class ImageMenuComponent : public ObjectMenuComponent
 {
 public:

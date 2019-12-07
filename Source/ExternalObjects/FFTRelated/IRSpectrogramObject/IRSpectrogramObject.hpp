@@ -9,8 +9,9 @@
 #define IRSpectrogramObject_hpp
 
 #include "IRSpectrogramWithPreference.hpp"
-
+#include "IRSpectrogramController2.h"
 class IRSpectrogramObject : public IRNodeObject,
+public IRHeavyWeightComponent,
 IRNodeObject::Listener,
 private ChangeListener
 {
@@ -28,13 +29,24 @@ public:
 
     void resized() override;
     void paint(Graphics& g) override;
-    
+    // ==================================================
+
     // refresh OpenGL when added
     void heavyComponentRefreshed() override;
     // ==================================================
     void mouseUpEvent(const MouseEvent& e) override;
     
     // ==================================================
+    void audioFileOpenAction();
+    // for callback
+    void audioFileImportCompleted();
+    
+    // ==================================================
+
+    
+    std::unique_ptr<IRSpectrogramController2> controller;
+    // ==================================================
+
 
 private:
     // ==================================================
@@ -44,6 +56,8 @@ private:
     void mouseDownEvent(const MouseEvent& e) override;
     
     void changeListenerCallback (ChangeBroadcaster* source) override;
+    void audioControllerChangeListener();
+
     
     bool isBeingResized = false;
 

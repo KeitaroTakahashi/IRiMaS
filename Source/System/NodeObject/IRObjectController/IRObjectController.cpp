@@ -9,7 +9,7 @@
 
 IRObjectController::IRObjectController(IRStr* str) : IRStrComponent(str)
 {
-    
+    addMouseListener(str->projectOwner, false);
 }
 
 IRObjectController::~IRObjectController()

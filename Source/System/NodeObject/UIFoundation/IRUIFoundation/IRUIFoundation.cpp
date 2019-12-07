@@ -11,23 +11,24 @@ IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject, IRStr* str) :
 IRStrComponent(str)
 {
     // to make it efficient to redrawn...
+
+    StopWatch t; t.start();
     setOpaque(false);
     
     this->nodeObject = nodeObject;
     this->nodeObject->statusChangeCompleted = [this](IRNodeComponentStatus status){ NodeObjectStatusChanged(status); };
 
     // setup callback function for FileManager
-    // get to know when fileManager is updated 
-    
+    // get to know when fileManager is updated
     std::function<void(IRFileManager& )> callback = [this](IRFileManager& fileManager){ updateFileManager(fileManager); };
     getStr()->addFileManagerUpdatedCallbackFunc(callback);
     
-    //this->nodeObject->fileManagerUpdated = [this](IRFileManager* fileManager) { updateFileManager(fileManager); };
-    
-    std::cout << "component keyListener " << getStr()->key << std::endl;
     this->nodeObject->addListener(this);
     
+    t.result("x x x x x x x IRUIFoundation initialized");
+    
     std::cout <<"==========" << nodeObject->name << " : IRUIFoundation inited\n";
+  
     
 }
 // --------------------------------------------------
@@ -175,7 +176,7 @@ void IRUIFoundation::setEditModeBase(bool newEditMode)
 
 
 // --------------------------------------------------
-
+/*
 void IRUIFoundation::receiveAudioLink(IRNodeObject* obj)
 {
     if(obj->getAudioLink() != nullptr)
@@ -199,6 +200,6 @@ void IRUIFoundation::receiveDataLink(IRNodeObject* obj)
 void IRUIFoundation::receiveVideoLink(IRNodeObject* obj)
 {
     if(obj->getVideoLink() != nullptr) videoPtrDelivery(obj->getVideoLink());
-}
+}*/
 // --------------------------------------------------
                                              

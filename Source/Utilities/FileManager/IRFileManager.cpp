@@ -136,7 +136,7 @@ IRObjectPtr IRFileManager::getFilePtr(IRFileType type, File file, IRObjectPtr ow
     }
 }
 
-void IRFileManager::getFilePtrWithCallBack(IRFileType type, File file, IRObjectPtr owner, std::function<void()>callback)
+void IRFileManager::getFilePtrWithCallBack(IRFileType type, File file, IRObjectPtr owner, std::string keyword, std::function<void()>callback)
 {
     std::cout << "IRFileManager ptr = " << this <<std::endl;
     
@@ -152,18 +152,19 @@ void IRFileManager::getFilePtrWithCallBack(IRFileType type, File file, IRObjectP
         // manager owner list
         managerOwner(type, obj, owner, true);
         
-        this->dummy = obj;
+        this->temporalBuffer[keyword] = obj;
         
         if(callback != nullptr) callback();
 
     }
     else
     {
-        IRObjectPtr newObj = createFileData(type, file, owner, callback);
+        IRObjectPtr newObj = createFileData(type, file, owner, nullptr);
         registerNewFile(file, newObj);
         std::cout << "registerNewFile done on " << newObj << std::endl;
-    
-        this->dummy = newObj;
+        this->temporalBuffer[keyword] = newObj;
+        if(callback != nullptr) callback();
+
     }
 }
 

@@ -2,8 +2,6 @@
 #include "IRNodeComponent.hpp"
 
 
-
-
 void IRNodeComponent::mouseDownNodeEvent(const MouseEvent& e)
 {
     
@@ -165,15 +163,15 @@ void IRNodeComponent::defaultPopupMenuEvents()
     switch (result)
     {
         case 1:
-            toFront(true);
             
             if(this->objectType.componentType == orginaryIRComponent ||
                this->objectType.componentType == heavyWeightComponent)
             {
                 bringThisToFront();
+            }else{
+                toFront(true);
             }
             
-            moveToFrontEvent();
             break;
         case 2:
             toBack();
@@ -190,6 +188,28 @@ void IRNodeComponent::defaultPopupMenuEvents()
     popupMenuEvents();
 }
 
+// ==================================================
+
+void IRNodeComponent::initResizingSquare()
+{
+    
+   
+}
+
+void IRNodeComponent::showResizingSquare()
+{
+    
+}
+void IRNodeComponent::hideResizingSquare()
+{
+    
+}
+void IRNodeComponent::resizingObjectSizeByResizingSquare()
+{
+    
+}
+
+// ==================================================
 
 
 

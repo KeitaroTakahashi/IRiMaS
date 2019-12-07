@@ -14,6 +14,9 @@ IRRightBar::IRRightBar(IRStr* str) : IRStrComponent(str)
     //OpenGL
     this->openGLContext.setContinuousRepainting(false);
     this->openGLContext.attachTo (*this);
+    
+    // add keyListener of IRWindowComponent
+    addKeyListener(str->key);
 }
 
 IRRightBar::~IRRightBar()

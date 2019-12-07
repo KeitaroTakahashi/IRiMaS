@@ -21,7 +21,6 @@
 // ------------------------------------------------------------
 // FFT related object
 #include "IRSpectrogramObject.hpp"
-#include "IRAudioAnalysisObject.hpp"
 
 // ------------------------------------------------------------
 // image related object

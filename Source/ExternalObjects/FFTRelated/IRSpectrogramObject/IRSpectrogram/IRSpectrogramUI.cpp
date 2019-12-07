@@ -14,9 +14,9 @@ IRUIFoundation(nodeObject, str)
     
     this->spectrogram = std::make_shared<IRSpectrogramComponent>(nodeObject, str);
     this->spectrogram->getComponent()->zoomInOutSharedCallback = [this]{ zoomInoutSharedAction(); };
-    
     this->spectrogram->getComponent()->currentPlayedFrameSharedCallback = [this] { currentPlayedFrameSharedAction(); };
     this->spectrogram->getComponent()->viewPortPositionSharedCallback = [this] { viewPortPositionSharedAction(); };
+    this->spectrogram->getComponent()->audioFileImportCompletedCallback = [this] { audioFileImportCompleted(); };
     
     this->spectrogramView = std::make_shared<IRSpectrogramViewUI>(this->spectrogram.get(),
                                                                   str,
@@ -28,15 +28,15 @@ IRUIFoundation(nodeObject, str)
     
     this->spectrogram->getComponent()->zoomInClickedCallback = [this]{ zoomInClicked(); };
     this->spectrogram->getComponent()->zoomOutClickedCallback = [this]{ zoomOutClicked(); };
-
+    
+    this->openButton.setButtonText("Open Audio File");
+    addAndMakeVisible(&this->openButton);
+    this->openButton.onClick = [this]{ openButtonClicked(); };
 }
 
 IRSpectrogramUI::~IRSpectrogramUI()
 {
-    if(this->audioData != nullptr)
-        getFileManager().discardFilePtr(IRFileType::IRAUDIO, this->audioData, this->parent, this->file);
-    
-    this->spectrogram->getComponent()->closeOpenGLComponent();
+    getSpectrogram()->closeOpenGLComponent();
     this->spectrogram.reset();
     this->spectrogramView.reset();
 }
@@ -58,6 +58,7 @@ void IRSpectrogramUI::resized()
 {
     zoomResize();
     this->spectrogram->getComponent()->linkZoomInfo(nodeObject);
+    this->openButton.setBounds(0, 0, getWidth(), getHeight());
 
 }
 
@@ -125,72 +126,14 @@ void IRSpectrogramUI::visibleAreaChanged(Rectangle<int> area)
 void IRSpectrogramUI::openFile()
 {
     
-    FileChooser chooser("Select an image file...",
-                        {},
-                        "*.wav, *.aif, *.aiff, *.mp3");
-    if (chooser.browseForFileToOpen())
-    {
-        auto file = chooser.getResult();
-        this->file = file;
-        auto p = file.getFullPathName();
-        this->path = p;
-        
-        String pathToOpen;
-        pathToOpen.swapWith(p);
-        
-        if(pathToOpen.isNotEmpty())
-        {
-            getFilePtr(this->file);
-        }
-    }
+    getSpectrogram()->openFile();
 }
 
 void IRSpectrogramUI::openFile(String path)
 {
-    if(path.isNotEmpty())
-    {
-        File f(path);
-        this->file = f;
-        this->path = path;
-        
-        if(f.exists())
-        {
-            getFilePtr(this->file);
-        }
-    }
+    getSpectrogram()->openFile(path);
 }
 
-void IRSpectrogramUI::getFilePtr(File file)
-{
-    
-    std::cout << "getFilePtr\n";
-    // set a callback function which is called when file load is completed.
-    // get a pointer of the audio file
-    std::function<void()> callback = [this]{fileImportCompleted();};
-    
-    
-    getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
-                                             file,
-                                             this->parent,
-                                             callback);
-    
-    // notify changes to IRProject to update IRFileInspecter
-    this->parent->notifyNodeObjectModification();
-    
-}
-
-void IRSpectrogramUI::fileImportCompleted()
-{
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
-    
-    this->status = AudioFileImportCompleted;
-    sendChangeMessage();
-    
-    fileImportCompletedAction();
-    
-    std::cout << "fileImportCompleted!\n";
-    
-}
 // ==================================================
 //controller
 
@@ -213,7 +156,7 @@ void IRSpectrogramUI::zoomOutClicked()
 
 void IRSpectrogramUI::zoomInoutSharedAction()
 {
-    this->spectrogram_width_ratio = this->spectrogram->getComponent()->getZoomInfo().getX();
+    this->spectrogram_width_ratio = getSpectrogram()->getZoomInfo().getX();
     std::cout << "changeListenerCallback zoomInClicked!! " << spectrogram_width_ratio << std::endl;
     
     zoomResize();
@@ -234,4 +177,18 @@ void IRSpectrogramUI::viewPortPositionSharedAction()
 void IRSpectrogramUI::changeListenerCallback (ChangeBroadcaster* source)
 {
    
+}
+
+void IRSpectrogramUI::audioFileImportCompleted()
+{
+    std::cout << "IRSpectrogramUI remove audioFileImportCompleted\n";
+    if(this->audioFileImportCompletedCallback != nullptr)
+        this->audioFileImportCompletedCallback();
+    
+    removeChildComponent(&this->openButton);
+}
+
+void IRSpectrogramUI::openButtonClicked()
+{
+    openFile();
 }

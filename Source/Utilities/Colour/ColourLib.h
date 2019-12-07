@@ -230,6 +230,21 @@ struct silverSet : public colorPattern
     }
 };
 
+
+//darkGray
+struct darkGraySet : public colorPattern
+{
+    darkGraySet()
+    {
+        this->colourName = "Dark Gray";
+        this->background = Colour(255,255,255);
+        this->fundamental = Colour(74,74,74);
+        this->contents = Colour(51,51,51);
+        this->titleText = Colour(0,0,0);
+        this->text = Colour(255,255,255);
+    }
+};
+
     
     struct whiteSet : public colorPattern
     {

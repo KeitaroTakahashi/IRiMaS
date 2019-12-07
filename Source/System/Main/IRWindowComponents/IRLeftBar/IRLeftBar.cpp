@@ -94,17 +94,17 @@ void IRLeftBar::paint(Graphics& g)
 void IRLeftBar::mouseDrag(const MouseEvent& e)
 {
     this->currentPos = e.getScreenPosition();
-    Point<int>delta = this->currentPos - this->prevPos;
     
-    // We need to subtract 1 to fix the gap between view position and window position!!
-    this->pos.setX(getScreenX() + delta.getX());
-    this->pos.setY(getScreenY() + delta.getY() - getY());
-    
-    this->status = MoveWindow;
-    sendChangeMessage();
-    
-    
-    this->prevPos = e.getScreenPosition();
+    if(this->isMovable)
+    {
+        Point<int>delta = this->currentPos - this->prevPos;
+        // We need to subtract 1 to fix the gap between view position and window position!!
+        this->pos.setX(getScreenX() + delta.getX());
+        this->pos.setY(getScreenY() + delta.getY() - getY());
+        this->status = MoveWindow;
+        sendChangeMessage();
+        this->prevPos = e.getScreenPosition();
+    }
 }
 
 void IRLeftBar::mouseUp(const MouseEvent& e)

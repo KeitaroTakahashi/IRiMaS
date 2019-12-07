@@ -242,21 +242,6 @@ void IRWaveformObjectUI::IRKeyPressed(int keyCode, String keyText)
 }
 
 
-
-void IRWaveformObjectUI::audioPtrDelivery(IRAudio *obj)
-{
-    std::cout << "IRWaveformObjectUI : audioPtrDelivery filename = " << obj->getFile().getFullPathName() << std::endl;
-    //makeThumbnail(obj->getFile().getFullPathName());
-    
-    // init
-    stopPlaying();
-    deleteSquareObject();
-    deinitializeAudioData();
-    
-    
-
-    openFile(obj->getFile().getFullPathName());
-}
 // ==================================================
 // controller
 void IRWaveformObjectUI::zoomInClicked()

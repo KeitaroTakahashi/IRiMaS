@@ -35,7 +35,7 @@ public ChangeBroadcaster,
 public ChangeListener,
 public IRNodeObject::Listener,
 public ObjectListMenu::Listener,
-public OpenGLRenderer,
+public IRHeavyWeightComponent,
 private KeyListener
 {
     
@@ -112,12 +112,15 @@ public:
     // ==================================================
 
     // object management
-    void createObject(IRNodeObject* obj);
+    void createObject(IRNodeObject* obj, bool shouldSort = true);
     // void createObject(std::string objName);
     void copyObject(IRNodeObject *obj, bool clearCopied);
     void pasteObject(IRNodeObject *obj, bool addToSelected);
     void duplicateObject(IRNodeObject *obj);
     void deleteObject(IRNodeObject *obj);
+    
+    // call this after complete creting the heavy objects
+    void resortHeavyObject();
     // ==================================================
 
     // object menu
@@ -135,10 +138,12 @@ public:
     // ==================================================
 
     // Link Menu
+    /*
     void openLinkMenuOfSelectedObject();
     void openAllLinkMenu();
     void closeLinkMenu();
     void closeLinkMenu(IRNodeObject* obj);
+     */
     
     // ==================================================
 
@@ -150,8 +155,8 @@ public:
     bool isEditMode() const;
     void setEditMode(bool flag, bool notification = false);
     
-    bool isLinkMode() const;
-    void setLinkMode(bool flag);
+    //bool isLinkMode() const;
+    //void setLinkMode(bool flag);
     // ==================================================
 
     // getter
@@ -284,7 +289,7 @@ private:
     
 // ==================================================
    //OpenGL
-   OpenGLContext openGLContext;
+   //OpenGLContext openGLContext;
    std::unique_ptr<OpenGLGraphicsContextCustomShader> shader;
    String fragmentCode;
    GLuint textureID;
@@ -318,25 +323,11 @@ private:
 // ==================================================
     //benchmark
     StopWatch bench;
+    StopWatch bench2;
+    StopWatch bench3;
+    StopWatch bench4;
+
     // ==================================================
-    
-    // ----------
-    //OpenGL
-    //void setOpenGLContextSurfaceOpacityToZero();
-    
-    void newOpenGLContextCreated()override
-    {
-    }
-       
-    virtual void renderOpenGL()override
-    {
-        OpenGLHelpers::clear(Colours::transparentBlack);
-    }
-    
-    virtual void openGLContextClosing() override
-    {
-        
-    }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRWorkspace)
         

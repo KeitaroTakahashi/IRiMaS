@@ -80,16 +80,12 @@ private:
     //==================================================
     void newOpenGLContextCreated()override
     {
-        std::cout << "newOpenGLContextCreated : " << this->name << std::endl;
         setComponentAlpha(this->alpha);
         componentCreated();
-        
     }
     
     virtual void renderOpenGL()override
     {
-        
-        //std::cout << " ==================== rendering..\n";
         // transparent background
         OpenGLHelpers::clear(Colours::transparentBlack);
     }

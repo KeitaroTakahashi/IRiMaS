@@ -201,10 +201,14 @@ void IRAutomationUI::getFilePtr(File file)
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
     
+    // create random ID to identify the retrieved ptr.
+    KeRandomStringGenerator a;
+    this->randomIDForPtr = a.createStrings(10);
     
     getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
                                              file,
                                              this->parent,
+                                            this->randomIDForPtr,
                                              callback);
     std::cout << "notify!\n";
 
@@ -215,7 +219,7 @@ void IRAutomationUI::getFilePtr(File file)
 
 void IRAutomationUI::fileImportCompleted()
 {
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObjectAndRemoveFromBuffer(this->randomIDForPtr));
     
     this->audioData->getData()->addListener(this);
     

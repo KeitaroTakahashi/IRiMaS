@@ -23,15 +23,8 @@
 class AudioEngine
 {
 public:
-    AudioEngine()
-    {
-        
-    }
-    
-    ~AudioEngine()
-    {
-        
-    }
+    AudioEngine() {}
+    ~AudioEngine() {}
     
     AudioSource &getAudioSource()
     {
@@ -50,7 +43,6 @@ public:
     
 private:
     MixerAudioSource mixer;
-    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioEngine)
 };
 

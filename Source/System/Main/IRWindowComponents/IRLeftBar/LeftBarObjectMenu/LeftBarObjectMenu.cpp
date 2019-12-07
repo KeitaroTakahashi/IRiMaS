@@ -301,13 +301,14 @@ void LeftBarObjectMenu::bindObjectMenuOnParent(ObjectMenuComponent* obj)
 void LeftBarObjectMenu::closeObjectMenu()
 {
     std::cout << "closeObjectMenu\n";
+    /*
     if(this->objectMenuSpaceArea.get() != nullptr)
     {
         this->objectMenuSpaceArea->removeMenuComponent();
         getStr()->projectOwner->removeChildComponent(this->objectMenuSpaceArea.get());
         
         this->objectMenuSpaceArea.reset();
-    }
+    }*/
 }
 
 

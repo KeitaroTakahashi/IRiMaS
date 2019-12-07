@@ -21,12 +21,12 @@ IRNodeObject(parent, "IRWaveform", str, NodeObjectType(orginaryIRComponent))
     
     
     setSize(400,150);
-    
+    /*
     clearLinkParam();
     addLinkParam(AudioLinkFlag);
     addLinkParam(DataLinkFlag);
     addLinkParam(ConsoleLinkFlag);
-    
+    */
 }
 
 IRWaveformObject::~IRWaveformObject()
@@ -86,7 +86,6 @@ IRNodeObject* IRWaveformObject::copyDragDropContents(IRNodeObject* object)
         
         obj->waveform->setAutomationWidthRatio(this->waveform->getAutomationWidthRatio());
 
-        
         Rectangle<float> bounds = o->getBoundsInRatio();
         double startms = ((double)this->waveform->getWaveformUI()->getStart() + (float)this->waveform->getWaveformUI()->getDisplayDuration()*bounds.getX());
         double durationms = ((double)this->waveform->getWaveformUI()->getDisplayDuration() * bounds.getWidth());

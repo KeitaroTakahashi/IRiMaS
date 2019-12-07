@@ -39,6 +39,8 @@ public:
     //==================================================
     
     void checkResizableFromMouseDownPosition(Point<int> pos);
+    
+    void setMovable(bool flag) { this->isMovable = flag; }
     //==================================================
 
     void bringToFrontCompleted() override;
@@ -75,9 +77,7 @@ private:
     OpenGLContext openGLContext;
     bool isOpenGLComponentClosed = false;
     
-   
 
-    
     //==================================================
     void addButtons();
 
@@ -89,6 +89,9 @@ private:
 
     IRWindowBarActionStatus status;
     bool isResizable = true;
+    
+    // true enables to make the window movable when dragging this area
+    bool isMovable = false;
     
     //==================================================
 

@@ -68,11 +68,7 @@ public:
     Array<IRMultiPurposeObject* > selectionSquareObjects;
     Array<IRMultiPurposeObject* > selectedSquareObjectList;
 
-    
-    // ==================================================
-    // link system
-    virtual void audioPtrDelivery(IRAudio *obj) override;
-    
+
     // ==================================================
     void setVisibleArea(Rectangle<int> area);
     

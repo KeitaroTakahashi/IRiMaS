@@ -56,7 +56,7 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     std::cout << "==================================================\n ";
     std::cout << "creating " << obj->getName() << std::endl;
     obj->setEditMode(isEditMode());
-    obj->setLinkMode(isLinkMode());
+    //obj->setLinkMode(isLinkMode());
 
     // make uniqueID
     KeRandomStringGenerator a;
@@ -292,7 +292,7 @@ void IRWorkSpace::editModeChangedInNodeObject(bool editMode)
 
 void IRWorkSpace::linkModeChangedInNodeObject(bool linkMode)
 {
-    setLinkMode(linkMode);
+    //setLinkMode(linkMode);
     // notify it to IRProject
     if(this->notifyLinkModeChanged != nullptr)
     {

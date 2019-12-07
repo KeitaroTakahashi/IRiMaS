@@ -58,9 +58,7 @@ public:
     IRShapeController* getController() { return this->controller.get(); }
 private:
     
-    void changeListenerCallback(ChangeBroadcaster* source) override;
-    
-    //std::shared_ptr<IRShapePreference> preference;
+    void changeListenerCallback(ChangeBroadcaster* source) override;    
     std::shared_ptr<IRShapeController> controller;
 
     void drawSquare(Graphics& g);

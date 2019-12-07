@@ -46,6 +46,9 @@ void TextMenuComponent::itemSelected(IRObjectFactory2::t_object* obj)
 
 void TextMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
 {
+    
+    StopWatch bench;
+    bench.start();
     IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
     auto topSpace = static_cast<IRWorkspace* >(getStr()->TopWorkspace);
     
@@ -54,6 +57,8 @@ void TextMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
     nodeObj->setCentrePosition(topSpace->getWidth()/2,
                                topSpace->getHeight()/2);
     topSpace->createObject(nodeObj);
+    
+    bench.result("x x x x xx x x x x xx x item created");
     
 }
 

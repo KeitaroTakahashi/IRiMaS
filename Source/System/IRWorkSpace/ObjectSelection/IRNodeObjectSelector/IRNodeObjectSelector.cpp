@@ -35,10 +35,11 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
         }
         
         // linkMode behavior
+        /*
         if(*this->linkModeFlag){
             if(nodeObj->isLinkActivated()) nodeObj->setLinkActivation(false);
             else nodeObj->setLinkActivation(true);
-        }
+        }*/
         
         //std::cout << "*this->linkModeFlag = " << *this->linkModeFlag << " : " << nodeObj->isLinkActivated() << std::endl;
         
@@ -139,7 +140,7 @@ void IRNodeObjectSelector::deactivateAllLinkingObjects()
     this->activatedLinkingObjectList.clear();
     for (auto obj : *this->objectList)
     {
-        obj->setLinkActivation(false);
+        //obj->setLinkActivation(false);
     }
 }
 
@@ -160,10 +161,11 @@ void IRNodeObjectSelector::addActivatedObjects()
     this->activatedLinkingObjectList.clear();
     for (auto obj : *this->objectList)
     {
+        /*
         if (obj->isLinkActivated())
         {
             this->activatedLinkingObjectList.add(obj);
-        }
+        }*/
     }
 }
 

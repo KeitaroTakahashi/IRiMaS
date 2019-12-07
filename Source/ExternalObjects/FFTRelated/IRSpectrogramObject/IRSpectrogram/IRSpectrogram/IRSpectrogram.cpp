@@ -37,6 +37,7 @@ IRSpectrogram::~IRSpectrogram()
     std::cout << "~IRSpectrogram\n";
     stopTimer();
 
+    deleteBuffer();
     if(!this->isOpenGLComponentClosed)
         closeOpenGLComponent();
     
@@ -108,7 +109,7 @@ void IRSpectrogram::resized()
 {
     if(getHeight() < 50) setBounds(getX(), getY(), getWidth(), 50);
 
-    this->openButton.setBounds(0, 0, getWidth(), getHeight());
+    //this->openButton.setBounds(0, 0, getWidth(), getHeight());
     
     int s = getHeight();
     if(s > 50) s = 50;
@@ -145,14 +146,25 @@ void IRSpectrogram::openFile()
         this->file = file;
         auto p = file.getFullPathName();
         this->path = p;
+      
         
-        String pathToOpen;
-        pathToOpen.swapWith(p);
-        
-        if(pathToOpen.isNotEmpty())
+        if(this->path.length() > 0)
         {
             getFilePtr(this->file);
         }
+    }
+}
+
+
+void IRSpectrogram::openFile(String path)
+{
+    
+    this->file = File(path);
+       
+    this->path = path;
+    if(this->path.length() > 0)
+    {
+        getFilePtr(this->file);
     }
 }
 
@@ -162,20 +174,25 @@ void IRSpectrogram::getFilePtr(File file)
     // get a pointer of the audio file
     std::function<void()> callback = [this]{fileImportCompleted();};
     
+    // create random ID to identify the retrieved ptr.
+    KeRandomStringGenerator a;
+    this->randomIDForPtr = a.createStrings(10);
     
     getFileManager().getFilePtrWithCallBack(IRFileType::IRAUDIO,
-                                             file,
-                                             this->parent,
-                                             callback);
+                                            file,
+                                            this->parent,
+                                            this->randomIDForPtr,
+                                            callback);
     // notify changes to IRProject to update IRFileInspecter
     this->parent->notifyNodeObjectModification();
+
+    
     
 }
 
 void IRSpectrogram::openButtonClicked()
 {
     openFile();
-    removeChildComponent(&this->openButton);
 }
 // ==================================================
 
@@ -227,7 +244,8 @@ void IRSpectrogram::calcPixel(IRDescriptorStr* data)
     float w_increment = texture_w / drawFrameNum;
     float h_increment = texture_h / drawFFTSize;
     
-    if(this->buffer != nullptr) delete[] this->buffer;
+    // delete buffer if already allocated
+    deleteBuffer();
     int texSize = (int)(texture_w) * (int)(texture_h);
     this->buffer = new float [texSize];
     
@@ -465,8 +483,7 @@ void IRSpectrogram::mouseMove(const MouseEvent &e)
 
 void IRSpectrogram::shaderTask(Graphics& g)
 {
-  
-    //std::cout << "shaderTask\n";
+
     if (shader.get() == nullptr || shader->getFragmentShaderCode() != fragmentCode)
     {
         //shader.reset();
@@ -586,49 +603,34 @@ void IRSpectrogram::setUniform(OpenGLShaderProgram& program)
     //}
 }
 
-
-// ==========
-/*
-void IRSpectrogram::createDemoTexture()
-{
-    if(this->buffer != nullptr) delete this->buffer;
-    this->buffer = new float [this->sp_w * this->sp_h];
-    
-    int hw = this->sp_w / 2.0;
-    int hh = this->sp_h / 2.0;
-    for(int i = 0; i < this->sp_h; i ++)
-    {
-        for(int j = 0; j < this->sp_w; j ++)
-        {
-            int iw = i * this->sp_w;
-            if(i > hh)
-            {
-                if(j > hw) this->buffer[iw + j] = (float)(rand() % 100) / 100.0;
-                else this->buffer[iw + j] = 1.0;
-            }else
-            {
-                if(j > hw) this->buffer[iw + j] = 1.0;
-                else this->buffer[iw + j] = (float)(rand() % 100) / 100.0;
-            }
-        }
-    }
-}
- */
-
 // ==========
 
 void IRSpectrogram::fileImportCompleted()
 {
     std::cout << "fileImportCompleted\n";
-    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObject());
-    this->audioData->getData()->addListener(this);
+    this->audioData = static_cast<DataAllocationManager<IRAudio>*>(getFileManager().getFileObjectAndRemoveFromBuffer(this->randomIDForPtr));
+    
+    if(this->audioData != nullptr)
+    {
+        this->audioData->getData()->addListener(this);
 
-    this->audioUpdated = true;
-    
-    loadDescriptor();
-    
-    // call virtual function
-    fileImportCompletedAction();
+        this->audioUpdated = true;
+        
+        loadDescriptor();
+        
+        // remove openButton
+        removeChildComponent(&this->openButton);
+        
+        bringThisToFront();
+
+        // call virtual function
+        fileImportCompletedAction();
+        
+        if(this->audioFileImportCompletedCallback != nullptr)
+            this->audioFileImportCompletedCallback();
+    }else{
+        KLib().showErrorMessage("Could not load audio data of " + this->path);
+    }
 }
 // ==================================================
 //Controller

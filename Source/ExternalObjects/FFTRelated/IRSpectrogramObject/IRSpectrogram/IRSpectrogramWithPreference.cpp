@@ -45,28 +45,11 @@ void IRSpectrogramWithPreference::changeListenerCallback (ChangeBroadcaster* sou
 }
 
 // --------------------------------------------------
-void IRSpectrogramWithPreference::openAudioFileAction()
-{
-    
-}
-// --------------------------------------------------
-void IRSpectrogramWithPreference::fileImportCompletedAction()
-{
-    this->isFileImportCompletedFlag = true;
-}
-// --------------------------------------------------
 void IRSpectrogramWithPreference::updateAudioPreferenceUI()
 {
 }
 // --------------------------------------------------
-void IRSpectrogramWithPreference::updateAnimationFrame()
-{
-    if(this->isFileImportCompletedFlag)
-    {
-        
-    }
 
-}
 // --------------------------------------------------
 
 // --------------------------------------------------

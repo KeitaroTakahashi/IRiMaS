@@ -102,6 +102,7 @@ void IRMainSpace::setTopWorkspace(IRWorkspace* topSpace)
         }
         this->topWorkspace = topSpace;
         this->topWorkspace->toFront(true);
+        this->topWorkspace->bringThisToFront();
         //show heavy components if they are hidden
         this->topWorkspace->manageHeavyWeightComponents(true);
         this->ir_str->TopWorkspace = this->topWorkspace;

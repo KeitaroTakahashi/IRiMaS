@@ -55,6 +55,7 @@ public:
     json11::Json saveAction(String projectPath, String projectTitle);
     String projectPath;
     String projectTitle;
+    void setProjectTitle(String title);
     // -----
     
     // ==================================================

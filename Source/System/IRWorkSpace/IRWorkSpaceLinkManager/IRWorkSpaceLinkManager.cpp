@@ -21,12 +21,12 @@ bool IRWorkSpaceLinkManager::addLinkingObject(IRNodeObject* obj)
 {
     
     bool flag = true;
-    
+    /*
     for(auto o : this->linkingObjects)
     {
         if(o->selectedLinkSystemFlag != obj->selectedLinkSystemFlag)
             flag = false;
-    }
+    }*/
     
     if(flag){
         // do not add obj if already exists
@@ -46,7 +46,7 @@ bool IRWorkSpaceLinkManager::addLinkingObject(IRNodeObject* obj)
         return false;
     }
 }
-
+/*
 void IRWorkSpaceLinkManager::addLinkObjectExecute(IRNodeObject* obj)
 {
     
@@ -69,6 +69,6 @@ void IRWorkSpaceLinkManager::showLinkingObjects()
     {
         std::cout << index << " : " << obj << " : " << obj->selectedLinkSystemFlag << std::endl;
     }
-}
+}*/
 
 

@@ -244,12 +244,12 @@ void IRProject::performLinkModeChange()
 {
     std::cout << "performLinkModeChange\n";
     // change the status
-    this->LinkModeFlag = !this->topSpace->isLinkMode();
+   // this->LinkModeFlag = !this->topSpace->isLinkMode();
     
     //apply the editMode status to all workspaces
     for(auto space : this->workspaces)
     {
-        space->setLinkMode(this->LinkModeFlag);
+       // space->setLinkMode(this->LinkModeFlag);
     }
     
     // notify IRProjectWindow change of the edit mode

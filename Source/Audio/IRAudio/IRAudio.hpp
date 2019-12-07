@@ -200,7 +200,7 @@ private:
     // ===========================================================================
     // thread safe reference pointer
     
-    std::unique_ptr<AudioFormatReaderSource> readerSource;
+    //std::unique_ptr<AudioFormatReaderSource> readerSource;
     AudioFormatReader *reader = nullptr;
     
     ReferenceCountedArray<ReferenceCountedBuffer> buffers;

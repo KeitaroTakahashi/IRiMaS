@@ -10,23 +10,19 @@
 IRShapeObject::IRShapeObject(Component* parent, IRStr* str) :
 IRNodeObject(parent, "IRShape", str, NodeObjectType(orginaryIRComponent))
 {
-    std::cout << "IRShapeObject\n";
+    StopWatch bench; bench.start();
     setOpaque(false);
-    
-    this->UI = std::make_shared<IRShapeUI>(this, str);
+    this->UI.reset( new IRShapeUI(this, str) );
     addAndMakeVisible(this->UI.get());
     childComponentManager(this->UI.get());
-    
     setObjController(this->UI->getController());
-    
-   
-
+    bench.result("x x x x x x x x x x IRShapeObject initialized");
     setSize(200,200);
 }
 
 IRShapeObject::~IRShapeObject()
 {
-    
+    this->UI.reset();
 }
 IRNodeObject* IRShapeObject::copyThis()
 {
@@ -36,16 +32,20 @@ IRNodeObject* IRShapeObject::copyThis()
     newObj->UI->setStatus(this->UI->getStatus());
     newObj->UI->setLineWidth( this->UI->getLineWidth() );
     newObj->UI->setFill(this->UI->getFill() );
-    std::cout << "isFill = " << this->UI->getFill() << std::endl;
-    
     newObj->UI->repaint();
     return newObj;
 }
 
 t_json IRShapeObject::saveThisToSaveData()
 {
+    
+    Colour c = this->UI->getColour();
+    
     t_json saveData = t_json::object({
-        {"test", "hello"}
+        {"textColour", json11::Json::array({c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()})},
+        {"status", (int)this->UI->getStatus()},
+        {"lineWidth", this->UI->getLineWidth()},
+        {"setFill", this->UI->getFill()}
     });
     
     t_json save = t_json::object({
@@ -56,6 +56,23 @@ t_json IRShapeObject::saveThisToSaveData()
 }
 void IRShapeObject::loadThisFromSaveData(t_json data)
 {
+    // example : array
+    t_json s = data["shape"];
+    json11::Json::array c = s["textColour"].array_items();
+    int r = c[0].int_value();
+    int g = c[1].int_value();
+    int b = c[2].int_value();
+    int a = c[3].int_value();
+    
+    Colour textColour = Colour((uint8)r,
+                               (uint8)g,
+                               (uint8)b,
+                               (uint8)a);
+    this->UI->setColour(textColour);
+    
+    this->UI->setStatus((IRShapeUI::IRShapeStatus)s["status"].int_value());
+    this->UI->setLineWidth(s["lineWidth"].number_value());
+    this->UI->setFill(s["setFill"].bool_value());
     
 }
 
@@ -74,9 +91,11 @@ void IRShapeObject::paint(Graphics &g)
 
 void IRShapeObject::resized()
 {
-    this->UI->setBounds(getLocalBounds());
-    this->UI->repaint();
-
+    if(this->UI.get() != nullptr)
+    {
+        this->UI->setBounds(getLocalBounds());
+        this->UI->repaint();
+    }
 }
 // ------------------------------------------------------------
 

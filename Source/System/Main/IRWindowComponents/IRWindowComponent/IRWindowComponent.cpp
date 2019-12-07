@@ -96,7 +96,7 @@ void IRWindowComponent::initialize()
     this->ir_str->setKeyListener(this);
     this->ir_str->setMouseListener(this);
     this->ir_str->projectName = this->projectName;
-    this->ir_str->SYSTEMCOLOUR = IR::darkBlueSet();
+    this->ir_str->SYSTEMCOLOUR = IR::darkGraySet();
     this->ir_str->ICONBANK = IRIconBank();
     
     //lookandfeelcolour
@@ -159,14 +159,12 @@ void IRWindowComponent::createLeftComponent()
     this->leftBar.reset(new IRLeftBar(this->ir_str.get()));
     this->leftBar->addChangeListener(this);
     addAndMakeVisible(this->leftBar.get());
-    this->rightBar->addMouseListener(this, true);
-
 }
 
 void IRWindowComponent::createComponents()
 {
     this->rightBar.reset(new IRRightBar(this->ir_str.get()));
-
+    this->rightBar->addMouseListener(this, false);
     this->mainSpace.reset(new IRMainSpace(this->ir_str.get()));
     this->mixer.addAudioSource(&this->mainSpace->getMixer());
     
@@ -661,6 +659,7 @@ json11::Json IRWindowComponent::saveAction(String projectPath, String projectTit
     
 }
 
+
 void IRWindowComponent::saveProject()
 {
     // if this is the first time to save, then open the dialog window
@@ -704,6 +703,14 @@ void IRWindowComponent::OpenDialogToSaveProject()
     }
    
 }
+// ==================================================
+
+void IRWindowComponent::setProjectTitle(String title)
+{
+    if(this->bar.get() != nullptr)
+        this->bar->comp.setTitle(title);
+}
+
 // ==================================================
 
 void IRWindowComponent::loadProjectFromSavedData(t_json saveData)

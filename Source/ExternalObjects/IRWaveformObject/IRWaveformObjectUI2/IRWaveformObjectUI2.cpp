@@ -48,9 +48,9 @@ void IRWaveformObjectUI2::resized()
 }
 void IRWaveformObjectUI2::paint(Graphics& g)
 {
-    g.fillAll(SYSTEMCOLOUR.background);
+    g.fillAll(getStr()->SYSTEMCOLOUR.background);
     
-    g.setColour (SYSTEMCOLOUR.contents);
+    g.setColour (getStr()->SYSTEMCOLOUR.contents);
     //g.drawRoundedRectangle (area.toFloat(), 5.0f, 4.0f);
     g.drawRect(getLocalBounds().toFloat(), 1.0);
 }
