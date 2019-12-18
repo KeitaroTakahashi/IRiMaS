@@ -14,14 +14,19 @@
             symbolName = "*0x10024b6f2">
             <Locations>
                <Location
-                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - 24c9ab530b3a922b"
+                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - ea00c04d6b15de0a"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44c0_s_p1_0"
+                  symbolName = "sqlite3WhereEnd"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "29330">
+                  urlString = "file:///Users/keitaro/program/JUCE/IRiMaS/Source/Utilities/SQL/SQLite/sqlite3.c"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "144519"
+                  endingLineNumber = "144519"
+                  offsetFromSymbolStart = "1954">
                </Location>
             </Locations>
          </BreakpointContent>

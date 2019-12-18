@@ -9,7 +9,6 @@ void IRWaveformObjectUI::mouseDown(const MouseEvent& e)
     this->previousWidth = getWidth();
     this->previousHeight = getHeight();
     
-    std::cout << "waveformUI mouseDown\n";
     mouseDownHandler(e);
     
     // play selected area

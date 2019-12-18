@@ -289,7 +289,7 @@ void IRWorkSpace::editModeChangedInNodeObject(bool editMode)
         this->notifyEditModeChanged();
     }
 }
-
+/*
 void IRWorkSpace::linkModeChangedInNodeObject(bool linkMode)
 {
     //setLinkMode(linkMode);
@@ -298,7 +298,7 @@ void IRWorkSpace::linkModeChangedInNodeObject(bool linkMode)
     {
         this->notifyLinkModeChanged();
     }
-}
+}*/
 // ------------------------------------------------------------
 void IRWorkSpace::saveProject()
 {

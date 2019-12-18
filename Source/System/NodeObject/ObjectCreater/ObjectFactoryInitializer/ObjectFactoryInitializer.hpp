@@ -26,6 +26,7 @@ public:
     ObjectFactoryInitializer()
     {
         Image img; // dummy
+        /*
         objectFactory.registerObject<IRAutomationObject>("IRAutomation",
                                                          "Automation Graph",
                                                          objectCategory::CHARTMENU,
@@ -43,7 +44,7 @@ public:
                                                     objectCategory::TEXTMENU,
                                                     img);
         
-        objectFactory.registerObject<IRISVObject>("IRISV",
+        objectFactory.registerObject<IRISVObject>("IR3DVisualizer",
                                                   "Interactive Sound Visualizer",
                                                   objectCategory::OBJECTMENU,
                                                   img);
@@ -68,7 +69,7 @@ public:
                                                           img);  // leak is audio
         
         
-        objectFactory.registerObject<IRVideoPlayerObject>("IRVideoPlayer",
+        objectFactory.registerObject<IRVideoAnnotaterObject>("IRVideoPlayer",
                                                           "Video Player",
                                                           objectCategory::PLAYERMENU,
                                                           img); // leak videocomp
@@ -80,6 +81,7 @@ public:
                                                     img); // leak videocomp
         
         //objectFactory.registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
+         */
         
     }
     

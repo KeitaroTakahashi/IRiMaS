@@ -519,30 +519,6 @@ void IRWorkspace::closeLinkMenu(IRNodeObject* obj)
     }
 }*/
 
-void IRWorkspace::getSelectedLinkSystemFlag(IRNodeObject* obj)
-{
-    //std::cout << obj << " : ws getSelected flag = " <<  obj->selectedLinkSystemFlag << std::endl;
-    
-    // if shift is pressed, then link this flag with the previously selected Flag
-    
-    /*
-    if(this->isShiftPressed)
-    {
-        addLinkingObject(obj);
-    }
-    else{
-        // if no shift pressed, then deselect other flag, and re-select the new one.
-        for(auto o : this->selector->getActivatedLinkingObjectList())
-        {
-            o->getLinkMenu()->deSelectAll();
-            removeAllLinkingObjects();
-        }
-        addLinkingObject(obj);
-    }
-    
-    showLinkingObjects();
-    */
-}
 
 // ==================================================
 

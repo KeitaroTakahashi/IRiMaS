@@ -74,11 +74,10 @@ void IRNodeComponent::mouseDragNodeEvent(const MouseEvent& e)
     {
     
         if (this->isMovable())
-        {
+        {            
             moveThisComponentEvent(e);
             
-        }
-        else if (this->isResizable())
+        } else if (this->isResizable())
         {
             resizeThisComponentEvent(e);
         }

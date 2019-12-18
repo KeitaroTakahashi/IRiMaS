@@ -100,6 +100,8 @@ private:
     int playSamples = 0;
     // parameter : start position to be played
     int startPosition = 0;
+    // channel
+    int nChannel = 0;
     
     int offset = 0;
     // current reading position : offset + playPosition

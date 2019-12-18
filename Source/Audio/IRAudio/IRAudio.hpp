@@ -67,7 +67,12 @@ public:
     // ------------------------------------------------------------------
     // getter of the audio file buffer
     // ------------------------------------------------------------------
-    AudioSampleBuffer* getAudioBuffer(){ return this->buffer->getAudioSampleBuffer(); }
+    AudioSampleBuffer* getAudioBuffer()
+    {
+        std::cout << "give AudioSampleBuffer()\n";
+        return this->currentBuffer->getAudioSampleBuffer();
+        
+    }
     
     // return audio buffer in vector<float> data type
     std::vector<float> getAudioBufferInVector();
@@ -163,6 +168,8 @@ private:
     void checkForPathToOpen();
     void OpenPath(File file);
     
+    void mainThreadAudioLoader();
+    
     // to check when file import completed
     void updateAnimationFrame() override;
     
@@ -201,10 +208,10 @@ private:
     // thread safe reference pointer
     
     //std::unique_ptr<AudioFormatReaderSource> readerSource;
-    AudioFormatReader *reader = nullptr;
+    //AudioFormatReader *reader = nullptr;
     
     ReferenceCountedArray<ReferenceCountedBuffer> buffers;
-    ReferenceCountedBuffer::Ptr buffer; // AudioBuffer<float>
+    ReferenceCountedBuffer::Ptr currentBuffer; // AudioBuffer<float>
     
     AudioFormatManager formatManager;
     

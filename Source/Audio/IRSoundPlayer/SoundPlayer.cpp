@@ -204,6 +204,8 @@ void SoundPlayerClass::setAudioBuffer(AudioBuffer<float>* audioBuffer, bool owne
     //initialize playSamples with buffer samples
     this->playSamples = this->buffer->getNumSamples();
     
+    std::cout << "SoundPlayerClass setAudioBuffer() : nChan = " << this->buffer->getNumChannels() << " : samples = " << this->buffer->getNumSamples() << std::endl;
+    
     this->currentOffsetPosition = 0;
     this->playPosition = 0;
 }

@@ -95,7 +95,6 @@ void IRRightBar::nodeObjectSelectionChange(IRNodeObject* obj)
 
 void IRRightBar::nodeObjectGetFocused(IRNodeObject* obj)
 {
-        
     if(this->comp != nullptr)
     {
         removeChildComponent(this->comp);
@@ -110,6 +109,9 @@ void IRRightBar::nodeObjectGetFocused(IRNodeObject* obj)
             addComponentAndMakeVisible(*this->comp);
     
     }
+    
+    //std::cout << "nodeObjectGetFocused "<< obj << " : " << this->comp << std::endl;
+
 }
 
 //==================================================

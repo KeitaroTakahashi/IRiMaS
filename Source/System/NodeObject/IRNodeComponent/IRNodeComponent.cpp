@@ -201,7 +201,7 @@ bool IRNodeComponent::isContainAudioSource() const
 // interaction
 void IRNodeComponent::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRNodeComponent mouseDown\n";
+    //std::cout << "IRNodeComponent mouseDown\n";
     mouseDownNodeEvent(e);
     mouseDownEvent(e);
 }

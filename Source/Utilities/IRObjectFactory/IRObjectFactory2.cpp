@@ -29,7 +29,7 @@ IRObjectFactory2::IRObjectFactory2()
                                                 objectCategory::TEXTMENU,
                                                 img);
     
-    registerObject<IRISVObject>("IRISV",
+    registerObject<IRISVObject>("IR3DVisualizer",
                                               "3D Visualizer",
                                               objectCategory::OBJECTMENU,
                                               img);
@@ -54,7 +54,7 @@ IRObjectFactory2::IRObjectFactory2()
                                                       img);  // leak is audio
     
     
-    registerObject<IRVideoPlayerObject>("IRVideoPlayer",
+    registerObject<IRVideoAnnotaterObject>("IRVideoPlayer",
                                                       "Video Player",
                                                       objectCategory::PLAYERMENU,
                                                       img); // leak videocomp
@@ -75,7 +75,7 @@ IRObjectFactory2::IRObjectFactory2()
 
 IRNodeObject* IRObjectFactory2::createObject(std::string id, Component* parent, IRStr* str)
 {
-    
+    std::cout << "IRObjectFactory2::createObject : " << id << std::endl;
     return this->list[id].obj->create(parent, str);
 }
 

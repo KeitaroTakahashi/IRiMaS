@@ -50,6 +50,7 @@ parent(parent)
 LeftBarObjectMenu::~LeftBarObjectMenu()
 {
     this->objectMenuIconArea.reset();
+   
     this->objectMenuSpaceArea.reset();
     
     this->textMenu.reset();

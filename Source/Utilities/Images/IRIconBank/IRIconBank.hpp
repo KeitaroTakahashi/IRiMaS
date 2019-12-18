@@ -52,6 +52,7 @@ public:
     IRIconImage icon_addPage2;
     IRIconImage icon_newSlide_noFrame;
     IRIconImage icon_newSlide;
+    IRIconImage icon_deleteSlide;
     IRIconImage icon_inspector;
     IRIconImage icon_load;
     IRIconImage icon_loop;
@@ -80,6 +81,13 @@ public:
     
     IRIconImage icon_rightBar;
     IRIconImage icon_leftBar;
+    
+    //Event
+    IRIconImage icon_AudioEvent;
+    IRIconImage icon_ImageEvent;
+    IRIconImage icon_ShapeEvent;
+    IRIconImage icon_TextEvent;
+
     
     
     // logo

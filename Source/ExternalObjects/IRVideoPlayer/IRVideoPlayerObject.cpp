@@ -7,29 +7,24 @@
 
 #include "IRVideoPlayerObject.hpp"
 
-IRVideoPlayerObject::IRVideoPlayerObject(Component* parent, IRStr* str) :
+IRVideoPlayerObject::IRVideoPlayerObject(Component* parent, IRStr* str, bool withOpenButton) :
 IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(orginaryIRComponent))
 {
     
     setOpaque(false);
-    
-    this->controller.reset( new IRVideoPlayerController(str) );
-    this->controller->addChangeListener(this);
-    setObjController(this->controller.get());
        
     // original function to give this ChangeListener to controller->UI
-    this->controller->addChangeListener(this);
     
-    this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str);
+    this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str, withOpenButton);
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
     addAndMakeVisible(this->videoPlayer.get());
+    
     
     setSize(300, 200);
 }
 
 IRVideoPlayerObject::~IRVideoPlayerObject()
 {
-    this->controller.reset();
     this->videoPlayer.reset();
 
 }
@@ -41,10 +36,13 @@ IRNodeObject* IRVideoPlayerObject::copyThis()
 // --------------------------------------------------
 IRNodeObject* IRVideoPlayerObject::copyContents(IRNodeObject* object)
 {
-    IRVideoPlayerObject* obj = static_cast<IRVideoPlayerObject*>(this->parent);
+    IRVideoPlayerObject* obj = static_cast<IRVideoPlayerObject*>(object);
     obj->setBounds(getLocalBounds());
-    File movieFile = obj->getVideoPlayer()->getMovieFile();
-    obj->getVideoPlayer()->openFile(movieFile);
+    File movieFile = getVideoPlayer()->getMovieFile();
+    if(movieFile.exists())
+    {
+        obj->openFile(movieFile, false);
+    }
     
     return obj;
 }
@@ -54,6 +52,17 @@ IRNodeObject* IRVideoPlayerObject::copyDragDropContents(IRNodeObject* object)
     IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent, getStr());
     return obj;
 }
+
+void IRVideoPlayerObject::shareContentsWith(IRVideoPlayerObject* withObject)
+{
+    File movieFile = getVideoPlayer()->getMovieFile();
+    if(movieFile.exists())
+    {
+        withObject->openFile(movieFile, false);
+    }
+}
+// --------------------------------------------------
+
 // --------------------------------------------------
 t_json IRVideoPlayerObject::saveThisToSaveData()
 {
@@ -85,7 +94,7 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
 {
     // turn off controller otherwise mouse event will be stolen by the controller,
     // and resize event can not be acomplished properly.
-    if(this->videoPlayer->isNeedController() && this->videoPlayer->isVideoOpened())
+    if(this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
         this->videoPlayer->setNeedController(false);
     
     double ratio = this->videoPlayer->getAspectRatio();
@@ -117,7 +126,7 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
 void IRVideoPlayerObject::mouseUpEvent(const MouseEvent& e)
 {
     //recover event
-    if(!this->videoPlayer->isNeedController() && this->videoPlayer->isVideoOpened())
+    if(!this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
         this->videoPlayer->setNeedController(true);
     
     if(this->resizing)
@@ -156,7 +165,16 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
    }
     
     setSize(w + 10, h + 10);
+
+    // callback
+    videoLoadCompletedCallback();
     
+    // called only when isCallback is true. isCallback is defined in this class.
+    if(this->videoLoadCompletedCallbackFunc != nullptr)
+    {
+        if(this->isCallback)
+            this->videoLoadCompletedCallbackFunc();
+    }
 
     bringThisToFront();
     // call reset Heavy-weight components
@@ -166,25 +184,7 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
     //callAddHeavyComponentToTopZOrder(this);
     
 }
-// --------------------------------------------------
 
-void IRVideoPlayerObject::changeListenerCallback (ChangeBroadcaster* source)
-{
-    if(source == this->controller.get())
-    {
-    
-        using uiStatus = VideoController::VideoControllerStatus;
-        
-        switch(this->controller->getStatus())
-        {
-            case uiStatus::OpenMovieFile:
-                this->videoPlayer->openFile();
-                break;
-            default:
-                break;
-        }
-    }
-}
 // --------------------------------------------------
 
 void IRVideoPlayerObject::moveToFrontAction()
@@ -200,4 +200,25 @@ void IRVideoPlayerObject::moveToFrontAction()
 void IRVideoPlayerObject::heavyComponentRefreshed()
 {
     moveToFrontAction();
+}
+
+
+// --------------------------------------------------
+void IRVideoPlayerObject::openFile(File file, bool isCallback)
+{
+    this->isCallback = isCallback;
+    if(this->videoPlayer.get() != nullptr)
+    {
+        this->videoPlayer->openFile(file);
+    }
+}
+
+void IRVideoPlayerObject::openFile(bool isCallback)
+{
+    
+    this->isCallback = isCallback;
+    if(this->videoPlayer.get() != nullptr)
+    {
+        this->videoPlayer->openFile();
+    }
 }

@@ -74,8 +74,6 @@ public:
     void dragoutNodeObjectFromParent(IRNodeObject* obj) override;
     void dropoutNodeObjectFromParent(IRNodeObject* obj) override;
     void editModeChangedInNodeObject(bool editMode) override;
-    void linkModeChangedInNodeObject(bool editMode) override;
-    void getSelectedLinkSystemFlag(IRNodeObject* obj) override;
     
     void saveProject() override;
     void saveAsProject() override;

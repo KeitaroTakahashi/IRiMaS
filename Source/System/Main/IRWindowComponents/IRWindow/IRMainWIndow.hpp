@@ -23,8 +23,6 @@ public:
         // dont use the native title bar
         setUsingNativeTitleBar(false);
         setTitleBarHeight(0);
-        
-        
     }
     
     ~IRMainWindow()

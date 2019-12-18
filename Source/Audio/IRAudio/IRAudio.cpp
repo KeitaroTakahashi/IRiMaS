@@ -21,11 +21,15 @@ zoomInfo(1.0, 1.0)
 // ------------------------------------------------------------------
 IRAudio::~IRAudio()
 {
+    /*
     if (this->reader != nullptr){
         delete this->reader;
         // because this class is about to deleted, notify all objects using this object that this object is null.
         callFileStatusChanged(nullptr);
-    }
+    }*/
+    // because this class is about to deleted, notify all objects using this object that this object is null.
+    callFileStatusChanged(nullptr);
+
     stopThread(4000);
 }
 // ------------------------------------------------------------------
@@ -85,7 +89,7 @@ bool IRAudio::loadFile(File file, bool threadSafe)
             }else{
                 //simply load audio file
                 checkForPathToOpen();
-                checkForBuffersToFree();
+                //checkForBuffersToFree();
             }
             return true;
 
@@ -99,7 +103,7 @@ bool IRAudio::loadFile(File file, bool threadSafe)
 
 std::vector<float> IRAudio::getAudioBufferInVector()
 {
-    AudioSampleBuffer* sampleBuffer = this->buffer->getAudioSampleBuffer();
+    AudioSampleBuffer* sampleBuffer = this->currentBuffer->getAudioSampleBuffer();
     float* startPtr = sampleBuffer->getWritePointer(0);
     int size = sampleBuffer->getNumSamples();
     std::vector<float> vec (startPtr, startPtr + size);
@@ -111,7 +115,7 @@ void IRAudio::run()
 {
     while(! threadShouldExit())
     {
-        checkForPathToOpen();
+        //checkForPathToOpen();
         checkForBuffersToFree();
         wait(500);
     }
@@ -130,11 +134,12 @@ void IRAudio::updateAnimationFrame()
         if(this->isFileLoadCompleted)
         {
             stopThread(4000);
-            
+            /*
             this->sampleRate = this->reader->sampleRate;
             this->numChannels = this->reader->numChannels;
             this->numSamples = this->reader->lengthInSamples;
             this->bitsPerSample = this->reader->bitsPerSample;
+             */
             std::cout << "file load completed\n";
             std::cout << "sampleRate " << this->sampleRate << " : numChannel " << this->numChannels << " : length (sample) " << this->numSamples << std::endl;
             
@@ -160,7 +165,8 @@ void IRAudio::checkForBuffersToFree()
     for(auto i = this->buffers.size(); --i >= 0;)
     {
         ReferenceCountedBuffer::Ptr buffer (this->buffers.getUnchecked(i));
-        if(this->buffer->getReferenceCount() == 2)
+        
+        if(buffer->getReferenceCount() == 2)
         {
             this->buffers.remove(i);
         }
@@ -173,29 +179,32 @@ void IRAudio::checkForPathToOpen()
     {
         this->isFileOpened = true;
         
-        if((this->reader = this->formatManager.createReaderFor(file)))
+        std::unique_ptr<AudioFormatReader> reader (formatManager.createReaderFor (file));
+
+        if(reader.get() != nullptr)
         {
             
             ReferenceCountedBuffer::Ptr newBuffer = new ReferenceCountedBuffer(file.getFileName(),
-                                                                               this->reader->numChannels,
+                                                                               (int) reader->numChannels,
                                                                                (int) reader->lengthInSamples);
             
-            this->reader->read(newBuffer->getAudioSampleBuffer(),
-                               0,
-                               (int) reader->lengthInSamples,
-                               0,
-                               true,
-                               true);
+            reader->read(newBuffer->getAudioSampleBuffer(),
+                         0,
+                         (int) reader->lengthInSamples,
+                         0,
+                         true,
+                         true);
             
-            this->buffer = newBuffer;
+            this->currentBuffer = newBuffer;
             this->buffers.add (newBuffer);
             
-            this->sampleRate = this->reader->sampleRate;
-            this->numChannels = this->reader->numChannels;
-            this->numSamples = this->reader->lengthInSamples;
-            this->bitsPerSample = this->reader->bitsPerSample;
+            this->sampleRate = reader->sampleRate;
+            this->numChannels = reader->numChannels;
+            this->numSamples = reader->lengthInSamples;
+            this->bitsPerSample = reader->bitsPerSample;
             
             this->isFileLoadCompleted = true;
+            
             
         }else{
             //std::cout << "read failed\n";
@@ -207,6 +216,25 @@ void IRAudio::checkForPathToOpen()
         this->isFileLoadFailed = true;
     }
 }
+
+// --------------------------------------------------
+
+void IRAudio::mainThreadAudioLoader()
+{
+    if(this->path.isNotEmpty())
+    {
+        
+        this->isFileOpened = true;
+        auto* reader = this->formatManager.createReaderFor (this->file);
+        
+        if (reader != nullptr)
+        {
+            std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource (reader, true));
+        }
+    }
+}
+
+
 // --------------------------------------------------
 
 void IRAudio::callFileImportCompleted()

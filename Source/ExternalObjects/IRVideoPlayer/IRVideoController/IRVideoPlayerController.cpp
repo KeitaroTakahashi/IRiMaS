@@ -8,8 +8,8 @@
 #include "IRVideoPlayerController.hpp"
 
 
-IRVideoPlayerController::IRVideoPlayerController(IRStr* str) : IRObjectController(str),
-UI(str)
+IRVideoPlayerController::IRVideoPlayerController(IRStr* str, IRVideoPlayerObject* videoPlayerObject) : IRObjectController(str),
+UI(str, videoPlayerObject)
 {
     addAndMakeVisible(&this->LabelTitle);
     this->LabelTitle.setText("VideoPlayer", dontSendNotification);
@@ -20,15 +20,17 @@ UI(str)
     addAndMakeVisible(&this->UI);
     this->UI.addChangeListener(this);
 }
+
 IRVideoPlayerController::~IRVideoPlayerController()
 {
     
 }
+// ==================================================
 
 void IRVideoPlayerController::resized()
 {
     int y = 10;
-    int yIncrement = 30;
+    //int yIncrement = 30;
     int yBigIncrement = 40;
     
     this->LabelTitle.       setBounds(10, y, getWidth() - 20, 30);
@@ -43,6 +45,7 @@ void IRVideoPlayerController::paint(Graphics& g)
     g.setColour(Colours::black);
     g.drawLine(0,42.5,getWidth(),42.5);
 }
+// ==================================================
 
 void IRVideoPlayerController::changeListenerCallback (ChangeBroadcaster* source)
 {
@@ -50,13 +53,36 @@ void IRVideoPlayerController::changeListenerCallback (ChangeBroadcaster* source)
     {
         switch (this->UI.getStatus())
         {
-            case VideoController::OpenMovieFile:
+            case VideoController::OpenVideoFile:
                 this->status = OpenMovieFile;
                 sendChangeMessage();
                 break;
-                
+            case VideoController::OpenVideoAnnotater:
+                this->status = OpenVideoAnnotater;
+                sendChangeMessage();
+                break;
+            case VideoController::CloseVideoAnnotater:
+            this->status = CloseVideoAnnotater;
+            sendChangeMessage();
+            break;
             default:
                 break;
         }
     }
 }
+// ==================================================
+
+void IRVideoPlayerController::updateAnnotater()
+{
+    this->UI.updateAnnotater();
+}
+
+void IRVideoPlayerController::updateParentVideoPlayerObject()
+{
+    this->UI.updateParentVideoPlayerObject();
+}
+// ==================================================
+
+// ==================================================
+// ==================================================
+// ==================================================

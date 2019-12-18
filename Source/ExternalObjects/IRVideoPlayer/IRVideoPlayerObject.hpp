@@ -10,16 +10,13 @@
 
 #include "IRNodeObject.hpp"
 #include "IRVideoPlayer.hpp"
-#include "IRVideoPlayerController.hpp"
 
-
-class IRVideoPlayerObject : public IRNodeObject,
-private ChangeListener
+class IRVideoPlayerObject : public IRNodeObject
 {
     
 public:
     
-    IRVideoPlayerObject(Component* parent, IRStr* str);
+    IRVideoPlayerObject(Component* parent, IRStr* str, bool withOpenButton = true);
     ~IRVideoPlayerObject();
     
     
@@ -31,6 +28,9 @@ public:
     IRNodeObject* copyContents(IRNodeObject* object) override;
     
     IRNodeObject* copyDragDropContents(IRNodeObject* object) override;
+    
+    // share object contents owned by this obejct to twithObject
+    void shareContentsWith(IRVideoPlayerObject* withObject);
     
     // --------------------------------------------------
     
@@ -46,6 +46,9 @@ public:
     
     void resizeThisComponentEvent(const MouseEvent& e) override;
     
+    void setBoundsInWorkspace(Rectangle<int> rect) { this->boundsInWorkspace = rect; }
+    Rectangle<int> getBoundsInWorkspace() const { return this->boundsInWorkspace; }
+    
     // --------------------------------------------------
     
     void mouseUpEvent(const MouseEvent& e) override;
@@ -55,37 +58,49 @@ public:
     void paint(Graphics& g) override;
     
     // --------------------------------------------------
-    // call back function by IRVideoPlayer
-    void videoLoadCompletedAction();
-    
+    // define if call videoLoadCompletedCallbackFunc();
+    void openFile(File file, bool isCallback = true);
+    void openFile(bool isCallbback = true);
+
+    std::function<void()> videoLoadCompletedCallbackFunc;
+    virtual void videoLoadCompletedCallback() {}
     // --------------------------------------------------
 
     IRVideoPlayer* getVideoPlayer() { return this->videoPlayer.get(); }
 
     // --------------------------------------------------
-    std::unique_ptr<IRVideoPlayerController> controller;
+
     // --------------------------------------------------
 
     // refresh OpenGL when added
     void heavyComponentRefreshed() override;
+    // --------------------------------------------------
 
+
+    // --------------------------------------------------
+
+    std::shared_ptr<IRVideoPlayer> videoPlayer;
 
 private:
     // --------------------------------------------------
+    // call back function by IRVideoPlayer
+    // use videoLoadCompletedCallback() to overload
+    void videoLoadCompletedAction();
+    
+    // --------------------------------------------------
 
-    void changeListenerCallback (ChangeBroadcaster* source) override;
-
+    Rectangle<int> boundsInWorkspace;
     // --------------------------------------------------
 
     // called when this object is brought to the most Front of all other objects
     void moveToFrontAction() override;
     
     // --------------------------------------------------
-
+    // call videoLoadCompletedCallbackFunc if true
+    bool isCallback = false;
     
     bool resizing = false;
     // IRVideoPlayer *videoPlayer;
-    std::shared_ptr<IRVideoPlayer> videoPlayer;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayerObject)
 };

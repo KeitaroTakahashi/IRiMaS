@@ -200,16 +200,7 @@ void IRNodeObject::receiveSelectedLinkMenuItemEvent()
     callGetSelectedLinkSystemFlag();
 }*/
 
-void IRNodeObject::callGetSelectedLinkSystemFlag()
-{
-    Component::BailOutChecker checker(this);
-    //==========
-    // check if the objects are not deleted, if deleted, return
-    if(checker.shouldBailOut()) return;
-    this->listeners.callChecked(checker, [this](Listener& l){ l.getSelectedLinkSystemFlag(this); });
-    //check again
-    if(checker.shouldBailOut()) return;
-}
+
 
 void IRNodeObject::callAddObjectGlobal(IRObjectPtr obj, String id)
 {

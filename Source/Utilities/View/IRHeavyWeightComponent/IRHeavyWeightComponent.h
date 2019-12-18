@@ -31,6 +31,8 @@ public:
     
     ~IRHeavyWeightComponent()
     {
+        
+        std::cout << "IRHeavyWeightComponent deinit!\n";
         this->ctx.detach();
     }
    //==================================================

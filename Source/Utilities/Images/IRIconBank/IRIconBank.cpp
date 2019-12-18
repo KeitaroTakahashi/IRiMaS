@@ -149,6 +149,20 @@ void IRIconBank::loadImages()
     url = "/materials/Images/icon/menu/icon_newSlide";
     this->icon_newSlide = loadImageAndReturn(url);
     
+    url = "/materials/Images/icon/menu/icon_deleteSlide";
+    this->icon_deleteSlide = loadImageAndReturn(url);
+
+    url = "/materials/Images/icon/menu/icon_audioEvent";
+    this->icon_AudioEvent = loadImageAndReturn(url);
+    
+    url = "/materials/Images/icon/menu/icon_ImageEvent";
+    this->icon_ImageEvent = loadImageAndReturn(url);
+    
+    url = "/materials/Images/icon/menu/icon_ShapeEvent";
+    this->icon_ShapeEvent = loadImageAndReturn(url);
+    
+    url = "/materials/Images/icon/menu/icon_TextEvent";
+    this->icon_TextEvent = loadImageAndReturn(url);
     
     this->logo_darkBlue = loadLogoImage("logo_15.png");
     this->logo_darkGreen = loadLogoImage("logo_14.png");

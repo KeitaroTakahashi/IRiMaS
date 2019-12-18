@@ -29,7 +29,7 @@
 
 // ------------------------------------------------------------
 // video related object
-#include "IRVideoPlayerObject.hpp"
+#include "IRVideoAnnotaterObject.hpp"
 #include "IRVideoThumbnailObject.hpp"
 // ------------------------------------------------------------
 // Text related object

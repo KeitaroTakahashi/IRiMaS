@@ -16,7 +16,6 @@
 #include "PreferenceWindow.hpp"
 
 #include "IRNodeObject.hpp"
-#include "IRWorkSpaceLinkManager.hpp"
 #include "AudioEngine.h"
 #include "IRNodeObjectSelector.hpp"
 #include "ObjectMenuWindow.hpp"
@@ -29,7 +28,6 @@
 
 class IRWorkSpace : public AudioAppComponent,
                     public IRComponents,
-                    public IRWorkSpaceLinkManager,
                     public ChangeBroadcaster,
                     public ChangeListener,
                     public IRNodeObject::Listener,
@@ -72,8 +70,8 @@ public:
     void dragoutNodeObjectFromParent(IRNodeObject* obj) override;
     void dropoutNodeObjectFromParent(IRNodeObject* obj) override;
     void editModeChangedInNodeObject(bool editMode) override;
-    void linkModeChangedInNodeObject(bool editMode) override;
-    void getSelectedLinkSystemFlag(IRNodeObject* obj) override;
+    //void linkModeChangedInNodeObject(bool editMode) override;
+    //void getSelectedLinkSystemFlag(IRNodeObject* obj) override;
 
     void saveProject() override;
     void saveAsProject() override;

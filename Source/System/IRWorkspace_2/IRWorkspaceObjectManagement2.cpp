@@ -202,24 +202,6 @@ void IRWorkspace::manageHeavyWeightComponents(bool flag)
             obj->bringThisToFront();
         }
     }
-    
-
-    /*
-    
-    for(auto obj: reversedZorder)
-    {
-        auto objType = obj->getObjectType();
-        // check if this object contains any HEAVY weights
-        if(objType.componentType == heavyWeightComponent || objType.componentType == orginaryIRComponent)
-        {
-            if(flag){
-                addAndMakeVisible(obj);
-                obj->heavyComponentRefreshed();
-            }else{
-                removeChildComponent(obj);
-            }
-        }
-    }*/
 }
 // ------------------------------------------------------------
 void IRWorkspace::openObjectListMenu(Point<int>Pos)
@@ -360,7 +342,7 @@ void IRWorkspace::editModeChangedInNodeObject(bool editMode)
         this->notifyEditModeChanged();
     }
 }
-
+/*
 void IRWorkspace::linkModeChangedInNodeObject(bool linkMode)
 {
     //setLinkMode(linkMode);
@@ -369,7 +351,7 @@ void IRWorkspace::linkModeChangedInNodeObject(bool linkMode)
     {
         this->notifyLinkModeChanged();
     }
-}
+}*/
 // ------------------------------------------------------------
 void IRWorkspace::saveProject()
 {

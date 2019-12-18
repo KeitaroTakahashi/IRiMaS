@@ -228,6 +228,7 @@ public:
     bool isDragging() const;
     // return a flag shows whether this Component is resizable or not. Default is true.
     bool isResizable() const;
+    void setResizable(bool flag) { this->isResizableFlag = flag; }
     // return a flag shows whether this Component is being resized or not. Default is false.
     bool isResizing() const;
     // return a flag shows whether this Component is being selected or not. Default is false.

@@ -102,9 +102,9 @@ public:
         virtual void editModeChangedInNodeObject(bool editMode) {};
         
         // link
-        virtual void linkModeChangedInNodeObject(bool linkMode) {};
+        //virtual void linkModeChangedInNodeObject(bool linkMode) {};
         
-        virtual void getSelectedLinkSystemFlag(IRNodeObject* obj) {};
+        //virtual void getSelectedLinkSystemFlag(IRNodeObject* obj) {};
         // overriden by IRUIFoundation
         /*
         virtual void receiveAudioLink(IRNodeObject* obj) {};
@@ -175,7 +175,7 @@ public:
     void setLinkActivationEvent() override;
     
     void setLinkedEvent() override {};*/
-    void callGetSelectedLinkSystemFlag();
+    //void callGetSelectedLinkSystemFlag();
     
     // fire addObjectGlobal() method in Listener
     void callAddObjectGlobal(IRObjectPtr obj, String id);
@@ -246,6 +246,7 @@ public:
     
     // ============================================================
 
+    Component* getParent() { return this->parent; }
 protected:
     
     Component* parent;
