@@ -19,7 +19,7 @@ public:
     IRVideoAnnotaterWindow(IRStr* str,
                            String name,
                            Rectangle<int>frameRect,
-                           IRVideoPlayerObject* videoPlayerObject) :
+                           IRVideoAnnotaterObject* videoPlayerObject) :
     DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), DocumentWindow::allButtons),
     IRStrComponent(str),
     videoPlayerObject(videoPlayerObject)
@@ -79,6 +79,11 @@ public:
         this->videoAnnotater->updateVideoPlayerOfWorkspace();
     }
     // ==================================================
+    void setEventModifiedCallback(std::function<void()> callback)
+    {
+        this->videoAnnotater->setEventModifiedCallback(callback);
+    }
+
    
     // ==================================================
 

@@ -58,11 +58,20 @@ private:
     // call back function automatically called when the status of this object changed by others.
     // write some tasks here
     void statusChangedCallback(IRNodeComponentStatus status) override;
-    
+    // ------------------------------------------------------------
+
     
     Font font;
     Colour textColour;
     int alignId;
+    
+    // ------------------------------------------------------------
+    
+    void statusInEditMode();
+    void statusInControlMode();
+    // ------------------------------------------------------------
+    // ------------------------------------------------------------
+
     
 };
 

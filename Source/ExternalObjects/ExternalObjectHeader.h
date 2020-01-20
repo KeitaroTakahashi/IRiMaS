@@ -29,6 +29,7 @@
 
 // ------------------------------------------------------------
 // video related object
+#include "IRVideoAnnotaterInterfaceObject.hpp"
 #include "IRVideoAnnotaterObject.hpp"
 #include "IRVideoThumbnailObject.hpp"
 // ------------------------------------------------------------

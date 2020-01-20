@@ -18,6 +18,7 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(orginaryIRComponent))
     this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str, withOpenButton);
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
     addAndMakeVisible(this->videoPlayer.get());
+    this->videoPlayer->updateAnimationFrameCallback = [this](double pos) { videoPlayingUpdateAction(pos); };
     
     
     setSize(300, 200);
@@ -92,6 +93,7 @@ void IRVideoPlayerObject::resized()
 // --------------------------------------------------
 void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
 {
+    
     // turn off controller otherwise mouse event will be stolen by the controller,
     // and resize event can not be acomplished properly.
     if(this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
@@ -150,6 +152,8 @@ void IRVideoPlayerObject::paint(Graphics& g)
 // --------------------------------------------------
 void IRVideoPlayerObject::videoLoadCompletedAction()
 {
+    // Keitaro : I decided not to fix the object size according to the loaded video size because it causes a lot of unnecessary difficulties.
+    /*
     int video_w = this->videoPlayer->getVideoSize().getWidth();
     int video_h = this->videoPlayer->getVideoSize().getHeight();
     
@@ -158,13 +162,22 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
    {
        w = getWidth();
        h = (int)((float)w / this->videoPlayer->getAspectRatio());
+       
+       // then
+       if(h > getHeight())
+       {
+           float newRatio = (float)getHeight() / (float)h;
+           h = getHeight();
+           w = (int)((float)w * newRatio);
+       }
    }else{
        w = video_w;
        h = video_h;
-
    }
     
-    setSize(w + 10, h + 10);
+    */
+    //setSize(w + 10, h + 10);
+    //setSize(w, h);
 
     // callback
     videoLoadCompletedCallback();
@@ -183,6 +196,12 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
     // and bring this obejct to the top of objectZOrder on the workspace
     //callAddHeavyComponentToTopZOrder(this);
     
+}
+// --------------------------------------------------
+
+void IRVideoPlayerObject::videoPlayingUpdateAction(double pos)
+{
+    videoPlayingUpdateCallback(pos);
 }
 
 // --------------------------------------------------
@@ -222,3 +241,16 @@ void IRVideoPlayerObject::openFile(bool isCallback)
         this->videoPlayer->openFile();
     }
 }
+// --------------------------------------------------
+
+void IRVideoPlayerObject::play()
+{
+    this->videoPlayer->play();
+}
+void IRVideoPlayerObject::stop()
+{
+    this->videoPlayer->stop();
+}
+
+// --------------------------------------------------
+// --------------------------------------------------

@@ -45,8 +45,8 @@ public:
     IRWaveform(IRNodeObject* parent, IRStr* str);
     ~IRWaveform();
     
-    void openFile();
-    void openFile(String path);
+    bool openFile();
+    bool openFile(String path);
 
     void changeListenerCallback (ChangeBroadcaster* source) override;
     

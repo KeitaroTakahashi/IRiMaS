@@ -34,7 +34,7 @@ public:
 
         addAndMakeVisible(this->labelFont);
         this->labelFont.setText("Font : ", dontSendNotification);
-        this->labelFont.setColour(Label::textColourId, Colours::black);
+        //this->labelFont.setColour(Label::textColourId, Colours::black);
         this->labelFont.setJustificationType(Justification::left);
         
         // get info
@@ -45,34 +45,34 @@ public:
         
         addAndMakeVisible(this->labelStyle);
         this->labelStyle.setText("Style : ", dontSendNotification);
-        this->labelStyle.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
+        //this->labelStyle.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelStyle.setJustificationType(Justification::left);
         
         
         addAndMakeVisible(this->labelFontSize);
         this->labelFontSize.setText("Font size : ", dontSendNotification);
-        this->labelFontSize.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
+        //this->labelFontSize.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelFontSize.setJustificationType(Justification::left);
         
         addAndMakeVisible(this->fontSizeInput);
         this->fontSizeInput.setEditable(true);
         this->fontSizeInput.setText("16", dontSendNotification);
-        this->fontSizeInput.setColour(Label::textColourId, Colours::black);
-        this->fontSizeInput.setColour(Label::textWhenEditingColourId, Colours::black);
+        //this->fontSizeInput.setColour(Label::textColourId, Colours::black);
+        //this->fontSizeInput.setColour(Label::textWhenEditingColourId, Colours::black);
         
         this->fontSizeInput.setJustificationType(Justification::left);
         this->fontSizeInput.onTextChange = [this] { fontSizeInputChanged(); };
         
         addAndMakeVisible(this->labelAlign);
         this->labelAlign.setText("Align : ", dontSendNotification);
-        this->labelAlign.setColour(Label::textColourId, Colours::black);
+        //this->labelAlign.setColour(Label::textColourId, Colours::black);
         this->labelAlign.setJustificationType(Justification::left);
         
         makeAlignMenu();
         
         addAndMakeVisible(this->labelTextColour);
         this->labelTextColour.setText("Text Colour : ", dontSendNotification);
-        this->labelTextColour.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
+        //this->labelTextColour.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelTextColour.setJustificationType(Justification::left);
         
         addAndMakeVisible(this->textColour);
@@ -82,7 +82,7 @@ public:
         
         addAndMakeVisible(this->labelBackgroundColour);
         this->labelBackgroundColour.setText("BackGround Colour : ", dontSendNotification);
-        this->labelBackgroundColour.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
+        //this->labelBackgroundColour.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelBackgroundColour.setJustificationType(Justification::left);
         
         addAndMakeVisible(this->backgroundColour);

@@ -32,7 +32,7 @@ public:
     };
     // ==================================================
 
-    VideoController(IRStr * str, IRVideoPlayerObject* videoPlayerObject) : IRStrComponent(str),
+    VideoController(IRStr * str, IRVideoAnnotaterObject* videoPlayerObject) : IRStrComponent(str),
     videoPlayerObject(videoPlayerObject)
     {
         addAndMakeVisible(&this->openVideoButton);
@@ -146,7 +146,7 @@ private:
     TextButton openVideoAnnotatorButton;
     // ==================================================
 
-    IRVideoPlayerObject* videoPlayerObject = nullptr;
+    IRVideoAnnotaterObject* videoPlayerObject = nullptr;
     
     std::shared_ptr<IRVideoAnnotaterWindow> videoAnnotater;
 

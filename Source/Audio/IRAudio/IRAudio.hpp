@@ -69,7 +69,6 @@ public:
     // ------------------------------------------------------------------
     AudioSampleBuffer* getAudioBuffer()
     {
-        std::cout << "give AudioSampleBuffer()\n";
         return this->currentBuffer->getAudioSampleBuffer();
         
     }

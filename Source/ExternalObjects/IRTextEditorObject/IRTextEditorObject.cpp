@@ -21,9 +21,13 @@ IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(orginaryIRComponent))
     //this->label.setFont(
     
     this->textEditor.setText("text...", dontSendNotification);
-    //this->label.setEditable(false); // not editable initially...
-    // this->textEditor.setColour(TextEditor::textColourId, SYSTEMCOLOUR.titleText);
+    this->textEditor.setBorder(BorderSize<int>(11,10,10,10));
     this->textEditor.setColour(TextEditor::backgroundColourId, getStr()->SYSTEMCOLOUR.background);
+    this->textEditor.setColour(TextEditor::outlineColourId,
+                               Colours::transparentBlack);
+    this->textEditor.setColour(TextEditor::focusedOutlineColourId,
+                               Colours::transparentBlack);
+
     this->textEditor.applyColourToAllText(getStr()->SYSTEMCOLOUR.titleText, true);
     
     // set editable condition
@@ -119,21 +123,21 @@ void IRTextEditorObject::loadThisFromSaveData(t_json data)
 
 void IRTextEditorObject::paint(Graphics &g)
 {
-    g.fillAll(getStr()->SYSTEMCOLOUR.background);
+    //g.fillAll(getStr()->SYSTEMCOLOUR.background);
     if (isEditMode())
     {
-        auto area = getLocalBounds();
+        //auto area = getLocalBounds();
         
-        g.setColour (getStr()->SYSTEMCOLOUR.contents);
+        //g.setColour (getStr()->SYSTEMCOLOUR.contents);
        // g.drawRoundedRectangle (area.toFloat(), 5.0f, 2.0f);
-        g.drawRect(area.toFloat(), 2.0);
+       // g.drawRect(area.toFloat(), 2.0);
     }
 }
 
 
 void IRTextEditorObject::resized()
 {
-    this->textEditor.setBounds(5,5, getWidth()-10, getHeight()-10);
+    this->textEditor.setBounds(getLocalBounds());
     
 }
 
@@ -249,20 +253,39 @@ int IRTextEditorObject::getAlignId() const
 
 
 // **** **** PRIVATE METHODS **** **** //
+// ------------------------------------------------------------
+
+void IRTextEditorObject::statusInEditMode()
+{
+    this->textEditor.setCaretVisible(true);
+    this->textEditor.setReadOnly(false);
+    
+    this->textEditor.setColour(TextEditor::outlineColourId,
+                               Colours::black);
+    this->textEditor.setColour(TextEditor::focusedOutlineColourId,
+                               Colours::black);
+}
+
+void IRTextEditorObject::statusInControlMode()
+{
+    this->textEditor.setCaretVisible(true);
+    this->textEditor.setReadOnly(false);
+    
+    this->textEditor.setColour(TextEditor::outlineColourId,
+                               Colours::transparentBlack);
+    this->textEditor.setColour(TextEditor::focusedOutlineColourId,
+                               Colours::transparentBlack);
+}
+
+// ------------------------------------------------------------
 
 void IRTextEditorObject::statusChangedCallback(IRNodeComponentStatus status)
 {
     switch (status)
     {
         case EditModeStatus:
-            if(isEditMode()){
-                this->textEditor.setCaretVisible(false);
-                this->textEditor.setReadOnly(true);
-            }
-            else{
-                this->textEditor.setCaretVisible(true);
-                this->textEditor.setReadOnly(false);
-            }
+            if(isEditMode()) statusInEditMode();
+            else statusInControlMode();
             break;
         case SelectableStatus:
             break;

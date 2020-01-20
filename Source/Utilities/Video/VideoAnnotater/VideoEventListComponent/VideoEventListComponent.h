@@ -8,16 +8,18 @@
 #ifndef VideoEventListComponent_h
 #define VideoEventListComponent_h
 
-#include "VideoAnnotationEventComponent.hpp"
 #include "AnnotationTextEventComponent.h"
 #include "AnnotationShapeEventComponent.h"
+#include "KLib.h"
 
 class VideoEventListComponent : public Component,
-public IRStrComponent
+public IRStrComponent,
+public VideoAnnotationEventComponent::Listener
 {
 public:
     
-    VideoEventListComponent(IRStr* str) : IRStrComponent(str)
+    VideoEventListComponent(IRStr* str) :
+    IRStrComponent(str)
     {
         
     }
@@ -38,24 +40,89 @@ public:
         eventComponentResized();
     }
     
+    void mouseDown(const MouseEvent& e) override
+    {
+        deSelectAllEventComponents();
+    }
+    
     // ==================================================
     
+    void openAnnotationFile()
+    {
+        FileChooser chooser("Select a SRT file to load...",
+                            {},
+                            "*.srt", "*.srts");
+        
+        
+        if(chooser.browseForFileToOpen())
+        {
+            auto file = chooser.getResult();
+            auto path = file.getFullPathName();
+            
+            this->srtL.openFile(path.toStdString());
+            auto eventList = this->srtL.getSubtitleItems();
+            
+            if(eventList.size() == 0)
+            {
+                KLib().showErrorMessage("SRT file has no contents to read.");
+                return;
+            }
+            
+            deleteAllEventComponents();
+            
+            for(auto item : eventList)
+            {
+                std::cout << item->getStartTimeString() << " --> " << item->getEndTimeString() << " : " << item->getText() << std::endl;
+                
+              
+                    createTextEventComponent(item->getStartTimeString(),
+                                             item->getEndTimeString(),
+                                             item->getText());
+            }
+            
+            // update events
+            eventModified(nullptr);
+            
+        }
+    }
+    
+    void openAnnotationFile(File file)
+    {
+        
+    }
+    
+    // ==================================================
+
     int getEventNum() const { return (int)this->eventComponents.size(); }
+    
     // ==================================================
     
     void createTextEventComponent()
     {
        std::cout << "createTextEventComponent\n";
        AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr());
-       addEventComponent(comp);
-       addAndMakeVisible(comp);
+       createEventComponent(comp);
     }
+    
+    void createTextEventComponent(std::string beginTime,
+                                  std::string endTime,
+                                  std::string contents)
+    {
+        AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
+                                                                              beginTime,
+                                                                              endTime,
+                                                                              contents);
+        createEventComponent(comp);
+        
+
+    }
+    
     void createShapeEventComponent()
     {
-       AnnotationShapeEventComponent* comp = new AnnotationShapeEventComponent(getStr());
-       addEventComponent(comp);
-       addAndMakeVisible(comp);
+        AnnotationShapeEventComponent* comp = new AnnotationShapeEventComponent(getStr());
+        createEventComponent(comp);
     }
+    
     void createImageEventComponent()
     {
        
@@ -65,6 +132,24 @@ public:
        
     }
     
+    void createEventComponent(VideoAnnotationEventComponent* comp)
+    {
+        addEventComponent(comp);
+        comp->addListener(this);
+        addAndMakeVisible(comp);
+        
+        sortEventComponentByTimeCode();
+    }
+    
+    void deleteAllEventComponents()
+    {
+        for(auto event : this->eventComponents)
+        {
+            selectEventComponent(event);
+        }
+        deleteSelectedEventComponent();
+    }
+    
     void deleteSelectedEventComponent()
     {
         for(auto event : this->selectedEventComponents)
@@ -72,6 +157,8 @@ public:
             clearEventComponent(event);
         }
         this->selectedEventComponents.clear();
+        
+        eventComponentResized();
     }
     
     void deSelectAllEventComponents()
@@ -80,19 +167,91 @@ public:
         {
             event->setSelected(false);
         }
+        
+        this->selectedEventComponents.clear();
+    }
+    
+    void selectEventComponent(VideoAnnotationEventComponent* comp)
+    {
+        comp->setSelected(true);
+        this->selectedEventComponents.push_back(comp);
+        comp->repaint();
+    }
+    
+    void deSelectEventComponent(VideoAnnotationEventComponent* comp)
+    {
+        auto it = std::find(this->selectedEventComponents.begin(), this->selectedEventComponents.end(), comp);
+        if(it != this->selectedEventComponents.end())
+        {
+            this->selectedEventComponents.erase(it);
+        }
+        
+
+        comp->setSelected(false);
     }
     // ==================================================
+    // VideoAnnotationEventComponent Listener
+    void eventComponentSelected(VideoAnnotationEventComponent* comp) override
+    {
+        deSelectAllEventComponents();
+        selectEventComponent(comp);
+        std::cout << "eventComponentSelected called\n";
+    }
     
+    void eventModified(VideoAnnotationEventComponent* comp) override
+    {
+        sortEventComponentByTimeCode();
+        
+        this->srt.open(this->srtPath);
+        
+        using t = VideoAnnotationEventComponent::VideoAnnotationType;
+        for(auto item : this->eventComponents)
+        {
+            this->srt.addItem(item->getSRT());
+
+        }
+
+        this->srt.close();
+        
+        if(this->eventModifiedCallback != nullptr)
+            this->eventModifiedCallback();
+
+    }
+    
+    void eventActiveChanged(VideoAnnotationEventComponent* comp) override
+    {
+        
+    }
+    
+    // ==================================================
+    void sortEventComponentByTimeCode()
+    {
+        std::sort(this->eventComponents.begin(), this->eventComponents.end(), [](const VideoAnnotationEventComponent* a, const VideoAnnotationEventComponent* b){
+            return a->sortVal1 < b->sortVal1;
+        });
+        
+        eventComponentResized();
+    }
+    
+    // SORT
+    bool cmp(const VideoAnnotationEventComponent& a, const VideoAnnotationEventComponent& b)
+    {
+        return a.sortVal1 < b.sortVal1;
+    }
     // ==================================================
 
     std::function<void()> newEventAddedCallback;
-    
-private:
+    std::function<void()> eventModifiedCallback;
     // ==================================================
-    
+
     std::vector<VideoAnnotationEventComponent*> eventComponents;
     std::vector<VideoAnnotationEventComponent*> selectedEventComponents;
-
+    
+    // ==================================================
+    void sortEventComponentsByAscending()
+    {
+        
+    }
    
     // ==================================================
 
@@ -124,6 +283,7 @@ private:
             this->newEventAddedCallback();
     }
     
+
     void eventComponentResized()
     {
         int margin = 5;
@@ -138,6 +298,12 @@ private:
             y += h + margin;
         }
     }
+    
+    private:
+    // ==================================================
+    srtWriter srt;
+    srtLoader srtL;
+    std::string srtPath = "/Users/keitaro/Desktop/out.srt";
 
     // ==================================================
     

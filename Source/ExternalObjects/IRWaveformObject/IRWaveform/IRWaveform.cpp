@@ -65,13 +65,12 @@ void IRWaveform::openFile()
 }
  */
 
-void IRWaveform::openFile()
+bool IRWaveform::openFile()
 {
     
     // stop first
     if(isPlaying()) stop();
     
-    deinitializeAudioData();
     
     
     FileChooser chooser("Select an image file...",
@@ -89,17 +88,19 @@ void IRWaveform::openFile()
         
         if(pathToOpen.isNotEmpty())
         {
+            deinitializeAudioData();
+
             getFilePtr(this->file);
-        }
-    }
+            return true;
+        }else return false;
+    }else return false;
 }
 
-void IRWaveform::openFile(String path)
+bool IRWaveform::openFile(String path)
 {
     
     if(isPlaying()) stop();
     
-    deinitializeAudioData();
 
     if(path.isNotEmpty())
     {
@@ -109,9 +110,12 @@ void IRWaveform::openFile(String path)
     
         if(f.exists())
         {
+            deinitializeAudioData();
+
             getFilePtr(this->file);
-        }
-    }
+            return true;
+        }else return false;
+    }else return false;
 }
 
 void IRWaveform::getFilePtr(File file)

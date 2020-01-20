@@ -164,7 +164,7 @@ void IRWindowComponent::createLeftComponent()
 void IRWindowComponent::createComponents()
 {
     this->rightBar.reset(new IRRightBar(this->ir_str.get()));
-    this->rightBar->addMouseListener(this, false);
+    this->rightBar->addMouseListener(this, true);
     this->mainSpace.reset(new IRMainSpace(this->ir_str.get()));
     this->mixer.addAudioSource(&this->mainSpace->getMixer());
     

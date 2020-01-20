@@ -13,9 +13,10 @@
 class AnnotationShapeEventComponent : public VideoAnnotationEventComponent
 {
 public:
-    AnnotationShapeEventComponent(IRStr *str) : VideoAnnotationEventComponent(str)
+    AnnotationShapeEventComponent(IRStr *str, int videoLengthInSecond = 0) : VideoAnnotationEventComponent(str, videoLengthInSecond)
     {
-        
+        setType(VideoAnnotationEventComponent::SHAPE);
+
     }
     
     ~AnnotationShapeEventComponent()
@@ -25,14 +26,18 @@ public:
     // ==================================================
     void paint(Graphics& g ) override
     {
-        g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
+        VideoAnnotationEventComponent::paint(g);
     }
     
     void resized() override
     {
-        
+        VideoAnnotationEventComponent::resized();
     }
     // ==================================================
+    srtWriter::SRT_STRUCT getSRT() override
+    {
+        return srtWriter::SRT_STRUCT();
+    }
     // ==================================================
     // ==================================================
     // ==================================================

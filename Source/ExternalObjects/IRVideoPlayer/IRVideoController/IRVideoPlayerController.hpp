@@ -31,7 +31,7 @@ public:
     };
     // ==================================================
 
-    IRVideoPlayerController(IRStr* str, IRVideoPlayerObject* videoPlayerObject);
+    IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject);
     ~IRVideoPlayerController();
     // ==================================================
 

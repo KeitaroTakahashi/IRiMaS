@@ -246,16 +246,14 @@ void IRWaveformObject::audioFileOpenAction()
 {
     // recreate waveform to initialize
     //createWaveform();
-    this->waveform->getWaveformUI()->openFile();
+    if(!this->waveform->getWaveformUI()->openFile()) return;
     
-    std::cout << "OK!" << std::endl;
 
     
     String path = this->waveform->getWaveformUI()->getPath();
     std::cout << path << std::endl;
 
     this->controller->audioController.setLoadedAudioFilePath(path);
-    std::cout << "audio file opne\n";
 }
 
 // received from AudioController

@@ -7,7 +7,7 @@
 
 #include "IRVideoAnnotater.hpp"
 
-IRVideoAnnotater::IRVideoAnnotater(IRStr* str, IRVideoPlayerObject* videoPlayerObject) : IRStrComponent(str),
+IRVideoAnnotater::IRVideoAnnotater(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject) : IRStrComponent(str),
 videoArea(10, 10, 640, 480),
 videoPlayerObject(videoPlayerObject),
 videoTransport(str)
@@ -22,7 +22,8 @@ videoTransport(str)
     
     this->eventListComponent.reset(new VideoEventList(str));
     addAndMakeVisible(this->eventListComponent.get());
-    
+    std::function<void()> callback = [this] { eventModifiedAction(); };
+    this->eventListComponent->addEventModifiedCallback(callback);
     
     setWantsKeyboardFocus(true);
 }
@@ -41,8 +42,9 @@ IRVideoAnnotater::~IRVideoAnnotater()
 void IRVideoAnnotater::paint(Graphics& g)
 {
     g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
-    
+
     g.setColour(getStr()->SYSTEMCOLOUR.contents);
+    
     g.fillRect(this->videoArea);
     
     g.fillRect(this->workArea);
@@ -59,11 +61,7 @@ void IRVideoAnnotater::resized()
                                      getWidth() - 20,
                                      getHeight() - (ha + 55));
     
-    if(this->myVideoPlayerObject.get() != nullptr)
-        this->myVideoPlayerObject->setBounds(this->videoArea.getX(),
-                                             this->videoArea.getY(),
-                                             this->videoArea.getWidth(),
-                                             this->videoArea.getHeight());
+    videoResized();
     
     this->videoTransport.setBounds(10,
                                    ha,
@@ -76,6 +74,19 @@ void IRVideoAnnotater::resized()
     eventComponentResized();
 }
 
+void IRVideoAnnotater::videoResized()
+{
+    if(this->myVideoPlayerObject.get() != nullptr)
+    {
+        this->myVideoPlayerObject->setBounds(this->videoArea.getX(),
+                                             this->videoArea.getY(),
+                                             this->videoArea.getWidth(),
+                                             this->videoArea.getHeight());
+        
+    }
+}
+// ==================================================
+
 void IRVideoAnnotater::eventComponentResized()
 {
 
@@ -87,8 +98,8 @@ void IRVideoAnnotater::bindVideoPlayerObject()
     if(this->videoPlayerObject != nullptr)
     {
         // create IRVideoPlayerObject without OpenButton
-        this->myVideoPlayerObject.reset( new IRVideoPlayerObject(this->videoPlayerObject->getParent(),
-                                                                 getStr(),
+        this->myVideoPlayerObject.reset( new IRVideoAnnotaterObject(this->videoPlayerObject->getParent(),
+                                                                getStr(),
                                                                  false));
         
         this->myVideoPlayerObject->videoLoadCompletedCallbackFunc = [this] { myVideoLoadCompleted(); };
@@ -120,21 +131,43 @@ void IRVideoAnnotater::openVideoButtonClicked()
 void IRVideoAnnotater::openFile()
 {
     if(this->myVideoPlayerObject == nullptr) return ;
+    
     this->myVideoPlayerObject->openFile();
+    
+    resized();
 }
 
 void IRVideoAnnotater::openFile(File file)
 {
     this->myVideoPlayerObject->openFile(file);
 }
+// --------------------------------------------------
+
+void IRVideoAnnotater::openSRTs()
+{
+    if(this->eventListComponent.get() != nullptr)
+        this->eventListComponent->openAnnotationFile();
+}
+
+void IRVideoAnnotater::openSRTs(File file)
+{
+    
+}
+// --------------------------------------------------
 
 bool IRVideoAnnotater::hsaVideo() const { return this->isVideoLoaded; }
 
 
 void IRVideoAnnotater::myVideoLoadCompleted()
 {
+    //disable controller
+    this->myVideoPlayerObject->getVideoPlayer()->setNeedController(false);
     // update videoPlayerObject
     updateVideoPlayerOfWorkspace();
+    //update video length
+    this->videoTransport.setVideoLengthInSec(myVideoPlayerObject->getVideoPlayer()->getVideoLength());
+    std::cout << myVideoPlayerObject->getVideoPlayer()->getVideoLength() << std::endl;
+    resized();
 }
 
 
@@ -142,8 +175,6 @@ void IRVideoAnnotater::myVideoLoadCompleted()
 
 void IRVideoAnnotater::openAnnotationMenu ()
 {
-    std::cout << "openAnnotationMenu\n";
-    
     Rectangle<int> pos = getBounds();
     pos.setX(getScreenPosition().getX());
     pos.setY(getScreenPosition().getY());
@@ -169,9 +200,24 @@ void IRVideoAnnotater::addEventButtonAction ()
 
 void IRVideoAnnotater::deleteEventButtonAction ()
 {
-    
+    deleteSelectedEvents();
 }
 
+void IRVideoAnnotater::playPositionChangedAction()
+{
+    float p = this->videoTransport.getPlayPosition();
+    this->myVideoPlayerObject->getVideoPlayer()->setPlayPosition(p);
+}
+
+void IRVideoAnnotater::playAction()
+{
+    this->myVideoPlayerObject->play();
+}
+void IRVideoAnnotater::stopAction()
+{
+    this->myVideoPlayerObject->stop();
+
+}
 // ==================================================
 
 void IRVideoAnnotater::changeListenerCallback (ChangeBroadcaster* source)
@@ -183,15 +229,34 @@ void IRVideoAnnotater::changeListenerCallback (ChangeBroadcaster* source)
     
     if(this->annotationMenu.get() != nullptr)
     {
-        std::cout <<"changeListner\n";
         if(source == this->annotationMenu.get())
         {
-            std::cout <<"aa\n";
             annotationMenuChangeListener();
         }
     }
     
 }
+
+void IRVideoAnnotater::setEventModifiedCallback(std::function<void()> callback)
+{
+    this->eventModifiedCallback = callback;
+}
+
+
+void IRVideoAnnotater::eventModifiedAction()
+{
+    // stop playing video first
+    this->videoPlayerObject->stop();
+    this->myVideoPlayerObject->stop();
+    
+    // apply
+    applyEventsOnTheLoadedVideo();
+    
+    
+    if(this->eventModifiedCallback != nullptr)
+        this->eventModifiedCallback();
+}
+
 
 void IRVideoAnnotater::videoTransportChangeListener()
 {
@@ -201,11 +266,23 @@ void IRVideoAnnotater::videoTransportChangeListener()
         case IRVideoTransport::OpenVideoFile:
             openFile();
             break;
+        case IRVideoTransport::OpenAnnotationFile:
+            openSRTs();
+            break;
         case IRVideoTransport::addEventButtonClicked:
             addEventButtonAction();
             break;
         case IRVideoTransport::deleteEventButtonClicked:
             deleteEventButtonAction();
+            break;
+        case IRVideoTransport::play:
+            playAction();
+            break;
+        case IRVideoTransport::stop:
+            stopAction();
+            break;
+        case IRVideoTransport::playPositionChanged:
+            playPositionChangedAction();
             break;
         default:
             break;
@@ -237,23 +314,30 @@ void IRVideoAnnotater::annotationMenuChangeListener()
 // ==================================================
 void IRVideoAnnotater::clearAllEventComponent()
 {
-    
+    this->eventListComponent->clearAllEventComponent();
 }
 
 void IRVideoAnnotater::clearEventComponent(VideoAnnotationEventComponent* eventComponent)
 {
-   
+
 }
 
 void IRVideoAnnotater::addEventComponent(VideoAnnotationEventComponent* eventComponent)
 {
-    
+    this->eventListComponent->createEventComponent(eventComponent);
 }
+
+void IRVideoAnnotater::deleteSelectedEvents()
+{
+    this->eventListComponent->deleteSelectedEventComponent();
+    
+    eventModifiedAction();
+}
+
 // ==================================================
 
 void IRVideoAnnotater::createTextEventComponent()
 {
-    std::cout << "IRVideoAnnotater::createTextEventComponent\n";
     this->eventListComponent->createTextEventComponent();
     this->annotationMenu->closeAction();
 }
@@ -277,7 +361,6 @@ void IRVideoAnnotater::createAudioEventComponent()
 
 bool IRVideoAnnotater::keyPressed(const KeyPress& key, Component* originatingComponent)
 {
-    std::cout << "keyPressed! IRVideoAnnotator\n";
     if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
     {
        DeleteKeyPressed();
@@ -336,5 +419,19 @@ void IRVideoAnnotater::updateVideoPlayerOfWorkspace()
     
 }
 // ==================================================
+
+void IRVideoAnnotater::applyEventsOnTheLoadedVideo()
+{
+    if(this->myVideoPlayerObject.get() == nullptr) return;
+    
+    auto events = this->eventListComponent->getEventComponents();
+    
+    //first update the videoObject on the Annotater
+    this->myVideoPlayerObject->setAnnotationEvents(events);
+    
+    //update the videoObject on the workspace
+    updateVideoPlayerOfWorkspace();
+}
+
 
 // ==================================================

@@ -82,6 +82,9 @@ public:
     IRIconImage icon_rightBar;
     IRIconImage icon_leftBar;
     
+    // square icon
+    IRIconImage icon_active;
+    
     //Event
     IRIconImage icon_AudioEvent;
     IRIconImage icon_ImageEvent;

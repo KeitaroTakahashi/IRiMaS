@@ -8,7 +8,7 @@
 #include "IRVideoPlayerController.hpp"
 
 
-IRVideoPlayerController::IRVideoPlayerController(IRStr* str, IRVideoPlayerObject* videoPlayerObject) : IRObjectController(str),
+IRVideoPlayerController::IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject) : IRObjectController(str),
 UI(str, videoPlayerObject)
 {
     addAndMakeVisible(&this->LabelTitle);

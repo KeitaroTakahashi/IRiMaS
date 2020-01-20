@@ -11,6 +11,8 @@
 #include "IRNodeObject.hpp"
 #include "IRVideoPlayer.hpp"
 
+#include "IRVideoAnnotationComponentHeader.h"
+
 class IRVideoPlayerObject : public IRNodeObject
 {
     
@@ -42,7 +44,7 @@ public:
     
     // --------------------------------------------------
     // resize reated methods
-    void resized() override;
+    virtual void resized() override;
     
     void resizeThisComponentEvent(const MouseEvent& e) override;
     
@@ -64,12 +66,17 @@ public:
 
     std::function<void()> videoLoadCompletedCallbackFunc;
     virtual void videoLoadCompletedCallback() {}
+    virtual void videoPlayingUpdateCallback(double pos) {}
+    // --------------------------------------------------
+    void play();
+    void stop();
+    
     // --------------------------------------------------
 
     IRVideoPlayer* getVideoPlayer() { return this->videoPlayer.get(); }
 
     // --------------------------------------------------
-
+    
     // --------------------------------------------------
 
     // refresh OpenGL when added
@@ -86,7 +93,7 @@ private:
     // call back function by IRVideoPlayer
     // use videoLoadCompletedCallback() to overload
     void videoLoadCompletedAction();
-    
+    void videoPlayingUpdateAction(double pos);
     // --------------------------------------------------
 
     Rectangle<int> boundsInWorkspace;

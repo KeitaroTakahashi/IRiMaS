@@ -1,46 +1,46 @@
 //
-//  IRVideoAnnotaterObject.hpp
+//  IRVideoAnnotaterInterfaceObject.hpp
 //  IRiMaS
 //
-//  Created by Keitaro on 13/12/2019.
+//  Created by Keitaro on 19/01/2020.
 //
 
-#ifndef IRVideoAnnotaterObject_hpp
-#define IRVideoAnnotaterObject_hpp
+#ifndef IRVideoAnnotaterInterfaceObject_hpp
+#define IRVideoAnnotaterInterfaceObject_hpp
 
-#include "IRVideoPlayerObject.hpp"
+#include "IRVideoAnnotaterObject.hpp"
 #include "IRVideoPlayerController.hpp"
 
-class IRVideoAnnotaterObject : public IRVideoPlayerObject,
+
+class IRVideoAnnotaterInterfaceObject : public IRVideoAnnotaterObject,
 private ChangeListener
 {
 public:
+    IRVideoAnnotaterInterfaceObject(Component* parent, IRStr* str);
+    ~IRVideoAnnotaterInterfaceObject();
     
-    IRVideoAnnotaterObject(Component* parent, IRStr* str);
-    ~IRVideoAnnotaterObject();
     // --------------------------------------------------
-    // --------------------------------------------------
-    
     void annotaterClosedAction();
     void annotaterOpenedAction();
     // --------------------------------------------------
+    
+    
+    
+    // --------------------------------------------------
 
-    
-    
 private:
     // --------------------------------------------------
-
-    void changeListenerCallback (ChangeBroadcaster* source) override;
-    
-    // --------------------------------------------------
     void videoLoadCompletedCallback() override;
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+
     // --------------------------------------------------
 
     std::shared_ptr<IRVideoPlayerController> controller;
-    
     // --------------------------------------------------
     // --------------------------------------------------
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoAnnotaterInterfaceObject)
 
 };
 
-#endif /* IRVideoAnnotaterObject_hpp */
+#endif /* IRVideoAnnotaterInterfaceObject_hpp */

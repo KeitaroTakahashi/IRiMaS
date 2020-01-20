@@ -13,94 +13,28 @@
 #include "IRFoundation.h"
 #include "IRNSViewManager.hpp"
 #include "IRVideoComponent.h"
-//#include "IRVideoPlayerController.hpp"
+#include "KeAnimationComponent.h"
 
 class IRVideoPlayer : public IRUIFoundation,
                       public DragAndDropContainer,
-public ChangeListener
+public ChangeListener,
+public KeAnimationComponent
 {
 public:
-    IRVideoPlayer(IRNodeObject* parent, IRStr* str, bool withOpenButton = true) :
-    IRUIFoundation(parent, str)
-    {
-        if(withOpenButton)
-        {
-            this->openButton.setButtonText("open a movie file");
-            this->openButton.onClick =[this] { openFile(); };
-            addAndMakeVisible(this->openButton);
-        }
-
-        this->player.reset(new IRVideoComponent());
-        this->player->videoLoadCompleted = [this] { videoLoadCompleteAction(); };
-        
-    }
-    
-    ~IRVideoPlayer()
-    {
-        this->player.reset();
-    }
-    // --------------------------------------------------
+    IRVideoPlayer(IRNodeObject* parent, IRStr* str, bool withOpenButton = true);
+    ~IRVideoPlayer();
 
     // --------------------------------------------------
     
-    void resized() override
-    {
-        if(this->player != nullptr)
-            this->player->setBounds(getLocalBounds());
-      
-        this->openButton.setBounds(getLocalBounds());        
-    }
-    
-    void paint(Graphics &g) override
-    {
-        g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
-    }
+    void resized() override;
+    void paint(Graphics &g) override;
+
     
     // --------------------------------------------------
-    void openFile()
-    {
-        FileChooser chooser("Select an video file to play...",
-                            {},
-                            "*.mov, *.mp4, *.m4v");
-        
-        FilenameComponent co {"movie", {}, true, false, false, "*", {}, "(choose a video file to play)"};
-        
-        if(chooser.browseForFileToOpen())
-        {
-            auto file = chooser.getResult();
-            this->movieFile = file;
-            auto path = file.getFullPathName();
-            auto url = URL (file);
-            
-            std::cout << url.getFileName() << std::endl;
-            this->path.swapWith(path);
-            
-            this->player->loadVideo(url);
-                        
-        }
-    }
-    
-    void openFile(File file, bool isCallback = true)
-    {
-        auto url = URL (file);
-        this->movieFile = file;
-        std::cout << url.getFileName() << std::endl;
-        this->player->loadVideo(url);
-    }
-    
-    void videoLoadCompleteAction()
-    {
-        
-        removeChildComponent(&this->openButton);
-        addAndMakeVisible(this->player.get());
-                
-        if(this->videoLoadCompleted != nullptr)
-            this->videoLoadCompleted();
-        
-        
-        
-    }
-    
+    void openFile();
+    void openFile(File file, bool isCallback = true);
+    void videoLoadCompleteAction();
+
     // --------------------------------------------------
     
     bool hsaVideo() const { return this->player->hasVideo(); }
@@ -125,16 +59,23 @@ public:
     // --------------------------------------------------
     
     std::function<void()> videoLoadCompleted;
+    std::function<void(double)> updateAnimationFrameCallback;
     // --------------------------------------------------
 
-    void bringViewToFront()
-    {
-        this->player->bringViewToFront();
-        
-    }
+    void bringViewToFront() { this->player->bringViewToFront(); }
     
     // --------------------------------------------------
-
+    void play() { this->player->play(); }
+    void stop() { this->player->stop(); }
+    
+    bool isPlaying() const { return this->player->isPlaying(); }
+    void setPlayPosition(double newPlayPositionInSec){ this->player->setPlayPosition(newPlayPositionInSec); }
+    double getPlayPosition(){ return this->player->getPlayPosition(); }
+    void setPlaySpeed(double newSpeed) { this->player->setPlaySpeed(newSpeed); }
+    double getPlaySpeed() { return this->player->getPlaySpeed(); }
+    void setAudioVolume(float newVolume) { this->player->setAudioVolume(newVolume); }
+    float getAudioVolume() { return this->player->getAudioVolume(); }
+    double getVideoLength() { return this->player->getVideoLength(); }
     
 private:
     std::shared_ptr<IRVideoComponent> player;
@@ -147,6 +88,12 @@ private:
     }
 
     // --------------------------------------------------
+    
+    void updateAnimationFrame() override
+    {
+        if(this->updateAnimationFrameCallback != nullptr)
+            this->updateAnimationFrameCallback(this->player->getPlayPosition());
+    }
     // --------------------------------------------------
     // --------------------------------------------------
 
@@ -163,7 +110,6 @@ private:
     TextButton openButton;
     
      JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoPlayer)
-    //JUCE_LEAK_DETECTOR (IRVideoPlayer)
     
 };
 #endif /* IRVideoPlayer_hpp */

@@ -77,6 +77,8 @@ void IRRightBar::updateAnimationFrame()
 //==================================================
 void IRRightBar::addComponentAndMakeVisible(Component& comp)
 {
+    // give mouse Listener
+    //comp.addMouseListener(getStr()->mouse, false);
     addAndMakeVisible(comp);
     resized();
 }

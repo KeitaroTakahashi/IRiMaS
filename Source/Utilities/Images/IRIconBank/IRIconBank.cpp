@@ -164,6 +164,13 @@ void IRIconBank::loadImages()
     url = "/materials/Images/icon/menu/icon_TextEvent";
     this->icon_TextEvent = loadImageAndReturn(url);
     
+    
+    // square Icon
+    url = "/materials/Images/icon/menu/icon_active";
+    this->icon_active = loadImageAndReturn(url);
+    
+    
+    // logo
     this->logo_darkBlue = loadLogoImage("logo_15.png");
     this->logo_darkGreen = loadLogoImage("logo_14.png");
     this->logo_darkMagenta = loadLogoImage("logo_10.png");

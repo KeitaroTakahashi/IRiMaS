@@ -33,7 +33,6 @@ public:
         int margin = 5;
         int listCompHeight = (this->videoListComponent->getEventNum() + margin) * this->listComponentHeight;
         this->viewPort->setBounds(0,0,getWidth()-10, listCompHeight);
-        std::cout << "listCompHeight = " << listCompHeight << std::endl;
         this->videoListComponent->setSize(getWidth()-10, listCompHeight);
     }
     //==================================================
@@ -44,6 +43,26 @@ public:
     }
     //==================================================
     
+    void openAnnotationFile()
+    {
+        this->videoListComponent->openAnnotationFile();
+
+    }
+    
+    void openAnnotationFile(File file)
+    {
+        this->videoListComponent->openAnnotationFile(file);
+
+    }
+    //==================================================
+    
+    void addEventModifiedCallback(std::function<void()> callback)
+    {
+        this->videoListComponent->eventModifiedCallback = callback;
+    }
+
+    //==================================================
+
     void createTextEventComponent()
     {
         std::cout << "V::createTextEventComponent\n";
@@ -65,7 +84,49 @@ public:
        this->videoListComponent->createAudioEventComponent();
 
     }
+    //==================================================
+    
+    std::vector<VideoAnnotationEventComponent*> getSelectedEventComponents()
+    {
+        return this->videoListComponent->selectedEventComponents;
+    }
+    
+    std::vector<VideoAnnotationEventComponent*> getEventComponents()
+    {
+        return this->videoListComponent->eventComponents;
+    }
+    
+    void createEventComponent(VideoAnnotationEventComponent* comp)
+    {
+        this->videoListComponent->createEventComponent(comp);
+    }
+    
+    void deleteSelectedEventComponent()
+    {
+        this->videoListComponent->deleteSelectedEventComponent();
+    }
+    
+    void clearAllEventComponent()
+    {
+        this->videoListComponent->clearAllEventComponent();
 
+    }
+    
+    void deSelectAllEventComponents()
+    {
+        this->videoListComponent->deSelectAllEventComponents();
+    }
+    
+    void selectEventComponent(VideoAnnotationEventComponent* comp)
+    {
+        this->videoListComponent->selectEventComponent(comp);
+    }
+    
+    //==================================================
+    void sortEventComponentByBeginTime()
+    {
+        
+    }
     
     //==================================================
     void visibleAreaChangedAction(const Rectangle<int> &newVisibleArea) override
@@ -92,8 +153,7 @@ private:
         {
             this->main->setBounds(0, 0, getWidth(), getHeight());
         }
-        
-        
+
     private:
         Component* main;
         

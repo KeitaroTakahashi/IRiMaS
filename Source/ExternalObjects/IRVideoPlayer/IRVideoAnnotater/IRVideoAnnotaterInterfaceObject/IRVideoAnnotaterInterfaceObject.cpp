@@ -1,42 +1,39 @@
 //
-//  IRVideoAnnotaterObject.cpp
+//  IRVideoAnnotaterInterfaceObject.cpp
 //  IRiMaS
 //
-//  Created by Keitaro on 13/12/2019.
+//  Created by Keitaro on 19/01/2020.
 //
 
-#include "IRVideoAnnotaterObject.hpp"
+#include "IRVideoAnnotaterInterfaceObject.hpp"
 
-IRVideoAnnotaterObject::IRVideoAnnotaterObject(Component* parent, IRStr* str) :
-IRVideoPlayerObject(parent, str)
+IRVideoAnnotaterInterfaceObject::IRVideoAnnotaterInterfaceObject(Component* parent, IRStr* str) :
+IRVideoAnnotaterObject(parent, str)
 {
-    this->controller.reset( new IRVideoPlayerController(str, this) );
-    this->controller->addChangeListener(this);
-    setObjController(this->controller.get());
-    
-    std::cout << "IRVideoAnnotaterObject init\n";
+   this->controller.reset( new IRVideoPlayerController(str, this) );
+   this->controller->addChangeListener(this);
+   setObjController(this->controller.get());
 
 }
 
-IRVideoAnnotaterObject::~IRVideoAnnotaterObject()
+IRVideoAnnotaterInterfaceObject::~IRVideoAnnotaterInterfaceObject()
 {
     this->controller.reset();
 }
-// --------------------------------------------------
 
-void IRVideoAnnotaterObject::videoLoadCompletedCallback()
+void IRVideoAnnotaterInterfaceObject::videoLoadCompletedCallback()
 {
     this->controller->updateAnnotater();
 }
 // --------------------------------------------------
 
-void IRVideoAnnotaterObject::annotaterOpenedAction()
+void IRVideoAnnotaterInterfaceObject::annotaterOpenedAction()
 {
     
 }
 // --------------------------------------------------
 
-void IRVideoAnnotaterObject::annotaterClosedAction()
+void IRVideoAnnotaterInterfaceObject::annotaterClosedAction()
 {
     //this->parent->addAndMakeVisible(this);
     //this->setBounds(getBoundsInWorkspace());
@@ -46,8 +43,7 @@ void IRVideoAnnotaterObject::annotaterClosedAction()
 
 // --------------------------------------------------
 
-
-void IRVideoAnnotaterObject::changeListenerCallback (ChangeBroadcaster* source)
+void IRVideoAnnotaterInterfaceObject::changeListenerCallback (ChangeBroadcaster* source)
 {
     if(source == this->controller.get())
     {
@@ -70,6 +66,5 @@ void IRVideoAnnotaterObject::changeListenerCallback (ChangeBroadcaster* source)
     }
 }
 // --------------------------------------------------
-
 // --------------------------------------------------
 // --------------------------------------------------

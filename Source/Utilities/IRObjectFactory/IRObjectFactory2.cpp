@@ -51,13 +51,15 @@ IRObjectFactory2::IRObjectFactory2()
     registerObject<IRSpectrogramObject>("IRSpectrogram",
                                                       "Spectrogram",
                                                       objectCategory::AUDIOMENU,
-                                                      img);  // leak is audio
+                                                      img);
     
     
-    registerObject<IRVideoAnnotaterObject>("IRVideoPlayer",
+    registerObject<IRVideoAnnotaterInterfaceObject>("IRVideoPlayer",
                                                       "Video Player",
                                                       objectCategory::PLAYERMENU,
-                                                      img); // leak videocomp
+                                                      img);
+    
+    
     //registerObject<IRTestObject>("IRTestObject", "test", img);
     
     registerObject<IRShapeObject>("IRShape",
