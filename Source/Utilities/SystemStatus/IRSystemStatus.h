@@ -28,13 +28,13 @@ public:
     
     void isValidOS()
     {
-        if(getOS() == SystemStats::OperatingSystemType::MacOSX_10_14 ||
-           getOS() == SystemStats::OperatingSystemType::MacOSX_10_15 )
+        if(getOS() == SystemStats::OperatingSystemType::MacOSX_10_13 ||
+           getOS() == SystemStats::OperatingSystemType::MacOSX_10_14 )
         {
 
         }else
         {
-            KLib().showInvalidSystemStatsMessage("TiAALS does NOT support your macOS " + SystemStats::getOperatingSystemName() + " and you are kindly requested to update your system to macOS 10.4 or later.");
+            KLib().showInvalidSystemStatsMessage("TiAALS does NOT support your macOS " + SystemStats::getOperatingSystemName() + " and you are kindly requested to update your system to macOS 10.14 or later.");
         }
     }
     
