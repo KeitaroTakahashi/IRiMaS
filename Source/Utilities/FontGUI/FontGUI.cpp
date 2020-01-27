@@ -191,7 +191,6 @@ void FontGUI::makeAlignMenu()
 
 void FontGUI::fontMenuChanged()
 {
-    std::cout << "Font changed" << std::endl;
     
     this->status = FontChanged;
     sendChangeMessage();
@@ -346,6 +345,6 @@ void FontGUI::changeListenerCallback(ChangeBroadcaster* source)
 
 void FontGUI::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 {
-    std::cout << "comboBox selection changed" << std::endl;
+
 }
 

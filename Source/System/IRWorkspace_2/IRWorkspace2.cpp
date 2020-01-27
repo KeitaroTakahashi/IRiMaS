@@ -337,12 +337,14 @@ json11::Json IRWorkspace::makeSaveDataOfThis()
     std::vector<IRNodeObject*> reversedZorder = this->ObjectZorder;
     std::reverse(std::begin(reversedZorder), std::end(reversedZorder));
 
+    KLib k;
     int index = 0;
     for(auto item : reversedZorder)
     {
+        std::string s = k.GetNextNumber("object-", index, 5);
         json11::Json::object ob = json11::Json::object({
-            {"object-" + std::to_string(index), json11::Json::object({
-                
+            {s, json11::Json::object({
+
                 {"objectType",          item->name.toStdString()},
                 {"objectUniqueID",      item->getUniqueID().toStdString()},
                 {"bounds",              json11::Json::array({item->getX(), item->getY(), item->getWidth(), item->getHeight()})},
@@ -353,7 +355,6 @@ json11::Json IRWorkspace::makeSaveDataOfThis()
         });
         
         objectList.push_back(ob);
-        index++;
     }
     
     json11::Json obList = json11::Json { objectList };

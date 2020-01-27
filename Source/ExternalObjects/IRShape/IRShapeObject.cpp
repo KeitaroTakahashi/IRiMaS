@@ -104,9 +104,9 @@ void IRShapeObject::mouseDownEvent(const MouseEvent& e)
     
     if(getPreferenceWindow() != nullptr)
     {
-        IRPreferenceSpace *space = getPreferenceWindow()->getPreferenceSpace();
+        //IRPreferenceSpace *space = getPreferenceWindow()->getPreferenceSpace();
         
-        IRPreferenceObject* current = space->getPreferenceObj();
+        //IRPreferenceObject* current = space->getPreferenceObj();
         /*
         if(current != this->UI->getPreference())
         {

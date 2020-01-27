@@ -457,6 +457,9 @@
 		82657D0121EFD1A4003FA700 /* MenusListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenusListBox.h; sourceTree = "<group>"; };
 		82657D0321F01367003FA700 /* KeAnimationComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeAnimationComponent.h; sourceTree = "<group>"; };
 		826DAFB023CEF067007BA10D /* IRVideoPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoPlayer.cpp; sourceTree = "<group>"; };
+		827F0D2B23D855E400ECAE7A /* AnnotationTextEventComponentSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnnotationTextEventComponentSetting.h; sourceTree = "<group>"; };
+		827F0D2D23D8563600ECAE7A /* IRColourSettingIcon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRColourSettingIcon.h; sourceTree = "<group>"; };
+		827F0D3023D8590500ECAE7A /* IRColourSettingWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRColourSettingWindow.h; sourceTree = "<group>"; };
 		828612152140020700D64F75 /* IRFFTSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFFTSequence.h; sourceTree = "<group>"; };
 		82861216214002E600D64F75 /* IRSignalWindowLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSignalWindowLib.h; sourceTree = "<group>"; };
 		8286CBF521431A7400AAD437 /* DataType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataType.h; sourceTree = "<group>"; };
@@ -1606,6 +1609,7 @@
 		823E7BCA213059E30046512B /* Colour */ = {
 			isa = PBXGroup;
 			children = (
+				827F0D2C23D8562600ECAE7A /* IRColourSettingIcon */,
 				82A8E7762344E8AA00E12214 /* ColourSelector */,
 				823E7BCB213059FA0046512B /* ColourLib.h */,
 			);
@@ -1719,10 +1723,10 @@
 		8244FED623A12675001AFEFD /* VideoAnnotationEventComponent */ = {
 			isa = PBXGroup;
 			children = (
+				827F0D2A23D855BD00ECAE7A /* AnnotationShapeEventComponent */,
+				827F0D2923D855B300ECAE7A /* AnnotationTextEventComponent */,
 				8244FED723A12689001AFEFD /* VideoAnnotationEventComponent.cpp */,
 				8244FED823A12689001AFEFD /* VideoAnnotationEventComponent.hpp */,
-				8244FEDA23A297B5001AFEFD /* AnnotationTextEventComponent.h */,
-				8244FEE023A2EFEF001AFEFD /* AnnotationShapeEventComponent.h */,
 			);
 			path = VideoAnnotationEventComponent;
 			sourceTree = "<group>";
@@ -1923,6 +1927,48 @@
 				820FBDE623D465E500044092 /* srtLoader.h */,
 			);
 			path = SRT;
+			sourceTree = "<group>";
+		};
+		827F0D2823D855A300ECAE7A /* AnnotationTextEventComponentSetting */ = {
+			isa = PBXGroup;
+			children = (
+				827F0D2B23D855E400ECAE7A /* AnnotationTextEventComponentSetting.h */,
+			);
+			path = AnnotationTextEventComponentSetting;
+			sourceTree = "<group>";
+		};
+		827F0D2923D855B300ECAE7A /* AnnotationTextEventComponent */ = {
+			isa = PBXGroup;
+			children = (
+				827F0D2823D855A300ECAE7A /* AnnotationTextEventComponentSetting */,
+				8244FEDA23A297B5001AFEFD /* AnnotationTextEventComponent.h */,
+			);
+			path = AnnotationTextEventComponent;
+			sourceTree = "<group>";
+		};
+		827F0D2A23D855BD00ECAE7A /* AnnotationShapeEventComponent */ = {
+			isa = PBXGroup;
+			children = (
+				8244FEE023A2EFEF001AFEFD /* AnnotationShapeEventComponent.h */,
+			);
+			path = AnnotationShapeEventComponent;
+			sourceTree = "<group>";
+		};
+		827F0D2C23D8562600ECAE7A /* IRColourSettingIcon */ = {
+			isa = PBXGroup;
+			children = (
+				827F0D2D23D8563600ECAE7A /* IRColourSettingIcon.h */,
+				827F0D2F23D858FB00ECAE7A /* IRColourSettingWindow */,
+			);
+			path = IRColourSettingIcon;
+			sourceTree = "<group>";
+		};
+		827F0D2F23D858FB00ECAE7A /* IRColourSettingWindow */ = {
+			isa = PBXGroup;
+			children = (
+				827F0D3023D8590500ECAE7A /* IRColourSettingWindow.h */,
+			);
+			path = IRColourSettingWindow;
 			sourceTree = "<group>";
 		};
 		8286CBF421431A5F00AAD437 /* DataType */ = {

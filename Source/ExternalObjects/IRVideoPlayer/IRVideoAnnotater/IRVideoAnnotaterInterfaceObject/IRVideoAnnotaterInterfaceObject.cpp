@@ -21,6 +21,74 @@ IRVideoAnnotaterInterfaceObject::~IRVideoAnnotaterInterfaceObject()
     this->controller.reset();
 }
 
+// --------------------------------------------------
+
+IRNodeObject* IRVideoAnnotaterInterfaceObject::copyThis()
+{
+    return new IRVideoAnnotaterInterfaceObject(this->parent, getStr());
+}
+// --------------------------------------------------
+IRNodeObject* IRVideoAnnotaterInterfaceObject::copyContents(IRNodeObject* object)
+{
+    IRVideoAnnotaterInterfaceObject* obj = static_cast<IRVideoAnnotaterInterfaceObject*>(object);
+    obj->setBounds(getLocalBounds());
+    File movieFile = getVideoPlayer()->getMovieFile();
+    if(movieFile.exists())
+    {
+        obj->openFile(movieFile, false);
+    }
+    
+    return obj;
+}
+// --------------------------------------------------
+IRNodeObject* IRVideoAnnotaterInterfaceObject::copyDragDropContents(IRNodeObject* object)
+{
+    IRVideoAnnotaterInterfaceObject* obj = new IRVideoAnnotaterInterfaceObject(this->parent, getStr());
+    return obj;
+}
+// --------------------------------------------------
+// --------------------------------------------------
+// SAVE LOAD
+t_json IRVideoAnnotaterInterfaceObject::saveThisToSaveData()
+{
+    using t = VideoAnnotationEventComponent::VideoAnnotationType;
+    
+    IRVideoAnnotater* videoAnnotator = this->controller->getVideoAnnotaterComponent();
+    
+    std::string srtFilePath = videoAnnotator->getSRTFilePath();
+    
+    std::cout << "videoFilePath = " << this->videoPlayer->getPath() << std::endl;
+    std::cout << "srtFilePath = " << srtFilePath << std::endl;
+    
+    t_json saveData = t_json::object({
+        {"filePath", this->videoPlayer->getPath()},
+        {"srtPath",  srtFilePath}
+    });
+    
+    t_json save = t_json::object({
+        {"videoPlayer", saveData}
+    });
+    
+    return save;
+}
+// --------------------------------------------------
+void IRVideoAnnotaterInterfaceObject::loadThisFromSaveData(t_json data)
+{
+    t_json w = data["videoPlayer"];
+    
+    File file(w["filePath"].string_value());
+    this->videoPlayer->openFile(file);
+    std::string srtPath = w["srtPath"].string_value();
+    if(srtPath.size() > 0)
+    {
+        IRVideoAnnotater* videoAnnotator = this->controller->getVideoAnnotaterComponent();
+        videoAnnotator->openSRTs(File(srtPath));
+    
+        std::cout << "srtPath = " << srtPath << std::endl;
+    }
+}
+// --------------------------------------------------
+
 void IRVideoAnnotaterInterfaceObject::videoLoadCompletedCallback()
 {
     this->controller->updateAnnotater();

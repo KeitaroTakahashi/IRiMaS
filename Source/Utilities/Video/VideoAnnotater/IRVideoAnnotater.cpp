@@ -31,11 +31,14 @@ videoTransport(str)
 IRVideoAnnotater::~IRVideoAnnotater()
 {
     closeAnnotationMenu();
+    std::cout << "annotationMenu closed\n";
+    
+    std::cout << "try clear myVideoPlayerObject : " << this->myVideoPlayerObject.get() << std::endl;
     this->myVideoPlayerObject.reset();
+    std::cout << "myVideoPlayerObject closed\n";
+
     this->eventListComponent.reset();
     
-    
-    clearAllEventComponent();
 }
 
 // ==================================================
@@ -103,6 +106,7 @@ void IRVideoAnnotater::bindVideoPlayerObject()
                                                                  false));
         
         this->myVideoPlayerObject->videoLoadCompletedCallbackFunc = [this] { myVideoLoadCompleted(); };
+        this->myVideoPlayerObject->videoPlayingUpdate = [this](double pos){ myVideoPlayingUpdate(pos); };
         
         this->videoPlayerObject->copyContents(this->myVideoPlayerObject.get());
 
@@ -151,8 +155,46 @@ void IRVideoAnnotater::openSRTs()
 
 void IRVideoAnnotater::openSRTs(File file)
 {
-    
+    if(this->eventListComponent.get() != nullptr)
+        this->eventListComponent->openAnnotationFile(file);
+    else std::cout << "error eventListComponent null\n";
 }
+
+void IRVideoAnnotater::saveSRTs()
+{
+    
+    if(this->srtSavePath.length() == 0)
+    {
+        if(this->eventListComponent.get() != nullptr){
+            this->eventListComponent->saveAnnotationFile();
+            
+            this->srtSavePath = this->eventListComponent->getSrtSavePath();
+        }
+    }else{
+        File file(this->srtSavePath);
+        if(file.exists())
+        {
+            saveSRTs(File(this->srtSavePath));
+        }else{
+            this->srtSavePath = "";
+            saveSRTs();
+        }
+    }
+}
+
+void IRVideoAnnotater::saveSRTs(File file)
+{
+    if(this->eventListComponent.get() != nullptr)
+        this->eventListComponent->saveAnnotationFile(file);
+}
+
+std::string IRVideoAnnotater::getSRTFilePath()
+{
+    if(this->eventListComponent.get() != nullptr)
+        return this->eventListComponent->getFilePath();
+    else return "";
+}
+
 // --------------------------------------------------
 
 bool IRVideoAnnotater::hsaVideo() const { return this->isVideoLoaded; }
@@ -170,6 +212,10 @@ void IRVideoAnnotater::myVideoLoadCompleted()
     resized();
 }
 
+void IRVideoAnnotater::myVideoPlayingUpdate(double pos)
+{
+    this->videoTransport.setCurrentPlayingPosition(pos);
+}
 
 // ==================================================
 
@@ -205,6 +251,8 @@ void IRVideoAnnotater::deleteEventButtonAction ()
 
 void IRVideoAnnotater::playPositionChangedAction()
 {
+    stopAction();
+    
     float p = this->videoTransport.getPlayPosition();
     this->myVideoPlayerObject->getVideoPlayer()->setPlayPosition(p);
 }
@@ -245,13 +293,13 @@ void IRVideoAnnotater::setEventModifiedCallback(std::function<void()> callback)
 
 void IRVideoAnnotater::eventModifiedAction()
 {
+    
     // stop playing video first
     this->videoPlayerObject->stop();
     this->myVideoPlayerObject->stop();
     
     // apply
     applyEventsOnTheLoadedVideo();
-    
     
     if(this->eventModifiedCallback != nullptr)
         this->eventModifiedCallback();
@@ -268,6 +316,9 @@ void IRVideoAnnotater::videoTransportChangeListener()
             break;
         case IRVideoTransport::OpenAnnotationFile:
             openSRTs();
+            break;
+        case IRVideoTransport::SaveAnnotationFile:
+            saveSRTs();
             break;
         case IRVideoTransport::addEventButtonClicked:
             addEventButtonAction();
@@ -338,14 +389,24 @@ void IRVideoAnnotater::deleteSelectedEvents()
 
 void IRVideoAnnotater::createTextEventComponent()
 {
-    this->eventListComponent->createTextEventComponent();
+    // automatically fill begin and end time Code
+    // end time code in default is begin + 3.0 sec
+    float betinTimeInSec = this->videoTransport.getPlayPosition();
+    float endTimeInSec = betinTimeInSec + 3.0;
+
+    this->eventListComponent->createTextEventComponent(betinTimeInSec,
+                                                       endTimeInSec);
     this->annotationMenu->closeAction();
+    
+    eventModifiedAction();
 }
 
 void IRVideoAnnotater::createShapeEventComponent()
 {
     this->eventListComponent->createShapeEventComponent();
     this->annotationMenu->closeAction();
+    
+    eventModifiedAction();
 }
 
 void IRVideoAnnotater::createImageEventComponent()
@@ -377,7 +438,7 @@ bool IRVideoAnnotater::keyPressed(const KeyPress& key, Component* originatingCom
     // close window
     if(key.getTextDescription() == "Command + W")
     {
-        AKeyPressed();
+        CommandWKeyPressed();
         return true;
     }
 
@@ -394,6 +455,17 @@ void IRVideoAnnotater::AKeyPressed()
     openAnnotationMenu();
 }
 
+void IRVideoAnnotater::CommandWKeyPressed()
+{
+    closeAnnotationWindow();
+}
+
+void IRVideoAnnotater::closeAnnotationWindow()
+{
+    if(this->closeAnnotationWindowCallback != nullptr)
+        this->closeAnnotationWindowCallback();
+}
+
 // ==================================================
 
 void IRVideoAnnotater::updateVideoPlayerOfThis()
@@ -403,6 +475,7 @@ void IRVideoAnnotater::updateVideoPlayerOfThis()
         if(this->myVideoPlayerObject.get() != nullptr)
         {
             this->videoPlayerObject->shareContentsWith(this->myVideoPlayerObject.get());
+            this->videoTransport.setVideoLengthInSec(this->videoPlayerObject->getVideoPlayer()->getVideoLength());
             resized();
         }
     }
@@ -425,12 +498,13 @@ void IRVideoAnnotater::applyEventsOnTheLoadedVideo()
     if(this->myVideoPlayerObject.get() == nullptr) return;
     
     auto events = this->eventListComponent->getEventComponents();
-    
+        
     //first update the videoObject on the Annotater
     this->myVideoPlayerObject->setAnnotationEvents(events);
+    this->videoPlayerObject->setAnnotationEvents(events);
     
     //update the videoObject on the workspace
-    updateVideoPlayerOfWorkspace();
+    //updateVideoPlayerOfWorkspace();
 }
 
 

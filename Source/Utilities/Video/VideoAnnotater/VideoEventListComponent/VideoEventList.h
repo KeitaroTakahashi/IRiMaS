@@ -24,7 +24,8 @@ public:
     
     ~VideoEventList()
     {
-        
+        this->viewPort.reset();
+        this->videoListComponent.reset();
     }
     //==================================================
     
@@ -54,6 +55,28 @@ public:
         this->videoListComponent->openAnnotationFile(file);
 
     }
+    
+    void saveAnnotationFile()
+    {
+        this->videoListComponent->saveAnnotationFile();
+    }
+    
+    void saveAnnotationFile(File file)
+    {
+        this->videoListComponent->saveAnnotationFile(file);
+    }
+    
+    std::string getFilePath()
+    {
+        return this->videoListComponent->getFilePath();
+    }
+    
+    std::string getSrtSavePath() const
+    {
+        return this->videoListComponent->getSrtSavePath();
+        
+    }
+
     //==================================================
     
     void addEventModifiedCallback(std::function<void()> callback)
@@ -65,9 +88,14 @@ public:
 
     void createTextEventComponent()
     {
-        std::cout << "V::createTextEventComponent\n";
-
         this->videoListComponent->createTextEventComponent();
+    }
+    
+    void createTextEventComponent(float beginTime,
+                                  float endTime)
+    {
+        this->videoListComponent->createTextEventComponent(beginTime,
+                                                           endTime);
     }
     void createShapeEventComponent()
     {

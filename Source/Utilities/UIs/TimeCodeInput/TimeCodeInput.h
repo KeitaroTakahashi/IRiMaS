@@ -154,6 +154,11 @@ public:
         this->msecLabelBegin.setText    (ms, dontSendNotification);
     }
     
+    void setBeginTime(float beginTime)
+    {
+        setBeginTime(getTimeCodeInString(beginTime));
+    }
+    
     float getEndTimeCode() const
     {
         int h = std::stoi(this->hourLabelEnd.getText().toStdString());
@@ -192,6 +197,11 @@ public:
         this->minLabelEnd.setText     (m, dontSendNotification);
         this->secLabelEnd.setText     (s, dontSendNotification);
         this->msecLabelEnd.setText    (ms, dontSendNotification);
+    }
+    
+    void setEndTime(float endTime)
+    {
+        setEndTime(getTimeCodeInString(endTime));
     }
     
     std::string getTimeCodeInString(float timeCodeInSec)

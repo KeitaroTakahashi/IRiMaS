@@ -52,6 +52,7 @@ void IRISVObject::mouseDownEvent(const MouseEvent& e)
     // restart OpenGL rendering if in EditMode
     if(getPreferenceWindow() != nullptr)
     {
+        /*
         IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
         
         IRPreferenceObject* current = space->getPreferenceObj();
@@ -60,7 +61,7 @@ void IRISVObject::mouseDownEvent(const MouseEvent& e)
         
         if(current != this->UI->getPreference()){
             space->setPreferenceObj(this->UI->getPreference());
-        }
+        }*/
     }
     
 }

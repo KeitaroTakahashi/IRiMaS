@@ -9,6 +9,7 @@
 #define AnnotationTextEventComponent_h
 
 #include "VideoAnnotationEventComponent.hpp"
+#include "FontController.h"
 
 class AnnotationTextEventComponent : public VideoAnnotationEventComponent
 {
@@ -26,7 +27,47 @@ public:
         this->textContents.addMouseListener(this, true);
         this->textContents.setEditable(true);
         this->textContents.onTextChange = [this]{ textContentsChanged(); };
+        
+        this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
+        this->TextSettingButton.addMouseListener(this, true);
+        this->TextSettingButton.setDrawCircle(true);
+        this->TextSettingButton.setDrawRoundedSquare(false);
+        addAndMakeVisible(&this->TextSettingButton);
+        this->TextSettingButton.onClick = [this]{ TextSettingButtonClickedAction(); };
     }
+    
+    AnnotationTextEventComponent(IRStr* str,
+                                 float beginTime,
+                                 float endTime,
+                                 int videoLengthInSecond = 0) :
+    VideoAnnotationEventComponent(str, videoLengthInSecond)
+
+    {
+        setType(VideoAnnotationEventComponent::TEXT);
+        
+        addAndMakeVisible(&this->timeCodeUI);
+        this->timeCodeUI.addMouseListener(this, true);
+        this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
+        this->timeCodeUI.setBeginTime(beginTime);
+        this->timeCodeUI.setEndTime(endTime);
+        addAndMakeVisible(&this->textContents);
+        this->textContents.setText("text...", dontSendNotification);
+        this->textContents.setColour(Label::outlineColourId, Colour(255,255,255));
+        this->textContents.addMouseListener(this, true);
+        this->textContents.setEditable(true);
+        this->textContents.onTextChange = [this]{ textContentsChanged(); };
+        
+        this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
+        this->TextSettingButton.setDrawCircle(true);
+        this->TextSettingButton.setDrawRoundedSquare(false);
+        addAndMakeVisible(&this->TextSettingButton);
+        this->TextSettingButton.onClick = [this]{ TextSettingButtonClickedAction(); };
+        
+        
+        timeCodeChanged();
+    }
+
+    
     
     AnnotationTextEventComponent(IRStr* str,
     std::string beginTime,
@@ -49,6 +90,13 @@ public:
         this->textContents.setEditable(true);
         this->textContents.onTextChange = [this]{ textContentsChanged(); };
         
+        this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
+        this->TextSettingButton.setDrawCircle(true);
+        this->TextSettingButton.setDrawRoundedSquare(false);
+        addAndMakeVisible(&this->TextSettingButton);
+        this->TextSettingButton.onClick = [this]{ TextSettingButtonClickedAction(); };
+        
+        
         timeCodeChanged();
     }
     
@@ -70,7 +118,12 @@ public:
         VideoAnnotationEventComponent::resized();
         
         this->timeCodeUI.setBounds(0, 0, 226, getHeight());
-        this->textContents.setBounds(230, 5, getWidth() - 200 - 100, 30);
+        this->textContents.setBounds(230, 5, getWidth() - 200 - 120, 30);
+        
+        int margin = 5;
+        int h = getHeight();
+        int buttonSize = h - margin*2;
+        this->TextSettingButton.setBounds(getWidth() - margin*3 - buttonSize * 2, margin, buttonSize, buttonSize);
     }
     // ==================================================
     
@@ -109,6 +162,13 @@ private:
     
     // ==================================================
     Label textContents;
+    
+    IRImageButton TextSettingButton;
+    void TextSettingButtonClickedAction()
+    {
+        selectedAction();
+    }
+
     // ==================================================
     
     void setVideoLength(int videoLengthInSecond) override
@@ -117,7 +177,8 @@ private:
     }
     // ==================================================
 
-    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AnnotationTextEventComponent)
+
     
 };
 #endif /* AnnotationTextEventComponent_h */

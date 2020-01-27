@@ -46,7 +46,8 @@ IRNodeComponent::~IRNodeComponent()
 
 void IRNodeComponent::initOpenGLContext()
 {
-    
+    StopWatch bench;
+    bench.start();
     std::cout << "initOpenGLContext\n";
     //if this object contains heavy weight component, then connect to OpenGLContext
        if(this->objectType.componentType == orginaryIRComponent)
@@ -59,6 +60,7 @@ void IRNodeComponent::initOpenGLContext()
            manager.setOpenGLContextAlpha(0);
     
        }
+    bench.result("OpenGL initialized");
 }
 
 

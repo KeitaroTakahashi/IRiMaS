@@ -18,8 +18,22 @@ private ChangeListener
 public:
     IRVideoAnnotaterInterfaceObject(Component* parent, IRStr* str);
     ~IRVideoAnnotaterInterfaceObject();
-    
     // --------------------------------------------------
+    // copy related methods
+    
+    IRNodeObject* copyThis() override;
+    
+    IRNodeObject* copyContents(IRNodeObject* object) override;
+    
+    IRNodeObject* copyDragDropContents(IRNodeObject* object) override;
+    
+    t_json saveThisToSaveData() override;
+
+    void loadThisFromSaveData(t_json data) override;
+
+    // --------------------------------------------------
+    
+    
     void annotaterClosedAction();
     void annotaterOpenedAction();
     // --------------------------------------------------

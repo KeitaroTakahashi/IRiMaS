@@ -21,7 +21,7 @@
                   symbolName = "juce::OggVorbisNamespace::_vq_lengthlist__44cn1_sm_p1_0"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
-                  offsetFromSymbolStart = "35026">
+                  offsetFromSymbolStart = "31266">
                </Location>
             </Locations>
          </BreakpointContent>

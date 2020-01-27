@@ -157,6 +157,7 @@ private:
     void DeleteKeyPressed();
     void CommandEPressed();
     void CommandAPressed();
+    void CommandSPressed(); // save
     
     // ==================================================
 

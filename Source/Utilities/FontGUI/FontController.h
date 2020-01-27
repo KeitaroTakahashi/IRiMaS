@@ -8,6 +8,7 @@
 #ifndef newFontController_h
 #define newFontController_h
 
+#include "IRColourSettingIcon.h"
 
 enum FontControllerStatus
 {
@@ -29,19 +30,27 @@ public ComboBox::Listener
     
 public:
     
-    FontController(IRStr* str) : IRStrComponent(str)
+    FontController(IRStr* str) : IRStrComponent(str),
+    textColourIcon(Colours::black, str)
     {
-
+        StopWatch bench;
         addAndMakeVisible(this->labelFont);
         this->labelFont.setText("Font : ", dontSendNotification);
         //this->labelFont.setColour(Label::textColourId, Colours::black);
         this->labelFont.setJustificationType(Justification::left);
         
         // get info
+        bench.start();
         getAllFonts();
+        bench.result("getAllFonts");
         
+        bench.start();
+
         makeFontMenu();
         makeFontStyleMenu();
+        
+        bench.result("makeFontMenu");
+
         
         addAndMakeVisible(this->labelStyle);
         this->labelStyle.setText("Style : ", dontSendNotification);
@@ -75,19 +84,18 @@ public:
         //this->labelTextColour.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelTextColour.setJustificationType(Justification::left);
         
-        addAndMakeVisible(this->textColour);
-        this->textColour.setCurrentColour(Colours::black);
-        this->textColour.addChangeListener(this);
+
+        // colour icon
+        addAndMakeVisible(this->textColourIcon);
+        this->textColourIcon.addChangeListener(this);
         
-        
+
         addAndMakeVisible(this->labelBackgroundColour);
         this->labelBackgroundColour.setText("BackGround Colour : ", dontSendNotification);
         //this->labelBackgroundColour.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelBackgroundColour.setJustificationType(Justification::left);
         
-        addAndMakeVisible(this->backgroundColour);
-        this->backgroundColour.setCurrentColour(getStr()->SYSTEMCOLOUR.background);
-        this->backgroundColour.addChangeListener(this);
+       
     }
     ~FontController() {}
     
@@ -98,7 +106,8 @@ public:
         int yBigIncrement = 30;
         
         int menuWidth = getWidth() - 20;
-        
+        int shortMenuWidth = getWidth() - 100;
+
         // margin 10
         //this->labelTitle.setBounds              (10, y, 300, 30);
         
@@ -108,29 +117,23 @@ public:
         
         y += yBigIncrement;
 
-        this->labelStyle.setBounds              (10, y, 100, 30);
-        y += yIncrement;
-        this->styleMenu.setBounds               (10, y, menuWidth, 30);
+        this->labelStyle.setBounds              (10, y, 80, 30);
+        this->styleMenu.setBounds               (90, y, shortMenuWidth, 30);
         
         y += yBigIncrement;
 
-        this->labelFontSize.setBounds           (10, y, 100, 30);
-        this->fontSizeInput.setBounds           (110, y, 100, 30);
+        this->labelFontSize.setBounds           (10, y, 80, 30);
+        this->fontSizeInput.setBounds           (90, y, shortMenuWidth, 30);
         
         y += yBigIncrement;
 
+        this->labelAlign.setBounds              (10, y, 80, 30);
+        this->alignMenu.setBounds               (90, y, shortMenuWidth, 30);
         
-        this->labelAlign.setBounds              (10, y, 100, 30);
-        y += yIncrement;
-        this->alignMenu.setBounds               (10, y, menuWidth, 30);
-        
-        y += yBigIncrement;
+        y += yBigIncrement + 5;
 
         this->labelTextColour.setBounds         (10, y, 100, 30);
-        y += yIncrement;
-        this->textColour.setBounds              (10, y, menuWidth, 200);
-        
-        y += 200;
+        this->textColourIcon.setBounds          (getWidth() - 10 - 80, y + 5, 80, 20);
         /*
         this->labelBackgroundColour.setBounds   (10, y, 100, 30);
         y += yIncrement;
@@ -147,7 +150,7 @@ public:
     void getAllFonts()
     {
         Font f;
-        this->fontFamilyList = f.findAllTypefaceNames();
+        this->fontFamilyList = getStr()->fontFamilyList;
     }
     void getSelectedFontStyles(String fontName)
     {
@@ -210,7 +213,6 @@ public:
     
     void fontMenuChanged()
     {
-        std::cout << "Font changed" << std::endl;
         
         this->status = FontChanged;
         sendChangeMessage();
@@ -268,26 +270,19 @@ public:
     float getHeight() const { return this->fontSize; }
     void setHeight(float newHeight) { this->fontSize = newHeight; }
     
-    Colour getTextColour() const { return this->textColour.getCurrentColour(); }
-    void setTextColour(Colour newColour) { this->textColour.setCurrentColour(newColour); }
-    Colour getBackgroundColour() const { return this->backgroundColour.getCurrentColour(); }
-    void setBackgroundColour(Colour newColour) { this->backgroundColour.setCurrentColour(newColour); }
+    Colour getTextColour() const { return this->textColourIcon.getCurrentColour(); }
+    void setTextColour(Colour newColour) { this->textColourIcon.setCurrentColour(newColour); }
     
     void changeListenerCallback(ChangeBroadcaster* source) override
     {
-        if (source == &this->textColour)
+       if (source == &this->textColourIcon)
         {
-            // colour changed
             fontColourMenuChanged();
-        }
-        else if (source == &this->backgroundColour)
-        {
-            backgroundColourMenuChanged();
         }
     }
     void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override
     {
-        std::cout << "comboBox selection changed" << std::endl;
+
     }
     
     
@@ -315,19 +310,7 @@ private:
     StringArray fontStyleList;
     StringArray fontFamilyList;
     
-    ColourSelector textColour
-    {
-        ColourSelector::showSliders
-        | ColourSelector::showColourspace
-        | ColourSelector::showAlphaChannel
-    };
-    
-    ColourSelector backgroundColour
-    {
-        ColourSelector::showSliders
-        | ColourSelector::showColourspace
-        | ColourSelector::showAlphaChannel
-    };
+    IRColourSettingIcon textColourIcon;
     
     FontControllerStatus status;
     

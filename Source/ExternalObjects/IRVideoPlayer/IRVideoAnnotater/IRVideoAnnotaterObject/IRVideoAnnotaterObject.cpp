@@ -11,9 +11,6 @@ IRVideoAnnotaterObject::IRVideoAnnotaterObject(Component* parent, IRStr* str, bo
 IRVideoPlayerObject(parent, str, withOpenButton)
 {
 
-    
-    std::cout << "IRVideoAnnotaterObject init\n";
-
 }
 
 IRVideoAnnotaterObject::~IRVideoAnnotaterObject()
@@ -31,7 +28,8 @@ void IRVideoAnnotaterObject::resized()
 
     for(auto comp : this->visibleAnnotationComponents)
     {
-        comp->setBounds(0, getHeight() - videoY - (60 * visibleIndex), getWidth(), 60);
+        //margin x = 5
+        comp->setBounds(5, getHeight() - videoY - (60 * visibleIndex), getWidth()-10, 60);
         
         visibleIndex ++;
     }
@@ -53,16 +51,10 @@ void IRVideoAnnotaterObject::videoPlayingUpdateCallback(double pos)
             // check if the event is active
             if(comp->getEvent()->isActive())
             {
-                if(comp->getEvent()->getType() == t::TEXT)
-                {
-                    auto c = static_cast<AnnotationTextEventComponent*> (comp->getEvent());
-                    //std::cout << "beginTime = " << comp->getBeginTimeInSec() << " : endTime = " << comp->getEndTimeInSec() << std::endl;
-
-                    //std::cout << c->getTextContents() << std::endl;
-
-                }
                 // add to the list
                 addVisibleAnnotationComponents(comp);
+                //highlight
+                comp->getEvent()->setSelected(true);
                 // set visible true
                 comp->setVisible(true);
             }
@@ -72,20 +64,26 @@ void IRVideoAnnotaterObject::videoPlayingUpdateCallback(double pos)
             {
                 // if the component is visible, then remove from the visible list and set it invisible
                 removeVisibleAnnotationComponents(comp);
+                comp->getEvent()->setSelected(false);
                 comp->setVisible(false);
             }
         }
     }
     
+    if(this->videoPlayingUpdate != nullptr)
+        this->videoPlayingUpdate(pos);
+    
     resized();
 }
-
+// --------------------------------------------------
 
 // --------------------------------------------------
 void IRVideoAnnotaterObject::setAnnotationEvents(std::vector<VideoAnnotationEventComponent*> events)
 {
-    
+    // reset
     clearAnnotationComponent();
+    clearVisibleAnnotationComponents();
+    
     for(auto e : events)
     {
         createAnnotationComponent(e);
@@ -101,6 +99,7 @@ void IRVideoAnnotaterObject::clearAnnotationComponent()
     }
     
     this->annotationComponents.clear();
+    
 }
 
 
@@ -134,7 +133,6 @@ void IRVideoAnnotaterObject::addAnnotationComponent(IRVideoAnnotationComponent* 
 
 void IRVideoAnnotaterObject::createTEXTAnnotationComponent(VideoAnnotationEventComponent* event)
 {
-    
     auto e = static_cast<AnnotationTextEventComponent* >(event);
     
     IRVideoAnnotationTextComponent* comp = new IRVideoAnnotationTextComponent(getStr(), e);

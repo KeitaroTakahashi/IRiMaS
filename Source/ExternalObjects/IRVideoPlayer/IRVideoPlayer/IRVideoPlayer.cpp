@@ -64,7 +64,7 @@ void IRVideoPlayer::openFile()
         auto url = URL (file);
         
         std::cout << url.getFileName() << std::endl;
-        this->path.swapWith(path);
+        this->videoFilePath = path.toStdString();
         this->player->loadVideo(url);
     }
 }
@@ -72,6 +72,7 @@ void IRVideoPlayer::openFile()
 void IRVideoPlayer::openFile(File file, bool isCallback)
 {
     auto url = URL (file);
+    this->videoFilePath = file.getFullPathName().toStdString();
     this->movieFile = file;
     std::cout << url.getFileName() << std::endl;
     this->player->loadVideo(url);

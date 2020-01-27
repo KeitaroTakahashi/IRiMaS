@@ -34,15 +34,6 @@ public:
             SubtitleParser *parser = this->parserFactory->getParser();
 
             this->items = parser->getSubtitles();
-            
-            for(auto item : this->items)
-            {
-                std::cout <<item->getStartTimeString() << " --> " << item->getEndTimeString() << std::endl;
-                std::cout << item->getText() << std::endl;
-
-            }
-            
-            std::cout << this->items.size() << " items loaded\n";
         }
     }
     

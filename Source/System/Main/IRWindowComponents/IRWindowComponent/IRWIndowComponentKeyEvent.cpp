@@ -19,5 +19,10 @@ void IRWindowComponent::CommandEPressed()
 
 }
 
+void IRWindowComponent::CommandSPressed()
+{
+    saveProject();
+    
+}
 
 

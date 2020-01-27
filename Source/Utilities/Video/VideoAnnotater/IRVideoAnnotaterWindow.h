@@ -22,8 +22,8 @@ public:
                            IRVideoAnnotaterObject* videoPlayerObject) :
     DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), DocumentWindow::allButtons),
     IRStrComponent(str),
-    videoPlayerObject(videoPlayerObject)
-
+    videoPlayerObject(videoPlayerObject),
+    videoAnnotater(str, videoPlayerObject)
     {
         setUsingNativeTitleBar(true);
         setResizable(true, true);
@@ -33,16 +33,19 @@ public:
         Rectangle<int> r = Desktop::getInstance().getDisplays().getMainDisplay().userArea;
         setResizeLimits(1000, 800, r.getWidth(), r.getHeight());
         
-        this->videoAnnotater.reset(new IRVideoAnnotater(str, videoPlayerObject));
-        this->videoAnnotater->setBounds(0, 0, frameRect.getWidth(), frameRect.getHeight());
-        setContentOwned(this->videoAnnotater.get(), true);
+        this->videoAnnotater.setBounds(0, 0, frameRect.getWidth(), frameRect.getHeight());
+        setContentOwned(&this->videoAnnotater, true);
+        addKeyListener(&this->videoAnnotater);
+        
+        this->videoAnnotater.closeAnnotationWindowCallback = [this] { close(); };
+        
+        this->videoAnnotater.bindVideoPlayerObject();
 
-        addKeyListener(this->videoAnnotater.get());
     }
     
     ~IRVideoAnnotaterWindow()
     {
-        this->videoAnnotater.reset();
+        
     }
     // ==================================================
     std::function<void()> closeButtonPressedCallback;
@@ -58,33 +61,38 @@ public:
     
     void close()
     {
-        this->videoAnnotater->removeVideoPlayerObject();
+        //this->videoAnnotater.removeVideoPlayerObject();
         setVisible(false);
     }
     
     void open()
     {
-        this->videoAnnotater->bindVideoPlayerObject();
+        //this->videoAnnotater.bindVideoPlayerObject();
         setVisible(true);
     }
     // ==================================================
     
     void uodateAnnotater()
     {
-        this->videoAnnotater->updateVideoPlayerOfThis();
+        this->videoAnnotater.updateVideoPlayerOfThis();
     }
     
     void updateParentVideoPlayerObject()
     {
-        this->videoAnnotater->updateVideoPlayerOfWorkspace();
+        this->videoAnnotater.updateVideoPlayerOfWorkspace();
     }
     // ==================================================
     void setEventModifiedCallback(std::function<void()> callback)
     {
-        this->videoAnnotater->setEventModifiedCallback(callback);
+        this->videoAnnotater.setEventModifiedCallback(callback);
     }
 
    
+    // ==================================================
+
+    IRVideoAnnotater* getVideoAnnotaterComponent() { return &this->videoAnnotater; }
+    
+    // ==================================================
     // ==================================================
 
 private:
@@ -99,7 +107,7 @@ private:
     // ==================================================
     // ==================================================
     
-    std::shared_ptr<IRVideoAnnotater> videoAnnotater;
+    IRVideoAnnotater videoAnnotater;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRVideoAnnotaterWindow)
 

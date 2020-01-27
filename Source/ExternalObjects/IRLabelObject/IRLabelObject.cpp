@@ -4,10 +4,11 @@
 IRLabelObject::IRLabelObject(Component* parent, IRStr* str) :
 IRNodeObject(parent, "IRLabel", str, NodeObjectType(orginaryIRComponent))
 {
-    
+    StopWatch bench;
+    bench.start();
     // initialize controller
     this->controller.reset( new IRLabelController(str) );
-    
+    bench.result("Label controller");
     this->controller->getFontController()->addChangeListener(this);
     
     setObjController(this->controller.get());
@@ -88,14 +89,11 @@ t_json IRLabelObject::saveThisToSaveData()
 void IRLabelObject::loadThisFromSaveData(t_json data)
 {
     // example : string value
-    std::cout << "setTypefaceName "<< String(data["fontTypefaceName"].string_value()) << std::endl;
     this->font.setTypefaceName(String(data["fontTypefaceName"].string_value()));
-    std::cout << "setTypefaceName "<< String(data["fontTypefaceStyle"].string_value()) << std::endl;
 
     this->font.setTypefaceStyle(String(data["fontTypefaceStyle"].string_value()));
     // example : int value
     this->font.setHeight(data["fontHeight"].int_value());
-    std::cout << "setTypefaceName "<< data["fontHeight"].int_value() << std::endl;
 
     // set align
     setAlign(data["textAlign"].int_value());
@@ -115,13 +113,8 @@ void IRLabelObject::loadThisFromSaveData(t_json data)
                                (uint8)b,
                                (uint8)a);
     
-    std::cout << "colour : " << c[0].int_value() << ", " << c[1].int_value() << ", " << c[2].int_value() << ", " <<c[3].int_value() << std::endl;
-
     this->label.setColour(Label::textColourId, textColour);
     
-    // set text contents
-    std::cout << "textContents : " << String(data["textContents"].string_value())<< std::endl;
-
     this->label.setText(String(data["textContents"].string_value()), dontSendNotification);
     
     // gui
@@ -131,9 +124,7 @@ void IRLabelObject::loadThisFromSaveData(t_json data)
     gui->setHeight(data["textHeight"].int_value());
     gui->setAlign(data["textAlign"].int_value());
     gui->setTextColour(textColour);
-    
-    std::cout << "all done\n";
-    
+        
 }
 
 
@@ -191,7 +182,6 @@ void IRLabelObject::changeListenerCallback (ChangeBroadcaster* source)
         switch (fontGUI->getChangeStatus()) {
             case FontChanged:
                 this->font.setTypefaceName(fontGUI->getTypefaceName());
-                std::cout << fontGUI->getTypefaceName() << std::endl;
                 this->label.setFont(this->font);
                 break;
             case FontStyleChanged:
@@ -203,9 +193,7 @@ void IRLabelObject::changeListenerCallback (ChangeBroadcaster* source)
                 this->label.setFont(this->font);
                 break;
             case FontAlignChanged:
-                
-                std::cout << "align number = " << fontGUI->getAlign() << std::endl;
-                
+                                
                 setAlign(fontGUI->getAlign());
                 break;
             case FontColourChanged:

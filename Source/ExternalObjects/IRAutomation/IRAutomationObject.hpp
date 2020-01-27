@@ -73,13 +73,14 @@ public:
         //change preference Window if not yet
         if(getPreferenceWindow() != nullptr)
         {
+            /*
             IRPreferenceSpace* space = getPreferenceWindow()->getPreferenceSpace();
             
             IRPreferenceObject* current = space->getPreferenceObj();
                     
             if(current != this->UI->getPreference()){
                 space->setPreferenceObj(this->UI->getPreference());
-            }
+            }*/
         }
         //getGlobalObjectFromParent();
        

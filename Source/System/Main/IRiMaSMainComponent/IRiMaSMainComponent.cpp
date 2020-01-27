@@ -18,7 +18,6 @@ IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
     
     this->initialise();
     
-    std::cout << "IRFactory2 = " << &IRFactory2 << std::endl;
 }
 
 
@@ -37,7 +36,6 @@ IRiMaSMainComponent::~IRiMaSMainComponent()
     // finalize singlton
     SingletonFinalizer::finalize();
     
-    std::cout << "end call destructor IRiMaSMainComponent" << std::endl;
 }
 
 

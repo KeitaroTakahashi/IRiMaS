@@ -25,22 +25,22 @@ public:
     // --------------------------------------------------
     // copy related methods
     
-    IRNodeObject* copyThis() override;
+    virtual IRNodeObject* copyThis() override;
     
-    IRNodeObject* copyContents(IRNodeObject* object) override;
+    virtual IRNodeObject* copyContents(IRNodeObject* object) override;
     
-    IRNodeObject* copyDragDropContents(IRNodeObject* object) override;
+    virtual IRNodeObject* copyDragDropContents(IRNodeObject* object) override;
     
     // share object contents owned by this obejct to twithObject
     void shareContentsWith(IRVideoPlayerObject* withObject);
     
     // --------------------------------------------------
     
-    t_json saveThisToSaveData() override;
+    virtual t_json saveThisToSaveData() override;
     
     // --------------------------------------------------
     
-    void loadThisFromSaveData(t_json data) override;
+    virtual void loadThisFromSaveData(t_json data) override;
     
     // --------------------------------------------------
     // resize reated methods

@@ -33,7 +33,11 @@ public:
     // ==================================================
 
     VideoController(IRStr * str, IRVideoAnnotaterObject* videoPlayerObject) : IRStrComponent(str),
-    videoPlayerObject(videoPlayerObject)
+    videoPlayerObject(videoPlayerObject),
+    videoAnnotater(getStr(),
+                   "Video Annotater",
+                   Rectangle<int> (10, 10, 1000, 800),
+                   videoPlayerObject)
     {
         addAndMakeVisible(&this->openVideoButton);
         this->openVideoButton.setButtonText("Open Video File");
@@ -42,12 +46,15 @@ public:
         addAndMakeVisible(&this->openVideoAnnotatorButton);
         this->openVideoAnnotatorButton.setButtonText("Open Video Annotater");
         this->openVideoAnnotatorButton.onClick = [this]{ OpenVideoAnnotaterAction(); };
+        
+        this->videoAnnotater.closeButtonPressedCallback = [this]{ CloseVideoAnnotaterAction(); };
+
 
     }
     
     ~VideoController()
     {
-        this->videoAnnotater.reset();
+        
     }
     // ==================================================
 
@@ -80,21 +87,8 @@ public:
 
     void OpenVideoAnnotaterAction()
     {
-        // store the original bounds of the videoPlayerObject
-
-        if(this->videoAnnotater.get() == nullptr)
-        {
-            this->videoAnnotater.reset(new IRVideoAnnotaterWindow(getStr(),
-                                                                  "Video Annotater",
-                                                                  Rectangle<int> (10, 10, 1000, 800),
-                                                                  this->videoPlayerObject));
-            
-
-        }
-        this->videoAnnotater->closeButtonPressedCallback = [this]{ CloseVideoAnnotaterAction(); };
-
-        this->videoAnnotater->open();
-        this->videoAnnotater->toFront(true);
+        this->videoAnnotater.open();
+        this->videoAnnotater.toFront(true);
         
         this->status = OpenVideoAnnotater;
         sendChangeMessage();
@@ -109,18 +103,14 @@ public:
    // ==================================================
     void updateAnnotater()
     {
-        if(this->videoAnnotater.get() != nullptr)
-        {
-            this->videoAnnotater->uodateAnnotater();
-        }
+        
+        this->videoAnnotater.uodateAnnotater();
     }
     
     void updateParentVideoPlayerObject()
     {
-        if(this->videoAnnotater.get() != nullptr)
-        {
-           this->videoAnnotater->updateParentVideoPlayerObject();
-        }
+
+        this->videoAnnotater.updateParentVideoPlayerObject();
     }
     
     // ==================================================
@@ -135,6 +125,9 @@ public:
 
     VideoControllerStatus getStatus() const { return this->status; }
     // ==================================================
+    
+    IRVideoAnnotater* getVideoAnnotaterComponent() { return this->videoAnnotater.getVideoAnnotaterComponent(); }
+
     // ==================================================
     // ==================================================
     // ==================================================
@@ -148,7 +141,7 @@ private:
 
     IRVideoAnnotaterObject* videoPlayerObject = nullptr;
     
-    std::shared_ptr<IRVideoAnnotaterWindow> videoAnnotater;
+    IRVideoAnnotaterWindow videoAnnotater;
 
     // ==================================================
     

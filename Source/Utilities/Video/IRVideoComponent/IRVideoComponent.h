@@ -221,5 +221,7 @@ private:
     // width / height
     float aspectRatio = 1.0;
     
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRVideoComponent)
+
 };
 #endif /* IRVideoComponent_h */

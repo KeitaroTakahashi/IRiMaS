@@ -30,6 +30,15 @@ public:
         return v;
     }
     
+    std::string GetNextNumber( std::string baseString, int &lastNum, int zeroNum )
+    {
+        std::stringstream ss;
+        ss << baseString;
+        ss << std::setfill('0') << std::setw(zeroNum) << lastNum++;
+
+        return ss.str();
+    }
+    
     void showConnectionErrorMessage (const String& messageText)
     {
         AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,

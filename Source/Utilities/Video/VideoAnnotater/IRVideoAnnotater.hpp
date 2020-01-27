@@ -37,9 +37,13 @@ public:
     // this covers shape, image, and other IRNodeObjects besides text subtitles.
     void openSRTs();
     void openSRTs(File file);
+    void saveSRTs();
+    void saveSRTs(File file);
+    
     bool hsaVideo() const;
 
     void myVideoLoadCompleted();
+    void myVideoPlayingUpdate(double pos);
     // ==================================================
     void setVideoComponent(IRVideoComponent* videoComponent);
     
@@ -62,13 +66,27 @@ public:
     // ==================================================
    
     void setEventModifiedCallback(std::function<void()> callback);
+    // ==================================================
 
+    std::vector<VideoAnnotationEventComponent*> getEventComponents()
+    {
+        return this->eventListComponent->getEventComponents();
+    }
+    // ==================================================
+    std::string getSRTFilePath();
+    // ==================================================
+    std::function<void()> closeAnnotationWindowCallback;
+    void closeAnnotationWindow();
+    // ==================================================
 
 private:
     // ==================================================
     // VIDEO
     File videoFile;
     String path;
+    
+    //SRT
+    String srtSavePath;
     
     bool isVideoLoaded = false;
     Rectangle<int> videoArea;
@@ -125,9 +143,11 @@ private:
     
     void DeleteKeyPressed();
     void AKeyPressed();
+    void CommandWKeyPressed();
     // ==================================================
 
-    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRVideoAnnotater)
+
 };
 
 #endif /* IRVideoAnnotater_hpp */

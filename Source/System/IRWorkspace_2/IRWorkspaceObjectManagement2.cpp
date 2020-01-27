@@ -29,8 +29,9 @@ void IRWorkspace::pasteSelectedObjects()
     {
         pasteObject(obj,false);
     }
-    this->selector->addSelectedObjects();
     bench2.result("x x x x x x x x : pasteSelectedObjects");
+
+    this->selector->addSelectedObjects();
     bench2.start();
 
     copySelectedObjects();
@@ -67,7 +68,7 @@ void IRWorkspace::duplicateSelectedObjects()
     copySelectedObjects();
     pasteSelectedObjects();
     
-    resortHeavyObject();
+    //resortHeavyObject();
 }
 
 
@@ -80,17 +81,17 @@ void IRWorkspace::createObject(IRNodeObject *obj, bool shouldSort)
     //obj->setLinkMode(isLinkMode());
     
     // make uniqueID
-    KeRandomStringGenerator a;
-    std::string id = a.createStrings(10);
+    //KeRandomStringGenerator a;
+    //std::string id = a.createStrings(10);
     // generate uniqueID
-    obj->setUniqueID(id);
+    //obj->setUniqueID("id-aa");
     addAndMakeVisible(obj);
     
     //obj->addToDesktop(ComponentPeer::windowIsTemporary);
     obj->addChangeListener(this);
     obj->addListener(this); // IRNodeObjectListener
     obj->addKeyListener(this); // key listener
-    obj->setPreferenceWindow(this->preferenceWindow); // set preference window
+    //obj->setPreferenceWindow(this->preferenceWindow); // set preference window
     this->objects.add(obj);
     
     // use this function in order to also update file manger of all related UIs etc.
@@ -111,6 +112,8 @@ void IRWorkspace::createObject(IRNodeObject *obj, bool shouldSort)
         if(obj->getObjectType().componentType == IRNodeComponentType::heavyWeightComponent ||
            obj->getObjectType().componentType == IRNodeComponentType::orginaryIRComponent)
         {
+            
+            std::cout << "IRWorkspace::createObject callHeavyObjectCreated\n";
             callHeavyObjectCreated(obj);
         }
     }
@@ -119,12 +122,13 @@ void IRWorkspace::createObject(IRNodeObject *obj, bool shouldSort)
     
     // register this object to the first place of ZOrder list
     insertObjectAtTopZOrder(obj);
-
     repaint();
 }
 
 void IRWorkspace::resortHeavyObject()
 {
+    
+    std::cout << "IRWorkspace::resortHeavyObject\n";
     callHeavyObjectCreated(nullptr);
 
 }
@@ -137,12 +141,17 @@ void IRWorkspace::copyObject(IRNodeObject *obj, bool clearCopied)
 
 void IRWorkspace::pasteObject(IRNodeObject *obj, bool addToSelected)
 {
+    
+    bench.start();
     IRNodeObject* newObj = obj->copyThis();
     newObj->setBounds(obj->getPosition().x-20, obj->getPosition().y-20,
                       obj->getWidth(), obj->getHeight());
    
+    bench.result("copy object");
     // do not initialize heavy weight component here but later
+    bench.start();
     createObject(newObj, false);
+    bench.result("createObject");
 
     obj->setSelected(false);
     this->selector->removeSelectedObject(obj);

@@ -16,7 +16,10 @@ IRLabelController::IRLabelController(IRStr* str) : IRObjectController(str)
     this->LabelTitle.setJustificationType(Justification::left);
     
     
+    StopWatch bench;
+    bench.start();
     this->fontController = std::make_unique<FontController>(str);
+    bench.result("fontController");
     addAndMakeVisible(this->fontController.get());
     this->fontController->addChangeListener(this);
 }

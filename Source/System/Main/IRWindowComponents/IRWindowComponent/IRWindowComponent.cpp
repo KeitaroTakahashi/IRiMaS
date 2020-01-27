@@ -99,6 +99,9 @@ void IRWindowComponent::initialize()
     this->ir_str->SYSTEMCOLOUR = IR::darkGraySet();
     this->ir_str->ICONBANK = IRIconBank();
     
+    Font f;
+    this->ir_str->fontFamilyList = f.findAllTypefaceNames();
+        
     //lookandfeelcolour
     
     updateAppearance();
@@ -223,6 +226,12 @@ bool IRWindowComponent::keyPressed(const KeyPress& key, Component* originatingCo
     if(key.getTextDescription() == "command + E")
     {
         CommandEPressed();
+        return true;
+    }
+    
+    if(key.getTextDescription() == "command + S")
+    {
+        CommandSPressed();
         return true;
     }
  
@@ -402,6 +411,7 @@ void IRWindowComponent::workspaceEditModeChanged(IRWorkspace* changedSpace)
 
 void IRWindowComponent::heavyObjectCreated(IRNodeObject* obj)
 {
+    std::cout << "heavyObjectCreated : " << obj << std::endl;
     rebindOpenGLContents();
 }
 
@@ -542,6 +552,7 @@ void IRWindowComponent::rebindOpenGLContents()
     // make sure to update
     resized();
 
+    std::cout << "=========================\n";
 }
 
 void IRWindowComponent::updateAppearance()
@@ -631,22 +642,22 @@ json11::Json IRWindowComponent::saveAction(String projectPath, String projectTit
     
     json11::Json::object buffer;
     auto workspaces = this->mainSpace->getWorkspaces();
-    int index = 1;
+    int index = 0;
     
+    KLib k;
     for(auto space : workspaces)
     {
-        buffer["workspace-" + std::to_string(index)] = space->makeSaveDataOfThis();
-        index++;
+        // generate workspace-00000 to workspace-99999
+        std::string s = k.GetNextNumber("workspace-", index, 5);
+        buffer[s] = space->makeSaveDataOfThis();
     }
+    
     // unify all json data
-    json11::Json::object jo(buffer.begin(), buffer.end());
+    //json11::Json::object jo(buffer.begin(), buffer.end());
     
-    json11::Json saveData = jo;
+    json11::Json saveData = buffer;
     
-    
-    
-    
-    this->saveLoadClass.createWorkspaces(jo);
+    this->saveLoadClass.createWorkspaces(buffer);
 
     auto sb = KLib().StringSplit(projectPath.toStdString(), '/');
     std::string filename = sb[sb.size()-1] + ".irimas"; // same to the project name
@@ -655,13 +666,14 @@ json11::Json IRWindowComponent::saveAction(String projectPath, String projectTit
     this->saveLoadClass.writeSaveData(filename);
     
     
-    return jo;
+    return buffer;
     
 }
 
 
 void IRWindowComponent::saveProject()
 {
+    std::cout << "IRWindowComponent::saveProject : path = " << this->projectPath << std::endl;
     // if this is the first time to save, then open the dialog window
     // else simply goes to the save action with the same project path.
     if (this->projectPath.length() == 0)
@@ -717,6 +729,10 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
 {
    
     std::cout << "========== loadWorkspaces ==========" << std::endl;
+    
+    // sort map
+    
+    
     
     for (auto it = saveData["Workspaces"].object_items().cbegin(); it != saveData["Workspaces"].object_items().cend(); ++it)
     {

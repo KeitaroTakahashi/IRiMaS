@@ -50,6 +50,8 @@ public:
     void updateAnnotater();
     void updateParentVideoPlayerObject();
     // ==================================================
+    IRVideoAnnotater* getVideoAnnotaterComponent() { return this->UI.getVideoAnnotaterComponent(); }
+
     
 private:
     // ==================================================

@@ -46,7 +46,6 @@ private:
     
     static void destroy()
     {
-        std::cout << "singleton destroy function called" << std::endl;
         delete instance;
         instance = nullptr;
     }

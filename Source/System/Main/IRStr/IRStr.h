@@ -64,6 +64,8 @@ struct IRStr
     IRFileManager FILEMANAGER;
 
     // ==================================================
+    // load and store here as it costs time
+    StringArray fontFamilyList;
 
 };
 

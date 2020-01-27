@@ -43,7 +43,7 @@ public:
     IRObjectFactory2();
     ~IRObjectFactory2( )
     {
-        std::cout << "IRObjectFactory2 deinitialized!!\n";
+        
     };
     
     template<class T>
@@ -77,10 +77,6 @@ void IRObjectFactory2::registerObject(std::string id, std::string name, objectCa
 {
     
     // now trying with shared pointer
-    
-    std::cout << "ObjectFactory2 : "<< id << " registering : size is " << this->list.size() << std::endl;
-    
-    
     std::shared_ptr<IRObjectCreater<T>> obj = std::make_shared<IRObjectCreater<T>>();
     // IRObjectCreater<T>* obj = new IRObjectCreater<T>();
     // std::cout << "hallo" << std::endl;
@@ -88,7 +84,6 @@ void IRObjectFactory2::registerObject(std::string id, std::string name, objectCa
     
     this->registeredObjectInfo[objectType].push_back(&this->list[id]);
     
-    std::cout<< id << " registered : size is " << this->list.size() << std::endl;
     
 }
 

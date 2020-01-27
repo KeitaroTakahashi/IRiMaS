@@ -23,6 +23,7 @@ public:
     {
         OpenVideoFile,
         OpenAnnotationFile,
+        SaveAnnotationFile,
         addEventButtonClicked,
         deleteEventButtonClicked,
         play,
@@ -41,6 +42,10 @@ public:
         addAndMakeVisible(&this->openAnnotationButton);
         this->openAnnotationButton.onClick = [this]{ openAnnotationButtonClicked(); };
         this->openAnnotationButton.setButtonText("Open SRTs");
+        
+        addAndMakeVisible(&this->saveAnnotationButton);
+        this->saveAnnotationButton.onClick = [this]{ saveAnnotationButtonClicked(); };
+        this->saveAnnotationButton.setButtonText("Save SRTs");
         
         createButton(&this->addEventButton, getStr()->ICONBANK.icon_newSlide);
         this->addEventButton.setDrawCircle(false);
@@ -98,9 +103,9 @@ public:
     {
         int h = 30;
         
-        this->openVideoButton.setBounds(getWidth() - 110, 5, 100, 30);
-        this->openAnnotationButton.setBounds(getWidth() - 225, 5, 100, 30);
-
+        this->openVideoButton.setBounds(getWidth() - 100, 5, 90, 30);
+        this->openAnnotationButton.setBounds(getWidth() - 200, 5, 90, 30);
+        this->saveAnnotationButton.setBounds(getWidth() - 300, 5, 90, 30);
         
         Point<int> b = Point<int> (((float)h / this->addEventButton.getAspectRatio()), h);
         int marginX = 5;
@@ -122,7 +127,7 @@ public:
         this->timeCode.setBounds(x, 0, 110, getHeight());
         
         x += (marginX) + this->timeCode.getWidth();
-        this->timeCodeSlider.setBounds(x, 0, getWidth() - x - 225, getHeight());
+        this->timeCodeSlider.setBounds(x, 0, getWidth() - x - 310, getHeight());
 
     }
     
@@ -152,6 +157,12 @@ public:
         this->status = OpenAnnotationFile;
         sendChangeMessage();
     }
+    
+    void saveAnnotationButtonClicked()
+    {
+        this->status = SaveAnnotationFile;
+        sendChangeMessage();
+    }
     // ==================================================
     
     void closeEventMenu()
@@ -168,6 +179,12 @@ public:
         this->timeCode.setVideoLengthInSec(videoLengthInSec);
         this->timeCodeSlider.setRange(0.0, (double)videoLengthInSec, 0.1);
         this->timeCodeSlider.setValue(0.0);
+    }
+    
+    void setCurrentPlayingPosition(double pos)
+    {
+        this->timeCodeSlider.setValue(pos, dontSendNotification);
+        this->timeCode.setLabelVal(pos);
     }
     // ==================================================
     IRVideoTransportStatus getStatus() const { return this->status; }
@@ -191,6 +208,7 @@ private:
 
     TextButton openVideoButton;
     TextButton openAnnotationButton;
+    TextButton saveAnnotationButton;
     IRImageButton addEventButton;
     IRImageButton deleteEventButton;
 
@@ -207,6 +225,8 @@ private:
         this->status = stop;
         sendChangeMessage();
     }
+    
+    
 
     // ==================================================
     TimeCode timeCode;
@@ -219,6 +239,7 @@ private:
             timeInSec = this->videoLengthInSec;
         }
         this->timeCodeSlider.setValue(timeInSec, dontSendNotification);
+        
         this->status = playPositionChanged;
         sendChangeMessage();
 
@@ -231,8 +252,9 @@ private:
     {
         if(slider == &this->timeCodeSlider)
         {
+            
             float val = slider->getValue();
-            this->timeCode.setLabelVal(val);
+            this->timeCode.setLabelVal(val);            
             this->status = playPositionChanged;
             sendChangeMessage();
         }
@@ -240,6 +262,7 @@ private:
 
 
     // ==================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRVideoTransport)
 
 };
 

@@ -47,6 +47,7 @@ public:
     
     // ==================================================
     
+    
     void openAnnotationFile()
     {
         FileChooser chooser("Select a SRT file to load...",
@@ -57,44 +58,49 @@ public:
         if(chooser.browseForFileToOpen())
         {
             auto file = chooser.getResult();
-            auto path = file.getFullPathName();
+            this->filePath = file.getFullPathName().toStdString();
             
-            this->srtL.openFile(path.toStdString());
-            auto eventList = this->srtL.getSubtitleItems();
-            
-            if(eventList.size() == 0)
-            {
-                KLib().showErrorMessage("SRT file has no contents to read.");
-                return;
-            }
-            
-            deleteAllEventComponents();
-            
-            for(auto item : eventList)
-            {
-                std::cout << item->getStartTimeString() << " --> " << item->getEndTimeString() << " : " << item->getText() << std::endl;
-                
-              
-                    createTextEventComponent(item->getStartTimeString(),
-                                             item->getEndTimeString(),
-                                             item->getText());
-            }
-            
-            // update events
-            eventModified(nullptr);
+            srtOpen();
             
         }
     }
     
     void openAnnotationFile(File file)
     {
+        this->filePath = file.getFullPathName().toStdString();
+        srtOpen();
+    }
+    
+    void saveAnnotationFile()
+    {
+        FileChooser chooser("Save srt file...",
+                            {},
+                            "");
         
+        
+        if(chooser.browseForFileToSave(true))
+        {
+            auto file = chooser.getResult();
+            this->savePath = file.getFullPathName().toStdString() + ".srt";
+            
+            srtSave();
+        }
+    }
+    
+    void saveAnnotationFile(File file)
+    {
+        this->savePath = file.getFullPathName().toStdString();
+        srtSave();
     }
     
     // ==================================================
 
+    std::string getSrtSavePath() const { return this->savePath; }
     int getEventNum() const { return (int)this->eventComponents.size(); }
     
+    // ==================================================
+
+    std::string getFilePath() const { return this->filePath; }
     // ==================================================
     
     void createTextEventComponent()
@@ -102,6 +108,16 @@ public:
        std::cout << "createTextEventComponent\n";
        AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr());
        createEventComponent(comp);
+    }
+    
+    void createTextEventComponent(float beginTime,
+                                  float endTime)
+    {
+        AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
+                                                                              beginTime,
+                                                                              endTime);
+        createEventComponent(comp);
+
     }
     
     void createTextEventComponent(std::string beginTime,
@@ -195,24 +211,13 @@ public:
     {
         deSelectAllEventComponents();
         selectEventComponent(comp);
-        std::cout << "eventComponentSelected called\n";
     }
     
     void eventModified(VideoAnnotationEventComponent* comp) override
     {
         sortEventComponentByTimeCode();
         
-        this->srt.open(this->srtPath);
-        
-        using t = VideoAnnotationEventComponent::VideoAnnotationType;
-        for(auto item : this->eventComponents)
-        {
-            this->srt.addItem(item->getSRT());
 
-        }
-
-        this->srt.close();
-        
         if(this->eventModifiedCallback != nullptr)
             this->eventModifiedCallback();
 
@@ -297,18 +302,63 @@ public:
             event->setBounds(x, y, w, h);
             y += h + margin;
         }
+        
+
     }
     
     private:
     // ==================================================
     srtWriter srt;
     srtLoader srtL;
-    std::string srtPath = "/Users/keitaro/Desktop/out.srt";
+    //std::string srtPath = "/Users/keitaro/Desktop/out.srt";
+    
+    std::string filePath;
+    std::string savePath;
+    
+    void srtOpen()
+    {
+        this->srtL.openFile(this->filePath);
+        auto eventList = this->srtL.getSubtitleItems();
+        
+        if(eventList.size() == 0)
+        {
+            KLib().showErrorMessage("SRT file has no contents to read.");
+            return;
+        }
+        
+        deleteAllEventComponents();
+        
+        for(auto item : eventList)
+        {
+                createTextEventComponent(item->getStartTimeString(),
+                                         item->getEndTimeString(),
+                                         item->getText());
+        }
+        
+        // update events
+        eventModified(nullptr);
+    }
+    
+    void srtSave()
+    {
+        this->srt.open(this->savePath);
+
+        using t = VideoAnnotationEventComponent::VideoAnnotationType;
+        
+        for(auto item : this->eventComponents)
+        {
+            this->srt.addItem(item->getSRT());
+        }
+
+        this->srt.close();
+        
+    }
 
     // ==================================================
     
     // ==================================================
     // ==================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VideoEventListComponent)
 
 };
 

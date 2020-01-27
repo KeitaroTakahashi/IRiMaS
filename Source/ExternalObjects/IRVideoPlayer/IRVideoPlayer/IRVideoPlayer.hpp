@@ -55,7 +55,7 @@ public:
     // --------------------------------------------------
 
     // --------------------------------------------------
-    std::string getPath() const { return this->path.toStdString(); } 
+    std::string getPath() const { return this->videoFilePath; } 
     // --------------------------------------------------
     
     std::function<void()> videoLoadCompleted;
@@ -69,7 +69,14 @@ public:
     void stop() { this->player->stop(); }
     
     bool isPlaying() const { return this->player->isPlaying(); }
-    void setPlayPosition(double newPlayPositionInSec){ this->player->setPlayPosition(newPlayPositionInSec); }
+    void setPlayPosition(double newPlayPositionInSec)
+    {
+        this->player->setPlayPosition(newPlayPositionInSec);
+        
+        // call playback
+        if(this->updateAnimationFrameCallback != nullptr)
+            this->updateAnimationFrameCallback(newPlayPositionInSec);
+    }
     double getPlayPosition(){ return this->player->getPlayPosition(); }
     void setPlaySpeed(double newSpeed) { this->player->setPlaySpeed(newSpeed); }
     double getPlaySpeed() { return this->player->getPlaySpeed(); }
@@ -91,8 +98,11 @@ private:
     
     void updateAnimationFrame() override
     {
-        if(this->updateAnimationFrameCallback != nullptr)
-            this->updateAnimationFrameCallback(this->player->getPlayPosition());
+        if(isPlaying())
+        {
+            if(this->updateAnimationFrameCallback != nullptr)
+                this->updateAnimationFrameCallback(this->player->getPlayPosition());
+        }
     }
     // --------------------------------------------------
     // --------------------------------------------------
@@ -100,7 +110,7 @@ private:
     Rectangle<int> videoSize;
     float aspectRatio = 0.0;
     bool isVideoLoaded = false;
-    String path;
+    std::string videoFilePath;
     File movieFile;
     
     bool isController = false;
