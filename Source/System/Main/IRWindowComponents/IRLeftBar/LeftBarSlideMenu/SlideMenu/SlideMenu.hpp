@@ -24,21 +24,43 @@ public:
 
     void addSlide(IRWorkspace* space);
     void slideSelectedAction(IRWorkspaceSlide* slide);
+    void slideSwitchedAction(IRWorkspaceSlide* slide);
     
+    void moveToLowerSlide();
+    void moveToHigherSlide();
+    // ==================================================
+    void mouseDown(const MouseEvent& e) override;
+    void mouseDrag(const MouseEvent& e) override;
+    void mouseUp(const MouseEvent& e) override;
     // ==================================================
 
     void addNewWorkspaceSlide(IRWorkspace* space);
+    void deleteSelectedWorkspaceSlide();
+    // ==================================================
     
+    void moveSelectedSlide(const MouseEvent& e);
+    bool isSlideMovedToItsNeighbor(IRWorkspaceSlide* slide);
     // ==================================================
 
     std::function<void()> slideMenuUpdated;
     std::function<void(IRWorkspaceSlide*)> slideHasSelected;
+
+    
     // ==================================================
+    IRWorkspaceSlide* getSelectedSlide();
+    
 
 private:
     // ==================================================
 
     std::vector<IRWorkspaceSlide* > slides;
+    IRWorkspaceSlide* selectedSlide;
+    // ==================================================
+    void updateSpace();
+    // ==================================================
+    Point<int> mouseDownPos;
+    Point<int> previousMousePos;
+    Point<int> mouseDownWithinTarget;
     // ==================================================
 
     int yMargin = 10;
@@ -48,7 +70,21 @@ private:
     int itemHeight = 80;
     
     // ==================================================
+    enum slideSwitchStatus
+    {
+        previous,
+        next,
+        none
+    };
+    slideSwitchStatus yHittest(Rectangle<int>a, Rectangle<int> b);
+    
+    void sortByIndex();
     // ==================================================
+    
+
+   
 
 };
+
+
 #endif /* SlideMenu_hpp */

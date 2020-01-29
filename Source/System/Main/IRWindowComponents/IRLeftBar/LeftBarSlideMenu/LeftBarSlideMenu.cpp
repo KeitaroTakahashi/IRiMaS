@@ -13,15 +13,16 @@ IRViewPort(str)
     this->slideMenu = std::make_shared<SlideMenu>(str);
     this->slideMenu->slideMenuUpdated = [this]{ slideMenuUpdatedAction(); };
     this->slideMenu->slideHasSelected = [this] (IRWorkspaceSlide* slide){ slideHasSelectedAction(slide); };
+    this->slideMenu->addMouseListener(this, true);
     this->viewPort = std::make_shared<Component4ViewPort>(this->slideMenu.get());
-    
-    //addAndMakeVisible(this->viewPort.get());
-    
+        
     setViewedComponent(this->viewPort.get());
     
     this->addNewSlideButton.setButtonText("+");
     this->deleteSlideButton.setButtonText("-");
     
+    
+
 }
 
 LeftBarSlideMenu::~LeftBarSlideMenu()
@@ -68,7 +69,28 @@ void LeftBarSlideMenu::slideHasSelectedAction(IRWorkspaceSlide* slide)
         this->workspaceSelectedCallback(slide->getWorkspace());
 }
 
-// ==================================================
 
 // ==================================================
+void LeftBarSlideMenu::deleteSelectedWorkspaceSlide()
+{
+    this->slideMenu->deleteSelectedWorkspaceSlide();
+}
+
 // ==================================================
+IRWorkspaceSlide* LeftBarSlideMenu::getSelectedSlide()
+{
+    return  this->slideMenu->getSelectedSlide();
+}
+
+// ==================================================
+
+
+void LeftBarSlideMenu::moveToLowerSlide()
+{
+    this->slideMenu->moveToLowerSlide();
+}
+
+void LeftBarSlideMenu::moveToHigherSlide()
+{
+    this->slideMenu->moveToHigherSlide();
+}

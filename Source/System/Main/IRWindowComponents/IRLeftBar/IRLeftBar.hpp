@@ -23,6 +23,7 @@ public IRStrComponent,
 public IRHeavyWeightComponent,
 public ChangeBroadcaster,
 public ChangeListener,
+public KeyListener,
 private KeAnimationComponent
 {
 public:
@@ -36,6 +37,7 @@ public:
     void mouseUp(const MouseEvent& e) override;
     void mouseDown(const MouseEvent& e)override;
     void mouseMove(const MouseEvent& e)override;
+
     //==================================================
     
     void checkResizableFromMouseDownPosition(Point<int> pos);
@@ -53,7 +55,9 @@ public:
     
     void workspaceSelectedAction(IRWorkspace* space);
     std::function<void(IRWorkspace*)> workspaceSelectedCallback;
-    
+    void workspaceDeleteAction(IRWorkspace* space);
+    std::function<void(IRWorkspace*)> workspaceDeleteCallback;
+
     //==================================================
 
     IRWindowBarActionStatus getStatus() const { return this->status; }
@@ -69,7 +73,12 @@ public:
     void toObjectMenuAction(bool notify = false);
     
     //==================================================   
-   
+   // Key commands
+    void deleteKeyPressed();
+    void commandNKeyPressed();
+    
+    void upKeyPressed();
+    void downKeyPressed();
 private:
     
     //==================================================
@@ -103,6 +112,7 @@ private:
     // ==================================================
     void updateAnimationFrame() override {};
     // ==================================================
+    bool keyPressed(const KeyPress& key, Component* originatingComponent) override;
 
     //==================================================
     
@@ -111,6 +121,9 @@ private:
     TextButton addNewSlideButton;
     TextButton deleteSlideButton;
     //==================================================
+    
+    //==================================================
+
     // layout
     int buttonSize = 40;
     

@@ -68,7 +68,9 @@ void IRWorkSpace::createObject(IRNodeObject *obj)
     //obj->addToDesktop(ComponentPeer::windowIsTemporary);
     obj->addChangeListener(this);
     obj->addListener(this); // IRNodeObjectListener
-    obj->addKeyListener(this); // key listener
+    
+    //obj->addKeyListener(this); // key listener
+    
     obj->setPreferenceWindow(this->preferenceWindow); // set preference window
     this->objects.add(obj);
     

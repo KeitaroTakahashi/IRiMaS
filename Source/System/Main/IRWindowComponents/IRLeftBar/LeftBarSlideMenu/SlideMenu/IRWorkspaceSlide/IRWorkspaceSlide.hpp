@@ -24,15 +24,29 @@ public:
     void paint(Graphics& g) override;
     
     void mouseDown(const MouseEvent& e) override;
-    
+    void mouseUp(const MouseEvent& e) override;
+
     std::function<void(IRWorkspaceSlide*)> onClick = nullptr;
+    std::function<void(IRWorkspaceSlide*)> slideSwitchedCallback = nullptr;
+
     // ==================================================
-    
+    void deleteThisWorkspace();
+    // ==================================================
+    void setIndex(int newIndex);
+    int getIndex() const { return this->index; }
+    // ==================================================
+
     void setSelectedFlag(bool flag) { this->isSelectedFlag = flag; repaint(); }
     bool isSelected() const { return this->isSelectedFlag; }
     // ==================================================
     
     IRWorkspace* getWorkspace() { return this->space; }
+    
+    // ==================================================
+    static bool compBy  (IRWorkspaceSlide* a, IRWorkspaceSlide* b)
+    {
+        return (a->getIndex() < b->getIndex());
+    }
 
 private:
     

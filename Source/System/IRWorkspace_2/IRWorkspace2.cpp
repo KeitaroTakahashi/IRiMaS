@@ -164,7 +164,7 @@ void IRWorkspace::resized()
 
 void IRWorkspace::mouseDown(const MouseEvent& e)
 {
-    //std::cout << "IRWorkspace mouseDown " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
+    std::cout << "IRWorkspace mouseDown " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
     
     this->selector->mouseDownHandler(e);
     
@@ -384,42 +384,7 @@ void IRWorkspace::setEditMode(bool flag, bool notification)
     
     // reset all selected objects
     this->selector->deselectAllObjects();
-    
-    
-    
-    /*
-    if (flag)
-    {
-        
-        this->message.setText("EDIT MODE");
-        this->message.toFront(true);
-        this->message.run();
-        this->message.addKeyListener(this);
-        
-        this->title = this->name + " (EDIT MODE)";
-        this->setInterceptsMouseClicks(true, true);
-        setWantsKeyboardFocus(true);
-        
-    }
-    else
-    {
-        
-        this->message.setText("CONTROL MODE");
-        this->message.toFront(true);
-        this->message.run();
-        this->message.addKeyListener(this);
 
-        setWantsKeyboardFocus(true);
-
-        this->title = this->name;
-        this->setInterceptsMouseClicks(true, false);
-
-        
-    }*/
-    
-    //std::cout << "edit mode changed " << flag << " : " << this->title << std::endl;
-    
-   
     for (auto obj : this->objects)
     {
         obj->setEditMode(flag);
@@ -434,30 +399,6 @@ void IRWorkspace::setEditMode(bool flag, bool notification)
     
     repaint();
 }
-/*
-bool IRWorkspace::isLinkMode() const
-{
-    return this->linkModeFlag;
-}
-void IRWorkspace::setLinkMode(bool flag)
-{
-    this->linkModeFlag = flag;
-    
-    for(auto obj : this->objects)
-    {
-        obj->setLinkMode(this->linkModeFlag);
-    }
-    
-    if(this->linkModeFlag){
-        
-        openLinkMenuOfSelectedObject();
-    }
-    else{
-        closeLinkMenu();
-    }
-    
-    repaint();
-}*/
 
 Array<IRNodeObject*> IRWorkspace::getObjectList()
 {

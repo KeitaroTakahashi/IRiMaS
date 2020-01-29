@@ -139,7 +139,7 @@ private:
     
     // called from IRLeftBar
     void workspaceSelected(IRWorkspace* space);
-    
+    void deleteWorkSpace(IRWorkspace* space);
     //initialize after loading savedata
     void initProjectAfterLoading();
     // ==================================================

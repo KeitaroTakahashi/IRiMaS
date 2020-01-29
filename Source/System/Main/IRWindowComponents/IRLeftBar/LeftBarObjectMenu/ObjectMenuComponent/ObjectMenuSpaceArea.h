@@ -76,6 +76,9 @@ private:
     {
         if(this->menuObj != nullptr)
             this->menuObj->bringThisToFront();
+        
+        std::cout << "OBjectMenuSpace::bringToFrontCompleted()\n";
+
     }
     // ==================================================
 

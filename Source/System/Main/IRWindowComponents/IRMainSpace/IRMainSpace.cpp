@@ -72,7 +72,7 @@ void IRMainSpace::createNewWorkspace()
     if(this->topWorkspace != nullptr)
     {
         // hide heavy components first
-        this->topWorkspace->manageHeavyWeightComponents(false);
+        //this->topWorkspace->manageHeavyWeightComponents(false);
     }
     // update a top workspace
     this->topWorkspace = space;
@@ -85,7 +85,24 @@ void IRMainSpace::createNewWorkspace()
     callnewWorkspaceCreated(space);
     
     resized();
+}
 
+void IRMainSpace::deleteWorkspace(IRWorkspace* space)
+{
+    callWorkspaceWillDeleted(space);
+    
+    this->mixer.removeSource(&space->getMixer());
+    removeChildComponent(space);
+    
+    this->topWorkspace = nullptr;
+    auto it = std::find(this->workspaces.begin(), this->workspaces.end(), space);
+    if(it != this->workspaces.end())
+    {
+        this->workspaces.erase(it);
+        delete space;
+    }
+    
+    callWorkspaceHasDeleted();
 }
 
 void IRMainSpace::setTopWorkspace(IRWorkspace* topSpace)
@@ -95,10 +112,11 @@ void IRMainSpace::setTopWorkspace(IRWorkspace* topSpace)
     auto it = std::find(this->workspaces.begin(), this->workspaces.end(), topSpace);
     if(it != this->workspaces.end())
     {
+        // this process is not needed as currently all components are heavyWeight component
         if(this->topWorkspace != nullptr)
         {
             // hide heavy components first
-            this->topWorkspace->manageHeavyWeightComponents(false);
+            //this->topWorkspace->manageHeavyWeightComponents(false);
         }
         this->topWorkspace = topSpace;
         this->topWorkspace->toFront(true);
@@ -194,6 +212,26 @@ void IRMainSpace::callnewWorkspaceCreated(IRWorkspace* space)
     // check if the objects are not deleted, if deleted, return
     if(checker.shouldBailOut()) return;
     this->listeners.callChecked(checker, [space](Listener& l){ l.newWorkspaceCreated(space); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+void IRMainSpace::callWorkspaceWillDeleted(IRWorkspace* space)
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [space](Listener& l){ l.workspaceWillDeleted(space); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+void IRMainSpace::callWorkspaceHasDeleted()
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [](Listener& l){ l.workspaceHasDeleted(); });
     //check again
     if(checker.shouldBailOut()) return;
 }

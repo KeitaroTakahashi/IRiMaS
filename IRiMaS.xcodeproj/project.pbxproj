@@ -155,6 +155,7 @@
 		82A8E7872345654300E12214 /* IRImageViewerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A8E7852345654300E12214 /* IRImageViewerController.cpp */; };
 		82A98B2A2199B84B0077EAE6 /* IRWorkspaceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82A98B282199B84B0077EAE6 /* IRWorkspaceList.cpp */; };
 		82AB42822224291C00F9184C /* IRiMaSApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82AB42802224291C00F9184C /* IRiMaSApplication.cpp */; };
+		82B20ACB23E1A49400C71563 /* IRLeftBarKeyEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82B20ACA23E1A49400C71563 /* IRLeftBarKeyEvents.cpp */; };
 		82C08AEB227655F700938726 /* IRAudioDescriptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C08AE9227655F700938726 /* IRAudioDescriptor.cpp */; };
 		82C08AEF2276624900938726 /* IR3DGraphicUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C08AED2276624900938726 /* IR3DGraphicUI.cpp */; };
 		82C08B01227663BC00938726 /* OpenGLVertexNoise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82C08AFF227663BC00938726 /* OpenGLVertexNoise.cpp */; };
@@ -569,6 +570,7 @@
 		82AB427D22208B3200F9184C /* DataAllocationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataAllocationManager.h; sourceTree = "<group>"; };
 		82AB42802224291C00F9184C /* IRiMaSApplication.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRiMaSApplication.cpp; sourceTree = "<group>"; };
 		82AB42812224291C00F9184C /* IRiMaSApplication.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRiMaSApplication.hpp; sourceTree = "<group>"; };
+		82B20ACA23E1A49400C71563 /* IRLeftBarKeyEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRLeftBarKeyEvents.cpp; sourceTree = "<group>"; };
 		82B2938A222FFF3A008E18B2 /* IRTestUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTestUI.h; sourceTree = "<group>"; };
 		82C08AE9227655F700938726 /* IRAudioDescriptor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRAudioDescriptor.cpp; sourceTree = "<group>"; };
 		82C08AEA227655F700938726 /* IRAudioDescriptor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRAudioDescriptor.hpp; sourceTree = "<group>"; };
@@ -2277,6 +2279,7 @@
 			children = (
 				82A8B5D322FD9E6E00FF05B8 /* IRLeftBar.cpp */,
 				82A8B5D422FD9E6E00FF05B8 /* IRLeftBar.hpp */,
+				82B20ACA23E1A49400C71563 /* IRLeftBarKeyEvents.cpp */,
 				823D65AB23311DF5005DCBD6 /* LeftBarSlideMenu */,
 				82A8B5E322FF32A600FF05B8 /* LeftBarObjectMenu */,
 			);
@@ -3286,6 +3289,7 @@
 				823E7BDB2134075C0046512B /* singletonClass.cpp in Sources */,
 				826056B2226FA8A000CAF8C5 /* IRLinkMenuObject.cpp in Sources */,
 				82D8AE9322C3923E0012D987 /* IRSpectrogram.cpp in Sources */,
+				82B20ACB23E1A49400C71563 /* IRLeftBarKeyEvents.cpp in Sources */,
 				823D65BE23327BB3005DCBD6 /* IRWorkspaceKeyEvents2.cpp in Sources */,
 				106588E1222FFAB1005D6B38 /* WindowCommandTarget.cpp in Sources */,
 				820D3BB8225EA44100BDA679 /* SoundPlayer_ThreadSafe.cpp in Sources */,

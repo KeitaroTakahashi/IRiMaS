@@ -28,8 +28,8 @@ public:
     
     void isValidOS()
     {
-        if(getOS() == SystemStats::OperatingSystemType::MacOSX_10_13 ||
-           getOS() == SystemStats::OperatingSystemType::MacOSX_10_14 )
+        if(getOS() == SystemStats::OperatingSystemType::MacOSX_10_14 ||
+           getOS() == SystemStats::OperatingSystemType::MacOSX_10_15 )
         {
 
         }else

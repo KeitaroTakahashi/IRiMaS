@@ -391,6 +391,7 @@ void IRWorkspace::openPreferenceWindow()
     if(this->requestOpenPreferenceWindow != nullptr) requestOpenPreferenceWindow();
 }
 // ============================================================
+
 void IRWorkspace::addObjectGlobal(IRObjectPtr ptr, String id)
 {
     std::cout << "addObjectGlobal" << std::endl;

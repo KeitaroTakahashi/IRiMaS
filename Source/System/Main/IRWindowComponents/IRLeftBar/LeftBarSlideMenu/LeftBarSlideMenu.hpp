@@ -28,8 +28,14 @@ public:
     std::function<void(IRWorkspace*)> workspaceSelectedCallback;
 
     //==================================================
-
+    void deleteSelectedWorkspaceSlide();
+    
+    void moveToLowerSlide();
+    void moveToHigherSlide();
     //==================================================
+    
+    IRWorkspaceSlide* getSelectedSlide();
+
 private:
     // callback from SlideMenu
     void slideMenuUpdatedAction();
@@ -64,6 +70,9 @@ private:
     std::shared_ptr<Component4ViewPort> viewPort;
     
     std::shared_ptr<SlideMenu> slideMenu;
+    //==================================================
+
+
     
     //==================================================
     int buttomMargin = 50;

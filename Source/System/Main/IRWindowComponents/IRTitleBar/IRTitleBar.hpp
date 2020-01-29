@@ -42,6 +42,8 @@ public:
     void bringToFrontCompleted() override
     {
         this->comp.bringAllButtonsToFront();
+        std::cout << "IRTitleBar::bringToFrontCompleted()\n";
+
     }
     
     void componentCreated() override

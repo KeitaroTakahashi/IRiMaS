@@ -32,6 +32,7 @@ public:
     //==================================================
     // IRWorkspace
     void createNewWorkspace();
+    void deleteWorkspace(IRWorkspace* space);
     
     std::vector<IRWorkspace* > getWorkspaces() const { return this->workspaces; }
     IRWorkspace* getTopWorkspace() const { return this->topWorkspace; }
@@ -58,6 +59,8 @@ public:
         virtual void nodeObjectGetFocused(IRNodeObject* obj) {};
         
         virtual void newWorkspaceCreated(IRWorkspace* space) {};
+        virtual void workspaceWillDeleted(IRWorkspace* space) {};
+        virtual void workspaceHasDeleted() {};
         virtual void workspaceEditModeChanged(IRWorkspace* changedSpace) {};
         virtual void heavyObjectCreated(IRNodeObject* obj) {};
 
@@ -71,6 +74,9 @@ public:
     void callNodeObjectSelectionChange(IRNodeObject* obj);
     void callNodeObjectGetFocused(IRNodeObject* obj);
     void callnewWorkspaceCreated(IRWorkspace* space);
+    void callWorkspaceWillDeleted(IRWorkspace* space);
+    void callWorkspaceHasDeleted();
+
     void callWorkspaceEditModeChanged(IRWorkspace* space);
     void callHeavyObjectCreated(IRNodeObject* obj);
 

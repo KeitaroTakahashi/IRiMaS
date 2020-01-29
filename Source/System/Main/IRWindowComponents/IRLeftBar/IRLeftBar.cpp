@@ -44,7 +44,11 @@ IRHeavyWeightComponent(this)
     this->ordinaryWidth = this->leftMarge + this->rightMarge + this->buttonSize;
     this->maxWidth = this->leftMarge + this->rightMarge + this->buttonSize + this->menuSpace;
     
-    
+    //key
+    setWantsKeyboardFocus(true);
+    addKeyListener(this);
+    //addKeyListener(getStr()->key);
+
     //OpenGL
     this->openGLContext.setContinuousRepainting(false);
     this->openGLContext.attachTo (*this);
@@ -94,7 +98,8 @@ void IRLeftBar::paint(Graphics& g)
 void IRLeftBar::mouseDrag(const MouseEvent& e)
 {
     this->currentPos = e.getScreenPosition();
-    
+    std::cout << "IRLeftBar mouse dragging...\n";
+
     if(this->isMovable)
     {
         Point<int>delta = this->currentPos - this->prevPos;
@@ -105,6 +110,8 @@ void IRLeftBar::mouseDrag(const MouseEvent& e)
         sendChangeMessage();
         this->prevPos = e.getScreenPosition();
     }
+    
+    
 }
 
 void IRLeftBar::mouseUp(const MouseEvent& e)
@@ -114,15 +121,21 @@ void IRLeftBar::mouseUp(const MouseEvent& e)
 
 void IRLeftBar::mouseDown(const MouseEvent& e)
 {
+    std::cout << "IRLeftBar mouseDown\n";
+        
     auto pos = e.getScreenPosition();
     this->prevPos = pos;
     checkResizableFromMouseDownPosition(pos);
+    
+    
+    toFront(true);
 }
 
 void IRLeftBar::mouseMove(const MouseEvent& e)
 {
     
 }
+
 
 //==================================================
 void IRLeftBar::checkResizableFromMouseDownPosition(Point<int> pos)
@@ -135,6 +148,11 @@ void IRLeftBar::bringToFrontCompleted()
 {
     this->objectSlideSwitchButton->bringThisToFront();
     this->objectMenuComponent->bringToFrontCompleted();
+    
+    setWantsKeyboardFocus(true);
+    addKeyListener(this);
+
+    std::cout << "IRLeftBar::bringToFrontCompleted()\n";
 }
 
 // ==================================================
@@ -198,6 +216,16 @@ void IRLeftBar::workspaceSelectedAction(IRWorkspace* space)
     if(this->workspaceSelectedCallback != nullptr)
         this->workspaceSelectedCallback(space);
 }
+
+void IRLeftBar::workspaceDeleteAction(IRWorkspace* space)
+{
+    
+    if(this->workspaceDeleteCallback != nullptr)
+        this->workspaceDeleteCallback(space);
+    
+
+}
+
 // ==================================================
 
 void IRLeftBar::closeObjectMenu()
@@ -223,5 +251,39 @@ void IRLeftBar::attachPreferenceMenu()
 void IRLeftBar::removePreferenceMenu()
 {
     
+}
+// ==================================================
+
+
+bool IRLeftBar::keyPressed(const KeyPress& key, Component* originatingComponent)
+{
+    std::cout << "IRLeftBar keyPressed() : " << key.getKeyCode() << " : " << key.getTextDescription() << ", " << key.getTextCharacter() <<   std::endl;
+    
+    if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
+    {
+        deleteKeyPressed();
+        return true;
+    }
+    
+    else if(key.getTextDescription() == "command + N")
+    {
+        commandNKeyPressed();
+        return true;
+    }
+    
+    else if(key.getKeyCode() == key.upKey)
+    {
+        upKeyPressed();
+        return true;
+    }
+    
+    else if(key.getKeyCode() == key.downKey)
+    {
+        downKeyPressed();
+        return true;
+    }
+
+    
+    return false;
 }
 // ==================================================

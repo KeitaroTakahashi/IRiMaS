@@ -71,7 +71,6 @@ void IRWindowComponent::resized()
     this->leftBar->setBounds(0, this->barHeight,
                              lw, 
                              h - this->barHeight);
-    this->leftBar->workspaceSelectedCallback = [this](IRWorkspace* space) { workspaceSelected(space); };
     
     int rw = this->rightBar->getWidth();
     this->rightBar->setBounds(getWidth() - rw, this->barHeight,
@@ -162,6 +161,10 @@ void IRWindowComponent::createLeftComponent()
     this->leftBar.reset(new IRLeftBar(this->ir_str.get()));
     this->leftBar->addChangeListener(this);
     addAndMakeVisible(this->leftBar.get());
+    
+    this->leftBar->workspaceSelectedCallback = [this](IRWorkspace* space) { workspaceSelected(space); };
+    this->leftBar->workspaceDeleteCallback = [this](IRWorkspace* space) { deleteWorkSpace(space); };
+
 }
 
 void IRWindowComponent::createComponents()
@@ -285,7 +288,7 @@ void IRWindowComponent::mouseDown(const MouseEvent& e)
     auto pos = e.getEventRelativeTo(this).getPosition();
     this->prevPos = pos;
     
-    //std::cout << "IRWindowComponent : " << pos.getX() << ", " << pos.getY() << std::endl;
+    std::cout << "IRWindowComponent : " << pos.getX() << ", " << pos.getY() << std::endl;
     //std::cout << "resizable area x " << getWidth() - this->resizableMargin << " : " << getHeight() - this->resizableMargin << std::endl;
  
     // store current window size
@@ -531,7 +534,15 @@ void IRWindowComponent::openButtonClicked()
 // called from IRLeftBar
 void IRWindowComponent::workspaceSelected(IRWorkspace* space)
 {
+    std::cout << "workpsaceSelected " << space << std::endl;
     this->mainSpace->setTopWorkspace(space);
+    heavyObjectCreated(nullptr);
+    
+}
+
+void IRWindowComponent::deleteWorkSpace(IRWorkspace* space)
+{
+    this->mainSpace->deleteWorkspace(space);
     heavyObjectCreated(nullptr);
     
 }
@@ -540,13 +551,17 @@ void IRWindowComponent::workspaceSelected(IRWorkspace* space)
 void IRWindowComponent::rebindOpenGLContents()
 {
     
+    if(this->rightBar->getWidth() > 0 && this->rightBar->getHeight() > 0)
+        this->rightBar->bringThisToFront();
+      
+    if(this->bar->getWidth() > 0 && this->bar->getHeight() > 0)
+        this->bar->bringThisToFront("IRTitleBar bringThisToFront : from IRWindowComponent");
+    
     std::cout << "rebindOpenGLContents\n";
     if(this->leftBar->getWidth() > 0 && this->leftBar->getHeight() > 0)
            this->leftBar->bringThisToFront("LeftBar bringThisToFront : from IRWindowComponent");
-       if(this->rightBar->getWidth() > 0 && this->rightBar->getHeight() > 0)
-           this->rightBar->bringThisToFront();
-       if(this->bar->getWidth() > 0 && this->bar->getHeight() > 0)
-           this->bar->bringThisToFront("IRTitleBar bringThisToFront : from IRWindowComponent");
+    
+    
        else std::cout << "bar not yet\n";
     
     // make sure to update
