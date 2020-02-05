@@ -21,7 +21,6 @@ IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(orginaryIRComponent))
     //this->label.setFont(
     
     this->textEditor.setText("text...", dontSendNotification);
-    this->textEditor.setBorder(BorderSize<int>(11,10,10,10));
     this->textEditor.setColour(TextEditor::backgroundColourId, getStr()->SYSTEMCOLOUR.background);
     this->textEditor.setColour(TextEditor::outlineColourId,
                                Colours::transparentBlack);
@@ -29,6 +28,9 @@ IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(orginaryIRComponent))
                                Colours::transparentBlack);
 
     this->textEditor.applyColourToAllText(getStr()->SYSTEMCOLOUR.titleText, true);
+    
+    this->textEditor.onReturnKey = [this] { onReturnKeyAction(); };
+    this->textEditor.onTextChange = [this] { onTextChangeAction(); };
     
     // set editable condition
     
@@ -54,6 +56,7 @@ IRNodeObject* IRTextEditorObject::copyThis()
     IRTextEditorObject* newObj = new IRTextEditorObject(this->parent, getStr());
     newObj->setFont(this->font);
     newObj->setTextColour(this->textColour);
+    newObj->setBackgroundColour(this->backgroundColour);
     newObj->setAlign(this->alignId);
     newObj->textEditor.setText(this->textEditor.getText() ,dontSendNotification);
     return newObj;
@@ -64,6 +67,7 @@ t_json IRTextEditorObject::saveThisToSaveData()
 {
     FontController* gui = this->controller->getFontController();
     Colour c = gui->getTextColour();
+    Colour b = gui->getBackgroundColour();
     
     std::string align = std::to_string(gui->getAlign());
     
@@ -74,6 +78,7 @@ t_json IRTextEditorObject::saveThisToSaveData()
         {"fontHeight", this->font.getHeight()},
         {"textAlign", gui->getAlign()},
         {"textColour", t_json::array({c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()})},
+        {"backgroundColour", t_json::array({b.getRed(), b.getGreen(), b.getBlue(), b.getAlpha()})},
         {"textContents", this->textEditor.getText().toStdString()}
     });
     
@@ -101,12 +106,16 @@ void IRTextEditorObject::loadThisFromSaveData(t_json data)
                                (uint8)colour[1].int_value(),
                                (uint8)colour[2].int_value(),
                                (uint8)colour[3].int_value());
+    t_json::array colour2 = data["backgroundColour"].array_items();
+    Colour backgroundColour = Colour((uint8)colour2[0].int_value(),
+                                     (uint8)colour2[1].int_value(),
+                                     (uint8)colour2[2].int_value(),
+                                     (uint8)colour2[3].int_value());
     
     this->textEditor.setColour(TextEditor::textColourId, textColour);
     this->textEditor.setColour(TextEditor::outlineColourId, Colours::transparentWhite);
+    this->textEditor.setColour(TextEditor::backgroundColourId , backgroundColour);
 
-    
-    
     // set text contents
     this->textEditor.setText(String(data["textContents"].string_value()), dontSendNotification);
     
@@ -117,6 +126,7 @@ void IRTextEditorObject::loadThisFromSaveData(t_json data)
     gui->setHeight(data["textHeight"].int_value());
     gui->setAlign(data["textAlign"].int_value());
     gui->setTextColour(textColour);
+    gui->setBackgroundColour(backgroundColour);
     
 }
 
@@ -191,6 +201,10 @@ void IRTextEditorObject::changeListenerCallback (ChangeBroadcaster* source)
                 this->textEditor.applyColourToAllText(this->textColour, true);
                 repaint();
                 break;
+            case BackgroundColourChanged:
+                this->backgroundColour = fontGUI->getBackgroundColour();
+                setBackgroundColour(this->backgroundColour);
+                break;
             default:
                 break;
         }
@@ -228,9 +242,15 @@ void IRTextEditorObject::setAlign(int id)
 void IRTextEditorObject::setTextColour(Colour colour)
 {
     this->textColour = colour;
-    this->textEditor.setColour(Label::textColourId, colour);
+    this->textEditor.setColour(TextEditor::textColourId, colour);
 }
 
+void IRTextEditorObject::setBackgroundColour(Colour colour)
+{
+    this->backgroundColour = colour;
+    this->textEditor.setColour(TextEditor::backgroundColourId, colour);
+    repaint();
+}
 
 Font IRTextEditorObject::getFont() const
 {
@@ -243,16 +263,26 @@ Colour IRTextEditorObject::getTextColour() const
     return this->textColour;
 }
 
+Colour IRTextEditorObject::getBackgroundColour() const
+{
+    return this->backgroundColour;
+}
 
 int IRTextEditorObject::getAlignId() const
 {
     return this->alignId;
 }
 
+int IRTextEditorObject::getTextWidth() const
+{
+    return this->textEditor.getTextWidth();
+}
+int IRTextEditorObject::getTextHeight() const
+{
+    return this->textEditor.getTextHeight();
+}
 
 
-
-// **** **** PRIVATE METHODS **** **** //
 // ------------------------------------------------------------
 
 void IRTextEditorObject::statusInEditMode()
@@ -276,6 +306,7 @@ void IRTextEditorObject::statusInControlMode()
     this->textEditor.setColour(TextEditor::focusedOutlineColourId,
                                Colours::transparentBlack);
 }
+// **** **** PRIVATE METHODS **** **** //
 
 // ------------------------------------------------------------
 
@@ -295,6 +326,21 @@ void IRTextEditorObject::statusChangedCallback(IRNodeComponentStatus status)
             break;
     }
 }
+// ------------------------------------------------------------
 
+
+void IRTextEditorObject::onReturnKeyAction()
+{
+    std::cout << "onReturnKeyAction\n";
+    //if(this->onReturnKey != nullptr)
+     //   this->onReturnKey();
+}
+void IRTextEditorObject::onTextChangeAction()
+{
+    std::cout << "onTextChangeAction\n";
+
+    if(this->onTextChange != nullptr)
+        this->onTextChange();
+}
 
 

@@ -10,17 +10,27 @@
 
 #include "JuceHeader.h"
 #include "IRStrComponent.hpp"
+#include "IRSwitchButton.h"
+
 
 class IRObjectController : public Component,
-public IRStrComponent
+public IRStrComponent,
+private IRSquareButton::Listener
 {
 public:
     IRObjectController(IRStr* str);
     ~IRObjectController();
     
+    virtual void resized() override;
     
+    virtual void mainControllerSelected() {}
+    virtual void arrangeControllerSelected() {}
 private:
     
+    IRSwitchButton switchButton;
+    void buttonClicked(IRSquareButton* clickedButton) override;
+
+   
 };
 
 #endif /* IRObjectController_hpp */

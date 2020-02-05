@@ -37,7 +37,7 @@ void VideoAnnotationEventComponent::paint(Graphics& g )
 void VideoAnnotationEventComponent::resized()
 {
     int margin = 5;
-    int h = getHeight();
+    int h = 40	;
     int buttonSize = h - margin*2;
     this->activeButton.setBounds(getWidth() - margin*2 - buttonSize, margin, buttonSize, buttonSize);
 }

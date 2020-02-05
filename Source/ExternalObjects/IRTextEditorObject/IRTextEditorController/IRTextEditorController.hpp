@@ -10,6 +10,7 @@
 
 #include "IRObjectController.hpp"
 #include "FontController.h"
+#include "ObjectArranger.hpp"
 
 class IRTextEditorController : public IRObjectController,
 public ChangeListener,
@@ -27,13 +28,17 @@ public:
         
     FontController* getFontController();
 
+    void mainControllerSelected() override;
+    void arrangeControllerSelected() override;
         
 private:
 
     Label LabelTitle;
     
+    
         // FontGUI* fontGUI;
     std::unique_ptr<FontController> fontController;
+    std::unique_ptr<ArrangeController> arrangeController;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRTextEditorController)
 

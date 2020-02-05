@@ -201,7 +201,6 @@ void SlideMenu::mouseDown(const MouseEvent& e)
 void SlideMenu::mouseDrag(const MouseEvent& e)
 {
     auto pos = e.getEventRelativeTo(this).getPosition();
-    std::cout << "SlideMenu mouse dragging...\n";
     
     moveSelectedSlide(e);
 }
@@ -242,7 +241,6 @@ bool SlideMenu::isSlideMovedToItsNeighbor(IRWorkspaceSlide* slide)
             switch(yHittest(slide->getBounds(), s->getBounds()))
             {
                 case previous:
-                    std::cout << "index " << s->getIndex() << " previous! "  << std::endl;;
                     
                     if(s->getIndex() > slide->getIndex())
                     {
@@ -255,7 +253,6 @@ bool SlideMenu::isSlideMovedToItsNeighbor(IRWorkspaceSlide* slide)
                     
                     break;
                 case next:
-                    std::cout << "index " << s->getIndex() << " next! "  << std::endl;;
 
                      if(s->getIndex() < slide->getIndex())
                      {

@@ -12,12 +12,16 @@
 IRObjectFactory2::IRObjectFactory2()
 {
     Image img; // dummy
+    
+    //registerObject<IRAudioAnalysisObject>("IRAudioAnalysis", "AudioAnalysis", img);
+    //registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
+
+    /*
     registerObject<IRAutomationObject>("IRAutomation",
                                        "Graph",
                                        objectCategory::CHARTMENU,
                                        img);
     
-    //registerObject<IRAudioAnalysisObject>("IRAudioAnalysis", "AudioAnalysis", img);
     
     registerObject<IRWaveformObject>("IRWaveform",
                                       "Waveform",
@@ -36,13 +40,9 @@ IRObjectFactory2::IRObjectFactory2()
     
     
     
-    //registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
     
     
-    registerObject<IRTextEditorObject>("IRTextEditor",
-                                                     "Text Editor",
-                                                     objectCategory::TEXTMENU,
-                                                     img);
+
     registerObject<IRImageViewerObject>("IRImageViewer",
                                                       "Image Viewer",
                                                       objectCategory::IMAGEMENU,
@@ -54,10 +54,7 @@ IRObjectFactory2::IRObjectFactory2()
                                                       img);
     
     
-    registerObject<IRVideoAnnotaterInterfaceObject>("IRVideoPlayer",
-                                                      "Video Player",
-                                                      objectCategory::PLAYERMENU,
-                                                      img);
+
     
     
     //registerObject<IRTestObject>("IRTestObject", "test", img);
@@ -66,11 +63,17 @@ IRObjectFactory2::IRObjectFactory2()
                                                 "Shape",
                                                 objectCategory::IMAGEMENU,
                                                 img); // leak videocomp
-    
+    */
     //registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
     
-    
-  
+    registerObject<IRVideoAnnotaterInterfaceObject>("IRVideoPlayer",
+                                                      "Video Player",
+                                                      objectCategory::PLAYERMENU,
+                                                      img);
+  registerObject<IRTextEditorObject>("IRTextEditor",
+                                                   "Text Editor",
+                                                   objectCategory::TEXTMENU,
+                                                   img);
     std::cout << "IRFactory2 initialized\n";
 }
 

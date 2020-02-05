@@ -154,6 +154,8 @@ public:
         comp->addListener(this);
         addAndMakeVisible(comp);
         
+        deSelectAllEventComponents();
+        selectEventComponent(comp);
         sortEventComponentByTimeCode();
     }
     
@@ -216,7 +218,6 @@ public:
     void eventModified(VideoAnnotationEventComponent* comp) override
     {
         sortEventComponentByTimeCode();
-        
 
         if(this->eventModifiedCallback != nullptr)
             this->eventModifiedCallback();
@@ -295,15 +296,29 @@ public:
         int x = margin;
         int y = margin;
         int w = getWidth();
-        int h = 40;
         
         for(auto event : this->eventComponents)
         {
+            int h = event->getInitHeight();
+            
+            std::cout <<"eventComponentResized h = " << h << std::endl;
+
             event->setBounds(x, y, w, h);
             y += h + margin;
         }
-        
+    }
+    // return sum of the height of all added eventcomponent
+    int getTotalComponentHeight()
+    {
+        int height = 0;
+        int margin = 5;
 
+        for(auto event : this->eventComponents)
+        {
+            height += event->getInitHeight() + 5;
+        }
+        
+        return height;
     }
     
     private:

@@ -293,10 +293,14 @@ void IRVideoAnnotater::setEventModifiedCallback(std::function<void()> callback)
 
 void IRVideoAnnotater::eventModifiedAction()
 {
-    
     // stop playing video first
     this->videoPlayerObject->stop();
     this->myVideoPlayerObject->stop();
+    
+    //resize to sort
+    auto currentPosition = this->eventListComponent->getViewPosition();
+    this->eventListComponent->resized();
+    this->eventListComponent->setViewPosition(currentPosition);
     
     // apply
     applyEventsOnTheLoadedVideo();

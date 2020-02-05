@@ -31,27 +31,18 @@ public ComboBox::Listener
 public:
     
     FontController(IRStr* str) : IRStrComponent(str),
-    textColourIcon(Colours::black, str)
+    textColourIcon(Colours::black, str),
+    backgroundColourIcon(Colours::transparentWhite, str)
     {
-        StopWatch bench;
         addAndMakeVisible(this->labelFont);
         this->labelFont.setText("Font : ", dontSendNotification);
         //this->labelFont.setColour(Label::textColourId, Colours::black);
         this->labelFont.setJustificationType(Justification::left);
-        
-        // get info
-        bench.start();
-        getAllFonts();
-        bench.result("getAllFonts");
-        
-        bench.start();
 
+        getAllFonts();
         makeFontMenu();
         makeFontStyleMenu();
-        
-        bench.result("makeFontMenu");
 
-        
         addAndMakeVisible(this->labelStyle);
         this->labelStyle.setText("Style : ", dontSendNotification);
         //this->labelStyle.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
@@ -89,6 +80,8 @@ public:
         addAndMakeVisible(this->textColourIcon);
         this->textColourIcon.addChangeListener(this);
         
+        addAndMakeVisible(this->backgroundColourIcon);
+        this->backgroundColourIcon.addChangeListener(this);
 
         addAndMakeVisible(this->labelBackgroundColour);
         this->labelBackgroundColour.setText("BackGround Colour : ", dontSendNotification);
@@ -134,6 +127,9 @@ public:
 
         this->labelTextColour.setBounds         (10, y, 100, 30);
         this->textColourIcon.setBounds          (getWidth() - 10 - 80, y + 5, 80, 20);
+        y += yBigIncrement;
+        this->labelBackgroundColour.setBounds   (10, y, 140, 30);
+        this->backgroundColourIcon.setBounds    (getWidth() - 10 - 80, y + 5, 80, 20);
         /*
         this->labelBackgroundColour.setBounds   (10, y, 100, 30);
         y += yIncrement;
@@ -251,6 +247,7 @@ public:
     }
     void backgroundColourMenuChanged()
     {
+        std::cout << "backgroundColourMenuChanged\n";
         this->status = BackgroundColourChanged;
         sendChangeMessage();
     }
@@ -272,12 +269,17 @@ public:
     
     Colour getTextColour() const { return this->textColourIcon.getCurrentColour(); }
     void setTextColour(Colour newColour) { this->textColourIcon.setCurrentColour(newColour); }
-    
+    Colour getBackgroundColour() const { return this->backgroundColourIcon.getCurrentColour(); }
+    void setBackgroundColour(Colour newColour) { this->backgroundColourIcon.setCurrentColour(newColour); }
+
     void changeListenerCallback(ChangeBroadcaster* source) override
     {
        if (source == &this->textColourIcon)
         {
             fontColourMenuChanged();
+        }else if(source == &this->backgroundColourIcon)
+        {
+            backgroundColourMenuChanged();
         }
     }
     void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override
@@ -311,6 +313,7 @@ private:
     StringArray fontFamilyList;
     
     IRColourSettingIcon textColourIcon;
+    IRColourSettingIcon backgroundColourIcon;
     
     FontControllerStatus status;
     

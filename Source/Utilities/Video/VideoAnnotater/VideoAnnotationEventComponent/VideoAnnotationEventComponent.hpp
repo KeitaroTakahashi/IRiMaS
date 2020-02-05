@@ -114,6 +114,9 @@ public:
         return this->timeCodeUI.getEndTimeInString();
     }
     // ==================================================
+    
+    int getInitHeight() const { return this->init_height; }
+    void setInitHeight(int newHeight) { this->init_height = newHeight; }
     // ==================================================
     
 protected:
@@ -123,6 +126,9 @@ private:
     bool isSelectedFlag = false;
     bool isActiveFlag = true;
     int videoLengthInSecond;
+    
+    int init_height = 40;
+    
     VideoAnnotationType type = TEXT;
     // ==================================================
     IRImageButton activeButton;

@@ -98,7 +98,6 @@ void IRLeftBar::paint(Graphics& g)
 void IRLeftBar::mouseDrag(const MouseEvent& e)
 {
     this->currentPos = e.getScreenPosition();
-    std::cout << "IRLeftBar mouse dragging...\n";
 
     if(this->isMovable)
     {

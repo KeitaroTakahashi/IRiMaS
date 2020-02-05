@@ -111,6 +111,7 @@
 		82657CEF21EE7DE5003FA700 /* IRiMaSMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82657CED21EE7DE5003FA700 /* IRiMaSMainComponent.cpp */; };
 		82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82657CFC21EFC8D8003FA700 /* IRListBoxObject.cpp */; };
 		826DAFB123CEF067007BA10D /* IRVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 826DAFB023CEF067007BA10D /* IRVideoPlayer.cpp */; };
+		827F862F23E9A6B500653A76 /* ObjectArranger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827F862D23E9A6B500653A76 /* ObjectArranger.cpp */; };
 		8289A08322D290B20088E156 /* IRSpectrogramPreferenceUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A08122D290B20088E156 /* IRSpectrogramPreferenceUI.cpp */; };
 		8289A08622D3F3A70088E156 /* IRSpectrogramWithPreference.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A08422D3F3A70088E156 /* IRSpectrogramWithPreference.cpp */; };
 		8289A08922D3FED00088E156 /* IRSpectrogramUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8289A08722D3FED00088E156 /* IRSpectrogramUI.cpp */; };
@@ -461,6 +462,9 @@
 		827F0D2B23D855E400ECAE7A /* AnnotationTextEventComponentSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnnotationTextEventComponentSetting.h; sourceTree = "<group>"; };
 		827F0D2D23D8563600ECAE7A /* IRColourSettingIcon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRColourSettingIcon.h; sourceTree = "<group>"; };
 		827F0D3023D8590500ECAE7A /* IRColourSettingWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRColourSettingWindow.h; sourceTree = "<group>"; };
+		827F862D23E9A6B500653A76 /* ObjectArranger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectArranger.cpp; sourceTree = "<group>"; };
+		827F862E23E9A6B500653A76 /* ObjectArranger.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ObjectArranger.hpp; sourceTree = "<group>"; };
+		827F863123E9CC3100653A76 /* IRSwitchButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSwitchButton.h; sourceTree = "<group>"; };
 		828612152140020700D64F75 /* IRFFTSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFFTSequence.h; sourceTree = "<group>"; };
 		82861216214002E600D64F75 /* IRSignalWindowLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSignalWindowLib.h; sourceTree = "<group>"; };
 		8286CBF521431A7400AAD437 /* DataType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataType.h; sourceTree = "<group>"; };
@@ -1973,6 +1977,23 @@
 			path = IRColourSettingWindow;
 			sourceTree = "<group>";
 		};
+		827F862C23E9A6A000653A76 /* ObjectArranger */ = {
+			isa = PBXGroup;
+			children = (
+				827F862D23E9A6B500653A76 /* ObjectArranger.cpp */,
+				827F862E23E9A6B500653A76 /* ObjectArranger.hpp */,
+			);
+			path = ObjectArranger;
+			sourceTree = "<group>";
+		};
+		827F863023E9CC2300653A76 /* IRSwitchButton */ = {
+			isa = PBXGroup;
+			children = (
+				827F863123E9CC3100653A76 /* IRSwitchButton.h */,
+			);
+			path = IRSwitchButton;
+			sourceTree = "<group>";
+		};
 		8286CBF421431A5F00AAD437 /* DataType */ = {
 			isa = PBXGroup;
 			children = (
@@ -2877,6 +2898,7 @@
 		82DEA52C2292F976004D3D9F /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				827F863023E9CC2300653A76 /* IRSwitchButton */,
 				82E914E9235DE5CF00A38C58 /* IRColourButton */,
 				820F7EDC234B815D00679F56 /* EditModeButton */,
 				82DEA52D2292F995004D3D9F /* IRImageButton */,
@@ -2951,6 +2973,7 @@
 		82DEA54F229423CE004D3D9F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				827F862C23E9A6A000653A76 /* ObjectArranger */,
 				8206B5332381BB020088767D /* IRHeavyWeightComponent */,
 				82D9718C236B1B1D00A5AE89 /* NSViewManager */,
 				8289A09822D8C35C0088E156 /* IRViewUI */,
@@ -3248,6 +3271,7 @@
 				106588DE222FFAA2005D6B38 /* EditCommandTarget.cpp in Sources */,
 				82D0D29422A5516F00C771B1 /* ISVParameterControlWindow.cpp in Sources */,
 				82DEA553229423E1004D3D9F /* IRViewPort.cpp in Sources */,
+				827F862F23E9A6B500653A76 /* ObjectArranger.cpp in Sources */,
 				82D0D29122A4560500C771B1 /* ISVParameterControlUI2.cpp in Sources */,
 				823C18172191B3C100AC9FC9 /* IRSaveLoadSystem.cpp in Sources */,
 				10F647542226DE6800A26D7D /* ObjectListMenuObject.cpp in Sources */,

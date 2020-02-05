@@ -32,7 +32,8 @@ public:
     void resized() override
     {
         int margin = 5;
-        int listCompHeight = (this->videoListComponent->getEventNum() + margin) * this->listComponentHeight;
+        int listCompHeight = this->videoListComponent->getTotalComponentHeight();
+        //(this->videoListComponent->getEventNum() + margin) * this->listComponentHeight;
         this->viewPort->setBounds(0,0,getWidth()-10, listCompHeight);
         this->videoListComponent->setSize(getWidth()-10, listCompHeight);
     }
@@ -89,6 +90,7 @@ public:
     void createTextEventComponent()
     {
         this->videoListComponent->createTextEventComponent();
+        
     }
     
     void createTextEventComponent(float beginTime,
@@ -96,6 +98,8 @@ public:
     {
         this->videoListComponent->createTextEventComponent(beginTime,
                                                            endTime);
+        
+        
     }
     void createShapeEventComponent()
     {

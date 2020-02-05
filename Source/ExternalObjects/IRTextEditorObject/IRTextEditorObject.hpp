@@ -24,34 +24,56 @@ public:
     
     IRTextEditorObject(Component* parent, IRStr* str);
     ~IRTextEditorObject();
-    
+    // ------------------------------------------------------------
+
     IRNodeObject* copyThis() override;
     
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json data) override;
+    // ------------------------------------------------------------
 
     void paint(Graphics &g) override;
     void resized() override;
-    
+    // ------------------------------------------------------------
+
     void mouseDownEvent(const MouseEvent& e) override;
-    
+    // ------------------------------------------------------------
+
     void changeListenerCallback(ChangeBroadcaster* source) override;
-    
+    // ------------------------------------------------------------
+
     void setFont(Font font);
     void setAlign(int id);
     void setTextColour(Colour colour);
+    void setBackgroundColour(Colour colour);
+    // ------------------------------------------------------------
 
     Font getFont() const;
     Colour getTextColour() const;
+    Colour getBackgroundColour() const;
     int getAlignId() const;
     
+    int getTextWidth() const;
+    int getTextHeight() const;
+    // ------------------------------------------------------------
+
+    void onReturnKeyAction();
+    void onTextChangeAction();
     
+    std::function<void()> onReturnKey;
+    std::function<void()> onTextChange;
+    // ------------------------------------------------------------
+
     TextEditor textEditor;
-    
+    // ------------------------------------------------------------
+
     // preference
     std::unique_ptr<IRTextEditorController> controller;
     
-    
+    // ------------------------------------------------------------
+
+    void statusInEditMode();
+    void statusInControlMode();
 private:
     
     // ------------------------------------------------------------
@@ -63,12 +85,11 @@ private:
     
     Font font;
     Colour textColour;
+    Colour backgroundColour;
     int alignId;
     
     // ------------------------------------------------------------
-    
-    void statusInEditMode();
-    void statusInControlMode();
+
     // ------------------------------------------------------------
     // ------------------------------------------------------------
 
