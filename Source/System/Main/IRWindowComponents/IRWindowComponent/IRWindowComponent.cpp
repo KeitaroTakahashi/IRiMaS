@@ -22,7 +22,7 @@ projectName(projectName), frameRect(frameRect)
     
     
     //initially set object menu on t
-    this->leftBar->toObjectMenuAction(true);
+    //this->leftBar->toObjectMenuAction(true);
     
     audioSetup();
     
@@ -37,7 +37,7 @@ IRWindowComponent::~IRWindowComponent()
     
     this->mainSpace.reset();
     this->bar.reset();
-    this->leftBar.reset();
+    //this->leftBar.reset();
     this->rightBar.reset();
     
     this->ir_str.reset();
@@ -63,6 +63,9 @@ void IRWindowComponent::resized()
     this->mainComponentHeight = h - this->barHeight;
     
     this->bar->setBounds(0, 0, w, this->barHeight);
+   
+    this->mainSpace->setBounds(0, 0, w, h);
+     /*
     this->mainSpace->setBounds(this->leftBarWidth, this->barHeight,
                                w - this->leftBarWidth, this->mainComponentHeight);
     
@@ -71,7 +74,7 @@ void IRWindowComponent::resized()
     this->leftBar->setBounds(0, this->barHeight,
                              lw, 
                              h - this->barHeight);
-    
+    */
     int rw = this->rightBar->getWidth();
     this->rightBar->setBounds(getWidth() - rw, this->barHeight,
                               rw, getHeight() - this->barHeight);
@@ -150,6 +153,7 @@ void IRWindowComponent::createBarComponent()
 
 void IRWindowComponent::createLeftComponent()
 {
+    /*
     if(this->leftBar.get() != nullptr)
     {
         if(this->leftBar->isVisible())
@@ -161,9 +165,10 @@ void IRWindowComponent::createLeftComponent()
     this->leftBar.reset(new IRLeftBar(this->ir_str.get()));
     this->leftBar->addChangeListener(this);
     addAndMakeVisible(this->leftBar.get());
-    
+
     this->leftBar->workspaceSelectedCallback = [this](IRWorkspace* space) { workspaceSelected(space); };
     this->leftBar->workspaceDeleteCallback = [this](IRWorkspace* space) { deleteWorkSpace(space); };
+         */
 
 }
 
@@ -186,6 +191,8 @@ void IRWindowComponent::createComponents()
     //this should be called after rightBar created
     createBarComponent();
     createLeftComponent();
+    
+    this->rightBar->openSpaceAction(true);
         
 }
 // ----------------------------------------
@@ -200,6 +207,7 @@ void IRWindowComponent::changeListenerCallback (ChangeBroadcaster* source)
                 this->windowMoveAction(this->bar->pos);
         }
     }
+    /*
     else if(source == this->leftBar.get())
     {
         if(this->leftBar->getStatus() == IRWindowBarActionStatus::MoveWindow)
@@ -209,7 +217,7 @@ void IRWindowComponent::changeListenerCallback (ChangeBroadcaster* source)
                 this->windowMoveAction(this->leftBar->pos);
             }
         }
-    }
+    }*/
 }
 // ----------------------------------------
 
@@ -308,7 +316,7 @@ void IRWindowComponent::mouseDown(const MouseEvent& e)
     }
     
     //close menu if it is opened
-    this->leftBar->closeObjectMenu();
+    //this->leftBar->closeObjectMenu();
 }
 // ----------------------------------------
 
@@ -396,7 +404,7 @@ void IRWindowComponent::newWorkspaceCreated(IRWorkspace* space)
 {
     
     std::cout << "IRWindowComponent::newWorkspaceCreated\n";
-    this->leftBar->addNewWorkspaceSlide(space);
+    //this->leftBar->addNewWorkspaceSlide(space);
     
 }
 
@@ -558,11 +566,13 @@ void IRWindowComponent::rebindOpenGLContents()
         this->bar->bringThisToFront("IRTitleBar bringThisToFront : from IRWindowComponent");
     
     std::cout << "rebindOpenGLContents\n";
+    /*
     if(this->leftBar->getWidth() > 0 && this->leftBar->getHeight() > 0)
            this->leftBar->bringThisToFront("LeftBar bringThisToFront : from IRWindowComponent");
+     */
     
     
-       else std::cout << "bar not yet\n";
+       //else std::cout << "bar not yet\n";
     
     // make sure to update
     resized();
@@ -596,10 +606,11 @@ void IRWindowComponent::updateAppearance()
     getLookAndFeel().setColour(ComboBox::outlineColourId, this->ir_str->SYSTEMCOLOUR.contents);
      */
     
+    /*
     if(this->leftBar.get() != nullptr)
     {
         this->leftBar->repaint();
-    }
+    }*/
     if(this->rightBar.get() != nullptr)
     {
         this->rightBar->repaint();
@@ -787,6 +798,8 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
                 
                 // ===== create object =====
                 std::string objectTypeId = it->second["objectType"].string_value();
+                
+                /*
                 auto* obj = factory.createObject(objectTypeId, currentSpace, this->ir_str.get());
                 
                 json11::Json::array b = it->second["bounds"].array_items();
@@ -804,7 +817,7 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
                 
                 // load save dada
                 obj->loadThisFromSaveData(it->second["ObjectDefined"]);
-                
+                */
                 // ===== END =====
             }
             

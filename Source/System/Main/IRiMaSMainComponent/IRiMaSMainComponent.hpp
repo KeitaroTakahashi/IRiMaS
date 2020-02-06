@@ -32,8 +32,6 @@ IRMAIN class operates
 
  */
 
-
-
 class IRiMaSMainComponent : public Component,
                             public ChangeListener,
 public IRProjectWindow2::Listener

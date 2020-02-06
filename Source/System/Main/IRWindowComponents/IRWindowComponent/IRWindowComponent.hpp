@@ -10,12 +10,13 @@
 
 #include "IRStr.h"
 #include "IRTitleBar.hpp"
-#include "IRLeftBar.hpp"
+//#include "IRLeftBar.hpp"
 #include "IRRightBar.hpp"
 #include "IRMainSpace.hpp"
 #include "IRSaveLoadSystem.hpp"
 #include "IRProjectOwnerBase.h"
 #include "json11.hpp"
+
 
 class IRWindowComponent : public IRProjectOwnerBase,
 public ChangeListener,
@@ -171,7 +172,7 @@ private:
 
     std::shared_ptr<IRMainSpace> mainSpace;
     std::shared_ptr<IRTitleBar> bar;
-    std::shared_ptr<IRLeftBar> leftBar;
+    //std::shared_ptr<IRLeftBar> leftBar;
     std::shared_ptr<IRRightBar> rightBar;
     
     //IRMainSpace Listener
@@ -202,7 +203,7 @@ private:
     // ==================================================
 
 
-    IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
+    //IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
 
     // ==================================================
    // LookAndFeel_V4 c;
