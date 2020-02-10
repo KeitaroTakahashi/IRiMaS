@@ -88,7 +88,7 @@ public:
     
 private:
     
-    IRObjectFactory& objectFactory { singleton<IRObjectFactory>::get_instance() };
+    //IRObjectFactory& objectFactory { singleton<IRObjectFactory>::get_instance() };
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ObjectFactoryInitializer)

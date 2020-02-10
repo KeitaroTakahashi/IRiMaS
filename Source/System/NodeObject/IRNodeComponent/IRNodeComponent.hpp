@@ -14,7 +14,7 @@
 #include "IRFoundation.h"
 #include "IRStrComponent.hpp"
 #include "IRSaveLoadSystem.hpp"
-#include "IRLinkFoundation.hpp"
+//#include "IRLinkFoundation.hpp"
 #include "Benchmark.h"
 #include "IRResizeSquare.h"
 

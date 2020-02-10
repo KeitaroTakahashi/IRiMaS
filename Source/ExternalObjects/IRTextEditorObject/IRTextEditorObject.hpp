@@ -55,6 +55,8 @@ public:
     
     int getTextWidth() const;
     int getTextHeight() const;
+    
+    void showTextContents();
     // ------------------------------------------------------------
 
     void onReturnKeyAction();

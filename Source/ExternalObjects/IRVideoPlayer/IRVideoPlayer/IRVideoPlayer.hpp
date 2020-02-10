@@ -73,9 +73,12 @@ public:
     {
         this->player->setPlayPosition(newPlayPositionInSec);
         
+        // NOT necessary anymore
+        /*
         // call playback
         if(this->updateAnimationFrameCallback != nullptr)
             this->updateAnimationFrameCallback(newPlayPositionInSec);
+         */
     }
     double getPlayPosition(){ return this->player->getPlayPosition(); }
     void setPlaySpeed(double newSpeed) { this->player->setPlaySpeed(newSpeed); }

@@ -70,6 +70,7 @@ public:
     // --------------------------------------------------
     void play();
     void stop();
+    void setPlayPosition(double newPositionInSec);
     
     // --------------------------------------------------
 

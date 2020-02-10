@@ -28,6 +28,8 @@ projectName(projectName), frameRect(frameRect)
     
     //init Z order
     rebindOpenGLContents();
+
+
 }
 // ----------------------------------------
 
@@ -193,6 +195,7 @@ void IRWindowComponent::createComponents()
     createLeftComponent();
     
     this->rightBar->openSpaceAction(true);
+    
         
 }
 // ----------------------------------------
@@ -243,6 +246,12 @@ bool IRWindowComponent::keyPressed(const KeyPress& key, Component* originatingCo
     if(key.getTextDescription() == "command + S")
     {
         CommandSPressed();
+        return true;
+    }
+    
+    if(key.getTextDescription() == "N")
+    {
+        CommandNPressed();
         return true;
     }
  

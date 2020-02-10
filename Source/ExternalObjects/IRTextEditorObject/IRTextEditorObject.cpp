@@ -282,6 +282,10 @@ int IRTextEditorObject::getTextHeight() const
     return this->textEditor.getTextHeight();
 }
 
+void IRTextEditorObject::showTextContents()
+{
+    std::cout << this->textEditor.getText() << std::endl;
+}
 
 // ------------------------------------------------------------
 

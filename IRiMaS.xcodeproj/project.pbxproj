@@ -449,6 +449,7 @@
 		826056BA22735FED00CAF8C5 /* IRText.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRText.hpp; sourceTree = "<group>"; };
 		826056BE2273619300CAF8C5 /* IRData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRData.cpp; sourceTree = "<group>"; };
 		826056BF2273619300CAF8C5 /* IRData.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRData.hpp; sourceTree = "<group>"; };
+		8262855723F1974A00F57D57 /* IRHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRHeaders.h; sourceTree = "<group>"; };
 		82657CE921EBFA6D003FA700 /* IRObjectCreater.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRObjectCreater.hpp; sourceTree = "<group>"; };
 		82657CEB21EE542A003FA700 /* IRProjectWindow.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IRProjectWindow.hpp; sourceTree = "<group>"; };
 		82657CED21EE7DE5003FA700 /* IRiMaSMainComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRiMaSMainComponent.cpp; sourceTree = "<group>"; };
@@ -721,6 +722,7 @@
 		104E2AB5221ADD2A008F5C7A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				8262855523F190BF00F57D57 /* PRECOMPILEDHEADER */,
 				820D3BBA225F933800BDA679 /* TUTORIAL */,
 				10F6473F2226B49900A26D7D /* System */,
 				10F647402226B4A200A26D7D /* ExternalObjects */,
@@ -1876,6 +1878,14 @@
 				826056BF2273619300CAF8C5 /* IRData.hpp */,
 			);
 			path = IRData;
+			sourceTree = "<group>";
+		};
+		8262855523F190BF00F57D57 /* PRECOMPILEDHEADER */ = {
+			isa = PBXGroup;
+			children = (
+				8262855723F1974A00F57D57 /* IRHeaders.h */,
+			);
+			path = PRECOMPILEDHEADER;
 			sourceTree = "<group>";
 		};
 		82657CE721EBFA56003FA700 /* ObjectCreater */ = {
@@ -3383,8 +3393,10 @@
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				DEAD_CODE_STRIPPING = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_NDEBUG=1",
 					"NDEBUG=1",
@@ -3533,8 +3545,10 @@
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"_DEBUG=1",
 					"DEBUG=1",

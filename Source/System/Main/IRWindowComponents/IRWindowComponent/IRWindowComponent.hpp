@@ -159,6 +159,7 @@ private:
     void CommandEPressed();
     void CommandAPressed();
     void CommandSPressed(); // save
+    void CommandNPressed();
     
     // ==================================================
 
@@ -193,8 +194,18 @@ private:
     bool isEditModeFlag = true;
     
     // ==================================================
-    
-   
+    void createNewNodeObject()
+    {
+        
+        auto currentSpace = this->mainSpace->getTopWorkspace();
+        auto* obj = new IRVideoAnnotaterInterfaceObject(currentSpace,
+                                                        this->ir_str.get());
+        obj->setBounds(getWidth()/2, getHeight()/2, 200, 100);
+        currentSpace->createObject(obj);
+        
+    }
+   // ==================================================
+
     
     // store window size before changing it.
     Point<int> prevSize;

@@ -25,4 +25,9 @@ void IRWindowComponent::CommandSPressed()
     
 }
 
+void IRWindowComponent::CommandNPressed()
+{
+    createNewNodeObject();
+}
+
 

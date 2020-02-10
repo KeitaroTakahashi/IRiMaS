@@ -26,6 +26,7 @@
 #include "IRMessage.h"
 
 #include "Benchmark.h"
+#include "KTextLoader.h"
 
 
 class IRWorkspace : public AudioAppComponent,

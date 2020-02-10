@@ -13,6 +13,7 @@
 #include "IRVideoAnnotaterObject.hpp"
 #include "VideoAnnotationMenuWindow.h"
 #include "VideoEventList.h"
+#include "EventLogList.h"
 
 
 class IRVideoAnnotater : public Component,

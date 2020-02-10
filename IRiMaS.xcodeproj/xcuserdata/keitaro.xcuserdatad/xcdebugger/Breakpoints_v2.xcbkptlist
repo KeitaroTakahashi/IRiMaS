@@ -14,19 +14,19 @@
             symbolName = "*0x10024b6f2">
             <Locations>
                <Location
-                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - fa9d236243a7167b"
+                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - c8fa11536cfbb877"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "walIndexClose"
+                  symbolName = "getPageMMap"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/keitaro/program/IRIMAS/IRiMaS2020/Source/Utilities/SQL/SQLite/sqlite3.c"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "59388"
-                  endingLineNumber = "59388"
-                  offsetFromSymbolStart = "146">
+                  startingLineNumber = "55961"
+                  endingLineNumber = "55961"
+                  offsetFromSymbolStart = "450">
                </Location>
             </Locations>
          </BreakpointContent>

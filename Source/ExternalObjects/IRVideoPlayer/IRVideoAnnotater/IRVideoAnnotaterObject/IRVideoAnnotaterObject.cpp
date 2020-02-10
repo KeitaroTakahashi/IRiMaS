@@ -137,7 +137,7 @@ void IRVideoAnnotaterObject::createTEXTAnnotationComponent(VideoAnnotationEventC
     
     IRVideoAnnotationTextComponent* comp = new IRVideoAnnotationTextComponent(getStr(), e);
     
-    
+    comp->setIRTextEditorObject(e->getIRTextEditorObject());
     addAndMakeVisible(comp);
     comp->setVisible(false);
     addAnnotationComponent(comp);

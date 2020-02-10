@@ -7,7 +7,7 @@
 
 #ifndef ExternalObjectHeader_h
 #define ExternalObjectHeader_h
-
+/*
 // ------------------------------------------------------------
 // test related object
 #include "IRTestObject.h"
@@ -49,7 +49,9 @@
 // ------------------------------------------------------------
 //#include "IRObjectCreater.hpp"
 #include "IRObjectFactory.hpp"
+*/
 
+#include "IRVideoAnnotaterInterfaceObject.hpp"
 
 namespace IR{
     

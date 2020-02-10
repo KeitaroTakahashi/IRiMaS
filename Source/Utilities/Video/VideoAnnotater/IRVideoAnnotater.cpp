@@ -254,7 +254,8 @@ void IRVideoAnnotater::playPositionChangedAction()
     stopAction();
     
     float p = this->videoTransport.getPlayPosition();
-    this->myVideoPlayerObject->getVideoPlayer()->setPlayPosition(p);
+    //this->myVideoPlayerObject->getVideoPlayer()->setPlayPosition(p);
+    this->myVideoPlayerObject->setPlayPosition(p);
 }
 
 void IRVideoAnnotater::playAction()

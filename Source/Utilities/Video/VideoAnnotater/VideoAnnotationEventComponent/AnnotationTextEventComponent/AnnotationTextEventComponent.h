@@ -182,6 +182,10 @@ public:
         return this->textContents.getText().toStdString();
     }
     
+    IRTextEditorObject* getIRTextEditorObject()
+    {
+        return this->textEditor.get();
+    }
     // ==================================================
     
     void onTextChange()

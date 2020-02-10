@@ -17,9 +17,7 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(orginaryIRComponent))
     
     this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str, withOpenButton);
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
-    addAndMakeVisible(this->videoPlayer.get());
-    this->videoPlayer->updateAnimationFrameCallback = [this](double pos) { videoPlayingUpdateAction(pos); };
-    
+    addAndMakeVisible(this->videoPlayer.get());    
     
     setSize(300, 200);
 }
@@ -252,5 +250,12 @@ void IRVideoPlayerObject::stop()
     this->videoPlayer->stop();
 }
 
+void IRVideoPlayerObject::setPlayPosition(double newPositionInSec)
+{
+    this->videoPlayer->setPlayPosition(newPositionInSec);
+    
+    // inform the new play position to its child classes.
+    videoPlayingUpdateAction(newPositionInSec);
+}
 // --------------------------------------------------
 // --------------------------------------------------

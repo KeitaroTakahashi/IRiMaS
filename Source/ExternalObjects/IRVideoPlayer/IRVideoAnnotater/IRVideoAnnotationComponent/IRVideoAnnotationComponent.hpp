@@ -31,6 +31,11 @@ public:
 
     // --------------------------------------------------
     VideoAnnotationEventComponent* getEvent() { return this->event; }
+    
+    void setPositionRatio(Rectangle<float> ratio) { this->positionRatio = ratio; }
+    Rectangle<float> getPositionRatio() const { return this->positionRatio; }
+    // --------------------------------------------------
+
 
 private:
     // --------------------------------------------------
@@ -38,6 +43,9 @@ private:
     VideoAnnotationEventComponent* event = nullptr;
     float beginTime;
     float endTime;
+    
+    // represent the position of this component as ratio to the video size.
+    Rectangle<float> positionRatio;
     // --------------------------------------------------
     // --------------------------------------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoAnnotationComponent)
