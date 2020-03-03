@@ -26,7 +26,7 @@ visiblePos(Point<int>(0,0))
     this->setEnabled(true);
     this->openButton.onClick = [this]{ openFile(); };
     
-    this->player.reset( new SoundPlayerClass(parent) );
+    this->player.reset( new SoundPlayerClass() );
     this->player->addChangeListener(this);
     
     setFps(17);

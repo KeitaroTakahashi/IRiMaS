@@ -44,6 +44,7 @@ void PlayerMenuComponent::itemSelected(IRObjectFactory2::t_object* obj)
 void PlayerMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
 {
     
+    std::cout << "PlayerMenuComponent::itemReleased\n";
     IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
 
     auto topSpace = static_cast<IRWorkspace* >(getStr()->TopWorkspace);

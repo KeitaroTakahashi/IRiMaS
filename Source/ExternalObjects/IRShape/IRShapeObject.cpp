@@ -8,7 +8,7 @@
 #include "IRShapeObject.hpp"
 
 IRShapeObject::IRShapeObject(Component* parent, IRStr* str) :
-IRNodeObject(parent, "IRShape", str, NodeObjectType(orginaryIRComponent))
+IRNodeObject(parent, "IRShape", str, NodeObjectType(ordinaryIRComponent))
 {
     StopWatch bench; bench.start();
     setOpaque(false);
@@ -17,7 +17,7 @@ IRNodeObject(parent, "IRShape", str, NodeObjectType(orginaryIRComponent))
     childComponentManager(this->UI.get());
     setObjController(this->UI->getController());
     bench.result("x x x x x x x x x x IRShapeObject initialized");
-    setSize(200,200);
+    setObjectSize(200,200);
 }
 
 IRShapeObject::~IRShapeObject()

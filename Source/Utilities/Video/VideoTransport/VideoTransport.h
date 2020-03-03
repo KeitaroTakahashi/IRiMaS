@@ -11,9 +11,11 @@
 #include "JuceHeader.h"
 #include "IRImageButton.hpp"
 #include "TimeCode.h"
+#include "IRVideoAnnotaterDelegate.h"
 
 class IRVideoTransport : public Component,
 public IRStrComponent,
+public IRVideoAnnotaterDelegate,
 public ChangeBroadcaster,
 private Slider::Listener
 {
@@ -32,7 +34,9 @@ public:
         NONE
     };
     
-    IRVideoTransport(IRStr* str) : IRStrComponent(str),
+    IRVideoTransport(IRStr* str, IRVideoAnnotaterBase* base) :
+    IRStrComponent(str),
+    IRVideoAnnotaterDelegate(base),
     timeCode(str, 0)
     {
         addAndMakeVisible(&this->openVideoButton);
@@ -177,8 +181,14 @@ public:
         this->videoLengthInSec = videoLengthInSec;
         
         this->timeCode.setVideoLengthInSec(videoLengthInSec);
-        this->timeCodeSlider.setRange(0.0, (double)videoLengthInSec, 0.1);
+        if(videoLengthInSec > 0)
+        {
+            this->timeCodeSlider.setRange(0.0, (double)videoLengthInSec, 0.1);
+        }
         this->timeCodeSlider.setValue(0.0);
+        
+        
+        std::cout << "slider max = "<< this->timeCodeSlider.getMaximum() << std::endl;
     }
     
     void setCurrentPlayingPosition(double pos)
@@ -233,7 +243,8 @@ private:
     void timeCodeChanged()
     {
         float timeInSec = this->timeCode.getTimeCodeInSec();
-        std::cout << "timeInSec = " << timeInSec << " of " << this->timeCode.getVideoLengthInSec() << " : " << this->timeCodeSlider.getMaxValue() << std::endl;
+        /*
+        std::cout << "timeInSec = " << timeInSec << " of " << this->timeCode.getVideoLengthInSec() << " : " << this->timeCodeSlider.getMaxValue() << std::endl;*/
         if(timeInSec > this->videoLengthInSec)
         {
             timeInSec = this->videoLengthInSec;
@@ -254,7 +265,7 @@ private:
         {
             
             float val = slider->getValue();
-            this->timeCode.setLabelVal(val);            
+            this->timeCode.setLabelVal(val);
             this->status = playPositionChanged;
             sendChangeMessage();
         }

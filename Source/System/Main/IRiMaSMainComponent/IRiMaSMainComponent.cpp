@@ -1,7 +1,6 @@
 
 #include "IRiMaSMainComponent.hpp"
 
-#include "ObjectFactoryInitializer.hpp"
 
 
 
@@ -14,7 +13,7 @@ IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
     
     this->applicationName = applicationName;
     
-    ObjectFactoryInitializer(); // this will create a singleton and initialise the object palette
+    //ObjectFactoryInitializer(); // this will create a singleton and initialise the object palette
     
     this->initialise();
     

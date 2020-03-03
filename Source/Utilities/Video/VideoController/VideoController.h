@@ -103,7 +103,7 @@ public:
    // ==================================================
     void updateAnnotater()
     {
-        
+        std::cout << "updateAnnotater called!\n";
         this->videoAnnotater.uodateAnnotater();
     }
     

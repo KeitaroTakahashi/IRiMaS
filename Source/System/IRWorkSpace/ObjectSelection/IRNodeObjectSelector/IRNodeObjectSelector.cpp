@@ -1,10 +1,10 @@
 
 #include "IRNodeObjectSelector.hpp"
 
-IRNodeObjectSelector::IRNodeObjectSelector(Array<IRNodeObject* > *list, bool* linkModeFlag)
+IRNodeObjectSelector::IRNodeObjectSelector(Array<IRNodeObject* > *list, Rectangle<int> draggableArea) :
+draggableArea(draggableArea)
 {
     this->objectList = list;
-    this->linkModeFlag = linkModeFlag;
 }
 
 
@@ -13,14 +13,38 @@ IRNodeObjectSelector::~IRNodeObjectSelector()
     
 }
 
+IRNodeObject* IRNodeObjectSelector::getNodeObjectFromOriginalComponent(Component* originalComponent)
+{
+    IRNodeObject* nodeObj = dynamic_cast<IRNodeObject* >(originalComponent);
+    
+    if(nodeObj == nullptr)
+    {
+        std::cout << "nodeObj null\n";
+        auto p = dynamic_cast<IRResizeSquare2*>(originalComponent);
+        if(p == nullptr)
+        {
+            auto p2 = dynamic_cast<IRResizeSquare2::ResizingItem*> (originalComponent);
+            
+            if(p2 != nullptr)
+            {
+                nodeObj = dynamic_cast<IRNodeObject* >(p2->getNodeObject());
+                return nodeObj;
+            } return nullptr;
+        }else
+        {
+            nodeObj = dynamic_cast<IRNodeObject* >(p->getResizedComponent());
+            return nodeObj;
+        }
+    }else return nodeObj;
+}
 
 void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
 {
-    IRNodeObject* nodeObj = dynamic_cast<IRNodeObject* >(e.originalComponent);
+    auto nodeObj = getNodeObjectFromOriginalComponent(e.originalComponent);
+    
     if (nodeObj != nullptr)
     {
-        
-        //std::cout << "nodeOBj size = "<< nodeObj->getWidth() << "; " << nodeObj->getHeight() << std::endl;
+        std::cout << "IRNodeObjectSelector::mouseDownHandler : selected = " << nodeObj->isSelected() << std::endl;
         if (e.mods.isShiftDown() || e.mods.isCommandDown())
         {
             nodeObj->setSelected(! nodeObj->isSelected());
@@ -28,27 +52,16 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
         }
         else if (! nodeObj->isSelected()){ // if the object is not yet selected.
             
-            // if not linkMode, then clear all objects otherwise, add newly selected objects
-            deselectAllObjects(); // CLEAR
+            deselectAllObjects();
             
             nodeObj->setSelected(true);
         }
-        
-        // linkMode behavior
-        /*
-        if(*this->linkModeFlag){
-            if(nodeObj->isLinkActivated()) nodeObj->setLinkActivation(false);
-            else nodeObj->setLinkActivation(true);
-        }*/
-        
-        //std::cout << "*this->linkModeFlag = " << *this->linkModeFlag << " : " << nodeObj->isLinkActivated() << std::endl;
         
         //repaint obj graphics
         nodeObj->repaint();
         
         //add all selected nodeObj to a list
         addSelectedObjects();
-        addActivatedObjects();
         
         //if this object is selected
         if (nodeObj->isSelected())
@@ -63,15 +76,12 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
     }
     else
     {
-        //std::cout << "workSpace mouseDowned "<< "*this->linkModeFlag = " << *this->linkModeFlag << " : " << std::endl;
-
+        std::cout << "nodeObj null\n";
         if (! e.mods.isShiftDown() && ! e.mods.isCommandDown())
         {
             //if background clicked
             deselectAllObjects();
         }
-        // linkMode behavior when background clicked
-        //deactivateAllLinkingObjects();
 
         beginSelection(e);
         this->multiSelectionFlag = true;
@@ -95,19 +105,23 @@ void IRNodeObjectSelector::mouseDragHandler(const MouseEvent& e)
         {
             if (comp != nullptr)
             {
-                if (comp != getBeingDraggedObject())
-                {
+                //if (comp != getBeingDraggedObject())
+                //{
                     Rectangle<int> bounds (comp->getBounds());
                     bounds += delta;
-                    comp->setBounds(bounds);
-                }
+                    
+                    // adapt to the draggable area if extended
+                    //adaptToDraggableArea(bounds);
+                    comp->setObjectBounds(bounds);
+                //}else{
+                    
+
+                //}
             }
         }
         
         this->totalDragDelta += delta;
     }
-    
-
 }
 
 
@@ -135,14 +149,23 @@ void IRNodeObjectSelector::deselectAllObjects()
     }
 }
 
-void IRNodeObjectSelector::deactivateAllLinkingObjects()
+void IRNodeObjectSelector::deselectOtherObejcts(IRNodeObject* selectedObj)
 {
-    this->activatedLinkingObjectList.clear();
+    this->selectedObjectList.clear();
     for (auto obj : *this->objectList)
     {
-        //obj->setLinkActivation(false);
+        if(obj != selectedObj)
+        {
+            if(obj->isSelected()) obj->setSelected(false);
+            obj->repaint();
+        }
     }
+    
+    this->selectedObjectList.add(selectedObj);
+
 }
+
+
 
 void IRNodeObjectSelector::addSelectedObjects()
 {
@@ -156,18 +179,6 @@ void IRNodeObjectSelector::addSelectedObjects()
     }
 }
 
-void IRNodeObjectSelector::addActivatedObjects()
-{
-    this->activatedLinkingObjectList.clear();
-    for (auto obj : *this->objectList)
-    {
-        /*
-        if (obj->isLinkActivated())
-        {
-            this->activatedLinkingObjectList.add(obj);
-        }*/
-    }
-}
 
 bool IRNodeObjectSelector::removeSelectedObject(IRNodeObject* removeObj)
 {
@@ -180,16 +191,6 @@ bool IRNodeObjectSelector::removeSelectedObject(IRNodeObject* removeObj)
     return false;
 }
 
-bool IRNodeObjectSelector::removeActivatedObject(IRNodeObject* removeObj)
-{
-    int index = this->activatedLinkingObjectList.indexOf(removeObj);
-    if (index >= 0)
-    {
-        this->activatedLinkingObjectList.remove(index);
-        return true;
-    }
-    return false;
-}
 void IRNodeObjectSelector::repaintAllSelectedObjects()
 {
     for(auto obj : this->selectedObjectList)
@@ -197,10 +198,6 @@ void IRNodeObjectSelector::repaintAllSelectedObjects()
         obj->repaint();
     }
     
-    for(auto obj : this->activatedLinkingObjectList)
-    {
-        obj->repaint();
-    }
 }
 
 
@@ -232,11 +229,7 @@ Array<IRNodeObject*> IRNodeObjectSelector::getSelectedObjectList() const
     return this->selectedObjectList;
 }
 
-Array<IRNodeObject*> IRNodeObjectSelector::getActivatedLinkingObjectList() const
-{
-    return this->activatedLinkingObjectList;
-}
-
+// ==================================================
 
 // **** **** PRIVATE METHODS **** **** //
 
@@ -251,4 +244,37 @@ Rectangle<int> IRNodeObjectSelector::getAreaOfSelectedObj()
         if (obj) a = a.getUnion(obj->getBounds());
     
     return a;
+}
+// ==================================================
+
+void IRNodeObjectSelector::setDraggableArea(Rectangle<int> area)
+{
+    this->draggableArea = area;
+}
+
+
+void IRNodeObjectSelector::adaptToDraggableArea(Rectangle<int>& bounds)
+{
+    
+    
+    if(bounds.getX() < this->draggableArea.getX())
+    {
+        bounds.setX(this->draggableArea.getX());
+    }
+    
+    if(bounds.getY() < this->draggableArea.getY())
+    {
+        bounds.setY(this->draggableArea.getY());
+    }
+    
+    if(bounds.getWidth() > this->draggableArea.getWidth())
+    {
+        bounds.setWidth(this->draggableArea.getWidth());
+    }
+    
+    if(bounds.getHeight() > this->draggableArea.getHeight())
+    {
+        bounds.setHeight(this->draggableArea.getHeight());
+    }
+       
 }

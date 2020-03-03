@@ -32,8 +32,8 @@ public:
     ~IRWaveformController2();
 
     // ==================================================
-    
-    void resized() override;
+    void ControllerResized() override;
+
     void paint(Graphics& g) override;
     
     // ==================================================

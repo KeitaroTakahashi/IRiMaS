@@ -8,9 +8,10 @@
 #include "IRVideoPlayerController.hpp"
 
 
-IRVideoPlayerController::IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject) : IRObjectController(str),
+IRVideoPlayerController::IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject) : IRObjectController("VideoPlayer", str),
 UI(str, videoPlayerObject)
 {
+    
     addAndMakeVisible(&this->LabelTitle);
     this->LabelTitle.setText("VideoPlayer", dontSendNotification);
     this->LabelTitle.setFont(getStr()->SYSTEMCOLOUR.h3);
@@ -19,25 +20,33 @@ UI(str, videoPlayerObject)
     
     addAndMakeVisible(&this->UI);
     this->UI.addChangeListener(this);
+    
+    this->arrangeController = std::make_unique<ArrangeController>(str);
+    addAndMakeVisible(this->arrangeController.get());
+    this->arrangeController->setVisible(false);
+    this->arrangeController->addChangeListener(this);
 }
 
 IRVideoPlayerController::~IRVideoPlayerController()
 {
-    
+    this->arrangeController.reset();
 }
 // ==================================================
 
-void IRVideoPlayerController::resized()
+void IRVideoPlayerController::ControllerResized()
 {
+    
     int y = 10;
-    //int yIncrement = 30;
+    int yIncrement = 30;
     int yBigIncrement = 40;
     
     this->LabelTitle.       setBounds(10, y, getWidth() - 20, 30);
     
     y += yBigIncrement;
-    
+    y += yIncrement;
     this->UI.               setBounds(0, y, getWidth(), getHeight() - y);
+    this->arrangeController->setBounds(0, y, getWidth(), getHeight() - y);
+    
 }
 void IRVideoPlayerController::paint(Graphics& g)
 {
@@ -83,6 +92,26 @@ void IRVideoPlayerController::updateParentVideoPlayerObject()
 }
 // ==================================================
 
+ArrangeController* IRVideoPlayerController::getArrangeController()
+{
+    return this->arrangeController.get();
+}
+
+
 // ==================================================
+
+
+void IRVideoPlayerController::mainControllerSelected()
+{
+    this->UI.setVisible(true);
+    this->arrangeController->setVisible(false);
+}
+
+void IRVideoPlayerController::arrangeControllerSelected()
+{
+    this->UI.setVisible(false);
+    this->arrangeController->setVisible(true);
+}
+
 // ==================================================
 // ==================================================

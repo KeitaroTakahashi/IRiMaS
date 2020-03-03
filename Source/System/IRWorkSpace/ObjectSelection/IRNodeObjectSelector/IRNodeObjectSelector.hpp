@@ -16,45 +16,56 @@ class IRNodeObjectSelector : public IRObjectSelection<IRNodeObject* >
 {
     
 public:
-    
-    IRNodeObjectSelector(Array<IRNodeObject* > *list, bool* linkModeFlag);
+    // ==================================================
+
+    IRNodeObjectSelector(Array<IRNodeObject* > *list, Rectangle<int> draggableArea);
     ~IRNodeObjectSelector();
+    // ==================================================
 
     void mouseDownHandler(const MouseEvent& e) override;
     void mouseDragHandler(const MouseEvent& e) override;
     void mouseUpHandler(const MouseEvent& e) override;
+    // ==================================================
 
     void deselectAllObjects();
-    void deactivateAllLinkingObjects();
+    void deselectOtherObejcts(IRNodeObject* selectedObj);
     void addSelectedObjects();
     void addActivatedObjects();
     bool removeSelectedObject(IRNodeObject* removeObj);
     bool removeActivatedObject(IRNodeObject* removeObj);
 
-    
+    // ==================================================
+
     void repaintAllSelectedObjects();
     
     void judgeSelection(const Rectangle<int>& area, const MouseEvent& e) override;
 
     Array<IRNodeObject* > getSelectedObjectList() const;
-    Array<IRNodeObject*> getActivatedLinkingObjectList() const;
     
+    void setDraggableArea(Rectangle<int> area);
     
+    void adaptToDraggableArea(Rectangle<int>& bounds);
+    
+    // ==================================================
+
 private:
     
     Rectangle<int> getAreaOfSelectedObj();
     
     Array<IRNodeObject* > selectedObjectList;
 
-    Array<IRNodeObject*> activatedLinkingObjectList;
     
     Array<IRNodeObject* > *objectList;
     
     bool multiSelectionFlag = false;
     
-    bool* linkModeFlag = nullptr;
-
+    Rectangle<int> draggableArea;
+    // ==================================================
     
+    IRNodeObject* getNodeObjectFromOriginalComponent(Component* originalComponent);
+    // ==================================================
+    // ==================================================
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeObjectSelector)
     
 };

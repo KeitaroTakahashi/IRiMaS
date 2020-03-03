@@ -14,11 +14,12 @@
 #include "IRFoundation.h"
 #include "IRStrComponent.hpp"
 #include "IRSaveLoadSystem.hpp"
-#include "IRLinkFoundation.hpp"
+//#include "IRLinkFoundation.hpp"
 #include "Benchmark.h"
-#include "IRResizeSquare.h"
+#include "IRResizeSquare2.h"
 
 #include "IROpenGLManager.hpp"
+#include "IRComponentDragger.h"
 
 enum IRNodeComponentSetUp
 {
@@ -73,22 +74,40 @@ enum IRNodeComponentType
     // os oriented object such as VideoComponent, embbed component, OpenGL etc.
     heavyWeightComponent,
     
-    // this is basically the heavyWeightComponent but does not contain any other heavy Weight component
-    orginaryIRComponent
+    // this is basically the heavyWeightComponent but does not contain any heavy Weight component on it for instance, IRVideoPlayerObject and IRSpectrogram have heavyWeightComponents on themselves so use heavyWeightComponent instead of ordinaryIRComponent
+    ordinaryIRComponent
 };
 
+enum IRNodeComponentMode
+{
+    WORKSPACE,
+    ANNOTATION
+};
 
 struct NodeObjectType
 {
     IRNodeComponentType componentType = IRNodeComponentType::lightWeightComponent;
+    IRNodeComponentMode componentMode = IRNodeComponentMode::WORKSPACE;
+    
     NodeObjectType(){}
     
     NodeObjectType(IRNodeComponentType type)
     {
         this->componentType = type;
     }
+    
+    NodeObjectType(IRNodeComponentMode mode)
+    {
+        this->componentMode = mode;
+    }
+    
+    NodeObjectType(IRNodeComponentType type,
+                   IRNodeComponentMode mode)
+    {
+        this->componentType = type;
+        this->componentMode = mode;
+    }
 };
-
 
 
 // ===========================================================================
@@ -108,10 +127,26 @@ public:
                     NodeObjectType objectType = NodeObjectType());
     ~IRNodeComponent();
     
+    // ==================================================
     // basics
     void resized() override;
-    void setSize(float width, float height);
+public:
+    void setObjectCentredPosition(int x, int y);
+    void setObjectBounds(Rectangle<int> bounds);
+    void setObjectBounds(int x, int y, int w, int h);
+    void setObjectBoundsRelative(Rectangle<float> ratioBounds);
+    void setObjectBoundsRelative(float x, float y, float w, float h);
+    void setObjectSize(int w, int h);
+
     
+protected:
+    // Notify any change of the position and size of this object,
+    // NOTE that the given argument values may NOT be represented in the actual scale but relative to the media resolution on which this object is binded.
+    
+    virtual void ObjectPositionChanged(int x, int y) {}
+    virtual void ObjectBoundsChanged(Rectangle<int> bounds) {}
+public:
+    // ==================================================
     void setEnableParameters(IRNodeComponentSetUp id...);
     void setDisableParameters(IRNodeComponentSetUp id...);
     
@@ -120,19 +155,22 @@ public:
     
     int getPreviousWidth() const;
     int getPreviousHeight() const;
-    
+    // ==================================================
+
     void setPreferenceWindow(PreferenceWindow* preferenceWindow);
     PreferenceWindow* getPreferenceWindow();
-    
+    // ==================================================
     // paint
     virtual void paint(Graphics& g) override;
+    // ==================================================
 
     // managing child components binded on the NodeObject
     // this method operates following
     // # addMouseListner -> status changed by Edit mode of workspace
     // # setInterceptsMouseClicks -> status changed by Edit mode of workspace
     void childComponentManager(Component* comp);
-    
+    // ==================================================
+
     // Audio Source Management
     // Use addAudioComponent() to add any AudioSource made in the NodeObject
     // This method adds a given AudioSource to a mixer which connects to the global mixer to the audio output.
@@ -143,6 +181,7 @@ public:
     // check if any AudioSources are added in this NodeObject.
     bool isContainAudioSource() const;
     
+    // ==================================================
 
     // interaction
     // # these JUCE oriented methods are not intended to be overriden in the IRNodeObject
@@ -153,10 +192,10 @@ private:
     void mouseUp(const MouseEvent& e)override; // JUCE oriented
     void mouseDoubleClick(const MouseEvent& e) override; // JUCE oriented
     void mouseDrag(const MouseEvent& e) override; // JUCE oriented
+    
 public:
     
     virtual void mouseUpCompleted(const MouseEvent& e) {};
-    
     // # controlling Node Object
     void mouseDownNodeEvent(const MouseEvent& e); // make another method to avoid spaghetti codes
     void mouseMoveNodeEvent(const MouseEvent& e); // make another method to avoid spaghetti codes
@@ -171,6 +210,19 @@ public:
     // resizing method
     // this is virtual method so that you can adjust its behavior to your NodeObject
     virtual void resizeThisComponentEvent(const MouseEvent& e);
+    
+    virtual void resizeTopLeftComponentEvent(const MouseEvent& e);
+    virtual void resizeTopRightComponentEvent(const MouseEvent& e);
+    virtual void resizeBottomLeftComponentEvent(const MouseEvent& e);
+    virtual void resizeBottomRightComponentEvent(const MouseEvent& e);
+    
+    virtual void resizeLeftComponentEvent(const MouseEvent& e);
+    virtual void resizeRightComponentEvent(const MouseEvent& e);
+    virtual void resizeTopComponentEvent(const MouseEvent& e);
+    virtual void resizeBottomComponentEvent(const MouseEvent& e);
+
+    
+    
     Point<float> getResizingArea() const;
     void setResizingArea(Point<float> area);
     void recoverEventStatus();
@@ -216,7 +268,7 @@ public:
     std::function<void(IRFileManager*)> fileManagerUpdated;
     IRFileManager* getFileManager() { return FILEMANAGER; }
 
-    
+    // ---------------------------------------------
     // change status
     // return a flag shows whether this Component is movable or not. Default is true.
     bool isMovable() const;
@@ -226,11 +278,18 @@ public:
     void setMovable(bool movable, bool verticalMovable, bool horizontalMovable);
     bool isMoving() const;
     bool isDragging() const;
+    // ---------------------------------------------
     // return a flag shows whether this Component is resizable or not. Default is true.
     bool isResizable() const;
-    void setResizable(bool flag) { this->isResizableFlag = flag; }
+    void setResizable(bool flag, bool isWidthResizableFlag, bool isHeightResizableFlag);
+    void setResizable(bool flag) { setResizable(true, true, true); }
     // return a flag shows whether this Component is being resized or not. Default is false.
     bool isResizing() const;
+    void setResizingStart(bool flag);
+    
+    
+    // ---------------------------------------------
+
     // return a flag shows whether this Component is being selected or not. Default is false.
     bool isSelected() const; // FD - THIS HAS NO IMPLEMENTATION
     void setSelected(bool flag);
@@ -266,32 +325,51 @@ public:
     void hideResizingSquare();
     void resizingObjectSizeByResizingSquare();
     
-    std::vector<IRResizeSquare* > resizingSquare;
+   
+    // called when resizing square is clicked.
+    void resizingSquareClicked(IRResizeSquare2::MovableDirection direction);
+    // called when resizing square is released (mouse up event)
+    void resizingSquareReleased(IRResizeSquare2::MovableDirection direction);
+    void resizingSquareDragged(MouseEvent e);
+
+    void resizingObjectFunc(IRResizeSquare2::MovableDirection direction);
+   
+    //std::vector<IRResizeSquare* > resizingSquare;
+    
+    IRResizeSquare2 resizingSquare;
+    void updateResizingSquare();
+    void setResizingSquareColour(Colour colour);
+
     
     // ==================================================
     // called when the object contains heavy component needs to be refreshed.
     virtual void heavyComponentRefreshed();
+    // call if you want to refresh the z order of heavy components on a workspace
+    virtual void heavyComponentCreatedFunc() {};
     // ==================================================
 
     // called when this object is moved to Front of all other objects
     virtual void moveToFrontEvent() {}
-    
+    virtual void moveToBackEvent() {}
     void bringThisToFront();
-    // ==================================================
-
-    // Save System
+    void bringThisToBack();
     
-    /*
-    void param_register(std::string id, unsigned char data);
-    void param_register(std::string id, int data);
-   
-    void param_register(std::string id, unsigned int data);
-    void param_register(std::string id, long data);
-    void param_register(std::string id, float data);
-    void param_register(std::string id, double data);
-    void param_register(std::string id, std::string data);
-
-    */
+    // ==================================================
+    // ### ANNOTATION ### //
+    
+    // in annotation mdoe, you first need to give a resolution of the media where this object is binded.
+    // the bounds of this object is calculated according to the ratio ralative to the resolution and the actual size of the media object.
+public:
+    void setMediaResolution(int w, int h);
+    void setMediaObjectSize(int w, int h);
+    Point<int> getMediaResolution() const { return this->mediaResolution; }
+    Point<float> getResolutionRatioToMedia() const { return this->resolutionRatioToMedia; }
+private:
+    Point<int> mediaResolution;
+    Point<int> mediaObjectSize;
+    Point<float> resolutionRatioToMedia;
+    // ===========================================================================
+public:
     
     // object menu appreas by ctl click
     PopupMenu menu;
@@ -321,7 +399,10 @@ protected:
     
     
     // ============================================================
-    
+    // IRNodeObject ONLY
+protected:
+    virtual void ObjectPositionChanged4IRNodeObject(int x, int y) {}
+    virtual void ObjectBoundsChanged4IRNodeObject(Rectangle<int> bounds) {}
     // ============================================================
 
 private:
@@ -349,15 +430,24 @@ private:
     float maxWidth = 3000;
     float maxHeight = 3000;
     
+    // for resize event
     float previousWidth = 0;
     float previousHeight = 0;
+    float previousX = 0;
+    float previousY = 0;
+    
+    IRResizeSquare2::MovableDirection resizeDirection = IRResizeSquare2::MovableDirection::None;
 
     // Interaction
     ComponentBoundsConstrainer constrainer;
-    ComponentDragger dragger;
-    
+    //IRComponentDragger dragger;
     bool draggingFlag = false;
-    
+    Rectangle<int> draggableArea;
+public:
+    void setDraggableArea(Rectangle<int> area);
+
+private:
+        
     bool isResizableFlag = true;
     bool resizingFlag = false;
     bool isWidthResizableFlag = true;
@@ -380,6 +470,24 @@ private:
     bool mouseListenerFlag = false;
 
     Point<float> resizingArea;
+    
+    Rectangle<float> initialBounds;
+
+    // =======================================================
+    // INITIAL BOUNDS used for fixing the position and size of this object relative to the workspace
+    // =======================================================
+
+public:
+    void setInitialBounds(Rectangle<float> initialBounds) { this->initialBounds = initialBounds; initialBoundsUpdated(); }
+    Rectangle<float> getInitialBounds() const { return this->initialBounds; }
+    
+protected:
+    // for IRNodeObject
+    virtual void initialBoundsUpdated() {};
+    
+    // =======================================================
+
+private:
     
     // global mode
     bool editModeFlag = true;
@@ -404,6 +512,23 @@ private:
         
     }
 
+    // ==================================================
+    // ###### JUCE FUNCTIONS #####
+    // ==================================================
+
+    private:
+        // disable JUCE size coordinate functions
+    //use setObjectBounds
+        void setSize(float width, float height);
+    
+    // use setObjectBounds
+        void setBounds(Rectangle<int> bounds);
+        void setBounds(int x, int y, int w, int h);
+    // use setObjectCentredPosition
+        void setCentredPosition(int x, int y);
+        void setTopLeftPosition(int x, int y);
+    
+    // ==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeComponent)
 };

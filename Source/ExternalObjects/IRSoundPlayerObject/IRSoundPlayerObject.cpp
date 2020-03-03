@@ -2,7 +2,7 @@
 #include "IRSoundPlayerObject.hpp"
 
 IRSoundPlayerObject::IRSoundPlayerObject(Component* parent, IRStr* str)
-: IRNodeObject(parent, "IRSoundPlayer", str, NodeObjectType(orginaryIRComponent))
+: IRNodeObject(parent, "IRSoundPlayer", str, NodeObjectType(ordinaryIRComponent))
 {
     this->player = new AudioPlayer_threadSafe(this, str); // FOR SOME UNCLEAR REASON THIS DOES NOT LEAK (FD)
     addAndMakeVisible(this->player);
@@ -10,7 +10,7 @@ IRSoundPlayerObject::IRSoundPlayerObject(Component* parent, IRStr* str)
     // in case we use any AudioSources, we must add them to the internal mixer via this method.
     addAudioComponent(this->player);
     
-    setSize(100, 118);
+    setObjectSize(100, 118);
 }
 
 IRSoundPlayerObject::~IRSoundPlayerObject()

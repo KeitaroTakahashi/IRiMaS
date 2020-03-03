@@ -511,7 +511,6 @@ void OpenGLVertexNoise::setNegativeStretch(float x, float y, float z)
 void OpenGLVertexNoise::setStretchX(float x, float y, float z, float w)
 {
     
-    std::cout << "setStretch X " << x << ", " << y << std::endl;
     if(x >= 0) this->stretchX.setVal1(x);
     if(y >= 0) this->stretchX.setVal2(y);
     if(z >= 0) this->stretchX.setVal3(z);

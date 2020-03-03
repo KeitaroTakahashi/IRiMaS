@@ -7,26 +7,47 @@
 
 #include "IRObjectController.hpp"
 
-IRObjectController::IRObjectController(IRStr* str) : IRStrComponent(str),
+IRObjectController::IRObjectController(String title, IRStr* str) : IRStrComponent(str),
 switchButton(str)
 {
+    
+    addAndMakeVisible(&this->LabelTitle);
+    this->LabelTitle.setText(title, dontSendNotification);
+    this->LabelTitle.setFont(getStr()->SYSTEMCOLOUR.h3);
+    this->LabelTitle.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
+    this->LabelTitle.setJustificationType(Justification::left);
+    
     addMouseListener(str->projectOwner, false);
     this->switchButton.createButton("Main", this);
     this->switchButton.createButton("Arrange", this);
     
     addAndMakeVisible(this->switchButton);
-   
+    buttonClicked(this->switchButton.getSquareButtonAt("Main"));
 }
 
 IRObjectController::~IRObjectController()
 {
-    
+    this->arrangeController.reset();
+
 }
 
 
 void IRObjectController::resized()
 {
+    int y = 10;
+    int yIncrement = 30;
+    int yBigIncrement = 40;
+    this->LabelTitle.       setBounds(10, y, 300, 30);
+    y += yBigIncrement;
+    y += yIncrement;
     this->switchButton.setBounds(0, 42, getWidth(), 30);
+    if(this->arrangeController.get() != nullptr)
+    {
+        this->arrangeController->setBounds(0, y, getWidth(), getHeight() - y);
+    }
+    
+    ControllerResized();
+
 }
 
 void IRObjectController::buttonClicked(IRSquareButton* clickedButton)
@@ -43,4 +64,30 @@ void IRObjectController::buttonClicked(IRSquareButton* clickedButton)
     }
 }
 
+// ==================================================
 
+void IRObjectController::setArrangeControllerVisible(bool shouldBeVisible)
+{
+    this->arrangeController->setVisible(shouldBeVisible);
+}
+
+// ==================================================
+
+void IRObjectController::createAndAddArrangeController()
+{
+    
+    std::cout << "createAndAddArrangeController\n";
+    this->arrangeController.reset(new ArrangeController(getStr()));
+    addAndMakeVisible(this->arrangeController.get());
+    this->arrangeController->setVisible(false);
+    this->arrangeController->addChangeListener(this);
+    
+    this->hasArrangeControllerFlag = true;
+}
+
+
+void IRObjectController::changeListenerCallback (ChangeBroadcaster* source)
+{
+    // this will be overrided by the child class
+    controllerChangeListenerCallback(source);
+}

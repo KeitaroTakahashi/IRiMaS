@@ -19,7 +19,7 @@ class IRMainSpace : public AudioAppComponent,
 public ChangeBroadcaster,
 public ChangeListener,
 private KeAnimationComponent,
-private IRWorkspace::Listener
+private IRWorkspaceComponent::Listener
 {
 public:
     //==================================================
@@ -93,7 +93,7 @@ private:
     // this function is, for instance, used to update the Object Controller in the IRRightBar
     void nodeObjectSelectionChange(IRNodeObject* obj) override;
     void nodeObjectGetFocused(IRNodeObject* obj)override;
-    void editModeChanged(IRWorkspace* changedSpace) override;
+    void editModeChanged(IRWorkspaceComponent* changedSpace) override;
     void heavyObjectCreated(IRNodeObject* obj) override;
 
     // ==================================================

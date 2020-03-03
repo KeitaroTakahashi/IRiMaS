@@ -5,7 +5,7 @@
 IRMultiPurposeObject::IRMultiPurposeObject(Component* parent, IRStr* str)
 : IRNodeObject(parent, "IRMultiPurposeObject", str)
 {
-    setSize(100, 20);
+    setObjectSize(100, 20);
 }
 
 

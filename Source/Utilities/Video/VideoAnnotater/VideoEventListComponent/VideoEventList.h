@@ -10,12 +10,16 @@
 #include "IRViewPort.hpp"
 #include "VideoEventListComponent.h"
 
-class VideoEventList : public IRViewPort
+class VideoEventList :
+public IRViewPort,
+public IRVideoAnnotaterDelegate
 {
 public:
-    VideoEventList(IRStr* str) : IRViewPort(str)
+    VideoEventList(IRStr* str, IRVideoAnnotaterBase* base) :
+    IRViewPort(str),
+    IRVideoAnnotaterDelegate(base)
     {
-        this->videoListComponent.reset( new VideoEventListComponent(str));
+        this->videoListComponent.reset( new VideoEventListComponent(str, base));
         this->videoListComponent->newEventAddedCallback = [this]{ newEventAdded(); };
         this->viewPort.reset(new Component4ViewPort(this->videoListComponent.get()));
         
@@ -31,7 +35,7 @@ public:
     
     void resized() override
     {
-        int margin = 5;
+        //int margin = 5;
         int listCompHeight = this->videoListComponent->getTotalComponentHeight();
         //(this->videoListComponent->getEventNum() + margin) * this->listComponentHeight;
         this->viewPort->setBounds(0,0,getWidth()-10, listCompHeight);
@@ -44,7 +48,7 @@ public:
         resized();
     }
     //==================================================
-    
+    // TRANSPORT
     void openAnnotationFile()
     {
         this->videoListComponent->openAnnotationFile();
@@ -79,14 +83,7 @@ public:
     }
 
     //==================================================
-    
-    void addEventModifiedCallback(std::function<void()> callback)
-    {
-        this->videoListComponent->eventModifiedCallback = callback;
-    }
-
-    //==================================================
-
+    // EVENTCOMPONENT
     void createTextEventComponent()
     {
         this->videoListComponent->createTextEventComponent();
@@ -128,6 +125,8 @@ public:
         return this->videoListComponent->eventComponents;
     }
     
+    //==================================================
+
     void createEventComponent(VideoAnnotationEventComponent* comp)
     {
         this->videoListComponent->createEventComponent(comp);

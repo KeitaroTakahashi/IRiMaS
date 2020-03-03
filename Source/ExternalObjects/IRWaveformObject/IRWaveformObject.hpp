@@ -8,8 +8,7 @@
 #include "IRObjectSelection.hpp"
 
 class IRWaveformObject : public IRNodeObject,
-                                IRNodeObject::Listener,
-                                private ChangeListener
+                                IRNodeObject::Listener
 {
     
 public:
@@ -33,7 +32,7 @@ public:
     // events
     void mouseDownEvent(const MouseEvent& e) override;
     
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void IRChangeListenerCallback (ChangeBroadcaster* source) override;
     
     int getXMargin() const;
     int getYMargin() const;

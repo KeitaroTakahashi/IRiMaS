@@ -8,13 +8,8 @@
 #include "IRTextEditorController.hpp"
 
 
-IRTextEditorController::IRTextEditorController(IRStr* str) : IRObjectController(str)
+IRTextEditorController::IRTextEditorController(IRStr* str) : IRObjectController("TextEditor", str)
 {
-    addAndMakeVisible(&this->LabelTitle);
-    this->LabelTitle.setText("TextEditor", dontSendNotification);
-    this->LabelTitle.setFont(getStr()->SYSTEMCOLOUR.h3);
-    this->LabelTitle.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
-    this->LabelTitle.setJustificationType(Justification::left);
     
     
     this->fontController = std::make_unique<FontController>(str);
@@ -22,32 +17,25 @@ IRTextEditorController::IRTextEditorController(IRStr* str) : IRObjectController(
     this->fontController->setVisible(true);
     this->fontController->addChangeListener(this);
     
-    this->arrangeController = std::make_unique<ArrangeController>(str);
-    addAndMakeVisible(this->arrangeController.get());
-    this->arrangeController->setVisible(false);
-    this->arrangeController->addChangeListener(this);
+    // create arrange controller
+    createAndAddArrangeController();
 }
 
 IRTextEditorController::~IRTextEditorController()
 {
     this->fontController.reset();
-    this->arrangeController.reset();
 }
 
-void IRTextEditorController::resized()
+void IRTextEditorController::ControllerResized()
 {
-    
-    IRObjectController::resized();
+    //std::cout << "ControllerResized\n";
     int y = 10;
     int yIncrement = 30;
     int yBigIncrement = 40;
     
-    this->LabelTitle.       setBounds(10, y, 300, 30);
-    
     y += yBigIncrement;
     y += yIncrement;
     this->fontController->setBounds(0, y, getWidth(), getHeight() - y);
-    this->arrangeController->setBounds(0, y, getWidth(), getHeight() - y);
 }
 
 void IRTextEditorController::paint(Graphics& g)
@@ -65,7 +53,7 @@ FontController* IRTextEditorController::getFontController()
     return this->fontController.get();
 }
 
-void IRTextEditorController::changeListenerCallback (ChangeBroadcaster* source)
+void IRTextEditorController::controllerChangeListenerCallback (ChangeBroadcaster* source)
 {
     
 }
@@ -74,11 +62,12 @@ void IRTextEditorController::changeListenerCallback (ChangeBroadcaster* source)
 void IRTextEditorController::mainControllerSelected()
 {
     this->fontController->setVisible(true);
-    this->arrangeController->setVisible(false);
+    setArrangeControllerVisible(false);
+    
 }
 
 void IRTextEditorController::arrangeControllerSelected()
 {
     this->fontController->setVisible(false);
-    this->arrangeController->setVisible(true);
+    setArrangeControllerVisible(true);
 }

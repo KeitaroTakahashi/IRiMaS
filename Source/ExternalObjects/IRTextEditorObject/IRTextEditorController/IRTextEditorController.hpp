@@ -13,7 +13,6 @@
 #include "ObjectArranger.hpp"
 
 class IRTextEditorController : public IRObjectController,
-public ChangeListener,
 public ChangeBroadcaster
 {
 public:
@@ -21,24 +20,24 @@ public:
     IRTextEditorController(IRStr* str);
     ~IRTextEditorController();
 
-    void resized() override;
+    void ControllerResized() override;
     void paint(Graphics& g) override;
     
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void controllerChangeListenerCallback (ChangeBroadcaster* source) override;
         
     FontController* getFontController();
 
+    // called by IRObjectController
     void mainControllerSelected() override;
     void arrangeControllerSelected() override;
         
 private:
 
-    Label LabelTitle;
     
     
         // FontGUI* fontGUI;
     std::unique_ptr<FontController> fontController;
-    std::unique_ptr<ArrangeController> arrangeController;
+    //std::unique_ptr<ArrangeController> arrangeController;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRTextEditorController)
 

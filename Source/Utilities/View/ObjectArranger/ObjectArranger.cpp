@@ -8,38 +8,65 @@
 #include "ObjectArranger.hpp"
 
 
-ArrangeController::ArrangeController(IRStr* str) : IRStrComponent(str)
+ArrangeController::ArrangeController(IRStr* str) : IRStrComponent(str),
+encloseColour(str->SYSTEMCOLOUR.fundamental.brighter(), 1.0, str)
 {
     createLabel(this->labelSize, "Size : ");
     createSmallLabel(this->labelWidth, "Width");
     createSmallLabel(this->labelHeight, "Height");
-    
+
+    createSmallLabel(this->labelSizePixel, "pixel");
+
     createLabel(this->InputWidth, "0");
+    //this->InputWidth.onTextChange = [this]{InputWidthChanged();};
     this->InputWidth.setEditable(true);
     createLabel(this->InputHeight, "0");
+    //this->InputHeight.onTextChange = [this]{InputHeightChanged();};
     this->InputHeight.setEditable(true);
 
     createLabel(this->labelPosition, "Position : ");
     createSmallLabel(this->labelX, "X");
     createSmallLabel(this->labelY, "Y");
+    
+    createSmallLabel(this->PositionLabelPixel, "pixel");
 
     createLabel(this->InputX, "0");
+    //this->InputX.onTextChange = [this]{InputXChanged();};
     this->InputX.setEditable(true);
     createLabel(this->InputY, "0");
+    //this->InputY.onTextChange = [this]{InputYChanged();};
     this->InputY.setEditable(true);
     
+    createLabel(this->layerLabel, "Layer");
     createButton(this->frontButton, "Front");
     createButton(this->backButton, "Back");
 
+    createLabel(this->statusLabel, "Status");
+    createToggleButton(this->encloseButton, "Enclose");
     
+    createLabel(this->encloseColourLabel, "Enclose Colour");
+    addAndMakeVisible(this->encloseColour);
+    this->encloseColour.addChangeListener(this);
+
     setSize (250, 400);
 
 }
 
+
+
 ArrangeController::~ArrangeController()
 {
+}
+
+void ArrangeController::setArrangeController(ArrangeController* controller)
+{
+    if(controller == nullptr) return;
+    
+    setRectangle(controller->getRectangle());
+    setEncloseColour(controller->getEncloseColour());
 
 }
+
 // =======================================================
 
 void ArrangeController::resized()
@@ -55,17 +82,28 @@ void ArrangeController::resized()
     y += ySmall;
     this->labelWidth.setBounds(x + 80, y, 60, 20);
     this->labelHeight.setBounds(x + 150, y, 60, 20);
-
+    this->labelSizePixel.setBounds(x + 200, y - ySmall/2, 50, 20);
+    
     y+= ySmall;
-    this->labelPosition.setBounds(margin, y,100, 30);
+    this->labelPosition.setBounds(margin, y, 100, 30);
     this->InputX.setBounds(x + 80, y, 60, 30);
     this->InputY.setBounds(x + 150, y, 60, 30);
     y += ySmall;
     this->labelX.setBounds(x + 80, y, 60, 20);
     this->labelY.setBounds(x + 150, y, 60, 20);
-    y += ySmall;
-    this->frontButton.setBounds(x + 20, y, 100, 20);
-    this->backButton.setBounds(x + 130, y, 100, 20);
+    this->PositionLabelPixel.setBounds(x + 200, y - ySmall/2, 50, 20);
+
+    y += yIncrement;
+    this->layerLabel.setBounds(margin, y, 60, 30);
+    this->frontButton.setBounds(x + 80, y + 5, 60, 20);
+    this->backButton.setBounds(x + 150, y + 5, 60, 20);
+    
+    y += yIncrement;
+    this->statusLabel.setBounds(margin, y, 80, 30);
+    this->encloseButton.setBounds(x + 80, y, 100, 30);
+    y += yIncrement;
+    this->encloseColourLabel.setBounds(margin, y, 120, 30);
+    this->encloseColour.setBounds(getWidth() - 10 - 80, y+5, 80, 20);
 }
 
 void ArrangeController::paint(Graphics& g)
@@ -75,6 +113,11 @@ void ArrangeController::paint(Graphics& g)
     g.drawRect(this->InputHeight.getBounds());
     g.drawRect(this->InputX.getBounds());
     g.drawRect(this->InputY.getBounds());
+    
+    g.drawLine(0, this->layerLabel.getY() - 10, getWidth(), this->layerLabel.getY() - 10);
+    
+    g.drawLine(0, this->statusLabel.getY() - 5, getWidth(), this->statusLabel.getY() - 5);
+
 
 }
 // =======================================================
@@ -83,6 +126,7 @@ void ArrangeController::createLabel(Label& label, String text)
 {
     Font f("Avenir Next",20, Font::plain);
     label.setFont(f);
+    label.addListener(this);
     addAndMakeVisible(label);
     label.setText(text, dontSendNotification);
     label.setJustificationType(Justification::left);
@@ -109,12 +153,15 @@ void ArrangeController::labelTextChanged (Label* labelThatHasChanged)
     // check if the input value is digit integer number and otherw
     try
     {
+        // avoid updating label
+        this->shouldUpdate = false;
         LabelChangeListener(labelThatHasChanged);
     }
     catch (const std::invalid_argument &e)
     {
        std::cout << "Bad input " << val << std::endl;
         labelThatHasChanged->setText("0", dontSendNotification);
+        
     }
 }
 
@@ -124,21 +171,18 @@ void ArrangeController::LabelChangeListener(Label* label)
     if(label == &this->InputWidth)
     {
         this->status = INPUTWIDTH;
-        sendChangeMessage();
     }else if(label == &this->InputHeight)
     {
         this->status = INPUTHEIGHT;
-        sendChangeMessage();
     }else if(label == &this->InputX)
     {
         this->status = INPUTX;
-        sendChangeMessage();
-        
     }else if(label == &this->InputY)
     {
         this->status = INPUTY;
-        sendChangeMessage();
     }
+
+    sendChangeMessage();
 }
 
 
@@ -150,6 +194,14 @@ void ArrangeController::createButton(TextButton& button, String text)
     button.addListener(this);
 }
 
+void ArrangeController::createToggleButton(ToggleButton& button, String text)
+{
+    button.setButtonText(text);
+    addAndMakeVisible(button);
+    button.addListener(this);
+}
+
+
 void ArrangeController::buttonClicked(Button* button)
 {
     if(button == &this->frontButton)
@@ -160,25 +212,175 @@ void ArrangeController::buttonClicked(Button* button)
     {
         this->status = BACKBUTTON;
         sendChangeMessage();
+    }else if(button == &this->encloseButton)
+    {
+        this->status = ENCLOSEBUTTON;
+        sendChangeMessage();
     }
 }
 
 // =======================================================
 int ArrangeController::getLabelWidth()
 {
-    return std::stoi(this->labelWidth.getText().toStdString());
+    return std::stoi(this->InputWidth.getText().toStdString());
 }
 int ArrangeController::getLabelHeight()
 {
-    return std::stoi(this->labelHeight.getText().toStdString());
+    return std::stoi(this->InputHeight.getText().toStdString());
 }
 int ArrangeController::getLabelX()
 {
-    return std::stoi(this->labelX.getText().toStdString());
+    return std::stoi(this->InputX.getText().toStdString());
 }
 int ArrangeController::getLabelY()
 {
-    return std::stoi(this->labelY.getText().toStdString());
+    return std::stoi(this->InputY.getText().toStdString());
 }
+
+bool ArrangeController::getEnclosedButtonStatus()
+{
+    return this->encloseButton.getToggleState();
+}
+
 // =======================================================
+
+void ArrangeController::setRectangle(Rectangle<int> rect)
+{
+    // if change is made
+    if(this->shouldUpdate)
+    {
+        setLabelWidth(rect.getWidth());
+        setLabelHeight(rect.getHeight());
+        setLabelX(rect.getX());
+        setLabelY(rect.getY());
+    }
+    this->shouldUpdate = true;
+}
+
+Rectangle<int> ArrangeController::getRectangle()
+{
+    Rectangle<int> b (getLabelX(), getLabelY(),
+                      getLabelWidth(), getLabelHeight());
+    return b;
+}
+
+
+
+
+void ArrangeController::setLabelWidth(int width)
+{
+    int w = width;
+    fixMinMax(w, this->res_min_w, this->res_max_w);
+    this->InputWidth.setText(String(w), dontSendNotification);
+    
+}
+void ArrangeController::setLabelHeight(int height)
+{
+    int h = height;
+    fixMinMax(h, this->res_min_h, this->res_max_h);
+    this->InputHeight.setText(String(h), dontSendNotification);
+}
+void ArrangeController::setLabelX(int x)
+{
+    int val = x;
+    fixMinMax(val, this->res_min_x, this->res_max_x);
+    this->InputX.setText(String(val), dontSendNotification);
+}
+void ArrangeController::setLabelY(int y)
+{
+    int val = y;
+    fixMinMax(val, this->res_min_y, this->res_max_y);
+    this->InputY.setText(String(val), dontSendNotification);
+}
+
+// =======================================================
+
+void ArrangeController::setRestrictPosition(int min_x, int max_x,
+                                            int min_y, int max_y)
+{
+    this->res_min_x = min_x;
+    this->res_max_x = max_x;
+
+    this->res_min_y = min_y;
+    this->res_max_y = max_y;
+
+}
+
+void ArrangeController::setRestrictSize(int min_w, int max_w,
+                                        int min_h, int max_h)
+{
+    this->res_min_w = min_w;
+    this->res_max_w = max_w;
+
+    this->res_min_h = min_h;
+    this->res_max_h = max_h;
+
+}
+
+// =======================================================
+
+
+void ArrangeController::fixMinMax(int& val, int min, int max)
+{
+    if(val < min) val = min;
+    else if(val > max) val = max;
+}
+
+// =======================================================
+
+void ArrangeController::changeListenerCallback(ChangeBroadcaster* source)
+{
+    if(source == &this->encloseColour)
+    {
+        this->status = ENCLOSECOLOUR;
+        sendChangeMessage();
+    }
+}
+
+// =======================================================
+
+
+Colour ArrangeController::getEncloseColour() const {
+    return this->encloseColour.getCurrentColour();
+}
+
+void ArrangeController::setEncloseColour(Colour newColour) {
+    this->encloseColour.setCurrentColour(newColour);
+    repaint();
+}
+
+void ArrangeController::encloseColourChanged()
+{
+    this->status = EncloseColourChanged;
+    sendChangeMessage();
+}
+
+// =======================================================
+// event
+void ArrangeController::InputWidthChanged()
+{
+    this->status = INPUTWIDTH;
+    sendChangeMessage();
+}
+
+void ArrangeController::InputHeightChanged()
+{
+    this->status = INPUTHEIGHT;
+    sendChangeMessage();
+}
+
+void ArrangeController::InputXChanged()
+{
+    this->status = INPUTX;
+    sendChangeMessage();
+}
+
+void ArrangeController::InputYChanged()
+{
+    this->status = INPUTY;
+    sendChangeMessage();
+}
+
+// =======================================================
+
 // =======================================================

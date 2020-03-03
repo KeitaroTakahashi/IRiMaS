@@ -5,7 +5,7 @@
 
 
 IRWaveformObject::IRWaveformObject(Component* parent, IRStr* str) :
-IRNodeObject(parent, "IRWaveform", str, NodeObjectType(orginaryIRComponent))
+IRNodeObject(parent, "IRWaveform", str, NodeObjectType(ordinaryIRComponent))
 {
     
     setOpaque(false);
@@ -19,14 +19,8 @@ IRNodeObject(parent, "IRWaveform", str, NodeObjectType(orginaryIRComponent))
     this->selector = new IRObjectSelection<Component*>();
     
     
-    
-    setSize(400,150);
-    /*
-    clearLinkParam();
-    addLinkParam(AudioLinkFlag);
-    addLinkParam(DataLinkFlag);
-    addLinkParam(ConsoleLinkFlag);
-    */
+    setObjectBounds(0, 0, 400, 150);
+ 
 }
 
 IRWaveformObject::~IRWaveformObject()
@@ -50,7 +44,7 @@ IRNodeObject* IRWaveformObject::copyContents(IRNodeObject* object)
     IRWaveformObject* obj = static_cast<IRWaveformObject*>(object);
 
     // temporary set the same bounds to calculate all other child components at the right positions.
-    obj->setBounds(getLocalBounds());
+    obj->setObjectBounds(getLocalBounds());
     // open the same audio file
     obj->waveform->getWaveformUI()->openFile(this->waveform->getWaveformUI()->getPath());
     // add all selectionSquares
@@ -76,13 +70,13 @@ IRNodeObject* IRWaveformObject::copyDragDropContents(IRNodeObject* object)
         //obj->setBounds(o->getX(), o->getY(), o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
         
         //obj->setSize(o->getWidth() + (this->xMargin*2), o->getHeight() + (this->yMargin*2));
-        obj->setSize(o->getWidth() + // width
-                     this->waveform->getGridSize() +
-                     this->waveform->getXMargin()*2,
-                     o->getHeight() + // height
-                     this->waveform->getGridSize() +
-                     this->waveform->getYMargin()*2 +
-                     this->waveform->getScrollSpace());
+        obj->setObjectSize(o->getWidth() + // width
+                           this->waveform->getGridSize() +
+                           this->waveform->getXMargin()*2,
+                           o->getHeight() + // height
+                           this->waveform->getGridSize() +
+                           this->waveform->getYMargin()*2 +
+                           this->waveform->getScrollSpace());
         
         obj->waveform->setAutomationWidthRatio(this->waveform->getAutomationWidthRatio());
 
@@ -286,7 +280,7 @@ void IRWaveformObject::audioControllerChangeListener()
 
 // ==================================================
 
-void IRWaveformObject::changeListenerCallback(ChangeBroadcaster* source)
+void IRWaveformObject::IRChangeListenerCallback(ChangeBroadcaster* source)
 {
     
     if(source == this->waveform->getWaveformUI())

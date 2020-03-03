@@ -12,9 +12,9 @@
 #include "FontController.h"
 #include "videoController.h"
 #include "IRVideoPlayerObject.hpp"
+#include "ObjectArranger.hpp"
 
 class IRVideoPlayerController : public IRObjectController,
-public ChangeListener,
 public ChangeBroadcaster
 {
 public:
@@ -35,7 +35,7 @@ public:
     ~IRVideoPlayerController();
     // ==================================================
 
-    void resized() override;
+    void ControllerResized() override;
     void paint(Graphics& g) override;
     // ==================================================
 
@@ -52,13 +52,19 @@ public:
     // ==================================================
     IRVideoAnnotater* getVideoAnnotaterComponent() { return this->UI.getVideoAnnotaterComponent(); }
 
+    // ==================================================
+    ArrangeController* getArrangeController();
     
 private:
     // ==================================================
 
     Label LabelTitle;
     VideoController UI;
+    std::unique_ptr<ArrangeController> arrangeController;
     // ==================================================
+    
+    void mainControllerSelected() override;
+    void arrangeControllerSelected() override;
 
 
     VideoPlayerControllerStatus status = NONE;

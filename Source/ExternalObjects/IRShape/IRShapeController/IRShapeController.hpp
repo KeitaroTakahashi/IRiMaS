@@ -12,7 +12,6 @@
 #include "IRColourSelector.h"
 
 class IRShapeController : public IRObjectController,
-public ChangeListener,
 public ChangeBroadcaster,
 private ComboBox::Listener
 
@@ -34,7 +33,7 @@ public:
 
     // ==================================================
     
-    void resized() override;
+    void ControllerResized() override;
     void paint(Graphics& g) override;
     
     // ==================================================

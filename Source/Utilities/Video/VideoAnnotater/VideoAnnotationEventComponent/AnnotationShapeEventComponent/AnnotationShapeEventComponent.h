@@ -8,12 +8,13 @@
 #ifndef AnnotationShapeEventComponent_h
 #define AnnotationShapeEventComponent_h
 
-#include "VideoAnnotationEventComponent.hpp"
+#include "VideoAnnotationEventComponent.h"
 
 class AnnotationShapeEventComponent : public VideoAnnotationEventComponent
 {
 public:
-    AnnotationShapeEventComponent(IRStr *str, int videoLengthInSecond = 0) : VideoAnnotationEventComponent(str, videoLengthInSecond)
+    AnnotationShapeEventComponent(IRStr *str, IRVideoAnnotaterBase* base, int videoLengthInSecond = 0) :
+    VideoAnnotationEventComponent(str, base, videoLengthInSecond)
     {
         setType(VideoAnnotationEventComponent::SHAPE);
 

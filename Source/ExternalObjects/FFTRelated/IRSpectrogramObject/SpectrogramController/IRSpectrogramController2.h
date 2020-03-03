@@ -13,7 +13,6 @@
 #include "AudioObjectController.h"
 
 class IRSpectrogramController2 : public IRObjectController,
-public ChangeListener,
 public ChangeBroadcaster
 {
 public:
@@ -29,7 +28,7 @@ public:
     };
     
     
-    IRSpectrogramController2(IRStr* str) : IRObjectController(str),
+    IRSpectrogramController2(IRStr* str) : IRObjectController("Spectrogram", str),
     audioController(str)
     {
         addAndMakeVisible(&this->LabelTitle);
@@ -48,7 +47,7 @@ public:
 
     // ==================================================
     
-    void resized() override
+    void ControllerResized() override
     {
         int y = 10;
         //int yIncrement = 30;

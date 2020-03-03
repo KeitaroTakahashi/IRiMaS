@@ -8,17 +8,18 @@
 #ifndef IRVideoAnnotaterInterfaceObject_hpp
 #define IRVideoAnnotaterInterfaceObject_hpp
 
-#include "IRVideoAnnotaterObject.hpp"
+#include "IRVideoAnnotaterObject.h"
 #include "IRVideoPlayerController.hpp"
 
 
-class IRVideoAnnotaterInterfaceObject : public IRVideoAnnotaterObject,
-private ChangeListener
+class IRVideoAnnotaterInterfaceObject : public IRVideoAnnotaterObject
 {
 public:
     IRVideoAnnotaterInterfaceObject(Component* parent, IRStr* str);
     ~IRVideoAnnotaterInterfaceObject();
     // --------------------------------------------------
+    
+    void resized() override;
     // copy related methods
     
     IRNodeObject* copyThis() override;
@@ -30,6 +31,10 @@ public:
     t_json saveThisToSaveData() override;
 
     void loadThisFromSaveData(t_json data) override;
+    
+    // called when this object position is changed
+    void ObjectPositionChanged(int x, int y) override;
+
 
     // --------------------------------------------------
     
@@ -45,8 +50,9 @@ public:
 private:
     // --------------------------------------------------
     void videoLoadCompletedCallback() override;
-    void changeListenerCallback (ChangeBroadcaster* source) override;
-
+    void IRChangeListenerCallback (ChangeBroadcaster* source) override;
+    
+    void arrangeControllerChangedCallback(ArrangeController* source);
     // --------------------------------------------------
 
     std::shared_ptr<IRVideoPlayerController> controller;

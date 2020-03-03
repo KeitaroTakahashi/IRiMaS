@@ -17,9 +17,9 @@ public ChangeListener,
 public ChangeBroadcaster
 {
 public:
-    IRColourSettingIcon(Colour defaultColour, IRStr * str) :
+    IRColourSettingIcon(Colour defaultColour, float alpha, IRStr * str) :
     IRStrComponent(str),
-    selectedColour(defaultColour)
+    selectedColour(defaultColour.getRed(), defaultColour.getGreen(), defaultColour.getBlue(), alpha)
     {
 
     }
@@ -76,8 +76,6 @@ private:
     {
        if(source == this->settingWindow.get())
        {
-           std::cout << "IRColourSettingIcon : change\n";
-
            this->selectedColour = this->settingWindow->getSelectedColour();
            sendChangeMessage();
            repaint();

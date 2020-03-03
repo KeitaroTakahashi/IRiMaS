@@ -10,15 +10,26 @@
 
 #include "IRStrComponent.hpp"
 #include "VideoTransport.h"
-#include "IRVideoAnnotaterObject.hpp"
+#include "IRVideoAnnotaterObject.h"
 #include "VideoAnnotationMenuWindow.h"
 #include "VideoEventList.h"
+#include "EventLogList.h"
+#include "IRVideoAnnotaterBase.h"
+#include "IRVideoAnnotaterDelegate.h"
+#include "VideoAnnotaterWorkspace.hpp"
 
+// VideoAnontater object
+#include "IRVATextEditorObject.h"
+#include "IRVAShapeObject.h"
+
+#include "IRObjectCreater.hpp"
 
 class IRVideoAnnotater : public Component,
 public IRStrComponent,
+public IRVideoAnnotaterBase,
 public KeyListener,
-public ChangeListener
+public ChangeListener,
+private IRWorkspaceComponent::Listener
 {
 public:
     IRVideoAnnotater(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject);
@@ -44,8 +55,12 @@ public:
 
     void myVideoLoadCompleted();
     void myVideoPlayingUpdate(double pos);
+    
+    void updateVideoSize(Point<int> newVideoSize);
+    
     // ==================================================
     void setVideoComponent(IRVideoComponent* videoComponent);
+    
     
     // as videoPlayerObject is shared with IRWorkspace, you need to remove it from this component when closed.
     void bindVideoPlayerObject();
@@ -65,7 +80,7 @@ public:
     void stopAction();
     // ==================================================
    
-    void setEventModifiedCallback(std::function<void()> callback);
+    void setEventModifiedCallback(std::function<void(VideoAnnotationEventComponent*)> callback);
     // ==================================================
 
     std::vector<VideoAnnotationEventComponent*> getEventComponents()
@@ -81,6 +96,11 @@ public:
 
 private:
     // ==================================================
+    // SYSTEM DELEGATE
+    IRVideoAnnotaterDelegate* delegate = nullptr;
+    
+    // ==================================================
+
     // VIDEO
     File videoFile;
     String path;
@@ -109,9 +129,11 @@ private:
     IRVideoTransport videoTransport;
     std::unique_ptr<VideoAnnotationMenuWindow> annotationMenu;
     
+    void createVideoTransport();
     // ==================================================
     
     std::shared_ptr<VideoEventList> eventListComponent;
+    void createEventListComponent();
     
     void clearAllEventComponent();
     void clearEventComponent(VideoAnnotationEventComponent* eventComponent);
@@ -122,29 +144,66 @@ private:
     void createShapeEventComponent();
     void createImageEventComponent();
     void createAudioEventComponent();
-    
-    
     void eventComponentResized();
 
     // ==================================================
+    //IRWorkspace
+    // getting to know when the selection status of a NodeObject has been changed.
+    // This function is called when an object is either selected or unselected.
+    // this function is, for instance, used to update the Object Controller in the IRRightBar
+    void createWorkspace();
+    // workspaceComponent::Listener
+    void nodeObjectSelectionChange(IRNodeObject* obj) override;
+    void nodeObjectGetFocused(IRNodeObject* obj)override;
+    void editModeChanged(IRWorkspaceComponent* changedSpace) override;
+    void heavyObjectCreated(IRNodeObject* obj) override;
+    
+    
+    
+    // ==================================================
+    std::shared_ptr<EventLogList> eventLogList;
+    
+    
+
+    // ==================================================
     // Apply
-    void applyEventsOnTheLoadedVideo();
+    void applyEventsOnTheLoadedVideo(VideoAnnotationEventComponent* event);
+    void updateEventsOnTheLoadedVideo();
+    // create
+    void createEventOnTheLoadedVideo(VideoAnnotationEventComponent* event);
+    void deleteEventOnTheLoadedVideo();
     // ==================================================
 
     void changeListenerCallback (ChangeBroadcaster* source) override;
     void videoTransportChangeListener();
     void annotationMenuChangeListener();
     
-    void eventModifiedAction();
-    std::function<void()> eventModifiedCallback;
+    // ==================================================
+
+    // IRVideoAnnotaterBase
+    void eventModifiedAction(Component* modifiedEvent) override;
+    void eventSelectedAction(Component* selectedEvent) override;
+    
+    // ==================================================
+
+    std::function<void(VideoAnnotationEventComponent*)> eventModifiedCallback;
     // ==================================================
     
+    void textEventComponentSelected(VideoAnnotationEventComponent* event);
+    void shapeEventComponentSelected(VideoAnnotationEventComponent* event);
+    
+    // ==================================================
+
     bool keyPressed(const KeyPress& key, Component* originatingComponent) override;
     
     void DeleteKeyPressed();
     void AKeyPressed();
     void CommandWKeyPressed();
+    void CommandEPressed();
+    void CommandSPressed();
     // ==================================================
+    
+    std::shared_ptr<VideoAnnotaterWorkspace> workspace;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRVideoAnnotater)
 

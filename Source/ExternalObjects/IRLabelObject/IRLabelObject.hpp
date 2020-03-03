@@ -5,8 +5,7 @@
 #include "IRNodeObject.hpp"
 #include "IRLabelController.hpp"
 
-class IRLabelObject : public IRNodeObject,
-                      public ChangeListener
+class IRLabelObject : public IRNodeObject
 {
     
 public:
@@ -25,7 +24,7 @@ public:
     
     void mouseDownEvent(const MouseEvent& e) override;
     
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void IRChangeListenerCallback (ChangeBroadcaster* source) override;
     
     void setFont(Font font);
     Font getFont() const;

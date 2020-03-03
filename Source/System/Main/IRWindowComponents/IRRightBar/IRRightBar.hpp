@@ -70,7 +70,7 @@ private:
     //==================================================
     // layout
     int buttonSize = 40;
-    int space = 250;
+    int space = 270;
     
     Point<int> initialPos;
      

@@ -28,13 +28,11 @@ IRRightBar::~IRRightBar()
 
 void IRRightBar::resized()
 {
-    
     if(this->comp != nullptr)
     {
         if(this->comp->isVisible())
             this->comp->setBounds(getLocalBounds());
     }
-    
 }
 
 void IRRightBar::paint(Graphics& g)

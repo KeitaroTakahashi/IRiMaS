@@ -3,7 +3,7 @@
 #define IRAudioPlayerObject_hpp
 
 #include "IRAudioReader.hpp"
-#include "SoundPlayer_ThreadSafe.hpp"
+#include "SoundPlayer_ThreadSafe.h"
 #include "IRNodeObject.hpp"
 
 

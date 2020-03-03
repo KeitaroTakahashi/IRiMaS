@@ -15,12 +15,15 @@
 class IRVideoComponent : public Component
 {
 public:
-    IRVideoComponent()
+    IRVideoComponent(bool enableController = true) :
+    enableController(enableController)
     {
+      
         this->player_with_controller.reset(new VideoComponent(true));
         this->player_without_controller.reset(new VideoComponent(false));
-        addAndMakeVisible(this->player_with_controller.get());
-        this->currentPlayer = this->player_with_controller.get();
+    
+        setVideoPlayer();
+
 
     }
     
@@ -42,6 +45,20 @@ public:
     }
     
     // ==================================================
+    void setVideoPlayer()
+    {
+        if(this->enableController)
+        {
+            addAndMakeVisible(this->player_with_controller.get());
+            this->currentPlayer = this->player_with_controller.get();
+        }else
+        {
+            addAndMakeVisible(this->player_without_controller.get());
+            this->currentPlayer = this->player_without_controller.get();
+        }
+    }
+    // ==================================================
+
     void play()
     {
         if(this->currentPlayer != nullptr)
@@ -97,12 +114,13 @@ public:
         else return this->currentPlayer->getVideoDuration();
     }
     
+    Rectangle<int> getCurrentVideoBounds() { return getBounds(); }
     // ==================================================
 
     
     void setNeedController(bool flag)
     {
-        this->isShowControllerFlag = flag;
+        this->enableController = flag;
         
         if(flag)
         {
@@ -115,15 +133,15 @@ public:
             removeChildComponent(this->player_with_controller.get());
             addAndMakeVisible(this->player_without_controller.get());
             this->currentPlayer = this->player_without_controller.get();
-
         }
     }
     
-    bool isController() const { return this->isShowControllerFlag; }
+    bool isController() const { return this->enableController; }
     
     void loadVideo(URL url, bool callback = true)
     {
         this->url = url;
+        
         this->isCallback = callback;
         
         this->player_without_controller->load(url);
@@ -154,9 +172,7 @@ public:
                 w = this->videoSize.getWidth();
                 h = this->videoSize.getHeight();
             }
-            
-            addAndMakeVisible(this->player_with_controller.get());
-            this->currentPlayer = this->player_with_controller.get();
+            setVideoPlayer();
             
             if(this->isCallback)
             {
@@ -188,7 +204,7 @@ public:
     {
         
     #if JUCE_MAC
-        NSViewComponent* view = static_cast<NSViewComponent*>(this->player_with_controller->getPimpl());
+        NSViewComponent* view = static_cast<NSViewComponent*>(this->currentPlayer->getPimpl());
         if(view == nullptr) return;
         
         IRNSViewManager manager;
@@ -209,10 +225,11 @@ private:
     
     VideoComponent* currentPlayer = nullptr;
 
-    bool isShowControllerFlag = true;
     bool isVideoLoaded = false;
     
     bool isCallback = true;
+    
+    bool enableController;
     
     URL url;
     

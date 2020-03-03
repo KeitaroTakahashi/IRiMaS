@@ -2,7 +2,7 @@
 #include "IRLabelObject.hpp"
 
 IRLabelObject::IRLabelObject(Component* parent, IRStr* str) :
-IRNodeObject(parent, "IRLabel", str, NodeObjectType(orginaryIRComponent))
+IRNodeObject(parent, "IRLabel", str, NodeObjectType(ordinaryIRComponent))
 {
     StopWatch bench;
     bench.start();
@@ -17,7 +17,7 @@ IRNodeObject(parent, "IRLabel", str, NodeObjectType(orginaryIRComponent))
     this->font.setTypefaceStyle("Regular");
     this->font.setHeight(20);
     
-    setSize(100,40);
+    setObjectSize(100,40);
     addAndMakeVisible(&this->label);
     this->label.setFont(this->font);
 
@@ -171,7 +171,7 @@ void IRLabelObject::mouseDownEvent(const MouseEvent& e)
 }
 
 
-void IRLabelObject::changeListenerCallback (ChangeBroadcaster* source)
+void IRLabelObject::IRChangeListenerCallback (ChangeBroadcaster* source)
 {
     FontController* fontGUI = this->controller->getFontController();
     

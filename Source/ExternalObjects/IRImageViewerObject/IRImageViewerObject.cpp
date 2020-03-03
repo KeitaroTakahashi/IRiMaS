@@ -2,7 +2,7 @@
 #include "IRImageViewerObject.hpp"
 
 IRImageViewerObject::IRImageViewerObject(Component* parent, IRStr* str) :
-IRNodeObject(parent, "IRImageViewer", str, NodeObjectType(orginaryIRComponent))
+IRNodeObject(parent, "IRImageViewer", str, NodeObjectType(ordinaryIRComponent))
 {
     
     this->controller.reset( new IRImageViewerController(str) );
@@ -21,7 +21,7 @@ IRNodeObject(parent, "IRImageViewer", str, NodeObjectType(orginaryIRComponent))
     this->imageViewer->addChangeListener(this);
 
 
-    setSize(150, 150);
+    setObjectSize(150, 150);
     /*
     clearLinkParam();
     addLinkParam(ImageLinkFlag);
@@ -132,7 +132,7 @@ void IRImageViewerObject::resizeThisComponentEvent(const MouseEvent& e)
             newHeight += deltaY;
             newWidth = (double) newHeight * ratio;
         }
-        setSize(newWidth, newHeight);
+        setObjectSize(newWidth, newHeight);
     }
     else
     {
@@ -163,11 +163,11 @@ void IRImageViewerObject::statusChangedCallback(IRNodeComponentStatus status)
 }
 
 
-void IRImageViewerObject::changeListenerCallback (ChangeBroadcaster* source)
+void IRImageViewerObject::IRChangeListenerCallback (ChangeBroadcaster* source)
 {
     if (source == this->imageViewer.get())
     {
-        setSize(this->imageViewer->getWidth(), this->imageViewer->getHeight());
+        setObjectSize(this->imageViewer->getWidth(), this->imageViewer->getHeight());
     }
     else if(source == this->controller.get())
     {

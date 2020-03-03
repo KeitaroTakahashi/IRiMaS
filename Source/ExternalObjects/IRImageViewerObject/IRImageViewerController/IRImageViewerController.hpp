@@ -13,7 +13,6 @@
 #include "ImageController.h"
 
 class IRImageViewerController : public IRObjectController,
-public ChangeListener,
 public ChangeBroadcaster
 {
 public:
@@ -30,7 +29,7 @@ public:
     IRImageViewerController(IRStr* str);
     ~IRImageViewerController();
 
-    void resized() override;
+    void ControllerResized() override;
     void paint(Graphics& g) override;
     
     void changeListenerCallback (ChangeBroadcaster* source) override;

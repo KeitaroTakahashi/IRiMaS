@@ -7,7 +7,7 @@
 
 #include "IRIVSRController.hpp"
 
-IRIVSRController::IRIVSRController(IRStr* str) : IRObjectController(str)
+IRIVSRController::IRIVSRController(IRStr* str) : IRObjectController("IVSR", str)
 {
     
 }
@@ -18,7 +18,7 @@ IRIVSRController::~IRIVSRController()
 }
 
 
-void IRIVSRController::resized()
+void IRIVSRController::ControllerResized()
 {
     
 }

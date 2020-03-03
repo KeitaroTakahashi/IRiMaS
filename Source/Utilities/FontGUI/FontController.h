@@ -31,8 +31,8 @@ public ComboBox::Listener
 public:
     
     FontController(IRStr* str) : IRStrComponent(str),
-    textColourIcon(Colours::black, str),
-    backgroundColourIcon(Colours::transparentWhite, str)
+    textColourIcon(Colours::black, 1.0, str),
+    backgroundColourIcon(Colours::transparentWhite, 1.0, str)
     {
         addAndMakeVisible(this->labelFont);
         this->labelFont.setText("Font : ", dontSendNotification);
@@ -268,9 +268,9 @@ public:
     void setHeight(float newHeight) { this->fontSize = newHeight; }
     
     Colour getTextColour() const { return this->textColourIcon.getCurrentColour(); }
-    void setTextColour(Colour newColour) { this->textColourIcon.setCurrentColour(newColour); }
+    void setTextColour(Colour newColour) { this->textColourIcon.setCurrentColour(newColour); repaint(); }
     Colour getBackgroundColour() const { return this->backgroundColourIcon.getCurrentColour(); }
-    void setBackgroundColour(Colour newColour) { this->backgroundColourIcon.setCurrentColour(newColour); }
+    void setBackgroundColour(Colour newColour) { this->backgroundColourIcon.setCurrentColour(newColour); repaint(); }
 
     void changeListenerCallback(ChangeBroadcaster* source) override
     {

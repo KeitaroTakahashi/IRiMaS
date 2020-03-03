@@ -43,7 +43,6 @@ void ObjectsMenuComponent::itemSelected(IRObjectFactory2::t_object* obj)
 
 void ObjectsMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
 {
-    
     IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
 
     auto topSpace = static_cast<IRWorkspace* >(getStr()->TopWorkspace);

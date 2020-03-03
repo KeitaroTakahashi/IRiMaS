@@ -7,7 +7,7 @@
 
 #include "IRImageViewerController.hpp"
 
-IRImageViewerController::IRImageViewerController(IRStr* str) : IRObjectController(str),
+IRImageViewerController::IRImageViewerController(IRStr* str) : IRObjectController("ImageViewer", str),
 UI(str)
 {
     addAndMakeVisible(&this->LabelTitle);
@@ -24,7 +24,7 @@ IRImageViewerController::~IRImageViewerController()
     
 }
 
-void IRImageViewerController::resized()
+void IRImageViewerController::ControllerResized()
 {
     int y = 10;
     int yIncrement = 30;

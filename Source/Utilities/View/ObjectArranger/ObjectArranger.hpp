@@ -10,10 +10,13 @@
 
 #include "JuceHeader.h"
 #include "IRStrComponent.hpp"
+#include "IRColourSettingIcon.h"
+
 
 class ArrangeController : public Component,
 public IRStrComponent,
 public ChangeBroadcaster,
+public ChangeListener,
 private Label::Listener,
 private Button::Listener
 {
@@ -27,12 +30,18 @@ public:
         INPUTY,
         
         FRONTBUTTON,
-        BACKBUTTON
+        BACKBUTTON,
+        ENCLOSEBUTTON,
+        ENCLOSECOLOUR,
+        
+        EncloseColourChanged
     };
     
     
     ArrangeController(IRStr* str);
     ~ArrangeController();
+    
+    void setArrangeController(ArrangeController* controller);
     // =======================================================
     
     void resized() override;
@@ -42,36 +51,94 @@ public:
     // =======================================================
     ArrangeControllerStatus getStatus() const { return this->status; }
     // =======================================================
-    
+    // getter
+    Rectangle<int> getRectangle();
     int getLabelWidth();
     int getLabelHeight();
     int getLabelX();
     int getLabelY();
     
+    bool getEnclosedButtonStatus();
+    
+    //setter
+    void setRectangle(Rectangle<int> rect);
+    void setLabelWidth(int width);
+    void setLabelHeight(int height);
+    void setLabelX(int x);
+    void setLabelY(int y);
     // =======================================================
 
+    //Restrict range
+    void setRestrictPosition(int min_x, int max_x, int min_y, int max_y);
+    void setRestrictSize(int min_w, int max_w, int min_h, int max_h);
+    
+    // =======================================================
+
+    Colour getEncloseColour() const;
+    
+    void setEncloseColour(Colour newColour);
+    
+    void encloseColourChanged();
+    // =======================================================
+
+    
 private:
     // =======================================================
+
+    void changeListenerCallback(ChangeBroadcaster* source) override;
+
+    // =======================================================
+    // Restrict
+    
+    int res_min_x = 0;
+    int res_min_y = 0;
+    int res_min_w = 0;
+    int res_min_h = 0;
+    int res_max_x = 99999;
+    int res_max_y = 99999;
+    int res_max_w = 99999;
+    int res_max_h = 99999;
+
+    
+    void fixMinMax(int& val, int min, int max);
+    // =======================================================
+
     Label labelSize;
     Label labelWidth;
     Label labelHeight;
     
-    Label InputWidth;
-    Label InputHeight;
+    Label labelSizePixel;
     
+    Label InputWidth;
+    void InputWidthChanged();
+    Label InputHeight;
+    void InputHeightChanged();
+
     Label labelPosition;
     Label labelX;
     Label labelY;
     
     Label InputX;
+    void InputXChanged();
     Label InputY;
+    void InputYChanged();
+
+    Label PositionLabelPixel;
     
     void createLabel(Label& label, String text);
     void createSmallLabel(Label& label, String text);
+    void createToggleButton(ToggleButton& button, String text);
     // =======================================================
 
+    Label layerLabel;
     TextButton frontButton;
     TextButton backButton;
+    
+    
+    Label statusLabel;
+    ToggleButton encloseButton;
+    Label encloseColourLabel;
+    IRColourSettingIcon encloseColour;
 
     void createButton(TextButton& button, String text);
     void buttonClicked(Button* button) override;
@@ -82,6 +149,8 @@ private:
     // =======================================================
     ArrangeControllerStatus status = NONE;
     // =======================================================
+        // use this to avoid infinite loop
+    bool shouldUpdate = true;
 
 };
 

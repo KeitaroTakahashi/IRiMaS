@@ -17,7 +17,7 @@ IRNodeObject(parent, "IR3DVisualizer", str, NodeObjectType(heavyWeightComponent)
     addAndMakeVisible(this->UI.get());
     this->UI->addChangeListener(this);
     childComponentManager(this->UI.get());
-    setSize(600, 400);
+    setObjectSize(600, 400);
     
 }
 

@@ -13,12 +13,11 @@
 #include "IRAutomationObjectPreference.h"
 #include "IRAUtomationUIWithPreference.hpp"
 
-class IRAutomationObject : public IRNodeObject,
-                           public ChangeListener
+class IRAutomationObject : public IRNodeObject
 {
 public:
     IRAutomationObject(Component *parent, IRStr* str) :
-    IRNodeObject(parent, "IRAutomation", str, NodeObjectType(orginaryIRComponent))
+    IRNodeObject(parent, "IRAutomation", str, NodeObjectType(ordinaryIRComponent))
     {
 
         this->UI = new IRAutomationUIWithPreference(this, str);
@@ -32,7 +31,7 @@ public:
         childComponentManager(this->UI);
         //this->UI->demoData(10000);
 
-        setSize(400, 160);
+        setObjectSize(400, 160);
     }
     
     ~IRAutomationObject()
@@ -103,7 +102,7 @@ public:
     
     //===============================================================
     //Listener
-    void changeListenerCallback (ChangeBroadcaster* source) override
+    void IRChangeListenerCallback (ChangeBroadcaster* source) override
     {
         if(source == this->UI)
         {

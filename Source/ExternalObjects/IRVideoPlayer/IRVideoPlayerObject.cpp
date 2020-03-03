@@ -8,7 +8,7 @@
 #include "IRVideoPlayerObject.hpp"
 
 IRVideoPlayerObject::IRVideoPlayerObject(Component* parent, IRStr* str, bool withOpenButton) :
-IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(orginaryIRComponent))
+IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 {
     
     setOpaque(false);
@@ -19,9 +19,7 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(orginaryIRComponent))
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
     addAndMakeVisible(this->videoPlayer.get());
     this->videoPlayer->updateAnimationFrameCallback = [this](double pos) { videoPlayingUpdateAction(pos); };
-    
-    
-    setSize(300, 200);
+
 }
 
 IRVideoPlayerObject::~IRVideoPlayerObject()
@@ -38,7 +36,7 @@ IRNodeObject* IRVideoPlayerObject::copyThis()
 IRNodeObject* IRVideoPlayerObject::copyContents(IRNodeObject* object)
 {
     IRVideoPlayerObject* obj = static_cast<IRVideoPlayerObject*>(object);
-    obj->setBounds(getLocalBounds());
+    obj->setObjectBounds(getLocalBounds());
     File movieFile = getVideoPlayer()->getMovieFile();
     if(movieFile.exists())
     {
@@ -88,16 +86,18 @@ void IRVideoPlayerObject::loadThisFromSaveData(t_json data)
 // --------------------------------------------------
 void IRVideoPlayerObject::resized()
 {
-   this->videoPlayer->setBounds(getLocalBounds().reduced(5));
+   this->videoPlayer->setBounds(getLocalBounds().reduced(0));
 }
 // --------------------------------------------------
 void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
 {
-    
     // turn off controller otherwise mouse event will be stolen by the controller,
     // and resize event can not be acomplished properly.
-    if(this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
-        this->videoPlayer->setNeedController(false);
+    if(this->enableControllerFlag)
+    {
+        if(this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
+            this->videoPlayer->setNeedController(false);
+    }
     
     double ratio = this->videoPlayer->getAspectRatio();
     if(ratio != 0){
@@ -116,7 +116,7 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
             newHeight += deltaY;
             newWidth = (double) newHeight * this->videoPlayer->getAspectRatio();
         }
-        setSize(newWidth, newHeight);
+        setObjectSize(newWidth, newHeight);
 
     }else{
         IRNodeComponent::resizeThisComponentEvent(e);
@@ -124,12 +124,55 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
     
     this->resizing = true;
 }
+
+void IRVideoPlayerObject::resizeThisComponent(Rectangle<int> rect)
+{
+    double ratio = this->videoPlayer->getAspectRatio();
+    if(ratio >= 0 && ratio != 1.0)
+    {
+        float curr_w = (float)getWidth();
+        float curr_h = (float)getHeight();
+        float new_w  = (float)rect.getWidth();
+        float new_h  = (float)rect.getHeight();
+        
+        float ratio_w = curr_w / new_w;
+        float ratio_h = curr_h / new_h;
+                
+        // if w is larger, then follow w
+        if(ratio_w >= ratio_h)
+        {
+            
+            float fixed_h = new_w / ratio;
+            float y = (rect.getHeight() - fixed_h) / 2.0;
+            setObjectBounds(rect.getX(), rect.getY() + y, new_w, fixed_h);
+        }else{
+            float fixed_w = new_h * ratio;
+            float x = (rect.getWidth() - fixed_w) / 2.0;
+
+            setObjectBounds(rect.getX() + x, rect.getY(), fixed_w, new_h);
+        }
+        
+    }else{
+        setObjectBounds(rect);
+    }
+    
+}
+
+Point<int> IRVideoPlayerObject::getVideoSize()
+{
+    int w = this->videoPlayer->getVideoSize().getWidth();
+    int h = this->videoPlayer->getVideoSize().getHeight();
+    return Point<int>( w, h );
+}
 // --------------------------------------------------
 void IRVideoPlayerObject::mouseUpEvent(const MouseEvent& e)
 {
     //recover event
-    if(!this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
-        this->videoPlayer->setNeedController(true);
+    if(this->enableControllerFlag)
+    {
+        if(!this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
+            this->videoPlayer->setNeedController(true);
+    }
     
     if(this->resizing)
     {
@@ -152,35 +195,11 @@ void IRVideoPlayerObject::paint(Graphics& g)
 // --------------------------------------------------
 void IRVideoPlayerObject::videoLoadCompletedAction()
 {
-    // Keitaro : I decided not to fix the object size according to the loaded video size because it causes a lot of unnecessary difficulties.
-    /*
-    int video_w = this->videoPlayer->getVideoSize().getWidth();
-    int video_h = this->videoPlayer->getVideoSize().getHeight();
     
-    int w,h;
-   if(video_w > getWidth())
-   {
-       w = getWidth();
-       h = (int)((float)w / this->videoPlayer->getAspectRatio());
-       
-       // then
-       if(h > getHeight())
-       {
-           float newRatio = (float)getHeight() / (float)h;
-           h = getHeight();
-           w = (int)((float)w * newRatio);
-       }
-   }else{
-       w = video_w;
-       h = video_h;
-   }
     
-    */
-    //setSize(w + 10, h + 10);
-    //setSize(w, h);
-
-    // callback
-    videoLoadCompletedCallback();
+    bringThisToFront();
+    // call reset Heavy-weight components
+    callHeavyComponentCreated(this);
     
     // called only when isCallback is true. isCallback is defined in this class.
     if(this->videoLoadCompletedCallbackFunc != nullptr)
@@ -189,12 +208,9 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
             this->videoLoadCompletedCallbackFunc();
     }
 
-    bringThisToFront();
-    // call reset Heavy-weight components
-    callHeavyComponentCreated(this);
     
-    // and bring this obejct to the top of objectZOrder on the workspace
-    //callAddHeavyComponentToTopZOrder(this);
+    // virtual
+    videoLoadCompletedCallback();
     
 }
 // --------------------------------------------------
@@ -225,10 +241,12 @@ void IRVideoPlayerObject::heavyComponentRefreshed()
 // --------------------------------------------------
 void IRVideoPlayerObject::openFile(File file, bool isCallback)
 {
-    this->isCallback = isCallback;
+    this->isCallback = nullptr;
+    if(isCallback) this->isCallback = isCallback;
+    
     if(this->videoPlayer.get() != nullptr)
     {
-        this->videoPlayer->openFile(file);
+        this->videoPlayer->openFile(file, isCallback);
     }
 }
 
@@ -252,5 +270,35 @@ void IRVideoPlayerObject::stop()
     this->videoPlayer->stop();
 }
 
+void IRVideoPlayerObject::setPlayPosition(double newPositionInSec)
+{
+    this->videoPlayer->setPlayPosition(newPositionInSec);
+    
+    // inform the new play position to its child classes.
+    videoPlayingUpdateAction(newPositionInSec);
+}
 // --------------------------------------------------
+
+void IRVideoPlayerObject::statusChangedCallback(IRNodeComponentStatus status)
+{
+    switch (status)
+    {
+        case EditModeStatus:
+            break;
+        case SelectableStatus:
+            break;
+        case HasResizedStatus:
+            break;
+        default:
+            break;
+    }
+}
+
 // --------------------------------------------------
+void IRVideoPlayerObject::enableController(bool flag)
+{
+    this->enableControllerFlag = flag;
+    this->videoPlayer->setNeedController(flag);
+
+    
+}

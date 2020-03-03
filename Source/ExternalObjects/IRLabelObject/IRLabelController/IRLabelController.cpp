@@ -7,7 +7,7 @@
 
 #include "IRLabelController.hpp"
 
-IRLabelController::IRLabelController(IRStr* str) : IRObjectController(str)
+IRLabelController::IRLabelController(IRStr* str) : IRObjectController("Label", str)
 {
     addAndMakeVisible(&this->LabelTitle);
     this->LabelTitle.setText("Label", dontSendNotification);
@@ -30,7 +30,7 @@ IRLabelController::~IRLabelController()
     
 }
 
-void IRLabelController::resized()
+void IRLabelController::ControllerResized()
 {
     int y = 10;
     int yIncrement = 30;

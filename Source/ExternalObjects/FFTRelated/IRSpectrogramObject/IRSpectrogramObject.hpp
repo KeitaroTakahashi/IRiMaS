@@ -12,8 +12,7 @@
 #include "IRSpectrogramController2.h"
 class IRSpectrogramObject : public IRNodeObject,
 public IRHeavyWeightComponent,
-IRNodeObject::Listener,
-private ChangeListener
+IRNodeObject::Listener
 {
 public:
     IRSpectrogramObject(Component* parent, IRStr* str);
@@ -55,7 +54,7 @@ private:
     // events
     void mouseDownEvent(const MouseEvent& e) override;
     
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void IRChangeListenerCallback (ChangeBroadcaster* source) override;
     void audioControllerChangeListener();
 
     

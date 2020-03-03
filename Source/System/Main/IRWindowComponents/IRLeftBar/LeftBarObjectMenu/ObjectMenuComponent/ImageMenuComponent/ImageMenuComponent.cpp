@@ -48,6 +48,8 @@ void ImageMenuComponent::itemSelected(IRObjectFactory2::t_object* obj)
 
 void ImageMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
 {
+    
+    std::cout << "ImageMenuComponent::itemReleased\n";
     StopWatch bench;
     bench.start();
 

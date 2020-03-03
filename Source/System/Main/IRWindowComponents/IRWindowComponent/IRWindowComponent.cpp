@@ -394,7 +394,6 @@ void IRWindowComponent::nodeObjectGetFocused(IRNodeObject* obj)
 
 void IRWindowComponent::newWorkspaceCreated(IRWorkspace* space)
 {
-    
     std::cout << "IRWindowComponent::newWorkspaceCreated\n";
     this->leftBar->addNewWorkspaceSlide(space);
     
@@ -757,7 +756,7 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
         // ===== create worksapce =====
         createNewWorkspace();
         // get created workspace
-        IRWorkspace* currentSpace = this->mainSpace->getTopWorkspace();
+        IRWorkspace* currentSpace = static_cast<IRWorkspace*>(this->mainSpace->getTopWorkspace());
         
         // retrieve save data of the workspace
         json11::Json data = saveData["Workspaces"][id].object_items();
@@ -790,8 +789,8 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
                 auto* obj = factory.createObject(objectTypeId, currentSpace, this->ir_str.get());
                 
                 json11::Json::array b = it->second["bounds"].array_items();
-                obj->setBounds(b[0].int_value(), b[1].int_value(),
-                               b[2].int_value(), b[3].int_value());
+                obj->setObjectBounds(b[0].int_value(), b[1].int_value(),
+                                     b[2].int_value(), b[3].int_value());
                 
                 std::cout << "object bounds = " << obj->getWidth() << ", " << obj->getHeight() << std::endl;
                 

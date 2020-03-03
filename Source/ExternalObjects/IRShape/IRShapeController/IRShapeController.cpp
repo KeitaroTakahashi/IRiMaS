@@ -7,7 +7,7 @@
 
 #include "IRShapeController.hpp"
 
-IRShapeController::IRShapeController(IRStr* str) : IRObjectController(str),
+IRShapeController::IRShapeController(IRStr* str) : IRObjectController("Shape", str),
 comboBoxFont(str)
 {
 
@@ -77,7 +77,7 @@ IRShapeController::~IRShapeController()
 }
 
 
-void IRShapeController::resized()
+void IRShapeController::ControllerResized()
 {
     int y = 10;
     int yIncrement = 30;

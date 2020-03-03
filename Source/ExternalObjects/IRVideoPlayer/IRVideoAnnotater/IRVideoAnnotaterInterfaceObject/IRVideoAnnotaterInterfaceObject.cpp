@@ -10,9 +10,13 @@
 IRVideoAnnotaterInterfaceObject::IRVideoAnnotaterInterfaceObject(Component* parent, IRStr* str) :
 IRVideoAnnotaterObject(parent, str)
 {
+
    this->controller.reset( new IRVideoPlayerController(str, this) );
    this->controller->addChangeListener(this);
+    this->controller->getArrangeController()->addChangeListener(this);
    setObjController(this->controller.get());
+   
+    setObjectSize(300, 200);
 
 }
 
@@ -21,6 +25,13 @@ IRVideoAnnotaterInterfaceObject::~IRVideoAnnotaterInterfaceObject()
     this->controller.reset();
 }
 
+void IRVideoAnnotaterInterfaceObject::resized()
+{
+    IRVideoAnnotaterObject::resized();
+    
+    this->controller->getArrangeController()->setRectangle(getBounds());
+
+}
 // --------------------------------------------------
 
 IRNodeObject* IRVideoAnnotaterInterfaceObject::copyThis()
@@ -31,7 +42,7 @@ IRNodeObject* IRVideoAnnotaterInterfaceObject::copyThis()
 IRNodeObject* IRVideoAnnotaterInterfaceObject::copyContents(IRNodeObject* object)
 {
     IRVideoAnnotaterInterfaceObject* obj = static_cast<IRVideoAnnotaterInterfaceObject*>(object);
-    obj->setBounds(getLocalBounds());
+    obj->setObjectBounds(getLocalBounds());
     File movieFile = getVideoPlayer()->getMovieFile();
     if(movieFile.exists())
     {
@@ -111,7 +122,7 @@ void IRVideoAnnotaterInterfaceObject::annotaterClosedAction()
 
 // --------------------------------------------------
 
-void IRVideoAnnotaterInterfaceObject::changeListenerCallback (ChangeBroadcaster* source)
+void IRVideoAnnotaterInterfaceObject::IRChangeListenerCallback (ChangeBroadcaster* source)
 {
     if(source == this->controller.get())
     {
@@ -131,8 +142,38 @@ void IRVideoAnnotaterInterfaceObject::changeListenerCallback (ChangeBroadcaster*
             default:
                 break;
         }
+    }else if(source == this->controller->getArrangeController()){
+        
+        using t = ArrangeController::ArrangeControllerStatus;
+
+        switch(this->controller->getArrangeController()->getStatus())
+        {
+            case t::INPUTWIDTH:
+                break;
+            case t::INPUTHEIGHT:
+                break;
+            case t::INPUTX:
+                break;
+            case t::INPUTY:
+                break;
+            case t::FRONTBUTTON:
+                bringThisToFront();
+                break;
+            case t::BACKBUTTON:
+                bringThisToBack();
+                break;
+            default:
+                break;
+        }
     }
 }
 // --------------------------------------------------
+
+void IRVideoAnnotaterInterfaceObject::ObjectPositionChanged(int x, int y)
+{
+    this->controller->getArrangeController()->setLabelX(x);
+    this->controller->getArrangeController()->setLabelY(y);
+
+}
 // --------------------------------------------------
 // --------------------------------------------------

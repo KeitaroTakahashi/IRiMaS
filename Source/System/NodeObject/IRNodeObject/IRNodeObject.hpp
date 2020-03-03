@@ -9,34 +9,58 @@
 #include "IRNodeObjectType.h"
 #include "IRPreferenceObject.hpp"
 #include "IRObjectController.hpp"
+#include "IREnclosedObject.hpp"
 
+#include "ObjectArranger.hpp"
 
-class IRNodeObject : public IRNodeComponent
+class IRNodeObject : public IRNodeComponent,
+public ChangeListener
 {
     
 public:
-    
+    // ==================================================
+
+    enum IRNodeObjectStatus
+    {
+        ORDINARY,
+        ENCLOSE
+    };
+    // ==================================================
+
     IRNodeObject(Component* parent,
                  String name,
                  IRStr* str,
                  NodeObjectType objectType = NodeObjectType());
     ~IRNodeObject();
-    
+    // ==================================================
+
     // something should be painted on the workspace.
     // @param1 Graphics from the workspace
     // @param2 frame rect of the workspace
     virtual void paintOnWorkspace(Graphics& g, Component* workspace) {};
     // paint oparated by parent
     void initialPaintOnWorkspace(Graphics& g, Component* workspace);
-    
+    // ==================================================
+
     virtual IRNodeObject* copyThis(); //copy constructor
     virtual IRNodeObject* copyContents(IRNodeObject* object); // copy constructor with contents
     virtual IRNodeObject* copyDragDropContents(IRNodeObject* object); // copy draged and dropped contents
     
-    
+    // ==================================================
+
     virtual t_json saveThisToSaveData();
     virtual void loadThisFromSaveData(t_json saveData);
-    
+    // ==================================================
+    // Controller
+    // to controll position of this project etc.
+    void setArrangeController(ArrangeController* controller);
+    virtual void arrangeControllerChangedNotify() {};
+    // ==================================================
+
+    virtual void IRChangeListenerCallback(ChangeBroadcaster* source);
+    // ==================================================
+
+
     // mouse events for its child class
     virtual void mouseDownEvent(const MouseEvent& e) override;
     virtual void mouseUpEvent(const MouseEvent& e) override;
@@ -45,7 +69,8 @@ public:
     virtual void mouseDragEvent(const MouseEvent& e) override;
     
     void mouseUpCompleted(const MouseEvent& e) override;
-    
+    // ==================================================
+
     
     // selected event from IRNodeComponent
     void selectedChangeEvent() override;
@@ -55,14 +80,33 @@ public:
     void thisObjectGetFocused() override;
     
     // ==================================================
-    void setObjController(IRObjectController* objCtl) { this->objController = objCtl; }
+    void setObjController(IRObjectController* objCtl);
     IRObjectController* getObjController() const { return this->objController; }
     
     // ==================================================
     // move to Front action
     void moveToFrontEvent() override;
+    void moveToBackEvent() override;
     virtual void moveToFrontAction() {} // for its Child component
+    virtual void moveToBackAction() {}
     // ==================================================
+    
+    // called when this object position is changed
+    virtual void ObjectPositionChanged(int x, int y) override {};
+    virtual void ObjectBoundsChanged(Rectangle<int> bounds) override {};
+    // ==================================================
+    // STATUS
+    
+    IRNodeObjectStatus getStatus() const { return this->status; }
+    void setStatus(IRNodeObjectStatus newStatus);
+    void transformStatusToOrdinary();
+    void transformStatusEnclose();
+    void setEncloseMode(bool flag);
+    IRNodeObjectStatus getEncloseMode() const { return this->getStatus(); }
+    void createEnclosedObject();
+    void setEncloseColour(Colour colour);
+    // ==================================================
+
 
     class Listener
     {
@@ -94,6 +138,8 @@ public:
         
         //Front
         virtual void nodeObjectMoveToFront(IRNodeObject* obj) {}
+        //Back
+        virtual void nodeObjectMoveToBack(IRNodeObject* obj) {}
 
         // notification to IRWorkspace
         virtual void nodeObjectModifiedNotification(IRNodeObject* obj) {};
@@ -101,19 +147,10 @@ public:
         //inform its parent that edit mode status changed
         virtual void editModeChangedInNodeObject(bool editMode) {};
         
-        // link
-        //virtual void linkModeChangedInNodeObject(bool linkMode) {};
+       //inform its position change
+        virtual void nodeObjectPositionChanged(IRNodeObject* obj) {};
         
-        //virtual void getSelectedLinkSystemFlag(IRNodeObject* obj) {};
-        // overriden by IRUIFoundation
-        /*
-        virtual void receiveAudioLink(IRNodeObject* obj) {};
-        virtual void receiveTextLink(IRNodeObject* obj) {};
-        virtual void receiveImageLink(IRNodeObject* obj) {};
-        virtual void receiveDataLink(IRNodeObject* obj) {};
-        virtual void receiveVideoLink(IRNodeObject* obj) {};
-         */
-        //
+        
         // give its IRFileManager when it is given or modified.
         // this is used for IRUIFoundation to receive IRFileManager
         virtual void updateIRFileManager(IRFileManager* fileManager) {};
@@ -131,6 +168,11 @@ public:
         virtual void heavyComponentCreated(IRNodeObject* obj) {};
         // Invoke an action to move IRNodeObject to the top of objectZOrder on the workspace.
         virtual void addHeavyCopmonentToTopZOrder(IRNodeObject* obj) {};
+        
+        
+        
+        // INITIAL BOUNDS
+        virtual void initialBoundsUpdated(IRNodeObject* obj) {};
     };
     
     virtual void addListener(Listener* newListener) { this->listeners.add(newListener); }
@@ -165,6 +207,18 @@ public:
     // fire heavyComponentCreated
     void callHeavyComponentCreated(IRNodeObject* obj);
     
+    //INITIAL BOUNDS
+    void callInitialBoundsUpdated();
+
+    
+    // from IRNodeComponent to call callHeavyComponentCreated
+    void heavyComponentCreatedFunc() override
+    {
+        callHeavyComponentCreated(this);
+    }
+    
+    void callNodeObjectPositionChanged();
+    
     void callAddHeavyComponentToTopZOrder(IRNodeObject* obj);
 
     
@@ -193,6 +247,7 @@ public:
     void callNodeObjectGetFocused();
     
     void callNodeObjectMoveToFront();
+    void callNodeObjectMoveToBack();
     
     void callOpenFileInspecter();
     void callOpenPreferenceWindow();
@@ -227,7 +282,6 @@ public:
     virtual void loadObjectContents();
     
     // ============================================================
-    // Linking System
     
     
     
@@ -250,18 +304,46 @@ public:
 protected:
     
     Component* parent;
+    
+    void ObjectPositionChanged4IRNodeObject(int x, int y) override;
+    void ObjectBoundsChanged4IRNodeObject(Rectangle<int> bounds) override;
 
 private:
-        
+    // ==================================================
+    // STATUS //
+
+    IRNodeObjectStatus status = ORDINARY;
+    std::shared_ptr<IREnclosedObject> enclosedObject;
+    void enclosedObjectClickedAction();
     
-    ListenerList<Listener> listeners;
+    Rectangle<int> ordinaryBounds;
+    Rectangle<int> encloseBounds;
     
-    
+    // flag to inform if the encloseObject is already created and has encloseBounds.
+    bool isEncloseObjectAlreadyDefined = false;
+    // called when the position of this object is changed
+    void encloseObjectPositionChangedAction(int x, int y);
+    void encloseObjectBoundsChangedAction(Rectangle<int> bounds);
+
+    // ==================================================
+    // INITIAL BOUNDS
+    void initialBoundsUpdated() override;
+    // ==================================================
+
     // ObjectController
     IRObjectController* objController = nullptr;
+    // Object Arrange Controller//
+    ArrangeController* arrangeController = nullptr;
+    // called when the position of this object is changed
+    void arrangeControllerPositionChangedAction(int x, int y);
+    void arrangeControllerBoundsChangedAction(Rectangle<int> bounds);
+    void arrangeControllerChangedCallback(ChangeBroadcaster* source);
 
+    // ==================================================
+    // LISTENER //
+    ListenerList<Listener> listeners;
     
-    //link System
+    void changeListenerCallback (ChangeBroadcaster* source) override;
     
     IRObjectPtr p_obj;
     String p_id;

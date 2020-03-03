@@ -5,7 +5,7 @@
 #include "IRFoundation.h"
 #include "IRUIAudioFoundation.hpp"
 #include "IRAudioReader.hpp"
-#include "SoundPlayer.hpp"
+#include "IRSoundPlayer.h"
 #include "KeAnimationComponent.h"
 
 

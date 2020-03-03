@@ -82,12 +82,13 @@ public:
         this->videoAnnotater.updateVideoPlayerOfWorkspace();
     }
     // ==================================================
+    /*
     void setEventModifiedCallback(std::function<void()> callback)
     {
         this->videoAnnotater.setEventModifiedCallback(callback);
     }
 
-   
+   */
     // ==================================================
 
     IRVideoAnnotater* getVideoAnnotaterComponent() { return &this->videoAnnotater; }

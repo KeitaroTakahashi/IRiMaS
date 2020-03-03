@@ -8,7 +8,7 @@
 #include "IRSpectrogramObject.hpp"
 
 IRSpectrogramObject::IRSpectrogramObject(Component* parent, IRStr* str) :
-IRNodeObject(parent, "IRSpectrogram", str, NodeObjectType(orginaryIRComponent)),
+IRNodeObject(parent, "IRSpectrogram", str, NodeObjectType(ordinaryIRComponent)),
 IRHeavyWeightComponent(this)
 {
     
@@ -24,7 +24,7 @@ IRHeavyWeightComponent(this)
     this->controller->audioController.addChangeListener(this);
     setObjController(this->controller.get());
     
-    setSize(500,500);
+    setObjectSize(500,500);
 
 }
 
@@ -164,7 +164,7 @@ void IRSpectrogramObject::mouseDownEvent(const MouseEvent& e)
 
 // ==================================================
 
-void IRSpectrogramObject::changeListenerCallback(ChangeBroadcaster* source)
+void IRSpectrogramObject::IRChangeListenerCallback(ChangeBroadcaster* source)
 {
    if(source == &this->controller->audioController)
    {

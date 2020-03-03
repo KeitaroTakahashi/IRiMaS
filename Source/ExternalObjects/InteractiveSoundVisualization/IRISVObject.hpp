@@ -12,8 +12,7 @@
 #include "IRISVObjectPreference.h"
 #include "IR3DGraphicUIWithPreference.hpp"
 
-class IRISVObject : public IRNodeObject,
-public ChangeListener
+class IRISVObject : public IRNodeObject
 {
 public:
     IRISVObject(Component* parent, IRStr* str);
@@ -43,7 +42,7 @@ public:
 
 private:
     
-    void changeListenerCallback (ChangeBroadcaster* source) override
+    void IRChangeListenerCallback (ChangeBroadcaster* source) override
     {
         
     }

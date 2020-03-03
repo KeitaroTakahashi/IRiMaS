@@ -12,7 +12,6 @@
 #include "FontController.h"
 
 class IRLabelController : public IRObjectController,
-public ChangeListener,
 public ChangeBroadcaster
 {
 public:
@@ -20,7 +19,7 @@ public:
     IRLabelController(IRStr* str);
     ~IRLabelController();
 
-    void resized() override;
+    void ControllerResized() override;
     void paint(Graphics& g) override;
     
     void changeListenerCallback (ChangeBroadcaster* source) override;

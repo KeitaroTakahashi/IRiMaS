@@ -8,7 +8,7 @@
 #include "IRWaveformController2.hpp"
 
 
-IRWaveformController2::IRWaveformController2(IRStr* str) : IRObjectController(str),
+IRWaveformController2::IRWaveformController2(IRStr* str) : IRObjectController("Waveform", str),
 audioController(str)
 {
     
@@ -29,7 +29,7 @@ IRWaveformController2::~IRWaveformController2()
 }
 
 
-void IRWaveformController2::resized()
+void IRWaveformController2::ControllerResized()
 {
     int y = 10;
     //int yIncrement = 30;

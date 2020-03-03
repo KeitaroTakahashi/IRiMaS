@@ -8,32 +8,24 @@
 #ifndef AnnotationTextEventComponent_h
 #define AnnotationTextEventComponent_h
 
-#include "VideoAnnotationEventComponent.hpp"
+#include "VideoAnnotationEventComponent.h"
 #include "FontController.h"
 #include "IRTextEditorObject.hpp"
 
 class AnnotationTextEventComponent : public VideoAnnotationEventComponent
 {
 public:
-    AnnotationTextEventComponent(IRStr *str, int videoLengthInSecond = 0) : VideoAnnotationEventComponent(str, videoLengthInSecond)
+    AnnotationTextEventComponent(IRStr *str, IRVideoAnnotaterBase* base, int videoLengthInSecond = 0) :
+    VideoAnnotationEventComponent(str, base, videoLengthInSecond)
     {
         setType(VideoAnnotationEventComponent::TEXT);
         
         addAndMakeVisible(&this->timeCodeUI);
         this->timeCodeUI.addMouseListener(this, true);
         this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
-        /*
-         addAndMakeVisible(&this->textContents);
-        this->textContents.setText("text...", dontSendNotification);
-        this->textContents.setColour(Label::outlineColourId, Colour(255,255,255));
-        this->textContents.addMouseListener(this, true);
-        this->textContents.setEditable(true);
-        this->textContents.onTextChange = [this]{ textContentsChanged(); };
-         */
-        
+
         createTextEditor();
         
-
         this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
         this->TextSettingButton.addMouseListener(this, true);
         this->TextSettingButton.setDrawCircle(true);
@@ -43,10 +35,11 @@ public:
     }
     
     AnnotationTextEventComponent(IRStr* str,
+                                 IRVideoAnnotaterBase* base,
                                  float beginTime,
                                  float endTime,
                                  int videoLengthInSecond = 0) :
-    VideoAnnotationEventComponent(str, videoLengthInSecond)
+    VideoAnnotationEventComponent(str, base, videoLengthInSecond)
 
     {
         setType(VideoAnnotationEventComponent::TEXT);
@@ -56,14 +49,7 @@ public:
         this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
         this->timeCodeUI.setBeginTime(beginTime);
         this->timeCodeUI.setEndTime(endTime);
-        /*
-        addAndMakeVisible(&this->textContents);
-        this->textContents.setText("text...", dontSendNotification);
-        this->textContents.setColour(Label::outlineColourId, Colour(255,255,255));
-        this->textContents.addMouseListener(this, true);
-        this->textContents.setEditable(true);
-        this->textContents.onTextChange = [this]{ textContentsChanged(); };
-        */
+
         createTextEditor();
         
         this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
@@ -79,11 +65,12 @@ public:
     
     
     AnnotationTextEventComponent(IRStr* str,
-    std::string beginTime,
-    std::string endTime,
-    std::string contents,
-    int videoLengthInSecond = 0) :
-    VideoAnnotationEventComponent(str, videoLengthInSecond)
+                                 IRVideoAnnotaterBase* base,
+                                std::string beginTime,
+                                std::string endTime,
+                                std::string contents,
+                                int videoLengthInSecond = 0) :
+    VideoAnnotationEventComponent(str, base, videoLengthInSecond)
     {
         setType(VideoAnnotationEventComponent::TEXT);
         
@@ -92,14 +79,7 @@ public:
         this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
         this->timeCodeUI.setBeginTime(beginTime);
         this->timeCodeUI.setEndTime(endTime);
-        /*
-        addAndMakeVisible(&this->textContents);
-        this->textContents.setText(contents, dontSendNotification);
-        this->textContents.setColour(Label::outlineColourId, Colour(255,255,255));
-        this->textContents.addMouseListener(this, true);
-        this->textContents.setEditable(true);
-        this->textContents.onTextChange = [this]{ textContentsChanged(); };
-        */
+
         createTextEditor();
         
         this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
@@ -122,6 +102,7 @@ public:
         
         VideoAnnotationEventComponent::paint(g);
         
+        g.fillAll(getStr()->SYSTEMCOLOUR.fundamental.withAlpha(0.7f));
         
     }
     
@@ -133,9 +114,9 @@ public:
         
         this->timeCodeUI.setBounds(0, 0, 226, h);
         //this->textContents.setBounds(230, 5, getWidth() - 200 - 120, 30);
-        this->textEditor->setBounds(230, margin,
-                                    getWidth() - 200 -120,
-                                    getHeight() - margin*2);
+        this->textEditor->setObjectBounds(230, margin,
+                                          getWidth() - 200 -120,
+                                          getHeight() - margin*2);
         
         int buttonSize = h - margin*2;
         this->TextSettingButton.setBounds(getWidth() - margin*3 - buttonSize * 2, margin, buttonSize, buttonSize);
@@ -146,12 +127,26 @@ public:
     {
         std::cout << "createTextEditor\n";
         this->textEditor.reset( new IRTextEditorObject(this, getStr()) );
+        
+        //set default bounds adjusted to the video size in pixel
+        auto videoSize = this->getBase()->getVideoSize();
+        auto rect = Rectangle<int> (0, 0,
+                                    videoSize.getX(),
+                                    videoSize.getY());
+        rect.setHeight(rect.getHeight() * 0.2);
+        if(rect.getHeight() < 50) rect.setHeight(50);
+        this->textEditor->controller->getArrangeController()->setRectangle(rect);
+        
+        
         addAndMakeVisible(this->textEditor.get());
         this->textEditor->addMouseListener(this,true);
         // here initialy in Edit mode
         this->textEditor->setEditMode(false);
         this->textEditor->onTextChange = [this]{ onTextChange(); };
         this->textEditor->onReturnKey  = [this]{ onReturnKey(); };
+        
+        this->textEditor->setBackgroundColour(getStr()->SYSTEMCOLOUR.fundamental.withAlpha(0.7f));
+        this->textEditor->applyColourToAllText(Colours::white);
     }
     // ==================================================
     
@@ -163,10 +158,6 @@ public:
         eventModified();
     }
     
-    void textContentsChanged()
-    {
-        eventModified();
-    }
     // ==================================================
     srtWriter::SRT_STRUCT getSRT() override
     {
@@ -182,19 +173,24 @@ public:
         return this->textContents.getText().toStdString();
     }
     
+    IRTextEditorObject* getIRTextEditorObject()
+    {
+        return this->textEditor.get();
+    }
     // ==================================================
     
     void onTextChange()
     {
-        std::cout << "onTextChange\n";
         int margin = 5;
         int h = this->textEditor->getTextHeight() + margin*4;
         setSize(getWidth(), h);
         
         setInitHeight(h);
 
-        eventModified();
+        //eventModified();
 
+        // IRVideoAnnotaterDelegate calls eventModifiedAction method in IRVidenoAnnotaterBase
+        eventModifiedAction(this);
     }
     
     void onReturnKey()

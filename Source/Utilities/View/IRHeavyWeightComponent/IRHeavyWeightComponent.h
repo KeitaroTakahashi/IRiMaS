@@ -48,6 +48,7 @@ public:
         std::cout << flag << std::endl;
         this->component->repaint();
         bringToFront(this->component);
+        this->component->toFront(true);
         //callback
         bringToFrontCompleted();
     }
@@ -89,6 +90,8 @@ private:
     {
         // transparent background
         OpenGLHelpers::clear(Colours::transparentBlack);
+        
+        
     }
     
     virtual void openGLContextClosing() override {}

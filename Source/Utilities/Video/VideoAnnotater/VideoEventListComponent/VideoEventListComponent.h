@@ -14,12 +14,14 @@
 
 class VideoEventListComponent : public Component,
 public IRStrComponent,
+public IRVideoAnnotaterDelegate,
 public VideoAnnotationEventComponent::Listener
 {
 public:
     
-    VideoEventListComponent(IRStr* str) :
-    IRStrComponent(str)
+    VideoEventListComponent(IRStr* str, IRVideoAnnotaterBase* base) :
+    IRStrComponent(str),
+    IRVideoAnnotaterDelegate(base)
     {
         
     }
@@ -106,7 +108,8 @@ public:
     void createTextEventComponent()
     {
        std::cout << "createTextEventComponent\n";
-       AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr());
+       AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
+                                                                             this->getBase());
        createEventComponent(comp);
     }
     
@@ -114,8 +117,11 @@ public:
                                   float endTime)
     {
         AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
+                                                                              this->getBase(),
                                                                               beginTime,
                                                                               endTime);
+        
+        
         createEventComponent(comp);
 
     }
@@ -125,6 +131,7 @@ public:
                                   std::string contents)
     {
         AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
+                                                                              this->getBase(),
                                                                               beginTime,
                                                                               endTime,
                                                                               contents);
@@ -135,7 +142,8 @@ public:
     
     void createShapeEventComponent()
     {
-        AnnotationShapeEventComponent* comp = new AnnotationShapeEventComponent(getStr());
+        AnnotationShapeEventComponent* comp = new AnnotationShapeEventComponent(getStr(),
+                                                                                this->getBase());
         createEventComponent(comp);
     }
     
@@ -213,18 +221,39 @@ public:
     {
         deSelectAllEventComponents();
         selectEventComponent(comp);
+        
+        /*
+        if(this->eventSelectedCallback != nullptr)
+            this->eventSelectedCallback(comp);
+         */
+        
+        eventSelectedAction(comp);
     }
     
     void eventModified(VideoAnnotationEventComponent* comp) override
     {
         sortEventComponentByTimeCode();
 
+        /*
         if(this->eventModifiedCallback != nullptr)
-            this->eventModifiedCallback();
+            this->eventModifiedCallback(comp);
+         */
+        
+        eventModifiedAction(comp);
 
     }
     
     void eventActiveChanged(VideoAnnotationEventComponent* comp) override
+    {
+        
+    }
+    
+    void eventShownOnVideoPlayer(VideoAnnotationEventComponent* comp) override
+    {
+        
+    }
+    
+    void eventHiddenOnVideoPlayer(VideoAnnotationEventComponent* comp) override
     {
         
     }
@@ -247,7 +276,9 @@ public:
     // ==================================================
 
     std::function<void()> newEventAddedCallback;
-    std::function<void()> eventModifiedCallback;
+   // std::function<void(VideoAnnotationEventComponent*)> eventModifiedCallback;
+    //std::function<void(VideoAnnotationEventComponent*)> eventSelectedCallback;
+
     // ==================================================
 
     std::vector<VideoAnnotationEventComponent*> eventComponents;
@@ -287,9 +318,10 @@ public:
         
         if(this->newEventAddedCallback != nullptr)
             this->newEventAddedCallback();
+        
+        newEventCreatedAction(this);
     }
     
-
     void eventComponentResized()
     {
         int margin = 5;
@@ -300,9 +332,6 @@ public:
         for(auto event : this->eventComponents)
         {
             int h = event->getInitHeight();
-            
-            std::cout <<"eventComponentResized h = " << h << std::endl;
-
             event->setBounds(x, y, w, h);
             y += h + margin;
         }

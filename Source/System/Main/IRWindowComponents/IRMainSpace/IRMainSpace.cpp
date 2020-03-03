@@ -61,8 +61,9 @@ void IRMainSpace::updateAnimationFrame()
 void IRMainSpace::createNewWorkspace()
 {
     std::cout << "create IRWorkspace\n";
-    String title = this->ir_str->projectName + "_" + String(this->workspaces.size() + 1);    
-    IRWorkspace* space = new IRWorkspace(title, this->ir_str, nullptr);
+    String title = this->ir_str->projectName + "_" + String(this->workspaces.size() + 1);
+    Rectangle<int> r (-1000, -1000, 1000, 1000);
+    IRWorkspace* space = new IRWorkspace(title, r, this->ir_str);
     space->addListener(this);
     this->workspaces.push_back(space);
     this->mixer.addAudioSource(&space->getMixer());
@@ -143,9 +144,10 @@ void IRMainSpace::nodeObjectGetFocused(IRNodeObject* obj)
     callNodeObjectGetFocused(obj);
 }
 
-void IRMainSpace::editModeChanged(IRWorkspace* changedSpace)
+void IRMainSpace::editModeChanged(IRWorkspaceComponent* changedSpace)
 {
-    callWorkspaceEditModeChanged(changedSpace);
+    auto space = static_cast<IRWorkspace*> (changedSpace);
+    callWorkspaceEditModeChanged(space);
 }
 
 void IRMainSpace::heavyObjectCreated(IRNodeObject* obj)

@@ -6,6 +6,7 @@ IRNodeComponent::IRNodeComponent(Component* parent,
                                  IRStr* str,
                                  NodeObjectType objectType) :
 IRStrComponent(str),
+resizingSquare(this, parent),
 resizingArea(25, 25)
 {
     StopWatch bench; bench.start();
@@ -28,6 +29,20 @@ resizingArea(25, 25)
     this->menu.addItem(6, "Duplicate");
     bench.result("x x x x x x x xx x : IRNodeComponent");
     
+    
+    //only resizingSquare and not squares at the corners
+    this->resizingSquare.enableSquare(false);
+    
+    this->resizingSquare.resizingSquareClicked = [this](IRResizeSquare2::MovableDirection direction){resizingSquareClicked(direction);};
+    
+    this->resizingSquare.resizingSquareReleased = [this](IRResizeSquare2::MovableDirection direction){resizingSquareReleased(direction);};
+
+    
+    this->resizingSquare.resizingSquareDragged = [this](MouseEvent e){resizingSquareDragged(e);};
+
+
+    //this->resizingSquare.addListener(this);
+
 }
 
 
@@ -36,9 +51,12 @@ IRNodeComponent::~IRNodeComponent()
 
     delete this->mixer;
     
-    std::cout << "openGL despatching...\n";
-    if(this->objectType.componentType == orginaryIRComponent)
+    if(this->objectType.componentType == ordinaryIRComponent)
+    {
         this->openGLContext.detach();
+        std::cout << "openGL despatched!\n";
+
+    }
 
     std::cout << "~IRNODECOMPONENT DESTRUCTOR CALLED" << std::endl;
     
@@ -46,11 +64,8 @@ IRNodeComponent::~IRNodeComponent()
 
 void IRNodeComponent::initOpenGLContext()
 {
-    StopWatch bench;
-    bench.start();
-    std::cout << "initOpenGLContext\n";
     //if this object contains heavy weight component, then connect to OpenGLContext
-       if(this->objectType.componentType == orginaryIRComponent)
+       if(this->objectType.componentType == ordinaryIRComponent)
        {
            this->openGLContext.setRenderer(this);
            this->openGLContext.setContinuousRepainting(false);
@@ -60,7 +75,6 @@ void IRNodeComponent::initOpenGLContext()
            manager.setOpenGLContextAlpha(0);
     
        }
-    bench.result("OpenGL initialized");
 }
 
 
@@ -71,6 +85,7 @@ void IRNodeComponent::resized()
       //                                          getHeight(), getWidth());
 }
 
+// ==================================================
 
 void IRNodeComponent::setSize(float width, float height)
 {
@@ -87,11 +102,102 @@ void IRNodeComponent::setSize(float width, float height)
     float x = getX();
     float y = getY();
     
-    setBounds(x, y, w, h);
+    setObjectBounds(x, y, w, h);
+    
+    updateResizingSquare();
     
     statusChangedWrapper(IRNodeComponentStatus::HasResizedStatus);
 }
 
+void IRNodeComponent::setObjectCentredPosition(int x, int y)
+{
+    std::cout << "IRNodeComponent::setObjectCentredPosition\n";
+    setCentrePosition(x, y);
+    
+    updateResizingSquare();
+    
+    if(this->objectType.componentMode == IRNodeComponentMode::WORKSPACE)
+    {
+        ObjectPositionChanged(x - getWidth()/2, y - getHeight()/2);
+    }
+    
+    // update initial bounds
+    this->setInitialBounds(getBounds().toFloat());
+    
+}
+
+void IRNodeComponent::setObjectBounds(Rectangle<int> bounds)
+{
+    //std::cout << "IRNodeComponent::setObjectBounds\n";
+    setBounds(bounds);
+    
+    updateResizingSquare();
+    
+    if(this->objectType.componentMode == IRNodeComponentMode::WORKSPACE)
+    {
+        ObjectPositionChanged(bounds.getX(), bounds.getY());
+        Rectangle<int> b (bounds.getX(), bounds.getY(),
+                          bounds.getWidth(), bounds.getHeight());
+        ObjectBoundsChanged(b);
+        ObjectBoundsChanged4IRNodeObject(b);
+    }
+    
+    // update initial bounds
+    this->setInitialBounds(getBounds().toFloat());
+}
+
+void IRNodeComponent::setObjectBounds(int x, int y, int w, int h)
+{
+    Rectangle<int> bounds(x,y,w,h);
+    setObjectBounds(bounds);
+}
+
+void IRNodeComponent::setObjectBoundsRelative(Rectangle<float> ratioBounds)
+{
+    setBoundsRelative(ratioBounds);
+}
+void IRNodeComponent::setObjectBoundsRelative(float x, float y, float w, float h)
+{
+    setBoundsRelative(x, y, w, h);
+}
+
+void IRNodeComponent::setBounds(int x, int y, int w, int h)
+{
+    Component::setBounds(x, y, w, h);
+}
+
+void IRNodeComponent::setBounds(Rectangle<int>bounds)
+{
+    Component::setBounds(bounds);
+}
+
+void IRNodeComponent::setObjectSize(int w, int h)
+{
+    Rectangle<int> bounds(getX(),getY(),w,h);
+    setObjectBounds(bounds);
+}
+
+void IRNodeComponent::setDraggableArea(Rectangle<int> area)
+{
+    this->draggableArea = area;
+}
+
+
+// ==================================================
+
+void IRNodeComponent::updateResizingSquare()
+{
+    //std::cout << "updateResizingSquare\n";
+    int s = this->resizingSquare.getSquareSize() / 2;
+    this->resizingSquare.setBounds(getBounds().expanded(s));
+}
+
+void IRNodeComponent::setResizingSquareColour(Colour colour)
+{
+    this->resizingSquare.setSquareColour(colour);
+}
+
+// ==================================================
 
 void IRNodeComponent::setEnableParameters(IRNodeComponentSetUp id...)
 {
@@ -333,6 +439,13 @@ bool IRNodeComponent::isHorizontalMovable() const
     return this->isHorizontalMovableFlag;
 }
 
+void IRNodeComponent::setResizable(bool flag, bool isWidthResizableFlag, bool isHeightResizableFlag)
+{
+    this->isResizableFlag = flag;
+    this->isWidthResizableFlag = isWidthResizableFlag;
+    this->isHeightResizableFlag = isHeightResizableFlag;
+}
+
 
 // all setter
 void IRNodeComponent::setMovable(bool movable, bool verticalMovable, bool horizontalMovable)
@@ -366,6 +479,23 @@ bool IRNodeComponent::isResizable() const
 bool IRNodeComponent::isResizing() const
 {
     return this->resizingFlag;
+}
+
+void IRNodeComponent::setResizingStart(bool flag)
+{
+    if(flag)
+    {
+        this->isMovableFlag = false;
+        this->resizingFlag = true;
+        // store the current size
+        this->previousWidth = getWidth();
+        this->previousHeight = getHeight();
+        this->previousX = getX();
+        this->previousY = getY();
+        sendChangeMessage();
+    }else{
+        recoverEventStatus();
+    }
 }
 
 
@@ -522,7 +652,26 @@ void IRNodeComponent::bringThisToFront()
     manager.bringOpenGLContextFront(this);
     manager.setOpenGLContextAlpha(0);
     
+    if(isSelected())
+    {
+        this->resizingSquare.bringThisToFront();
+    }
+    
     moveToFrontEvent();
+}
+
+void IRNodeComponent::bringThisToBack()
+{
+    toBack();
+
+    moveToBackEvent();
+    // after all others are to front
+    if(isSelected())
+    {
+        this->resizingSquare.bringThisToFront();
+    }
+    // and refresh
+    heavyComponentCreatedFunc();
 }
 
 void IRNodeComponent::heavyComponentRefreshed()
