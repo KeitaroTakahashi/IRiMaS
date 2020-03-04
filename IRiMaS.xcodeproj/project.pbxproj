@@ -363,6 +363,8 @@
 		823A437D240C7A2700C7F66E /* IRVATextEditorObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVATextEditorObject.h; sourceTree = "<group>"; };
 		823A4381240DBF8F00C7F66E /* IRComponentDragger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRComponentDragger.h; sourceTree = "<group>"; };
 		823A4383240DDBB500C7F66E /* IRVAShapeObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVAShapeObject.h; sourceTree = "<group>"; };
+		823A4384240EAD9F00C7F66E /* shapeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shapeController.h; sourceTree = "<group>"; };
+		823A4387240F0C9700C7F66E /* NothingSelectedUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NothingSelectedUI.h; sourceTree = "<group>"; };
 		823C18152191B3C100AC9FC9 /* IRSaveLoadSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSaveLoadSystem.cpp; sourceTree = "<group>"; };
 		823C18162191B3C100AC9FC9 /* IRSaveLoadSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSaveLoadSystem.hpp; sourceTree = "<group>"; };
 		823C18182191B3F800AC9FC9 /* json11.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = json11.cpp; sourceTree = "<group>"; };
@@ -1508,6 +1510,14 @@
 			path = IRVAShapeObject;
 			sourceTree = "<group>";
 		};
+		823A4386240F0C8C00C7F66E /* NothingSelectedUI */ = {
+			isa = PBXGroup;
+			children = (
+				823A4387240F0C9700C7F66E /* NothingSelectedUI.h */,
+			);
+			path = NothingSelectedUI;
+			sourceTree = "<group>";
+		};
 		823C18142191B3AD00AC9FC9 /* SaveLoadSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -2547,6 +2557,7 @@
 			children = (
 				82A8E7732344D71B00E12214 /* IRShapeController.cpp */,
 				82A8E7742344D71B00E12214 /* IRShapeController.hpp */,
+				823A4384240EAD9F00C7F66E /* shapeController.h */,
 			);
 			path = IRShapeController;
 			sourceTree = "<group>";
@@ -2838,6 +2849,7 @@
 		82D8B16522A0179E00940CD1 /* UIs */ = {
 			isa = PBXGroup;
 			children = (
+				823A4386240F0C8C00C7F66E /* NothingSelectedUI */,
 				82A6866D23F9A13700DE50BE /* ResizingSquares */,
 				8258E85723A8D75B002193E1 /* IRProgressBar */,
 				8244FEDB23A2998C001AFEFD /* TimeCodeInput */,

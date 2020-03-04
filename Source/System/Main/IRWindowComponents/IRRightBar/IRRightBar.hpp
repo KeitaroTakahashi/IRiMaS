@@ -14,6 +14,8 @@
 #include "IRImageButton.hpp"
 #include "IRMainSpace.hpp"
 #include "IROpenGLManager.hpp"
+#include "NothingSelectedUI.h"
+
 
 class IRRightBar : public Component,
 public IRStrComponent,
@@ -45,13 +47,18 @@ public:
         manager.bringOpenGLContextFront(this);
     }
     
+    //==================================================
+
+    void showNothingSelectedUI();
+    
 private:
     //==================================================
      //OpenGL
      OpenGLContext openGLContext;
      bool isOpenGLComponentClosed = false;
-     
-    
+     //==================================================
+
+    std::shared_ptr<NothingSelectedUI> nothingSelectedUI;
     //==================================================
 
     void changeListenerCallback (ChangeBroadcaster* source) override;
@@ -82,6 +89,7 @@ private:
     // actual component
     Component* comp = nullptr;
     
+    void removeComponents();
     //==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRRightBar)

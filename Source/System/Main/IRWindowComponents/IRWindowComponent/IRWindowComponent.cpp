@@ -392,6 +392,14 @@ void IRWindowComponent::nodeObjectGetFocused(IRNodeObject* obj)
     
 }
 
+void IRWindowComponent::nothingSelected()
+{
+    if(this->rightBar.get() != nullptr)
+    {
+        this->rightBar->showNothingSelectedUI();
+    }
+}
+
 void IRWindowComponent::newWorkspaceCreated(IRWorkspace* space)
 {
     std::cout << "IRWindowComponent::newWorkspaceCreated\n";
@@ -416,6 +424,7 @@ void IRWindowComponent::heavyObjectCreated(IRNodeObject* obj)
     std::cout << "heavyObjectCreated : " << obj << std::endl;
     rebindOpenGLContents();
 }
+
 
 
 // ==================================================

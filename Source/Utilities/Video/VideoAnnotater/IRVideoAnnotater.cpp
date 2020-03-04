@@ -85,12 +85,13 @@ void IRVideoAnnotater::resized()
     
     this->eventListComponent->setBounds(this->workArea);
   
+   
     this->eventLogList->setBounds(xMarge + this->videoArea.getWidth(),
                                   yMarge,
                                   getWidth() - xMarge - this->videoArea.getWidth() - xMarge,
                                   getHeight() * 0.5);
     
-  
+
     
     eventComponentResized();
 }
@@ -141,6 +142,12 @@ void IRVideoAnnotater::createWorkspace()
     addAndMakeVisible(this->workspace.get());
     this->workspace->addListener(this);
     this->workspace->addKeyListener(this);
+}
+
+void IRVideoAnnotater::nothingSelected()
+{
+    if(this->eventLogList.get() != nullptr)
+        this->eventLogList->removeLogComponent();
 }
 // ==================================================
 
@@ -507,6 +514,20 @@ void IRVideoAnnotater::addEventComponent(VideoAnnotationEventComponent* eventCom
 
 void IRVideoAnnotater::deleteSelectedEvents()
 {
+    // deselect all object first
+    
+    auto events = this->eventListComponent->getSelectedEventComponents();
+    
+    for(auto e : events)
+    {
+        std::cout << "Selected List component = " << e << std::endl;
+        if(e->getNodeObject()->isSelected())
+        {
+            this->eventLogList->removeLogComponent();
+        }
+        this->workspace->deleteObject(e->getNodeObject());
+    }
+
     this->eventListComponent->deleteSelectedEventComponent();
     
     deleteEventOnTheLoadedVideo();

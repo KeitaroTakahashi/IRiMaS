@@ -19,7 +19,6 @@
 #include "IRResizeSquare2.h"
 
 #include "IROpenGLManager.hpp"
-#include "IRComponentDragger.h"
 
 enum IRNodeComponentSetUp
 {
@@ -440,7 +439,6 @@ private:
 
     // Interaction
     ComponentBoundsConstrainer constrainer;
-    //IRComponentDragger dragger;
     bool draggingFlag = false;
     Rectangle<int> draggableArea;
 public:

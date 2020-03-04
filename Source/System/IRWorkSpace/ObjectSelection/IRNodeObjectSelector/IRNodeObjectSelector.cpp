@@ -169,13 +169,19 @@ void IRNodeObjectSelector::deselectOtherObejcts(IRNodeObject* selectedObj)
 
 void IRNodeObjectSelector::addSelectedObjects()
 {
+    
+    std::cout << "addSelectedObjects()\n";
     this->selectedObjectList.clear();
     for (auto obj : *this->objectList)
     {
+        std::cout << "scheck" << obj << std::endl;
+
         if (obj->isSelected())
         {
             this->selectedObjectList.add(obj);
-        }
+            
+            std::cout << "selected object " << obj << std::endl;
+        }else std::cout << "object not selected\n";
     }
 }
 

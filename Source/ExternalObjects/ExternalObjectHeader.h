@@ -43,7 +43,6 @@
 // other object
 
 #include "ObjectGlobalTestObject.h"
-#include "IRShapeObject.hpp"
 
 // ------------------------------------------------------------
 //#include "IRObjectCreater.hpp"
@@ -53,6 +52,7 @@
 
 #include "IRTextEditorObject.hpp"
 #include "IRVideoAnnotaterInterfaceObject.hpp"
+#include "IRShapeObject.hpp"
 
 
 namespace IR{

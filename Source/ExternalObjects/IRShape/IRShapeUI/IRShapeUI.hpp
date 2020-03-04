@@ -14,8 +14,7 @@
 #include "IRShapeController.hpp"
 
 class IRShapeUI : public IRUIFoundation,
-public ChangeBroadcaster,
-public ChangeListener
+public ChangeBroadcaster
 {
 public:
     
@@ -38,7 +37,9 @@ public:
     void setStatus(IRShapeStatus status)
     {
         this->status = status;
-        this->controller->setShape((int)status + 1);
+        
+        if(this->ShapeController != nullptr)
+            this->ShapeController->setShape((int)status + 1);
     }
     IRShapeStatus getStatus() const { return this->status; }
     
@@ -51,24 +52,30 @@ public:
     void setFill(bool flag)
     {
         this->isFill = flag;
-        this->controller->setFillShape(flag);
+        
+        if(this->ShapeController != nullptr)
+            this->ShapeController->setFillShape(flag);
     }
     bool getFill()const { return this->isFill; }
     
-    IRShapeController* getController() { return this->controller.get(); }
-private:
+    void setShapeController(shapeController* ctl)
+    {
+        this->ShapeController = ctl;
+    }
     
-    void changeListenerCallback(ChangeBroadcaster* source) override;    
-    std::shared_ptr<IRShapeController> controller;
+private:
 
     void drawSquare(Graphics& g);
     void drawBorderSquare(Graphics& g);
     void drawCircle(Graphics& g);
     void drawTriangle(Graphics& g);
+    //========================================================
 
     bool isFill = false;
     //========================================================
 
+    shapeController* ShapeController = nullptr;
+    
     Colour colour;
     IRShapeStatus status = SQUARE;
     

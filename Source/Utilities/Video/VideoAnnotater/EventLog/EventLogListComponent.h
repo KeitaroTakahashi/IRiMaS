@@ -55,6 +55,16 @@ public:
         addAndMakeVisible(comp);
         resized();
     }
+    
+    void removeComponent()
+    {
+        if(this->comp != nullptr)
+        {
+            removeChildComponent(this->comp);
+        }
+        
+        this->comp = nullptr;
+    }
     // ==================================================
     // ==================================================
     // ==================================================

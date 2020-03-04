@@ -10,13 +10,18 @@
 IRShapeObject::IRShapeObject(Component* parent, IRStr* str) :
 IRNodeObject(parent, "IRShape", str, NodeObjectType(ordinaryIRComponent))
 {
-    StopWatch bench; bench.start();
+    
+    this->controller = std::make_shared<IRShapeController>(str);
+    this->controller->getShapeController()->addChangeListener(this);
+    this->controller->getArrangeController()->addChangeListener(this);
+    setObjController(this->controller.get());
+
     setOpaque(false);
     this->UI.reset( new IRShapeUI(this, str) );
+    this->UI->setShapeController(this->controller->getShapeController());
     addAndMakeVisible(this->UI.get());
     childComponentManager(this->UI.get());
-    setObjController(this->UI->getController());
-    bench.result("x x x x x x x x x x IRShapeObject initialized");
+    
     setObjectSize(200,200);
 }
 
@@ -113,4 +118,73 @@ void IRShapeObject::mouseDownEvent(const MouseEvent& e)
             space->setPreferenceObj(this->UI->getPreference());
         }*/
     }
+}
+
+// ------------------------------------------------------------
+
+void IRShapeObject::IRChangeListenerCallback (ChangeBroadcaster* source)
+{
+    shapeController* shapeCtl = this->controller->getShapeController();
+    ArrangeController* arrangeCtl = this->controller->getArrangeController();
+    
+    if(source == shapeCtl)
+    {
+        shapeControllerChangeListenerCallback(source);
+    }else if (source == arrangeCtl)
+    {
+        arrangeControllerChangeListenerCallback(source);
+    }
+
+}
+
+void IRShapeObject::shapeControllerChangeListenerCallback (ChangeBroadcaster* source)
+{
+    using statusFlag = shapeController::IRShapeControllerStatus;
+    auto gui = this->controller->getShapeController();
+
+    statusFlag status = gui->getStatus();
+    
+    
+    if(status == statusFlag::FillMenuSelected)
+    {
+        
+        std::cout << "FillMenu = " << gui->getFillMenuIndex() << std::endl;
+        if(gui->getFillMenuIndex() == 1)
+        {
+            this->UI->setFill(true);
+        }else if(gui->getFillMenuIndex() == 2)
+        {
+            this->UI->setFill(false);
+        }
+    }else if(status == statusFlag::ShapeMenuSelected)
+    {
+        std::cout << "selected shape = " << gui->getSelectedShapeIndex() << std::endl;
+        switch(gui->getSelectedShapeIndex())
+        {
+            case 1:
+                this->UI->setStatus(IRShapeUI::IRShapeStatus::SQUARE);
+                break;
+            case 2:
+                this->UI->setStatus(IRShapeUI::IRShapeStatus::CIRCLE);
+                break;
+            case 3:
+                this->UI->setStatus(IRShapeUI::IRShapeStatus::TRIANGLE);
+                break;
+            default:
+                break;
+        }
+    }else if(status == statusFlag::ColourChanged)
+    {
+        this->UI->setColour(gui->getColour());
+    }else if(statusFlag::BorderWidthChanged)
+    {
+        this->UI->setLineWidth(gui->getLineWidth());
+    }
+    repaint();
+}
+
+
+void IRShapeObject::arrangeControllerChangeListenerCallback (ChangeBroadcaster* source)
+{
+    
 }

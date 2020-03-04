@@ -26,22 +26,21 @@ void IRWorkspaceComponent::pasteSelectedObjects()
     {
         pasteObject(obj,false);
     }
-    bench2.result("x x x x x x x x : pasteSelectedObjects");
-
     this->selector->addSelectedObjects();
-    bench2.start();
-
     copySelectedObjects();
-    bench2.result("x x x x x x x x : copySelectedObjects");
-
-    bench2.start();
-
     resortHeavyObject();
-    bench2.result("x x x x x x x x : resortHeavyObject");
-
-    
 }
 // ------------------------------------------------------------
+
+void IRWorkspaceComponent::deselectAllObjects()
+{
+    auto list = this->selector->getSelectedObjectList();
+
+    for(auto obj : list )
+    {
+        obj->setSelected(false);
+    }
+}
 
 void IRWorkspaceComponent::deleteSelectedObjects()
 {
@@ -50,6 +49,7 @@ void IRWorkspaceComponent::deleteSelectedObjects()
     
     for(auto obj : list)
     {
+        std::cout << "IRWorkspaceComponent : delete obj " << obj << std::endl;
         deleteObject(obj);
     }
     
@@ -58,6 +58,7 @@ void IRWorkspaceComponent::deleteSelectedObjects()
     
     repaint();
 }
+
 // ------------------------------------------------------------
 
 void IRWorkspaceComponent::duplicateSelectedObjects()
@@ -414,7 +415,11 @@ void IRWorkspaceComponent::nodeObjectModifiedNotification(IRNodeObject* obj)
 
 void IRWorkspaceComponent::nodeObjectSelectionChange(IRNodeObject* obj)
 {
-    //std::cout << "IRWorkspaceComponent nodeObjectSelectionChange " << obj << std::endl;
+    std::cout << "IRWorkspaceComponent nodeObjectSelectionChange " << obj << std::endl;
+    
+    // add
+    this->selector->addSelectedObjects();
+
     callNodeObjectSelectionChange(obj);
     
 }
@@ -492,6 +497,16 @@ void IRWorkspaceComponent::callHeavyObjectCreated(IRNodeObject* obj)
     if(checker.shouldBailOut()) return;
 }
 
+
+void IRWorkspaceComponent::callNothingSelected()
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.nothingSelected(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
 
 // ============================================================
 

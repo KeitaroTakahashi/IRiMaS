@@ -125,6 +125,10 @@ public:
     
     // get VideoAnnotation in SRT format (only text is relevant to the usual SRT and others are TIAALS original formats)
     virtual srtWriter::SRT_STRUCT getSRT() = 0;
+    
+    void setNodeObject(IRNodeObject* obj) { this->nodeObj = obj; }
+    IRNodeObject* getNodeObject() { return this->nodeObj; }
+    
     // ==================================================
     void eventDeactivated();
     void eventActivated();
@@ -145,6 +149,7 @@ public:
     }
     
     // ==================================================
+    
     // ==================================================
     // LISTENER
     class Listener
@@ -267,6 +272,8 @@ private:
     IRImageButton activeButton;
    
     // ==================================================
+    
+    IRNodeObject* nodeObj = nullptr;
     // ==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VideoAnnotationEventComponent)

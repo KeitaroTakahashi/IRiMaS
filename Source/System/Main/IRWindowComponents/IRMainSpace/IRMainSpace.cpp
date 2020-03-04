@@ -144,6 +144,11 @@ void IRMainSpace::nodeObjectGetFocused(IRNodeObject* obj)
     callNodeObjectGetFocused(obj);
 }
 
+void IRMainSpace::nothingSelected()
+{
+    callNothingSelected();
+}
+
 void IRMainSpace::editModeChanged(IRWorkspaceComponent* changedSpace)
 {
     auto space = static_cast<IRWorkspace*> (changedSpace);
@@ -254,6 +259,17 @@ void IRMainSpace::callHeavyObjectCreated(IRNodeObject* obj)
     // check if the objects are not deleted, if deleted, return
     if(checker.shouldBailOut()) return;
     this->listeners.callChecked(checker, [obj](Listener& l){ l.heavyObjectCreated(obj); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+
+void IRMainSpace::callNothingSelected()
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.nothingSelected(); });
     //check again
     if(checker.shouldBailOut()) return;
 }

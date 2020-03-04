@@ -32,7 +32,10 @@ void IRVideoAnnotater::createTextEventComponent()
                              60);
     this->workspace->createObject(nodeObj);
     nodeObj->bringThisToFront();
+    this->workspace->deselectAllObjects();
     nodeObj->setSelected(true);
+    
+    event->setNodeObject(nodeObj);
 }
 
 void IRVideoAnnotater::createShapeEventComponent()
@@ -40,15 +43,25 @@ void IRVideoAnnotater::createShapeEventComponent()
     this->eventListComponent->createShapeEventComponent();
     this->annotationMenu->closeAction();
     
+    // create eventComponent on the video
+    auto events = this->eventListComponent->getEventComponents();
+    auto event = events[events.size() - 1];
+    createEventOnTheLoadedVideo(event);
+
+    
     IRVAShapeObject* nodeObj = static_cast<IRVAShapeObject*>(IRObjectCreater<IRVAShapeObject>().create(this->workspace.get(),
                                                                 getStr()));
-    nodeObj->setObjectBounds(this->workspace->getWidth()/2,
-                             this->workspace->getHeight()/2,
-                             this->workspace->getWidth()/2,
-                             this->workspace->getHeight()/2);
+    nodeObj->setObjectBounds(this->workspace->getWidth()/4,
+                             this->workspace->getHeight()/4,
+                             this->workspace->getWidth()/3,
+                             this->workspace->getHeight()/3);
     this->workspace->createObject(nodeObj);
     nodeObj->bringThisToFront();
+    
+    this->workspace->deselectAllObjects();
     nodeObj->setSelected(true);
+    
+    event->setNodeObject(nodeObj);
 
 }
 

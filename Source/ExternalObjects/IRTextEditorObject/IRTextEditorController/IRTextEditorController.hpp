@@ -23,7 +23,6 @@ public:
     void ControllerResized() override;
     void paint(Graphics& g) override;
     
-    void controllerChangeListenerCallback (ChangeBroadcaster* source) override;
         
     FontController* getFontController();
 
@@ -32,13 +31,11 @@ public:
     void arrangeControllerSelected() override;
         
 private:
-
-    
-    
-        // FontGUI* fontGUI;
+    // FontGUI* fontGUI;
     std::unique_ptr<FontController> fontController;
-    //std::unique_ptr<ArrangeController> arrangeController;
     
+    void controllerChangeListenerCallback (ChangeBroadcaster* source) override;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRTextEditorController)
 
 };

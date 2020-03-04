@@ -10,24 +10,13 @@
 
 #include "IRObjectController.hpp"
 #include "IRColourSelector.h"
+#include "shapeController.h"
 
 class IRShapeController : public IRObjectController,
-public ChangeBroadcaster,
-private ComboBox::Listener
+public ChangeBroadcaster
 
 {
 public:
-    
-    enum IRShapeControllerStatus
-    {
-        ColourChanged,
-        FillMenuSelected,
-        LineWidthChanged,
-        ShapeMenuSelected,
-        BorderWidthChanged
-    };
-    
-    
     IRShapeController(IRStr* str);
     ~IRShapeController();
 
@@ -38,82 +27,17 @@ public:
     
     // ==================================================
     
-    void setColour(Colour colour) { this->shapeColour.setCurrentColour(colour); }
-    Colour getColour() const { return this->shapeColour.getCurrentColour(); }
-    void setLineWidth(float width) { this->lineWidth = width; }
-    float getLineWidth() const { return this->lineWidth; }
-    void setFillShape(bool flag);
-    bool isFillShape() const { return this->isFill; }
-    int getSelectedShapeIndex() const { return this->shapeMenu.getSelectedId(); }
+    // called by IRObjectController
+    void mainControllerSelected() override;
+    void arrangeControllerSelected() override;
     
-    void setShape(int index);
-
-    
-    int getFillMenuIndex() const { return this->fillMenu.getSelectedId(); }
-    void lineWidthChanged();
-    
-    IRShapeControllerStatus getStatus() const { return this->status; }
+    shapeController* getShapeController() { return this->ShapeController.get(); }
     
 private:
+    std::shared_ptr<shapeController> ShapeController;
     
-    
-    // ==================================================
-    void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
-    void changeListenerCallback(ChangeBroadcaster* source) override;
-
-    
-    // ==================================================
-
-    IRShapeControllerStatus status;
-    
-    
-    Label LabelTitle;
-    Label shapeMenuLabel;
-    ComboBox shapeMenu;
-    
-    Label fillLabel;
-    ComboBox fillMenu;
-    bool isFill = false;
-    
-    Label lineWidthLabel;
-    Label lineWidthInput;
-    float lineWidth = 4;
-    
-    Label shapeColourLabel;
-    void shapeColourChanged();
-    ColourSelector shapeColour
-    {
-        ColourSelector::showSliders
-        | ColourSelector::showColourspace
-        | ColourSelector::showAlphaChannel
-    };
-    // ==================================================
-    
-    //for combo box
-    class BoxLookAndFeel : public LookAndFeel_V3
-    {
-    public:
-        BoxLookAndFeel(IRStr* str) : str(str) {}
-        
-        Font getComboBoxFont(ComboBox& /* box */) override
-        {
-            return getNewFont();
-        }
-        Font getPopupMenuFont() override
-        {
-            return getNewFont();
-        }
-        
-    private:
-        IRStr* str;
-        Font getNewFont()
-        {
-            return this->str->SYSTEMCOLOUR.h5;
-        }
-    };
-    
-    BoxLookAndFeel comboBoxFont;
-    
+    void controllerChangeListenerCallback (ChangeBroadcaster* source) override;
+   
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRShapeController)
 

@@ -58,6 +58,7 @@ public:
     IRIconImage icon_loop;
     IRIconImage icon_newProject; // used
     IRIconImage icon_object;
+    IRIconImage icon_object_type1;
     IRIconImage icon_preference;
     IRIconImage icon_save;
     IRIconImage icon_save_noFrame;

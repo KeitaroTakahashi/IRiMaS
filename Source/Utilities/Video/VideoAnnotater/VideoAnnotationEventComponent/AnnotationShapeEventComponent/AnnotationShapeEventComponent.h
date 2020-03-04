@@ -17,6 +17,10 @@ public:
     VideoAnnotationEventComponent(str, base, videoLengthInSecond)
     {
         setType(VideoAnnotationEventComponent::SHAPE);
+        
+        addAndMakeVisible(&this->timeCodeUI);
+        this->timeCodeUI.addMouseListener(this, true);
+        this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
 
     }
     
@@ -33,6 +37,11 @@ public:
     void resized() override
     {
         VideoAnnotationEventComponent::resized();
+        
+        int h = 40;
+        int margin = 5;
+        
+        this->timeCodeUI.setBounds(0, 0, 226, h);
     }
     // ==================================================
     srtWriter::SRT_STRUCT getSRT() override
@@ -40,8 +49,31 @@ public:
         return srtWriter::SRT_STRUCT();
     }
     // ==================================================
+    
+    // set sort value for ascending sort
+    void timeCodeChanged()
+    {
+        setSortValue(this->timeCodeUI.getBeginTimeCode());
+        
+        eventModified();
+    }
+    
     // ==================================================
+    /*
+    srtWriter::SRT_STRUCT getSRT() override
+    {
+        srtWriter::SRT_STRUCT srt = srtWriter::SRT_STRUCT(getBeginTimeInString(),
+                                                          getEndTimeInString(),
+                                                          getTextContents());
+        
+        return srt;
+    }*/
     // ==================================================
+    
+    void setVideoLength(int videoLengthInSecond) override
+    {
+        VideoAnnotationEventComponent::setVideoLength(videoLengthInSecond);
+    }
 
 private:
     // ==================================================

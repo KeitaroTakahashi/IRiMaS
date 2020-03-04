@@ -33,6 +33,11 @@ void IRRightBar::resized()
         if(this->comp->isVisible())
             this->comp->setBounds(getLocalBounds());
     }
+    
+    if(this->nothingSelectedUI.get() != nullptr)
+    {
+        this->nothingSelectedUI->setBounds(getLocalBounds());
+    }
 }
 
 void IRRightBar::paint(Graphics& g)
@@ -95,23 +100,39 @@ void IRRightBar::nodeObjectSelectionChange(IRNodeObject* obj)
 
 void IRRightBar::nodeObjectGetFocused(IRNodeObject* obj)
 {
+    
+    removeComponents();
+    
+    if(obj != nullptr)
+    {
+        this->comp = obj->getObjController();
+        if(this->comp != nullptr)
+            addComponentAndMakeVisible(*this->comp);
+    }
+}
+
+void IRRightBar::removeComponents()
+{
     if(this->comp != nullptr)
     {
         removeChildComponent(this->comp);
         this->comp = nullptr;
     }
     
-    if(obj != nullptr)
+    if(this->nothingSelectedUI.get() != nullptr)
     {
-        
-        this->comp = obj->getObjController();
-        if(this->comp != nullptr)
-            addComponentAndMakeVisible(*this->comp);
-    
+        removeChildComponent(this->nothingSelectedUI.get());
+        this->nothingSelectedUI.reset();
     }
-    
-    //std::cout << "nodeObjectGetFocused "<< obj << " : " << this->comp << std::endl;
-
 }
 
 //==================================================
+void IRRightBar::showNothingSelectedUI()
+{
+    std::cout << "showNothingSelectedUI\n";
+    
+    removeComponents();
+    
+    this->nothingSelectedUI.reset(new NothingSelectedUI(getStr()));
+    addComponentAndMakeVisible(*this->nothingSelectedUI.get());
+}

@@ -9,18 +9,16 @@
 #define EventLogList_h
 #include "IRViewPort.hpp"
 #include "EventLogListComponent.h"
+#include "NothingSelectedUI.h"
 
 class EventLogList : public IRViewPort
 {
 public:
     EventLogList(IRStr* str) : IRViewPort(str)
     {
-        this->logComponent.reset( new EventLogListComponent(str));
-        this->logComponent->newComponentAddedCallback = [this]{ newComponentAddedAction(); };
+        this->nothingSelectedUI.reset(new NothingSelectedUI(str));
+        createLogComponent(this->nothingSelectedUI.get());
         
-        this->viewPort.reset(new Component4ViewPort(this->logComponent.get()));
-        setViewedComponent(this->viewPort.get());
-
     }
     
     ~EventLogList()
@@ -29,18 +27,32 @@ public:
         this->logComponent.reset();
     }
     //==================================================
+    void createLogComponent(Component* comp)
+    {
+        
+        std::cout << "createLogComponent\n";
+        this->logComponent.reset( new EventLogListComponent(getStr()));
+        this->logComponent->newComponentAddedCallback = [this]{ newComponentAddedAction(); };
+        
+        if(comp != nullptr) this->logComponent->setComponent(comp);
+        
+        this->viewPort.reset(new Component4ViewPort(this->logComponent.get()));
+        setViewedComponent(this->viewPort.get());
+        
+        this->hasComponent = true;
+    }
+    
+    //==================================================
 
     void resized() override
     {
         
+        std::cout << "EventLogList resized\n";
+
         this->viewPort->setBounds(0,0,getWidth()-10, getHeight());
         this->logComponent->setBounds(0, 0, getWidth()-10, getHeight());
 
-        /*
-        int listCompHeight = this->logComponent->getTotalComponentHeight();
-        this->viewPort->setBounds(0,0,getWidth()-10, listCompHeight);
-        this->logComponent->setSize(getWidth()-10, listCompHeight);
-         */
+        this->nothingSelectedUI->setBounds(getLocalBounds());
     }
     
     void paint(Graphics& g) override
@@ -58,7 +70,11 @@ public:
     void setLogComponent(Component* comp)
     {
         this->logComponent->setComponent(comp);
-        
+    }
+    
+    void removeLogComponent()
+    {
+        this->logComponent->setComponent(this->nothingSelectedUI.get());
     }
  
     //==================================================
@@ -77,7 +93,18 @@ private:
         
         void resized() override
         {
-            this->main->setBounds(0, 0, getWidth(), getHeight());
+            if(this->main != nullptr)
+                this->main->setBounds(0, 0, getWidth(), getHeight());
+        }
+        
+        void removeMainComponent()
+        {
+            this->main = nullptr;
+        }
+        
+        void addMainComponent(Component* main)
+        {
+            addAndMakeVisible(main);
         }
 
     private:
@@ -90,6 +117,10 @@ private:
     std::shared_ptr<EventLogListComponent> logComponent;
     
     //==================================================
+    
+    bool hasComponent = false;
+    
+    std::shared_ptr<NothingSelectedUI> nothingSelectedUI;
     //==================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EventLogList)
 

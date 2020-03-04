@@ -152,6 +152,7 @@ private:
     // This function is called when an object is either selected or unselected.
     // this function is, for instance, used to update the Object Controller in the IRRightBar
     void createWorkspace();
+    void nothingSelected() override;
     // workspaceComponent::Listener
     void nodeObjectSelectionChange(IRNodeObject* obj) override;
     void nodeObjectGetFocused(IRNodeObject* obj)override;

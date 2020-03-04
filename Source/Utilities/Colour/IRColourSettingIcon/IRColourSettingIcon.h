@@ -63,7 +63,8 @@ public:
     // ==================================================
     void setCurrentColour(Colour newColour)
     {
-        
+        this->selectedColour = newColour;
+        repaint();
     }
     Colour getCurrentColour() const { return this->selectedColour; }
     // ==================================================

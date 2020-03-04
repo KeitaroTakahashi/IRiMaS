@@ -59,10 +59,7 @@ IRObjectFactory2::IRObjectFactory2()
     
     //registerObject<IRTestObject>("IRTestObject", "test", img);
     
-    registerObject<IRShapeObject>("IRShape",
-                                                "Shape",
-                                                objectCategory::IMAGEMENU,
-                                                img); // leak videocomp
+    
     */
     //registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
     
@@ -70,10 +67,15 @@ IRObjectFactory2::IRObjectFactory2()
                                                       "Video Player",
                                                       objectCategory::PLAYERMENU,
                                                       img);
-  registerObject<IRTextEditorObject>("IRTextEditor",
-                                                   "Text Editor",
-                                                   objectCategory::TEXTMENU,
-                                                   img);
+    registerObject<IRTextEditorObject>("IRTextEditor",
+                                       "Text Editor",
+                                       objectCategory::TEXTMENU,
+                                       img);
+    
+    registerObject<IRShapeObject>("IRShape",
+                                  "Shape",
+                                  objectCategory::IMAGEMENU,
+                                  img); // leak videocomp
     std::cout << "IRFactory2 initialized\n";
 }
 

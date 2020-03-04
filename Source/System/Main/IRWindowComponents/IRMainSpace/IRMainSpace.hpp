@@ -58,6 +58,9 @@ public:
         virtual void nodeObjectSelectionChange(IRNodeObject* obj) {};
         virtual void nodeObjectGetFocused(IRNodeObject* obj) {};
         
+        virtual void nothingSelected() {};
+
+        
         virtual void newWorkspaceCreated(IRWorkspace* space) {};
         virtual void workspaceWillDeleted(IRWorkspace* space) {};
         virtual void workspaceHasDeleted() {};
@@ -77,6 +80,8 @@ public:
     void callWorkspaceWillDeleted(IRWorkspace* space);
     void callWorkspaceHasDeleted();
 
+    void callNothingSelected();
+
     void callWorkspaceEditModeChanged(IRWorkspace* space);
     void callHeavyObjectCreated(IRNodeObject* obj);
 
@@ -93,6 +98,7 @@ private:
     // this function is, for instance, used to update the Object Controller in the IRRightBar
     void nodeObjectSelectionChange(IRNodeObject* obj) override;
     void nodeObjectGetFocused(IRNodeObject* obj)override;
+    void nothingSelected() override;
     void editModeChanged(IRWorkspaceComponent* changedSpace) override;
     void heavyObjectCreated(IRNodeObject* obj) override;
 

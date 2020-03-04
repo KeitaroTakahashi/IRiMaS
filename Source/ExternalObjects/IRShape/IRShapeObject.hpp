@@ -13,8 +13,7 @@
 
 #include "Benchmark.h"
 
-class IRShapeObject : public IRNodeObject,
-public ChangeListener
+class IRShapeObject : public IRNodeObject
 {
 public:
     IRShapeObject(Component* parent, IRStr* str);
@@ -37,10 +36,13 @@ private:
     
     std::shared_ptr<IRShapeUI> UI;
 
-    void changeListenerCallback (ChangeBroadcaster* source) override
-    {
-        
-    }
+    std::shared_ptr<IRShapeController> controller;
+
+    void IRChangeListenerCallback (ChangeBroadcaster* source) override;
+    
+    void shapeControllerChangeListenerCallback(ChangeBroadcaster* source);
+    void arrangeControllerChangeListenerCallback(ChangeBroadcaster* source);
+    
     // ------------------------------------------------------------
     // call back function automatically called when the status of this object changed by others.
     // write some tasks here

@@ -81,6 +81,11 @@ void IRIconBank::loadImages()
     url = "/materials/Images/icon/menu/icon_object";
     this->icon_object = loadImageAndReturn(url);
     
+    
+    
+    url = "/materials/Images/icon/menu/icon_object_type1";
+    this->icon_object_type1 = loadImageAndReturn(url);
+    
     url = "/materials/Images/icon/menu/icon_preference";
     this->icon_preference = loadImageAndReturn(url);
     

@@ -177,9 +177,11 @@ private:
     //IRMainSpace Listener
     void nodeObjectSelectionChange(IRNodeObject* obj) override;
     void nodeObjectGetFocused(IRNodeObject* obj) override;
+    void nothingSelected() override;
     void newWorkspaceCreated(IRWorkspace* space) override;
     void workspaceEditModeChanged(IRWorkspace* changedSpace) override;
     void heavyObjectCreated(IRNodeObject* obj) override;
+    
     // ==================================================
 
     void rebindOpenGLContents() override;
