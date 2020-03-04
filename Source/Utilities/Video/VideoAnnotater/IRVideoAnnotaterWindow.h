@@ -69,6 +69,8 @@ public:
     {
         //this->videoAnnotater.bindVideoPlayerObject();
         setVisible(true);
+        
+        this->videoAnnotater.openAnnotaterWindowAction();
     }
     // ==================================================
     

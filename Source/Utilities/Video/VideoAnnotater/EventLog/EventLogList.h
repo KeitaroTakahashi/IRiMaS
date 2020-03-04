@@ -46,12 +46,8 @@ public:
 
     void resized() override
     {
-        
-        std::cout << "EventLogList resized\n";
-
         this->viewPort->setBounds(0,0,getWidth()-10, getHeight());
         this->logComponent->setBounds(0, 0, getWidth()-10, getHeight());
-
         this->nothingSelectedUI->setBounds(getLocalBounds());
     }
     

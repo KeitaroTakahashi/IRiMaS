@@ -63,10 +63,12 @@ void IRMainSpace::createNewWorkspace()
     std::cout << "create IRWorkspace\n";
     String title = this->ir_str->projectName + "_" + String(this->workspaces.size() + 1);
     Rectangle<int> r (-1000, -1000, 1000, 1000);
+    
     IRWorkspace* space = new IRWorkspace(title, r, this->ir_str);
     space->addListener(this);
     this->workspaces.push_back(space);
     this->mixer.addAudioSource(&space->getMixer());
+    
     
     addAndMakeVisible(space);
     

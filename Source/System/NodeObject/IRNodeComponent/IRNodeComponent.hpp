@@ -319,11 +319,6 @@ public:
     // ==================================================
     // create small square on each corner of the object square which enables to resize this object
     bool isResizingSquareInitialized = false;
-    void initResizingSquare();
-    void showResizingSquare();
-    void hideResizingSquare();
-    void resizingObjectSizeByResizingSquare();
-    
    
     // called when resizing square is clicked.
     void resizingSquareClicked(IRResizeSquare2::MovableDirection direction);
@@ -332,7 +327,11 @@ public:
     void resizingSquareDragged(MouseEvent e);
 
     void resizingObjectFunc(IRResizeSquare2::MovableDirection direction);
-   
+    
+    void setResizableMargin(Rectangle<int> margin);
+    void adjustSizeToResizableArea(Rectangle<int>& bounds, const MouseEvent& e);
+    void adjustCurrentXYToResizableArea(int& currentX, int& currentY, const MouseEvent& e);
+    Rectangle<int> resizableMargin;
     //std::vector<IRResizeSquare* > resizingSquare;
     
     IRResizeSquare2 resizingSquare;
@@ -348,9 +347,9 @@ public:
     // ==================================================
 
     // called when this object is moved to Front of all other objects
-    virtual void moveToFrontEvent() {}
+    virtual void moveToFrontEvent(bool isRefreshHeavyComponent) {}
     virtual void moveToBackEvent() {}
-    void bringThisToFront();
+    void bringThisToFront(bool isRefreshHeavyComponent = true);
     void bringThisToBack();
     
     // ==================================================
@@ -423,8 +422,8 @@ private:
    
     
     // Object appearance setup
-    float minWidth = 50;
-    float minHeight = 25;
+    float minWidth = 10;
+    float minHeight = 10;
     
     float maxWidth = 3000;
     float maxHeight = 3000;

@@ -57,7 +57,14 @@ private:
     void paint (Graphics& g) override;
     void drawShadows(Graphics& g);
    // void drawGrids(Graphics& g);
+    
+    // ==================================================
+
     void resized() override;
+    void resizeNodeObjectsRelativeToWorkspaceSizeChange();
+    
+    // ==================================================
+
     String getTitle() { return this->title; }
     
     // interaction

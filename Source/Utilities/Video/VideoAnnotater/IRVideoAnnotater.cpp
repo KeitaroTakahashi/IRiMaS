@@ -112,6 +112,21 @@ void IRVideoAnnotater::videoResized()
 }
 // ==================================================
 
+void IRVideoAnnotater::openAnnotaterWindowAction()
+{
+    if(this->eventListComponent.get() == nullptr) return;
+    auto events = this->eventListComponent->getEventComponents();
+    if(events.size() > 0)
+    {
+        if(this->workspace.get() != nullptr){
+            this->workspace->manageHeavyWeightComponents(true);
+            std::cout << "openAnnotaterWindowAction\n";
+        }
+    }
+}
+
+// ==================================================
+
 
 void IRVideoAnnotater::createVideoTransport()
 {
@@ -139,6 +154,7 @@ void IRVideoAnnotater::createWorkspace()
 {
     Rectangle<int> r(0, 0, 0, 0);
     this->workspace.reset( new VideoAnnotaterWorkspace("VideoAnnotater", r, getStr() ));
+    this->workspace->setDraggableMargin(Rectangle<int>(0, 0, 0, 0));
     addAndMakeVisible(this->workspace.get());
     this->workspace->addListener(this);
     this->workspace->addKeyListener(this);
@@ -286,6 +302,7 @@ void IRVideoAnnotater::myVideoLoadCompleted()
     std::cout << myVideoPlayerObject->getVideoPlayer()->getVideoLength() << std::endl;
     
     this->workspace->bringThisToFront("Workspace bringToThisFront");
+    this->workspace->manageHeavyWeightComponents(true);
     
     resized();
 }
@@ -405,6 +422,10 @@ void IRVideoAnnotater::eventSelectedAction(Component* selectedEvent)
     auto event = static_cast<VideoAnnotationEventComponent* >(selectedEvent);
     jassert(event != nullptr);
     
+    // select object
+    this->workspace->deselectAllObjects();
+    event->getNodeObject()->setSelected(true);
+    
     using s = VideoAnnotationEventComponent::VideoAnnotationType;
        switch (event->getType())
        {
@@ -427,7 +448,7 @@ void IRVideoAnnotater::textEventComponentSelected(VideoAnnotationEventComponent*
 {
     //auto e = static_cast<AnnotationTextEventComponent* >(event);
     
-    auto c = static_cast<IRVideoAnnotationTextComponent*>(this->myVideoPlayerObject->getVideoAnnotationComponentOf(event));
+    //auto c = static_cast<IRVideoAnnotationTextComponent*>(this->myVideoPlayerObject->getVideoAnnotationComponentOf(event));
     //this->eventLogList->setLogComponent(c->getIRTextEditorObject()->getObjController());
 }
 

@@ -34,15 +34,16 @@ public:
     
     void resized() override
     {
+        int yMargin = 60;
         int w = 200;
         int h = 60;
         
         this->title.setSize(w, h);
-        this->title.setCentrePosition(getWidth()/2, getHeight()/2);
+        this->title.setCentrePosition(getWidth()/2, getHeight()/2 + yMargin);
         
         
         this->objectIcon.setSize(100, 100);
-        this->objectIcon.setCentrePosition(getWidth()/2, getHeight()/2 - 100);
+        this->objectIcon.setCentrePosition(getWidth()/2, getHeight()/2 - 100 + yMargin);
     }
     
     void paint(Graphics& g) override

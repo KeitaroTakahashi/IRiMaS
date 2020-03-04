@@ -39,6 +39,9 @@ public:
     void paint(Graphics& g) override;
     void resized() override;
     void videoResized();
+    
+    // do whatever necessary task when its window is opened.
+    void openAnnotaterWindowAction();
     // ==================================================
     
     void openFile();

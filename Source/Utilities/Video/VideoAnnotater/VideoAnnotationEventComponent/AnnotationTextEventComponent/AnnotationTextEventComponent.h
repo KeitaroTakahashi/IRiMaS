@@ -141,7 +141,7 @@ public:
         addAndMakeVisible(this->textEditor.get());
         this->textEditor->addMouseListener(this,true);
         // here initialy in Edit mode
-        this->textEditor->setEditMode(false);
+        this->textEditor->setEditMode(true);
         this->textEditor->onTextChange = [this]{ onTextChange(); };
         this->textEditor->onReturnKey  = [this]{ onReturnKey(); };
         

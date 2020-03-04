@@ -85,7 +85,7 @@ public:
     
     // ==================================================
     // move to Front action
-    void moveToFrontEvent() override;
+    void moveToFrontEvent(bool isRefreshHeavyComponent) override;
     void moveToBackEvent() override;
     virtual void moveToFrontAction() {} // for its Child component
     virtual void moveToBackAction() {}

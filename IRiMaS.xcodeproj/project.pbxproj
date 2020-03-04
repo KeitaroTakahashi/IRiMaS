@@ -305,8 +305,6 @@
 		820FBDE423D1667400044092 /* srtparser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = srtparser.h; sourceTree = "<group>"; };
 		820FBDE523D1667B00044092 /* srtWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = srtWriter.h; sourceTree = "<group>"; };
 		820FBDE623D465E500044092 /* srtLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = srtLoader.h; sourceTree = "<group>"; };
-		820FBDF023D488BE00044092 /* IRVideoAnnotationTextComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVideoAnnotationTextComponent.h; sourceTree = "<group>"; };
-		820FBDF223D4911F00044092 /* IRVideoAnnotationComponentHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVideoAnnotationComponentHeader.h; sourceTree = "<group>"; };
 		820FBDF523D4925300044092 /* IRVideoAnnotaterInterfaceObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoAnnotaterInterfaceObject.cpp; sourceTree = "<group>"; };
 		820FBDF623D4925300044092 /* IRVideoAnnotaterInterfaceObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoAnnotaterInterfaceObject.hpp; sourceTree = "<group>"; };
 		820FBDF923D5E50E00044092 /* TimeCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeCode.h; sourceTree = "<group>"; };
@@ -435,7 +433,6 @@
 		8262855923F19B1200F57D57 /* SoundPlayer_ThreadSafe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundPlayer_ThreadSafe.h; sourceTree = "<group>"; };
 		8262855A23F19D3200F57D57 /* VideoAnnotationEventComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoAnnotationEventComponent.h; sourceTree = "<group>"; };
 		8262855B23F19E7000F57D57 /* IRVideoAnnotaterObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVideoAnnotaterObject.h; sourceTree = "<group>"; };
-		8262855C23F19F6000F57D57 /* IRVideoAnnotationComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVideoAnnotationComponent.h; sourceTree = "<group>"; };
 		8262855D23F19FBB00F57D57 /* IRVideoPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVideoPlayer.h; sourceTree = "<group>"; };
 		82657CE921EBFA6D003FA700 /* IRObjectCreater.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRObjectCreater.hpp; sourceTree = "<group>"; };
 		82657CED21EE7DE5003FA700 /* IRiMaSMainComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRiMaSMainComponent.cpp; sourceTree = "<group>"; };
@@ -1132,7 +1129,6 @@
 			children = (
 				820FBDF423D4921400044092 /* IRVideoAnnotaterInterfaceObject */,
 				820FBDF323D4920A00044092 /* IRVideoAnnotaterObject */,
-				820FBDE723D4867200044092 /* IRVideoAnnotationComponent */,
 			);
 			path = IRVideoAnnotater;
 			sourceTree = "<group>";
@@ -1194,32 +1190,6 @@
 				820F7EDD234B816E00679F56 /* EditModeButton.h */,
 			);
 			path = EditModeButton;
-			sourceTree = "<group>";
-		};
-		820FBDE723D4867200044092 /* IRVideoAnnotationComponent */ = {
-			isa = PBXGroup;
-			children = (
-				820FBDF123D4911000044092 /* IRVideoAnnotationComponentHeader */,
-				820FBDEF23D488B100044092 /* IRVideoAnnotationTextComponent */,
-				8262855C23F19F6000F57D57 /* IRVideoAnnotationComponent.h */,
-			);
-			path = IRVideoAnnotationComponent;
-			sourceTree = "<group>";
-		};
-		820FBDEF23D488B100044092 /* IRVideoAnnotationTextComponent */ = {
-			isa = PBXGroup;
-			children = (
-				820FBDF023D488BE00044092 /* IRVideoAnnotationTextComponent.h */,
-			);
-			path = IRVideoAnnotationTextComponent;
-			sourceTree = "<group>";
-		};
-		820FBDF123D4911000044092 /* IRVideoAnnotationComponentHeader */ = {
-			isa = PBXGroup;
-			children = (
-				820FBDF223D4911F00044092 /* IRVideoAnnotationComponentHeader.h */,
-			);
-			path = IRVideoAnnotationComponentHeader;
 			sourceTree = "<group>";
 		};
 		820FBDF323D4920A00044092 /* IRVideoAnnotaterObject */ = {

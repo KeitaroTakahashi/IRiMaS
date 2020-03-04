@@ -11,8 +11,6 @@
 #include "IRNodeObject.hpp"
 #include "IRVideoPlayer.h"
 
-#include "IRVideoAnnotationComponentHeader.h"
-
 class IRVideoPlayerObject : public IRNodeObject
 {
     

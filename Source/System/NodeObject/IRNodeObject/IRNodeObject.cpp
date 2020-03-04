@@ -617,13 +617,16 @@ void IRNodeObject::callInitialBoundsUpdated()
 // ==================================================
 // move to Front
 
-void IRNodeObject::moveToFrontEvent()
+void IRNodeObject::moveToFrontEvent(bool isRefreshHeavyComponent)
 {
     // to inform IRNodeObject
     moveToFrontAction();
     
-    // to inform IRWorksapce
-    callHeavyComponentCreated(this);
+    if(isRefreshHeavyComponent)
+    {
+        // to inform IRWorksapce
+        callHeavyComponentCreated(this);
+    }
     
     // to inform IRWorkspace that this object is moved to the front top of others.
     callNodeObjectMoveToFront();

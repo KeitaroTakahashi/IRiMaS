@@ -43,7 +43,6 @@ public:
     Array<IRNodeObject* > getSelectedObjectList() const;
     
     void setDraggableArea(Rectangle<int> area);
-    
     void adaptToDraggableArea(Rectangle<int>& bounds);
     
     // ==================================================

@@ -644,7 +644,7 @@ void param_register(std::string id, int data)
 // =============================================
 
 
-void IRNodeComponent::bringThisToFront()
+void IRNodeComponent::bringThisToFront(bool isRefreshHeavyComponent)
 {
     toFront(true);
 
@@ -657,7 +657,7 @@ void IRNodeComponent::bringThisToFront()
         this->resizingSquare.bringThisToFront();
     }
     
-    moveToFrontEvent();
+    moveToFrontEvent(isRefreshHeavyComponent);
 }
 
 void IRNodeComponent::bringThisToBack()

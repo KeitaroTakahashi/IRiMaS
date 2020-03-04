@@ -122,18 +122,29 @@ void IRWorkspaceComponent::drawGrids(Graphics& g)
     p.closeSubPath();
     g.strokePath(p, PathStrokeType(this->grid_thickness2));
 }*/
+// ==================================================
 
 void IRWorkspaceComponent::resized()
 {
+
+    resizeNodeObjectsRelativeToWorkspaceSizeChange();
     
+    Rectangle<int>   area = getLocalBounds();
+    area.setX       (area.getX() + this->draggableMargin.getX());
+    area.setY       (area.getY() + this->draggableMargin.getY());
+    area.setWidth   (area.getWidth() + this->draggableMargin.getWidth());
+    area.setHeight  (area.getHeight() + this->draggableMargin.getHeight());
+    
+    this->selector->setDraggableArea(area);
+}
+
+void IRWorkspaceComponent::resizeNodeObjectsRelativeToWorkspaceSizeChange()
+{
     if(!this->isFixObjectSizeRatio)
     {
-    
         if(this->previousBounds.getWidth() != 0 &&
            this->previousBounds.getHeight() != 0)
         {
-            
-            
             auto wb = getBounds().toFloat();
             
             float ratioX = wb.getX() / this->initialBounds.getX();
@@ -143,34 +154,18 @@ void IRWorkspaceComponent::resized()
 
             for(auto obj : this->objects)
             {
-                auto b = obj->getBounds().toFloat();
-             
                 Rectangle<float> rb(obj->getInitialBounds().getX() * ratioW,
                                     obj->getInitialBounds().getY() * ratioH,
                                     obj->getInitialBounds().getWidth() * ratioW,
                                     obj->getInitialBounds().getHeight() * ratioH);
                 obj->setObjectBounds(rb.toNearestInt());
-               
-                
-                //obj->setObjectBoundsRelative(ratioX, ratioY, ratioW, ratioH);
-                
-  
-                
             }
         }
     }
-    
     setPreviousBounds(getBounds().toFloat());
-    
-    Rectangle<int> area = getLocalBounds();
-    area.setX       (area.getX() - this->draggableMargin.getX());
-    area.setY       (area.getY() - this->draggableMargin.getY());
-    area.setWidth   (area.getWidth() + this->draggableMargin.getWidth());
-    area.setHeight  (area.getHeight() + this->draggableMargin.getHeight());
-
-    
-    this->selector->setDraggableArea(area);
 }
+// ==================================================
+
 
 void IRWorkspaceComponent::setPreviousBounds(Rectangle<float> previousBounds)
 {

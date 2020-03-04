@@ -147,108 +147,217 @@ void IRNodeComponent::resizeThisComponentEvent(const MouseEvent& e)
     }
 }
 
+void IRNodeComponent::setResizableMargin(Rectangle<int> margin)
+{
+    this->resizableMargin = Rectangle<int>(margin.getX(),
+                                         margin.getY(),
+                                         margin.getWidth(),
+                                         margin.getHeight());
+}
+
+void IRNodeComponent::adjustSizeToResizableArea(Rectangle<int>& bounds, const MouseEvent& e)
+{
+    
+
+    
+}
+
+void IRNodeComponent::adjustCurrentXYToResizableArea(int& currentX, int& currentY, const MouseEvent& e)
+{
+    currentX = e.getScreenX();
+    if(currentX <= (this->parent->getScreenX() + this->resizableMargin.getX()))
+        currentX = (this->parent->getScreenX() + this->resizableMargin.getX());
+    else if(currentX > (this->parent->getScreenX() + this->parent->getWidth()) + this->resizableMargin.getWidth())
+        currentX = (this->parent->getScreenX() + this->parent->getWidth()) + this->resizableMargin.getWidth();
+    
+    currentY = e.getScreenY();
+    if(currentY < (this->parent->getScreenY() + this->resizableMargin.getY())) currentY = (this->parent->getScreenY() + this->resizableMargin.getY());
+    else if(currentY >= (this->parent->getScreenY() + this->parent->getHeight() + this->resizableMargin.getHeight()))
+        currentY = (this->parent->getScreenY() + this->parent->getHeight() + this->resizableMargin.getHeight());
+}
+
+
 void IRNodeComponent::resizeTopLeftComponentEvent(const MouseEvent& e)
 {
-    float deltaX = e.getScreenX() - e.getMouseDownScreenX();
-    float deltaY = e.getScreenY() - e.getMouseDownScreenY();
+    int currentX = 0;
+    int currentY = 0;
+    adjustCurrentXYToResizableArea(currentX, currentY, e);
+    
+    float deltaX = currentX - e.getMouseDownScreenX();
+    float deltaY = currentY - e.getMouseDownScreenY();
 
     float newWidth = this->previousWidth - deltaX;
     float newHeight = this->previousHeight - deltaY;
-    
     float newX = this->previousX + deltaX;
     float newY = this->previousY + deltaY;
-    setObjectBounds(Rectangle<int> (newX,
-                                    newY,
-                                    newWidth,
-                                    newHeight));
+    
+    if(newWidth < this->minWidth)
+    {
+        newX = this->previousX + (this->previousWidth - this->minWidth);
+        newWidth = this->minWidth;
+    }
+    if(newHeight < this->minHeight)
+    {
+        newY = this->previousY + (this->previousHeight - this->minHeight);
+        newHeight = this->minHeight;
+    }
+    setObjectBounds(Rectangle<int>(newX, newY, newWidth, newHeight));
 }
+
 void IRNodeComponent::resizeTopRightComponentEvent(const MouseEvent& e)
 {
-    float deltaX = e.getScreenX() - e.getMouseDownScreenX();
-    float deltaY = e.getScreenY() - e.getMouseDownScreenY();
+    int currentX = 0;
+    int currentY = 0;
+    adjustCurrentXYToResizableArea(currentX, currentY, e);
+       
+    float deltaX = currentX - e.getMouseDownScreenX();
+    float deltaY = currentY - e.getMouseDownScreenY();
 
     float newWidth = this->previousWidth + deltaX;
     float newHeight = this->previousHeight - deltaY;
-    
     float newY = this->previousY + deltaY;
-    setObjectBounds(Rectangle<int> (this->previousX,
-                                    newY,
-                                    newWidth,
-                                    newHeight));
+    
+    if(newWidth < this->minWidth)
+    {
+        newWidth = this->minWidth;
+    }
+    if(newHeight < this->minHeight)
+    {
+        newY = this->previousY + (this->previousHeight - this->minHeight);
+        newHeight = this->minHeight;
+    }
+    
+    Rectangle<int> b2(this->previousX, newY, newWidth, newHeight);
+    setObjectBounds(b2);
 }
 void IRNodeComponent::resizeBottomLeftComponentEvent(const MouseEvent& e)
 {
-    float deltaX = e.getScreenX() - e.getMouseDownScreenX();
-    float deltaY = e.getScreenY() - e.getMouseDownScreenY();
+    int currentX = 0;
+    int currentY = 0;
+    adjustCurrentXYToResizableArea(currentX, currentY, e);
+    
+    float deltaX = currentX - e.getMouseDownScreenX();
+    float deltaY = currentY - e.getMouseDownScreenY();
 
     float newWidth = this->previousWidth - deltaX;
     float newHeight = this->previousHeight + deltaY;
-    
     float newX = this->previousX + deltaX;
-    setObjectBounds(Rectangle<int> (newX,
-                                    this->previousY,
-                                    newWidth,
-                                    newHeight));
+    
+    if(newWidth < this->minWidth)
+    {
+        newX = this->previousX + (this->previousWidth - this->minWidth);
+        newWidth = this->minWidth;
+    }
+    if(newHeight < this->minHeight)
+    {
+        newHeight = this->minHeight;
+    }
+    setObjectBounds(Rectangle<int>(newX, this->previousY, newWidth, newHeight));
+
 }
 void IRNodeComponent::resizeBottomRightComponentEvent(const MouseEvent& e)
 {
-    float deltaX = e.getScreenX() - e.getMouseDownScreenX();
-    float deltaY = e.getScreenY() - e.getMouseDownScreenY();
+     int currentX = 0;
+       int currentY = 0;
+       adjustCurrentXYToResizableArea(currentX, currentY, e);
+       
+       float deltaX = currentX - e.getMouseDownScreenX();
+       float deltaY = currentY - e.getMouseDownScreenY();
 
-    float newWidth = this->previousWidth + deltaX;
-    float newHeight = this->previousHeight + deltaY;
+       float newWidth = this->previousWidth + deltaX;
+       float newHeight = this->previousHeight + deltaY;
+       
+       if(newWidth < this->minWidth)
+       {
+           newWidth = this->minWidth;
+       }
+       if(newHeight < this->minHeight)
+       {
+           newHeight = this->minHeight;
+       }
+       setObjectBounds(Rectangle<int>(this->previousX, this->previousY, newWidth, newHeight));
     
-    setObjectBounds(Rectangle<int> (this->previousX,
-                                    this->previousY,
-                                    newWidth,
-                                    newHeight));
 }
 
 void IRNodeComponent::resizeLeftComponentEvent(const MouseEvent& e)
 {
-    float deltaX = e.getScreenX() - e.getMouseDownScreenX();
+    
+    int currentX = 0;
+    int currentY = 0;
+    adjustCurrentXYToResizableArea(currentX, currentY, e);
+    
+    float deltaX = currentX - e.getMouseDownScreenX();
 
     float newWidth = this->previousWidth - deltaX;
     float newX = this->previousX + deltaX;
-    setObjectBounds(Rectangle<int> (newX,
-                                    this->previousY,
-                                    newWidth,
-                                    this->previousHeight));
+    
+    if(newWidth < this->minWidth)
+    {
+        newX = this->previousX + (this->previousWidth - this->minWidth);
+        newWidth = this->minWidth;
+    }
+    
+    setObjectBounds(Rectangle<int>(newX, this->previousY, newWidth, this->previousHeight));
+    
 }
 void IRNodeComponent::resizeRightComponentEvent(const MouseEvent& e)
 {
-    float deltaX = e.getScreenX() - e.getMouseDownScreenX();
-    float deltaY = e.getScreenY() - e.getMouseDownScreenY();
+
+    int currentX = 0;
+    int currentY = 0;
+    adjustCurrentXYToResizableArea(currentX, currentY, e);
+    
+    float deltaX = currentX - e.getMouseDownScreenX();
 
     float newWidth = this->previousWidth + deltaX;
-
-    setObjectBounds(Rectangle<int> (this->previousX,
-                                    this->previousY,
-                                    newWidth,
-                                    this->previousHeight));
+    
+    if(newWidth < this->minWidth)
+    {
+        newWidth = this->minWidth;
+    }
+    
+    setObjectBounds(Rectangle<int>(this->previousX, this->previousY,
+                                   newWidth, this->previousHeight));
+    
+    
 }
 void IRNodeComponent::resizeTopComponentEvent(const MouseEvent& e)
 {
-    float deltaY = e.getScreenY() - e.getMouseDownScreenY();
+    int currentX = 0;
+    int currentY = 0;
+    adjustCurrentXYToResizableArea(currentX, currentY, e);
+    
+    float deltaY = currentY - e.getMouseDownScreenY();
 
     float newHeight = this->previousHeight - deltaY;
-    
     float newY = this->previousY + deltaY;
-    setObjectBounds(Rectangle<int> (this->previousX,
-                                    newY,
-                                    this->previousWidth,
-                                    newHeight));
+    
+    if(newHeight < this->minHeight)
+    {
+        newY = this->previousY + (this->previousHeight - this->minHeight);
+        newHeight = this->minHeight;
+    }
+    setObjectBounds(Rectangle<int>(this->previousX, newY,
+                                   this->previousWidth, newHeight));
+    
 }
 void IRNodeComponent::resizeBottomComponentEvent(const MouseEvent& e)
 {
-    float deltaY = e.getScreenY() - e.getMouseDownScreenY();
+    int currentX = 0;
+    int currentY = 0;
+    adjustCurrentXYToResizableArea(currentX, currentY, e);
+    
+    float deltaY = currentY - e.getMouseDownScreenY();
 
     float newHeight = this->previousHeight + deltaY;
     
-    setObjectBounds(Rectangle<int> (this->previousX,
-                                    this->previousY,
-                                    this->previousWidth,
-                                    newHeight));
+    if(newHeight < this->minHeight)
+    {
+        newHeight = this->minHeight;
+    }
+    setObjectBounds(Rectangle<int>(this->previousX, this->previousY,
+                                   this->previousWidth, newHeight));
+    
 }
 
 
@@ -296,7 +405,7 @@ void IRNodeComponent::setSelected(bool flag)
     {
         this->parent->addAndMakeVisible(this->resizingSquare);
         this->resizingSquare.enableSquare(true);
-        heavyComponentCreatedFunc();
+        //heavyComponentCreatedFunc();
         //this->resizingSquare.toFront(true);
     }else{
         this->parent->removeChildComponent(&this->resizingSquare);
@@ -345,26 +454,6 @@ void IRNodeComponent::defaultPopupMenuEvents()
 
 // ==================================================
 
-void IRNodeComponent::initResizingSquare()
-{
-    
-   
-}
-
-void IRNodeComponent::showResizingSquare()
-{
-    
-}
-void IRNodeComponent::hideResizingSquare()
-{
-    
-}
-
-void IRNodeComponent::resizingObjectSizeByResizingSquare()
-{
-    
-}
-
 // ==================================================
 
 void IRNodeComponent::resizingSquareClicked(IRResizeSquare2::MovableDirection direction)
@@ -384,7 +473,7 @@ void IRNodeComponent::resizingSquareReleased(IRResizeSquare2::MovableDirection d
 
 void IRNodeComponent::resizingSquareDragged(MouseEvent e)
 {
-    std::cout <<"resizingSquareDragged : dragged!!\n";
+    //std::cout <<"resizingSquareDragged : dragged!!\n";
     resizeThisComponentEvent(e);
 }
 

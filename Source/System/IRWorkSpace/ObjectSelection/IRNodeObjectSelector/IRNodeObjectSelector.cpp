@@ -105,18 +105,12 @@ void IRNodeObjectSelector::mouseDragHandler(const MouseEvent& e)
         {
             if (comp != nullptr)
             {
-                //if (comp != getBeingDraggedObject())
-                //{
-                    Rectangle<int> bounds (comp->getBounds());
-                    bounds += delta;
-                    
-                    // adapt to the draggable area if extended
-                    //adaptToDraggableArea(bounds);
-                    comp->setObjectBounds(bounds);
-                //}else{
-                    
 
-                //}
+                Rectangle<int> bounds (comp->getBounds());
+                bounds += delta;
+                
+                adaptToDraggableArea(bounds);
+                comp->setObjectBounds(bounds);
             }
         }
         
@@ -170,18 +164,13 @@ void IRNodeObjectSelector::deselectOtherObejcts(IRNodeObject* selectedObj)
 void IRNodeObjectSelector::addSelectedObjects()
 {
     
-    std::cout << "addSelectedObjects()\n";
     this->selectedObjectList.clear();
     for (auto obj : *this->objectList)
     {
-        std::cout << "scheck" << obj << std::endl;
-
         if (obj->isSelected())
         {
             this->selectedObjectList.add(obj);
-            
-            std::cout << "selected object " << obj << std::endl;
-        }else std::cout << "object not selected\n";
+        }
     }
 }
 
@@ -262,25 +251,18 @@ void IRNodeObjectSelector::setDraggableArea(Rectangle<int> area)
 void IRNodeObjectSelector::adaptToDraggableArea(Rectangle<int>& bounds)
 {
     
-    
-    if(bounds.getX() < this->draggableArea.getX())
+    // adjust
+    if(bounds.getX() < this->draggableArea.getX()) bounds.setX(this->draggableArea.getX());
+    int deltaW = (bounds.getX() + bounds.getWidth()) - this->draggableArea.getWidth();
+    if(deltaW > 0)
     {
-        bounds.setX(this->draggableArea.getX());
+        bounds.setX(bounds.getX() - deltaW);
     }
     
-    if(bounds.getY() < this->draggableArea.getY())
+    if(bounds.getY() < this->draggableArea.getY()) bounds.setY(this->draggableArea.getY());
+    int deltaH = (bounds.getY() + bounds.getHeight()) - this->draggableArea.getHeight();
+    if(deltaH > 0)
     {
-        bounds.setY(this->draggableArea.getY());
+        bounds.setY(bounds.getY() - deltaH);
     }
-    
-    if(bounds.getWidth() > this->draggableArea.getWidth())
-    {
-        bounds.setWidth(this->draggableArea.getWidth());
-    }
-    
-    if(bounds.getHeight() > this->draggableArea.getHeight())
-    {
-        bounds.setHeight(this->draggableArea.getHeight());
-    }
-       
 }

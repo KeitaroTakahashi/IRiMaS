@@ -76,6 +76,7 @@ void IRWorkspaceComponent::createObject(IRNodeObject *obj, bool shouldSort)
     
     obj->setEditMode(isEditMode());
     
+    obj->setResizableMargin(this->draggableMargin);
     // make uniqueID
     //KeRandomStringGenerator a;
     //std::string id = a.createStrings(10);
@@ -83,11 +84,9 @@ void IRWorkspaceComponent::createObject(IRNodeObject *obj, bool shouldSort)
     //obj->setUniqueID("id-aa");
     addAndMakeVisible(obj);
     obj->toFront(true);
-    //obj->addToDesktop(ComponentPeer::windowIsTemporary);
     obj->addChangeListener(this);
     obj->addListener(this); // IRNodeObjectListener
     obj->addKeyListener(this); // key listener
-    //obj->setPreferenceWindow(this->preferenceWindow); // set preference window
     this->objects.add(obj);
     
     // use this function in order to also update file manger of all related UIs etc.
@@ -95,7 +94,8 @@ void IRWorkspaceComponent::createObject(IRNodeObject *obj, bool shouldSort)
     obj->callUpdateIRFileManager(&this->ir_str->FILEMANAGER);
     
     //audiosource
-    if (obj->isContainAudioSource()){
+    if (obj->isContainAudioSource())
+    {
         this->mixer.addAudioSource(obj->getAudioSource());
     }
     
@@ -206,9 +206,12 @@ void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
     {
         if(flag)
         {
-            obj->bringThisToFront();
+            // do not refresh heacy component z- order until all objects are set up
+            obj->bringThisToFront(false);
         }
     }
+    // refresh heacy component z order
+    callHeavyObjectCreated(nullptr);
 }
 // ------------------------------------------------------------
 /*
