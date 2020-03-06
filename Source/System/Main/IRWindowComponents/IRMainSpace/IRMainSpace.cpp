@@ -115,12 +115,6 @@ void IRMainSpace::setTopWorkspace(IRWorkspace* topSpace)
     auto it = std::find(this->workspaces.begin(), this->workspaces.end(), topSpace);
     if(it != this->workspaces.end())
     {
-        // this process is not needed as currently all components are heavyWeight component
-        if(this->topWorkspace != nullptr)
-        {
-            // hide heavy components first
-            //this->topWorkspace->manageHeavyWeightComponents(false);
-        }
         this->topWorkspace = topSpace;
         this->topWorkspace->toFront(true);
         this->topWorkspace->bringThisToFront();

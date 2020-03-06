@@ -44,12 +44,11 @@ void IRWorkspaceComponent::deselectAllObjects()
 
 void IRWorkspaceComponent::deleteSelectedObjects()
 {
-    std::cout << "delete selected objects\n";
     auto list = this->selector->getSelectedObjectList();
     
     for(auto obj : list)
     {
-        std::cout << "IRWorkspaceComponent : delete obj " << obj << std::endl;
+       // std::cout << "IRWorkspaceComponent : delete obj " << obj << std::endl;
         deleteObject(obj);
     }
     
@@ -558,7 +557,7 @@ void IRWorkspaceComponent::insertObjectAtEndZOrder(IRNodeObject* obj)
 void IRWorkspaceComponent::removeObjectFromZOrder(IRNodeObject* obj)
 {
     
-    std::cout << "removeObjectFromZOrder : " << obj << std::endl;
+    //std::cout << "removeObjectFromZOrder : " << obj << std::endl;
 
     auto it = std::find(this->ObjectZorder.begin(), this->ObjectZorder.end(), obj);
     if(it != this->ObjectZorder.end())
@@ -569,7 +568,7 @@ void IRWorkspaceComponent::removeObjectFromZOrder(IRNodeObject* obj)
     for(int i = 0; i < this->ObjectZorder.size(); i ++)
        {
            this->ObjectZorder[i]->sortIndex = i;
-           std::cout << this->ObjectZorder[i]->name << " : " << this->ObjectZorder[i]->sortIndex << std::endl;
+           //std::cout << this->ObjectZorder[i]->name << " : " << this->ObjectZorder[i]->sortIndex << std::endl;
        }
 }
 

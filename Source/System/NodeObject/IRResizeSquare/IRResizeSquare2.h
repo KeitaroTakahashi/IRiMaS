@@ -166,10 +166,6 @@ public:
         for(auto item : this->items)
         {
             item->setVisible(flag);
-            if(flag)
-            {
-                //item->bringThisToFront();
-            }
         }
         
         this->isItemVisible = flag;
