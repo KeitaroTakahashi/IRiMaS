@@ -31,6 +31,7 @@ resizingArea(25, 25)
     
     
     //only resizingSquare and not squares at the corners
+    parent->addAndMakeVisible(this->resizingSquare);
     this->resizingSquare.enableSquare(false);
     
     this->resizingSquare.resizingSquareClicked = [this](IRResizeSquare2::MovableDirection direction){resizingSquareClicked(direction);};

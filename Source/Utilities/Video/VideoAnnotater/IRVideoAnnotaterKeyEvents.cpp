@@ -12,12 +12,13 @@ bool IRVideoAnnotater::keyPressed(const KeyPress& key, Component* originatingCom
 {
     
     std::cout << "IRVideoAnnotater::keyPressed\n";
+    /*
     if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)
     {
        DeleteKeyPressed();
         return true;
     }
-
+*/
     // open Annotation Event Menu
     if(key.getTextDescription() == "A")
     {

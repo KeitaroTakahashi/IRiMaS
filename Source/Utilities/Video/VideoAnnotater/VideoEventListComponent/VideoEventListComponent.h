@@ -105,30 +105,30 @@ public:
     std::string getFilePath() const { return this->filePath; }
     // ==================================================
     
-    void createTextEventComponent()
+    AnnotationTextEventComponent* createTextEventComponent()
     {
-       std::cout << "createTextEventComponent\n";
-       AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
-                                                                             this->getBase());
-       createEventComponent(comp);
+        std::cout << "createTextEventComponent\n";
+        AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
+                                                                              this->getBase());
+        createEventComponent(comp);
+        return comp;
     }
     
-    void createTextEventComponent(float beginTime,
+    AnnotationTextEventComponent* createTextEventComponent(float beginTime,
                                   float endTime)
     {
         AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
                                                                               this->getBase(),
                                                                               beginTime,
                                                                               endTime);
-        
-        
         createEventComponent(comp);
+        return comp;
 
     }
     
-    void createTextEventComponent(std::string beginTime,
-                                  std::string endTime,
-                                  std::string contents)
+    AnnotationTextEventComponent* createTextEventComponent(std::string beginTime,
+                                                           std::string endTime,
+                                                           std::string contents)
     {
         AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
                                                                               this->getBase(),
@@ -136,15 +136,26 @@ public:
                                                                               endTime,
                                                                               contents);
         createEventComponent(comp);
-        
-
+        return comp;
     }
     
-    void createShapeEventComponent()
+    AnnotationShapeEventComponent* createShapeEventComponent()
     {
         AnnotationShapeEventComponent* comp = new AnnotationShapeEventComponent(getStr(),
                                                                                 this->getBase());
         createEventComponent(comp);
+        return comp;
+    }
+    
+    AnnotationShapeEventComponent* createShapeEventComponent(float beginTime,
+                                                             float endTime)
+    {
+        AnnotationShapeEventComponent* comp = new AnnotationShapeEventComponent(getStr(),
+                                                                                this->getBase(),
+                                                                                beginTime,
+                                                                                endTime);
+        createEventComponent(comp);
+        return comp;
     }
     
     void createImageEventComponent()
@@ -186,6 +197,7 @@ public:
         
         eventComponentResized();
     }
+    
     
     void deSelectAllEventComponents()
     {
@@ -304,6 +316,9 @@ public:
     
     void clearEventComponent(VideoAnnotationEventComponent* eventComponent)
     {
+        
+        deSelectAllEventComponents();
+        
         auto it = std::find(this->eventComponents.begin(), this->eventComponents.end(), eventComponent);
         if(it != this->eventComponents.end())
         {

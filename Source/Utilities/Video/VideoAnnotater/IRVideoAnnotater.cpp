@@ -120,7 +120,6 @@ void IRVideoAnnotater::openAnnotaterWindowAction()
     {
         if(this->workspace.get() != nullptr){
             this->workspace->manageHeavyWeightComponents(true);
-            std::cout << "openAnnotaterWindowAction\n";
         }
     }
 }
@@ -141,13 +140,7 @@ void IRVideoAnnotater::createEventListComponent()
     // eventListComponent
     this->eventListComponent.reset(new VideoEventList(getStr(), this));
     addAndMakeVisible(this->eventListComponent.get());
-    
-    /*
-    std::function<void(VideoAnnotationEventComponent*)> callback = [this] (VideoAnnotationEventComponent* comp){ eventModifiedAction(static_cast<VideoAnnotationEventComponent*>(comp)); };
-    this->eventListComponent->addEventModifiedCallback(callback);
-    std::function<void(VideoAnnotationEventComponent*)> callback2 = [this] (VideoAnnotationEventComponent* comp){ eventSelectedAction(static_cast<VideoAnnotationEventComponent*>(comp)); };
-    this->eventListComponent->addEventSelectedCallback(callback2);
-     */
+
 }
 
 void IRVideoAnnotater::createWorkspace()
@@ -164,6 +157,28 @@ void IRVideoAnnotater::nothingSelected()
 {
     if(this->eventLogList.get() != nullptr)
         this->eventLogList->removeLogComponent();
+}
+
+void IRVideoAnnotater::nodeObjectPasted(IRNodeObject* obj)
+{
+    String name = obj->name;
+    std::cout << "nodeObjectPasted " << name << std::endl;
+    
+    if(name == "IRTextEditor")
+    {
+        createTextEventComponentFromIRNodeObject(obj);
+    }else if(name == "IRShape")
+    {
+        createShapeEventComponentFromNodeObject(obj);
+    }
+}
+
+void IRVideoAnnotater::nodeObjectWillDeleted(IRNodeObject* obj)
+{
+    auto event = static_cast<VideoAnnotationEventComponent* >(obj->getEventComponent());
+    
+    std::cout <<"nodeObejctWillDeleted , event delete " << event << std::endl;
+    deleteEventComponent(event);
 }
 // ==================================================
 
@@ -188,8 +203,7 @@ void IRVideoAnnotater::bindVideoPlayerObject()
         this->myVideoPlayerObject->videoPlayingUpdate = [this](double pos){ myVideoPlayingUpdate(pos); };
         // disable QT controller
         this->myVideoPlayerObject->enableController(false);
-        
-        //this->eventLogList->setLogComponent(this->myVideoPlayerObject->getObjController());
+
         
         this->videoPlayerObject->copyContents(this->myVideoPlayerObject.get());
 
@@ -315,7 +329,19 @@ void IRVideoAnnotater::updateVideoSize(Point<int> newVideoSize)
 void IRVideoAnnotater::myVideoPlayingUpdate(double pos)
 {
     this->videoTransport.setCurrentPlayingPosition(pos);
+    
+    
+    updateWorkspaceWithCurrentPlayingPosition(pos);
 }
+
+void IRVideoAnnotater::updateWorkspaceWithCurrentPlayingPosition(float pos)
+{
+    // test
+    this->workspace->enableTimeCodeAnimation(true);
+    this->workspace->setCurrentTimeCode(pos);
+    this->workspace->updateCurrentAnimation();
+}
+
 
 // ==================================================
 
@@ -349,21 +375,34 @@ void IRVideoAnnotater::deleteEventButtonAction ()
     deleteSelectedEvents();
 }
 
-void IRVideoAnnotater::playPositionChangedAction()
+void IRVideoAnnotater::playPositionChangedBySliderAction()
 {
+    std::cout << "playPositionChangedBySliderAction\n";
     stopAction();
     
     float p = this->videoTransport.getPlayPosition();
     //this->myVideoPlayerObject->getVideoPlayer()->setPlayPosition(p);
     this->myVideoPlayerObject->setPlayPosition(p);
+    
+    std::cout << "workspace\n";
+
+    // first reset animated Object
+    //this->workspace->resetAnimatedObjectList();
+    // and then, re-animate the corresponding objects
+    updateWorkspaceWithCurrentPlayingPosition(p);
+    
+    std::cout << "end\n";
+
 }
 
 void IRVideoAnnotater::playAction()
 {
+    this->workspace->setEditMode(false);
     this->myVideoPlayerObject->play();
 }
 void IRVideoAnnotater::stopAction()
 {
+    this->workspace->setEditMode(true);
     this->myVideoPlayerObject->stop();
 
 }
@@ -424,6 +463,7 @@ void IRVideoAnnotater::eventSelectedAction(Component* selectedEvent)
     
     // select object
     this->workspace->deselectAllObjects();
+    std::cout<< "nodeobj = " << event->getNodeObject() << std::endl;
     event->getNodeObject()->setSelected(true);
     
     using s = VideoAnnotationEventComponent::VideoAnnotationType;
@@ -485,7 +525,7 @@ void IRVideoAnnotater::videoTransportChangeListener()
             stopAction();
             break;
         case IRVideoTransport::playPositionChanged:
-            playPositionChangedAction();
+            playPositionChangedBySliderAction();
             break;
         default:
             break;
@@ -535,8 +575,6 @@ void IRVideoAnnotater::addEventComponent(VideoAnnotationEventComponent* eventCom
 
 void IRVideoAnnotater::deleteSelectedEvents()
 {
-    // deselect all object first
-    
     auto events = this->eventListComponent->getSelectedEventComponents();
     
     for(auto e : events)
@@ -554,6 +592,14 @@ void IRVideoAnnotater::deleteSelectedEvents()
     deleteEventOnTheLoadedVideo();
     //eventModifiedAction();
 }
+
+void IRVideoAnnotater::deleteEventComponent(VideoAnnotationEventComponent* event)
+{
+    this->eventListComponent->deleteEventComponent(event);
+    deleteEventOnTheLoadedVideo();
+    this->eventListComponent->newEventAdded();
+}
+
 
 // ==================================================
 
@@ -636,8 +682,28 @@ void IRVideoAnnotater::deleteEventOnTheLoadedVideo()
 
 void IRVideoAnnotater::nodeObjectSelectionChange(IRNodeObject* obj)
 {
-    std::cout << "nodeObjectSelectionChange "<< obj << std::endl;
+    std::cout << "nodeObjectSelectionChange "<< obj << " : " << obj->isSelected()<< std::endl;
+    
+    // return when obj is DESELECTED
+    if(!obj->isSelected()) return;
+    
     this->eventLogList->setLogComponent(obj->getObjController());
+
+    VideoAnnotationEventComponent* event = static_cast<VideoAnnotationEventComponent*>(obj->getEventComponent());
+    
+    this->eventListComponent->deSelectAllEventComponents();
+    
+    std:: cout << "event select  = "<< event << std::endl;
+    if(event != nullptr){
+        this->eventListComponent->selectEventComponent(event);
+        //this->videoTransport.setCurrentPlayingPosition(obj->getBeginTimeCode());
+        
+        this->myVideoPlayerObject->setPlayPosition(obj->getBeginTimeCode());
+    }
+    //event->setSelected(true);
+    
+  
+    
 }
 void IRVideoAnnotater::nodeObjectGetFocused(IRNodeObject* obj)
 {

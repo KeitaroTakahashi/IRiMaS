@@ -156,6 +156,9 @@ public:
     
     void setBeginTime(float beginTime)
     {
+        float duration = getEndTimeCode() - getBeginTimeCode();
+       
+        setEndTime(beginTime + duration);
         setBeginTime(getTimeCodeInString(beginTime));
     }
     
@@ -356,7 +359,7 @@ private:
         if(isBeginLargerThanEnd(beginSec, endSec))
         {
             std::cout << "begin " << beginSec << " is larger than " << endSec << std::endl;
-            endSec = beginSec; // add 1 sec. duration
+            endSec = beginSec + 0.1; // add 0.1 sec. duration
             setLabelVal(beginSec, endSec);
         }
     }

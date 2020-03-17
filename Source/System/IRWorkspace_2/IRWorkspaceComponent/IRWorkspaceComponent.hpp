@@ -170,6 +170,38 @@ public:
     Array<IRNodeObject*> getObjectList();
     Image getSnap();
     // ==================================================
+    
+    // ==================================================
+
+    //##### Time Code Animation ######
+public:
+    
+    void resetAnimatedObjectList();
+    void enableTimeCodeAnimation(bool flag);
+    bool isTimeCodeAnimationEnabled() const { return this->timeCodeAnimationEnable; }
+    
+    void setCurrentTimeCode(float currentTime);
+    
+    // update animation with already set current Time
+    void updateCurrentAnimation();
+    // update animation with currentTime
+    void updateCurrentAnimation(float currentTime);
+    
+private:
+    bool timeCodeAnimationEnable = false;
+    // store objects currently animated by IRNodeObjectAnimation such as VideoAnnotater
+    Array<IRNodeObject* > currentlyAnimatedObjects;
+    
+    void addCurrentlyAnimatedObjectList(IRNodeObject* obj);
+    void removeFromCurrentlyAnmatedObjectList(IRNodeObject* obj);
+    
+    void startAnimated(IRNodeObject* obj);
+    void endAnimated(IRNodeObject* obj);
+    
+    float currentTime = 0;
+    // ==================================================
+    // ==================================================
+public:
 
     //Listener
     class Listener
@@ -179,6 +211,11 @@ public:
         
         virtual void nodeObjectSelectionChange(IRNodeObject* obj) {};
         virtual void nodeObjectGetFocused(IRNodeObject* obj) {};
+        
+        virtual void nodeObjectCopied(IRNodeObject* obj) {};
+        virtual void nodeObjectPasted(IRNodeObject* obj) {};
+        virtual void nodeObjectWillDeleted(IRNodeObject* obj) {};
+
         
         virtual void nothingSelected() {};
         
@@ -198,6 +235,11 @@ public:
     void callEditModeChanged();
     void callHeavyObjectCreated(IRNodeObject* obj);
     void callNothingSelected();
+    
+    void callNodeObjectCopied(IRNodeObject* obj);
+    void callNodeObjectPasted(IRNodeObject* obj);
+    void callNodeObjectWillDeleted(IRNodeObject* obj);
+
 
     // Callback
     std::function<void()> requestWorkspaceListUpdate;
@@ -249,6 +291,9 @@ private:
     // ==================================================
 
     Array<IRNodeObject* > objects;
+    
+
+
     IRNodeObjectSelector *selector;
     
     Array<IRNodeObject* > copiedObjects;

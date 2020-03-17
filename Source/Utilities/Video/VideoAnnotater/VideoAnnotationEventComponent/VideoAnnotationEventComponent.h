@@ -41,6 +41,10 @@ public:
         this->activeButton.setDrawRoundedSquare(false);
         addAndMakeVisible(&this->activeButton);
         this->activeButton.onClick = [this]{ changeActive(); };
+        
+        this->timeCodeUI.addMouseListener(this, true);
+        this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
+
     }
     
 
@@ -101,10 +105,19 @@ public:
             setActive(false);
             this->activeButton.setImage(getStr()->ICONBANK.icon_active.gray);
             this->activeButton.setDrawColour(Colour(100, 100, 100));
+            
+            // deactivate animation
+            auto obj = getNodeObject();
+            if(obj != nullptr) obj->setAnimationActive(false);
+            
         }else{
             setActive(true);
             this->activeButton.setImage(getStr()->ICONBANK.icon_active.white);
             this->activeButton.setDrawColour(Colour(255, 255, 255));
+            
+            // activate animation 
+            auto obj = getNodeObject();
+            if(obj != nullptr) obj->setAnimationActive(true);
 
         }
         callEventActiveChanged();
@@ -126,10 +139,38 @@ public:
     // get VideoAnnotation in SRT format (only text is relevant to the usual SRT and others are TIAALS original formats)
     virtual srtWriter::SRT_STRUCT getSRT() = 0;
     
-    void setNodeObject(IRNodeObject* obj) { this->nodeObj = obj; }
+    void setNodeObject(IRNodeObject* obj)
+    {
+        this->nodeObj = obj;
+        updateNodeObjTimeCode();
+        nodeObjectSetAction(obj);
+        
+    }
     IRNodeObject* getNodeObject() { return this->nodeObj; }
+    virtual void nodeObjectSetAction(IRNodeObject* obj) {};
     
     // ==================================================
+    // set sort value for ascending sort
+    void timeCodeChanged()
+    {
+        setSortValue(this->timeCodeUI.getBeginTimeCode());
+        updateNodeObjTimeCode();
+        eventModified();
+    }
+    
+    void updateNodeObjTimeCode()
+    {
+        if(this->nodeObj != nullptr)
+        {
+            // set animation time code
+            this->nodeObj->setBeginTimeCode (getBeginTimeCode());
+            this->nodeObj->setEndTimeCode   (getEndTimeCode());
+        }
+    }
+    
+    // ==================================================
+
+    
     void eventDeactivated();
     void eventActivated();
     // ==================================================

@@ -84,23 +84,32 @@ public:
 
     //==================================================
     // EVENTCOMPONENT
-    void createTextEventComponent()
+    AnnotationTextEventComponent* createTextEventComponent()
     {
-        this->videoListComponent->createTextEventComponent();
+        return this->videoListComponent->createTextEventComponent();
         
     }
     
-    void createTextEventComponent(float beginTime,
-                                  float endTime)
+    AnnotationTextEventComponent* createTextEventComponent(float beginTime,
+                                                       float endTime)
     {
-        this->videoListComponent->createTextEventComponent(beginTime,
-                                                           endTime);
+        return this->videoListComponent->createTextEventComponent(beginTime,
+                                                                  endTime);
         
         
     }
-    void createShapeEventComponent()
+    
+    AnnotationShapeEventComponent* createShapeEventComponent()
     {
-       this->videoListComponent->createShapeEventComponent();
+       return this->videoListComponent->createShapeEventComponent();
+
+    }
+    
+    AnnotationShapeEventComponent* createShapeEventComponent(float beginTime,
+                                                             float endTime)
+    {
+       return this->videoListComponent->createShapeEventComponent(beginTime,
+                                                                  endTime);
 
     }
     void createImageEventComponent()
@@ -125,6 +134,7 @@ public:
         return this->videoListComponent->eventComponents;
     }
     
+    
     //==================================================
 
     void createEventComponent(VideoAnnotationEventComponent* comp)
@@ -135,6 +145,11 @@ public:
     void deleteSelectedEventComponent()
     {
         this->videoListComponent->deleteSelectedEventComponent();
+    }
+    
+    void deleteEventComponent(VideoAnnotationEventComponent* comp)
+    {
+        this->videoListComponent->clearEventComponent(comp);
     }
     
     void clearAllEventComponent()

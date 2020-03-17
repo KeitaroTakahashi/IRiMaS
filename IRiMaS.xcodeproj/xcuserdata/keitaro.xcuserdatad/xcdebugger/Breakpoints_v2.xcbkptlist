@@ -14,37 +14,21 @@
             symbolName = "*0x10024b6f2">
             <Locations>
                <Location
-                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - 12abe1cab856fb2b"
+                  uuid = "E59D5B71-FC85-49C6-93D2-8154A077192C - fbd17472fe3b480"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "exprDup"
+                  symbolName = "sqlite3ExprIfTrue"
                   moduleName = "IRiMaS"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/keitaro/program/IRIMAS/IRiMaS2020/Source/Utilities/SQL/SQLite/sqlite3.c"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "97322"
-                  endingLineNumber = "97322"
-                  offsetFromSymbolStart = "18">
+                  startingLineNumber = "100452"
+                  endingLineNumber = "100452"
+                  offsetFromSymbolStart = "50">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "C89B0A37-96BF-4193-BF9A-1B1AAE21D15C"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/System/NodeObject/IRNodeObject/IRNodeObject.hpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
-            landmarkName = "IRNodeObject"
-            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

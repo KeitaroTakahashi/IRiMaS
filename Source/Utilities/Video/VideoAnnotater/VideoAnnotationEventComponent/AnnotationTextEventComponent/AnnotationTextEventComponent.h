@@ -21,17 +21,9 @@ public:
         setType(VideoAnnotationEventComponent::TEXT);
         
         addAndMakeVisible(&this->timeCodeUI);
-        this->timeCodeUI.addMouseListener(this, true);
-        this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
-
+        
         createTextEditor();
         
-        this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
-        this->TextSettingButton.addMouseListener(this, true);
-        this->TextSettingButton.setDrawCircle(true);
-        this->TextSettingButton.setDrawRoundedSquare(false);
-        addAndMakeVisible(&this->TextSettingButton);
-        this->TextSettingButton.onClick = [this]{ TextSettingButtonClickedAction(); };
     }
     
     AnnotationTextEventComponent(IRStr* str,
@@ -45,19 +37,10 @@ public:
         setType(VideoAnnotationEventComponent::TEXT);
         
         addAndMakeVisible(&this->timeCodeUI);
-        this->timeCodeUI.addMouseListener(this, true);
-        this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
         this->timeCodeUI.setBeginTime(beginTime);
         this->timeCodeUI.setEndTime(endTime);
 
         createTextEditor();
-        
-        this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
-        this->TextSettingButton.setDrawCircle(true);
-        this->TextSettingButton.setDrawRoundedSquare(false);
-        addAndMakeVisible(&this->TextSettingButton);
-        this->TextSettingButton.onClick = [this]{ TextSettingButtonClickedAction(); };
-        
         
         timeCodeChanged();
     }
@@ -75,26 +58,16 @@ public:
         setType(VideoAnnotationEventComponent::TEXT);
         
         addAndMakeVisible(&this->timeCodeUI);
-        this->timeCodeUI.addMouseListener(this, true);
-        this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
         this->timeCodeUI.setBeginTime(beginTime);
         this->timeCodeUI.setEndTime(endTime);
 
         createTextEditor();
-        
-        this->TextSettingButton.setImage(getStr()->ICONBANK.icon_text.white);
-        this->TextSettingButton.setDrawCircle(true);
-        this->TextSettingButton.setDrawRoundedSquare(false);
-        addAndMakeVisible(&this->TextSettingButton);
-        this->TextSettingButton.onClick = [this]{ TextSettingButtonClickedAction(); };
-        
-        
+      
         timeCodeChanged();
     }
     
     ~AnnotationTextEventComponent()
     {
-        this->textEditor.reset();
     }
     // ==================================================
     void paint(Graphics& g ) override
@@ -102,7 +75,7 @@ public:
         
         VideoAnnotationEventComponent::paint(g);
         
-        g.fillAll(getStr()->SYSTEMCOLOUR.fundamental.withAlpha(0.7f));
+        //g.fillAll(getStr()->SYSTEMCOLOUR.fundamental.withAlpha(0.7f));
         
     }
     
@@ -113,11 +86,12 @@ public:
         VideoAnnotationEventComponent::resized();
         
         this->timeCodeUI.setBounds(0, 0, 226, h);
-        //this->textContents.setBounds(230, 5, getWidth() - 200 - 120, 30);
-        this->textEditor->setObjectBounds(230, margin,
-                                          getWidth() - 200 -120,
-                                          getHeight() - margin*2);
+        this->textEditor.setBounds(230, margin,
+                                   getWidth() - 200 -120,
+                                   getHeight() - margin*2);
         
+        this->textEditor.setInputRestrictions(this->textEditor.getWidth() / 12);
+
         int buttonSize = h - margin*2;
         this->TextSettingButton.setBounds(getWidth() - margin*3 - buttonSize * 2, margin, buttonSize, buttonSize);
     }
@@ -125,9 +99,6 @@ public:
 
     void createTextEditor()
     {
-        std::cout << "createTextEditor\n";
-        this->textEditor.reset( new IRTextEditorObject(this, getStr()) );
-        
         //set default bounds adjusted to the video size in pixel
         auto videoSize = this->getBase()->getVideoSize();
         auto rect = Rectangle<int> (0, 0,
@@ -135,28 +106,37 @@ public:
                                     videoSize.getY());
         rect.setHeight(rect.getHeight() * 0.2);
         if(rect.getHeight() < 50) rect.setHeight(50);
-        this->textEditor->controller->getArrangeController()->setRectangle(rect);
         
-        
-        addAndMakeVisible(this->textEditor.get());
-        this->textEditor->addMouseListener(this,true);
+        addAndMakeVisible(this->textEditor);
         // here initialy in Edit mode
-        this->textEditor->setEditMode(true);
-        this->textEditor->onTextChange = [this]{ onTextChange(); };
-        this->textEditor->onReturnKey  = [this]{ onReturnKey(); };
         
-        this->textEditor->setBackgroundColour(getStr()->SYSTEMCOLOUR.fundamental.withAlpha(0.7f));
-        this->textEditor->applyColourToAllText(Colours::white);
+        this->textEditor.setMultiLine(false);
+        this->textEditor.setCaretVisible(false);
+        this->textEditor.setReadOnly(true);
+        this->textEditor.setColour(TextEditor::backgroundColourId, getStr()->SYSTEMCOLOUR.contents);
+        this->textEditor.applyColourToAllText(getStr()->SYSTEMCOLOUR.text);
+    }
+    
+    void nodeObjectSetAction(IRNodeObject* obj) override
+    {
+        this->textEditorObj = static_cast<IRTextEditorObject*>(obj);
+        this->textEditorObj->onTextChange = [this] { onTextChangeAction(); };
+    }
+    
+    void onTextChangeAction()
+    {
+        // insert only first 10 characters
+        String text = this->textEditorObj->textEditor.getText().substring(0, 100);
+        
+        if(text.containsAnyOf ("\r\n"))
+        {
+            text = text.replaceCharacters("\r\n", "  ");
+        }
+        this->textEditor.setText(text);
     }
     // ==================================================
     
-    // set sort value for ascending sort
-    void timeCodeChanged()
-    {
-        setSortValue(this->timeCodeUI.getBeginTimeCode());
-        
-        eventModified();
-    }
+    
     
     // ==================================================
     srtWriter::SRT_STRUCT getSRT() override
@@ -173,30 +153,9 @@ public:
         return this->textContents.getText().toStdString();
     }
     
-    IRTextEditorObject* getIRTextEditorObject()
-    {
-        return this->textEditor.get();
-    }
     // ==================================================
     
-    void onTextChange()
-    {
-        int margin = 5;
-        int h = this->textEditor->getTextHeight() + margin*4;
-        setSize(getWidth(), h);
-        
-        setInitHeight(h);
-
-        //eventModified();
-
-        // IRVideoAnnotaterDelegate calls eventModifiedAction method in IRVidenoAnnotaterBase
-        eventModifiedAction(this);
-    }
-    
-    void onReturnKey()
-    {
-        
-    }
+  
     // ==================================================
 
 private:
@@ -207,12 +166,8 @@ private:
     
     IRImageButton TextSettingButton;
     
-    std::shared_ptr<IRTextEditorObject> textEditor;
-    
-    void TextSettingButtonClickedAction()
-    {
-        selectedAction();
-    }
+    TextEditor textEditor;
+    IRTextEditorObject* textEditorObj = nullptr;
 
     // ==================================================
     

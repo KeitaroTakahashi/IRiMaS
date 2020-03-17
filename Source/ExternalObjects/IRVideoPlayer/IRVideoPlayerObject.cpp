@@ -10,21 +10,29 @@
 IRVideoPlayerObject::IRVideoPlayerObject(Component* parent, IRStr* str, bool withOpenButton) :
 IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 {
-    
     setOpaque(false);
-       
     // original function to give this ChangeListener to controller->UI
+    
+    
+    // workspace
+    Rectangle<int> a (0,0,0,0);
+    this->workspace.reset(new IRNodeObjectWorkspace("VideoAnnotater", a ,getStr()));
+    this->workspace->setDraggableMargin(Rectangle<int>(0, 0, 0, 0));
+    addAndMakeVisible(this->workspace.get());
+    this->workspace->addListener(this);
     
     this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str, withOpenButton);
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
     addAndMakeVisible(this->videoPlayer.get());
     this->videoPlayer->updateAnimationFrameCallback = [this](double pos) { videoPlayingUpdateAction(pos); };
-
+    
+    
 }
 
 IRVideoPlayerObject::~IRVideoPlayerObject()
 {
     this->videoPlayer.reset();
+    this->workspace.reset();
 
 }
 
@@ -42,10 +50,11 @@ IRNodeObject* IRVideoPlayerObject::copyContents(IRNodeObject* object)
     {
         obj->openFile(movieFile, false);
     }
-    
     return obj;
 }
+
 // --------------------------------------------------
+
 IRNodeObject* IRVideoPlayerObject::copyDragDropContents(IRNodeObject* object)
 {
     IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent, getStr());
@@ -60,6 +69,7 @@ void IRVideoPlayerObject::shareContentsWith(IRVideoPlayerObject* withObject)
         withObject->openFile(movieFile, false);
     }
 }
+
 // --------------------------------------------------
 
 // --------------------------------------------------
@@ -87,6 +97,13 @@ void IRVideoPlayerObject::loadThisFromSaveData(t_json data)
 void IRVideoPlayerObject::resized()
 {
    this->videoPlayer->setBounds(getLocalBounds().reduced(0));
+    
+    if(this->workspace.get() != nullptr)
+    {
+        auto videoSize = getVideoPlayer()->getBounds();
+        this->workspace->setBounds(videoSize);
+        
+    }
 }
 // --------------------------------------------------
 void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
@@ -164,22 +181,28 @@ Point<int> IRVideoPlayerObject::getVideoSize()
     int h = this->videoPlayer->getVideoSize().getHeight();
     return Point<int>( w, h );
 }
+
 // --------------------------------------------------
+
 void IRVideoPlayerObject::mouseUpEvent(const MouseEvent& e)
 {
     //recover event
     if(this->enableControllerFlag)
     {
         if(!this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
+        {
             this->videoPlayer->setNeedController(true);
+        
+            refreshZIndex();
+        }
     }
     
     if(this->resizing)
     {
-        callHeavyComponentCreated(this);
         this->resizing = false;
     }
     
+
 }
 // --------------------------------------------------
 void IRVideoPlayerObject::paint(Graphics& g)
@@ -199,8 +222,7 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
     
     bringThisToFront();
     // call reset Heavy-weight components
-    callHeavyComponentCreated(this);
-    
+    refreshZIndex();
     // called only when isCallback is true. isCallback is defined in this class.
     if(this->videoLoadCompletedCallbackFunc != nullptr)
     {
@@ -208,9 +230,12 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
             this->videoLoadCompletedCallbackFunc();
     }
 
-    
+    std::cout << "IRVideoPlayerObject::videoLoadCompletedAction\n";
+
     // virtual
     videoLoadCompletedCallback();
+    
+    
     
 }
 // --------------------------------------------------
@@ -227,6 +252,9 @@ void IRVideoPlayerObject::moveToFrontAction()
     std::cout << "IRVideoPlayerObject::moveToFrontAction\n";
     if(this->videoPlayer->hsaVideo())
         this->videoPlayer->bringViewToFront();
+    
+    this->workspace->bringThisToFront("Workspace bringToThisFront");
+
     
 }
 
@@ -265,6 +293,7 @@ void IRVideoPlayerObject::play()
 {
     this->videoPlayer->play();
 }
+
 void IRVideoPlayerObject::stop()
 {
     this->videoPlayer->stop();
@@ -275,7 +304,7 @@ void IRVideoPlayerObject::setPlayPosition(double newPositionInSec)
     this->videoPlayer->setPlayPosition(newPositionInSec);
     
     // inform the new play position to its child classes.
-    videoPlayingUpdateAction(newPositionInSec);
+    //videoPlayingUpdateAction(newPositionInSec);
 }
 // --------------------------------------------------
 
@@ -294,11 +323,56 @@ void IRVideoPlayerObject::statusChangedCallback(IRNodeComponentStatus status)
     }
 }
 
-// --------------------------------------------------
+// ---------------------------------------------------
+
 void IRVideoPlayerObject::enableController(bool flag)
 {
     this->enableControllerFlag = flag;
     this->videoPlayer->setNeedController(flag);
+}
 
+// ---------------------------------------------------
+// WORKSPACE
+
+void IRVideoPlayerObject::editModeChanged(IRWorkspaceComponent* changedSpace)
+{
+    
+    
+}
+
+// ---------------------------------------------------
+
+
+void IRVideoPlayerObject::refreshZIndex()
+{
+
+    // set up workspace
+    this->workspace->setFixObjectSizeRatioWithOriginalSize(false, getBounds().toFloat());
+    this->workspace->manageHeavyWeightComponents(true);
+    this->workspace->bringThisToFront("Workspace bringToThisFront");
+    callHeavyComponentCreated(this);
+
+    // it is important to call this method to get keyboard focus.
+    // but do not use bringThisToFront as zIndex of the HeavyWeightComponent will be changed
+    this->workspace->toFront(true);
+    
+    
+    
+    
+}
+// ---------------------------------------------------
+
+
+void IRVideoPlayerObject::resizingSquareClickedAction(IRResizeSquare2::MovableDirection direction)
+{
+    
+}
+void IRVideoPlayerObject::resizingSquareReleasedAction(IRResizeSquare2::MovableDirection direction)
+{
+    if(this->videoPlayer->hsaVideo())
+        refreshZIndex();
+}
+void IRVideoPlayerObject::resizingSquareDraggedAction(MouseEvent e)
+{
     
 }

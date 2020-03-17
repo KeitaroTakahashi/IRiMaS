@@ -398,17 +398,22 @@ void IRNodeComponent::deleteThisComponentEvent(const MouseEvent& e)
 
 void IRNodeComponent::setSelected(bool flag)
 {
-    std::cout << "setSelected\n";
-    this->selectedFlag = flag;
+    std::cout << "setSelected " << flag << std::endl;
+    // if this object is not visible, then do nothing.
+    if(!isVisible()) return;
     
+    if(this->selectedFlag == flag) return;
+    
+    this->selectedFlag = flag;
+
     if(flag)
     {
-        this->parent->addAndMakeVisible(this->resizingSquare);
+        //this->parent->addAndMakeVisible(this->resizingSquare);
         this->resizingSquare.enableSquare(true);
         //heavyComponentCreatedFunc();
         //this->resizingSquare.toFront(true);
     }else{
-        this->parent->removeChildComponent(&this->resizingSquare);
+        //this->parent->removeChildComponent(&this->resizingSquare);
         this->resizingSquare.enableSquare(false);
     }
     
@@ -454,27 +459,42 @@ void IRNodeComponent::defaultPopupMenuEvents()
 
 // ==================================================
 
+void IRNodeComponent::showThisObject(bool flag)
+{
+    this->resizingSquare.enableSquare(flag);
+    
+    setVisible(flag);
+    
+    IROpenGLManager manager(&this->openGLContext);
+    manager.setOpenGLContextAlpha(0);
+
+}
 // ==================================================
 
 void IRNodeComponent::resizingSquareClicked(IRResizeSquare2::MovableDirection direction)
 {
     std::cout << "resizingSquareClicked : " << direction << std::endl;
     resizingObjectFunc(direction);
+    resizingSquareClickedAction(direction);
+
 }
 
 void IRNodeComponent::resizingSquareReleased(IRResizeSquare2::MovableDirection direction)
 {
     std::cout << "resizingSquareReleased : " << direction << std::endl;
 
-    
     //reset
     resizingObjectFunc(IRResizeSquare2::MovableDirection::None);
+    
+    resizingSquareReleasedAction(direction);
 }
 
 void IRNodeComponent::resizingSquareDragged(MouseEvent e)
 {
     //std::cout <<"resizingSquareDragged : dragged!!\n";
     resizeThisComponentEvent(e);
+    resizingSquareDraggedAction(e);
+
 }
 
 void IRNodeComponent::resizingObjectFunc(IRResizeSquare2::MovableDirection direction)

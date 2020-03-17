@@ -72,13 +72,16 @@ public:
     // update video player and share the status.
     void updateVideoPlayerOfThis();
     void updateVideoPlayerOfWorkspace();
+    
+    void updateWorkspaceWithCurrentPlayingPosition(float pos);
     // ==================================================
     void openAnnotationMenu();
     void closeAnnotationMenu();
     
     void addEventButtonAction();
     void deleteEventButtonAction();
-    void playPositionChangedAction();
+    // by slider
+    void playPositionChangedBySliderAction();
     void playAction();
     void stopAction();
     // ==================================================
@@ -142,12 +145,17 @@ private:
     void clearEventComponent(VideoAnnotationEventComponent* eventComponent);
     void addEventComponent(VideoAnnotationEventComponent* eventComponent);
     void deleteSelectedEvents();
+    void deleteEventComponent(VideoAnnotationEventComponent* event);
     
     void createTextEventComponent();
+    void createTextEventComponentFromIRNodeObject(IRNodeObject* obj);
     void createShapeEventComponent();
+    void createShapeEventComponentFromNodeObject(IRNodeObject* obj);
     void createImageEventComponent();
     void createAudioEventComponent();
     void eventComponentResized();
+    
+    void createNodeObjectOnEvent(IRNodeObject* obj, VideoAnnotationEventComponent* event);
 
     // ==================================================
     //IRWorkspace
@@ -156,6 +164,8 @@ private:
     // this function is, for instance, used to update the Object Controller in the IRRightBar
     void createWorkspace();
     void nothingSelected() override;
+    void nodeObjectPasted(IRNodeObject* obj) override;
+    void nodeObjectWillDeleted(IRNodeObject* obj) override;
     // workspaceComponent::Listener
     void nodeObjectSelectionChange(IRNodeObject* obj) override;
     void nodeObjectGetFocused(IRNodeObject* obj)override;

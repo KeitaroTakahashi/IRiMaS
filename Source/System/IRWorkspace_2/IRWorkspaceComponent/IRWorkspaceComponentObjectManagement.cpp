@@ -159,6 +159,8 @@ void IRWorkspaceComponent::pasteObject(IRNodeObject *obj, bool addToSelected)
         this->selector->addSelectedObjects();
         copySelectedObjects();
     }
+    
+    callNodeObjectPasted(newObj);
 }
 void IRWorkspaceComponent::duplicateObject(IRNodeObject *obj)
 {
@@ -175,12 +177,13 @@ void IRWorkspaceComponent::deleteObject(IRNodeObject *obj)
         
         int index = this->objects.indexOf(obj);
         
-        // DUFEU ADDON
         if (obj->isContainAudioSource())
             this->mixer.removeSource(obj->getAudioSource());
-        // END DUFEU ADDON
         
         if(index >= 0){
+            
+            callNodeObjectWillDeleted(obj);
+            
             this->objects.remove(index);
             delete obj;
         }
@@ -506,6 +509,36 @@ void IRWorkspaceComponent::callNothingSelected()
     // check if the objects are not deleted, if deleted, return
     if(checker.shouldBailOut()) return;
     this->listeners.callChecked(checker, [this](Listener& l){ l.nothingSelected(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
+// ============================================================
+
+void IRWorkspaceComponent::callNodeObjectCopied(IRNodeObject* obj)
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [obj](Listener& l){ l.nodeObjectCopied(obj); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+void IRWorkspaceComponent::callNodeObjectPasted(IRNodeObject* obj)
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [obj](Listener& l){ l.nodeObjectPasted(obj); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+void IRWorkspaceComponent::callNodeObjectWillDeleted(IRNodeObject* obj)
+{
+    Component::BailOutChecker checker(this);
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [obj](Listener& l){ l.nodeObjectWillDeleted(obj); });
     //check again
     if(checker.shouldBailOut()) return;
 }

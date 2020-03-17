@@ -102,6 +102,9 @@ void IRVideoAnnotaterInterfaceObject::loadThisFromSaveData(t_json data)
 
 void IRVideoAnnotaterInterfaceObject::videoLoadCompletedCallback()
 {
+    // call this
+    IRVideoAnnotaterObject::videoLoadCompletedCallback();
+    
     this->controller->updateAnnotater();
 }
 // --------------------------------------------------

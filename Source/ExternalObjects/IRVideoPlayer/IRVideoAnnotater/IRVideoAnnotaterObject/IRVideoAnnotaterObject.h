@@ -30,6 +30,7 @@ public:
     {
         IRVideoPlayerObject::resized();
         
+        
         int visibleIndex = 1;
         
         int videoY = getVideoPlayer()->getY();
@@ -38,9 +39,10 @@ public:
         {
             
           
-          
             visibleIndex ++;
         }
+        
+        
     }
     // --------------------------------------------------
     
@@ -142,6 +144,7 @@ public:
                 return c;
             }
         }
+        return nullptr;
     }
     
     // --------------------------------------------------
@@ -198,17 +201,36 @@ public:
     // --------------------------------------------------
     // --------------------------------------------------
 
+    virtual void videoLoadCompletedCallback() override
+    {
+        std::cout << "IRVideoAnnotaterObject::videoLoadCompletedCallback\n";
+        
+        
+
+        
+        
+        resized();
+
+    }
     
+    // --------------------------------------------------
+
 private:
     // --------------------------------------------------
+    
+    // --------------------------------------------------
+
     std::vector<VideoAnnotationEventComponent* > annotationComponents;
     std::vector<VideoAnnotationEventComponent* > visibleAnnotationComponents;
     void clearVisibleAnnotationComponents()
     {
     }
+    
     void addVisibleAnnotationComponents(VideoAnnotationEventComponent* visibleComponent)
     {
+    
     }
+    
     void removeVisibleAnnotationComponents(VideoAnnotationEventComponent* visibleComponent)
     {
 
@@ -231,7 +253,7 @@ private:
 
     }
     // --------------------------------------------------
-
+    
     // --------------------------------------------------
     // --------------------------------------------------
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoAnnotaterObject)

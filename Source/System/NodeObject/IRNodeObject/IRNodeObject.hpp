@@ -10,10 +10,12 @@
 #include "IRPreferenceObject.hpp"
 #include "IRObjectController.hpp"
 #include "IREnclosedObject.hpp"
+#include "IRNodeObjectAnimation.hpp"
 
 #include "ObjectArranger.hpp"
 
 class IRNodeObject : public IRNodeComponent,
+public IRNodeObjectAnimation,
 public ChangeListener
 {
     
@@ -95,6 +97,13 @@ public:
     virtual void ObjectPositionChanged(int x, int y) override {};
     virtual void ObjectBoundsChanged(Rectangle<int> bounds) override {};
     // ==================================================
+    
+    // ###### Time Code Anomation ######
+    
+    void StatusUpdated() override;
+    
+    // ==================================================
+
     // STATUS
     
     IRNodeObjectStatus getStatus() const { return this->status; }
@@ -107,6 +116,7 @@ public:
     void setEncloseColour(Colour colour);
     // ==================================================
 
+    // ==================================================
 
     class Listener
     {
@@ -168,8 +178,7 @@ public:
         virtual void heavyComponentCreated(IRNodeObject* obj) {};
         // Invoke an action to move IRNodeObject to the top of objectZOrder on the workspace.
         virtual void addHeavyCopmonentToTopZOrder(IRNodeObject* obj) {};
-        
-        
+
         
         // INITIAL BOUNDS
         virtual void initialBoundsUpdated(IRNodeObject* obj) {};
@@ -338,6 +347,15 @@ private:
     void arrangeControllerPositionChangedAction(int x, int y);
     void arrangeControllerBoundsChangedAction(Rectangle<int> bounds);
     void arrangeControllerChangedCallback(ChangeBroadcaster* source);
+    // ==================================================
+    // EVENT COMPONENT //
+    // for videoAnnotater or Any other objects
+    Component* eventComponent = nullptr;
+public:
+    void setEventComponent(Component* event) { this->eventComponent = event; }
+    Component* getEventComponent() { return this->eventComponent; }
+    
+private:
 
     // ==================================================
     // LISTENER //

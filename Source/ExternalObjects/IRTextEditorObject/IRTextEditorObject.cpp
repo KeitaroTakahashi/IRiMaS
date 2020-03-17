@@ -66,6 +66,7 @@ IRNodeObject* IRTextEditorObject::copyThis()
     newObj->setBackgroundColour(this->backgroundColour);
     newObj->setAlign(this->alignId);
     newObj->textEditor.setText(this->textEditor.getText() ,dontSendNotification);
+    newObj->applyColourToAllText(this->textColour);
     return newObj;
 }
 

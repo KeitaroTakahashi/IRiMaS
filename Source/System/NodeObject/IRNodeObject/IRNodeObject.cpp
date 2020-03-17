@@ -4,8 +4,9 @@
 IRNodeObject::IRNodeObject(Component* parent,
                            String name,
                            IRStr* str,
-                           NodeObjectType objectType)
-: IRNodeComponent(parent, name, str, objectType)
+                           NodeObjectType objectType) :
+IRNodeComponent(parent, name, str, objectType),
+IRNodeObjectAnimation(this)
 {
     this->parent = parent;
 }
@@ -776,3 +777,12 @@ void IRNodeObject::arrangeControllerBoundsChangedAction(Rectangle<int> bounds)
     if(this->arrangeController != nullptr)
         this->arrangeController->setRectangle(getBounds());
  }
+
+// ==================================================
+//##### Animation #####
+// ==================================================
+
+void IRNodeObject::StatusUpdated()
+{
+    
+}

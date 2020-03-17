@@ -19,8 +19,24 @@ public:
         setType(VideoAnnotationEventComponent::SHAPE);
         
         addAndMakeVisible(&this->timeCodeUI);
-        this->timeCodeUI.addMouseListener(this, true);
-        this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
+        
+
+    }
+    
+    AnnotationShapeEventComponent(IRStr *str,
+                                  IRVideoAnnotaterBase* base,
+                                  float beginTime,
+                                  float endTime,
+                                  int videoLengthInSecond = 0) :
+    VideoAnnotationEventComponent(str, base, videoLengthInSecond)
+    {
+        setType(VideoAnnotationEventComponent::SHAPE);
+        
+        addAndMakeVisible(&this->timeCodeUI);
+        this->timeCodeUI.setBeginTime(beginTime);
+        this->timeCodeUI.setEndTime(endTime);
+        
+        timeCodeChanged();
 
     }
     
@@ -49,14 +65,6 @@ public:
         return srtWriter::SRT_STRUCT();
     }
     // ==================================================
-    
-    // set sort value for ascending sort
-    void timeCodeChanged()
-    {
-        setSortValue(this->timeCodeUI.getBeginTimeCode());
-        
-        eventModified();
-    }
     
     // ==================================================
     /*

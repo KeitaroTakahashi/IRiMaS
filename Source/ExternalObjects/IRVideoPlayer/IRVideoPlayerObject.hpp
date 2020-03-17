@@ -10,8 +10,12 @@
 
 #include "IRNodeObject.hpp"
 #include "IRVideoPlayer.h"
+#include "IRNodeObjectWorkspace.hpp"
+#include "IRTextEditorObject.hpp"
 
-class IRVideoPlayerObject : public IRNodeObject
+class IRVideoPlayerObject : public IRNodeObject,
+private IRWorkspaceComponent::Listener
+
 {
     
 public:
@@ -90,12 +94,32 @@ public:
     
     void resizeThisComponentEvent(const MouseEvent& e) override;
     void resizeThisComponent(Rectangle<int> rect);
+    
+    
 private:
+    // --------------------------------------------------
+    // WORKSPACE
+    std::shared_ptr<IRNodeObjectWorkspace> workspace;
+    
+    void editModeChanged(IRWorkspaceComponent* changedSpace) override;
+    
+    
+    // --------------------------------------------------
+    // ResizingSquare
+
+    void resizingSquareClickedAction(IRResizeSquare2::MovableDirection direction) override;
+    void resizingSquareReleasedAction(IRResizeSquare2::MovableDirection direction) override;
+    void resizingSquareDraggedAction(MouseEvent e) override;
+    
     // --------------------------------------------------
     // call back function by IRVideoPlayer
     // use videoLoadCompletedCallback() to overload
     void videoLoadCompletedAction();
     void videoPlayingUpdateAction(double pos);
+    
+    // --------------------------------------------------
+    void refreshZIndex();
+    
     // --------------------------------------------------
     bool enableControllerFlag = true;
     // --------------------------------------------------

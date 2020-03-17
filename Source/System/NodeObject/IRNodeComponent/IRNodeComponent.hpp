@@ -286,7 +286,7 @@ public:
     bool isResizing() const;
     void setResizingStart(bool flag);
     
-    
+    void showThisObject(bool flag);
     // ---------------------------------------------
 
     // return a flag shows whether this Component is being selected or not. Default is false.
@@ -321,10 +321,14 @@ public:
     bool isResizingSquareInitialized = false;
    
     // called when resizing square is clicked.
-    void resizingSquareClicked(IRResizeSquare2::MovableDirection direction);
+private: void resizingSquareClicked(IRResizeSquare2::MovableDirection direction);
+public: virtual void resizingSquareClickedAction(IRResizeSquare2::MovableDirection direction) {}
+
     // called when resizing square is released (mouse up event)
-    void resizingSquareReleased(IRResizeSquare2::MovableDirection direction);
-    void resizingSquareDragged(MouseEvent e);
+private: void resizingSquareReleased(IRResizeSquare2::MovableDirection direction);
+public: virtual void resizingSquareReleasedAction(IRResizeSquare2::MovableDirection direction) {}
+private: void resizingSquareDragged(MouseEvent e);
+public: virtual void resizingSquareDraggedAction(MouseEvent e){}
 
     void resizingObjectFunc(IRResizeSquare2::MovableDirection direction);
     

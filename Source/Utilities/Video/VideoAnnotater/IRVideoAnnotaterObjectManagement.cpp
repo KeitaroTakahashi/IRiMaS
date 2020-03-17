@@ -7,6 +7,24 @@
 
 #include "IRVideoAnnotater.hpp"
 
+void IRVideoAnnotater::createNodeObjectOnEvent(IRNodeObject* obj,
+                                               VideoAnnotationEventComponent* event)
+{
+    obj->setObjectBounds(this->workspace->getWidth()/2,
+                             this->workspace->getHeight()/2,
+                             this->workspace->getWidth()/4,
+                             60);
+    this->workspace->createObject(obj);
+    obj->bringThisToFront();
+    this->workspace->deselectAllObjects();
+    obj->setEventComponent(event);
+    event->setNodeObject(obj);
+    obj->setSelected(true);
+    // initially the object is shown
+    obj->setAnimated(true);
+}
+
+
 void IRVideoAnnotater::createTextEventComponent()
 {
     // automatically fill begin and end time Code
@@ -14,55 +32,69 @@ void IRVideoAnnotater::createTextEventComponent()
     float betinTimeInSec = this->videoTransport.getPlayPosition();
     float endTimeInSec = betinTimeInSec + 3.0;
 
-    this->eventListComponent->createTextEventComponent(betinTimeInSec,
-                                                       endTimeInSec);
+    auto event = this->eventListComponent->createTextEventComponent(betinTimeInSec,
+                                                                    endTimeInSec);
     this->annotationMenu->closeAction();
-    
-    // create eventComponent on the video
-    auto events = this->eventListComponent->getEventComponents();
-    auto event = events[events.size() - 1];
     createEventOnTheLoadedVideo(event);
 
     
     IRVATextEditorObject* nodeObj = static_cast<IRVATextEditorObject*>(IRObjectCreater<IRVATextEditorObject>().create(this->workspace.get(),
                                                                 getStr()));
-    nodeObj->setObjectBounds(this->workspace->getWidth()/2,
-                             this->workspace->getHeight()/2,
-                             this->workspace->getWidth()/2,
-                             60);
-    this->workspace->createObject(nodeObj);
-    nodeObj->bringThisToFront();
-    this->workspace->deselectAllObjects();
-    nodeObj->setSelected(true);
-    
-    event->setNodeObject(nodeObj);
+    createNodeObjectOnEvent(nodeObj, event);
+
 }
+
+void IRVideoAnnotater::createTextEventComponentFromIRNodeObject(IRNodeObject* obj)
+{
+    // automatically fill begin and end time Code
+    // end time code in default is begin + 3.0 sec
+    float betinTimeInSec = this->videoTransport.getPlayPosition();
+    float endTimeInSec = betinTimeInSec + 3.0;
+
+    auto event = this->eventListComponent->createTextEventComponent(betinTimeInSec,
+                                                                    endTimeInSec);
+   
+    createEventOnTheLoadedVideo(event);
+    obj->setEventComponent(event);
+    event->setNodeObject(obj);
+    obj->setSelected(true);
+    obj->setAnimated(true);
+
+}
+
 
 void IRVideoAnnotater::createShapeEventComponent()
 {
-    this->eventListComponent->createShapeEventComponent();
-    this->annotationMenu->closeAction();
     
-    // create eventComponent on the video
-    auto events = this->eventListComponent->getEventComponents();
-    auto event = events[events.size() - 1];
+    float betinTimeInSec = this->videoTransport.getPlayPosition();
+    float endTimeInSec = betinTimeInSec + 3.0;
+    
+    auto event = this->eventListComponent->createShapeEventComponent(betinTimeInSec,
+                                                            endTimeInSec);
+    this->annotationMenu->closeAction();
     createEventOnTheLoadedVideo(event);
 
-    
     IRVAShapeObject* nodeObj = static_cast<IRVAShapeObject*>(IRObjectCreater<IRVAShapeObject>().create(this->workspace.get(),
                                                                 getStr()));
-    nodeObj->setObjectBounds(this->workspace->getWidth()/4,
-                             this->workspace->getHeight()/4,
-                             this->workspace->getWidth()/3,
-                             this->workspace->getHeight()/3);
-    this->workspace->createObject(nodeObj);
-    nodeObj->bringThisToFront();
-    
-    this->workspace->deselectAllObjects();
-    nodeObj->setSelected(true);
-    
-    event->setNodeObject(nodeObj);
+    createNodeObjectOnEvent(nodeObj, event);
+}
 
+void IRVideoAnnotater::createShapeEventComponentFromNodeObject(IRNodeObject* obj)
+{
+    // automatically fill begin and end time Code
+    // end time code in default is begin + 3.0 sec
+    float betinTimeInSec = this->videoTransport.getPlayPosition();
+    float endTimeInSec = betinTimeInSec + 3.0;
+
+    auto event = this->eventListComponent->createShapeEventComponent(betinTimeInSec,
+                                                                     endTimeInSec);
+    
+    createEventOnTheLoadedVideo(event);
+    obj->setEventComponent(event);
+    event->setNodeObject(obj);
+    this->workspace->deselectAllObjects();
+    obj->setSelected(true);
+    obj->setAnimated(true);
 }
 
 void IRVideoAnnotater::createImageEventComponent()
