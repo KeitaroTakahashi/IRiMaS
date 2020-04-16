@@ -29,7 +29,8 @@ public:
     
     ~IRVideoComponent()
     {
-        
+        this->player_with_controller.reset();
+        this->player_without_controller.reset();
     }
     // ==================================================
 
@@ -202,6 +203,17 @@ public:
     // ==================================================
     void bringViewToFront()
     {
+        
+        // **** add following code in juce::VideoComponent
+        /*
+         
+         void*  getPimpl() {
+             if(pimpl.get() != nullptr)
+                 return pimpl.get();
+             else return nullptr;
+         }
+         
+         */
         
     #if JUCE_MAC
         NSViewComponent* view = static_cast<NSViewComponent*>(this->currentPlayer->getPimpl());

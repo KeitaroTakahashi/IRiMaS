@@ -75,7 +75,11 @@ public:
 
     
     // selected event from IRNodeComponent
+private:
     void selectedChangeEvent() override;
+public:
+    virtual void selectedChangedAction(bool flag) {}
+
     void editModeChangedEvent() override;
     //void linkModeChangedEvent() override;
     

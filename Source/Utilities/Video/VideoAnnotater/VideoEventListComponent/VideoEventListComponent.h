@@ -257,7 +257,8 @@ public:
     
     void eventActiveChanged(VideoAnnotationEventComponent* comp) override
     {
-        
+        // call updateAnimation method in IRVideoAnnotater
+        updateAnimation();
     }
     
     void eventShownOnVideoPlayer(VideoAnnotationEventComponent* comp) override

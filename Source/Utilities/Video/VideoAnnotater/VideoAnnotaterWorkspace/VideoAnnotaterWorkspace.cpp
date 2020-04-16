@@ -10,8 +10,8 @@
 VideoAnnotaterWorkspace::VideoAnnotaterWorkspace(String title, Rectangle<int> draggableMargin, IRStr* str) :
 IRWorkspaceComponent(title, draggableMargin, str)
 {
-    enableDrawGrids(false);
-    setGridsBackgroundAlpha(0.0);
+    //enableDrawGrids(false);
+    setGridsBackgroundAlpha(0.2);
     
 }
 

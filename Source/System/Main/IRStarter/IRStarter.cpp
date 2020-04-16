@@ -66,7 +66,7 @@ void IRStarter::resized()
 {
     int buttonX = getWidth() / 3;
     int h = 40;
-    Point<int> bs = Point<int> ((float)h / this->newProjectButton.getAspectRatio(), h);
+   juce::Point<int> bs =juce::Point<int> ((float)h / this->newProjectButton.getAspectRatio(), h);
 
     std::cout << "this->newProjectButton.getAspectRatio() = " << this->newProjectButton.getAspectRatio() << std::endl;
     this->newProjectButton.setSize(bs.getX(), bs.getY());

@@ -162,7 +162,7 @@ public:
     void enableSquare(bool flag)
     {
         
-        std::cout << "enableSquare\n";
+        std::cout << "enableSquare : " << flag << std::endl;
         for(auto item : this->items)
         {
             item->setVisible(flag);
@@ -207,7 +207,7 @@ public:
         {
             g.fillAll(Colours::transparentBlack);
             g.setColour(this->squareColour);
-            g.drawRect(getLocalBounds());
+            g.drawRect(getLocalBounds(), 2.0);
         }
         
         void setSquareColour(Colour colour)
@@ -283,7 +283,7 @@ private:
     // ==================================================
 
     // square size
-    int s = 10;
+    int s = 12;
     
     Colour squareColour;
     

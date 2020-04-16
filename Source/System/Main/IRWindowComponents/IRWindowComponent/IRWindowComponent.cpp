@@ -75,7 +75,7 @@ void IRWindowComponent::resized()
     int rw = this->rightBar->getWidth();
     this->rightBar->setBounds(getWidth() - rw, this->barHeight,
                               rw, getHeight() - this->barHeight);
-    this->rightBar->setInitialPos(Point<int>(getWidth(), this->barHeight));
+    this->rightBar->setInitialPos(juce::Point<int>(getWidth(), this->barHeight));
     
     
     
@@ -259,7 +259,7 @@ void IRWindowComponent::mouseDrag(const MouseEvent& e)
     
     if(this->isResizable)
     {
-        Point<int> delta = pos - this->prevPos;
+       juce::Point<int> delta = pos - this->prevPos;
         
         int newW = this->prevSize.getX() + delta.getX();
         int newH = this->prevSize.getY() + delta.getY();
@@ -270,6 +270,7 @@ void IRWindowComponent::mouseDrag(const MouseEvent& e)
     }
     
 }
+
 // ----------------------------------------
 
 void IRWindowComponent::mouseUp(const MouseEvent& e)
@@ -287,12 +288,9 @@ void IRWindowComponent::mouseDown(const MouseEvent& e)
 {
     auto pos = e.getEventRelativeTo(this).getPosition();
     this->prevPos = pos;
-    
-    std::cout << "IRWindowComponent : " << pos.getX() << ", " << pos.getY() << std::endl;
-    //std::cout << "resizable area x " << getWidth() - this->resizableMargin << " : " << getHeight() - this->resizableMargin << std::endl;
- 
+     
     // store current window size
-    this->prevSize = Point<int> (getWidth(), getHeight());
+    this->prevSize =juce::Point<int> (getWidth(), getHeight());
     
     if(pos.getX() > getWidth() - this->resizableMargin &&
        pos.getY() > getHeight() - this->resizableMargin)
@@ -505,10 +503,10 @@ void IRWindowComponent::titleDoubleClicked()
         setSize(this->previousSize.getX(), this->previousSize.getY());
     }else
     {
-        this->previousSize = Point<int>(getWidth(), getHeight());
+        this->previousSize =juce::Point<int>(getWidth(), getHeight());
         setSize(r.getWidth(), r.getHeight());
         if(this->windowMoveAction != nullptr)
-            this->windowMoveAction(Point<int>(0,0));
+            this->windowMoveAction(juce::Point<int>(0,0));
     }
      */
 }

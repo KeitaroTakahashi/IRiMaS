@@ -35,7 +35,7 @@ public:
     void setComponentBounds(int x, int y, int w, int h);
     Rectangle<int> getComponentBounds() { return this->viewPort->getBounds(); }
     
-    Point<float> getDummyRatio() const   { return this->viewPort->dummyRatio; }
+    juce::Point<float> getDummyRatio() const   { return this->viewPort->dummyRatio; }
     int getMaxViewWidth() const          { return this->viewPort->MaxViewWidth; }
     int getMaxViewHeight() const         { return this->viewPort->MaxViewHeight; }
     int getDummyWidth() const            { return this->viewPort->dummyWidth; }
@@ -89,7 +89,7 @@ private:
             this->dummyWidth = w;
             this->dummyHeight = h;
             
-            this->dummyRatio = Point<float>((float)w / (float)width,
+            this->dummyRatio = juce::Point<float>((float)w / (float)width,
                                             (float)h / (float)height);
             
             
@@ -148,7 +148,7 @@ private:
         }
         
         // we use dummy size as it is very expensive if you use millions size of the view...
-        Point<float> dummyRatio;
+        juce::Point<float> dummyRatio;
         const int MaxViewWidth = 10000000;
         const int MaxViewHeight = 10000;
         int dummyWidth = 0;

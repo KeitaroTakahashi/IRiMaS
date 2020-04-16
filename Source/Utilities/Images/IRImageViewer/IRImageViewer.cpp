@@ -56,7 +56,7 @@ void IRImageViewer::openFile()
         return;
     }
     
-    Point<int> fixedSize = this->imgLoader.sizeFix();
+    juce::Point<int> fixedSize = this->imgLoader.sizeFix();
     
     setSize(fixedSize.getX(), fixedSize.getY());
     

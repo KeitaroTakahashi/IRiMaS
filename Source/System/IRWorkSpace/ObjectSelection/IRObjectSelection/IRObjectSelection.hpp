@@ -172,7 +172,7 @@ public:
         this->shiftConstrainsDirection = constrainDirection;
     }
     // ------------------------------------------------------------
-    void applyDirectionConstraints(const MouseEvent &e, Point<int> &delta)
+    void applyDirectionConstraints(const MouseEvent &e, juce::Point<int> &delta)
     {
         if (shiftConstrainsDirection && e.mods.isShiftDown())
         {
@@ -248,8 +248,8 @@ public:
         yAxisOnly
     } constrainedDirection;
     
-    Point<int> mouseDownWithinTarget;
-    Point<int> totalDragDelta;
+    juce::Point<int> mouseDownWithinTarget;
+    juce::Point<int> totalDragDelta;
     
     bool constrainToParent = true;
     bool shiftConstrainsDirection = false;

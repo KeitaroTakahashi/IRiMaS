@@ -85,6 +85,14 @@ private:
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
     virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
     virtual void releaseResources() override;
+    
+    
+    // ==================================================
+    // APPEARANCE
+public:
+    void setBackgroundColour(Colour colour);
+private:
+    Colour backgroundColour = Colours::white;
 public:
 
     AudioSource& getMixer();
@@ -171,6 +179,9 @@ public:
     Image getSnap();
     // ==================================================
     
+    
+    // ==================================================
+
     // ==================================================
 
     //##### Time Code Animation ######
@@ -287,7 +298,7 @@ private:
     float grid_thickness = 1.0;
     float grid_thickness2 = 0.5;
     
-    float gridsBackgroundAlpha = 1.0;
+    float gridsBackgroundAlpha = 0.1;
     // ==================================================
 
     Array<IRNodeObject* > objects;
@@ -320,7 +331,7 @@ private:
     bool isdrawGridsFlag = true;
     // ==================================================
 
-    Point<int> currentMousePosition {0, 0};
+    juce::Point<int> currentMousePosition {0, 0};
     
     // workspace status
     bool editModeFlag = true;

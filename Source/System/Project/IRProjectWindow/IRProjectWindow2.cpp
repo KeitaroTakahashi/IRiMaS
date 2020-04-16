@@ -13,7 +13,7 @@ IRProjectWindow2::IRProjectWindow2(String name, Rectangle<int> frameRect) : IRMa
     //Rectangle<int> frameRect (10, 10, 1280, 800);
     this->comp.reset(new IRWindowComponent(name, frameRect));
     this->comp->setSize(frameRect.getWidth(), frameRect.getHeight());
-    this->comp->windowMoveAction = [this](Point<int>pos) { windowMoveToPos(pos); };
+    this->comp->windowMoveAction = [this](juce::Point<int>pos) { windowMoveToPos(pos); };
     this->comp->newProjectCallback = [this] { newProjectCallbackAction(); };
     this->comp->closeProjectCallback = [this]{ closeButtonPressed(); };
     this->comp->openProjectCallback = [this] { openProjectCallbackAction(); };
@@ -71,7 +71,7 @@ void IRProjectWindow2::closeButtonPressed()
 // ==================================================
 
 
-void IRProjectWindow2::windowMoveToPos(Point<int>pos)
+void IRProjectWindow2::windowMoveToPos(juce::Point<int>pos)
 {
     setTopLeftPosition(pos);
 }

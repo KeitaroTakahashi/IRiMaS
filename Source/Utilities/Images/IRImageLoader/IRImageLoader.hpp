@@ -20,7 +20,7 @@ public:
     bool open(String pathToOpen);
     
     void resized(int w, int h);
-    Point<int> sizeFix();
+    juce::Point<int> sizeFix();
 
     double getAspectRatio() const;
     

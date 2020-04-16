@@ -115,6 +115,8 @@ public:
         this->textEditor.setReadOnly(true);
         this->textEditor.setColour(TextEditor::backgroundColourId, getStr()->SYSTEMCOLOUR.contents);
         this->textEditor.applyColourToAllText(getStr()->SYSTEMCOLOUR.text);
+        
+        this->textEditor.addMouseListener(this, true);
     }
     
     void nodeObjectSetAction(IRNodeObject* obj) override

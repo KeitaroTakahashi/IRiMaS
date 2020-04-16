@@ -91,7 +91,7 @@ void IRSpectrogramUI::zoomResize()
     
     this->spectrogram->setMainComponentBounds(Rectangle<int>(0,0,w-20,h-30));
 
-    this->spectrogram->getComponent()->setZoomInfo(Point<float>(this->spectrogram_width_ratio, 1.0));
+    this->spectrogram->getComponent()->setZoomInfo(juce::Point<float>(this->spectrogram_width_ratio, 1.0));
 }
 // ==================================================
 

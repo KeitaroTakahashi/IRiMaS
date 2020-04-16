@@ -94,7 +94,7 @@ private:
 
     SelectedButtonType selectedButtonType = NONE;
     
-     Point<int> buttonSize;
+     juce::Point<int> buttonSize;
     int marginX = 20;
 
     IRImageButton leftBarButton;

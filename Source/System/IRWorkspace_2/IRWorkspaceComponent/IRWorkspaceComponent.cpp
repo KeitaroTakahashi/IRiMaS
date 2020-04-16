@@ -17,7 +17,7 @@ draggableMargin(draggableMargin)
     this->title = this->name + " (EDIT MODE)";
     
     this->ir_str = str;
-    setOpaque(true);
+    setOpaque(false);
     
     setWantsKeyboardFocus(true);
     addKeyListener(this);
@@ -56,7 +56,8 @@ IRWorkspaceComponent::~IRWorkspaceComponent()
 
 void IRWorkspaceComponent::paint (Graphics& g)
 {
-    if(isDrawGrids()) shaderTask(g);
+    g.fillAll(this->backgroundColour);
+    if(isDrawGrids() && this->editModeFlag) shaderTask(g);
     
     
     // virtual method
@@ -65,6 +66,7 @@ void IRWorkspaceComponent::paint (Graphics& g)
 
 }
 
+
 void IRWorkspaceComponent::drawShadows(Graphics& g)
 {
     // std::cout << "drawing... shadow of " << this->selector->getSelectedObjectList().size() << " items" << std::endl;
@@ -72,7 +74,7 @@ void IRWorkspaceComponent::drawShadows(Graphics& g)
     
     for(auto obj : list)
     {
-        DropShadow shadow(getStr()->SYSTEMCOLOUR.contents, 30, Point<int>(0,0));
+        DropShadow shadow(getStr()->SYSTEMCOLOUR.contents, 30, juce::Point<int>(0,0));
         
         Rectangle<int> b = obj->getBounds();
         Rectangle<int> bounds(b.getX(), b.getY(), b.getWidth(), b.getHeight());
@@ -84,44 +86,16 @@ void IRWorkspaceComponent::drawShadows(Graphics& g)
     }
 }
 
-/*
-void IRWorkspaceComponent::drawGrids(Graphics& g)
+// ==================================================
+// APPEARANCE
+// ==================================================
+
+void IRWorkspaceComponent::setBackgroundColour(Colour colour)
 {
-    int w = getWidth();
-    int h = getHeight();
-    
-    g.setColour(Colours::lightgrey.brighter().brighter());
-    int i = 0;
-    
-    Path p;
-    for(i=0;i<=w;i+=this->thick_grids_interval)
-    {
-        p.startNewSubPath(i, 0);
-        p.lineTo(i, h);
-    }
-    
-    for(i=0;i<=h;i+=this->thick_grids_interval)
-    {
-        p.startNewSubPath(0, i);
-        p.lineTo(w, i);
-    }
-    p.closeSubPath();
-    g.strokePath(p, PathStrokeType(this->grid_thickness));
-    
-    for(i=0;i<=w;i+=this->thin_grids_pixel)
-    {
-        p.startNewSubPath(i, 0);
-        p.lineTo(i, h);
-    }
-    
-    for(i=0;i<=h;i+=this->thin_grids_pixel)
-       {
-           p.startNewSubPath(0, i);
-           p.lineTo(w, i);
-       }
-    p.closeSubPath();
-    g.strokePath(p, PathStrokeType(this->grid_thickness2));
-}*/
+    this->backgroundColour = colour;
+    repaint();
+}
+
 // ==================================================
 
 void IRWorkspaceComponent::resized()
@@ -425,6 +399,8 @@ bool IRWorkspaceComponent::isEditMode() const
 
 void IRWorkspaceComponent::setEditMode(bool flag, bool notification)
 {
+    
+    std::cout << "IRWorkspaceComponent::setEditMode : " << flag << std::endl;
     this->editModeFlag = flag;
     
     
@@ -490,9 +466,9 @@ void IRWorkspaceComponent::openGLInit()
         String url = File::getSpecialLocation(File::currentApplicationFile).getFullPathName();
     
     #if JUCE_MAC
-        url += "/Contents/Resources/materials/Sources/GLSL/grid/KGrid.frag";
+        url += "/Contents/Resources/materials/Sources/GLSL/grid/KGrid2.frag";
     #elif JUCE_IOS
-        url += "/materials/Sources/GLSL/grid/KGrid.frag";
+        url += "/materials/Sources/GLSL/grid/KGrid2.frag";
     #endif
         
         File f(url);

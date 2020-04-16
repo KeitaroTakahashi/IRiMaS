@@ -54,27 +54,35 @@ void IRWorkspaceComponent::updateCurrentAnimation()
 void IRWorkspaceComponent::updateCurrentAnimation(float currentTime)
 {
     
-    if(this->timeCodeAnimationEnable) return;
+    if(!this->timeCodeAnimationEnable) return;
 
     for(auto obj : this->objects)
     {
         if(obj->isAnimationActive())
         {
-            std::cout << "updateCurrentAnimation of " << obj << " : animated = " << obj->isAnimated() << std::endl;
             // check if this is the first time that the object is set animation
             if(!obj->isAnimated())
             {
                 if(obj->tryTrigerAnimation(currentTime))
+                {
                     startAnimated(obj); // START
+                    std::cout << "updateCurrentAnimation of " << obj << " : animation start!\n";
+
+                }
             }else{
                 
-                std::cout << obj << " alreasdy animated!\n";
                 // check if the object is already set animation and now switched off
                 if(!obj->tryTrigerAnimation(currentTime))
+                {
                     endAnimated(obj); // END
+                    std::cout << "updateCurrentAnimation of " << obj << " : animation end!\n";
+
+                }
             }
             
         }else endAnimated(obj); // END
+        
+        //obj->setSelected(false);
     }
     
     // then update each object animation behaviors
@@ -82,6 +90,7 @@ void IRWorkspaceComponent::updateCurrentAnimation(float currentTime)
     {
         obj->setCurrentTimeCode(currentTime);
     }
+    
 }
 
 

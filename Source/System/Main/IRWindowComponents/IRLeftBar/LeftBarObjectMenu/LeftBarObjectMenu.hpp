@@ -92,7 +92,7 @@ private:
     void preferenceAction();
     
     // ==================================================
-    int buttonSize = 40;
+    int buttonSize = 20;
     objectCategory selectedButtonType = NONE;
     // ==================================================
 

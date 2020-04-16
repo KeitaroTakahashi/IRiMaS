@@ -32,7 +32,8 @@ public:
     
     void paint(Graphics& g) override
     {
-        g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
+        g.fillAll(getStr()->SYSTEMCOLOUR.contents);
+
     }
     
     // ==================================================

@@ -56,8 +56,8 @@ public:
 
             
             float cx = this->lineVertex[i].p.getX() + (this->lineVertex[i+1].p.getX() - this->lineVertex[i].p.getX())/2.0;
-            Point<float> c1 = Point<float>(cx, this->lineVertex[i].p.getY());
-            Point<float> c2 = Point<float>(cx, this->lineVertex[i+1].p.getY());
+            juce::Point<float> c1 = juce::Point<float>(cx, this->lineVertex[i].p.getY());
+            juce::Point<float> c2 = juce::Point<float>(cx, this->lineVertex[i+1].p.getY());
             path.cubicTo (c1,c2,this->lineVertex[i+1].p);
             
             //dot
@@ -84,22 +84,22 @@ private:
 
         
         
-        this->lineVertex.push_back(a_vertex(Point<float>(0,y/2), SYSTEMCOLOUR.contents));
-        this->lineVertex.push_back(a_vertex(Point<float>(x/8,y*2/7), SYSTEMCOLOUR.contents.brighter()));
-        this->lineVertex.push_back(a_vertex(Point<float>(x/3,y*3/5), SYSTEMCOLOUR.fundamental));
-        this->lineVertex.push_back(a_vertex(Point<float>(x/2,y*1/8), SYSTEMCOLOUR.contents.brighter().brighter()));
-        this->lineVertex.push_back(a_vertex(Point<float>(x*2/3,y*3/5), SYSTEMCOLOUR.contents));
-        this->lineVertex.push_back(a_vertex(Point<float>(x*6/8,y*3/7), SYSTEMCOLOUR.contents.brighter()));
-        this->lineVertex.push_back(a_vertex(Point<float>(x*7/8,y*6/7), SYSTEMCOLOUR.fundamental.darker().darker()));
-        this->lineVertex.push_back(a_vertex(Point<float>(x,y/2), SYSTEMCOLOUR.contents));
+        this->lineVertex.push_back(a_vertex(juce::Point<float>(0,y/2), SYSTEMCOLOUR.contents));
+        this->lineVertex.push_back(a_vertex(juce::Point<float>(x/8,y*2/7), SYSTEMCOLOUR.contents.brighter()));
+        this->lineVertex.push_back(a_vertex(juce::Point<float>(x/3,y*3/5), SYSTEMCOLOUR.fundamental));
+        this->lineVertex.push_back(a_vertex(juce::Point<float>(x/2,y*1/8), SYSTEMCOLOUR.contents.brighter().brighter()));
+        this->lineVertex.push_back(a_vertex(juce::Point<float>(x*2/3,y*3/5), SYSTEMCOLOUR.contents));
+        this->lineVertex.push_back(a_vertex(juce::Point<float>(x*6/8,y*3/7), SYSTEMCOLOUR.contents.brighter()));
+        this->lineVertex.push_back(a_vertex(juce::Point<float>(x*7/8,y*6/7), SYSTEMCOLOUR.fundamental.darker().darker()));
+        this->lineVertex.push_back(a_vertex(juce::Point<float>(x,y/2), SYSTEMCOLOUR.contents));
 
     }
     
     struct a_vertex{
-        Point<float> p;
+        juce::Point<float> p;
         Colour colour;
 
-        a_vertex(Point<float>p, Colour colour = Colours::grey)
+        a_vertex(juce::Point<float>p, Colour colour = Colours::grey)
         {
             this->p = p;
             this->colour = colour;

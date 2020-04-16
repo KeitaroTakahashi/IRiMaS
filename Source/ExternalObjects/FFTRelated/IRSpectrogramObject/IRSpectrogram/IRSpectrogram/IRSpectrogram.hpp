@@ -65,7 +65,7 @@ public:
     
     void loadDrawData(IRDescriptorStr* data);
     
-    void setVisibleArea(Rectangle<int> area, Point<int> parentSize);
+    void setVisibleArea(Rectangle<int> area, juce::Point<int> parentSize);
     Rectangle<int> getVisibleArea() const { return this->visibleArea; }
     void parentSizeChanged(int w, int h);
     
@@ -96,7 +96,7 @@ public:
     // ==================================================
     //sharedInfo
     
-    void setZoomInfo(Point<float> zoom) {
+    void setZoomInfo(juce::Point<float> zoom) {
         this->zoomInfo = zoom;
         if(this->audioData != nullptr)
         {
@@ -107,14 +107,14 @@ public:
     }
     
     void setZoomInfo(float w, float h) {
-        this->zoomInfo = Point<float>(w, h);
+        this->zoomInfo = juce::Point<float>(w, h);
         setZoomInfo(this->zoomInfo);
     }
     
     void linkZoomInfo(Component* comp);
     
     
-    Point<float> getZoomInfo() const { return this->zoomInfo; }
+    juce::Point<float> getZoomInfo() const { return this->zoomInfo; }
     
     void setCurrentPlayedFrame(int64 frame) { this->currentPlayedFrame = frame; }
     int64 getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
@@ -146,8 +146,8 @@ private:
     File file;
     String path;
     
-    Point<int> mouseDownPos;
-    Point<int> currentMousePos;
+    juce::Point<int> mouseDownPos;
+    juce::Point<int> currentMousePos;
     
     DataAllocationManager<IRAudio>* audioData = nullptr;
     void fileImportCompleted();
@@ -163,7 +163,7 @@ private:
     IRSpectrogramController controller;
     int previousOffsetX = 0;
     Rectangle<int> visibleArea;
-    Point<int>      parentSize;
+    juce::Point<int>      parentSize;
     
     void zoomInClicked();
     void zoomOutClicked();
@@ -189,14 +189,14 @@ private:
     int fftsize = 2048;
     int hopsize = 1024;
     
-    //Point<float> zoomRatio;
+    //juce::Point<float> zoomRatio;
     
     // ---------------------------------------------------------------------------
     // sharedInformation
     
     int64 currentPlayedFrame = 0;
     
-    Point<float> zoomInfo;
+    juce::Point<float> zoomInfo;
     
     Rectangle<int> playingLine;
     

@@ -389,10 +389,10 @@ void IRTextEditorObject::statusInEditMode()
     this->textEditor.setCaretVisible(true);
     this->textEditor.setReadOnly(false);
     
-    this->textEditor.setColour(TextEditor::outlineColourId,
-                               Colours::black);
-    this->textEditor.setColour(TextEditor::focusedOutlineColourId,
-                               Colours::black);
+    // redefine MouseLIstenr
+    //this->textEditor.addMouseListener(this, true);
+    //this->textEditor.setInterceptsMouseClicks(true, false);
+    
 }
 
 void IRTextEditorObject::statusInControlMode()
@@ -400,10 +400,7 @@ void IRTextEditorObject::statusInControlMode()
     this->textEditor.setCaretVisible(true);
     this->textEditor.setReadOnly(false);
     
-    this->textEditor.setColour(TextEditor::outlineColourId,
-                               Colours::transparentBlack);
-    this->textEditor.setColour(TextEditor::focusedOutlineColourId,
-                               Colours::transparentBlack);
+    
 }
 // **** **** PRIVATE METHODS **** **** //
 
@@ -425,6 +422,24 @@ void IRTextEditorObject::statusChangedCallback(IRNodeComponentStatus status)
             break;
     }
 }
+
+void IRTextEditorObject::selectedChangedAction(bool flag)
+{
+    if(flag)
+    {
+        this->textEditor.setColour(TextEditor::outlineColourId,
+                                   Colours::black);
+        this->textEditor.setColour(TextEditor::focusedOutlineColourId,
+                                   Colours::black);
+    }else{
+        this->textEditor.setColour(TextEditor::outlineColourId,
+                                   Colours::transparentBlack);
+        this->textEditor.setColour(TextEditor::focusedOutlineColourId,
+                                   Colours::transparentBlack);
+    }
+}
+
+
 // ------------------------------------------------------------
 
 

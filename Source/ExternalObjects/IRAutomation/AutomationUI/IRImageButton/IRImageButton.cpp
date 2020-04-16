@@ -40,7 +40,7 @@ void IRImageButton::paint(Graphics& g)
         if(!this->mouseDownFlag)
             g.drawEllipse(1, 1, getWidth()-2, getHeight()-2, 1);
         else
-            g.fillEllipse(1, 1, getWidth()-2, getHeight()-2);
+            g.fillEllipse(1, 1, getWidth()-1, getHeight()-1);
     }
     
     if(this->drawRoundedSquare)
@@ -51,7 +51,7 @@ void IRImageButton::paint(Graphics& g)
             g.fillRoundedRectangle(1, 1, getWidth() - 2, getHeight() - 2, 4.0);
     }
     
-    g.drawImage(this->buttonImage, getLocalBounds().toFloat());
+    g.drawImage(this->buttonImage, getLocalBounds().reduced(1).toFloat());
     
 }
 

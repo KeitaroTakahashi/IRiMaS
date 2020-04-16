@@ -90,7 +90,7 @@ public:
         if(this->selectedButtonType != NONE)
         {
             g.setColour(getStr()->SYSTEMCOLOUR.contents);
-            int index = (int)this->selectedButtonType;
+            //int index = (int)this->selectedButtonType;
             int x = this->leftMarge / 2;
             //int y = this->topMarge + index * (this->buttonSize + yMarge*2) - yMarge/2;
             int y = getButtonFromType().getBounds().getY() - 5;
@@ -169,8 +169,8 @@ private:
     objectCategory selectedButtonType = NONE;
 
     // ==================================================
-       // marge
-       int buttonSize = 40;
+    // marge
+    int buttonSize = 20;
     int leftMarge = 10;
     // ==================================================
 
@@ -231,7 +231,7 @@ private:
         void paint(Graphics& g) override
         {
             g.setColour(getStr()->SYSTEMCOLOUR.text);
-            g.drawText(title, buttonSize + 10, 8, 80, 24, Justification::left);
+            //g.drawText(title, buttonSize + 10, 8, 80, 24, Justification::left);
         }
         
         // --------------------------------------------------

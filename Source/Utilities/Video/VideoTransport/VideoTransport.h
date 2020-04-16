@@ -111,7 +111,7 @@ public:
         this->openAnnotationButton.setBounds(getWidth() - 200, 5, 90, 30);
         this->saveAnnotationButton.setBounds(getWidth() - 300, 5, 90, 30);
         
-        Point<int> b = Point<int> (((float)h / this->addEventButton.getAspectRatio()), h);
+        juce::Point<int> b = juce::Point<int> (((float)h / this->addEventButton.getAspectRatio()), h);
         int marginX = 5;
         int x = marginX;
         this->addEventButton.setBounds(x, 5, b.getX(), b.getY());

@@ -100,7 +100,7 @@ void IRImageLoader::resized(int w, int h)
 
 }
 
-Point<int> IRImageLoader::sizeFix()
+juce::Point<int> IRImageLoader::sizeFix()
 {
     // image size
     int img_w = getData()->getImageData().getWidth();
@@ -120,7 +120,7 @@ Point<int> IRImageLoader::sizeFix()
         img_h = this->maxHeight;
     }
     
-    return Point<int> (img_w, img_h);
+    return juce::Point<int> (img_w, img_h);
 }
 
 

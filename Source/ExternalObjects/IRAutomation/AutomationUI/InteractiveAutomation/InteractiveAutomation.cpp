@@ -183,9 +183,9 @@ void InteractiveAutomation::paintBezierLines(Graphics& g)
         
         float cx = p_x + (x - p_x) * 0.5;
         
-        Point<float> c1 (cx, p_y);
-        Point<float> c2 (cx, y);
-        Point<float> d (x, y);
+        juce::Point<float> c1 (cx, p_y);
+        juce::Point<float> c2 (cx, y);
+        juce::Point<float> d (x, y);
          */
         
         /*
@@ -198,9 +198,9 @@ void InteractiveAutomation::paintBezierLines(Graphics& g)
         float cx = this->verteces[i-1]->getX() +
         (this->verteces[i]->getX() - this->verteces[i-1]->getX()) * this->verteces[i-1]->getBezierRatio();
         
-        Point<float> c1 (cx, this->verteces[i-1]->getY());
-        Point<float> c2 (cx, this->verteces[i]->getY());
-        Point<float> d (this->verteces[i]->getX() + wh2,
+        juce::Point<float> c1 (cx, this->verteces[i-1]->getY());
+        juce::Point<float> c2 (cx, this->verteces[i]->getY());
+        juce::Point<float> d (this->verteces[i]->getX() + wh2,
                         this->verteces[i]->getY() + wh2);
         */
         
@@ -267,8 +267,8 @@ void InteractiveAutomation::reCalcPos()
     // if there is no verteces, then add two verteces with 0 values.
     if(v_size == 0)
     {
-        createVertex(Point<float>(0, h), false);
-        createVertex(Point<float>(w, h), false);
+        createVertex(juce::Point<float>(0, h), false);
+        createVertex(juce::Point<float>(w, h), false);
         reCalcPosDone();
 
         return;
@@ -333,7 +333,7 @@ void InteractiveAutomation::reCalcPos()
             
             //std::cout << "vertex["<<visible_x + i << "] = " << max << " : min = " << min << " : accum = " << accumVal <<" by interval " << interval << std::endl;
             
-            createVertex(Point<float>(visible_x + i, accumVal), false, false);
+            createVertex(juce::Point<float>(visible_x + i, accumVal), false, false);
             
             previousIndex = currentIndex;
 
@@ -411,7 +411,7 @@ void InteractiveAutomation::mouseDrag(const MouseEvent& e)
 }
 // ==================================================
 
-void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected, bool shouldSort)
+void InteractiveAutomation::createVertex(juce::Point<float> pos, bool isSelected, bool shouldSort)
 {
     IRAutomationVertexComponent* obj = new IRAutomationVertexComponent (getStr(), this);
     obj->setPosition(pos);
@@ -444,12 +444,12 @@ void InteractiveAutomation::createVertex(Point<float> pos, bool isSelected, bool
                     previous->getPosition().getX())/2;
         int y_b1 = previous->getPosition().getY();
         
-        Point<float> p1 (x_b1, y_b1);
+        juce::Point<float> p1 (x_b1, y_b1);
         b1->setPosition(p1);
         
         int y_b2 = current->getPosition().getY();
         
-        Point<float> p2 (x_b1, y_b2);
+        juce::Point<float> p2 (x_b1, y_b2);
         b2->setPosition(p2);
         
         current->setBezier(b1.get(), b2.get());
@@ -549,7 +549,7 @@ void InteractiveAutomation::demoData(int num)
 
         //std::cout << i << " : value = " << value << std::endl;
         
-        createVertex(Point<float>(x, value), false);
+        createVertex(juce::Point<float>(x, value), false);
         
         if(value < this->MinVertexValue) this->MinVertexValue = value;
         if(value > this->MaxVertexValue) this->MaxVertexValue = value;
@@ -593,7 +593,7 @@ void InteractiveAutomation::setDescriptor(IRDescriptorStr* data)
                                                                    buffer[i])
                                         );
 
-        //createVertex(Point<float>((float)i * increment, value), false, false);
+        //createVertex(juce::Point<float>((float)i * increment, value), false, false);
     
         if(value < this->MinVertexValue) this->MinVertexValue = value;
         if(value > this->MaxVertexValue) this->MaxVertexValue = value;

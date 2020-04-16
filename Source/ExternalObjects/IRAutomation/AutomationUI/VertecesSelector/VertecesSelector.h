@@ -28,7 +28,7 @@ public:
     
     void mouseDownHandler(const MouseEvent& e) override
     {
-        Point<int> pos = e.getEventRelativeTo(this->parent).getPosition();
+        juce::Point<int> pos = e.getEventRelativeTo(this->parent).getPosition();
         
         IRAutomationVertexComponent* nodeObj = nullptr;
         for(auto obj : *this->objectList)
@@ -92,7 +92,7 @@ public:
         {
             if (! isDragging()) return;
             
-            Point<int> delta = e.getEventRelativeTo(getBeingDraggedObject()).getPosition() - this->mouseDownWithinTarget;
+            juce::Point<int> delta = e.getEventRelativeTo(getBeingDraggedObject()).getPosition() - this->mouseDownWithinTarget;
             
             if(! isVerticalMovable) delta.setY(0);
             if(! isHorizontalMovable) delta.setX(0);
@@ -108,7 +108,7 @@ public:
                     bounds = boundsConstrainWithinParent(bounds);
                     
                     comp->setBounds(bounds);
-                    //comp->setPosition(Point<float>(bounds.getX(), bounds.getY()));
+                    //comp->setPosition(juce::Point<float>(bounds.getX(), bounds.getY()));
                 }
             }
             this->totalDragDelta += delta;
@@ -127,7 +127,7 @@ public:
             for(auto comp : this->selectedObjectList)
             {
                 Rectangle<float> b = comp->getBounds().toFloat();
-                comp->setPosition(Point<float>(b.getX() + b.getWidth()/2, b.getY() + b.getHeight()/2));
+                comp->setPosition(juce::Point<float>(b.getX() + b.getWidth()/2, b.getY() + b.getHeight()/2));
             }
         }
     }

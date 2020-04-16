@@ -200,38 +200,38 @@ void IRAutomationVertexComponent::setSelected(bool flag)
 {
     if(flag){
         this->condition = uiSelected;
-        Point<int> c = getBounds().getCentre();
+        juce::Point<int> c = getBounds().getCentre();
         setSize(this->selectedSize, this->selectedSize);
         setCentrePosition(c);
     }
     else
     {
         this->condition = uiOrdinary;
-        Point<int> c = getBounds().getCentre();
+        juce::Point<int> c = getBounds().getCentre();
         setSize(this->ordinarySize, this->ordinarySize);
         setCentrePosition(c);
     }
 }
 bool IRAutomationVertexComponent::isSelected() { if(this->condition == uiSelected) return true; else return false;}
 
-void IRAutomationVertexComponent::setMouseDownPos(Point<int> pos) { this->mouseDownPos = pos; }
-Point<int> IRAutomationVertexComponent::getMouseDownPos() const { return this->mouseDownPos; }
+void IRAutomationVertexComponent::setMouseDownPos(juce::Point<int> pos) { this->mouseDownPos = pos; }
+juce::Point<int> IRAutomationVertexComponent::getMouseDownPos() const { return this->mouseDownPos; }
 
 // ==================================================
 
-void IRAutomationVertexComponent::setPosition(Point<float>pos)
+void IRAutomationVertexComponent::setPosition(juce::Point<float>pos)
 {
     this->position = pos;
     setCentrePosition(pos.roundToInt());
 }
 
-void IRAutomationVertexComponent::setPosition(Point<int>pos)
+void IRAutomationVertexComponent::setPosition(juce::Point<int>pos)
 {
     this->position = pos.toFloat();
     setCentrePosition(pos);
 }
 
-void IRAutomationVertexComponent::setPositionEx(Point<float>pos)
+void IRAutomationVertexComponent::setPositionEx(juce::Point<float>pos)
 {
     this->position = pos;
     setTopLeftPosition(pos.roundToInt());
@@ -239,7 +239,7 @@ void IRAutomationVertexComponent::setPositionEx(Point<float>pos)
 
 
 
-Point<float> IRAutomationVertexComponent::getPosition()
+juce::Point<float> IRAutomationVertexComponent::getPosition()
 {
     return this->position;
 }

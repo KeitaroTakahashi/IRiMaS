@@ -59,7 +59,7 @@ public:
     void myVideoLoadCompleted();
     void myVideoPlayingUpdate(double pos);
     
-    void updateVideoSize(Point<int> newVideoSize);
+    void updateVideoSize(juce::Point<int> newVideoSize);
     
     // ==================================================
     void setVideoComponent(IRVideoComponent* videoComponent);
@@ -173,7 +173,7 @@ private:
     void heavyObjectCreated(IRNodeObject* obj) override;
     
     
-    
+    void deselectAllObjectsOnWorkspace();
     // ==================================================
     std::shared_ptr<EventLogList> eventLogList;
     
@@ -198,6 +198,8 @@ private:
     void eventModifiedAction(Component* modifiedEvent) override;
     void eventSelectedAction(Component* selectedEvent) override;
     
+    void updateAnimation() override;
+    void showEventPosition(Component* event) override;
     // ==================================================
 
     std::function<void(VideoAnnotationEventComponent*)> eventModifiedCallback;

@@ -1,16 +1,12 @@
 
 #include "IRWaveform.hpp"
 
-
-
-
-
 IRWaveform::IRWaveform(IRNodeObject* parent, IRStr* str) :
 IRUIAudioFoundation(parent, str),
 thumbnailCache(5),
 thumbnail(512, formatManager, thumbnailCache),
 playingLine(0,0,0,0),
-visiblePos(Point<int>(0,0))
+visiblePos(juce::Point<int>(0,0))
 {
     this->parent = parent;
     // We need to add this to the ChangeListener of thumbnail to repaint() waveform

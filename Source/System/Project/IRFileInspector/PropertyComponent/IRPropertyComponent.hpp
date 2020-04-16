@@ -16,7 +16,7 @@
 class IRPropertyComponent : public PropertyComponent
 {
 public:
-    IRPropertyComponent(const String &propertyName, Point<int>Marge, Rectangle<int> objectBounds = Rectangle<int>(0,0,0,0), int preferredHeight = 25);
+    IRPropertyComponent(const String &propertyName, juce::Point<int>Marge, Rectangle<int> objectBounds = Rectangle<int>(0,0,0,0), int preferredHeight = 25);
     ~IRPropertyComponent();
     
     void resized() override;

@@ -29,7 +29,7 @@ public:
     // ==================================================
 
     
-    void windowMoveToPos(Point<int>pos);
+    void windowMoveToPos(juce::Point<int>pos);
     
     // ==================================================
     

@@ -73,7 +73,7 @@ public:
     void stop();
     void setPlayPosition(double newPositionInSec);
     
-    Point<int> getVideoSize();
+    juce::Point<int> getVideoSize();
     // --------------------------------------------------
 
     IRVideoPlayer* getVideoPlayer() { return this->videoPlayer.get(); }

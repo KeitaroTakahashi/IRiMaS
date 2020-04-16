@@ -42,14 +42,24 @@ public:
     {
         this->base->eventTimeCodeChangedAction(changedEvent);
     }
+    
+    void updateAnimation()
+    {
+        this->base->updateAnimation();
+    }
+    
+    void showEventPosition(Component* event)
+    {
+        this->base->showEventPosition(event);
+    }
     // ==================================================
     
-    void setVideoSize(Point<int> newVideoSize)
+    void setVideoSize(juce::Point<int> newVideoSize)
     {
         this->base->setVideoSize( newVideoSize );
     }
     
-    Point<int> getVideoSize() const
+    juce::Point<int> getVideoSize() const
     {
         return this->base->getVideoSize();
     }

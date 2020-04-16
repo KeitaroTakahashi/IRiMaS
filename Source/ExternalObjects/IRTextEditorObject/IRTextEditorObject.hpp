@@ -100,6 +100,7 @@ public:
     // ------------------------------------------------------------
 private:
     
+    void selectedChangedAction(bool flag) override;
     // ------------------------------------------------------------
     // call back function automatically called when the status of this object changed by others.
     // write some tasks here

@@ -37,14 +37,14 @@ public:
         
     }
     
-    void setMousePosition(Point<int> pos)
+    void setMousePosition(juce::Point<int> pos)
     {
         this->mousePos = pos;
         repaint();
     }
 private:
     
-    Point<int> mousePos;
+    juce::Point<int> mousePos;
     
     IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
 

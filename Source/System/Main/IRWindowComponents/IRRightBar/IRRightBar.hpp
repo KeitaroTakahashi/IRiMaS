@@ -35,7 +35,7 @@ public:
     
     void openSpaceAction(bool flag);
     
-    void setInitialPos(Point<int> pos) { this->initialPos = pos; }
+    void setInitialPos(juce::Point<int> pos) { this->initialPos = pos; }
     
     //==================================================
     void addComponentAndMakeVisible(Component& comp);
@@ -79,7 +79,7 @@ private:
     int buttonSize = 40;
     int space = 270;
     
-    Point<int> initialPos;
+    juce::Point<int> initialPos;
      
     //==================================================
     bool openSpace = false;

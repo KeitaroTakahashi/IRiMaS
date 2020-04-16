@@ -41,7 +41,15 @@ public:
         this->activeButton.setDrawRoundedSquare(false);
         addAndMakeVisible(&this->activeButton);
         this->activeButton.onClick = [this]{ changeActive(); };
+        this->activeButton.addMouseListener(this, true);
         
+        this->searchButton.setImage(getStr()->ICONBANK.icon_search.white);
+        this->searchButton.setDrawCircle(true);
+        this->searchButton.setDrawRoundedSquare(false);
+        addAndMakeVisible(&this->searchButton);
+        this->searchButton.onClick = [this]{ searchButtonPressed(); };
+        this->searchButton.addMouseListener(this, true);
+
         this->timeCodeUI.addMouseListener(this, true);
         this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
 
@@ -66,7 +74,12 @@ public:
         int margin = 5;
         int h = 40    ;
         int buttonSize = h - margin*2;
-        this->activeButton.setBounds(getWidth() - margin*2 - buttonSize, margin,
+        int x = getWidth() - margin*2 - buttonSize;
+        this->activeButton.setBounds(x, margin,
+                                     buttonSize, buttonSize);
+        
+        x = x - buttonSize - margin*2;
+        this->searchButton.setBounds(x, margin,
                                      buttonSize, buttonSize);
     }
     // ==================================================
@@ -124,6 +137,17 @@ public:
     }
     bool isActive() const { return this->isActiveFlag; }
     // ==================================================
+    
+    void searchButtonPressed()
+    {
+        // delegate
+        showEventPosition(this);
+    }
+    
+    // ==================================================
+
+    
+    
 
     int getVideoLength() const { return this->videoLengthInSecond; }
     // set any functions when video length has been changed, but keep calling the original method
@@ -205,6 +229,8 @@ public:
         
         virtual void eventShownOnVideoPlayer(VideoAnnotationEventComponent* comp) = 0;
         virtual void eventHiddenOnVideoPlayer(VideoAnnotationEventComponent* comp) = 0;
+        
+        //virtual void showEventPosition(VideoAnnotationEventComponent* comp) = 0;
 
     };
 
@@ -266,6 +292,19 @@ public:
         //check again
         if(checker.shouldBailOut()) return;
     }
+    
+    /*
+    void callShowEventPosition()
+    {
+        Component::BailOutChecker checker(this);
+        //==========
+        // check if the objects are not deleted, if deleted, return
+        if(checker.shouldBailOut()) return;
+        this->listeners.callChecked(checker, [this](Listener& l){ l.showEventPosition(this); });
+        //check again
+        if(checker.shouldBailOut()) return;
+    }*/
+    
 
     // ==================================================
     // ==================================================
@@ -311,7 +350,7 @@ private:
     VideoAnnotationType type = TEXT;
     // ==================================================
     IRImageButton activeButton;
-   
+    IRImageButton searchButton;
     // ==================================================
     
     IRNodeObject* nodeObj = nullptr;

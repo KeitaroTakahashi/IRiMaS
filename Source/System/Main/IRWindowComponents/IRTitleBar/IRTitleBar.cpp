@@ -52,7 +52,7 @@ void IRTitleBar::resized()
 void IRTitleBar::mouseDrag(const MouseEvent& e)
 {
     this->currentPos = e.getScreenPosition();
-    Point<int>delta = this->currentPos - this->prevPos;
+   juce::Point<int>delta = this->currentPos - this->prevPos;
     
     this->pos.setX(getScreenX() + delta.getX());
     this->pos.setY(getScreenY() + delta.getY());
@@ -81,7 +81,7 @@ void IRTitleBar::mouseDoubleClick(const MouseEvent& e)
         this->titleDoubleClickedCallback();
 }
 
-void IRTitleBar::checkResizableFromMouseDownPosition(Point<int> pos)
+void IRTitleBar::checkResizableFromMouseDownPosition(juce::Point<int> pos)
 {
     
 }

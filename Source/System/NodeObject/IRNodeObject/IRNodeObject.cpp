@@ -476,6 +476,7 @@ void IRNodeObject::loadObjectContents()
 // called from IRNodeComponent
 void IRNodeObject::selectedChangeEvent()
 {
+    selectedChangedAction(isSelected());
     //call callNodeObjectSelectionChange() in Workspace
     callNodeObjectSelectionChange();
 }

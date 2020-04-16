@@ -152,8 +152,8 @@ void IRTitleBarComponent::resized()
     //int w = getHeight() * 0.9;
     int h = getHeight() * 0.41;
 
-    //this->buttonSize = Point<int> (w, (float)w * this->rightBarButton.getAspectRatio());
-    this->buttonSize = Point<int> (((float)h / this->rightBarButton.getAspectRatio()) * 1.2, h);
+    //this->buttonSize =juce::Point<int> (w, (float)w * this->rightBarButton.getAspectRatio());
+    this->buttonSize =juce::Point<int> (((float)h / this->rightBarButton.getAspectRatio()) * 1.2, h);
     
     //this->closeButton.setBounds(5, 5, 20, 20);
 
@@ -186,7 +186,7 @@ void IRTitleBarComponent::resized()
                                   labelHeight);
     
     x = 145; // leftBar width + 10
-    //Point<int> bs = Point<int> ((float)h / this->newProjectButton.getAspectRatio(), h);
+    //Point<int> bs =juce::Point<int> ((float)h / this->newProjectButton.getAspectRatio(), h);
     
     this->projectButtonComponent->setBounds(0, 0, 600, getHeight());
     

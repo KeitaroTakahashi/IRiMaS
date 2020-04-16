@@ -93,8 +93,6 @@ public:
     void paint(Graphics& g) override
     {
         g.fillAll(getStr()->SYSTEMCOLOUR.contents);
-        //g.setColour(Colours::black);
-        //g.drawLine(0,42.5,getWidth(),42.5);
     }
     
     void resized() override

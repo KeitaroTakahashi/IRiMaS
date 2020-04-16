@@ -125,14 +125,14 @@ public:
         
         this->closeButton.setBounds(5, 5, 20, 20);
 
-        this->buttonSize = Point<int> (((float)h / this->newSlideButton->getAspectRatio()) * 1.2, h);
+        this->buttonSize = juce::Point<int> (((float)h / this->newSlideButton->getAspectRatio()) * 1.2, h);
 
         int marginY = (getHeight() - this->buttonSize.getY())/2;
         int labelY = getHeight() - marginY + 3;
         int labelHeight = marginY * 0.5;
 
         
-        Point<int> bs = Point<int> ((float)h / this->newProjectButton->getAspectRatio(), h);
+        juce::Point<int> bs = juce::Point<int> ((float)h / this->newProjectButton->getAspectRatio(), h);
         
      
         this->newSlideButton->setBounds(x, marginY, bs.getX(), bs.getY());
@@ -247,7 +247,7 @@ private:
         this->newSlideButtonCallback();
     }
     //==================================================
-    Point<int> buttonSize;
+    juce::Point<int> buttonSize;
     //==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRTitleBarProjectButtonArea)

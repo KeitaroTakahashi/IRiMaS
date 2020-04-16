@@ -149,6 +149,7 @@ void IRVideoAnnotater::createWorkspace()
     this->workspace.reset( new VideoAnnotaterWorkspace("VideoAnnotater", r, getStr() ));
     this->workspace->setDraggableMargin(Rectangle<int>(0, 0, 0, 0));
     addAndMakeVisible(this->workspace.get());
+    this->workspace->setBackgroundColour(Colours::transparentBlack);
     this->workspace->addListener(this);
     this->workspace->addKeyListener(this);
 }
@@ -195,9 +196,15 @@ void IRVideoAnnotater::bindVideoPlayerObject()
         
         std::cout << "bindVideoPlayerObject\n";
         // create IRVideoPlayerObject without OpenButton
+        /*
         this->myVideoPlayerObject.reset( new IRVideoAnnotaterObject(this->videoPlayerObject->getParent(),
                                                                 getStr(),
                                                                  false));
+         */
+        this->myVideoPlayerObject.reset( new IRVideoAnnotaterObject(
+                                                                    this,
+                                                                    getStr(),
+                                                                    false));
         
         this->myVideoPlayerObject->videoLoadCompletedCallbackFunc = [this] { myVideoLoadCompleted(); };
         this->myVideoPlayerObject->videoPlayingUpdate = [this](double pos){ myVideoPlayingUpdate(pos); };
@@ -205,7 +212,7 @@ void IRVideoAnnotater::bindVideoPlayerObject()
         this->myVideoPlayerObject->enableController(false);
 
         
-        this->videoPlayerObject->copyContents(this->myVideoPlayerObject.get());
+        //this->videoPlayerObject->copyContents(this->myVideoPlayerObject.get());
 
         this->myVideoPlayerObject->setMovable(false, false, false);
         this->myVideoPlayerObject->setResizable(false);
@@ -321,7 +328,7 @@ void IRVideoAnnotater::myVideoLoadCompleted()
     resized();
 }
 
-void IRVideoAnnotater::updateVideoSize(Point<int> newVideoSize)
+void IRVideoAnnotater::updateVideoSize(juce::Point<int> newVideoSize)
 {
     setVideoSize(newVideoSize);
 }
@@ -430,6 +437,7 @@ void IRVideoAnnotater::setEventModifiedCallback(std::function<void(VideoAnnotati
     this->eventModifiedCallback = callback;
 }
 
+// ==================================================
 
 void IRVideoAnnotater::eventModifiedAction(Component* modifiedEvent)
 {
@@ -438,7 +446,7 @@ void IRVideoAnnotater::eventModifiedAction(Component* modifiedEvent)
     jassert(event != nullptr);
     
     // stop playing video first
-    this->videoPlayerObject->stop();
+    //this->videoPlayerObject->stop();
     this->myVideoPlayerObject->stop();
     
     //resize to sort
@@ -464,8 +472,11 @@ void IRVideoAnnotater::eventSelectedAction(Component* selectedEvent)
     // select object
     this->workspace->deselectAllObjects();
     std::cout<< "nodeobj = " << event->getNodeObject() << std::endl;
-    event->getNodeObject()->setSelected(true);
     
+    if(this->workspace->isEditMode())
+    {
+        event->getNodeObject()->setSelected(true);
+    }
     using s = VideoAnnotationEventComponent::VideoAnnotationType;
        switch (event->getType())
        {
@@ -482,7 +493,30 @@ void IRVideoAnnotater::eventSelectedAction(Component* selectedEvent)
            default:
                break;
        }
+    
+    
+    //this->videotransport->setCurrentPlayingPosition
 }
+
+void IRVideoAnnotater::updateAnimation()
+{
+    this->workspace->updateCurrentAnimation();
+}
+
+void IRVideoAnnotater::showEventPosition(Component* event)
+{
+    // first deselect all objects
+    deselectAllObjectsOnWorkspace();
+    
+    auto e = static_cast<VideoAnnotationEventComponent* >(event);
+    
+    this->videoTransport.setCurrentPlayingPosition(e->getBeginTimeCode());
+    this->workspace->setCurrentTimeCode(e->getBeginTimeCode());
+    updateAnimation();
+    
+    //e->getNodeObject()->setSelected(true);
+}
+// ==================================================
 
 void IRVideoAnnotater::textEventComponentSelected(VideoAnnotationEventComponent* event)
 {
@@ -615,7 +649,7 @@ void IRVideoAnnotater::closeAnnotationWindow()
 
 void IRVideoAnnotater::updateVideoPlayerOfThis()
 {
-    
+    /*
     std::cout << "updateVideoPlayerOfThis\n";
     if(this->videoPlayerObject != nullptr)
     {
@@ -625,18 +659,19 @@ void IRVideoAnnotater::updateVideoPlayerOfThis()
         this->videoTransport.setVideoLengthInSec(this->videoPlayerObject->getVideoPlayer()->getVideoLength());
             resized();
         }
-    }
+    }*/
     
 }
 void IRVideoAnnotater::updateVideoPlayerOfWorkspace()
 {
+    /*
     std::cout << "updateVideoPlayerOfWorkspace\n";
     if(this->videoPlayerObject != nullptr)
     {
         if(this->myVideoPlayerObject.get() != nullptr)
             this->myVideoPlayerObject->shareContentsWith(this->videoPlayerObject);
 
-    }
+    }*/
 }
 // ==================================================
 
@@ -644,8 +679,8 @@ void IRVideoAnnotater::applyEventsOnTheLoadedVideo(VideoAnnotationEventComponent
 {
     if(this->myVideoPlayerObject.get() == nullptr) return;
     
-    this->myVideoPlayerObject->updateEventComponent(event);
-    this->videoPlayerObject->updateEventComponent(event);
+    //this->myVideoPlayerObject->updateEventComponent(event);
+    //this->videoPlayerObject->updateEventComponent(event);
 
 }
 
@@ -661,7 +696,7 @@ void IRVideoAnnotater::deleteEventOnTheLoadedVideo()
 {
     if(this->myVideoPlayerObject.get() == nullptr) return;
     // stop playing video first
-    this->videoPlayerObject->stop();
+    //this->videoPlayerObject->stop();
     this->myVideoPlayerObject->stop();
     
     //resize to sort
@@ -673,7 +708,7 @@ void IRVideoAnnotater::deleteEventOnTheLoadedVideo()
         
     //first update the videoObject on the Annotater
     this->myVideoPlayerObject->setAnnotationEvents(events);
-    this->videoPlayerObject->setAnnotationEvents(events);
+    //this->videoPlayerObject->setAnnotationEvents(events);
     
 }
 
@@ -698,7 +733,7 @@ void IRVideoAnnotater::nodeObjectSelectionChange(IRNodeObject* obj)
         this->eventListComponent->selectEventComponent(event);
         //this->videoTransport.setCurrentPlayingPosition(obj->getBeginTimeCode());
         
-        this->myVideoPlayerObject->setPlayPosition(obj->getBeginTimeCode());
+        //this->myVideoPlayerObject->setPlayPosition(obj->getBeginTimeCode());
     }
     //event->setSelected(true);
     
@@ -716,6 +751,11 @@ void IRVideoAnnotater::editModeChanged(IRWorkspaceComponent* changedSpace)
 void IRVideoAnnotater::heavyObjectCreated(IRNodeObject* obj)
 {
     
+}
+
+void IRVideoAnnotater::deselectAllObjectsOnWorkspace()
+{
+    this->workspace->deselectAllObjects();
 }
 
 // ==================================================

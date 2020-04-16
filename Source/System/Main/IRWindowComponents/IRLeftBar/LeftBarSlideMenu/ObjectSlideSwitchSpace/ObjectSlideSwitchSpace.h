@@ -104,7 +104,7 @@ public:
         void paint(Graphics& g) override
         {
             g.setColour(getStr()->SYSTEMCOLOUR.text);
-            g.drawText(title, buttonSize + 10, 8, 80, 24, Justification::left);
+            //g.drawText(title, buttonSize + 10, 8, 80, 24, Justification::left);
         }
         
         // --------------------------------------------------

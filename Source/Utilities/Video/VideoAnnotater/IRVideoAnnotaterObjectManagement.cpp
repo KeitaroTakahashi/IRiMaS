@@ -22,6 +22,7 @@ void IRVideoAnnotater::createNodeObjectOnEvent(IRNodeObject* obj,
     obj->setSelected(true);
     // initially the object is shown
     obj->setAnimated(true);
+    obj->setCurrentTimeCode(this->videoTransport.getPlayPosition());
 }
 
 
@@ -59,6 +60,7 @@ void IRVideoAnnotater::createTextEventComponentFromIRNodeObject(IRNodeObject* ob
     event->setNodeObject(obj);
     obj->setSelected(true);
     obj->setAnimated(true);
+    obj->setCurrentTimeCode(this->videoTransport.getPlayPosition());
 
 }
 
@@ -95,6 +97,8 @@ void IRVideoAnnotater::createShapeEventComponentFromNodeObject(IRNodeObject* obj
     this->workspace->deselectAllObjects();
     obj->setSelected(true);
     obj->setAnimated(true);
+    obj->setCurrentTimeCode(this->videoTransport.getPlayPosition());
+
 }
 
 void IRVideoAnnotater::createImageEventComponent()

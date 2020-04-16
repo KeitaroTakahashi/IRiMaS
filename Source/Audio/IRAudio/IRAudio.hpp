@@ -141,14 +141,14 @@ public:
     
     
     void setZoomInfo(float w, float h);
-    void setZoomInfo(Point<float> zoom);
-    Point<float> getZoomInfo() const { return this->zoomInfo; }
+    void setZoomInfo(juce::Point<float> zoom);
+    juce::Point<float> getZoomInfo() const { return this->zoomInfo; }
     void setCurrentPlayedFrame(int64 frame) { this->currentPlayedFrame = frame; }
     int64 getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
     void setCurrentPlayedPosRatio(float ratio) { this->currentPlayedPosRatio = ratio; }
     float getCurrentPlayedPosRatio() const { return this->currentPlayedPosRatio; }
-    void setViewPortPosition(Point<int> pos) { this->viewPortPos = pos; }
-    Point<int> getViewPortPosition() const { return this->viewPortPos; }
+    void setViewPortPosition(juce::Point<int> pos) { this->viewPortPos = pos; }
+    juce::Point<int> getViewPortPosition() const { return this->viewPortPos; }
     
     // ===========================================================================
 
@@ -185,9 +185,9 @@ private:
     
     int64 currentPlayedFrame = 0;
     float currentPlayedPosRatio = 0.0;
-    Point<int> viewPortPos;
+    juce::Point<int> viewPortPos;
     
-    Point<float> zoomInfo;
+    juce::Point<float> zoomInfo;
     // ---------------------------------------------------------------------------
 
     File file;

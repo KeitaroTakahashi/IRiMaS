@@ -101,7 +101,7 @@ void IRLeftBar::mouseDrag(const MouseEvent& e)
 
     if(this->isMovable)
     {
-        Point<int>delta = this->currentPos - this->prevPos;
+       juce::Point<int>delta = this->currentPos - this->prevPos;
         // We need to subtract 1 to fix the gap between view position and window position!!
         this->pos.setX(getScreenX() + delta.getX());
         this->pos.setY(getScreenY() + delta.getY() - getY());
@@ -137,7 +137,7 @@ void IRLeftBar::mouseMove(const MouseEvent& e)
 
 
 //==================================================
-void IRLeftBar::checkResizableFromMouseDownPosition(Point<int> pos)
+void IRLeftBar::checkResizableFromMouseDownPosition(juce::Point<int> pos)
 {
     
 }

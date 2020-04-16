@@ -7,7 +7,7 @@
 
 #include "IRPropertyComponent.hpp"
 
-IRPropertyComponent::IRPropertyComponent(const String &propertyName, Point<int>Marge, Rectangle<int> objectBounds, int preferredHeight) :
+IRPropertyComponent::IRPropertyComponent(const String &propertyName,juce::Point<int>Marge, Rectangle<int> objectBounds, int preferredHeight) :
 PropertyComponent(propertyName, preferredHeight)
 {
     this->objectBounds = objectBounds;

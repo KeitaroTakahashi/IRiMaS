@@ -398,7 +398,7 @@ void IRNodeComponent::deleteThisComponentEvent(const MouseEvent& e)
 
 void IRNodeComponent::setSelected(bool flag)
 {
-    std::cout << "setSelected " << flag << std::endl;
+    std::cout << "setSelected " << flag << " of " << this <<std::endl;
     // if this object is not visible, then do nothing.
     if(!isVisible()) return;
     
@@ -461,14 +461,41 @@ void IRNodeComponent::defaultPopupMenuEvents()
 
 void IRNodeComponent::showThisObject(bool flag)
 {
-    this->resizingSquare.enableSquare(flag);
     
     setVisible(flag);
+    
+    if(flag)
+    {
+        if(isEditMode())
+        {
+            this->resizingSquare.enableSquare(flag);
+            this->selectedFlag = flag;
+        }else{
+            this->resizingSquare.enableSquare(false);
+            this->selectedFlag = false;
+        }
+        
+        /*
+        if(!this->parent->isParentOf(this))
+        {
+            this->parent->addChildComponent(this);
+        }*/
+        
+        
+        if(!this->parent->isParentOf(&this->resizingSquare))
+        {
+            this->parent->addChildComponent(this->resizingSquare);
+        }
+    }else{
+        this->parent->removeChildComponent(&this->resizingSquare);
+        //this->parent->removeChildComponent(this);
+    }
     
     IROpenGLManager manager(&this->openGLContext);
     manager.setOpenGLContextAlpha(0);
 
 }
+
 // ==================================================
 
 void IRNodeComponent::resizingSquareClicked(IRResizeSquare2::MovableDirection direction)

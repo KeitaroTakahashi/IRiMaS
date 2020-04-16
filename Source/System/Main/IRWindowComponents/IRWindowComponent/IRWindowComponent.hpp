@@ -39,10 +39,9 @@ public:
     void mouseUp(const MouseEvent& e) override;
     void mouseDown(const MouseEvent& e)override;
     void mouseMove(const MouseEvent& e)override;
+
     // ==================================================
-    
-    
-    // ==================================================
+public:
     void openProject();
     void closeProject(DocumentWindow* closingWindow);
     void createNewProject();
@@ -77,13 +76,13 @@ public:
     
     // ==================================================
     // for the window size change
-    Point<int> pos;
-    Point<int> currentPos;
-    Point<int> prevPos;
+    juce::Point<int> pos;
+    juce::Point<int> currentPos;
+    juce::Point<int> prevPos;
     
     // ==================================================
     // to inform IRProjectWIndow and IRiMaSMainComponent the behavior of the project
-    std::function<void(Point<int>)> windowMoveAction;
+    std::function<void(juce::Point<int>)> windowMoveAction;
     std::function<void()> closeProjectCallback;
     std::function<void()> newProjectCallback;
     std::function<void()> openProjectCallback;
@@ -187,7 +186,7 @@ private:
     void rebindOpenGLContents() override;
     void updateAppearance() override;
 
-    Point<int> previousSize;
+    juce::Point<int> previousSize;
     // ==================================================
 
     
@@ -198,7 +197,7 @@ private:
    
     
     // store window size before changing it.
-    Point<int> prevSize;
+    juce::Point<int> prevSize;
     // ==================================================
    
     // ==================================================

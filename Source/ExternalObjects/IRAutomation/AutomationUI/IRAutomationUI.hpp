@@ -71,7 +71,7 @@ private:
     void audioPlayOperatedFromComponent(IRAudio* obj) override;
     void viewPortPositionFromComponent(IRAudio* obj) override;
     
-    void setZoomInfo(Point<float> zoom) {
+    void setZoomInfo(juce::Point<float> zoom) {
         this->zoomInfo = zoom;
         if(this->audioData != nullptr)
         {
@@ -81,30 +81,30 @@ private:
     }
     
     void setZoomInfo(float w, float h) {
-        this->zoomInfo = Point<float>(w, h);
+        this->zoomInfo = juce::Point<float>(w, h);
         setZoomInfo(this->zoomInfo);
     }
     
     void linkZoomInfo(Component* comp);
     void linkViewPosition(Component* comp);
     
-    Point<float> getZoomInfo() const { return this->zoomInfo; }
+    juce::Point<float> getZoomInfo() const { return this->zoomInfo; }
     
     void setCurrentPlayedFrame(int64 frame) { this->currentPlayedFrame = frame; }
     int64 getCurrentPlayedFrame() const { return this->currentPlayedFrame; }
     
     void linkCurrentPlayedFrame(Component* comp);
     
-    void setVisiblePos(Point<int>pos) { this->visiblePos = pos; }
-    Point<int> getVisiblePos() const { return this->visiblePos; }
+    void setVisiblePos(juce::Point<int>pos) { this->visiblePos = pos; }
+    juce::Point<int> getVisiblePos() const { return this->visiblePos; }
     
     Rectangle<int> visibleArea;
     // ---------------------------------------------------------------------------
     // sharedInformation
     
     int64 currentPlayedFrame = 0;
-    Point<int>visiblePos;
-    Point<float> zoomInfo;
+    juce::Point<int>visiblePos;
+    juce::Point<float> zoomInfo;
     Rectangle<int>playingLine;
     
     void createPlayingLine(int64 currentFrame);

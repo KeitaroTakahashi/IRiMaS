@@ -30,7 +30,7 @@ public:
 
 private:
     
-    Point<int> mediaResolution;
+    juce::Point<int> mediaResolution;
 
     // ==================================================
 

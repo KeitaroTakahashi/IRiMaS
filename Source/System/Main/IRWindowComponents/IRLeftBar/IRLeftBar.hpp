@@ -40,7 +40,7 @@ public:
 
     //==================================================
     
-    void checkResizableFromMouseDownPosition(Point<int> pos);
+    void checkResizableFromMouseDownPosition(juce::Point<int> pos);
     
     void setMovable(bool flag) { this->isMovable = flag; }
     //==================================================
@@ -62,9 +62,9 @@ public:
 
     IRWindowBarActionStatus getStatus() const { return this->status; }
     
-    Point<int> pos;
-    Point<int> currentPos;
-    Point<int> prevPos;
+    juce::Point<int> pos;
+    juce::Point<int> currentPos;
+    juce::Point<int> prevPos;
     
     //==================================================
     
@@ -125,7 +125,7 @@ private:
     //==================================================
 
     // layout
-    int buttonSize = 40;
+    int buttonSize = 30;
     
     int topMarge = 10;
     int switchSpace = 50;

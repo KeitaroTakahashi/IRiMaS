@@ -174,6 +174,9 @@ void IRIconBank::loadImages()
     url = "/materials/Images/icon/menu/icon_active";
     this->icon_active = loadImageAndReturn(url);
     
+    url = "/materials/Images/icon/menu/icon_search";
+    this->icon_search = loadImageAndReturn(url);
+    
     
     // logo
     this->logo_darkBlue = loadLogoImage("logo_15.png");

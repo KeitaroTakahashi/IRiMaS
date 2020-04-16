@@ -38,7 +38,7 @@ void IRTextEditorAnnotaterObject::setAnnotationBounds(Rectangle<int> bounds4This
                                                       Rectangle<int> parentBounds)
 {
     // calculate ratio relative to the mediaResolution
-    Point<float> ratio = Point<float> ((float)parentBounds.getWidth() / (float)this->mediaResolution.getX(),
+    juce::Point<float> ratio = juce::Point<float> ((float)parentBounds.getWidth() / (float)this->mediaResolution.getX(),
                                        (float)parentBounds.getHeight() / (float)this->mediaResolution.getY());
     
     setObjectBounds(bounds4This.getX() * ratio.getX(),

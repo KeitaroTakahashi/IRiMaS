@@ -85,6 +85,7 @@ public:
     
     // square icon
     IRIconImage icon_active;
+    IRIconImage icon_search;
     
     //Event
     IRIconImage icon_AudioEvent;

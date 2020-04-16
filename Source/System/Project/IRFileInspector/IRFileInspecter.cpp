@@ -51,7 +51,7 @@ void IRFileInspecter::makePropertyPanel()
         {
             IRNodeObject* node = static_cast<IRNodeObject* >(obj->getOwnerList()[j]);
             //std::cout << "node = " << node << std::endl;
-            components.add(new IRPropertyComponent(node->name, Point<int>(40,0), node->getBounds()));
+            components.add(new IRPropertyComponent(node->name, juce::Point<int>(40,0), node->getBounds()));
             //std::cout << "makePropertyPanel : " << i << " of " << fileList.size() << " : " << node->name << "\n";
         }
         this->panel.addSection(fileList[i].getFileName(), components);

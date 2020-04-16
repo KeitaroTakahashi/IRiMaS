@@ -215,7 +215,7 @@ void SlideMenu::moveSelectedSlide(const MouseEvent& e)
     
     if(slide != nullptr)
     {
-        Point<int> delta = e.getEventRelativeTo(slide).getPosition() - this->mouseDownWithinTarget;
+        juce::Point<int> delta = e.getEventRelativeTo(slide).getPosition() - this->mouseDownWithinTarget;
 
         Rectangle<int> bounds = slide->getBounds();
         bounds.setY(bounds.getY() + delta.getY());

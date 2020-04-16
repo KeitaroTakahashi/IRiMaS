@@ -75,7 +75,7 @@ void IRAutomationUI::zoomInClicked()
     this->automation_width_ratio *= 2;
     resized();
     this->automation->reCalcPos();
-    setZoomInfo(Point<float>(this->automation_width_ratio, 1.0));
+    setZoomInfo(juce::Point<float>(this->automation_width_ratio, 1.0));
     linkZoomInfo(nodeObject);
 }
 
@@ -84,7 +84,7 @@ void IRAutomationUI::zoomOutClicked()
     this->automation_width_ratio /= 2;
     resized();
     this->automation->reCalcPos();
-    setZoomInfo(Point<float>(this->automation_width_ratio, 1.0));
+    setZoomInfo(juce::Point<float>(this->automation_width_ratio, 1.0));
     linkZoomInfo(nodeObject);
 }
 

@@ -11,7 +11,7 @@ IRSpectrogram::IRSpectrogram(IRNodeObject* nodeObject, IRStr* str) :
 IRUIAudioFoundation(nodeObject, str),
 IRHeavyWeightComponent(this),
 parent(nodeObject),
-zoomInfo(Point<float>(1.0,1.0))
+zoomInfo(juce::Point<float>(1.0,1.0))
 {
     init();
     
@@ -345,7 +345,7 @@ void IRSpectrogram::loadDrawData(IRDescriptorStr* data)
     
 }
 
-void IRSpectrogram::setVisibleArea(Rectangle<int> area, Point<int> parentSize)
+void IRSpectrogram::setVisibleArea(Rectangle<int> area, juce::Point<int> parentSize)
 {
     int s = getHeight();
     if(s > 50) s = 50;
@@ -387,7 +387,7 @@ void IRSpectrogram::setVisibleArea(Rectangle<int> area, Point<int> parentSize)
 
 void IRSpectrogram::parentSizeChanged(int w, int h)
 {
-    this->parentSize = Point<int>(w, h);
+    this->parentSize = juce::Point<int>(w, h);
     loadDescriptor();
 }
 

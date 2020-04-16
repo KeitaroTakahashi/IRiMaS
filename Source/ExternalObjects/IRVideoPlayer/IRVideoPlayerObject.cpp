@@ -10,7 +10,7 @@
 IRVideoPlayerObject::IRVideoPlayerObject(Component* parent, IRStr* str, bool withOpenButton) :
 IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 {
-    setOpaque(false);
+    setOpaque(true);
     // original function to give this ChangeListener to controller->UI
     
     
@@ -19,6 +19,8 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
     this->workspace.reset(new IRNodeObjectWorkspace("VideoAnnotater", a ,getStr()));
     this->workspace->setDraggableMargin(Rectangle<int>(0, 0, 0, 0));
     addAndMakeVisible(this->workspace.get());
+    this->workspace->setBackgroundColour(Colours::transparentBlack);
+
     this->workspace->addListener(this);
     
     this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str, withOpenButton);
@@ -175,11 +177,11 @@ void IRVideoPlayerObject::resizeThisComponent(Rectangle<int> rect)
     
 }
 
-Point<int> IRVideoPlayerObject::getVideoSize()
+juce::Point<int> IRVideoPlayerObject::getVideoSize()
 {
     int w = this->videoPlayer->getVideoSize().getWidth();
     int h = this->videoPlayer->getVideoSize().getHeight();
-    return Point<int>( w, h );
+    return juce::Point<int>( w, h );
 }
 
 // --------------------------------------------------

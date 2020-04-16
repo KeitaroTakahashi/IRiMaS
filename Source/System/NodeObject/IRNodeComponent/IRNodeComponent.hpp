@@ -222,8 +222,8 @@ public:
 
     
     
-    Point<float> getResizingArea() const;
-    void setResizingArea(Point<float> area);
+    juce::Point<float> getResizingArea() const;
+    void setResizingArea(juce::Point<float> area);
     void recoverEventStatus();
     
     // min max setter
@@ -364,12 +364,12 @@ public: virtual void resizingSquareDraggedAction(MouseEvent e){}
 public:
     void setMediaResolution(int w, int h);
     void setMediaObjectSize(int w, int h);
-    Point<int> getMediaResolution() const { return this->mediaResolution; }
-    Point<float> getResolutionRatioToMedia() const { return this->resolutionRatioToMedia; }
+    juce::Point<int> getMediaResolution() const { return this->mediaResolution; }
+    juce::Point<float> getResolutionRatioToMedia() const { return this->resolutionRatioToMedia; }
 private:
-    Point<int> mediaResolution;
-    Point<int> mediaObjectSize;
-    Point<float> resolutionRatioToMedia;
+    juce::Point<int> mediaResolution;
+    juce::Point<int> mediaObjectSize;
+    juce::Point<float> resolutionRatioToMedia;
     // ===========================================================================
 public:
     
@@ -470,7 +470,7 @@ private:
     
     bool mouseListenerFlag = false;
 
-    Point<float> resizingArea;
+    juce::Point<float> resizingArea;
     
     Rectangle<float> initialBounds;
 

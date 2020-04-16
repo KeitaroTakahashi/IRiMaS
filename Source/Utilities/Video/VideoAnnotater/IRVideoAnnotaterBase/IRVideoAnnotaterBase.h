@@ -29,17 +29,19 @@ public:
     virtual void eventSelectedAction(Component* selectedEvent) {};
     virtual void newEventCreatedAction(Component* selectedEvent) {};
     virtual void eventTimeCodeChangedAction(Component* changedEvent) {};
+    virtual void updateAnimation() {};
+    virtual void showEventPosition(Component* event) {};
 
     // ==================================================
     
-    void setVideoSize(Point<int> newVideoSize) { this->videoSize = newVideoSize; }
-    Point<int> getVideoSize() const { return this->videoSize; }
+    void setVideoSize(juce::Point<int> newVideoSize) { this->videoSize = newVideoSize; }
+    juce::Point<int> getVideoSize() const { return this->videoSize; }
     // ==================================================
  
 
 private:
     // ==================================================
-    Point<int> videoSize;
+    juce::Point<int> videoSize;
 
     // ==================================================
     // ==================================================

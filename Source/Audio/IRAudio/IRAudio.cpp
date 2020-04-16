@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------
 IRAudio::IRAudio():
 Thread("ImportAudioFile Background thread"),
-viewPortPos(Point<int>(0,0)),
+viewPortPos(juce::Point<int>(0,0)),
 zoomInfo(1.0, 1.0)
 {
     this->formatManager.registerBasicFormats();
@@ -424,11 +424,11 @@ void IRAudio::linkViewPortPositionWithSharedComponents(Component* comp)
 
 void IRAudio::setZoomInfo(float w, float h)
 {
-    this->zoomInfo = Point<float>(w, h);
+    this->zoomInfo = juce::Point<float>(w, h);
     setZoomInfo(this->zoomInfo);
 }
 
-void IRAudio::setZoomInfo(Point<float> zoom)
+void IRAudio::setZoomInfo(juce::Point<float> zoom)
 {
     this->zoomInfo = zoom;
 }

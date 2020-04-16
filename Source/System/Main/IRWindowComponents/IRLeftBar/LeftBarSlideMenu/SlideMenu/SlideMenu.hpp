@@ -58,9 +58,9 @@ private:
     // ==================================================
     void updateSpace();
     // ==================================================
-    Point<int> mouseDownPos;
-    Point<int> previousMousePos;
-    Point<int> mouseDownWithinTarget;
+    juce::Point<int> mouseDownPos;
+    juce::Point<int> previousMousePos;
+    juce::Point<int> mouseDownWithinTarget;
     // ==================================================
 
     int yMargin = 10;

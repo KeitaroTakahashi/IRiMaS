@@ -61,7 +61,7 @@ private:
     bool isMouseEnter = false;
     Image img;
     Image selectedImg;
-    Point<float> margin;
+    juce::Point<float> margin;
     
     Rectangle<float> rect;
     

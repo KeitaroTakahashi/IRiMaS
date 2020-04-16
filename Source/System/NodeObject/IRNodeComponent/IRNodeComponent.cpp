@@ -346,13 +346,13 @@ void IRNodeComponent::mouseDrag(const MouseEvent& e)
 
 
 // resizing area
-Point<float> IRNodeComponent::getResizingArea() const
+juce::Point<float> IRNodeComponent::getResizingArea() const
 {
     return this->resizingArea;
 }
 
 
-void IRNodeComponent::setResizingArea(Point<float> area)
+void IRNodeComponent::setResizingArea(juce::Point<float> area)
 {
     this->resizingArea = area;
 }
@@ -518,6 +518,10 @@ bool IRNodeComponent::isEditMode() const
 // if false, this object receive Mouse/Keyboard events
 void IRNodeComponent::setEditMode(bool flag)
 {
+    
+    // square
+    if(!flag) this->resizingSquare.enableSquare(flag);
+
     this->editModeFlag = flag;
     statusChangedWrapper(IRNodeComponentStatus::EditModeStatus);
     editModeChangedEvent();

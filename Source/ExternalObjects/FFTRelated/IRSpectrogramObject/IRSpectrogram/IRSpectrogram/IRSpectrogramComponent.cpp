@@ -72,7 +72,7 @@ void IRSpectrogramComponent::setVisibleArea(Rectangle<int> area)
 {
     
     //std::cout << "iRSpectrogramComponent : size changed " << getWidth()<< std::endl;
-    this->spectrogram->setVisibleArea(area, Point<int>(getWidth(), getHeight()));
+    this->spectrogram->setVisibleArea(area, juce::Point<int>(getWidth(), getHeight()));
     
     
     repaint();

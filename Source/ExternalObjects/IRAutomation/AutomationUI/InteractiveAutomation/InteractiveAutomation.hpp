@@ -144,7 +144,7 @@ private:
     
     std::shared_ptr<VertecesSelector> selector;
     
-    void createVertex(Point<float> pos, bool isSelected, bool shouldSort = true);
+    void createVertex(juce::Point<float> pos, bool isSelected, bool shouldSort = true);
     
     void drawVerteces(Graphics& g);
     
@@ -161,7 +161,7 @@ private:
     
     // ==================================================
     
-    Point<int> currentMousePos {0, 0};
+    juce::Point<int> currentMousePos {0, 0};
     
     // ==================================================
     

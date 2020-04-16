@@ -99,7 +99,7 @@ void IRNodeObjectSelector::mouseDragHandler(const MouseEvent& e)
     {
         if (! isDragging()) return;
         
-        Point<int> delta = e.getEventRelativeTo(getBeingDraggedObject()).getPosition() - this->mouseDownWithinTarget;
+       juce::Point<int> delta = e.getEventRelativeTo(getBeingDraggedObject()).getPosition() - this->mouseDownWithinTarget;
 
         for (auto comp: this->selectedObjectList)
         {

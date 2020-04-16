@@ -46,28 +46,6 @@ bool IRWorkspaceComponent::keyPressed (const KeyPress& key, Component* originati
         }
         return true;
     }
-      /*
-    if(key.getTextDescription() == "command + E")
-    {
-        setEditMode(!this->editModeFlag);
-        
-        // notify it to IRProject
-        if(this->notifyEditModeChanged != nullptr)
-        {
-            this->notifyEditModeChanged();
-        }
-        
-        return true;
-    }
-    
-    // in case no key
-    if(! this->isEditMode())
-    {
-        std::cout << "IRWworkspace : The workspace can not receive any key event because it is in Control Mode, if you want to control Object interface, please click an object you want to control and give a KeyEventFocus on it." << std::endl;
-    }
-    else {
-        std::cout << "IRWorkspaceComponent : Unknown KeyEvent received." << std::endl;
-    }*/
     
     return false;
 }

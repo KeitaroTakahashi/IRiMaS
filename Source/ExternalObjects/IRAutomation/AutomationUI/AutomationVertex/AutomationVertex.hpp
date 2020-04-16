@@ -108,8 +108,8 @@ namespace IRAutomation {
         
         void setSelected(bool flag);
         bool isSelected();
-        void setMouseDownPos(Point<int> pos);
-        Point<int> getMouseDownPos() const;
+        void setMouseDownPos(juce::Point<int> pos);
+        juce::Point<int> getMouseDownPos() const;
         void moveThisComponentEvent(const MouseEvent& e);
         
         // --------------------------------------------------
@@ -144,12 +144,12 @@ namespace IRAutomation {
         // --------------------------------------------------
         
         
-        void setPosition(Point<float>pos);
-        void setPosition(Point<int>pos);
+        void setPosition(juce::Point<float>pos);
+        void setPosition(juce::Point<int>pos);
 
-        Point<float> getPosition();
+        juce::Point<float> getPosition();
         
-        void setPositionEx(Point<float>pos);
+        void setPositionEx(juce::Point<float>pos);
         
         void setBezierRatio(float ratio) { this->bezierRatio = ratio; }
         float getBezierRatio() const { return this->bezierRatio; }
@@ -164,7 +164,7 @@ namespace IRAutomation {
     
     private:
         
-        Point<float> position;
+        juce::Point<float> position;
         
         ComponentBoundsConstrainer constrainer;
         ComponentDragger dragger;
@@ -182,7 +182,7 @@ namespace IRAutomation {
         // --------------------------------------------------
 
         uiCondition condition = uiOrdinary;
-        Point<int> mouseDownPos = {0, 0};
+        juce::Point<int> mouseDownPos = {0, 0};
         int selectedSize = 10;
         int ordinarySize = 5;
         

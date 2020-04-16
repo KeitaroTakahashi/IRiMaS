@@ -37,7 +37,7 @@ public:
     std::function<void()> titleDoubleClickedCallback;
     
     //==================================================
-    void checkResizableFromMouseDownPosition(Point<int> pos);
+    void checkResizableFromMouseDownPosition(juce::Point<int> pos);
     
     void bringToFrontCompleted() override
     {
@@ -56,9 +56,9 @@ public:
     
     IRWindowBarActionStatus getStatus() const { return this->status; }
     
-    Point<int> pos;
-    Point<int> currentPos;
-    Point<int> prevPos;
+    juce::Point<int> pos;
+    juce::Point<int> currentPos;
+    juce::Point<int> prevPos;
     
     //==================================================
     // acceccible from outside of this class

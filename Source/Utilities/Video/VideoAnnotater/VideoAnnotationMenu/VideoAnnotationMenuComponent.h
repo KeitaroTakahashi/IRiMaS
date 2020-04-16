@@ -67,7 +67,7 @@ public:
         int centreH = getHeight() / 2;
         int margin = 5;
         float h = 100;
-        Point<int> b = Point<int> (((float)h / this->TextEventButton.getAspectRatio()), h);
+        juce::Point<int> b = juce::Point<int> (((float)h / this->TextEventButton.getAspectRatio()), h);
 
         this->TextEventButton.setBounds(0, 0, b.getX(), b.getY());
         this->TextEventButton.setCentrePosition(centreW - b.getX()/2 - margin,
