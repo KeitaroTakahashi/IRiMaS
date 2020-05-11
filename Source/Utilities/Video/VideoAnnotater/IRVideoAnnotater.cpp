@@ -219,6 +219,9 @@ void IRVideoAnnotater::bindVideoPlayerObject()
         this->myVideoPlayerObject->setObjectBounds(this->videoArea);
         addAndMakeVisible(this->myVideoPlayerObject.get());
         
+        //add to workspace
+        //this->workspace->createObject(this->myVideoPlayerObject.get());
+        
         // set up workspace
         this->workspace->setFixObjectSizeRatioWithOriginalSize(false, this->myVideoPlayerObject->getBounds().toFloat());
         

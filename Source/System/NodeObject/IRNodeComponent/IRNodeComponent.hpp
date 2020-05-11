@@ -306,6 +306,11 @@ public:
     
     bool isMouseListenerFlag() const;
     void setMouseListenerFlag(bool flag);
+    
+    
+    // activate
+    bool isActive() const { return this->isActiveFlag; }
+    void setActive(bool active);
 
     //unique ID
     void setUniqueID(String id);
@@ -473,6 +478,11 @@ private:
     juce::Point<float> resizingArea;
     
     Rectangle<float> initialBounds;
+    
+    // default activate.
+    // when deactivate, this object is hidden by moving to bihind the workspace (this is how to avoid using setVisible() causing latency)
+    // used for annotater
+    bool isActiveFlag = true;
 
     // =======================================================
     // INITIAL BOUNDS used for fixing the position and size of this object relative to the workspace

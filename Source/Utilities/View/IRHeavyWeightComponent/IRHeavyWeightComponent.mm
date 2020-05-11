@@ -40,6 +40,10 @@ void IRHeavyWeightComponent::bringToFront(juce::Component* owner)
     [context.view setHidden: ! owner->isShowing()];
     // re-setup component alpha
     setComponentAlpha(this->alpha);
+
+    // reset repainting 
+    this->ctx.setContinuousRepainting(false);
+
 }
 
 

@@ -18,7 +18,7 @@ public IRHeavyWeightComponent
 public:
     //==============================================================================
 
-    IRObjectSelection() : IRHeavyWeightComponent(this)
+    IRObjectSelection() : IRHeavyWeightComponent(this, "IRObjectSelection")
     {
         setShiftConstrainsDirection(true);
         setConstrainBoundsToParent(true, {0,0,10,10});

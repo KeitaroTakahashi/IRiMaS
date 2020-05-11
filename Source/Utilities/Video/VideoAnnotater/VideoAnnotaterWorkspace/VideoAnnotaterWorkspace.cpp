@@ -10,19 +10,17 @@
 VideoAnnotaterWorkspace::VideoAnnotaterWorkspace(String title, Rectangle<int> draggableMargin, IRStr* str) :
 IRWorkspaceComponent(title, draggableMargin, str)
 {
-    //enableDrawGrids(false);
+    enableDrawGrids(true);
     setGridsBackgroundAlpha(0.2);
     
 }
 
 VideoAnnotaterWorkspace::~VideoAnnotaterWorkspace()
 {
-    
 }
 
 void VideoAnnotaterWorkspace::onPaint(Graphics& g)
 {
-    
 }
 
 void VideoAnnotaterWorkspace::setFixObjectSizeRatioWithOriginalSize(bool flag, Rectangle<float> originalSize)

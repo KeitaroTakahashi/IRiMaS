@@ -67,6 +67,14 @@ IRObjectFactory2::IRObjectFactory2()
                                                       "Video Player",
                                                       objectCategory::PLAYERMENU,
                                                       img);
+    
+    
+    registerObject<IRVideoAnnotaterObject2>("IRVideoAnnotater2",
+                                            "Video Annotater",
+                                            objectCategory::PLAYERMENU,
+                                            img);
+    
+    
     registerObject<IRTextEditorObject>("IRTextEditor",
                                        "Text Editor",
                                        objectCategory::TEXTMENU,

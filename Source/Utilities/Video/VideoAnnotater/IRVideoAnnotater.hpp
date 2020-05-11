@@ -21,6 +21,8 @@
 // VideoAnontater object
 #include "IRVATextEditorObject.h"
 #include "IRVAShapeObject.h"
+#include "IRVAImageViewerObject.h"
+#include "IRVAWaveformObject.h"
 
 #include "IRObjectCreater.hpp"
 
@@ -152,7 +154,10 @@ private:
     void createShapeEventComponent();
     void createShapeEventComponentFromNodeObject(IRNodeObject* obj);
     void createImageEventComponent();
+    void createImageEventComponentFromNodeObject(IRNodeObject* obj);
     void createAudioEventComponent();
+    void createAudioEventComponentFromNodeObject(IRNodeObject* obj);
+
     void eventComponentResized();
     
     void createNodeObjectOnEvent(IRNodeObject* obj, VideoAnnotationEventComponent* event);

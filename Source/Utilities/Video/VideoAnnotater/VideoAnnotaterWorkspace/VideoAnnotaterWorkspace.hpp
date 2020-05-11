@@ -9,6 +9,7 @@
 #define VideoAnotaterWorkspace_hpp
 
 #include "IRWorkspaceComponent.hpp"
+#include "IRVideoPlayerObject.hpp"
 
 class VideoAnnotaterWorkspace : public IRWorkspaceComponent
 {
@@ -18,8 +19,10 @@ public:
     
     void onPaint(Graphics& g) override;
     
+    
     void setFixObjectSizeRatioWithOriginalSize(bool flag, Rectangle<float> originalSize);
 private:
+    
     
 };
 

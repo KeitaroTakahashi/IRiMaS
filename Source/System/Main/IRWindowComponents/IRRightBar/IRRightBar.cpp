@@ -129,7 +129,6 @@ void IRRightBar::removeComponents()
 //==================================================
 void IRRightBar::showNothingSelectedUI()
 {
-    std::cout << "showNothingSelectedUI\n";
     
     removeComponents();
     

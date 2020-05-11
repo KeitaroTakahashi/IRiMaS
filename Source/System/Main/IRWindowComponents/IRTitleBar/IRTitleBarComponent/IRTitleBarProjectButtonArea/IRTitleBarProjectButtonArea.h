@@ -21,7 +21,7 @@ public ChangeBroadcaster
     
 public:
     IRTitleBarProjectButtonArea(IRStr* str) : IRStrComponent(str),
-    IRHeavyWeightComponent(this)
+    IRHeavyWeightComponent(this, "IRTitleBarProjectButtonArea")
     {
         std::cout << "IRTitleBarProjectButtonArea init\n";
         

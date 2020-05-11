@@ -162,7 +162,6 @@ public:
     void enableSquare(bool flag)
     {
         
-        std::cout << "enableSquare : " << flag << std::endl;
         for(auto item : this->items)
         {
             item->setVisible(flag);

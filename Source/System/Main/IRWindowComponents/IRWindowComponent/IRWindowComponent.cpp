@@ -279,7 +279,7 @@ void IRWindowComponent::mouseUp(const MouseEvent& e)
     {
         this->isResizable = false;
         if(this->mainSpace->getTopWorkspace() != nullptr)
-            this->mainSpace->getTopWorkspace()->setResizing(true);
+            this->mainSpace->getTopWorkspace()->setResizing(false);
     }
 }
 // ----------------------------------------

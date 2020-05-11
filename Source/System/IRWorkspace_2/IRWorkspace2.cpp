@@ -10,7 +10,7 @@
 IRWorkspace::IRWorkspace(String title, Rectangle<int> draggableMargin, IRStr* str) :
 IRWorkspaceComponent(title, draggableMargin, str)
 {
-    enableDrawGrids(true);
+    //enableDrawGrids(true);
 }
 
 IRWorkspace::~IRWorkspace()

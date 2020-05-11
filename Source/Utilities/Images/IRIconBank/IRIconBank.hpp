@@ -21,6 +21,10 @@ public:
         Image white;
         Image black;
         Image gray;
+        
+        Image small_white;
+        Image small_black;
+        Image small_gray;
     };
     
     struct IRLogoImage
@@ -46,7 +50,8 @@ public:
     IRIconImage getLinear() const { return this->icon_linear; }
 
     IRIconImage loadImageAndReturn(String url);
-    
+    IRIconImage loadImageWithSmallAndReturn(String url);
+
     
     IRIconImage icon_addPage;
     IRIconImage icon_addPage2;
@@ -83,6 +88,8 @@ public:
     IRIconImage icon_rightBar;
     IRIconImage icon_leftBar;
     
+    
+    
     // square icon
     IRIconImage icon_active;
     IRIconImage icon_search;
@@ -105,6 +112,7 @@ public:
 private:
     
     IRIconImage loadImage(String url);
+    IRIconImage loadWithSmallImage(String url);
     IRIconImage icon_zoomIn;
     IRIconImage icon_zoomOut;
     

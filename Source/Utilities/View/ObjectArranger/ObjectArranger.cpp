@@ -42,9 +42,9 @@ encloseColour(str->SYSTEMCOLOUR.fundamental.brighter(), 1.0, str)
     createButton(this->backButton, "Back");
 
     createLabel(this->statusLabel, "Status");
-    createToggleButton(this->encloseButton, "Enclose");
+    createToggleButton(this->encloseButton, "Wrap");
     
-    createLabel(this->encloseColourLabel, "Enclose Colour");
+    createLabel(this->encloseColourLabel, "Wrap Colour");
     addAndMakeVisible(this->encloseColour);
     this->encloseColour.addChangeListener(this);
 

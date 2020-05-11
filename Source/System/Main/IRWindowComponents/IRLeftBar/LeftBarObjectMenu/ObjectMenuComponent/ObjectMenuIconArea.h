@@ -15,7 +15,7 @@ public IRHeavyWeightComponent
 {
 public:
     ObjectMenuIconArea(IRStr* str, int buttonSize, int leftMarge) : IRStrComponent(str),
-    IRHeavyWeightComponent(this),
+    IRHeavyWeightComponent(this, "ObjectMenuIconArea"),
     buttonSize(buttonSize),
     leftMarge(leftMarge),
     textButton(str, str->ICONBANK.icon_text, "Texts", buttonSize),
@@ -237,10 +237,11 @@ private:
         // --------------------------------------------------
         void createButton(IRIconBank::IRIconImage img)
         {
-            if(getStr()->SYSTEMCOLOUR.isWhiteBased) button.setImage(img.black);
-               else button.setImage(img.white);
+            if(getStr()->SYSTEMCOLOUR.isWhiteBased) button.setImage(img.small_black);
+               else button.setImage(img.small_white);
             addAndMakeVisible(button);
             button.addMouseListener(this, false);
+            
         }
         
         void mouseDown(const MouseEvent& e) override

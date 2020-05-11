@@ -19,6 +19,7 @@
 #include "KLib.h"
 #include "Benchmark.h"
 #include "KTextLoader.h"
+#include "IRWorkspaceCover.hpp"
 
 
 class IRWorkspaceComponent : public AudioAppComponent,
@@ -42,7 +43,7 @@ public:
     
     // paint Graphics called by paint() private method
     virtual void onPaint(Graphics& g) {}
-    
+    virtual void onResized() {}
     // ==================================================
     
     bool isDrawGrids() const { return this->isdrawGridsFlag; }
@@ -301,9 +302,8 @@ private:
     float gridsBackgroundAlpha = 0.1;
     // ==================================================
 
+    // Objects
     Array<IRNodeObject* > objects;
-    
-
 
     IRNodeObjectSelector *selector;
     
@@ -317,6 +317,13 @@ private:
     // IRObjectPtr for Global values between objects binded in Workspace
     std::map<String, IRObjectPtr> p_obj;
     // ==================================================
+    
+    // cover with grids
+    std::shared_ptr<IRWorkspaceCover> cover;
+    void createCover();
+    void bringCoverToFront();
+    // ==================================================
+
 
     bool isMultiSelectMode = false;
     bool isPointAlreadySelected = false;

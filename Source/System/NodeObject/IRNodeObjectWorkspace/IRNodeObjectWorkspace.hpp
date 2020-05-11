@@ -17,7 +17,6 @@ public:
     ~IRNodeObjectWorkspace();
     // ==================================================
 
-    void onPaint(Graphics& g) override;
     // ==================================================
 
     void setFixObjectSizeRatioWithOriginalSize(bool flag, Rectangle<float> originalSize);

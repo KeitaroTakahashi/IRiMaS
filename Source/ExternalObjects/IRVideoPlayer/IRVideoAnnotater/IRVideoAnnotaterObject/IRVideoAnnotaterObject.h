@@ -29,20 +29,7 @@ public:
     virtual void resized() override
     {
         IRVideoPlayerObject::resized();
-        
-        
-        int visibleIndex = 1;
-        
-        int videoY = getVideoPlayer()->getY();
-
-        for(auto comp : this->visibleAnnotationComponents)
-        {
-            
-          
-            visibleIndex ++;
-        }
-        
-        
+      
     }
     // --------------------------------------------------
     

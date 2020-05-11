@@ -20,10 +20,6 @@ IRNodeObjectWorkspace::~IRNodeObjectWorkspace()
     
 }
 
-void IRNodeObjectWorkspace::onPaint(Graphics& g)
-{
-    
-}
 
 void IRNodeObjectWorkspace::setFixObjectSizeRatioWithOriginalSize(bool flag, Rectangle<float> originalSize)
 {

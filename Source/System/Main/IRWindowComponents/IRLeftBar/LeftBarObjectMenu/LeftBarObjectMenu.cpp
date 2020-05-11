@@ -28,13 +28,14 @@ parent(parent)
 {
     addButtons();
   
+    /*
     this->inspectorLabel.setText("Inspector", dontSendNotification);
     this->inspectorLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
-    addAndMakeVisible(&this->inspectorLabel);
-    
+    addAndMakeVisible(&this->inspectorLabel);*/
+    /*
     this->preferenceLabel.setText("Preference", dontSendNotification);
     this->preferenceLabel.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
-    addAndMakeVisible(&this->preferenceLabel);
+    addAndMakeVisible(&this->preferenceLabel);*/
     
     this->objectMenuIconArea.reset( new ObjectMenuIconArea(str, this->buttonSize, this->leftMarge) );
     addAndMakeVisible(this->objectMenuIconArea.get());
@@ -150,9 +151,9 @@ void LeftBarObjectMenu::paintSelectedItem(Graphics& g)
 void LeftBarObjectMenu::createButton(IRImageButton* button, IRIconBank::IRIconImage img)
 {
     if(getStr()->SYSTEMCOLOUR.isWhiteBased)
-        button->setImage(img.black);
+        button->setImage(img.small_black);
     else
-        button->setImage(img.white);
+        button->setImage(img.small_white);
     
     addAndMakeVisible(button);
 }
@@ -301,14 +302,14 @@ void LeftBarObjectMenu::bindObjectMenuOnParent(ObjectMenuComponent* obj)
 
 void LeftBarObjectMenu::closeObjectMenu()
 {
-    /*
+
     if(this->objectMenuSpaceArea.get() != nullptr)
     {
         this->objectMenuSpaceArea->removeMenuComponent();
         getStr()->projectOwner->removeChildComponent(this->objectMenuSpaceArea.get());
         
         this->objectMenuSpaceArea.reset();
-    }*/
+    }
 }
 
 

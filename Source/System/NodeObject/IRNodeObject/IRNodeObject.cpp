@@ -684,6 +684,7 @@ void IRNodeObject::transformStatusEnclose()
     this->ordinaryBounds = getBounds();
     
     createEnclosedObject();
+    this->resizingSquare.bringThisToFront();
     
     // then move this object to the enclosed object if encloseBounds is not empty
     if(this->isEncloseObjectAlreadyDefined)
@@ -703,6 +704,7 @@ void IRNodeObject::createEnclosedObject()
     this->enclosedObject->onClick = [this]{ enclosedObjectClickedAction(); };
     addAndMakeVisible(this->enclosedObject.get());
     this->enclosedObject->setColour(this->arrangeController->getEncloseColour());
+    this->enclosedObject->addMouseListener(this, true);
 }
 
 

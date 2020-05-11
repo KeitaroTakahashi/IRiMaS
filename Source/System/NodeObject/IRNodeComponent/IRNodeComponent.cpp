@@ -519,7 +519,7 @@ bool IRNodeComponent::isEditMode() const
 void IRNodeComponent::setEditMode(bool flag)
 {
     
-    // square
+    // disable resizingSquare in Control mode
     if(!flag) this->resizingSquare.enableSquare(flag);
 
     this->editModeFlag = flag;
@@ -566,6 +566,18 @@ void IRNodeComponent::setUniqueID(std::string id)
 String IRNodeComponent::getUniqueID() const
 {
     return this->uniqueID;
+}
+
+void IRNodeComponent::setActive(bool active)
+{
+    this->isActiveFlag = active;
+    
+    if(active)
+    {
+        
+    }else{
+        
+    }
 }
 
 

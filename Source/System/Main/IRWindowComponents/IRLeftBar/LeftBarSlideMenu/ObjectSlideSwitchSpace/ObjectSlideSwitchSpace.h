@@ -16,7 +16,7 @@ public IRHeavyWeightComponent
 public:
     ObjectSlideSwitchSpace(IRStr* str, int buttonSize) :
     IRStrComponent(str),
-    IRHeavyWeightComponent(this),
+    IRHeavyWeightComponent(this, "ObjectSlideSwitchSpace"),
     buttonSize(buttonSize),
     toNavigatorButton(str, str->ICONBANK.icon_toNavigator, "to Slides", buttonSize),
     toObjectMenuButton(str, str->ICONBANK.icon_toObjectMenu, "to Objects", buttonSize)
@@ -44,6 +44,7 @@ public:
     
     void paint(Graphics& g) override
     {
+        std::cout << "ObjectSlideSwitchSpace paint\n";
         g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     }
     // ==================================================
@@ -111,7 +112,7 @@ public:
         void createButton(IRIconBank::IRIconImage img)
         {
             if(getStr()->SYSTEMCOLOUR.isWhiteBased) button.setImage(img.black);
-            else button.setImage(img.white);
+            else button.setImage(img.small_white);
             addAndMakeVisible(button);
             
             button.addMouseListener(this, false);

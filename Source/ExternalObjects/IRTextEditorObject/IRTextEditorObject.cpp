@@ -375,10 +375,6 @@ void IRTextEditorObject::encloseStatusChangedListener()
     
     bool id = arr->getEnclosedButtonStatus();
     
-    if(id)
-    {
-        std::cout << "enclose!\n";
-    }else std::cout << "off\n";
 }
 
 

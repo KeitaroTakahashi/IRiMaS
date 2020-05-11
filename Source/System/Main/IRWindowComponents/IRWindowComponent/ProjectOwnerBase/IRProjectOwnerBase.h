@@ -32,7 +32,7 @@ public:
     int minHeight = 700;
     
     int barHeight = 70;
-    int leftBarWidth = 135;
+    int leftBarWidth = 55;
     int mainComponentHeight = 400;
 };
 

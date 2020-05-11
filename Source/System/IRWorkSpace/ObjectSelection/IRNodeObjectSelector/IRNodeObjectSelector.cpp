@@ -91,6 +91,7 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
 
 void IRNodeObjectSelector::mouseDragHandler(const MouseEvent& e)
 {
+    std::cout <<"mouseDragHandler\n";
     if (this->multiSelectionFlag)
     {
         dragSelection(e);

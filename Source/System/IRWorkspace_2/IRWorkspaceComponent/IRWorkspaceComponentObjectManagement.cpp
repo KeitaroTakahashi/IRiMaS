@@ -204,12 +204,21 @@ void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
     std::vector<IRNodeObject*> reversedZorder = this->ObjectZorder;
     std::reverse(std::begin(reversedZorder), std::end(reversedZorder));
     
+    //first bring cover object to front
+    bringCoverToFront();
+   
     for(auto obj: reversedZorder)
     {
         if(flag)
         {
-            // do not refresh heacy component z- order until all objects are set up
-            obj->bringThisToFront(false);
+            if(obj->isActive())
+            {
+                // do not refresh heacy component z- order until all objects are set up
+                obj->bringThisToFront(false);
+            }else{
+                // if inAvtivated, then the object is behind the cover object
+                obj->bringThisToBack();
+            }
         }
     }
     // refresh heacy component z order

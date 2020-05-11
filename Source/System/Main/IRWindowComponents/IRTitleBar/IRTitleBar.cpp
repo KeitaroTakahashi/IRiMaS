@@ -10,7 +10,7 @@
 //==============================================================================
 IRTitleBar::IRTitleBar(IRStr* str, String title) :
 IRStrComponent(str),
-IRHeavyWeightComponent(this),
+IRHeavyWeightComponent(this, "IRTitleBar"),
 comp(str, title)
 {
     setOpaque(false);
@@ -28,6 +28,8 @@ IRTitleBar::~IRTitleBar()
 //==============================================================================
 void IRTitleBar::paint (Graphics& g)
 {
+    
+    std::cout << "IRTitleBar::paint\n";
     /*
     g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     g.setColour(getStr()->SYSTEMCOLOUR.contents);

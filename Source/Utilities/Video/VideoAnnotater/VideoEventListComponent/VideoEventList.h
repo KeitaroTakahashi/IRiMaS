@@ -112,14 +112,30 @@ public:
                                                                   endTime);
 
     }
-    void createImageEventComponent()
+    AnnotationImageEventComponent* createImageEventComponent()
     {
-       this->videoListComponent->createImageEventComponent();
+       return this->videoListComponent->createImageEventComponent();
 
     }
-    void createAudioEventComponent()
+    
+    AnnotationImageEventComponent* createImageEventComponent(float beginTime,
+                                                             float endTime)
     {
-       this->videoListComponent->createAudioEventComponent();
+       return this->videoListComponent->createImageEventComponent(beginTime,
+                                                                  endTime);
+
+    }
+    AnnotationWaveformEventComponent* createWaveformEventComponent()
+    {
+       return this->videoListComponent->createWaveformEventComponent();
+
+    }
+    
+    AnnotationWaveformEventComponent* createWaveformEventComponent(float beginTime,
+                                                                float endTime)
+    {
+       return this->videoListComponent->createWaveformEventComponent(beginTime,
+                                                                  endTime);
 
     }
     //==================================================

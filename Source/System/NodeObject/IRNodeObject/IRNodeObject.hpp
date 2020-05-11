@@ -112,6 +112,7 @@ public:
     
     IRNodeObjectStatus getStatus() const { return this->status; }
     void setStatus(IRNodeObjectStatus newStatus);
+    
     void transformStatusToOrdinary();
     void transformStatusEnclose();
     void setEncloseMode(bool flag);

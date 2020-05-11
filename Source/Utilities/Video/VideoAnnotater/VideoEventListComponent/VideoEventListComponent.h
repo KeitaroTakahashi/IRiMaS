@@ -10,6 +10,8 @@
 
 #include "AnnotationTextEventComponent.h"
 #include "AnnotationShapeEventComponent.h"
+#include "AnnotationImageEventComponent.h"
+#include "AnnotationWaveformEventComponent.h"
 #include "KLib.h"
 
 class VideoEventListComponent : public Component,
@@ -158,13 +160,43 @@ public:
         return comp;
     }
     
-    void createImageEventComponent()
+    AnnotationImageEventComponent* createImageEventComponent()
     {
-       
+       AnnotationImageEventComponent* comp = new AnnotationImageEventComponent(getStr(),
+                                                                               this->getBase());
+       createEventComponent(comp);
+       return comp;
     }
-    void createAudioEventComponent()
+    
+    AnnotationImageEventComponent* createImageEventComponent(float beginTime,
+                                                             float endTime)
     {
-       
+        AnnotationImageEventComponent* comp = new AnnotationImageEventComponent(getStr(),
+                                                                                this->getBase(),
+                                                                                beginTime,
+                                                                                endTime);
+        createEventComponent(comp);
+        return comp;
+    }
+    
+
+    AnnotationWaveformEventComponent* createWaveformEventComponent()
+    {
+       AnnotationWaveformEventComponent* comp = new AnnotationWaveformEventComponent(getStr(),
+                                                                                     this->getBase());
+       createEventComponent(comp);
+       return comp;
+    }
+    
+    AnnotationWaveformEventComponent* createWaveformEventComponent(float beginTime,
+                                                                   float endTime)
+    {
+        AnnotationWaveformEventComponent* comp = new AnnotationWaveformEventComponent(getStr(),
+                                                                                      this->getBase(),
+                                                                                      beginTime,
+                                                                                      endTime);
+        createEventComponent(comp);
+        return comp;
     }
     
     void createEventComponent(VideoAnnotationEventComponent* comp)

@@ -1,27 +1,20 @@
 //
-//  IRVideoPlayerObject.cpp
+//  IRVideoPlayerObject2.cpp
 //  NodeComponentObject_Study - App
 //
 //  Created by Keitaro on 28/01/2019.
 //
 
-#include "IRVideoPlayerObject.hpp"
+#include "IRVideoPlayerObject2.hpp"
 
-IRVideoPlayerObject::IRVideoPlayerObject(Component* parent, IRStr* str, bool withOpenButton) :
+IRVideoPlayerObject2::IRVideoPlayerObject2(Component* parent, IRStr* str, bool withOpenButton) :
 IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 {
     setOpaque(false);
     // original function to give this ChangeListener to controller->UI
     
     
-    // workspace
-    Rectangle<int> a (0,0,0,0);
-    this->workspace.reset(new IRNodeObjectWorkspace("VideoAnnotater", a ,getStr()));
-    this->workspace->setDraggableMargin(Rectangle<int>(0, 0, 0, 0));
-    addAndMakeVisible(this->workspace.get());
-    this->workspace->setBackgroundColour(Colours::transparentBlack);
-
-    this->workspace->addListener(this);
+   
     
     this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str, withOpenButton);
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
@@ -31,21 +24,20 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
     
 }
 
-IRVideoPlayerObject::~IRVideoPlayerObject()
+IRVideoPlayerObject2::~IRVideoPlayerObject2()
 {
     this->videoPlayer.reset();
-    this->workspace.reset();
 
 }
 
-IRNodeObject* IRVideoPlayerObject::copyThis()
+IRNodeObject* IRVideoPlayerObject2::copyThis()
 {
-    return new IRVideoPlayerObject(this->parent, getStr());
+    return new IRVideoPlayerObject2(this->parent, getStr());
 }
 // --------------------------------------------------
-IRNodeObject* IRVideoPlayerObject::copyContents(IRNodeObject* object)
+IRNodeObject* IRVideoPlayerObject2::copyContents(IRNodeObject* object)
 {
-    IRVideoPlayerObject* obj = static_cast<IRVideoPlayerObject*>(object);
+    IRVideoPlayerObject2* obj = static_cast<IRVideoPlayerObject2*>(object);
     obj->setObjectBounds(getLocalBounds());
     File movieFile = getVideoPlayer()->getMovieFile();
     if(movieFile.exists())
@@ -57,13 +49,13 @@ IRNodeObject* IRVideoPlayerObject::copyContents(IRNodeObject* object)
 
 // --------------------------------------------------
 
-IRNodeObject* IRVideoPlayerObject::copyDragDropContents(IRNodeObject* object)
+IRNodeObject* IRVideoPlayerObject2::copyDragDropContents(IRNodeObject* object)
 {
-    IRVideoPlayerObject* obj = new IRVideoPlayerObject(this->parent, getStr());
+    IRVideoPlayerObject2* obj = new IRVideoPlayerObject2(this->parent, getStr());
     return obj;
 }
 
-void IRVideoPlayerObject::shareContentsWith(IRVideoPlayerObject* withObject)
+void IRVideoPlayerObject2::shareContentsWith(IRVideoPlayerObject2* withObject)
 {
     File movieFile = getVideoPlayer()->getMovieFile();
     if(movieFile.exists())
@@ -75,7 +67,7 @@ void IRVideoPlayerObject::shareContentsWith(IRVideoPlayerObject* withObject)
 // --------------------------------------------------
 
 // --------------------------------------------------
-t_json IRVideoPlayerObject::saveThisToSaveData()
+t_json IRVideoPlayerObject2::saveThisToSaveData()
 {
     t_json saveData = t_json::object({
         {"filePath", this->videoPlayer->getPath()}
@@ -88,7 +80,7 @@ t_json IRVideoPlayerObject::saveThisToSaveData()
     return save;
 }
 // --------------------------------------------------
-void IRVideoPlayerObject::loadThisFromSaveData(t_json data)
+void IRVideoPlayerObject2::loadThisFromSaveData(t_json data)
 {
     t_json w = data["videoPlayer"];
     
@@ -96,19 +88,13 @@ void IRVideoPlayerObject::loadThisFromSaveData(t_json data)
     this->videoPlayer->openFile(file);
 }
 // --------------------------------------------------
-void IRVideoPlayerObject::resized()
+void IRVideoPlayerObject2::resized()
 {
    this->videoPlayer->setBounds(getLocalBounds().reduced(0));
-    
-    if(this->workspace.get() != nullptr)
-    {
-        auto videoSize = getVideoPlayer()->getBounds();
-        this->workspace->setBounds(videoSize);
-        
-    }
+   
 }
 // --------------------------------------------------
-void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
+void IRVideoPlayerObject2::resizeThisComponentEvent(const MouseEvent& e)
 {
     // turn off controller otherwise mouse event will be stolen by the controller,
     // and resize event can not be acomplished properly.
@@ -144,7 +130,7 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
     this->resizing = true;
 }
 
-void IRVideoPlayerObject::resizeThisComponent(Rectangle<int> rect)
+void IRVideoPlayerObject2::resizeThisComponent(Rectangle<int> rect)
 {
     double ratio = this->videoPlayer->getAspectRatio();
     if(ratio >= 0 && ratio != 1.0)
@@ -177,7 +163,7 @@ void IRVideoPlayerObject::resizeThisComponent(Rectangle<int> rect)
     
 }
 
-juce::Point<int> IRVideoPlayerObject::getVideoSize()
+juce::Point<int> IRVideoPlayerObject2::getVideoSize()
 {
     int w = this->videoPlayer->getVideoSize().getWidth();
     int h = this->videoPlayer->getVideoSize().getHeight();
@@ -186,7 +172,7 @@ juce::Point<int> IRVideoPlayerObject::getVideoSize()
 
 // --------------------------------------------------
 
-void IRVideoPlayerObject::mouseUpEvent(const MouseEvent& e)
+void IRVideoPlayerObject2::mouseUpEvent(const MouseEvent& e)
 {
     //recover event
     if(this->enableControllerFlag)
@@ -207,7 +193,7 @@ void IRVideoPlayerObject::mouseUpEvent(const MouseEvent& e)
 
 }
 // --------------------------------------------------
-void IRVideoPlayerObject::paint(Graphics& g)
+void IRVideoPlayerObject2::paint(Graphics& g)
 {
     IRNodeObject::paint(g);
     
@@ -218,7 +204,7 @@ void IRVideoPlayerObject::paint(Graphics& g)
         g.drawRoundedRectangle(area.toFloat(), 0, 2.0);
 }
 // --------------------------------------------------
-void IRVideoPlayerObject::videoLoadCompletedAction()
+void IRVideoPlayerObject2::videoLoadCompletedAction()
 {
     
     
@@ -232,7 +218,7 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
             this->videoLoadCompletedCallbackFunc();
     }
 
-    std::cout << "IRVideoPlayerObject::videoLoadCompletedAction\n";
+    std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction\n";
 
     // virtual
     videoLoadCompletedCallback();
@@ -242,34 +228,33 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
 }
 // --------------------------------------------------
 
-void IRVideoPlayerObject::videoPlayingUpdateAction(double pos)
+void IRVideoPlayerObject2::videoPlayingUpdateAction(double pos)
 {
     videoPlayingUpdateCallback(pos);
 }
 
 // --------------------------------------------------
 
-void IRVideoPlayerObject::moveToFrontAction()
+void IRVideoPlayerObject2::moveToFrontAction()
 {
-    std::cout << "IRVideoPlayerObject::moveToFrontAction\n";
+    std::cout << "IRVideoPlayerObject2::moveToFrontAction\n";
     if(this->videoPlayer->hsaVideo())
         this->videoPlayer->bringViewToFront();
     
-    this->workspace->bringThisToFront("Workspace bringToThisFront");
 
     
 }
 
 // --------------------------------------------------
 
-void IRVideoPlayerObject::heavyComponentRefreshed()
+void IRVideoPlayerObject2::heavyComponentRefreshed()
 {
     moveToFrontAction();
 }
 
 
 // --------------------------------------------------
-void IRVideoPlayerObject::openFile(File file, bool isCallback)
+void IRVideoPlayerObject2::openFile(File file, bool isCallback)
 {
     this->isCallback = nullptr;
     if(isCallback) this->isCallback = isCallback;
@@ -280,7 +265,7 @@ void IRVideoPlayerObject::openFile(File file, bool isCallback)
     }
 }
 
-void IRVideoPlayerObject::openFile(bool isCallback)
+void IRVideoPlayerObject2::openFile(bool isCallback)
 {
     
     this->isCallback = isCallback;
@@ -291,17 +276,17 @@ void IRVideoPlayerObject::openFile(bool isCallback)
 }
 // --------------------------------------------------
 
-void IRVideoPlayerObject::play()
+void IRVideoPlayerObject2::play()
 {
     this->videoPlayer->play();
 }
 
-void IRVideoPlayerObject::stop()
+void IRVideoPlayerObject2::stop()
 {
     this->videoPlayer->stop();
 }
 
-void IRVideoPlayerObject::setPlayPosition(double newPositionInSec)
+void IRVideoPlayerObject2::setPlayPosition(double newPositionInSec)
 {
     this->videoPlayer->setPlayPosition(newPositionInSec);
     
@@ -310,7 +295,7 @@ void IRVideoPlayerObject::setPlayPosition(double newPositionInSec)
 }
 // --------------------------------------------------
 
-void IRVideoPlayerObject::statusChangedCallback(IRNodeComponentStatus status)
+void IRVideoPlayerObject2::statusChangedCallback(IRNodeComponentStatus status)
 {
     switch (status)
     {
@@ -327,54 +312,37 @@ void IRVideoPlayerObject::statusChangedCallback(IRNodeComponentStatus status)
 
 // ---------------------------------------------------
 
-void IRVideoPlayerObject::enableController(bool flag)
+void IRVideoPlayerObject2::enableController(bool flag)
 {
     this->enableControllerFlag = flag;
     this->videoPlayer->setNeedController(flag);
 }
 
 // ---------------------------------------------------
-// WORKSPACE
-
-void IRVideoPlayerObject::editModeChanged(IRWorkspaceComponent* changedSpace)
-{
-    
-    
-}
 
 // ---------------------------------------------------
 
 
-void IRVideoPlayerObject::refreshZIndex()
+void IRVideoPlayerObject2::refreshZIndex()
 {
 
-    // set up workspace
-    this->workspace->setFixObjectSizeRatioWithOriginalSize(false, getBounds().toFloat());
-    this->workspace->manageHeavyWeightComponents(true);
-    this->workspace->bringThisToFront("Workspace bringToThisFront");
+ 
     callHeavyComponentCreated(this);
 
-    // it is important to call this method to get keyboard focus.
-    // but do not use bringThisToFront as zIndex of the HeavyWeightComponent will be changed
-    this->workspace->toFront(true);
-    
-    
-    
-    
 }
 // ---------------------------------------------------
 
 
-void IRVideoPlayerObject::resizingSquareClickedAction(IRResizeSquare2::MovableDirection direction)
+void IRVideoPlayerObject2::resizingSquareClickedAction(IRResizeSquare2::MovableDirection direction)
 {
     
 }
-void IRVideoPlayerObject::resizingSquareReleasedAction(IRResizeSquare2::MovableDirection direction)
+void IRVideoPlayerObject2::resizingSquareReleasedAction(IRResizeSquare2::MovableDirection direction)
 {
     if(this->videoPlayer->hsaVideo())
         refreshZIndex();
 }
-void IRVideoPlayerObject::resizingSquareDraggedAction(MouseEvent e)
+void IRVideoPlayerObject2::resizingSquareDraggedAction(MouseEvent e)
 {
     
 }

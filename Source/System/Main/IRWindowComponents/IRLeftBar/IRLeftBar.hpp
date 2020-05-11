@@ -125,15 +125,15 @@ private:
     //==================================================
 
     // layout
-    int buttonSize = 30;
+    int buttonSize = 34;
     
     int topMarge = 10;
     int switchSpace = 50;
-    int menuSpace = 150;
-    int buttomSpace = 130;
+    int menuSpace = 150; // 150
+    int buttomSpace = 130; // 130
     int yMarge = 6; // better to be even
     int leftMarge = 10;
-    int rightMarge = 85;
+    int rightMarge = 10; // 85
     int slideMenuButtomMargin = 50;
     
     int maxWidth = 0;

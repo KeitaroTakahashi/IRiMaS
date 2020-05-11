@@ -45,7 +45,7 @@ public:
     // ==================================================
     static bool compBy  (IRWorkspaceSlide* a, IRWorkspaceSlide* b)
     {
-        return (a->dst() < b->dst());
+        return (a->index < b->index);
     }
 
 private:

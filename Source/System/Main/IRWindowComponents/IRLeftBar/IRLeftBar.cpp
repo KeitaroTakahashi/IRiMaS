@@ -206,7 +206,7 @@ void IRLeftBar::addNewWorkspaceSlide(IRWorkspace* space)
 {
     this->slideMenuComponent->addNewWorkspaceSlide(space);
     // switch to slide emenu
-    toNavigatorAction(true);
+    //toNavigatorAction(true);
 }
 
 // ==================================================

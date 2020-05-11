@@ -9,7 +9,7 @@
 
 IRWorkspaceComponent::IRWorkspaceComponent(String title, Rectangle<int> draggableMargin, IRStr* str) :
 IRStrComponent(str),
-IRHeavyWeightComponent(this),
+IRHeavyWeightComponent(this, "IRWorkspaceComponent"),
 draggableMargin(draggableMargin)
 {
     
@@ -27,13 +27,15 @@ draggableMargin(draggableMargin)
         addMouseListener(this->ir_str->mouse, false);
     }
     
+    createCover();
+    
     //give object lists to selector
     this->selector = new IRNodeObjectSelector(&this->objects, this->draggableMargin);
     
     this->selector->setShiftConstrainsDirection(true);
     this->selector->setConstrainBoundsToParent(true, {0,0,10,10});
     
-    openGLInit();
+    //openGLInit();
     
     
 }
@@ -51,13 +53,16 @@ IRWorkspaceComponent::~IRWorkspaceComponent()
         delete obj;
     }
     this->objects.clearQuick();
+    
+    this->cover.reset();
 }
 
 
 void IRWorkspaceComponent::paint (Graphics& g)
 {
     g.fillAll(this->backgroundColour);
-    if(isDrawGrids() && this->editModeFlag) shaderTask(g);
+    g.fillAll(Colours::green);
+    //if(isDrawGrids() && this->editModeFlag) shaderTask(g);
     
     
     // virtual method
@@ -66,6 +71,23 @@ void IRWorkspaceComponent::paint (Graphics& g)
 
 }
 
+void IRWorkspaceComponent::createCover()
+{
+    this->cover.reset(new IRWorkspaceCover(getStr()));
+    
+    addAndMakeVisible(this->cover.get());
+    this->cover->addMouseListener(this, true);
+    this->cover->addMouseListener(getStr()->projectOwner, false);
+    this->cover->addKeyListener(this);
+    
+    
+}
+
+void IRWorkspaceComponent::bringCoverToFront()
+{
+    if(this->cover.get() != nullptr)
+           this->cover->bringThisToFront();
+}
 
 void IRWorkspaceComponent::drawShadows(Graphics& g)
 {
@@ -101,6 +123,8 @@ void IRWorkspaceComponent::setBackgroundColour(Colour colour)
 void IRWorkspaceComponent::resized()
 {
 
+    onResized();
+    
     resizeNodeObjectsRelativeToWorkspaceSizeChange();
     
     Rectangle<int>   area = getLocalBounds();
@@ -110,6 +134,9 @@ void IRWorkspaceComponent::resized()
     area.setHeight  (area.getHeight() + this->draggableMargin.getHeight());
     
     this->selector->setDraggableArea(area);
+    
+    if(this->cover.get() != nullptr)
+        this->cover->setBounds(getLocalBounds());
 }
 
 void IRWorkspaceComponent::resizeNodeObjectsRelativeToWorkspaceSizeChange()
@@ -178,9 +205,9 @@ void IRWorkspaceComponent::setDraggableMargin(Rectangle<int> newMargin)
 
 void IRWorkspaceComponent::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRWorkspaceComponent mouseDown " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
+    std::cout << "IRWorkspaceComponent mouseDown " << e.getEventRelativeTo(this).getPosition().getX() << ", " << e.getEventRelativeTo(this).getPosition().getY() << std::endl;
     
-    this->selector->mouseDownHandler(e);
+    this->selector->mouseDownHandler(e.getEventRelativeTo(this));
     
     if(isEditMode())
     {
@@ -212,7 +239,7 @@ void IRWorkspaceComponent::mouseUp(const MouseEvent& e)
 {
     
     //std::cout << "IRWorkspaceComponent mouseUp " << e.getPosition().getX() << ", " << e.getPosition().getY() << std::endl;
-    this->selector->mouseUpHandler(e);
+    this->selector->mouseUpHandler(e.getEventRelativeTo(this));
 
     if(isEditMode())
     {
@@ -236,13 +263,13 @@ void IRWorkspaceComponent::mouseUp(const MouseEvent& e)
 void IRWorkspaceComponent::mouseDrag(const MouseEvent& e)
 {
     
-    //std::cout << "IRWorkspaceComponent mouseDrag\n";
+    std::cout << "IRWorkspaceComponent mouseDrag\n";
     if(isEditMode())
     {
         this->currentMousePosition = e.getEventRelativeTo(this).getPosition();
         
         if(!this->isResizingFlag){
-            this->selector->mouseDragHandler(e);
+            this->selector->mouseDragHandler(e.getEventRelativeTo(this));
         }
         
         if(this->dummy.size() > 0)

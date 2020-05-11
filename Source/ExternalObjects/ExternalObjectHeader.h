@@ -52,6 +52,7 @@
 
 #include "IRTextEditorObject.hpp"
 #include "IRVideoAnnotaterInterfaceObject.hpp"
+#include "IRVideoAnnotaterObject2.hpp"
 #include "IRShapeObject.hpp"
 
 

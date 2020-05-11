@@ -29,6 +29,19 @@ IRIconBank::IRIconImage IRIconBank::loadImageAndReturn(String url)
     return IRIconImage();
 }
 
+IRIconBank::IRIconImage IRIconBank::loadImageWithSmallAndReturn(String url)
+{
+    
+    
+#if JUCE_MAC
+    return loadWithSmallImage("/Contents/Resources" + url);
+#elif JUCE_IOS
+    return loadWithSmallImage(url);
+#endif
+    return IRIconImage();
+}
+
+
 void IRIconBank::loadImages()
 {
     String url = "/materials/Images/icon/menu/icon_zoomIn";
@@ -58,7 +71,6 @@ void IRIconBank::loadImages()
     url = "/materials/Images/icon/menu/icon_linear";
     this->icon_linear = loadImageAndReturn(url);
     
-    
     // icons
     url = "/materials/Images/icon/menu/icon_addPage";
     this->icon_addPage = loadImageAndReturn(url);
@@ -67,7 +79,7 @@ void IRIconBank::loadImages()
     this->icon_addPage2 = loadImageAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_inspector";
-    this->icon_inspector = loadImageAndReturn(url);
+    this->icon_inspector = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_load";
     this->icon_load = loadImageAndReturn(url);
@@ -79,7 +91,7 @@ void IRIconBank::loadImages()
     this->icon_newProject = loadImageAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_object";
-    this->icon_object = loadImageAndReturn(url);
+    this->icon_object = loadImageWithSmallAndReturn(url);
     
     
     
@@ -87,28 +99,28 @@ void IRIconBank::loadImages()
     this->icon_object_type1 = loadImageAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_preference";
-    this->icon_preference = loadImageAndReturn(url);
+    this->icon_preference = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_save";
     this->icon_save = loadImageAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_toNavigator";
-    this->icon_toNavigator = loadImageAndReturn(url);
+    this->icon_toNavigator = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_toObjectMenu";
-    this->icon_toObjectMenu = loadImageAndReturn(url);
+    this->icon_toObjectMenu = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_text";
-    this->icon_text = loadImageAndReturn(url);
+    this->icon_text = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_data";
-    this->icon_chart = loadImageAndReturn(url);
+    this->icon_chart = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_img";
-    this->icon_image = loadImageAndReturn(url);
+    this->icon_image = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_play";
-    this->icon_play = loadImageAndReturn(url);
+    this->icon_play = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_pause";
     this->icon_pause = loadImageAndReturn(url);
@@ -117,7 +129,7 @@ void IRIconBank::loadImages()
     this->icon_stop = loadImageAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_wav";
-    this->icon_wav = loadImageAndReturn(url);
+    this->icon_wav = loadImageWithSmallAndReturn(url);
     
     url = "/materials/Images/icon/menu/icon_rightBar";
     this->icon_rightBar = loadImageAndReturn(url);
@@ -185,15 +197,17 @@ void IRIconBank::loadImages()
 
  
 }
-
-
-IRIconBank::IRIconImage IRIconBank::loadImage(String url)
+IRIconBank::IRIconImage IRIconBank::loadWithSmallImage(String url)
 {
     IRIconImage img;
     
     String url_white = url + "_white.png";
     String url_black = url + ".png";
     String url_gray  = url + "_gray.png";
+    
+    String url_small_white = url + "_small_white.png";
+    String url_small_black = url + "_small.png";
+    String url_small_gray  = url + "_small_gray.png";
     
     // white image
     File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_white);
@@ -214,6 +228,57 @@ IRIconBank::IRIconImage IRIconBank::loadImage(String url)
     if(!file.exists()) std::cout << "Error : IRIconBank : file does not exist!! " << file.getFullPathName() << std::endl;
 
     img.gray = ImageFileFormat::loadFrom(file);
+    
+    // small white image
+    file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_small_white);
+    if(!file.exists()) std::cout << "Error : IRIconBank : file does not exist!! " << file.getFullPathName() << std::endl;
+    img.small_white = ImageFileFormat::loadFrom(file);
+    
+    // small black image
+    file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_small_black);
+    if(!file.exists()) std::cout << "Error : IRIconBank : file does not exist!! " << file.getFullPathName() << std::endl;
+    img.small_black = ImageFileFormat::loadFrom(file);
+    
+    // small gray image
+    file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_small_gray);
+    if(!file.exists()) std::cout << "Error : IRIconBank : file does not exist!! " << file.getFullPathName() << std::endl;
+    img.small_gray = ImageFileFormat::loadFrom(file);
+    
+    return img;
+}
+
+
+IRIconBank::IRIconImage IRIconBank::loadImage(String url)
+{
+    IRIconImage img;
+    
+    String url_white = url + "_white.png";
+    String url_black = url + ".png";
+    String url_gray  = url + "_gray.png";
+    
+    
+    
+    // white image
+    File file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_white);
+    if(!file.exists()) std::cout << "Error : IRIconBank : file does not exist!! " << file.getFullPathName() << std::endl;
+    
+    img.white = ImageFileFormat::loadFrom(file);
+    
+    // black image
+
+    file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_black);
+    if(!file.exists()) std::cout << "Error : IRIconBank : file does not exist!! " << file.getFullPathName() << std::endl;
+
+    img.black = ImageFileFormat::loadFrom(file);
+    
+    // gray image
+
+    file = File(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + url_gray);
+    if(!file.exists()) std::cout << "Error : IRIconBank : file does not exist!! " << file.getFullPathName() << std::endl;
+
+    img.gray = ImageFileFormat::loadFrom(file);
+    
+
     
     return img;
 }

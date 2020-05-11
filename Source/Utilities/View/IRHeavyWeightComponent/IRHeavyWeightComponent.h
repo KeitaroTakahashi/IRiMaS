@@ -24,9 +24,10 @@ public:
     component ( component ),
     name(name)
     {
-        this->ctx.attachTo(*component);
         this->ctx.setRenderer(this);
+        this->ctx.attachTo(*component);
         this->ctx.setContinuousRepainting(false);
+
     }
     
     ~IRHeavyWeightComponent()
@@ -88,6 +89,9 @@ private:
     
     virtual void renderOpenGL()override
     {
+        
+        //String text = "OpenGL Rendered : " + this->name + "\n";
+        //std::cout << text;
         // transparent background
         OpenGLHelpers::clear(Colours::transparentBlack);
         
