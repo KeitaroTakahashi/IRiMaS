@@ -71,24 +71,6 @@ void IRWorkspaceComponent::paint (Graphics& g)
 
 }
 
-void IRWorkspaceComponent::createCover()
-{
-    this->cover.reset(new IRWorkspaceCover(getStr()));
-    
-    addAndMakeVisible(this->cover.get());
-    this->cover->addMouseListener(this, true);
-    this->cover->addMouseListener(getStr()->projectOwner, false);
-    this->cover->addKeyListener(this);
-    
-    
-}
-
-void IRWorkspaceComponent::bringCoverToFront()
-{
-    if(this->cover.get() != nullptr)
-           this->cover->bringThisToFront();
-}
-
 void IRWorkspaceComponent::drawShadows(Graphics& g)
 {
     // std::cout << "drawing... shadow of " << this->selector->getSelectedObjectList().size() << " items" << std::endl;
@@ -263,7 +245,7 @@ void IRWorkspaceComponent::mouseUp(const MouseEvent& e)
 void IRWorkspaceComponent::mouseDrag(const MouseEvent& e)
 {
     
-    std::cout << "IRWorkspaceComponent mouseDrag\n";
+    //std::cout << "IRWorkspaceComponent mouseDrag\n";
     if(isEditMode())
     {
         this->currentMousePosition = e.getEventRelativeTo(this).getPosition();
@@ -430,10 +412,12 @@ void IRWorkspaceComponent::setEditMode(bool flag, bool notification)
     std::cout << "IRWorkspaceComponent::setEditMode : " << flag << std::endl;
     this->editModeFlag = flag;
     
-    
     // reset all selected objects
     this->selector->deselectAllObjects();
-
+    
+    // change cover as well
+    setCoverEditMode(flag);
+    
     for (auto obj : this->objects)
     {
         obj->setEditMode(flag);

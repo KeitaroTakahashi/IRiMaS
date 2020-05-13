@@ -12,6 +12,9 @@
 #include "IRVATextEditorObject.h"
 #include "IRObjectCreater.hpp"
 
+#include "AnnotationTextEventComponent.h"
+#include "VideoAnnotationEventComponent.h"
+
 class IRVideoAnnotaterObject2 : public IRNodeObject
 {
 public:
@@ -23,11 +26,41 @@ public:
     
     void paint(Graphics& g) override;
     
+    virtual void videoLoadCompletedCallback();
+    
+    // --------------------------------------------------
+    // --------------------------------------------------
+    // define if call videoLoadCompletedCallbackFunc();
+    void openFile(File file, bool isCallback = true);
+    void openFile(bool isCallbback = true);
+
+    std::function<void()> videoLoadCompletedCallbackFunc;
+   // virtual void videoLoadCompletedCallback() {}
+    //virtual void videoPlayingUpdateCallback(double pos) {}
+    // --------------------------------------------------
+    void play();
+    void stop();
+    void setPlayPosition(double newPositionInSec);
+    
+    juce::Point<int> getVideoSize();
+    // --------------------------------------------------
+
+    IRVideoPlayerObject2* getVideoPlayerObject();
+
+
+    // --------------------------------------------------
+    void enableController(bool flag);
+    // --------------------------------------------------
+    // Annotation
+    void createAnnotationComponent(VideoAnnotationEventComponent* event);
+    void createTEXTAnnotationComponent(VideoAnnotationEventComponent* event);
+    // --------------------------------------------------
+    void createTextObject();
+
 private:
     
     
     void createNodeObjectOnWorkspace(IRNodeObject* obj);
-    void createTextObject();
     
     
     std::shared_ptr<IRVideoAnnotaterWorkspace> workspace;

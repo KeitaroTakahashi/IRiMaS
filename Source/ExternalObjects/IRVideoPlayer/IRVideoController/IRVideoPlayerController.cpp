@@ -8,7 +8,7 @@
 #include "IRVideoPlayerController.hpp"
 
 
-IRVideoPlayerController::IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject) : IRObjectController("VideoPlayer", str),
+IRVideoPlayerController::IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObject2* videoPlayerObject) : IRObjectController("VideoPlayer", str),
 UI(str, videoPlayerObject)
 {
     
@@ -21,7 +21,8 @@ UI(str, videoPlayerObject)
     addAndMakeVisible(&this->UI);
     this->UI.addChangeListener(this);
     
-    this->arrangeController = std::make_unique<ArrangeController>(str);
+    this->arrangeController = std::make_unique<
+    ArrangeController>(str);
     addAndMakeVisible(this->arrangeController.get());
     this->arrangeController->setVisible(false);
     this->arrangeController->addChangeListener(this);

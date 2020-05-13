@@ -20,12 +20,20 @@ public:
     void onResized() override;
     void onPaint(Graphics& g) override;
     
+    // ==============================
+
     void addAnnotationObject(IRNodeObject* obj, Rectangle<int> bounds);
+    
+    // ==============================
+
+    // ==============================
+    IRVideoPlayerObject2* getVideoPlayerObject();
     
 private:
     
     
     std::shared_ptr<IRVideoPlayerObject2> videoPlayerObj;
+
     
 };
 #endif /* IRVideoAnnotaterWorkspace_hpp */

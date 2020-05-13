@@ -11,7 +11,7 @@
 #include "IRObjectController.hpp"
 #include "FontController.h"
 #include "videoController.h"
-#include "IRVideoPlayerObject.hpp"
+#include "IRVideoAnnotaterObject2.hpp"
 #include "ObjectArranger.hpp"
 
 class IRVideoPlayerController : public IRObjectController,
@@ -31,7 +31,7 @@ public:
     };
     // ==================================================
 
-    IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject);
+    IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObject2* videoPlayerObject);
     ~IRVideoPlayerController();
     // ==================================================
 

@@ -138,7 +138,7 @@ public:
             addAndMakeVisible(item);
         }
         
-        enableSquare(true);
+        enableSquare(false);
          
     }
     

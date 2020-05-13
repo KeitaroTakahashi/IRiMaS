@@ -174,7 +174,6 @@ void IRVideoPlayerObject::resizeThisComponent(Rectangle<int> rect)
     }else{
         setObjectBounds(rect);
     }
-    
 }
 
 juce::Point<int> IRVideoPlayerObject::getVideoSize()

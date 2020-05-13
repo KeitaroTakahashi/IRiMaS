@@ -188,13 +188,8 @@ public:
     // --------------------------------------------------
     // --------------------------------------------------
 
-    virtual void videoLoadCompletedCallback() override
-    {
-        std::cout << "IRVideoAnnotaterObject::videoLoadCompletedCallback\n";
-
-        resized();
-
-    }
+    
+    
     
     // --------------------------------------------------
 

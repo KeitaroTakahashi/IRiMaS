@@ -11,10 +11,10 @@ IRVideoAnnotaterWorkspace::IRVideoAnnotaterWorkspace(String title, Rectangle<int
 IRNodeObjectWorkspace(title, draggableMargin, str)
 {
     enableDrawGrids(true);
-
     // initially create videoplayer and add
     this->videoPlayerObj.reset( new IRVideoPlayerObject2(this, str, true) );
     addAndMakeVisible(this->videoPlayerObj.get());
+    setParentNodeObject(this->videoPlayerObj.get());
     
 }
 
@@ -22,6 +22,7 @@ IRVideoAnnotaterWorkspace::~IRVideoAnnotaterWorkspace()
 {
     this->videoPlayerObj.reset();
 }
+// ------------------------------------------------------------------------------------------
 
 void IRVideoAnnotaterWorkspace::onResized()
 {
@@ -40,4 +41,16 @@ void IRVideoAnnotaterWorkspace::onPaint(Graphics& g)
 void IRVideoAnnotaterWorkspace::addAnnotationObject(IRNodeObject* obj, Rectangle<int> bounds)
 {
     
+}
+
+// ------------------------------------------------------------------------------------------
+
+// ------------------------------------------------------------------------------------------
+
+
+IRVideoPlayerObject2* IRVideoAnnotaterWorkspace::getVideoPlayerObject()
+{
+    if(this->videoPlayerObj.get() != nullptr)
+        return this->videoPlayerObj.get();
+    else return nullptr;
 }

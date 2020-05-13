@@ -8,11 +8,11 @@
 #ifndef IRVideoAnnotaterInterfaceObject_hpp
 #define IRVideoAnnotaterInterfaceObject_hpp
 
-#include "IRVideoAnnotaterObject.h"
+#include "IRVideoAnnotaterObject2.hpp"
 #include "IRVideoPlayerController.hpp"
 
 
-class IRVideoAnnotaterInterfaceObject : public IRVideoAnnotaterObject
+class IRVideoAnnotaterInterfaceObject : public IRVideoAnnotaterObject2
 {
 public:
     IRVideoAnnotaterInterfaceObject(Component* parent, IRStr* str);

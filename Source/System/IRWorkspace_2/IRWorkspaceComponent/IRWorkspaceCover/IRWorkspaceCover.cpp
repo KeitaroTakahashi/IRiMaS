@@ -39,6 +39,7 @@ void IRWorkspaceCover::resized()
 void IRWorkspaceCover::setEditMode(bool flag)
 {
     this->isEditModeFlag = flag;
+    repaint();
 }
 void IRWorkspaceCover::setBackgroundColour(Colour colour)
 {

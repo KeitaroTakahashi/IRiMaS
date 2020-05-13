@@ -10,13 +10,23 @@
 void IRVideoAnnotater::createNodeObjectOnEvent(IRNodeObject* obj,
                                                VideoAnnotationEventComponent* event)
 {
+    /*
     obj->setObjectBounds(this->workspace->getWidth()/2,
-                             this->workspace->getHeight()/2,
+                            this->workspace->getHeight()/2,
                              this->workspace->getWidth()/4,
-                             60);
-    this->workspace->createObject(obj);
+                             60);*/
+    
+    this->myVideoPlayerObject->createTextObject();
+    
+    auto b = this->myVideoPlayerObject->getBounds();
+    obj->setObjectBounds(b.getWidth() / 2,
+                         b.getHeight() / 2,
+                         b.getWidth() / 4,
+                         60);
+    
+    //this->workspace->createObject(obj);
     obj->bringThisToFront();
-    this->workspace->deselectAllObjects();
+   // this->workspace->deselectAllObjects();
     obj->setEventComponent(event);
     event->setNodeObject(obj);
     obj->setSelected(true);

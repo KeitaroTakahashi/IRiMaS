@@ -281,7 +281,7 @@ public:
     // return a flag shows whether this Component is resizable or not. Default is true.
     bool isResizable() const;
     void setResizable(bool flag, bool isWidthResizableFlag, bool isHeightResizableFlag);
-    void setResizable(bool flag) { setResizable(true, true, true); }
+    void setResizable(bool flag) { setResizable(flag, flag, flag); }
     // return a flag shows whether this Component is being resized or not. Default is false.
     bool isResizing() const;
     void setResizingStart(bool flag);
@@ -322,6 +322,7 @@ public:
     NodeObjectType getObjectType() const;
     
     // ==================================================
+    //Resizing Square
     // create small square on each corner of the object square which enables to resize this object
     bool isResizingSquareInitialized = false;
    
@@ -346,7 +347,15 @@ public: virtual void resizingSquareDraggedAction(MouseEvent e){}
     IRResizeSquare2 resizingSquare;
     void updateResizingSquare();
     void setResizingSquareColour(Colour colour);
+    
+    void setEnableResizingSquare(bool flag);
+    bool isResizingSquareEnabled() const { return this->enableResizingSquare; }
+private:
+    bool enableResizingSquare = true;
+    
+    // ==================================================
 
+public:
     
     // ==================================================
     // called when the object contains heavy component needs to be refreshed.

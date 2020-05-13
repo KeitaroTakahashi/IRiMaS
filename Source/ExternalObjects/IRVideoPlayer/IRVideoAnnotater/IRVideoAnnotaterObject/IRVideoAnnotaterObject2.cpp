@@ -23,7 +23,7 @@ IRNodeObject(parent, "IRVideoAnnotater2", str, NodeObjectType(ordinaryIRComponen
     setObjectSize(300, 200);
     
     
-    createTextObject();
+    //createTextObject();
 }
 
 IRVideoAnnotaterObject2::~IRVideoAnnotaterObject2()
@@ -35,11 +35,9 @@ void IRVideoAnnotaterObject2::resized()
 {
     std::cout << "videoANnoter2 resized\n";
     this->workspace->setBounds(getLocalBounds());
-   //this->annotaterWorkspace->setBounds(0, 0, 200, 200);
     
-    
-
 }
+
 
 void IRVideoAnnotaterObject2::paint(Graphics& g) 
 {
@@ -82,3 +80,80 @@ void IRVideoAnnotaterObject2::createTextObject()
 
 }
 // --------------------------------------------------
+
+void IRVideoAnnotaterObject2::videoLoadCompletedCallback()
+{
+    std::cout << "IRVideoAnnotaterObject2::videoLoadCompletedCallback\n";
+
+    resized();
+
+}
+
+
+// --------------------------------------------------
+// define if call videoLoadCompletedCallbackFunc();
+void IRVideoAnnotaterObject2::openFile(File file, bool isCallback)
+{
+    
+}
+void IRVideoAnnotaterObject2::openFile(bool isCallbback)
+{
+    
+}
+
+// --------------------------------------------------
+void IRVideoAnnotaterObject2::play()
+{
+    
+}
+void IRVideoAnnotaterObject2::stop()
+{
+    
+}
+void IRVideoAnnotaterObject2::setPlayPosition(double newPositionInSec)
+{
+    
+}
+
+juce::Point<int> IRVideoAnnotaterObject2::getVideoSize()
+{
+    
+}
+// --------------------------------------------------
+
+// --------------------------------------------------
+void IRVideoAnnotaterObject2::enableController(bool flag)
+{
+    
+}
+// --------------------------------------------------
+IRVideoPlayerObject2* IRVideoAnnotaterObject2::getVideoPlayerObject()
+{
+    return this->workspace->getVideoPlayerObject();
+}
+
+// --------------------------------------------------
+
+void IRVideoAnnotaterObject2::createAnnotationComponent(VideoAnnotationEventComponent* event)
+{
+    using t = VideoAnnotationEventComponent::VideoAnnotationType;
+    switch(event->getType())
+    {
+        case t::TEXT:
+            createTEXTAnnotationComponent(event);
+            break;
+        case t::SHAPE:
+            break;
+        case t::IMAGE:
+            break;
+        case t::AUDIO:
+            break;
+        default:
+            break;
+    }
+}
+
+void IRVideoAnnotaterObject2::createTEXTAnnotationComponent(VideoAnnotationEventComponent* event)
+{
+
+}

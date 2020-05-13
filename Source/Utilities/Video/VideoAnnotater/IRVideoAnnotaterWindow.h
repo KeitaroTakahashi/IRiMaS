@@ -19,7 +19,7 @@ public:
     IRVideoAnnotaterWindow(IRStr* str,
                            String name,
                            Rectangle<int>frameRect,
-                           IRVideoAnnotaterObject* videoPlayerObject) :
+                           IRVideoAnnotaterObject2* videoPlayerObject) :
     DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), DocumentWindow::allButtons),
     IRStrComponent(str),
     videoPlayerObject(videoPlayerObject),
@@ -106,7 +106,7 @@ private:
 
     // ==================================================
     
-    IRVideoPlayerObject* videoPlayerObject = nullptr;
+    IRVideoAnnotaterObject2* videoPlayerObject = nullptr;
     // ==================================================
     // ==================================================
     

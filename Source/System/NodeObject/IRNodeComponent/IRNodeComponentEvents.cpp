@@ -409,7 +409,10 @@ void IRNodeComponent::setSelected(bool flag)
     if(flag)
     {
         //this->parent->addAndMakeVisible(this->resizingSquare);
-        this->resizingSquare.enableSquare(true);
+        if(this->isResizingSquareEnabled()){
+            this->resizingSquare.enableSquare(true);
+            std::cout << "square enabled\n";
+        }
         //heavyComponentCreatedFunc();
         //this->resizingSquare.toFront(true);
     }else{
@@ -468,7 +471,8 @@ void IRNodeComponent::showThisObject(bool flag)
     {
         if(isEditMode())
         {
-            this->resizingSquare.enableSquare(flag);
+            if(this->isResizingSquareEnabled())
+                this->resizingSquare.enableSquare(flag);
             this->selectedFlag = flag;
         }else{
             this->resizingSquare.enableSquare(false);

@@ -316,12 +316,23 @@ private:
     
     // IRObjectPtr for Global values between objects binded in Workspace
     std::map<String, IRObjectPtr> p_obj;
-    // ==================================================
     
+    
+    // parent node object has role of fundamental object in the annotation mode
+    IRNodeObject* parentNodeObject = nullptr;
+    bool hasParentNodeObjectFlag = false;
+    void bringParentNodeObjectToFront();
+public:
+    bool hasParentNodeObject() const { return this->hasParentNodeObjectFlag; }
+    void setParentNodeObject(IRNodeObject* newParentNodeObject);
+    void removeParentNodeObject();
+    // ==================================================
+private:
     // cover with grids
     std::shared_ptr<IRWorkspaceCover> cover;
     void createCover();
     void bringCoverToFront();
+    void setCoverEditMode(bool editMode);
     // ==================================================
 
 

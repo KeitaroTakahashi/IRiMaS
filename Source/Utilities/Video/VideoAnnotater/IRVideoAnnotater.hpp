@@ -11,6 +11,8 @@
 #include "IRStrComponent.hpp"
 #include "VideoTransport.h"
 #include "IRVideoAnnotaterObject.h"
+#include "IRVideoAnnotaterObject2.hpp"
+
 #include "VideoAnnotationMenuWindow.h"
 #include "VideoEventList.h"
 #include "EventLogList.h"
@@ -34,7 +36,7 @@ public ChangeListener,
 private IRWorkspaceComponent::Listener
 {
 public:
-    IRVideoAnnotater(IRStr* str, IRVideoAnnotaterObject* videoPlayerObject);
+    IRVideoAnnotater(IRStr* str, IRVideoAnnotaterObject2* videoPlayerObject);
     ~IRVideoAnnotater();
     
     // ==================================================
@@ -129,8 +131,8 @@ private:
     void openVideoButtonClicked();
     // ==================================================
 
-    IRVideoAnnotaterObject* videoPlayerObject = nullptr;
-    std::shared_ptr<IRVideoAnnotaterObject> myVideoPlayerObject;
+    IRVideoAnnotaterObject2* videoPlayerObject = nullptr;
+    std::shared_ptr<IRVideoAnnotaterObject2> myVideoPlayerObject;
     
     
     // ==================================================

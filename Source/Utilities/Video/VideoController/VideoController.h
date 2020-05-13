@@ -32,8 +32,8 @@ public:
     };
     // ==================================================
 
-    VideoController(IRStr * str, IRVideoAnnotaterObject* videoPlayerObject) : IRStrComponent(str),
-    videoPlayerObject(videoPlayerObject),
+    VideoController(IRStr * str, IRVideoAnnotaterObject2* videoPlayerObject) :
+    IRStrComponent(str),
     videoAnnotater(getStr(),
                    "Video Annotater",
                    Rectangle<int> (10, 10, 1000, 800),
@@ -139,7 +139,6 @@ private:
     TextButton openVideoAnnotatorButton;
     // ==================================================
 
-    IRVideoAnnotaterObject* videoPlayerObject = nullptr;
     
     IRVideoAnnotaterWindow videoAnnotater;
 

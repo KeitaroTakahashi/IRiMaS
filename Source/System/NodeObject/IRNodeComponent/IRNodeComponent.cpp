@@ -198,6 +198,20 @@ void IRNodeComponent::setResizingSquareColour(Colour colour)
     this->resizingSquare.setSquareColour(colour);
 }
 
+void IRNodeComponent::setEnableResizingSquare(bool flag)
+{
+    this->enableResizingSquare = flag;
+    
+    if(!flag)
+    {
+        if(this->resizingSquare.isVisible())
+        {
+            this->resizingSquare.enableSquare(false);
+        }
+    }
+    
+}
+
 // ==================================================
 
 void IRNodeComponent::setEnableParameters(IRNodeComponentSetUp id...)
