@@ -93,7 +93,6 @@ public:
     
     void videoLoadCompleteAction()
     {
-        
         removeChildComponent(&this->openButton);
         addAndMakeVisible(this->player.get());
                 

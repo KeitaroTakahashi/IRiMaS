@@ -12,21 +12,21 @@ videoArea(10, 10, 640, 480),
 videoPlayerObject(videoPlayerObject),
 videoTransport(str, this)
 {
-   
+   setWantsKeyboardFocus(true);
+
     // setup delegate
     this->delegate = new IRVideoAnnotaterDelegate(this);
     
     // video button
-    addAndMakeVisible(&this->openVideoButton);
-    this->openVideoButton.setButtonText("Open Video Annotater");
-    this->openVideoButton.onClick = [this] { openVideoButtonClicked(); };
+   // addAndMakeVisible(&this->openVideoButton);
+   // this->openVideoButton.setButtonText("Open Video Annotater");
+    //this->openVideoButton.onClick = [this] { openVideoButtonClicked(); };
     
     createVideoTransport();
     createEventListComponent();
     this->eventLogList.reset(new EventLogList(str));
     addAndMakeVisible(this->eventLogList.get());
     
-    setWantsKeyboardFocus(true);
     
     //createWorkspace();
     
@@ -54,10 +54,8 @@ void IRVideoAnnotater::paint(Graphics& g)
     g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
 
     g.setColour(getStr()->SYSTEMCOLOUR.contents);
-    
     g.fillRect(this->videoArea);
     g.setColour(getStr()->SYSTEMCOLOUR.contents);
-
     g.fillRect(this->workArea);
     
 }
@@ -81,12 +79,12 @@ void IRVideoAnnotater::resized()
                                    getWidth() - 20,
                                    40);
     
-    this->openVideoButton.setBounds(this->videoArea);
+    //this->openVideoButton.setBounds(this->videoArea);
     
     this->eventListComponent->setBounds(this->workArea);
   
    
-    this->eventLogList->setBounds(xMarge + this->videoArea.getWidth(),
+    this->eventLogList->setBounds(xMarge + xMarge+ this->videoArea.getWidth(),
                                   yMarge,
                                   getWidth() - xMarge - this->videoArea.getWidth() - xMarge,
                                   getHeight() * 0.5);
@@ -100,11 +98,18 @@ void IRVideoAnnotater::videoResized()
 {
     if(this->myVideoPlayerObject.get() != nullptr)
     {
-        this->myVideoPlayerObject->juce::Component::setBounds(this->videoArea);
+        
+        std::cout << "IRVideoAnnotater::videoResized\n";
+        this->myVideoPlayerObject->resizeAndCentredThisComponent(this->videoArea);
+        
+       
+        /*
         auto vp = this->myVideoPlayerObject->getVideoPlayerObject();
         
-        //vp->resizeThisComponent(Rectangle<int>(this->videoArea));
-        
+        vp->resizeThisComponent(Rectangle<int>(0, 0,
+                                               this->videoArea.getWidth(),
+                                               this->videoArea.getHeight()  ));
+        */
 
         //this->workspace->setBounds(this->myVideoPlayerObject->getBounds());
         
@@ -165,13 +170,14 @@ void IRVideoAnnotater::nodeObjectPasted(IRNodeObject* obj)
     String name = obj->name;
     std::cout << "nodeObjectPasted " << name << std::endl;
     
+    /*
     if(name == "IRTextEditor")
     {
         createTextEventComponentFromIRNodeObject(obj);
     }else if(name == "IRShape")
     {
         createShapeEventComponentFromNodeObject(obj);
-    }
+    }*/
 }
 
 void IRVideoAnnotater::nodeObjectWillDeleted(IRNodeObject* obj)
@@ -179,7 +185,7 @@ void IRVideoAnnotater::nodeObjectWillDeleted(IRNodeObject* obj)
     auto event = static_cast<VideoAnnotationEventComponent* >(obj->getEventComponent());
     
     std::cout <<"nodeObejctWillDeleted , event delete " << event << std::endl;
-    deleteEventComponent(event);
+    //deleteEventComponent(event);
 }
 // ==================================================
 
@@ -202,8 +208,13 @@ void IRVideoAnnotater::bindVideoPlayerObject()
                                                                     getStr(),
                                                                     false));
         
-        //this->myVideoPlayerObject->videoLoadCompletedCallbackFunc = [this] { myVideoLoadCompleted(); };
-        //this->myVideoPlayerObject->videoPlayingUpdate = [this](double pos){ myVideoPlayingUpdate(pos); };
+        this->myVideoPlayerObject->getWorkspace()->addListener(this);
+        //this->myVideoPlayerObject->getWorkspace()->registerKeyListener(this);
+        addKeyListener(this->myVideoPlayerObject->getWorkspace());
+        //this->myVideoPlayerObject->addKeyListener(this);
+
+        this->myVideoPlayerObject->videoLoadCompletedCallbackFunc = [this] { myVideoLoadCompleted(); };
+        this->myVideoPlayerObject->videoPlayingUpdateCallbackFunc = [this](double pos){ myVideoPlayingUpdate(pos); };
         // disable QT controller
        // this->myVideoPlayerObject->enableController(false);
 
@@ -220,7 +231,12 @@ void IRVideoAnnotater::bindVideoPlayerObject()
         //this->workspace->createObject(this->myVideoPlayerObject.get());
         
         // set up workspace
-        //this->workspace->setFixObjectSizeRatioWithOriginalSize(false, this->myVideoPlayerObject->getBounds().toFloat());
+        //this->myVideoPlayerObject->setFixObjectSizeRatioWithOriginalSize(false,                 this->myVideoPlayerObject->getBounds().toFloat());
+        // set video size not videoPlayer Object size
+        
+        auto v = this->myVideoPlayerObject->getVideoPlayerObject()->getVideoPlayer();
+        
+        this->myVideoPlayerObject->setFixObjectSizeRatioWithOriginalSize(false, v->getCurrentVideoBounds().toFloat());
         
         
         resized();
@@ -314,20 +330,23 @@ bool IRVideoAnnotater::hsaVideo() const { return this->isVideoLoaded; }
 
 void IRVideoAnnotater::myVideoLoadCompleted()
 {
+    
+    videoResized();
     //disable controller
     //this->myVideoPlayerObject->enableController(false);
     
     //updateVideoSize(this->myVideoPlayerObject->getVideoSize());
-    // update videoPlayerObject
-   // std::cout<< "myVideoLoadCompleted length = " << myVideoPlayerObject->getVideoPlayer()->getVideoLength() << std::endl;
     //update video length
-    //this->videoTransport.setVideoLengthInSec(myVideoPlayerObject->getVideoPlayer()->getVideoLength());
-    //std::cout << myVideoPlayerObject->getVideoPlayer()->getVideoLength() << std::endl;
+    
+    double len = this->myVideoPlayerObject->getVideoPlayerObject()->getVideoPlayer()->getVideoLength();
+    
+    std::cout << "loaded video length = " << len << std::endl;
+    this->videoTransport.setVideoLengthInSec(len);
     
    // this->workspace->bringThisToFront("Workspace bringToThisFront");
     //this->workspace->manageHeavyWeightComponents(true);
     
-    resized();
+    videoResized();
 }
 
 void IRVideoAnnotater::updateVideoSize(juce::Point<int> newVideoSize)
@@ -346,6 +365,11 @@ void IRVideoAnnotater::myVideoPlayingUpdate(double pos)
 void IRVideoAnnotater::updateWorkspaceWithCurrentPlayingPosition(float pos)
 {
     // test
+    
+    this->myVideoPlayerObject->getWorkspace()->enableTimeCodeAnimation(true);
+    this->myVideoPlayerObject->getWorkspace()->setCurrentTimeCode(pos);
+    this->myVideoPlayerObject->getWorkspace()->updateCurrentAnimation();
+    
     //this->workspace->enableTimeCodeAnimation(true);
    // this->workspace->setCurrentTimeCode(pos);
    // this->workspace->updateCurrentAnimation();
@@ -392,6 +416,7 @@ void IRVideoAnnotater::playPositionChangedBySliderAction()
     float p = this->videoTransport.getPlayPosition();
     //this->myVideoPlayerObject->getVideoPlayer()->setPlayPosition(p);
     this->myVideoPlayerObject->setPlayPosition(p);
+   // this->myVideoPlayerObject->getWorkspace()->resetAnimatedObjectList();
     
     std::cout << "workspace\n";
 
@@ -690,7 +715,7 @@ void IRVideoAnnotater::createEventOnTheLoadedVideo(VideoAnnotationEventComponent
 {
     if(this->myVideoPlayerObject.get() == nullptr) return;
     
-    this->myVideoPlayerObject->createAnnotationComponent(event);
+    //this->myVideoPlayerObject->createAnnotationComponent(event);
     
 }
 

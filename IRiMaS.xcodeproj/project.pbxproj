@@ -103,6 +103,8 @@
 		826056C02273619300CAF8C5 /* IRData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 826056BE2273619300CAF8C5 /* IRData.cpp */; };
 		82657CEF21EE7DE5003FA700 /* IRiMaSMainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82657CED21EE7DE5003FA700 /* IRiMaSMainComponent.cpp */; };
 		82657CFE21EFC8D8003FA700 /* IRListBoxObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82657CFC21EFC8D8003FA700 /* IRListBoxObject.cpp */; };
+		8274197C247680FF00FE9CFD /* IRQuillTextEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8274197A247680FF00FE9CFD /* IRQuillTextEditor.cpp */; };
+		8274197F2476810E00FE9CFD /* IRQuillTextEditorObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8274197D2476810E00FE9CFD /* IRQuillTextEditorObject.cpp */; };
 		827F862F23E9A6B500653A76 /* ObjectArranger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 827F862D23E9A6B500653A76 /* ObjectArranger.cpp */; };
 		8282F97324667F6F00E2075E /* IRVideoAnnotaterWorkspace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8282F97124667F6F00E2075E /* IRVideoAnnotaterWorkspace.cpp */; };
 		8282F9772467078500E2075E /* IRVideoAnnotaterObject2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8282F9752467078500E2075E /* IRVideoAnnotaterObject2.cpp */; };
@@ -456,6 +458,10 @@
 		82657CFD21EFC8D8003FA700 /* IRListBoxObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRListBoxObject.hpp; sourceTree = "<group>"; };
 		82657D0121EFD1A4003FA700 /* MenusListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenusListBox.h; sourceTree = "<group>"; };
 		82657D0321F01367003FA700 /* KeAnimationComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeAnimationComponent.h; sourceTree = "<group>"; };
+		8274197A247680FF00FE9CFD /* IRQuillTextEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRQuillTextEditor.cpp; sourceTree = "<group>"; };
+		8274197B247680FF00FE9CFD /* IRQuillTextEditor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRQuillTextEditor.hpp; sourceTree = "<group>"; };
+		8274197D2476810E00FE9CFD /* IRQuillTextEditorObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRQuillTextEditorObject.cpp; sourceTree = "<group>"; };
+		8274197E2476810E00FE9CFD /* IRQuillTextEditorObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRQuillTextEditorObject.hpp; sourceTree = "<group>"; };
 		827F0D2D23D8563600ECAE7A /* IRColourSettingIcon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRColourSettingIcon.h; sourceTree = "<group>"; };
 		827F0D3023D8590500ECAE7A /* IRColourSettingWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRColourSettingWindow.h; sourceTree = "<group>"; };
 		827F862D23E9A6B500653A76 /* ObjectArranger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectArranger.cpp; sourceTree = "<group>"; };
@@ -936,6 +942,7 @@
 		10F647402226B4A200A26D7D /* ExternalObjects */ = {
 			isa = PBXGroup;
 			children = (
+				82741979247680CD00FE9CFD /* IRQuillTextEditorObject */,
 				829EC3C622EBB0B300964ACD /* IRShape */,
 				82C08AEC227660FF00938726 /* InteractiveSoundVisualization */,
 				821C5EAD21348E4100187902 /* multiPurposeObject */,
@@ -1995,6 +2002,25 @@
 				820FBDE623D465E500044092 /* srtLoader.h */,
 			);
 			path = SRT;
+			sourceTree = "<group>";
+		};
+		82741975247680AE00FE9CFD /* IRQuillTextEditor */ = {
+			isa = PBXGroup;
+			children = (
+				8274197A247680FF00FE9CFD /* IRQuillTextEditor.cpp */,
+				8274197B247680FF00FE9CFD /* IRQuillTextEditor.hpp */,
+			);
+			path = IRQuillTextEditor;
+			sourceTree = "<group>";
+		};
+		82741979247680CD00FE9CFD /* IRQuillTextEditorObject */ = {
+			isa = PBXGroup;
+			children = (
+				82741975247680AE00FE9CFD /* IRQuillTextEditor */,
+				8274197D2476810E00FE9CFD /* IRQuillTextEditorObject.cpp */,
+				8274197E2476810E00FE9CFD /* IRQuillTextEditorObject.hpp */,
+			);
+			path = IRQuillTextEditorObject;
 			sourceTree = "<group>";
 		};
 		827F0D2923D855B300ECAE7A /* AnnotationTextEventComponent */ = {
@@ -3332,6 +3358,7 @@
 				8282F97A24679DF300E2075E /* IRVideoPlayerObject2.cpp in Sources */,
 				823A4376240BEA1200C7F66E /* VideoAnnotaterWorkspace.cpp in Sources */,
 				82DEA5312292F9AF004D3D9F /* IRImageMovableButton.cpp in Sources */,
+				8274197F2476810E00FE9CFD /* IRQuillTextEditorObject.cpp in Sources */,
 				821C5EB021348E6900187902 /* IRMultiPurposeObject.cpp in Sources */,
 				82D4A7C9234F533D00F89347 /* IRWaveformController2.cpp in Sources */,
 				823D65BA23327B56005DCBD6 /* IRWorkspace2.cpp in Sources */,
@@ -3396,6 +3423,7 @@
 				82A8B5E022FDA29000FF05B8 /* IRProjectWindow2.cpp in Sources */,
 				106588F5223024CF005D6B38 /* IRTextEditorObjectPreference.cpp in Sources */,
 				82D0D28922A29EA300C771B1 /* IR3DGraphicUIWithPreference.cpp in Sources */,
+				8274197C247680FF00FE9CFD /* IRQuillTextEditor.cpp in Sources */,
 				82A8B65323180FD500FF05B8 /* IRStrComponent.cpp in Sources */,
 				82A8B5F72300E02500FF05B8 /* TextMenuComponent.cpp in Sources */,
 				820FBDF723D4925300044092 /* IRVideoAnnotaterInterfaceObject.cpp in Sources */,

@@ -32,7 +32,7 @@ resizingArea(25, 25)
     
     //only resizingSquare and not squares at the corners
     parent->addAndMakeVisible(this->resizingSquare);
-    this->resizingSquare.enableSquare(false);
+    this->resizingSquare.showSquare(false);
     
     this->resizingSquare.resizingSquareClicked = [this](IRResizeSquare2::MovableDirection direction){resizingSquareClicked(direction);};
     
@@ -206,7 +206,7 @@ void IRNodeComponent::setEnableResizingSquare(bool flag)
     {
         if(this->resizingSquare.isVisible())
         {
-            this->resizingSquare.enableSquare(false);
+            this->resizingSquare.showSquare(false);
         }
     }
     
@@ -534,7 +534,7 @@ void IRNodeComponent::setEditMode(bool flag)
 {
     
     // disable resizingSquare in Control mode
-    if(!flag) this->resizingSquare.enableSquare(flag);
+    if(!flag) this->resizingSquare.showSquare(flag);
 
     this->editModeFlag = flag;
     statusChangedWrapper(IRNodeComponentStatus::EditModeStatus);

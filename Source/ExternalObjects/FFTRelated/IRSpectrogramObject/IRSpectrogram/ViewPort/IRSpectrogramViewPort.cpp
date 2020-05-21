@@ -45,7 +45,6 @@ void IRSpectrogramViewUI::resized()
 
 void IRSpectrogramViewUI::setComponentBounds(int x, int y, int w, int h)
 {
-    std::cout << "xywh = " << x << ", " << y << ", " << w << ", "<< h << std::endl;
     this->viewPort->setBounds(x, y, w, h);
 }
 

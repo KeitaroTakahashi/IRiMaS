@@ -7,14 +7,14 @@
 
 #ifndef ExternalObjectHeader_h
 #define ExternalObjectHeader_h
-/*
+
 // ------------------------------------------------------------
 // test related object
-#include "IRTestObject.h"
+//#include "IRTestObject.h"
 
 // ------------------------------------------------------------
 // audio related object
-#include "IRSoundPlayerObject.hpp"
+//#include "IRSoundPlayerObject.hpp"
 
 #include "IRWaveformObject.hpp"
 
@@ -42,11 +42,11 @@
 
 // other object
 
-#include "ObjectGlobalTestObject.h"
+//#include "ObjectGlobalTestObject.h"
 
 // ------------------------------------------------------------
 //#include "IRObjectCreater.hpp"
-*/
+
 
 //#include "IRObjectFactory.hpp"
 

@@ -6,7 +6,7 @@
 
 IRWaveformObjectUI::IRWaveformObjectUI(IRNodeObject* parent, IRStr* str) : IRWaveform(parent, str)
 {
-    this->selector = new IRGraphSelector();
+    this->selector.reset( new IRGraphSelector() );
     // only horizontal axis is movable and height follows the object height.
     this->selector->setSelectionMode(true, false);
     this->selector->setParentSize(getWidth(), getHeight());
@@ -23,9 +23,11 @@ IRWaveformObjectUI::IRWaveformObjectUI(IRNodeObject* parent, IRStr* str) : IRWav
 
 IRWaveformObjectUI::~IRWaveformObjectUI()
 {
-    delete this->selector;
-    
+    this->selector.reset();
+ 
+    deleteAllObjects();
     this->selectionSquareObjects.clear();
+    this->selectedSquareObjectList.clear();
 }
 
 
@@ -144,7 +146,7 @@ void IRWaveformObjectUI::createSquareObject(Rectangle<int> rect)
         
         obj->setBoundsInRatio(x, y, w, h);
         obj->renewBounds();
-        this->selectionSquareObjects.add(obj);
+        this->selectionSquareObjects.push_back(obj);
     }
 }
 
@@ -155,7 +157,7 @@ void IRWaveformObjectUI::addSquareObject(IRMultiPurposeObject* obj)
     obj->setBoundsRatio(true);
     obj->setMovable(false,false,false);
     addAndMakeVisible(obj);
-    this->selectionSquareObjects.add(obj);
+    this->selectionSquareObjects.push_back(obj);
 }
 
 
@@ -167,9 +169,14 @@ void IRWaveformObjectUI::deleteSquareObject()
     for(auto obj : this->selectedSquareObjectList)
     {
         
-        int index = this->selectionSquareObjects.indexOf(obj);
-        if(index >= 0) this->selectionSquareObjects.remove(index);
-        removeChildComponent(obj);
+        auto it = std::find(this->selectionSquareObjects.begin(), this->selectionSquareObjects.end(), obj);
+        if(it != this->selectionSquareObjects.end())
+        {
+            int index = (int)std::distance(this->selectionSquareObjects.begin(), it);
+            this->selectionSquareObjects.erase(it);
+            removeChildComponent(obj);
+            delete obj;
+        }
     }
     this->selectedSquareObjectList.clear();
 }
@@ -177,14 +184,15 @@ void IRWaveformObjectUI::deleteSquareObject()
 void IRWaveformObjectUI::deleteAllObjects()
 {
     stopPlaying();
-    for(auto obj : this->selectionSquareObjects)
-    {
-        int index = this->selectionSquareObjects.indexOf(obj);
-        if(index >= 0) this->selectionSquareObjects.remove(index);
-        removeChildComponent(obj);
-    }
     
     this->selectedSquareObjectList.clear();
+
+    for(auto obj : this->selectionSquareObjects)
+    {
+        removeChildComponent(obj);
+        delete obj;
+    }
+    
     this->selectionSquareObjects.clear();
 }
 
@@ -210,7 +218,7 @@ void IRWaveformObjectUI::addSelectedObjects()
         //std::cout << obj << " : selected? = " << obj->isSelected() << std::endl;
         if(obj->isSelected())
         {
-            this->selectedSquareObjectList.add(obj);
+            this->selectedSquareObjectList.push_back(obj);
         }
     }
 }

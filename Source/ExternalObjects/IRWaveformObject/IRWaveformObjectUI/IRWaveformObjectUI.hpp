@@ -65,8 +65,8 @@ public:
     
     
     
-    Array<IRMultiPurposeObject* > selectionSquareObjects;
-    Array<IRMultiPurposeObject* > selectedSquareObjectList;
+    std::vector<IRMultiPurposeObject* > selectionSquareObjects;
+    std::vector<IRMultiPurposeObject* > selectedSquareObjectList;
 
 
     // ==================================================
@@ -94,7 +94,7 @@ private:
     // ==================================================
 
     
-    IRGraphSelector* selector;
+    std::shared_ptr<IRGraphSelector> selector;
 
     IRNodeObject::Listener* parentListener;
     

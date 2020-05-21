@@ -120,6 +120,62 @@ void IRWorkspaceComponent::createObject(IRNodeObject *obj, bool shouldSort)
     repaint();
 }
 
+void IRWorkspaceComponent::createParentObject(IRNodeObject* obj, bool shouldSort)
+{
+    std::cout << "==================================================\n ";
+    
+    obj->setEditMode(isEditMode());
+    
+    obj->setResizableMargin(this->draggableMargin);
+    //obj->setEnableResizingSquare(false);
+    //obj->setMovable(false, false, false);
+    // make uniqueID
+    //KeRandomStringGenerator a;
+    //std::string id = a.createStrings(10);
+    // generate uniqueID
+    //obj->setUniqueID("id-aa");
+    addAndMakeVisible(obj);
+    obj->toFront(true);
+    obj->addChangeListener(this);
+    obj->addListener(this); // IRNodeObjectListener
+    obj->addKeyListener(this); // key listener
+    //this->objects.add(obj);
+    
+    // add as a Parent node object
+    setParentNodeObject(obj);
+    
+    // use this function in order to also update file manger of all related UIs etc.
+    obj->updateFileManager(this->ir_str->FILEMANAGER);
+    obj->callUpdateIRFileManager(&this->ir_str->FILEMANAGER);
+    
+    //audiosource
+    if (obj->isContainAudioSource())
+    {
+        this->mixer.addAudioSource(obj->getAudioSource());
+    }
+    
+    // setup openGL Context if it has. This should be called adter addAndMakeVisible
+    obj->initOpenGLContext();
+   
+    // check if the created object is Heavy-weight Component
+    if(shouldSort)
+    {
+        if(obj->getObjectType().componentType == IRNodeComponentType::heavyWeightComponent ||
+           obj->getObjectType().componentType == IRNodeComponentType::ordinaryIRComponent)
+        {
+            
+            std::cout << "IRWorkspaceComponent::createObject callHeavyObjectCreated\n";
+            callHeavyObjectCreated(obj);
+        }
+    }
+    //request updating the workspaceList
+    if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
+    
+    // register this object to the first place of ZOrder list
+    //insertObjectAtTopZOrder(obj);
+    repaint();
+}
+
 void IRWorkspaceComponent::resortHeavyObject()
 {
     
@@ -199,16 +255,17 @@ void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
     
     // to save objects, we need to reverse the order of ObjectZorder
     // The top object is stored the begining of the vector but it needs to be at the end in order to be created at last.
-    
-
+    std::cout << "IRWorkspaceComponent::manageHeavyWeightComponents\n";
     std::vector<IRNodeObject*> reversedZorder = this->ObjectZorder;
     std::reverse(std::begin(reversedZorder), std::end(reversedZorder));
     
     // ##############
     //first bring cover object to front
-    bringCoverToFront();
     // second bring parent nodeObject to front
     bringParentNodeObjectToFront();
+    
+    bringCoverToFront();
+
     // these two objects should be always placed in this z-order, and then we coordinate other objects
     // ##############
 
@@ -270,6 +327,7 @@ void IRWorkspaceComponent::setParentNodeObject(IRNodeObject* newParentNodeObject
 {
     this->parentNodeObject = newParentNodeObject;
     this->hasParentNodeObjectFlag = true;
+    this->parentNodeObject->setEnableResizingSquare(false);
 }
 
 void IRWorkspaceComponent::removeParentNodeObject()

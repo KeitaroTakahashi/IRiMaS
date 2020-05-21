@@ -19,7 +19,7 @@ IRNodeObject* IRNodeObjectSelector::getNodeObjectFromOriginalComponent(Component
     
     if(nodeObj == nullptr)
     {
-        std::cout << "nodeObj null\n";
+        //std::cout << "nodeObj null\n";
         auto p = dynamic_cast<IRResizeSquare2*>(originalComponent);
         if(p == nullptr)
         {
@@ -44,7 +44,7 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
     
     if (nodeObj != nullptr)
     {
-        std::cout << "IRNodeObjectSelector::mouseDownHandler : selected = " << nodeObj->isSelected() << std::endl;
+        std::cout << "IRNodeObjectSelector::mouseDownHandler : " << nodeObj << " : selected = " << nodeObj->isSelected() << std::endl;
         if (e.mods.isShiftDown() || e.mods.isCommandDown())
         {
             nodeObj->setSelected(! nodeObj->isSelected());
@@ -66,6 +66,7 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
         //if this object is selected
         if (nodeObj->isSelected())
         {
+            
             setDragging(true);
             // set this object to be dragged.
             this->setBeingDraggedObject(nodeObj);
@@ -76,7 +77,7 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
     }
     else
     {
-        std::cout << "nodeObj null\n";
+        //std::cout << "nodeObj null\n";
         if (! e.mods.isShiftDown() && ! e.mods.isCommandDown())
         {
             //if background clicked
@@ -91,6 +92,7 @@ void IRNodeObjectSelector::mouseDownHandler(const MouseEvent& e)
 
 void IRNodeObjectSelector::mouseDragHandler(const MouseEvent& e)
 {
+    
     //std::cout <<"mouseDragHandler\n";
     if (this->multiSelectionFlag)
     {

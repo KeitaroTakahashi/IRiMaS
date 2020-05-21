@@ -96,6 +96,7 @@ void IRVideoPlayerObject2::resized()
 // --------------------------------------------------
 void IRVideoPlayerObject2::resizeThisComponentEvent(const MouseEvent& e)
 {
+    std::cout << "IRVideoPlayerObject2 resizeThisComponentEvent\n";
     // turn off controller otherwise mouse event will be stolen by the controller,
     // and resize event can not be acomplished properly.
     if(this->enableControllerFlag)
@@ -132,7 +133,11 @@ void IRVideoPlayerObject2::resizeThisComponentEvent(const MouseEvent& e)
 
 void IRVideoPlayerObject2::resizeThisComponent(Rectangle<int> rect)
 {
+
     double ratio = this->videoPlayer->getAspectRatio();
+    
+    std::cout << "IRVideoPlayerObject2 resizeThisComponent : ratio = " << ratio << std::endl;
+
     if(ratio >= 0 && ratio != 1.0)
     {
         float curr_w = (float)getWidth();
@@ -142,16 +147,32 @@ void IRVideoPlayerObject2::resizeThisComponent(Rectangle<int> rect)
         
         float ratio_w = curr_w / new_w;
         float ratio_h = curr_h / new_h;
+        
+        std::cout << "ratio_w = " << ratio_w << " : ratio_h = " << ratio_h << std::endl;
+        
+        float fixed_h = new_w / ratio;
+        float fixed_w = new_h * ratio;
+        if(fixed_h > new_h){
+            fixed_h = new_h;
+            fixed_w = fixed_h * ratio;
+        }
+        
+        if(fixed_w > new_w){
+            fixed_w = new_w;
+            fixed_h = fixed_w / ratio;
+        }
+        
+        
                 
         // if w is larger, then follow w
         if(ratio_w >= ratio_h)
         {
             
-            float fixed_h = new_w / ratio;
+            //float fixed_h = new_w / ratio;
             float y = (rect.getHeight() - fixed_h) / 2.0;
             setObjectBounds(rect.getX(), rect.getY() + y, new_w, fixed_h);
         }else{
-            float fixed_w = new_h * ratio;
+            //float fixed_w = new_h * ratio;
             float x = (rect.getWidth() - fixed_w) / 2.0;
 
             setObjectBounds(rect.getX() + x, rect.getY(), fixed_w, new_h);
@@ -206,7 +227,8 @@ void IRVideoPlayerObject2::paint(Graphics& g)
 // --------------------------------------------------
 void IRVideoPlayerObject2::videoLoadCompletedAction()
 {
-    
+    std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction : " << isCallback << std::endl;
+
     
     bringThisToFront();
     // call reset Heavy-weight components
@@ -218,12 +240,11 @@ void IRVideoPlayerObject2::videoLoadCompletedAction()
             this->videoLoadCompletedCallbackFunc();
     }
 
-    std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction\n";
 
     // virtual
     videoLoadCompletedCallback();
     
-    
+    std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction\n";
     
 }
 // --------------------------------------------------
@@ -231,6 +252,9 @@ void IRVideoPlayerObject2::videoLoadCompletedAction()
 void IRVideoPlayerObject2::videoPlayingUpdateAction(double pos)
 {
     videoPlayingUpdateCallback(pos);
+    
+    if(this->videoPlayingUpdateCallbackFunc != nullptr)
+        this->videoPlayingUpdateCallbackFunc(pos);
 }
 
 // --------------------------------------------------
@@ -256,8 +280,7 @@ void IRVideoPlayerObject2::heavyComponentRefreshed()
 // --------------------------------------------------
 void IRVideoPlayerObject2::openFile(File file, bool isCallback)
 {
-    this->isCallback = nullptr;
-    if(isCallback) this->isCallback = isCallback;
+    this->isCallback = isCallback;
     
     if(this->videoPlayer.get() != nullptr)
     {
@@ -288,10 +311,12 @@ void IRVideoPlayerObject2::stop()
 
 void IRVideoPlayerObject2::setPlayPosition(double newPositionInSec)
 {
+    
+    std::cout << " IRVideoPlayerObject2::setPlayPosition = " << newPositionInSec << std::endl;
     this->videoPlayer->setPlayPosition(newPositionInSec);
     
     // inform the new play position to its child classes.
-    //videoPlayingUpdateAction(newPositionInSec);
+    videoPlayingUpdateAction(newPositionInSec);
 }
 // --------------------------------------------------
 

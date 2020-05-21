@@ -372,6 +372,18 @@ void IRNodeComponent::recoverEventStatus()
         this->isMovableFlag = true; // recover movableFlag
     }
     if(this->isMoving()) this->movingFlag = false;
+    
+    // important to call bringThisToFront of resizingSquare, so that the square is now on the IRNodeComponent and catch the mouseEvent. The mouseEvent is sent to IRNodeComponent by addMouseListener.
+    // Without bringThisToFront, mouseEvent is stolen after enableSquare() at setSelected method and mouseDrag event is not called anymore.
+    if(this->isResizingSquareEnabled() && isEditMode())
+    {
+        this->resizingSquare.bringThisToFront();
+    }else{
+        
+        std::cout << "hide square!\n";
+        this->resizingSquare.toBack();
+        this->resizingSquare.showSquare(false);
+    }
 }
 
 
@@ -409,15 +421,15 @@ void IRNodeComponent::setSelected(bool flag)
     if(flag)
     {
         //this->parent->addAndMakeVisible(this->resizingSquare);
-        if(this->isResizingSquareEnabled()){
-            this->resizingSquare.enableSquare(true);
-            std::cout << "square enabled\n";
+        if(this->isResizingSquareEnabled() && isEditMode()){
+            this->resizingSquare.showSquare(true);
+
+            std::cout << "square enabled : " << &this->resizingSquare << std::endl;
         }
         //heavyComponentCreatedFunc();
         //this->resizingSquare.toFront(true);
     }else{
-        //this->parent->removeChildComponent(&this->resizingSquare);
-        this->resizingSquare.enableSquare(false);
+        this->resizingSquare.showSquare(false);
     }
     
     
@@ -472,10 +484,10 @@ void IRNodeComponent::showThisObject(bool flag)
         if(isEditMode())
         {
             if(this->isResizingSquareEnabled())
-                this->resizingSquare.enableSquare(flag);
+                this->resizingSquare.showSquare(flag);
             this->selectedFlag = flag;
         }else{
-            this->resizingSquare.enableSquare(false);
+            this->resizingSquare.showSquare(false);
             this->selectedFlag = false;
         }
         
@@ -504,7 +516,6 @@ void IRNodeComponent::showThisObject(bool flag)
 
 void IRNodeComponent::resizingSquareClicked(IRResizeSquare2::MovableDirection direction)
 {
-    std::cout << "resizingSquareClicked : " << direction << std::endl;
     resizingObjectFunc(direction);
     resizingSquareClickedAction(direction);
 
@@ -512,7 +523,7 @@ void IRNodeComponent::resizingSquareClicked(IRResizeSquare2::MovableDirection di
 
 void IRNodeComponent::resizingSquareReleased(IRResizeSquare2::MovableDirection direction)
 {
-    std::cout << "resizingSquareReleased : " << direction << std::endl;
+    //std::cout << "resizingSquareReleased : " << direction << std::endl;
 
     //reset
     resizingObjectFunc(IRResizeSquare2::MovableDirection::None);

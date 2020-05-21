@@ -9,11 +9,7 @@
 #define IRVideoAnnotaterObject2_hpp
 
 #include "IRVideoAnnotaterWorkspace.hpp"
-#include "IRVATextEditorObject.h"
-#include "IRObjectCreater.hpp"
 
-#include "AnnotationTextEventComponent.h"
-#include "VideoAnnotationEventComponent.h"
 
 class IRVideoAnnotaterObject2 : public IRNodeObject
 {
@@ -23,7 +19,12 @@ public:
     ~IRVideoAnnotaterObject2();
     
     void resized() override;
-    
+    void resizeThisComponentEvent(const MouseEvent& e) override;
+    void resizeThisComponent(Rectangle<int> rect);
+    void resizeAndCentredThisComponent(Rectangle<int> rect);
+
+    void setFixObjectSizeRatioWithOriginalSize(bool flag, Rectangle<float> originalSize);
+
     void paint(Graphics& g) override;
     
     virtual void videoLoadCompletedCallback();
@@ -35,8 +36,9 @@ public:
     void openFile(bool isCallbback = true);
 
     std::function<void()> videoLoadCompletedCallbackFunc;
+    std::function<void(double pos)> videoPlayingUpdateCallbackFunc;
    // virtual void videoLoadCompletedCallback() {}
-    //virtual void videoPlayingUpdateCallback(double pos) {}
+    //void videoPlayingUpdateCallback(double pos) {}
     // --------------------------------------------------
     void play();
     void stop();
@@ -47,23 +49,24 @@ public:
 
     IRVideoPlayerObject2* getVideoPlayerObject();
 
-
+    IRVideoAnnotaterWorkspace* getWorkspace() { return this->workspace.get(); }
     // --------------------------------------------------
     void enableController(bool flag);
+
+    
     // --------------------------------------------------
-    // Annotation
-    void createAnnotationComponent(VideoAnnotationEventComponent* event);
-    void createTEXTAnnotationComponent(VideoAnnotationEventComponent* event);
-    // --------------------------------------------------
-    void createTextObject();
+    // Object
+    void createTextObject(Component* event);
+    void createShapeObject(Component* event);
+    void createImageObject(Component* event);
 
 private:
     
-    
-    void createNodeObjectOnWorkspace(IRNodeObject* obj);
-    
-    
+
     std::shared_ptr<IRVideoAnnotaterWorkspace> workspace;
+    
+    void videoLoadCompletedAction();
+    void videoPlayingUpdateAction(double pos);
     
 };
 #endif /* IRVideoAnnotaterObject2_hpp */

@@ -39,7 +39,8 @@ void IRLabelController::ControllerResized()
     this->LabelTitle.       setBounds(10, y, 300, 30);
     
     y += yBigIncrement;
-    
+    y += yIncrement;
+
     this->fontController->setBounds(0, y, getWidth(), getHeight() - y);
 }
 

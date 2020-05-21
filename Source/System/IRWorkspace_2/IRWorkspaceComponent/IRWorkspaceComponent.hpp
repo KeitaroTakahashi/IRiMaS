@@ -76,7 +76,11 @@ private:
     void mouseDoubleClick(const MouseEvent& e) override; // JUCE oriented
     void modifierKeysChanged(const ModifierKeys &mod) override; // JUCE oriented
     bool keyPressed(const KeyPress& key, Component* originatingComponent) override; // JUCE oriented
+public:
+    void registerKeyListener(KeyListener* key);
+    void registerMouseListener(MouseListener* mouse);
     
+private:
     //Listener
     void changeListenerCallback(ChangeBroadcaster* source) override; // JUCE oriented
     
@@ -149,6 +153,9 @@ public:
     void pasteObject(IRNodeObject *obj, bool addToSelected);
     void duplicateObject(IRNodeObject *obj);
     void deleteObject(IRNodeObject *obj);
+    
+    // for parent node object, use this instead of createObject()
+    void createParentObject(IRNodeObject* obj, bool shouldSort = true);
     
     // call this after complete creting the heavy objects
     void resortHeavyObject();
@@ -304,6 +311,9 @@ private:
 
     // Objects
     Array<IRNodeObject* > objects;
+protected:
+    Array<IRNodeObject* > getObjects() const { return this->objects; }
+private:
 
     IRNodeObjectSelector *selector;
     
@@ -347,6 +357,7 @@ private:
     bool isOptionPressed = false;
     
     bool isdrawGridsFlag = true;
+
     // ==================================================
 
     juce::Point<int> currentMousePosition {0, 0};
@@ -356,6 +367,8 @@ private:
     
     //resize object position
     bool isFixObjectSizeRatio = true;
+    
+    
     
     Rectangle<float> previousBounds;
 

@@ -19,18 +19,17 @@ public:
     enableController(enableController)
     {
       
-        this->player_with_controller.reset(new VideoComponent(true));
-        this->player_without_controller.reset(new VideoComponent(false));
-    
-        setVideoPlayer();
+        
 
 
     }
     
     ~IRVideoComponent()
     {
-        this->player_with_controller.reset();
-        this->player_without_controller.reset();
+        if(this->player_with_controller.get() != nullptr)
+            this->player_with_controller.reset();
+        if(this->player_without_controller.get() != nullptr)
+            this->player_without_controller.reset();
     }
     // ==================================================
 
@@ -41,8 +40,41 @@ public:
 
     void resized() override
     {
-        this->player_with_controller->setBounds(getLocalBounds());
-        this->player_without_controller->setBounds(getLocalBounds());
+        
+        if(this->isVideoLoaded)
+        {
+            if(this->player_with_controller.get() != nullptr)
+                this->player_with_controller->setBounds(getLocalBounds());
+            if(this->player_without_controller.get() != nullptr)
+                this->player_without_controller->setBounds(getLocalBounds());
+            
+           // std::cout << "videoComponent size = " << player_without_controller->getWidth() << " : " << player_without_controller->getHeight() << " x = " << player_without_controller->getX() << std::endl;
+            
+
+            auto p = this->player_without_controller;
+            int w = p->getHeight() * this->aspectRatio;
+            
+            if(p->getWidth() < w)
+            {
+                // follow width
+                int h = p->getWidth() / this->aspectRatio;
+                int y = (getHeight() - h) / 2;
+                this->videoBounds = Rectangle<int> (0, y,
+                                                    p->getWidth(), h);
+                
+
+            }else{
+                // follow h
+                // follow width
+                int w = p->getHeight() * this->aspectRatio;
+                int x = (getWidth() - w) / 2;
+
+                this->videoBounds = Rectangle<int> (x, 0,
+                                                    w, p->getHeight());
+            }
+        }
+        
+
     }
     
     // ==================================================
@@ -123,6 +155,8 @@ public:
     {
         this->enableController = flag;
         
+        if(!this->isVideoLoaded) return;
+            
         if(flag)
         {
             removeChildComponent(this->player_without_controller.get());
@@ -136,11 +170,22 @@ public:
             this->currentPlayer = this->player_without_controller.get();
         }
     }
-    
+
     bool isController() const { return this->enableController; }
+    // ==================================================
+
+    void createVideos()
+    {
+        this->player_with_controller.reset(new VideoComponent(true));
+        this->player_without_controller.reset(new VideoComponent(false));
+        setVideoPlayer();
+    }
     
     void loadVideo(URL url, bool callback = true)
     {
+        
+        createVideos();
+        
         this->url = url;
         
         this->isCallback = callback;
@@ -197,6 +242,7 @@ public:
 
     Rectangle<int> getVideoSize() const { return this->videoSize; }
     float getAspectRatio() const { return this->aspectRatio; }
+    Rectangle<int> getVideoBounds() const { return this->videoBounds; }
     
     URL getURL() const { return this->url; }
         
@@ -245,10 +291,12 @@ private:
     
     URL url;
     
-    Rectangle<int> videoSize;
-    
     // width / height
     float aspectRatio = 1.0;
+    
+    Rectangle<int> videoSize;
+    Rectangle<int> videoBounds;
+
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRVideoComponent)
 

@@ -69,7 +69,8 @@ void IRVideoAnnotater::CommandEPressed()
 {
     
     std::cout << "IRVideoAnnotater::CommandEPressed()\n" << std::endl;
-    this->workspace->setEditMode(!this->workspace->isEditMode());
+    auto w = this->myVideoPlayerObject->getWorkspace();
+    w->setEditMode(!w->isEditMode());
 }
 
 void IRVideoAnnotater::CommandSPressed()

@@ -61,7 +61,7 @@ void IRWaveformObjectUI::mouseDownHandler(const MouseEvent& e)
         if (this->selectFlag && ! isEditMode())
         {
             this->selector->mouseDownHandler(e);
-            addAndMakeVisible(this->selector);
+            addAndMakeVisible(this->selector.get());
             this->selectModeFlag = true;
         }
     }

@@ -10,13 +10,7 @@
 void IRVideoAnnotater::createNodeObjectOnEvent(IRNodeObject* obj,
                                                VideoAnnotationEventComponent* event)
 {
-    /*
-    obj->setObjectBounds(this->workspace->getWidth()/2,
-                            this->workspace->getHeight()/2,
-                             this->workspace->getWidth()/4,
-                             60);*/
     
-    this->myVideoPlayerObject->createTextObject();
     
     auto b = this->myVideoPlayerObject->getBounds();
     obj->setObjectBounds(b.getWidth() / 2,
@@ -24,12 +18,11 @@ void IRVideoAnnotater::createNodeObjectOnEvent(IRNodeObject* obj,
                          b.getWidth() / 4,
                          60);
     
-    //this->workspace->createObject(obj);
     obj->bringThisToFront();
-   // this->workspace->deselectAllObjects();
     obj->setEventComponent(event);
     event->setNodeObject(obj);
     obj->setSelected(true);
+    
     // initially the object is shown
     obj->setAnimated(true);
     obj->setCurrentTimeCode(this->videoTransport.getPlayPosition());
@@ -48,10 +41,14 @@ void IRVideoAnnotater::createTextEventComponent()
     this->annotationMenu->closeAction();
     createEventOnTheLoadedVideo(event);
 
-    
+    /*
     IRVATextEditorObject* nodeObj = static_cast<IRVATextEditorObject*>(IRObjectCreater<IRVATextEditorObject>().create(this->workspace.get(),
                                                                 getStr()));
     createNodeObjectOnEvent(nodeObj, event);
+    */
+    this->myVideoPlayerObject->createTextObject(event);
+    
+
 
 }
 
@@ -72,6 +69,9 @@ void IRVideoAnnotater::createTextEventComponentFromIRNodeObject(IRNodeObject* ob
     obj->setAnimated(true);
     obj->setCurrentTimeCode(this->videoTransport.getPlayPosition());
 
+    
+    this->myVideoPlayerObject->createTextObject(event);
+
 }
 
 
@@ -89,6 +89,9 @@ void IRVideoAnnotater::createShapeEventComponent()
     IRVAShapeObject* nodeObj = static_cast<IRVAShapeObject*>(IRObjectCreater<IRVAShapeObject>().create(this->workspace.get(),
                                                                 getStr()));
     createNodeObjectOnEvent(nodeObj, event);
+    
+    this->myVideoPlayerObject->createShapeObject(event);
+
 }
 
 void IRVideoAnnotater::createShapeEventComponentFromNodeObject(IRNodeObject* obj)
@@ -108,6 +111,7 @@ void IRVideoAnnotater::createShapeEventComponentFromNodeObject(IRNodeObject* obj
     obj->setSelected(true);
     obj->setAnimated(true);
     obj->setCurrentTimeCode(this->videoTransport.getPlayPosition());
+    this->myVideoPlayerObject->createShapeObject(event);
 
 }
 
@@ -127,6 +131,9 @@ void IRVideoAnnotater::createImageEventComponent()
     IRVAImageViewerObject* nodeObj = static_cast<IRVAImageViewerObject*>(IRObjectCreater<IRVAImageViewerObject>().create(this->workspace.get(),
                                                                 getStr()));
     createNodeObjectOnEvent(nodeObj, event);
+    
+    this->myVideoPlayerObject->createImageObject(event);
+
 }
 
 void IRVideoAnnotater::createImageEventComponentFromNodeObject(IRNodeObject* obj)
@@ -145,6 +152,7 @@ void IRVideoAnnotater::createImageEventComponentFromNodeObject(IRNodeObject* obj
     obj->setSelected(true);
     obj->setAnimated(true);
     obj->setCurrentTimeCode(this->videoTransport.getPlayPosition());
+    this->myVideoPlayerObject->createImageObject(event);
 
 }
 

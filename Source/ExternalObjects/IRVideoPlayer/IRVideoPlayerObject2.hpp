@@ -67,6 +67,7 @@ public:
     std::function<void()> videoLoadCompletedCallbackFunc;
     virtual void videoLoadCompletedCallback() {}
     virtual void videoPlayingUpdateCallback(double pos) {}
+    std::function<void(double)> videoPlayingUpdateCallbackFunc;
     // --------------------------------------------------
     void play();
     void stop();
@@ -129,7 +130,7 @@ private:
     
     // --------------------------------------------------
     // call videoLoadCompletedCallbackFunc if true
-    bool isCallback = false;
+    bool isCallback = true;
     
     bool resizing = false;
     // IRVideoPlayer *videoPlayer;

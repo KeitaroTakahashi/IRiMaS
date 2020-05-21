@@ -20,11 +20,13 @@ draggableMargin(draggableMargin)
     setOpaque(false);
     
     setWantsKeyboardFocus(true);
-    addKeyListener(this);
+    //addKeyListener(this);
     if(this->ir_str != nullptr)
     {
-        addKeyListener(this->ir_str->key);
-        addMouseListener(this->ir_str->mouse, false);
+        
+        // needs to be controlled from outside of this class!
+        //addKeyListener(this->ir_str->key);
+        //addMouseListener(this->ir_str->mouse, false);
     }
     
     createCover();
@@ -123,25 +125,31 @@ void IRWorkspaceComponent::resized()
 
 void IRWorkspaceComponent::resizeNodeObjectsRelativeToWorkspaceSizeChange()
 {
-    if(!this->isFixObjectSizeRatio)
+    if(!this->isFixObjectSizeRatio && this->parentNodeObject != nullptr)
     {
         if(this->previousBounds.getWidth() != 0 &&
            this->previousBounds.getHeight() != 0)
         {
-            auto wb = getBounds().toFloat();
+            //auto wb = getBounds().toFloat();
+            auto wb = this->previousBounds.toFloat();
+            //auto wb = this->parentNodeObject->getBounds();
+            float ratioX = this->initialBounds.getX() / wb.getX();
+            float ratioY = this->initialBounds.getY() / wb.getY();
+            float ratioW = this->initialBounds.getWidth() / wb.getWidth();
+            float ratioH = this->initialBounds.getHeight() / wb.getHeight();
+
             
-            float ratioX = wb.getX() / this->initialBounds.getX();
-            float ratioY = wb.getY() / this->initialBounds.getY();
-            float ratioW = wb.getWidth() / this->initialBounds.getWidth();
-            float ratioH = wb.getHeight() / this->initialBounds.getHeight();
+            //std::cout <<"w = " << ratioW << " : " << ratioH << " : initial(w, h) = " << this->initialBounds.getWidth() << ", " <<  this->initialBounds.getHeight() << " : current = " << wb.getWidth() << ", " << wb.getHeight() << std::endl;
 
             for(auto obj : this->objects)
             {
-                Rectangle<float> rb(obj->getInitialBounds().getX() * ratioW,
-                                    obj->getInitialBounds().getY() * ratioH,
-                                    obj->getInitialBounds().getWidth() * ratioW,
-                                    obj->getInitialBounds().getHeight() * ratioH);
+                
+                Rectangle<float> rb((float)obj->getInitialBounds().getX() * ratioW,
+                                    (float)obj->getInitialBounds().getY() * ratioH,
+                                    (float)obj->getInitialBounds().getWidth() * ratioW,
+                                    (float)obj->getInitialBounds().getHeight() * ratioH);
                 obj->setObjectBounds(rb.toNearestInt());
+                
             }
         }
     }
@@ -170,11 +178,14 @@ void IRWorkspaceComponent::setFixObjectSizeRatio(bool flag, Rectangle<float> ini
 {
     this->isFixObjectSizeRatio = flag;
     this->initialBounds = initialBounds;
+    std::cout << "setFixObjectSizeRatio IRWorkspace updated\n";
 }
 
 void IRWorkspaceComponent::initialBoundsUpdated(IRNodeObject* obj)
 {
     setInitialBounds(getBounds().toFloat());
+    
+
 }
 
 // ==================================================
@@ -421,6 +432,11 @@ void IRWorkspaceComponent::setEditMode(bool flag, bool notification)
     for (auto obj : this->objects)
     {
         obj->setEditMode(flag);
+    }
+    
+    if(this->parentNodeObject != nullptr)
+    {
+        //this->parentNodeObject->setEditMode(flag);
     }
   
     // notify to IRMainSpace

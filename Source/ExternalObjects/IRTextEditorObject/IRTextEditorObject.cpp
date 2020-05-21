@@ -8,9 +8,8 @@ IRTextEditorObject::IRTextEditorObject(Component* parent, IRStr* str) :
 IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(ordinaryIRComponent))
 {
     
-    this->textColour = getStr()->SYSTEMCOLOUR.text;
-    this->backgroundColour = getStr()->SYSTEMCOLOUR.background;
-    
+    this->textColour = Colours::black;
+    this->backgroundColour = getStr()->SYSTEMCOLOUR.background.withAlpha(0.0f);
     this->controller.reset(new IRTextEditorController(str));
     this->controller->getFontController()->addChangeListener(this);
     this->controller->getFontController()->setBackgroundColour(this->backgroundColour);
@@ -26,13 +25,13 @@ IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(ordinaryIRComponent))
     
 
     this->textEditor.setText("text...", dontSendNotification);
-    this->textEditor.setColour(TextEditor::backgroundColourId, getStr()->SYSTEMCOLOUR.background);
+    this->textEditor.setColour(TextEditor::backgroundColourId, this->backgroundColour);
     this->textEditor.setColour(TextEditor::outlineColourId,
                                Colours::transparentBlack);
     this->textEditor.setColour(TextEditor::focusedOutlineColourId,
                                Colours::transparentBlack);
 
-    this->textEditor.applyColourToAllText(getStr()->SYSTEMCOLOUR.titleText, true);
+    this->textEditor.applyColourToAllText(Colours::black, true);
     
     this->textEditor.onReturnKey = [this] { onReturnKeyAction(); };
     this->textEditor.onTextChange = [this] { onTextChangeAction(); };
@@ -267,6 +266,7 @@ void IRTextEditorObject::setAlign(int id)
             break;
     }
     
+    
     textArrangeChanged();
 }
 
@@ -453,6 +453,8 @@ void IRTextEditorObject::onTextChangeAction()
 
 void IRTextEditorObject::textArrangeChanged()
 {
+    repaint();
+
     onTextChangeAction();
 }
 

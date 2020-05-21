@@ -66,6 +66,12 @@ void IRMainSpace::createNewWorkspace()
     
     IRWorkspace* space = new IRWorkspace(title, r, this->ir_str);
     space->addListener(this);
+    // register key and mouse listeners if necessary
+    space->registerKeyListener(this->ir_str->key);
+    space->registerMouseListener(this->ir_str->mouse);
+    addKeyListener(space);
+    
+    
     this->workspaces.push_back(space);
     this->mixer.addAudioSource(&space->getMixer());
     

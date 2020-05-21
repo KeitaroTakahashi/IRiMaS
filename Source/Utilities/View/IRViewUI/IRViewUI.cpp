@@ -29,7 +29,6 @@ IRViewUI::~IRViewUI()
 
 void IRViewUI::setComponentBounds(int x, int y, int w, int h)
 {
-    std::cout << "xywh = " << x << ", " << y << ", " << w << ", "<< h << std::endl;
     this->viewPort->setThisBounds(x, y, w, h);
 }
 

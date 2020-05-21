@@ -16,7 +16,6 @@ IRObjectFactory2::IRObjectFactory2()
     //registerObject<IRAudioAnalysisObject>("IRAudioAnalysis", "AudioAnalysis", img);
     //registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
 
-    /*
     registerObject<IRAutomationObject>("IRAutomation",
                                        "Graph",
                                        objectCategory::CHARTMENU,
@@ -43,11 +42,9 @@ IRObjectFactory2::IRObjectFactory2()
     
     
 
-    registerObject<IRImageViewerObject>("IRImageViewer",
-                                                      "Image Viewer",
-                                                      objectCategory::IMAGEMENU,
-                                                      img);
+    
     //registerObject<IRSoundPlayerObject>("IRSoundPlayer", "Sound Player", img); // leak is audio
+     
     registerObject<IRSpectrogramObject>("IRSpectrogram",
                                                       "Spectrogram",
                                                       objectCategory::AUDIOMENU,
@@ -60,19 +57,24 @@ IRObjectFactory2::IRObjectFactory2()
     //registerObject<IRTestObject>("IRTestObject", "test", img);
     
     
-    */
     //registerObject<IRVideoThumbnailObject>("IRVideoThumbnail", "Video Thumbnail", img);
+    
+    registerObject<IRImageViewerObject>("IRImageViewer",
+                                        "Image Viewer",
+                                        objectCategory::IMAGEMENU,
+                                        img);
+    
     
     registerObject<IRVideoAnnotaterInterfaceObject>("IRVideoPlayer",
                                                       "Video Player",
                                                       objectCategory::PLAYERMENU,
                                                       img);
     
-    
+    /*
     registerObject<IRVideoAnnotaterObject2>("IRVideoAnnotater2",
                                             "Video Annotater",
                                             objectCategory::PLAYERMENU,
-                                            img);
+                                            img);*/
     
     
     registerObject<IRTextEditorObject>("IRTextEditor",

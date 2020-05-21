@@ -52,3 +52,14 @@ bool IRWorkspaceComponent::keyPressed (const KeyPress& key, Component* originati
 
 
 
+// ==================================================
+
+
+void IRWorkspaceComponent::registerKeyListener(KeyListener* key)
+{
+    addKeyListener(key);
+}
+void IRWorkspaceComponent::registerMouseListener(MouseListener* mouse)
+{
+    addMouseListener(mouse, false);
+}

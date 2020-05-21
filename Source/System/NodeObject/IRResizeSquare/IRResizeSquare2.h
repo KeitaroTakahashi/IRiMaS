@@ -138,7 +138,7 @@ public:
             addAndMakeVisible(item);
         }
         
-        enableSquare(false);
+        showSquare(false);
          
     }
     
@@ -159,7 +159,7 @@ public:
     
     // ==================================================
 
-    void enableSquare(bool flag)
+    void showSquare(bool flag)
     {
         
         for(auto item : this->items)
