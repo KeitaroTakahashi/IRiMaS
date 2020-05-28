@@ -209,12 +209,68 @@ void IRVideoAnnotaterObject2::setFixObjectSizeRatioWithOriginalSize(bool flag, R
 
 void IRVideoAnnotaterObject2::paint(Graphics& g) 
 {
-    //g.fillAll(Colours::yellow);
+    g.fillAll(Colours::pink);
 }
 
 // --------------------------------------------------
+IRNodeObject* IRVideoAnnotaterObject2::copyThis()
+{
+    
+    std::cout << "IRVideoAnnotaterObject2::copyThis\n";
+    auto newObj = new IRVideoAnnotaterObject2(this->parent, getStr());
+    
+    // copy all workspace data to the newly created workspace
+    this->workspace->copyAllDataToWorkspace(newObj->getWorkspace());
+    newObj->resized();
+    //newObj->moveToFrontAction();
+    
+    return newObj;
+}
 
 // --------------------------------------------------
+// SAVE LOAD
+t_json IRVideoAnnotaterObject2::saveThisToSaveData()
+{
+    using t = VideoAnnotationEventComponent::VideoAnnotationType;
+    
+    /*
+    IRVideoAnnotater* videoAnnotator = this->controller->getVideoAnnotaterComponent();
+    
+    std::string srtFilePath = videoAnnotator->getSRTFilePath();
+    
+    std::cout << "videoFilePath = " << this->videoPlayer->getPath() << std::endl;
+    std::cout << "srtFilePath = " << srtFilePath << std::endl;
+    
+    t_json saveData = t_json::object({
+        {"filePath", this->videoPlayer->getPath()},
+        {"srtPath",  srtFilePath}
+    });
+    */
+    t_json saveData = t_json::object({
+        });
+
+    t_json save = t_json::object({
+        {"videoAnnotater", saveData}
+    });
+    
+    return save;
+}
+// --------------------------------------------------
+void IRVideoAnnotaterObject2::loadThisFromSaveData(t_json data)
+{
+    t_json w = data["videoAnnotater"];
+    /*
+    File file(w["filePath"].string_value());
+    this->videoPlayer->openFile(file);
+    std::string srtPath = w["srtPath"].string_value();
+    if(srtPath.size() > 0)
+    {
+        IRVideoAnnotater* videoAnnotator = this->controller->getVideoAnnotaterComponent();
+        videoAnnotator->openSRTs(File(srtPath));
+    
+        std::cout << "srtPath = " << srtPath << std::endl;
+    }*/
+}
 // --------------------------------------------------
 // --------------------------------------------------
 
@@ -222,9 +278,6 @@ void IRVideoAnnotaterObject2::paint(Graphics& g)
 
 void IRVideoAnnotaterObject2::videoLoadCompletedCallback()
 {
-    std::cout << "IRVideoAnnotaterObject2::videoLoadCompletedCallback\n";
-
-    //resized();
 
 }
 
@@ -233,11 +286,11 @@ void IRVideoAnnotaterObject2::videoLoadCompletedCallback()
 // define if call videoLoadCompletedCallbackFunc();
 void IRVideoAnnotaterObject2::openFile(File file, bool isCallback)
 {
-    
+    this->workspace->getVideoPlayerObject()->openFile(file, isCallback);
 }
 void IRVideoAnnotaterObject2::openFile(bool isCallbback)
 {
-    
+    this->workspace->getVideoPlayerObject()->openFile(isCallbback);
 }
 
 // --------------------------------------------------
@@ -280,8 +333,11 @@ IRVideoPlayerObject2* IRVideoAnnotaterObject2::getVideoPlayerObject()
 
 void IRVideoAnnotaterObject2::videoLoadCompletedAction()
 {
-
+    std::cout << "IRVideoAnnotaterObject2::videoLoadCompletedAction\n";
     resizeThisComponent(getBounds());
+    
+    //this->workspace->bringThisToFront();
+    //this->workspace->getVideoPlayerObject()->bringToFront();
     
     if(this->videoLoadCompletedCallbackFunc != nullptr)
         this->videoLoadCompletedCallbackFunc();
@@ -312,5 +368,18 @@ void IRVideoAnnotaterObject2::createImageObject(Component* event)
 {
     this->workspace->createImageObject(event);
 
+}
+// --------------------------------------------------
+
+void IRVideoAnnotaterObject2::moveToFrontAction()
+{
+    std::cout << "IRVideoAnnotaterObject2::moveToFrontAction\n";
+    this->workspace->getVideoPlayerObject()->bringToFront(false, false);
+    this->workspace->manageHeavyWeightComponents(true);
+}
+
+void IRVideoAnnotaterObject2::moveToBackAction()
+{
+    
 }
 // --------------------------------------------------

@@ -17,7 +17,7 @@ void IROpenGLManager::setOpenGLContextAlpha(GLint aValue)
     if(context != nullptr)
         [context setValues:&aValue forParameter:NSOpenGLCPSurfaceOpacity];
     else
-        std::cout << "Error : IROpenGLManager::setOpenGLContextAlpha() : could not get NSOpenGLContext : nullptr\n";
+        std::cout << "Error : IROpenGLManager::setOpenGLContextAlpha() : could not get NSOpenGLContext : " << this->name << " nullptr\n";
     
 }
 
@@ -27,9 +27,10 @@ void IROpenGLManager::bringOpenGLContextFront(juce::Component* owner)
     NSOpenGLContext* context = (NSOpenGLContext*)this->context->getRawContext();
     if(context == nullptr)
     {
-        std::cout << "Error : IROpenGLManager::bringOpenGLContextFront() : could not get NSOpenGLContext : nullptr\n";
+        std::cout << "Error : IROpenGLManager::bringOpenGLContextFront() : could not get NSOpenGLContext : " << this->name << " nullptr\n";
         return;
     }
+    
         
     
     auto* peer = owner->getPeer();

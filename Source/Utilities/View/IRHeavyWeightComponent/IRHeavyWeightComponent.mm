@@ -11,19 +11,21 @@
 void IRHeavyWeightComponent::setComponentAlpha(GLint aValue)
 {
     NSOpenGLContext* context = (NSOpenGLContext*)this->ctx.getRawContext();
+    
     if(context != nullptr)
         [context setValues:&aValue forParameter:NSOpenGLCPSurfaceOpacity];
     else
-        std::cout << "Error : IROpenGLManager::setOpenGLContextAlpha() : could not get NSOpenGLContext : nullptr in " << this->name << std::endl;
+        std::cout << "Error : IRHeavyWeightComponent::setOpenGLContextAlpha() : could not get NSOpenGLContext : nullptr in " << this->name << std::endl;
 }
 
-void IRHeavyWeightComponent::bringToFront(juce::Component* owner)
+void IRHeavyWeightComponent::bringToFrontObj(juce::Component* owner)
 {
     
     NSOpenGLContext* context = (NSOpenGLContext*)this->ctx.getRawContext();
+    
     if(context == nullptr)
     {
-        std::cout << "Error : IROpenGLManager::bringOpenGLContextFront() : could not get NSOpenGLContext : nullptr in " << this->name << std::endl;
+        std::cout << "Error : IRHeavyWeightComponent::bringOpenGLContextFront() : could not get NSOpenGLContext : nullptr in " << this->name << std::endl;
         return;
     }
 

@@ -12,13 +12,13 @@ IRVideoAnnotaterObject2 (parent, str)
 {
 
     
-   this->controller.reset( new IRVideoPlayerController(str, this) );
-   this->controller->addChangeListener(this);
+    this->controller.reset( new IRVideoPlayerController(str, this) );
+    this->controller->addChangeListener(this);
     this->controller->getArrangeController()->addChangeListener(this);
-   setObjController(this->controller.get());
+    setObjController(this->controller.get());
    
     setObjectSize(300, 200);
-
+    
 }
 
 IRVideoAnnotaterInterfaceObject::~IRVideoAnnotaterInterfaceObject()
@@ -37,7 +37,15 @@ void IRVideoAnnotaterInterfaceObject::resized()
 
 IRNodeObject* IRVideoAnnotaterInterfaceObject::copyThis()
 {
-    return new IRVideoAnnotaterInterfaceObject(this->parent, getStr());
+    
+    std::cout << "IRVideoAnnotaterInterfaceObject::copyThis\n";
+    auto v = new IRVideoAnnotaterInterfaceObject(this->parent, getStr());
+    //v->setObjectBounds(getBounds());
+    getWorkspace()->copyAllDataToWorkspace(v->getWorkspace());
+    
+    
+        
+    return v;
 }
 // --------------------------------------------------
 IRNodeObject* IRVideoAnnotaterInterfaceObject::copyContents(IRNodeObject* object)
@@ -116,7 +124,8 @@ void IRVideoAnnotaterInterfaceObject::videoLoadCompletedCallback()
 
 void IRVideoAnnotaterInterfaceObject::annotaterOpenedAction()
 {
-    
+    std::cout << "annotaterOpenedAction\n";
+
 }
 // --------------------------------------------------
 
@@ -165,10 +174,10 @@ void IRVideoAnnotaterInterfaceObject::IRChangeListenerCallback (ChangeBroadcaste
             case t::INPUTY:
                 break;
             case t::FRONTBUTTON:
-                bringThisToFront();
+                bringToFront();
                 break;
             case t::BACKBUTTON:
-                bringThisToBack();
+                bringToBack();
                 break;
             default:
                 break;

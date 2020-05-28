@@ -451,17 +451,17 @@ void IRNodeComponent::defaultPopupMenuEvents()
             if(this->objectType.componentType == ordinaryIRComponent ||
                this->objectType.componentType == heavyWeightComponent)
             {
-                bringThisToFront();
+                //bringThisToFront();
+                bringToFront();
             }else{
                 toFront(true);
             }
             
             break;
         case 2:
-            bringThisToBack();
+            bringToBack();
             break;
         case 3:
-            
             break;
             
         default:
@@ -507,8 +507,8 @@ void IRNodeComponent::showThisObject(bool flag)
         //this->parent->removeChildComponent(this);
     }
     
-    IROpenGLManager manager(&this->openGLContext);
-    manager.setOpenGLContextAlpha(0);
+    //IROpenGLManager manager(&this->openGLContext, this->name);
+    //manager.setOpenGLContextAlpha(0);
 
 }
 

@@ -88,7 +88,7 @@ public:
             test[i] = (float)i * 0.01;
         }
 
-        this->callAddObjectGlobal(static_cast<IRObjectPtr>(&stringTest), this->id);
+        //this->callAddObjectGlobal(static_cast<IRObjectPtr>(&stringTest), this->id);
     }
     
     void getButtonClicked()
@@ -96,7 +96,7 @@ public:
         IRObjectPtr val = nullptr;
         
         //get pointer of the data
-        val = this->callGetObjectGlobal(this->id);
+        //val = this->callGetObjectGlobal(this->id);
         
         // if success
         if(val != nullptr){

@@ -48,8 +48,9 @@ IRWindowComponent::~IRWindowComponent()
 
 void IRWindowComponent::paint(Graphics& g)
 {
-    g.fillAll(this->ir_str->SYSTEMCOLOUR.fundamental);
-    
+    //g.fillAll(this->ir_str->SYSTEMCOLOUR.fundamental);
+    g.fillAll(this->ir_str->SYSTEMCOLOUR.background);
+    //g.fillAll(Colours::white);
     
     
 }

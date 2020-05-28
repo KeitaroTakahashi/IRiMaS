@@ -94,10 +94,10 @@ void IRNodeObject::arrangeControllerChangedCallback(ChangeBroadcaster* source)
                             getWidth(), getHeight());
             break;
         case t::FRONTBUTTON:
-            bringThisToFront();
+            bringToFront();
             break;
         case t::BACKBUTTON:
-            bringThisToBack();
+            bringToBack();
             break;
         case t::ENCLOSEBUTTON:
             setEncloseMode(this->arrangeController->getEnclosedButtonStatus());
@@ -229,6 +229,17 @@ void IRNodeObject::callHeavyComponentCreated(IRNodeObject* obj)
     if(checker.shouldBailOut()) return;
 }
 
+void IRNodeObject::callReorderZIndex()
+{
+    Component::BailOutChecker checker(this);
+    //==========
+    // check if the objects are not deleted, if deleted, return
+    if(checker.shouldBailOut()) return;
+    this->listeners.callChecked(checker, [this](Listener& l){ l.reorderZIndex(); });
+    //check again
+    if(checker.shouldBailOut()) return;
+}
+
 void IRNodeObject::callAddHeavyComponentToTopZOrder(IRNodeObject* obj)
 {
     Component::BailOutChecker checker(this);
@@ -259,7 +270,7 @@ void IRNodeObject::receiveSelectedLinkMenuItemEvent()
 }*/
 
 
-
+/*
 void IRNodeObject::callAddObjectGlobal(IRObjectPtr obj, String id)
 {
     Component::BailOutChecker checker(this);
@@ -297,7 +308,7 @@ IRObjectPtr IRNodeObject::callGetObjectGlobal(String id)
     
     std::cout << " got pointer " <<  this->p_obj << std::endl;
     return this->p_obj;
-}
+}*/
 
 void IRNodeObject::callSaveProject()
 {
@@ -619,31 +630,47 @@ void IRNodeObject::callInitialBoundsUpdated()
 // ==================================================
 // move to Front
 
-void IRNodeObject::moveToFrontEvent(bool isRefreshHeavyComponent)
+void IRNodeObject::moveThisToFrontZIndex()
 {
-    // to inform IRNodeObject
+    // to inform IRWorkspace to add this object in the top of Z-Index
+       callNodeObjectMoveToFront();
+}
+
+void IRNodeObject::moveToFrontEvent(bool isRefreshHeavyComponent, bool registerZindex)
+{
+    // move to front z index
+    if(registerZindex) moveThisToFrontZIndex();
+    
+    // virtual method to inform IRNodeObject
     moveToFrontAction();
     
     if(isRefreshHeavyComponent)
     {
+        // to inform IRWindowComponent
+        getStr()->projectOwner->rebindOpenGLContents();
         // to inform IRWorksapce
-        callHeavyComponentCreated(this);
+        //callHeavyComponentCreated(this);
     }
     
-    // to inform IRWorkspace that this object is moved to the front top of others.
-    callNodeObjectMoveToFront();
+   
+}
+
+void IRNodeObject::moveThisToBackIndex()
+{
+    // inform to IRWorkspace
+    callNodeObjectMoveToBack();
 }
 
 void IRNodeObject::moveToBackEvent()
 {
-    // to inform IRNodeObject
+    // move to back z index
+    moveThisToBackIndex();
+    
+    // IRWorkspace will reorder objects according to the new ZIndex.
+    callReorderZIndex();
+    
+    //to inform IRNodeObject
     moveToBackAction();
-    
-    // inform to IRWorkspace
-    callNodeObjectMoveToBack();
-    
-    // to inform IRWorkspace that this object is moved to the back of others.
-    callHeavyComponentCreated(this);
 
 }
 

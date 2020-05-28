@@ -24,9 +24,10 @@ IRWorkspaceCover::~IRWorkspaceCover()
 
 void IRWorkspaceCover::paint(Graphics& g)
 {
-    g.fillAll(this->backgroundColour);
+    g.fillAll(Colours::white);
     //g.fillAll(Colours::yellow);
 
+    g.setColour(Colours::black);
     if(isDrawGrids() && isEditMode()) shaderTask(g);
 
 }
@@ -93,7 +94,6 @@ void IRWorkspaceCover::shaderTask(Graphics& g)
         //shader.reset();
         if (fragmentCode.isNotEmpty() && this->fragmentRefreshed)
         {
-            std::cout << "cover shader\n";
 
             glEnable (GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

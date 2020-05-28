@@ -163,13 +163,12 @@ private:
     void eventComponentResized();
     
     void createNodeObjectOnEvent(IRNodeObject* obj, VideoAnnotationEventComponent* event);
-
+    void copyNodeObject(IRNodeObject* obj);
     // ==================================================
     //IRWorkspace
     // getting to know when the selection status of a NodeObject has been changed.
     // This function is called when an object is either selected or unselected.
     // this function is, for instance, used to update the Object Controller in the IRRightBar
-    void createWorkspace();
     void nothingSelected() override;
     void nodeObjectPasted(IRNodeObject* obj) override;
     void nodeObjectWillDeleted(IRNodeObject* obj) override;

@@ -161,6 +161,7 @@ public:
 
     void showSquare(bool flag)
     {
+        if(!flag) toBack();
         
         for(auto item : this->items)
         {

@@ -12,10 +12,7 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 {
     setOpaque(false);
     // original function to give this ChangeListener to controller->UI
-    
-    
-   
-    
+
     this->videoPlayer = std::make_shared<IRVideoPlayer>(this, str, withOpenButton);
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
     addAndMakeVisible(this->videoPlayer.get());
@@ -32,7 +29,20 @@ IRVideoPlayerObject2::~IRVideoPlayerObject2()
 
 IRNodeObject* IRVideoPlayerObject2::copyThis()
 {
-    return new IRVideoPlayerObject2(this->parent, getStr());
+    
+    std::cout << "IRVideoPlayerObject2::copyThis\n";
+    auto v = new IRVideoPlayerObject2(this->parent, getStr(), true);
+    v->setObjectSize(getWidth(), getHeight());
+    
+    File movieFile = getVideoPlayer()->getMovieFile();
+    if(movieFile.exists())
+    {
+        v->openFile(movieFile, true);
+    }else{
+        std::cout << "movieFile " << movieFile.getFullPathName() << " not exists!\n";
+    }
+    
+    return v;
 }
 // --------------------------------------------------
 IRNodeObject* IRVideoPlayerObject2::copyContents(IRNodeObject* object)
@@ -219,7 +229,9 @@ void IRVideoPlayerObject2::paint(Graphics& g)
     IRNodeObject::paint(g);
     
     auto area = getLocalBounds();
-    g.fillAll(getStr()->SYSTEMCOLOUR.background);
+    
+    g.fillAll(Colours::red);
+    //g.fillAll(getStr()->SYSTEMCOLOUR.background);
     
     if(isEditMode())
         g.drawRoundedRectangle(area.toFloat(), 0, 2.0);
@@ -227,12 +239,11 @@ void IRVideoPlayerObject2::paint(Graphics& g)
 // --------------------------------------------------
 void IRVideoPlayerObject2::videoLoadCompletedAction()
 {
-    std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction : " << isCallback << std::endl;
 
-    
-    bringThisToFront();
+    std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction\n";
     // call reset Heavy-weight components
     refreshZIndex();
+    //refreshZIndex();
     // called only when isCallback is true. isCallback is defined in this class.
     if(this->videoLoadCompletedCallbackFunc != nullptr)
     {
@@ -243,9 +254,7 @@ void IRVideoPlayerObject2::videoLoadCompletedAction()
 
     // virtual
     videoLoadCompletedCallback();
-    
-    std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction\n";
-    
+        
 }
 // --------------------------------------------------
 
@@ -261,7 +270,6 @@ void IRVideoPlayerObject2::videoPlayingUpdateAction(double pos)
 
 void IRVideoPlayerObject2::moveToFrontAction()
 {
-    std::cout << "IRVideoPlayerObject2::moveToFrontAction\n";
     if(this->videoPlayer->hsaVideo())
         this->videoPlayer->bringViewToFront();
     
@@ -285,6 +293,8 @@ void IRVideoPlayerObject2::openFile(File file, bool isCallback)
     if(this->videoPlayer.get() != nullptr)
     {
         this->videoPlayer->openFile(file, isCallback);
+    }else{
+        std::cout << "IRVideoPlayerObject2::openFile " << file.getFullPathName() << " : could not load. videoPlayer is null\n";
     }
 }
 
@@ -351,8 +361,8 @@ void IRVideoPlayerObject2::enableController(bool flag)
 void IRVideoPlayerObject2::refreshZIndex()
 {
 
- 
-    callHeavyComponentCreated(this);
+    getStr()->projectOwner->rebindOpenGLContents();
+    //callHeavyComponentCreated(this);
 
 }
 // ---------------------------------------------------

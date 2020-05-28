@@ -27,18 +27,13 @@ videoTransport(str, this)
     this->eventLogList.reset(new EventLogList(str));
     addAndMakeVisible(this->eventLogList.get());
     
-    
-    //createWorkspace();
-    
    
 }
 
 IRVideoAnnotater::~IRVideoAnnotater()
 {
     closeAnnotationMenu();
-    
-    this->workspace.reset();
-    
+        
     this->myVideoPlayerObject.reset();
 
     this->eventListComponent.reset();
@@ -52,7 +47,6 @@ IRVideoAnnotater::~IRVideoAnnotater()
 void IRVideoAnnotater::paint(Graphics& g)
 {
     g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
-
     g.setColour(getStr()->SYSTEMCOLOUR.contents);
     g.fillRect(this->videoArea);
     g.setColour(getStr()->SYSTEMCOLOUR.contents);
@@ -64,7 +58,9 @@ void IRVideoAnnotater::resized()
 {
     int xMarge = 10;
     int yMarge = 10;
-    this->videoArea = Rectangle<int>(xMarge, yMarge, getWidth() * 0.6, getHeight() * 0.5);
+    
+    int eventLogListWidth = 350;
+    this->videoArea = Rectangle<int>(xMarge, yMarge, getWidth() - eventLogListWidth, getHeight() * 0.5);
     int ha = this->videoArea.getY() + this->videoArea.getHeight() + 5;
     
     this->workArea  = Rectangle<int>(xMarge,
@@ -86,7 +82,7 @@ void IRVideoAnnotater::resized()
    
     this->eventLogList->setBounds(xMarge + xMarge+ this->videoArea.getWidth(),
                                   yMarge,
-                                  getWidth() - xMarge - this->videoArea.getWidth() - xMarge,
+                                  eventLogListWidth - xMarge - xMarge,
                                   getHeight() * 0.5);
     
 
@@ -119,13 +115,9 @@ void IRVideoAnnotater::videoResized()
 
 void IRVideoAnnotater::openAnnotaterWindowAction()
 {
-    if(this->eventListComponent.get() == nullptr) return;
-    auto events = this->eventListComponent->getEventComponents();
-    if(events.size() > 0)
+    if(this->myVideoPlayerObject.get() != nullptr)
     {
-        if(this->workspace.get() != nullptr){
-            this->workspace->manageHeavyWeightComponents(true);
-        }
+        this->myVideoPlayerObject->moveToFrontAction();
     }
 }
 
@@ -148,17 +140,6 @@ void IRVideoAnnotater::createEventListComponent()
 
 }
 
-void IRVideoAnnotater::createWorkspace()
-{
-    Rectangle<int> r(0, 0, 0, 0);
-    this->workspace.reset( new VideoAnnotaterWorkspace("VideoAnnotater", r, getStr() ));
-    this->workspace->setDraggableMargin(Rectangle<int>(0, 0, 0, 0));
-    addAndMakeVisible(this->workspace.get());
-    this->workspace->setBackgroundColour(Colours::transparentBlack);
-    this->workspace->addListener(this);
-    this->workspace->addKeyListener(this);
-}
-
 void IRVideoAnnotater::nothingSelected()
 {
     if(this->eventLogList.get() != nullptr)
@@ -170,14 +151,7 @@ void IRVideoAnnotater::nodeObjectPasted(IRNodeObject* obj)
     String name = obj->name;
     std::cout << "nodeObjectPasted " << name << std::endl;
     
-    /*
-    if(name == "IRTextEditor")
-    {
-        createTextEventComponentFromIRNodeObject(obj);
-    }else if(name == "IRShape")
-    {
-        createShapeEventComponentFromNodeObject(obj);
-    }*/
+    copyNodeObject(obj);
 }
 
 void IRVideoAnnotater::nodeObjectWillDeleted(IRNodeObject* obj)
@@ -343,9 +317,6 @@ void IRVideoAnnotater::myVideoLoadCompleted()
     std::cout << "loaded video length = " << len << std::endl;
     this->videoTransport.setVideoLengthInSec(len);
     
-   // this->workspace->bringThisToFront("Workspace bringToThisFront");
-    //this->workspace->manageHeavyWeightComponents(true);
-    
     videoResized();
 }
 
@@ -359,16 +330,16 @@ void IRVideoAnnotater::myVideoPlayingUpdate(double pos)
     this->videoTransport.setCurrentPlayingPosition(pos);
     
     
-    updateWorkspaceWithCurrentPlayingPosition(pos);
+    //updateWorkspaceWithCurrentPlayingPosition(pos);
 }
 
 void IRVideoAnnotater::updateWorkspaceWithCurrentPlayingPosition(float pos)
 {
     // test
-    
+    std::cout << "updateWorkspaceWithCurrentPlayingPosition " << pos << std::endl;
     this->myVideoPlayerObject->getWorkspace()->enableTimeCodeAnimation(true);
     this->myVideoPlayerObject->getWorkspace()->setCurrentTimeCode(pos);
-    this->myVideoPlayerObject->getWorkspace()->updateCurrentAnimation();
+    //this->myVideoPlayerObject->getWorkspace()->updateCurrentAnimation();
     
     //this->workspace->enableTimeCodeAnimation(true);
    // this->workspace->setCurrentTimeCode(pos);

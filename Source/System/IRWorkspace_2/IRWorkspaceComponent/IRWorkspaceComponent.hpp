@@ -46,6 +46,9 @@ public:
     virtual void onResized() {}
     // ==================================================
     
+    virtual void copyAllDataToWorkspace(IRWorkspaceComponent* newWorkspace);
+    // ==================================================
+
     bool isDrawGrids() const { return this->isdrawGridsFlag; }
     void enableDrawGrids(bool flag) { this->isdrawGridsFlag = flag; }
     void setGridsBackgroundAlpha(float alpha) { this->gridsBackgroundAlpha = alpha; };
@@ -121,13 +124,12 @@ public:
     void nodeObjectGetFocused(IRNodeObject* obj) override;
     void nodeObjectMoveToFront(IRNodeObject* obj) override;
     void nodeObjectMoveToBack(IRNodeObject* obj) override;
+    void reorderZIndex() override;
+
 
     void heavyComponentCreated(IRNodeObject* obj)override;
     void addHeavyCopmonentToTopZOrder(IRNodeObject* obj) override;
 
-    
-    void addObjectGlobal(IRObjectPtr obj, String id) override;
-    void getObjectGlobal(IRNodeObject* obj) override;
     
     // object control
     void copySelectedObjects();
@@ -332,6 +334,7 @@ private:
     IRNodeObject* parentNodeObject = nullptr;
     bool hasParentNodeObjectFlag = false;
     void bringParentNodeObjectToFront();
+    void bringParentNodeObjectToBack();
 public:
     bool hasParentNodeObject() const { return this->hasParentNodeObjectFlag; }
     void setParentNodeObject(IRNodeObject* newParentNodeObject);
@@ -342,6 +345,7 @@ private:
     std::shared_ptr<IRWorkspaceCover> cover;
     void createCover();
     void bringCoverToFront();
+    void bringCoverToBack();
     void setCoverEditMode(bool editMode);
     // ==================================================
 

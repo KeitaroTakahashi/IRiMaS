@@ -67,7 +67,7 @@ public:
        this->context.setContinuousRepainting(false);
        
        this->context.attachTo(*this);
-       IROpenGLManager manager(&this->context);
+       IROpenGLManager manager(&this->context, "IRMessage");
        manager.setOpenGLContextAlpha(0.0);
         
     }

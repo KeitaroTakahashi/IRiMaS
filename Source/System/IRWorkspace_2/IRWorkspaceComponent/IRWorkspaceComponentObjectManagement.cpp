@@ -71,7 +71,7 @@ void IRWorkspaceComponent::duplicateSelectedObjects()
 
 void IRWorkspaceComponent::createObject(IRNodeObject *obj, bool shouldSort)
 {
-    std::cout << "==================================================\n ";
+    std::cout << "createObject ==================================================\n ";
     
     obj->setEditMode(isEditMode());
     
@@ -99,7 +99,7 @@ void IRWorkspaceComponent::createObject(IRNodeObject *obj, bool shouldSort)
     }
     
     // setup openGL Context if it has. This should be called adter addAndMakeVisible
-    obj->initOpenGLContext();
+    //obj->initOpenGLContext();
    
     // check if the created object is Heavy-weight Component
     if(shouldSort)
@@ -122,7 +122,7 @@ void IRWorkspaceComponent::createObject(IRNodeObject *obj, bool shouldSort)
 
 void IRWorkspaceComponent::createParentObject(IRNodeObject* obj, bool shouldSort)
 {
-    std::cout << "==================================================\n ";
+    std::cout << "createParentObject ==================================================\n ";
     
     obj->setEditMode(isEditMode());
     
@@ -155,7 +155,7 @@ void IRWorkspaceComponent::createParentObject(IRNodeObject* obj, bool shouldSort
     }
     
     // setup openGL Context if it has. This should be called adter addAndMakeVisible
-    obj->initOpenGLContext();
+    //obj->initOpenGLContext();
    
     // check if the created object is Heavy-weight Component
     if(shouldSort)
@@ -259,32 +259,34 @@ void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
     std::vector<IRNodeObject*> reversedZorder = this->ObjectZorder;
     std::reverse(std::begin(reversedZorder), std::end(reversedZorder));
     
-    // ##############
-    //first bring cover object to front
-    // second bring parent nodeObject to front
     bringParentNodeObjectToFront();
-    
-    bringCoverToFront();
+    //bringCoverToFront();
 
-    // these two objects should be always placed in this z-order, and then we coordinate other objects
-    // ##############
-
+    // First modify the z-indeces of all objects in the right order.
     for(auto obj: reversedZorder)
     {
         if(flag)
         {
             if(obj->isActive())
             {
-                // do not refresh heacy component z- order until all objects are set up
-                obj->bringThisToFront(false);
+                
+                std::cout << "obj bringThisToFront " << obj->name << " : " << obj << std::endl;
+                // bring object to front but do not refresh heavy component, nor register to z index
+                obj->bringToFront(false, false);
             }else{
-                // if inAvtivated, then the object is behind the cover object
-                obj->bringThisToBack();
+                //obj->bringThisToBack();
+                //obj->moveThisToBackIndex();
             }
         }
     }
+    
+    std::cout << "obj front done\n";
+    //bringCoverToBack();
+    // bring parent object to the bihind of all other objects.
+    //bringParentNodeObjectToBack();
     // refresh heacy component z order
-    callHeavyObjectCreated(nullptr);
+    //callHeavyObjectCreated(nullptr);
+    getStr()->projectOwner->rebindOpenGLContents();
 }
 // ------------------------------------------------------------
 
@@ -306,6 +308,16 @@ void IRWorkspaceComponent::bringCoverToFront()
            this->cover->bringThisToFront();
 }
 
+void IRWorkspaceComponent::bringCoverToBack()
+{
+    if(this->cover.get() != nullptr)
+    {
+        toBack();
+    }
+    
+}
+
+
 void IRWorkspaceComponent::setCoverEditMode(bool editMode)
 {
     if(this->cover.get() != nullptr)
@@ -320,12 +332,33 @@ void IRWorkspaceComponent::setCoverEditMode(bool editMode)
 void IRWorkspaceComponent::bringParentNodeObjectToFront()
 {
     if(this->parentNodeObject != nullptr)
+    {
+        
+        std::cout << "bringParentNodeObjectToFront " << this->parentNodeObject << std::endl ;
         this->parentNodeObject->bringThisToFront();
+        // in case parentNodeObje
+        this->parentNodeObject->moveToFrontAction();
+        
+    }else{
+        std::cout << "parentNodeObject = " << this->parentNodeObject << std::endl;
+    }
 }
+
+void IRWorkspaceComponent::bringParentNodeObjectToBack()
+{
+    if(this->parentNodeObject != nullptr)
+        this->parentNodeObject->bringToBack();
+
+}
+
+// ------------------------------------------------------------
+
 
 void IRWorkspaceComponent::setParentNodeObject(IRNodeObject* newParentNodeObject)
 {
     this->parentNodeObject = newParentNodeObject;
+    
+    std::cout << "IRWorkspaceComponent::setParentNodeObject " << this->parentNodeObject << std::endl;
     this->hasParentNodeObjectFlag = true;
     this->parentNodeObject->setEnableResizingSquare(false);
 }
@@ -418,28 +451,6 @@ void IRWorkspaceComponent::openFileInspecter()
 
 // ============================================================
 
-void IRWorkspaceComponent::addObjectGlobal(IRObjectPtr ptr, String id)
-{
-    std::cout << "addObjectGlobal" << std::endl;
-    
-    this->p_obj.insert(std::make_pair(id, ptr));
-    
-    std::cout << this->p_obj.at(id) << std::endl;
-}
-// ------------------------------------------------------------
-void IRWorkspaceComponent::getObjectGlobal(IRNodeObject* obj)
-{
-    String id = obj->getGlobalObjectID();
-    
-    std::cout << "getObjectGlobal of " << id << std::endl;
-    
-    if(this->p_obj.find(id) != this->p_obj.end()){
-        std::cout << this->p_obj.at(id) << std::endl;
-        obj->setGlobalObject(this->p_obj.at(id));
-    }else{
-        std::cout << "could not find "<< id << std::endl;
-    }
-}
 // ------------------------------------------------------------
 
 void IRWorkspaceComponent::nodeObjectModifiedNotification(IRNodeObject* obj)
@@ -463,7 +474,7 @@ void IRWorkspaceComponent::nodeObjectSelectionChange(IRNodeObject* obj)
 
 void IRWorkspaceComponent::nodeObjectGetFocused(IRNodeObject* obj)
 {
-    //std::cout << "IRWorkspaceComponent nodeObjectSelectionChange " << obj << std::endl;
+    std::cout << "IRWorkspaceComponent nodeObjectGetFocused " << obj << std::endl;
     callNodeObjectGetFocused(obj);
     
 }
@@ -472,19 +483,30 @@ void IRWorkspaceComponent::nodeObjectMoveToFront(IRNodeObject* obj)
 {
     // bring obj to the top front Z order
     insertObjectAtTopZOrder(obj);
+    
+    // here we do not need to call reorderZIndex() because pnly the top z-order object and other elements which should be forward to the top objects need to be re-binded, and all objects behind them are no need to be refreshed.
 }
 
 void IRWorkspaceComponent::nodeObjectMoveToBack(IRNodeObject* obj)
 {
+    
+    std::cout << "IRWorkspaceComponent::nodeObjectMoveToBack\n";
     // bring obj to the top front Z order
     insertObjectAtEndZOrder(obj);
     
+    //reorderZIndex();
+}
+
+void IRWorkspaceComponent::reorderZIndex()
+{
     //re-order the objects
-    manageHeavyWeightComponents(true);
+       manageHeavyWeightComponents(true);
 }
 
 void IRWorkspaceComponent::heavyComponentCreated(IRNodeObject* obj)
 {
+
+    
     callHeavyObjectCreated(obj);
 }
 
@@ -579,7 +601,9 @@ void IRWorkspaceComponent::callNodeObjectWillDeleted(IRNodeObject* obj)
 
 void IRWorkspaceComponent::insertObjectAtTopZOrder(IRNodeObject* obj)
 {
-    //std::cout << "insertObjectAtTopZOrder : " << obj << std::endl;
+    
+    std::cout << "IRWorkspaceComponent::insertObjectAtTopZOrder : " << obj->name << std::endl;
+    std::cout << "insertObjectAtTopZOrder : " << obj << std::endl;
     // check if inserted obj is already registered and remove it.
     auto it = std::find(this->ObjectZorder.begin(), this->ObjectZorder.end(), obj);
     if(it != this->ObjectZorder.end())

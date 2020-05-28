@@ -8,6 +8,21 @@
 #ifndef IRQuillTextEditor_hpp
 #define IRQuillTextEditor_hpp
 
-#include <stdio.h>
+#include "IRUIFoundation.hpp"
+
+class IRQuillTextEditor : public IRUIFoundation
+{
+public:
+    IRQuillTextEditor(IRNodeObject* parent, IRStr* str);
+    ~IRQuillTextEditor();
+    
+    
+    void resized() override;
+    
+private:
+    std::shared_ptr<WebBrowserComponent> browser;
+    
+    
+};
 
 #endif /* IRQuillTextEditor_hpp */

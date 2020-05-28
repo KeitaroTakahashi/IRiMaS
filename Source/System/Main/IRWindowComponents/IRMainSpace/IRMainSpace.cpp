@@ -143,6 +143,8 @@ void IRMainSpace::nodeObjectSelectionChange(IRNodeObject* obj)
 
 void IRMainSpace::nodeObjectGetFocused(IRNodeObject* obj)
 {
+    
+    //std::cout << "IRMainSpace::nodeObjectGetFocused\n";
     callNodeObjectGetFocused(obj);
 }
 

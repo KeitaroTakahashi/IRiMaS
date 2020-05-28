@@ -44,20 +44,20 @@ public:
     //==================================================
     //OpenGL
     OpenGLContext ctx;
-    
     void bringThisToFront(String flag = "") {
+        
+        this->name = flag;
         std::cout << flag << std::endl;
-        this->component->repaint();
-        bringToFront(this->component);
+        bringToFrontObj(this->component);
         this->component->toFront(true);
         //callback
         bringToFrontCompleted();
     }
-    
+public:
     void heavyWeightRepaint(String flag = "")
     {
         
-        std::cout << flag << std::endl;
+        //std::cout << flag << std::endl;
         this->ctx.triggerRepaint();
     }
     
@@ -78,7 +78,7 @@ private:
     // set up alpha value of NSOpenGLView to make transparent background
     void setComponentAlpha(GLint aValue = 0);
     // bring the juce::Component inheriting this class to the foreground of any other juce::Component or heavy-weight Components
-    void bringToFront(juce::Component* owner);
+    void bringToFrontObj(juce::Component* owner);
    
     //==================================================
     void newOpenGLContextCreated()override

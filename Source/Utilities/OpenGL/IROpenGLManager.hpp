@@ -22,7 +22,9 @@
 class IROpenGLManager
 {
 public:
-    IROpenGLManager(OpenGLContext* context) : context(context)
+    IROpenGLManager(OpenGLContext* context, String name) :
+    context(context),
+    name(name)
     {
         
     }
@@ -36,6 +38,7 @@ public:
     
 private:
     OpenGLContext* context;
+    String name;
 };
 
 #endif /* glTest_hpp */

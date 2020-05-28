@@ -6,6 +6,7 @@ IRNodeComponent::IRNodeComponent(Component* parent,
                                  IRStr* str,
                                  NodeObjectType objectType) :
 IRStrComponent(str),
+IRHeavyWeightComponent(this, name),
 resizingSquare(this, parent),
 resizingArea(25, 25)
 {
@@ -54,7 +55,7 @@ IRNodeComponent::~IRNodeComponent()
     
     if(this->objectType.componentType == ordinaryIRComponent)
     {
-        this->openGLContext.detach();
+        //this->openGLContext.detach();
         std::cout << "openGL despatched!\n";
 
     }
@@ -62,7 +63,7 @@ IRNodeComponent::~IRNodeComponent()
     std::cout << "~IRNODECOMPONENT DESTRUCTOR CALLED" << std::endl;
     
 }
-
+/*
 void IRNodeComponent::initOpenGLContext()
 {
     //if this object contains heavy weight component, then connect to OpenGLContext
@@ -72,11 +73,11 @@ void IRNodeComponent::initOpenGLContext()
            this->openGLContext.setContinuousRepainting(false);
            
            this->openGLContext.attachTo(*this);
-           IROpenGLManager manager(&this->openGLContext);
+           IROpenGLManager manager(&this->openGLContext, this->name);
            manager.setOpenGLContextAlpha(0);
     
        }
-}
+}*/
 
 
 // basics
@@ -584,14 +585,11 @@ String IRNodeComponent::getUniqueID() const
 
 void IRNodeComponent::setActive(bool active)
 {
+    
+    std::cout << "IRNodeComponent::setActive = " << active << std::endl;
     this->isActiveFlag = active;
     
-    if(active)
-    {
-        
-    }else{
-        
-    }
+    //heavyComponentCreatedFunc();
 }
 
 
@@ -674,41 +672,33 @@ void param_register(std::string id, int data)
 
 // =============================================
 
-
-void IRNodeComponent::bringThisToFront(bool isRefreshHeavyComponent)
+void IRNodeComponent::bringToFront(bool isRefreshHeavyComponent, bool registerZIndex)
 {
-    toFront(true);
-
-    IROpenGLManager manager(&this->openGLContext);
-    manager.bringOpenGLContextFront(this);
-    manager.setOpenGLContextAlpha(0);
+    //IRHeavyWeightComponent
+    bringThisToFront();
     
-    if(isSelected())
-    {
-        this->resizingSquare.bringThisToFront();
-    }
+    if(isSelected()) this->resizingSquare.bringThisToFront();
     
-    moveToFrontEvent(isRefreshHeavyComponent);
+    // inform IRWorkspaceComponent 
+    moveToFrontEvent(isRefreshHeavyComponent, registerZIndex);
 }
-
-void IRNodeComponent::bringThisToBack()
+void IRNodeComponent::bringToBack()
 {
-    toBack();
-
+    
+    std::cout << "IRNodeComponent::bringToBack\n";
+    //toBack(); // dont need it!
+    
     moveToBackEvent();
     // after all others are to front
-    if(isSelected())
-    {
-        this->resizingSquare.bringThisToFront();
-    }
-    // and refresh
-    heavyComponentCreatedFunc();
+    if(isSelected()) this->resizingSquare.toBack();
+
 }
+
 
 void IRNodeComponent::heavyComponentRefreshed()
 {
-    IROpenGLManager manager(&this->openGLContext);
-    manager.setOpenGLContextAlpha(0);
+    //IROpenGLManager manager(&this->openGLContext, this->name);
+   // manager.setOpenGLContextAlpha(0);
 
 }
 

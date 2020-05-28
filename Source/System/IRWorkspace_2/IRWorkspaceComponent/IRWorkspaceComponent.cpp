@@ -63,7 +63,6 @@ IRWorkspaceComponent::~IRWorkspaceComponent()
 void IRWorkspaceComponent::paint (Graphics& g)
 {
     g.fillAll(this->backgroundColour);
-    g.fillAll(Colours::green);
     //if(isDrawGrids() && this->editModeFlag) shaderTask(g);
     
     
@@ -91,6 +90,31 @@ void IRWorkspaceComponent::drawShadows(Graphics& g)
         repaint(b.getX()-50, b.getY()-50, b.getWidth()+100, b.getHeight()+100);
     }
 }
+// ==================================================
+
+void IRWorkspaceComponent::copyAllDataToWorkspace(IRWorkspaceComponent* newWorkspace)
+{
+    auto w = newWorkspace;
+    
+    //w->enableDrawGrids(isDrawGrids());
+    //w->setGridsBackgroundAlpha(this->gridsBackgroundAlpha);
+    
+    /*
+    if(this->parentNodeObject != nullptr)
+    {
+        auto p = this->parentNodeObject->copyThis();
+        w->setParentNodeObject(p);
+    }
+    
+    for(auto obj : this->objects)
+    {
+        auto o = obj->copyThis();
+        w->createObject(o);
+    }*/
+    
+}
+
+// ==================================================
 
 // ==================================================
 // APPEARANCE

@@ -91,10 +91,18 @@ public:
     
     // ==================================================
     // move to Front action
-    void moveToFrontEvent(bool isRefreshHeavyComponent) override;
+    // only modify z order
+    void moveThisToFrontZIndex();
+    // also update
+    void moveToFrontEvent(bool isRefreshHeavyComponent, bool registerZindex) override;
+    // only modify z order
+    void moveThisToBackIndex();
+    // also update
     void moveToBackEvent() override;
-    virtual void moveToFrontAction() {} // for its Child component
-    virtual void moveToBackAction() {}
+    
+    // ## ========== Obligatory to implement! ========== ##
+    virtual void moveToFrontAction() {}; // for its Child component
+    virtual void moveToBackAction() {};
     // ==================================================
     
     // called when this object position is changed
@@ -183,7 +191,8 @@ public:
         virtual void heavyComponentCreated(IRNodeObject* obj) {};
         // Invoke an action to move IRNodeObject to the top of objectZOrder on the workspace.
         virtual void addHeavyCopmonentToTopZOrder(IRNodeObject* obj) {};
-
+        // simply reorganize z-order of objects
+        virtual void reorderZIndex() {};
         
         // INITIAL BOUNDS
         virtual void initialBoundsUpdated(IRNodeObject* obj) {};
@@ -200,7 +209,7 @@ public:
     std::function<void()> editModeChangedCompleted;
     std::function<void()> linkModeChangedCompleted;
 
-    std::function<void()> addOBjectGlobalCompleted;
+    //std::function<void()> addOBjectGlobalCompleted;
     
     // requests to IRProject
     std::function<void()> saveProjectCompleted;
@@ -209,7 +218,7 @@ public:
     std::function<void()> openProjectCompleted;
     std::function<void()> createNewProjectCompleted;
 
-    std::function<void()> getObjectGlobalCompleted;
+    //std::function<void()> getObjectGlobalCompleted;
     
 
     // fire dragoutNodeObjectFromParent() methods in Listener
@@ -221,6 +230,9 @@ public:
     // fire heavyComponentCreated
     void callHeavyComponentCreated(IRNodeObject* obj);
     
+    // ask IRWorkspace to Recorder objects according to the new ZIndex
+    void callReorderZIndex();
+    
     //INITIAL BOUNDS
     void callInitialBoundsUpdated();
 
@@ -228,7 +240,8 @@ public:
     // from IRNodeComponent to call callHeavyComponentCreated
     void heavyComponentCreatedFunc() override
     {
-        callHeavyComponentCreated(this);
+        getStr()->projectOwner->rebindOpenGLContents();
+        //callHeavyComponentCreated(this);
     }
     
     void callNodeObjectPositionChanged();

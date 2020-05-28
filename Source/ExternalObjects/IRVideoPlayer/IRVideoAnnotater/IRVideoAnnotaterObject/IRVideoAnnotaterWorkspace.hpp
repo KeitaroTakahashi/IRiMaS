@@ -33,7 +33,8 @@ public:
     void addAnnotationObject(IRNodeObject* obj, Rectangle<int> bounds);
     
     // ==============================
-
+    void copyAllDataToWorkspace(IRVideoAnnotaterWorkspace* newWorkspace);
+    void replaceVideoPlayerObject(IRVideoPlayerObject2* newVideoPlayer);
     // ==============================
     IRVideoPlayerObject2* getVideoPlayerObject();
     

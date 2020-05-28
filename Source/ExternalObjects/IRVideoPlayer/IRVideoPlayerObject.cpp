@@ -221,7 +221,7 @@ void IRVideoPlayerObject::videoLoadCompletedAction()
 {
     
     
-    bringThisToFront();
+    bringToFront();
     // call reset Heavy-weight components
     refreshZIndex();
     // called only when isCallback is true. isCallback is defined in this class.

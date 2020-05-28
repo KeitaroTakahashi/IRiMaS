@@ -43,7 +43,7 @@ public:
     // update Z-Order?
     void bringThisToFront() {
         //this->openGLContext.bringViewToFront();
-        IROpenGLManager manager(&this->openGLContext);
+        IROpenGLManager manager(&this->openGLContext, "IRRightBar");
         manager.bringOpenGLContextFront(this);
     }
     

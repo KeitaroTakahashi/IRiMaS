@@ -30,6 +30,10 @@ public:
     virtual void videoLoadCompletedCallback();
     
     // --------------------------------------------------
+    
+    IRNodeObject* copyThis() override;
+    t_json saveThisToSaveData() override;
+    void loadThisFromSaveData(t_json data) override;
     // --------------------------------------------------
     // define if call videoLoadCompletedCallbackFunc();
     void openFile(File file, bool isCallback = true);
@@ -59,9 +63,17 @@ public:
     void createTextObject(Component* event);
     void createShapeObject(Component* event);
     void createImageObject(Component* event);
+    
+    void moveToFrontAction() override;
+    void moveToBackAction() override;
+
 
 private:
+    // --------------------------------------------------
+
     
+    
+    // --------------------------------------------------
 
     std::shared_ptr<IRVideoAnnotaterWorkspace> workspace;
     

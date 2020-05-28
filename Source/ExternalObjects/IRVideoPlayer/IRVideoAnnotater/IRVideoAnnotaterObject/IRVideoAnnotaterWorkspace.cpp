@@ -44,8 +44,7 @@ void IRVideoAnnotaterWorkspace::onResized()
 
 void IRVideoAnnotaterWorkspace::onPaint(Graphics& g)
 {
-    std::cout << "print\n";
-    
+    g.drawText("IRVideoAnnotaterWorkspace", 0, 0, getWidth(), getHeight()/2, Justification::centred);
     g.fillAll(Colours::blue);
 }
 
@@ -61,12 +60,57 @@ void IRVideoAnnotaterWorkspace::addAnnotationObject(IRNodeObject* obj, Rectangle
 {
     
 }
+// ------------------------------------------------------------------------------------------
+
+void IRVideoAnnotaterWorkspace::copyAllDataToWorkspace(IRVideoAnnotaterWorkspace* newWorkspace)
+{
+    auto w = newWorkspace;
+        
+    auto p = static_cast<IRVideoPlayerObject2*>(this->videoPlayerObj->copyThis());
+    std::cout << "IRVideoAnnotaterWorkspace copy VideoPlayerObj url = " << p->getVideoPlayer()->getMovieFile().getFullPathName() << std::endl;
+    
+    // replace videoPlayerObject
+    w->replaceVideoPlayerObject(p);
+    
+    /*
+    for(auto obj : getObjects())
+    {
+        auto o = obj->copyThis();
+        w->createObject(o);
+    }*/
+}
+
+void IRVideoAnnotaterWorkspace::replaceVideoPlayerObject(IRVideoPlayerObject2* newVideoPlayer)
+{
+    if(this->videoPlayerObj.get() != nullptr)
+    {
+        //removeChildComponent(this->videoPlayerObj.get());
+    }
+    std::cout << "newVideoPlayer = " << newVideoPlayer << std::endl;
+    this->videoPlayerObj.reset( newVideoPlayer );
+    addAndMakeVisible(this->videoPlayerObj.get());
+    setParentNodeObject(this->videoPlayerObj.get());
+    this->videoPlayerObj->addMouseListener(this, true);
+    this->videoPlayerObj->addListener(this);
+    this->videoPlayerObj->addChangeListener(this);
+    this->videoPlayerObj->videoLoadCompletedCallbackFunc = [this] { videoLoadCompletedAction(); };
+    this->videoPlayerObj->videoPlayingUpdateCallbackFunc = [this] (double pos) { videoPlayingUpdateAction(pos); };
+ 
+    //this->videoPlayerObj->setObjectBounds(0, 0, newVideoPlayer->getWidth(), newVideoPlayer->getHeight());
+    //setBounds(newVideoPlayer->getLocalBounds());
+    
+    manageHeavyWeightComponents(true);
+    
+    std::cout << "IRVideoAnnotaterWorkspace::replaceVideoPlayerObject bounds = " << getWidth() << ", " << getHeight() << " : " << this->videoPlayerObj->getWidth() << ", " << this->videoPlayerObj->getHeight()<< std::endl;
+    
+}
+
+
 
 // ------------------------------------------------------------------------------------------
 void IRVideoAnnotaterWorkspace::videoLoadCompletedAction()
 {
-    
-    manageHeavyWeightComponents(isEditMode());
+    manageHeavyWeightComponents(true);
     if(this->videoLoadCompletedCallback != nullptr)
         this->videoLoadCompletedCallback();
 }
@@ -89,7 +133,7 @@ void IRVideoAnnotaterWorkspace::createNodeObjectOnWorkspace(IRNodeObject* obj)
                              getWidth()/4,
                              60);
     createObject(obj);
-    obj->bringThisToFront();
+    obj->bringToFront();
     deselectAllObjects();
     //obj->setEventComponent(event);
     //event->setNodeObject(obj);
@@ -115,6 +159,8 @@ void IRVideoAnnotaterWorkspace::createTextObject(Component* event)
     
     IRVATextEditorObject* nodeObj = static_cast<IRVATextEditorObject*>(IRObjectCreater<IRVATextEditorObject>().create(this,
                                                                 getStr()));
+    
+    nodeObj->setEventComponent(event);
     createNodeObjectOnWorkspace(nodeObj);
 
 }
@@ -134,6 +180,8 @@ void IRVideoAnnotaterWorkspace::createShapeObject(Component* event)
     
     IRVAShapeObject* nodeObj = static_cast<IRVAShapeObject*>(IRObjectCreater<IRVAShapeObject>().create(this,
                                                                 getStr()));
+    
+    nodeObj->setEventComponent(event);
     createNodeObjectOnWorkspace(nodeObj);
 
 }
@@ -153,54 +201,70 @@ void IRVideoAnnotaterWorkspace::createImageObject(Component* event)
     
     IRVAImageViewerObject* nodeObj = static_cast<IRVAImageViewerObject*>(IRObjectCreater<IRVAImageViewerObject>().create(this,
                                                                 getStr()));
+    
+    nodeObj->setEventComponent(event);
     createNodeObjectOnWorkspace(nodeObj);
 
 }
 // --------------------------------------------------
 void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
 {
-    //std::cout << "pos = " << pos << std::endl;
+    //  std::cout << "pos = " << pos << std::endl;
     // first reset the list of the visible annotation components
-/*
+
+    bool shouldUpdateZOrder = false;
+    
     using t = VideoAnnotationEventComponent::VideoAnnotationType;
     for(auto obj : getObjects())
     {
-        auto event = obj->getEventComponent();
+        auto event = static_cast<VideoAnnotationEventComponent*>(obj->getEventComponent());
         
+        //std::cout << "event component begin = " << event->getBeginTimeCode() << " : " << event->getEndTimeCode() << std::endl;
         
-        if(pos >= obj->getBeginTimeInSec() && obj->getEndTimeInSec() > pos)
+        if(pos >= event->getBeginTimeCode() && event->getEndTimeCode() > pos)
         {
-            // check if the event is active
-            if(obj->getEvent()->isActive())
+            //std::cout << "in event activate? " << obj << " : " << obj->isActive() << std::endl;
+            if(event->isActive())
             {
-                // add to the list
-                addVisibleAnnotationComponents(obj);
-                //highlight
-                obj->getEvent()->setSelected(true);
-                obj->getEvent()->selectedAction(); // to opearate any following actions by selecting
-                // set visible true
-                obj->setVisible(true);
+                if(!obj->isActive())
+                {
+                    event->setSelected(true);
+                    event->selectedAction();
+                    // show object
+                    obj->setActive(true);
+                    //obj->callReorderZIndex();
+                    
+                    shouldUpdateZOrder = true;
+                    
+                }
             }
         }else{
-            
-            if(obj->isVisible())
+            //std::cout << "out event activate? " << obj << " : " << obj->isActive() << std::endl;
+            if(event->isActive())
             {
-                // if the component is visible, then remove from the visible list and set it invisible
-                removeVisibleAnnotationComponents(obj);
-                obj->getEvent()->setSelected(false);
-                obj->setVisible(false);
+                if(obj->isActive())
+                {
+                    event->setSelected(false);
+                    // hide object
+                    obj->setActive(false);
+                    
+                    //obj->callReorderZIndex();
+                    
+                    shouldUpdateZOrder = true;
+                }
             }
+            
         }
+
+    }
+
+    if(shouldUpdateZOrder)
+    {
+        manageHeavyWeightComponents(true);
     }
             
-            if(this->videoPlayingUpdate != nullptr)
-                this->videoPlayingUpdate(pos);
-            
-            resized();
-    
-    */
-    
-    
+    //resized();
+      
     if(this->videoPlayingUpdateCallback != nullptr)
         this->videoPlayingUpdateCallback(pos);
 }

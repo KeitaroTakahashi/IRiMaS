@@ -18,7 +18,7 @@
 #include "Benchmark.h"
 #include "IRResizeSquare2.h"
 
-#include "IROpenGLManager.hpp"
+#include "IRHeavyWeightComponent.h"
 
 enum IRNodeComponentSetUp
 {
@@ -116,8 +116,8 @@ struct NodeObjectType
 
 class IRNodeComponent : public Component,
                         public IRStrComponent,
-                        public OpenGLRenderer,
-                        public ChangeBroadcaster
+                        public ChangeBroadcaster,
+                        public IRHeavyWeightComponent
 {
 public:
     IRNodeComponent(Component *parent,
@@ -150,7 +150,7 @@ public:
     void setDisableParameters(IRNodeComponentSetUp id...);
     
     // managing its OpenGL context This should be called after addAndMakeVisible() of this object;
-    void initOpenGLContext();
+    //void initOpenGLContext();
     
     int getPreviousWidth() const;
     int getPreviousHeight() const;
@@ -365,11 +365,13 @@ public:
     // ==================================================
 
     // called when this object is moved to Front of all other objects
-    virtual void moveToFrontEvent(bool isRefreshHeavyComponent) {}
+    virtual void moveToFrontEvent(bool isRefreshHeavyComponent, bool registerZindex) {}
     virtual void moveToBackEvent() {}
-    void bringThisToFront(bool isRefreshHeavyComponent = true);
-    void bringThisToBack();
-    
+    //void bringThisToFront(bool isRefreshHeavyComponent = true, bool registerZindex = true);
+public:
+    void bringToFront(bool isRefreshHeavyComponent = true, bool registerZIndex = true);
+    void bringToBack();
+
     // ==================================================
     // ### ANNOTATION ### //
     
@@ -515,6 +517,7 @@ private:
     
     // ----------
     //OpenGL
+    /*
     OpenGLContext openGLContext;
     void setOpenGLContextSurfaceOpacityToZero();
     
@@ -530,7 +533,7 @@ private:
     virtual void openGLContextClosing() override
     {
         
-    }
+    }*/
 
     // ==================================================
     // ###### JUCE FUNCTIONS #####

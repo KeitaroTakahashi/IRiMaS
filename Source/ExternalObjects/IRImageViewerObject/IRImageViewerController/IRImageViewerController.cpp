@@ -29,7 +29,9 @@ void IRImageViewerController::ControllerResized()
     int y = 10;
     int yIncrement = 30;
     int yBigIncrement = 40;
-    
+    y += yBigIncrement;
+    y += yIncrement;
+
     this->LabelTitle.       setBounds(10, y, getWidth() - 20, 30);
     
     y += yBigIncrement;

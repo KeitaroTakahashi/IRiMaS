@@ -82,6 +82,11 @@ IRObjectFactory2::IRObjectFactory2()
                                        objectCategory::TEXTMENU,
                                        img);
     
+    registerObject<IRQuillTextEditorObject>("IRQuillTextEditor",
+                                       "Quill Text Editor",
+                                       objectCategory::TEXTMENU,
+                                       img);
+    
     registerObject<IRShapeObject>("IRShape",
                                   "Shape",
                                   objectCategory::IMAGEMENU,

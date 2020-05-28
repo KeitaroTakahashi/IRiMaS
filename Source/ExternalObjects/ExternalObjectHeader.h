@@ -51,6 +51,7 @@
 //#include "IRObjectFactory.hpp"
 
 #include "IRTextEditorObject.hpp"
+#include "IRQuillTextEditorObject.hpp"
 #include "IRVideoAnnotaterInterfaceObject.hpp"
 #include "IRVideoAnnotaterObject2.hpp"
 #include "IRShapeObject.hpp"

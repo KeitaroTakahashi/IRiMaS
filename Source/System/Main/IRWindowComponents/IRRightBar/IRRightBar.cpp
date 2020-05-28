@@ -100,7 +100,7 @@ void IRRightBar::nodeObjectSelectionChange(IRNodeObject* obj)
 
 void IRRightBar::nodeObjectGetFocused(IRNodeObject* obj)
 {
-    
+    std::cout << " IRRightBar::nodeObjectGetFocused\n";
     removeComponents();
     
     if(obj != nullptr)

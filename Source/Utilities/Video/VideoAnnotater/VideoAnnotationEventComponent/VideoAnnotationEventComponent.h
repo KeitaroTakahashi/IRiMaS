@@ -36,6 +36,8 @@ public:
     timeCodeUI(str, videoLengthInSecond),
     videoLengthInSecond(videoLengthInSecond)
     {
+        
+        std::cout << "VideoAnnotationEventComponent\n";
         this->activeButton.setImage(getStr()->ICONBANK.icon_active.white);
         this->activeButton.setDrawCircle(true);
         this->activeButton.setDrawRoundedSquare(false);
@@ -52,6 +54,7 @@ public:
 
         this->timeCodeUI.addMouseListener(this, true);
         this->timeCodeUI.timeCodeChangedCallback = [this]{timeCodeChanged();};
+        std::cout << "end\n";
 
     }
     
@@ -145,9 +148,6 @@ public:
     }
     
     // ==================================================
-
-    
-    
 
     int getVideoLength() const { return this->videoLengthInSecond; }
     // set any functions when video length has been changed, but keep calling the original method

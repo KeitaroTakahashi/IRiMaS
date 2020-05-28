@@ -9,14 +9,15 @@
 //#import <AppKit/NSOpenGL.h>
 #include "IRNodeComponent.hpp"
 
-
+/*
 void IRNodeComponent::setOpenGLContextSurfaceOpacityToZero()
 {
-/*
+
     NSOpenGLContext* context = (NSOpenGLContext*)openGLContext.getRawContext();
 
     GLint aValue = 0;
 
     [context setValues:&aValue forParameter:NSOpenGLCPSurfaceOpacity];
-*/
+
 }
+*/
