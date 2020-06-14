@@ -51,8 +51,3 @@ void IRWaveformController2::paint(Graphics& g)
     g.drawLine(0,42.5,getWidth(),42.5, 2);
     
 }
-
-void IRWaveformController2::changeListenerCallback(ChangeBroadcaster* source)
-{
-   
-}

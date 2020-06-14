@@ -410,8 +410,21 @@ void IRNodeComponent::deleteThisComponentEvent(const MouseEvent& e)
 
 void IRNodeComponent::setSelected(bool flag)
 {
-    std::cout << "setSelected " << flag << " of " << this <<std::endl;
+    std::cout << "setSelected " << flag << " of " << name << " : " << this << std::endl;
     // if this object is not visible, then do nothing.
+    
+    if(!isActive())
+    {
+        this->selectedFlag = false;
+        this->resizingSquare.showSquare(false);
+        
+        statusChangedCallback(IRNodeComponentStatus::SelectableStatus); // call back
+        selectedChangeEvent();
+        
+        return;
+
+    }
+    
     if(!isVisible()) return;
     
     if(this->selectedFlag == flag) return;
@@ -434,7 +447,6 @@ void IRNodeComponent::setSelected(bool flag)
     
     
     statusChangedCallback(IRNodeComponentStatus::SelectableStatus); // call back
-    
     selectedChangeEvent();
 }
 

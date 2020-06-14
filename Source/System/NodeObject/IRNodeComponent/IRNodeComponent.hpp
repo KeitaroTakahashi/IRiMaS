@@ -14,6 +14,7 @@
 #include "IRFoundation.h"
 #include "IRStrComponent.hpp"
 #include "IRSaveLoadSystem.hpp"
+#include "IRNodeObjectStatusStruct.h"
 //#include "IRLinkFoundation.hpp"
 #include "Benchmark.h"
 #include "IRResizeSquare2.h"
@@ -83,11 +84,16 @@ enum IRNodeComponentMode
     ANNOTATION
 };
 
+enum IRNodeComponentBoundsType
+{
+    ORDINARY,
+    RELATIVE
+};
+
 struct NodeObjectType
 {
     IRNodeComponentType componentType = IRNodeComponentType::lightWeightComponent;
     IRNodeComponentMode componentMode = IRNodeComponentMode::WORKSPACE;
-    
     NodeObjectType(){}
     
     NodeObjectType(IRNodeComponentType type)
@@ -99,6 +105,7 @@ struct NodeObjectType
     {
         this->componentMode = mode;
     }
+
     
     NodeObjectType(IRNodeComponentType type,
                    IRNodeComponentMode mode)
@@ -133,10 +140,16 @@ public:
     void setObjectCentredPosition(int x, int y);
     void setObjectBounds(Rectangle<int> bounds);
     void setObjectBounds(int x, int y, int w, int h);
+    
+    void setObjectSize(int w, int h);
+    
+    // this method is called only the object position and size are changed, and NOT called when its parent size is changed.
     void setObjectBoundsRelative(Rectangle<float> ratioBounds);
     void setObjectBoundsRelative(float x, float y, float w, float h);
-    void setObjectSize(int w, int h);
-
+    Rectangle<float> getObjectBoundsRelative() const { return this->relativeBoundsToParent; }
+    
+    IRNodeComponentBoundsType getBoundType() const { return this->boundType; }
+    void setBoundType(IRNodeComponentBoundsType boundType) { this->boundType = boundType; }
     
 protected:
     // Notify any change of the position and size of this object,
@@ -400,7 +413,7 @@ public:
     String name;
 
     // parent
-    Component* parent;
+    Component* parent = nullptr;
     
     // ============================================================
     // ==================================================
@@ -500,13 +513,10 @@ private:
     // =======================================================
 
 public:
-    void setInitialBounds(Rectangle<float> initialBounds) { this->initialBounds = initialBounds; initialBoundsUpdated(); }
+    void setInitialBounds(Rectangle<float> initialBounds) { this->initialBounds = initialBounds; }
     Rectangle<float> getInitialBounds() const { return this->initialBounds; }
     
-protected:
-    // for IRNodeObject
-    virtual void initialBoundsUpdated() {};
-    
+
     // =======================================================
 
 private:
@@ -551,6 +561,15 @@ private:
         void setCentredPosition(int x, int y);
         void setTopLeftPosition(int x, int y);
     
+    IRNodeComponentBoundsType boundType = IRNodeComponentBoundsType::ORDINARY;
+        
+    Rectangle<float> relativeBoundsToParent;
+    
+    // for save data, Corresponding to the all parameters in ArrangeController
+    IRNodeObjectStatusStr statusStr;
+public:
+    IRNodeObjectStatusStr* getStatusStr() { return &this->statusStr; }
+
     // ==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeComponent)

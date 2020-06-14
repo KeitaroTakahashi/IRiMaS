@@ -11,7 +11,7 @@ IRWorkspaceCover::IRWorkspaceCover(IRStr* str) :
 IRHeavyWeightComponent(this, "IRWorkspaceCover"),
 IRStrComponent(str)
 {
-    setOpaque(true);
+    setOpaque(false);
 
     openGLInit();
 }
@@ -24,10 +24,9 @@ IRWorkspaceCover::~IRWorkspaceCover()
 
 void IRWorkspaceCover::paint(Graphics& g)
 {
-    g.fillAll(Colours::white);
-    //g.fillAll(Colours::yellow);
+    g.fillAll(Colours::transparentWhite);
+    //g.fillAll(Colours::blue);
 
-    g.setColour(Colours::black);
     if(isDrawGrids() && isEditMode()) shaderTask(g);
 
 }
@@ -90,7 +89,6 @@ void IRWorkspaceCover::shaderTask(Graphics& g)
 {
     if (shader.get() == nullptr || shader->getFragmentShaderCode() != fragmentCode)
     {
-       
         //shader.reset();
         if (fragmentCode.isNotEmpty() && this->fragmentRefreshed)
         {

@@ -7,21 +7,18 @@
 
 #include "IRVideoAnnotater.hpp"
 
-IRVideoAnnotater::IRVideoAnnotater(IRStr* str, IRVideoAnnotaterObject2* videoPlayerObject) : IRStrComponent(str),
+IRVideoAnnotater::IRVideoAnnotater(IRStr* str, IRVideoAnnotaterObject2* videoPlayerObject) :
 videoArea(10, 10, 640, 480),
 videoPlayerObject(videoPlayerObject),
-videoTransport(str, this)
+ir_parentStr(str)
 {
    setWantsKeyboardFocus(true);
 
+    initialize();
+    
     // setup delegate
     this->delegate = new IRVideoAnnotaterDelegate(this);
-    
-    // video button
-   // addAndMakeVisible(&this->openVideoButton);
-   // this->openVideoButton.setButtonText("Open Video Annotater");
-    //this->openVideoButton.onClick = [this] { openVideoButtonClicked(); };
-    
+
     createVideoTransport();
     createEventListComponent();
     this->eventLogList.reset(new EventLogList(str));
@@ -46,10 +43,10 @@ IRVideoAnnotater::~IRVideoAnnotater()
 // ==================================================
 void IRVideoAnnotater::paint(Graphics& g)
 {
-    g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
-    g.setColour(getStr()->SYSTEMCOLOUR.contents);
+    g.fillAll(this->ir_str->SYSTEMCOLOUR.fundamental);
+    g.setColour(this->ir_str->SYSTEMCOLOUR.contents);
     g.fillRect(this->videoArea);
-    g.setColour(getStr()->SYSTEMCOLOUR.contents);
+    g.setColour(this->ir_str->SYSTEMCOLOUR.contents);
     g.fillRect(this->workArea);
     
 }
@@ -70,7 +67,7 @@ void IRVideoAnnotater::resized()
     
     videoResized();
     
-    this->videoTransport.setBounds(xMarge,
+    this->videoTransport->setBounds(xMarge,
                                    ha,
                                    getWidth() - 20,
                                    40);
@@ -113,6 +110,30 @@ void IRVideoAnnotater::videoResized()
 }
 // ==================================================
 
+
+
+void IRVideoAnnotater::initialize()
+{
+    
+    //keyListener setup
+    //setWantsKeyboardFocus(true);
+    //addKeyListener(this);
+    
+    // create IRStr
+    this->ir_str.reset(new IRStr());
+    this->ir_str->projectOwner = this;
+    this->ir_str->setKeyListener(this);
+    this->ir_str->setMouseListener(this);
+    this->ir_str->projectName = "VideoAnnotator";
+    this->ir_str->SYSTEMCOLOUR = this->ir_parentStr->SYSTEMCOLOUR;
+    this->ir_str->ICONBANK = this->ir_parentStr->ICONBANK;
+    
+    Font f;
+    this->ir_str->fontFamilyList = f.findAllTypefaceNames();
+
+}
+// ==================================================
+
 void IRVideoAnnotater::openAnnotaterWindowAction()
 {
     if(this->myVideoPlayerObject.get() != nullptr)
@@ -123,19 +144,19 @@ void IRVideoAnnotater::openAnnotaterWindowAction()
 
 // ==================================================
 
-
 void IRVideoAnnotater::createVideoTransport()
 {
     // video transport
-    addAndMakeVisible(&this->videoTransport);
-    this->videoTransport.addChangeListener(this);
+    this->videoTransport.reset( new IRVideoTransport(this->ir_str.get(), this));
+    addAndMakeVisible(this->videoTransport.get());
+    this->videoTransport->addChangeListener(this);
     setVisible(true);
 }
 
 void IRVideoAnnotater::createEventListComponent()
 {
     // eventListComponent
-    this->eventListComponent.reset(new VideoEventList(getStr(), this));
+    this->eventListComponent.reset(new VideoEventList(this->ir_str.get(), this));
     addAndMakeVisible(this->eventListComponent.get());
 
 }
@@ -158,8 +179,8 @@ void IRVideoAnnotater::nodeObjectWillDeleted(IRNodeObject* obj)
 {
     auto event = static_cast<VideoAnnotationEventComponent* >(obj->getEventComponent());
     
-    std::cout <<"nodeObejctWillDeleted , event delete " << event << std::endl;
-    //deleteEventComponent(event);
+    std::cout << obj << " nodeObejctWillDeleted , event delete " << event << std::endl;
+    deleteEventComponent(event);
 }
 // ==================================================
 
@@ -167,21 +188,21 @@ void IRVideoAnnotater::eventComponentResized()
 {
 
 }
+
 // ==================================================
 
 void IRVideoAnnotater::bindVideoPlayerObject()
 {
     if(this->videoPlayerObject != nullptr)
     {
-        
-        std::cout << "bindVideoPlayerObject\n";
+        std::cout << "IRVideoAnnotater create myVideoPlayerObject\n";
         // create IRVideoPlayerObject without OpenButton
 
         this->myVideoPlayerObject.reset( new IRVideoAnnotaterObject2(
                                                                     this,
-                                                                    getStr(),
+                                                                     this->ir_str.get(),
                                                                     false));
-        
+        this->myVideoPlayerObject->getWorkspace()->enableDrawGrids(true);
         this->myVideoPlayerObject->getWorkspace()->addListener(this);
         //this->myVideoPlayerObject->getWorkspace()->registerKeyListener(this);
         addKeyListener(this->myVideoPlayerObject->getWorkspace());
@@ -190,7 +211,7 @@ void IRVideoAnnotater::bindVideoPlayerObject()
         this->myVideoPlayerObject->videoLoadCompletedCallbackFunc = [this] { myVideoLoadCompleted(); };
         this->myVideoPlayerObject->videoPlayingUpdateCallbackFunc = [this](double pos){ myVideoPlayingUpdate(pos); };
         // disable QT controller
-       // this->myVideoPlayerObject->enableController(false);
+        this->myVideoPlayerObject->enableController(false);
 
         
         //this->videoPlayerObject->copyContents(this->myVideoPlayerObject.get());
@@ -200,6 +221,24 @@ void IRVideoAnnotater::bindVideoPlayerObject()
         this->myVideoPlayerObject->setResizable(false);
         this->myVideoPlayerObject->setObjectBounds(this->videoArea);
         addAndMakeVisible(this->myVideoPlayerObject.get());
+        
+        // if parent object on the workspace already has a video file, then load it
+        
+        if(this->videoPlayerObject != nullptr)
+        {
+
+            auto vp = this->videoPlayerObject->getVideoPlayerObject()->getVideoPlayer();
+            
+            std::cout << "videoPlayerObject : " << vp << " : hasVideo = " << vp->hasVideo() << std::endl;
+
+            if(this->videoPlayerObject->hasVideo())
+            {
+                File f = vp->getMovieFile();
+                
+                std::cout << "bindVideo file = " << f.getFullPathName() << std::endl;
+                this->myVideoPlayerObject->openFile(f);
+            }
+        }
         
         //add to workspace
         //this->workspace->createObject(this->myVideoPlayerObject.get());
@@ -225,15 +264,13 @@ void IRVideoAnnotater::removeVideoPlayerObject()
 }
 // ==================================================
 
-void IRVideoAnnotater::openVideoButtonClicked()
-{
-    openFile();
-}
-
 // --------------------------------------------------
 void IRVideoAnnotater::openFile()
 {
     if(this->myVideoPlayerObject == nullptr) return ;
+    
+    // update video on the workspace
+    this->wantUpdateVideoWorkspace = true;
     
     this->myVideoPlayerObject->getVideoPlayerObject()->openFile();
     
@@ -243,6 +280,10 @@ void IRVideoAnnotater::openFile()
 void IRVideoAnnotater::openFile(File file)
 {
     if(this->myVideoPlayerObject == nullptr) return ;
+    
+    // update video on the workspace
+    this->wantUpdateVideoWorkspace = true;
+    
     this->myVideoPlayerObject->getVideoPlayerObject()->openFile(file);
     resized();
 }
@@ -250,32 +291,59 @@ void IRVideoAnnotater::openFile(File file)
 
 void IRVideoAnnotater::openSRTs()
 {
-    if(this->eventListComponent.get() != nullptr)
-        this->eventListComponent->openAnnotationFile();
+    //if(this->eventListComponent.get() != nullptr)
+       // this->eventListComponent->openAnnotationFile();
+    
+    /*
+    FileChooser chooser("Select a SRT file to load...",
+                        {},
+                        "*.srt", "*.srts");
+    
+    
+    if(chooser.browseForFileToOpen())
+    {
+        auto file = chooser.getResult();
+        this->SrtPath = file.getFullPathName();
+        
+        loadAndApplySRTs(this->SrtPath);
+        
+    }*/
+    
+    this->srtFileLoader.openFile();
+    loadAndApplySRTs(this->srtFileLoader.getSrtData());
 }
 
 void IRVideoAnnotater::openSRTs(File file)
 {
-    if(this->eventListComponent.get() != nullptr)
-        this->eventListComponent->openAnnotationFile(file);
-    else std::cout << "error eventListComponent null\n";
+    //if(this->eventListComponent.get() != nullptr)
+    //    this->eventListComponent->openAnnotationFile(file);
+    //else std::cout << "error eventListComponent null\n";
+    
+    //this->SrtPath = file.getFullPathName();
+    //loadAndApplySRTs(this->SrtPath);
+    this->srtFileLoader.openFile(file.getFullPathName());
+    loadAndApplySRTs(this->srtFileLoader.getSrtData());
+
 }
 
 void IRVideoAnnotater::saveSRTs()
 {
-    
     if(this->srtSavePath.length() == 0)
     {
+        /*
         if(this->eventListComponent.get() != nullptr){
             this->eventListComponent->saveAnnotationFile();
             
             this->srtSavePath = this->eventListComponent->getSrtSavePath();
-        }
+        }*/
+        
+        openDialogtoSaveSRTs();
+        
     }else{
         File file(this->srtSavePath);
         if(file.exists())
         {
-            saveSRTs(File(this->srtSavePath));
+            saveSRTs(file);
         }else{
             this->srtSavePath = "";
             saveSRTs();
@@ -285,9 +353,131 @@ void IRVideoAnnotater::saveSRTs()
 
 void IRVideoAnnotater::saveSRTs(File file)
 {
-    if(this->eventListComponent.get() != nullptr)
-        this->eventListComponent->saveAnnotationFile(file);
+    //if(this->eventListComponent.get() != nullptr)
+        //this->eventListComponent->saveAnnotationFile(file);
+    //if(!file.exists()) return;
+    
+    this->srt.open(file.getFullPathName().toStdString());
+
+    using t = VideoAnnotationEventComponent::VideoAnnotationType;
+    
+    for(auto obj : this->myVideoPlayerObject->getWorkspace()->getObjectList())
+    {
+        
+        if(obj->getEventComponent() == nullptr)
+        {
+            std::cout << "Error : saveSTRs() eventComponent NULL!\n";
+            KLib().showErrorMessage("Error : saveSTRs() : eventComponent is NULL!");
+            break;
+        }
+        auto event = static_cast<VideoAnnotationEventComponent*>(obj->getEventComponent());
+        auto id = event->getSRT();
+        
+        auto s = obj->getStatusStr();
+          
+        std::string contents = "{ \"" + obj->name.toStdString() + "\": ";
+
+        contents += "{\"ArrangeController\": ";
+        contents += "{\"bounds\": [" + std::to_string(s->bounds.getX()) +
+        ", " + std::to_string(s->bounds.getY()) +
+        ", " + std::to_string(s->bounds.getWidth()) +
+        ", " + std::to_string(s->bounds.getHeight()) + "], ";
+
+        contents += "{\"relativeBounds\": [" + std::to_string(s->relativeBounds.getX()) +
+        ", " + std::to_string(s->relativeBounds.getY()) +
+        ", " + std::to_string(s->relativeBounds.getWidth()) +
+        ", " + std::to_string(s->relativeBounds.getHeight()) + "], ";
+
+        contents += "\"wrap\": " + std::to_string(s->wrap) + ", ";
+
+        contents += "{\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
+        ", " + std::to_string(s->wrapColour.getGreen()) +
+        ", " + std::to_string(s->wrapColour.getBlue()) +
+        ", " + std::to_string(s->wrapColour.getAlpha()) + "]}, ";
+
+        auto objSaveData = obj->saveThisToSaveData().dump();
+        contents += "\"contents\": \"" + objSaveData + "\"}";
+
+        contents += "}"; // close textAnnotation
+
+        srtWriter::SRT_STRUCT saveItem(id.beginTime,
+                                       id.endTime,
+                                       contents);
+
+
+
+        this->srt.addItem(saveItem);
+    }
+    
+    /*
+    for(auto item : getEventComponents())
+    {
+        
+        
+        auto id = item->getSRT();
+        
+        auto nodeObj = item->getNodeObject();
+        
+        if(nodeObj == nullptr)
+        {
+            std::cout << "Error : saveSTRs() nodeObj NULL!\n";
+            KLib().showErrorMessage("Error : saveSTRs() : nodeObj is NULL!");
+            break;
+        }
+        
+        auto objSaveData = nodeObj->saveThisToSaveData();
+        
+        auto s = nodeObj->getStatusStr();
+        
+        std::string contents = "{ \"TEXT\": ";
+        
+        contents += "{\"ArrangeController\": ";
+        contents += "{\"bounds\": [" + std::to_string(s->bounds.getX()) +
+        ", " + std::to_string(s->bounds.getY()) +
+        ", " + std::to_string(s->bounds.getWidth()) +
+        ", " + std::to_string(s->bounds.getHeight()) + "], ";
+        
+        contents += "{\"relativeBounds\": [" + std::to_string(s->relativeBounds.getX()) +
+        ", " + std::to_string(s->relativeBounds.getY()) +
+        ", " + std::to_string(s->relativeBounds.getWidth()) +
+        ", " + std::to_string(s->relativeBounds.getHeight()) + "], ";
+        
+        contents += "\"wrap\": " + std::to_string(s->wrap) + ", ";
+        
+        contents += "{\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
+        ", " + std::to_string(s->wrapColour.getGreen()) +
+        ", " + std::to_string(s->wrapColour.getBlue()) +
+        ", " + std::to_string(s->wrapColour.getAlpha()) + "]}, ";
+
+        contents += "\"contents\": \"" + id.Contents + "\"}";
+        
+        contents += "}"; // close textAnnotation
+        
+        srtWriter::SRT_STRUCT saveItem(id.beginTime,
+                                       id.endTime,
+                                       contents);
+        
+        
+      
+        this->srt.addItem(saveItem);
+    }*/
+
+    this->srt.close();
 }
+
+void IRVideoAnnotater::openDialogtoSaveSRTs()
+{
+    FileChooser chooser("Save irSrt file...",
+                        {},
+                        "");
+    if(chooser.browseForFileToSave(true))
+    {
+        auto file = chooser.getResult();
+        this->savePath = file.getFullPathName() + ".srt";
+        saveSRTs(File(this->savePath));
+    }
+}
+
 
 std::string IRVideoAnnotater::getSRTFilePath()
 {
@@ -315,9 +505,16 @@ void IRVideoAnnotater::myVideoLoadCompleted()
     double len = this->myVideoPlayerObject->getVideoPlayerObject()->getVideoPlayer()->getVideoLength();
     
     std::cout << "loaded video length = " << len << std::endl;
-    this->videoTransport.setVideoLengthInSec(len);
+    this->videoTransport->setVideoLengthInSec(len);
     
     videoResized();
+    
+    // update video on the workspace
+    if(this->wantUpdateVideoWorkspace)
+        updateVideoFileWorkspace();
+    
+    //reset
+    this->wantUpdateVideoWorkspace = false;
 }
 
 void IRVideoAnnotater::updateVideoSize(juce::Point<int> newVideoSize)
@@ -327,7 +524,7 @@ void IRVideoAnnotater::updateVideoSize(juce::Point<int> newVideoSize)
 
 void IRVideoAnnotater::myVideoPlayingUpdate(double pos)
 {
-    this->videoTransport.setCurrentPlayingPosition(pos);
+    this->videoTransport->setCurrentPlayingPosition(pos);
     
     
     //updateWorkspaceWithCurrentPlayingPosition(pos);
@@ -355,7 +552,7 @@ void IRVideoAnnotater::openAnnotationMenu ()
     pos.setX(getScreenPosition().getX());
     pos.setY(getScreenPosition().getY());
 
-    this->annotationMenu.reset(new VideoAnnotationMenuWindow(getStr(),
+    this->annotationMenu.reset(new VideoAnnotationMenuWindow(this->ir_str.get(),
                                                              "AnnotationMenu",
                                                              pos));
     
@@ -384,7 +581,7 @@ void IRVideoAnnotater::playPositionChangedBySliderAction()
     std::cout << "playPositionChangedBySliderAction\n";
     stopAction();
     
-    float p = this->videoTransport.getPlayPosition();
+    float p = this->videoTransport->getPlayPosition();
     //this->myVideoPlayerObject->getVideoPlayer()->setPlayPosition(p);
     this->myVideoPlayerObject->setPlayPosition(p);
    // this->myVideoPlayerObject->getWorkspace()->resetAnimatedObjectList();
@@ -415,7 +612,7 @@ void IRVideoAnnotater::stopAction()
 
 void IRVideoAnnotater::changeListenerCallback (ChangeBroadcaster* source)
 {
-    if(source == &this->videoTransport)
+    if(source == this->videoTransport.get())
     {
         videoTransportChangeListener();
     }
@@ -439,7 +636,7 @@ void IRVideoAnnotater::setEventModifiedCallback(std::function<void(VideoAnnotati
 
 void IRVideoAnnotater::eventModifiedAction(Component* modifiedEvent)
 {
-    
+    std::cout << "IRVideoAnnotater::eventModifiedAction\n";
     auto event = dynamic_cast<VideoAnnotationEventComponent* >(modifiedEvent);
     jassert(event != nullptr);
     
@@ -453,12 +650,10 @@ void IRVideoAnnotater::eventModifiedAction(Component* modifiedEvent)
     this->eventListComponent->setViewPosition(currentPosition);
     
     // apply
-    applyEventsOnTheLoadedVideo(event);
-    /*
-    if(this->eventModifiedCallback != nullptr)
-        this->eventModifiedCallback(event);
-     
-     */
+    //applyEventsOnTheLoadedVideo(event);
+    
+    updateAnnotationWorkspace();
+    
 }
 
 void IRVideoAnnotater::eventSelectedAction(Component* selectedEvent)
@@ -496,9 +691,10 @@ void IRVideoAnnotater::eventSelectedAction(Component* selectedEvent)
     //this->videotransport->setCurrentPlayingPosition
 }
 
-void IRVideoAnnotater::updateAnimation()
+void IRVideoAnnotater::updateAnnotation()
 {
-   // this->workspace->updateCurrentAnimation();
+        //updateAnnotationWorkspace();
+    
 }
 
 void IRVideoAnnotater::showEventPosition(Component* event)
@@ -508,12 +704,25 @@ void IRVideoAnnotater::showEventPosition(Component* event)
     
     auto e = static_cast<VideoAnnotationEventComponent* >(event);
     
-    this->videoTransport.setCurrentPlayingPosition(e->getBeginTimeCode());
-    //this->workspace->setCurrentTimeCode(e->getBeginTimeCode());
-    updateAnimation();
+    this->videoTransport->setCurrentPlayingPosition(e->getBeginTimeCode());
     
-    //e->getNodeObject()->setSelected(true);
+    this->myVideoPlayerObject->getWorkspace()->setCurrentTimeCode(e->getBeginTimeCode());
+    this->myVideoPlayerObject->setPlayPosition(e->getBeginTimeCode());
+    
+    e->getNodeObject()->setSelected(true);
+
 }
+
+void IRVideoAnnotater::eventActivationChanged(Component* changedEvent)
+{
+    
+    std::cout << "eventActivationChanged\n";
+    //auto e = static_cast<VideoAnnotationEventComponent* >(changedEvent);
+    float p = this->videoTransport->getPlayPosition();
+
+    this->myVideoPlayerObject->getWorkspace()->updateVideoPlayingPos(p);
+}
+
 // ==================================================
 
 void IRVideoAnnotater::textEventComponentSelected(VideoAnnotationEventComponent* event)
@@ -532,7 +741,7 @@ void IRVideoAnnotater::shapeEventComponentSelected(VideoAnnotationEventComponent
 
 void IRVideoAnnotater::videoTransportChangeListener()
 {
-    auto status = this->videoTransport.getStatus();
+    auto status = this->videoTransport->getStatus();
     switch (status)
     {
         case IRVideoTransport::OpenVideoFile:
@@ -616,20 +825,31 @@ void IRVideoAnnotater::deleteSelectedEvents()
         {
             this->eventLogList->removeLogComponent();
         }
+        
+        deleteEventComponent(e);
+        //this->eventListComponent->deleteEventComponent(e);
+        
+        
         //this->workspace->deleteObject(e->getNodeObject());
     }
-
-    this->eventListComponent->deleteSelectedEventComponent();
     
-    deleteEventOnTheLoadedVideo();
+    
+
+    //this->eventListComponent->deleteSelectedEventComponent();
+    
+    //deleteEventOnTheLoadedVideo();
     //eventModifiedAction();
 }
 
 void IRVideoAnnotater::deleteEventComponent(VideoAnnotationEventComponent* event)
 {
+    
     this->eventListComponent->deleteEventComponent(event);
-    deleteEventOnTheLoadedVideo();
-    this->eventListComponent->newEventAdded();
+    
+    //delete event;
+    
+    //deleteEventOnTheLoadedVideo();
+    //this->eventListComponent->newEventAdded();
 }
 
 
@@ -645,31 +865,56 @@ void IRVideoAnnotater::closeAnnotationWindow()
 
 // ==================================================
 
-void IRVideoAnnotater::updateVideoPlayerOfThis()
+void IRVideoAnnotater::updateThisAnnotationWorkspace()
+{
+    if(this->videoPlayerObject == nullptr || this->myVideoPlayerObject.get() == nullptr) return;
+}
+void IRVideoAnnotater::updateThisVideoFile()
+{
+    if(this->videoPlayerObject == nullptr || this->myVideoPlayerObject.get() == nullptr) return;
+
+    File f = this->videoPlayerObject->getVideoPlayerObject()->getVideoPlayer()->getMovieFile();
+    
+    if(f.exists()) this->myVideoPlayerObject->openFile(f);
+    else std::cout << "IRVideoAnnotater::updateThisVideoFile file does not exist!" << std::endl;
+
+}
+void IRVideoAnnotater::updateAnnotationWorkspace()
 {
     /*
-    std::cout << "updateVideoPlayerOfThis\n";
+    if(this->videoPlayerObject == nullptr || this->myVideoPlayerObject.get() == nullptr) return;
+    
+    this->videoPlayerObject->getWorkspace()->copyAllDataToWorkspace(this->myVideoPlayerObject->getWorkspace());
+    this->videoPlayerObject->resized();*/
+
+}
+void IRVideoAnnotater::updateVideoFileWorkspace()
+{
+    if(this->videoPlayerObject == nullptr || this->myVideoPlayerObject.get() == nullptr) return;
+
+    File f = this->myVideoPlayerObject->getVideoPlayerObject()->getVideoPlayer()->getMovieFile();
+    this->videoPlayerObject->openFile(f);
+
+}
+// ==================================================
+
+void IRVideoAnnotater::updateVideoPlayerOfThis()
+{
     if(this->videoPlayerObject != nullptr)
     {
         if(this->myVideoPlayerObject.get() != nullptr)
         {
-            this->videoPlayerObject->shareContentsWith(this->myVideoPlayerObject.get());
-        this->videoTransport.setVideoLengthInSec(this->videoPlayerObject->getVideoPlayer()->getVideoLength());
-            resized();
+            updateThisVideoFile();
         }
-    }*/
-    
+    }
 }
 void IRVideoAnnotater::updateVideoPlayerOfWorkspace()
 {
-    /*
-    std::cout << "updateVideoPlayerOfWorkspace\n";
-    if(this->videoPlayerObject != nullptr)
+    if(this->videoPlayerObject != nullptr && this->myVideoPlayerObject.get() != nullptr)
     {
-        if(this->myVideoPlayerObject.get() != nullptr)
-            this->myVideoPlayerObject->shareContentsWith(this->videoPlayerObject);
+        //this->myVideoPlayerObject->shareContentsWith(this->videoPlayerObject);
 
-    }*/
+    }
 }
 // ==================================================
 
@@ -686,7 +931,6 @@ void IRVideoAnnotater::createEventOnTheLoadedVideo(VideoAnnotationEventComponent
 {
     if(this->myVideoPlayerObject.get() == nullptr) return;
     
-    //this->myVideoPlayerObject->createAnnotationComponent(event);
     
 }
 
@@ -729,7 +973,7 @@ void IRVideoAnnotater::nodeObjectSelectionChange(IRNodeObject* obj)
     std:: cout << "event select  = "<< event << std::endl;
     if(event != nullptr){
         this->eventListComponent->selectEventComponent(event);
-        //this->videoTransport.setCurrentPlayingPosition(obj->getBeginTimeCode());
+        //this->videoTransport->setCurrentPlayingPosition(obj->getBeginTimeCode());
         
         //this->myVideoPlayerObject->setPlayPosition(obj->getBeginTimeCode());
     }
@@ -753,7 +997,54 @@ void IRVideoAnnotater::heavyObjectCreated(IRNodeObject* obj)
 
 void IRVideoAnnotater::deselectAllObjectsOnWorkspace()
 {
-    this->workspace->deselectAllObjects();
+    //this->workspace->deselectAllObjects();
+    this->myVideoPlayerObject->getWorkspace()->deselectAllObjects();
 }
+
+// ==================================================
+
+void IRVideoAnnotater::loadAndApplySRTs(std::vector<SubtitleItem*> data)
+{
+    for(auto item : data)
+    {
+        
+        
+        std::string text = item->getText();
+        std::cout << "text  = " << item->getText() << std::endl;
+        
+        std::string err;
+        json11::Json saveData = json11::Json::parse(text, err);
+        
+        std::cout << "get data as json : " << saveData["text"].string_value() << std::endl;
+        
+        
+        // if text
+        std::string annotationData = saveData["text"].string_value();
+        if(annotationData.size() > 0)
+        {
+            createTextEventComponentFromSRT(item);
+        }
+        
+        // if shape
+        annotationData = saveData["shape"].string_value();
+        if(annotationData.size() > 0)
+        {
+            
+        }
+        
+        // if image
+        annotationData = saveData["image"].string_value();
+        if(annotationData.size() > 0)
+        {
+            
+        }
+        
+    }
+}
+
+
+// ==================================================
+
+
 
 // ==================================================

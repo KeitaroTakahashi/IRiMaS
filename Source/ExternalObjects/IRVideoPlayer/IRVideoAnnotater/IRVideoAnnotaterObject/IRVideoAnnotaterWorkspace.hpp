@@ -49,15 +49,20 @@ public:
     void createAnnotationComponent(VideoAnnotationEventComponent* event);
     void createTEXTAnnotationComponent(VideoAnnotationEventComponent* event);
     // ==============================
-    void createTextObject(Component* event);
-    void createShapeObject(Component* event);
-    void createImageObject(Component* event);
+    IRNodeObject* createTextObject(Component* event);
+    IRNodeObject* createShapeObject(Component* event);
+    IRNodeObject* createImageObject(Component* event);
+    
+    void createAnnotationObject(IRNodeObject* obj, Component* event);
     // ==============================
+    
+    void updateVideoPlayingPos(double pos);
 
 private:
     // ==============================
 
     void createNodeObjectOnWorkspace(IRNodeObject* obj);
+    void createNodeObjectOnworkspaceAsSubtitle(IRNodeObject* obj);
     // ==============================
 
     void videoLoadCompletedAction();

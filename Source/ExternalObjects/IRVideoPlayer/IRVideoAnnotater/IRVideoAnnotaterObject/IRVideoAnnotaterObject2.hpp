@@ -26,14 +26,17 @@ public:
     void setFixObjectSizeRatioWithOriginalSize(bool flag, Rectangle<float> originalSize);
 
     void paint(Graphics& g) override;
-    
+    // --------------------------------------------------
+
     virtual void videoLoadCompletedCallback();
+    
+    bool hasVideo() const;
     
     // --------------------------------------------------
     
-    IRNodeObject* copyThis() override;
-    t_json saveThisToSaveData() override;
-    void loadThisFromSaveData(t_json data) override;
+    virtual IRNodeObject* copyThis() override;
+    virtual t_json saveThisToSaveData() override;
+    virtual void loadThisFromSaveData(t_json data) override;
     // --------------------------------------------------
     // define if call videoLoadCompletedCallbackFunc();
     void openFile(File file, bool isCallback = true);
@@ -60,9 +63,9 @@ public:
     
     // --------------------------------------------------
     // Object
-    void createTextObject(Component* event);
-    void createShapeObject(Component* event);
-    void createImageObject(Component* event);
+    IRNodeObject* createTextObject(Component* event);
+    IRNodeObject* createShapeObject(Component* event);
+    IRNodeObject* createImageObject(Component* event);
     
     void moveToFrontAction() override;
     void moveToBackAction() override;
@@ -71,8 +74,10 @@ public:
 private:
     // --------------------------------------------------
 
+    void statusChangedCallback(IRNodeComponentStatus status) override;
     
-    
+    void eidtModeChangedAction();
+
     // --------------------------------------------------
 
     std::shared_ptr<IRVideoAnnotaterWorkspace> workspace;

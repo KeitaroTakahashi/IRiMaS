@@ -12,6 +12,7 @@ IRVideoPlayerController::IRVideoPlayerController(IRStr* str, IRVideoAnnotaterObj
 UI(str, videoPlayerObject)
 {
     
+    std::cout << "IRVideoPlayerController init\n";
     addAndMakeVisible(&this->LabelTitle);
     this->LabelTitle.setText("VideoPlayer", dontSendNotification);
     this->LabelTitle.setFont(getStr()->SYSTEMCOLOUR.h3);
@@ -72,9 +73,13 @@ void IRVideoPlayerController::changeListenerCallback (ChangeBroadcaster* source)
                 sendChangeMessage();
                 break;
             case VideoController::CloseVideoAnnotater:
-            this->status = CloseVideoAnnotater;
-            sendChangeMessage();
-            break;
+                this->status = CloseVideoAnnotater;
+                sendChangeMessage();
+                break;
+            case VideoController::ApplyAnnotation:
+                this->status = ApplyAnnotation;
+                sendChangeMessage();
+                break;
             default:
                 break;
         }

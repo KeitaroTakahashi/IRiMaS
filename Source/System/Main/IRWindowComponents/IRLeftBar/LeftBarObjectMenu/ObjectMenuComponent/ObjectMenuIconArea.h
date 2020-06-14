@@ -18,12 +18,12 @@ public:
     IRHeavyWeightComponent(this, "ObjectMenuIconArea"),
     buttonSize(buttonSize),
     leftMarge(leftMarge),
-    textButton(str, str->ICONBANK.icon_text, "Texts", buttonSize),
-    imageButton(str, str->ICONBANK.icon_image, "Graphics", buttonSize),
-    audioButton(str, str->ICONBANK.icon_wav, "Audio", buttonSize),
-    chartButton(str, str->ICONBANK.icon_chart, "Charts", buttonSize),
-    playerButton(str, str->ICONBANK.icon_play, "Players", buttonSize),
-    objectButton(str, str->ICONBANK.icon_object, "Objects", buttonSize)
+    textButton(str, str->ICONBANK->icon_text, "Texts", buttonSize),
+    imageButton(str, str->ICONBANK->icon_image, "Graphics", buttonSize),
+    audioButton(str, str->ICONBANK->icon_wav, "Audio", buttonSize),
+    chartButton(str, str->ICONBANK->icon_chart, "Charts", buttonSize),
+    playerButton(str, str->ICONBANK->icon_play, "Players", buttonSize),
+    objectButton(str, str->ICONBANK->icon_object, "Objects", buttonSize)
     {
         addButtons();
     }

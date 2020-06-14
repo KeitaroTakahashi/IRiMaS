@@ -9,7 +9,7 @@
 
 
 IRLeftBar::IRLeftBar(IRStr* str) : IRStrComponent(str),
-IRHeavyWeightComponent(this)
+IRHeavyWeightComponent(this, "IRLeftBar")
 {
     setFps(60);
     setOpaque(true);
@@ -145,7 +145,7 @@ void IRLeftBar::checkResizableFromMouseDownPosition(juce::Point<int> pos)
 //==================================================
 void IRLeftBar::bringToFrontCompleted()
 {
-    this->objectSlideSwitchButton->bringThisToFront();
+    this->objectSlideSwitchButton->bringThisToFront("objectSlideSwitchButton");
     this->objectMenuComponent->bringToFrontCompleted();
     
     setWantsKeyboardFocus(true);

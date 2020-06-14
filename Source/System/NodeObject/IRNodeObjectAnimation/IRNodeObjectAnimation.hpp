@@ -25,7 +25,7 @@ public:
     
     
     IRNodeObjectAnimation(IRNodeComponent* obj);
-    ~IRNodeObjectAnimation();
+    virtual ~IRNodeObjectAnimation();
     // ============================================================
     
     void actionStart();
@@ -60,7 +60,7 @@ public:
     // ============================================================
 
     // request to update Animation
-    virtual void StatusUpdated() = 0;
+    virtual void StatusUpdated(){};
 private:
     
     IRNodeComponent* obj;

@@ -45,6 +45,19 @@ public:
         }
     };
     
+    struct IRSRT_STRUCT : public SRT_STRUCT
+    {
+        Rectangle<float> relativeBounds;
+        
+        IRSRT_STRUCT()
+        {
+            
+        }
+        
+        
+        
+    };
+    
     srtWriter()
     {
     }

@@ -35,13 +35,11 @@ public:
 
     {
         setType(VideoAnnotationEventComponent::TEXT);
+        createTextEditor();
         
         addAndMakeVisible(&this->timeCodeUI);
         this->timeCodeUI.setBeginTime(beginTime);
         this->timeCodeUI.setEndTime(endTime);
-
-        createTextEditor();
-        
         timeCodeChanged();
     }
 
@@ -61,13 +59,14 @@ public:
         this->timeCodeUI.setBeginTime(beginTime);
         this->timeCodeUI.setEndTime(endTime);
 
-        createTextEditor();
+        createTextEditor(contents);
       
         timeCodeChanged();
     }
     
     ~AnnotationTextEventComponent()
     {
+        
     }
     // ==================================================
     void paint(Graphics& g ) override
@@ -97,7 +96,18 @@ public:
     }
     // ==================================================
 
-    void createTextEditor()
+    AnnotationTextEventComponent* copyThis() override
+    {
+        auto event = new AnnotationTextEventComponent(getStr(),
+                                                      getBase(),
+                                                      getBeginTimeCode(),
+                                                      getEndTimeCode());
+        
+        return event;
+    }
+    // ==================================================
+
+    void createTextEditor(std::string contents = "")
     {
         //set default bounds adjusted to the video size in pixel
         auto videoSize = this->getBase()->getVideoSize();
@@ -113,6 +123,7 @@ public:
         this->textEditor.setMultiLine(false);
         this->textEditor.setCaretVisible(false);
         this->textEditor.setReadOnly(true);
+        this->textEditor.setText(contents, dontSendNotification);
         this->textEditor.setColour(TextEditor::backgroundColourId, getStr()->SYSTEMCOLOUR.contents);
         this->textEditor.applyColourToAllText(getStr()->SYSTEMCOLOUR.text);
         
@@ -127,6 +138,7 @@ public:
     
     void onTextChangeAction()
     {
+        /*
         // insert only first 10 characters
         String text = this->textEditorObj->textEditor.getText().substring(0, 100);
         
@@ -134,7 +146,7 @@ public:
         {
             text = text.replaceCharacters("\r\n", "  ");
         }
-        this->textEditor.setText(text);
+        this->textEditor.setText(text);*/
     }
     // ==================================================
     
@@ -143,6 +155,8 @@ public:
     // ==================================================
     srtWriter::SRT_STRUCT getSRT() override
     {
+        
+        std::cout << "textAnnotation : getSRT " << getTextContents() << std::endl;
         srtWriter::SRT_STRUCT srt = srtWriter::SRT_STRUCT(getBeginTimeInString(),
                                                           getEndTimeInString(),
                                                           getTextContents());
@@ -152,7 +166,7 @@ public:
 
     std::string getTextContents()
     {
-        return this->textContents.getText().toStdString();
+        return this->textEditor.getText().toStdString();
     }
     
     // ==================================================
@@ -164,7 +178,6 @@ private:
     // ==================================================
     
     // ==================================================
-    Label textContents;
     
     IRImageButton TextSettingButton;
     

@@ -25,6 +25,7 @@ public:
         OpenVideoFile,
         OpenVideoAnnotater,
         CloseVideoAnnotater,
+        ApplyAnnotation,
         WidthChange,
         HeightChange,
         W_H_Sync,
@@ -49,6 +50,11 @@ public:
         
         this->videoAnnotater.closeButtonPressedCallback = [this]{ CloseVideoAnnotaterAction(); };
 
+        
+        addAndMakeVisible(&this->applyAnnotationButton);
+        this->applyAnnotationButton.setButtonText("Apply Annotation");
+        this->applyAnnotationButton.onClick = [this] { ApplyAnnotationAction(); };
+        
 
     }
     
@@ -70,6 +76,9 @@ public:
         
         y += yBigIncrement + 10;
         this->openVideoAnnotatorButton.setBounds(10, y, menuWidth, 30);
+        
+        y += yBigIncrement + 10;
+        this->applyAnnotationButton.setBounds(10, y, menuWidth, 30);
     }
     
     void paint(Graphics& g) override
@@ -97,6 +106,12 @@ public:
     void CloseVideoAnnotaterAction()
     {
         this->status = CloseVideoAnnotater;
+        sendChangeMessage();
+    }
+    
+    void ApplyAnnotationAction()
+    {
+        this->status = ApplyAnnotation;
         sendChangeMessage();
     }
     
@@ -137,15 +152,15 @@ private:
     
     TextButton openVideoButton;
     TextButton openVideoAnnotatorButton;
+    TextButton applyAnnotationButton;
     // ==================================================
-
     
     IRVideoAnnotaterWindow videoAnnotater;
 
     // ==================================================
-    
 
     VideoControllerStatus status = NONE;
+    
     // ==================================================
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VideoController)

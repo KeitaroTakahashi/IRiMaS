@@ -26,10 +26,13 @@ public:
     
     ~IRVideoComponent()
     {
-        if(this->player_with_controller.get() != nullptr)
-            this->player_with_controller.reset();
-        if(this->player_without_controller.get() != nullptr)
-            this->player_without_controller.reset();
+        if(this->isVideoLoaded)
+        {
+            if(this->player_with_controller.get() != nullptr)
+                this->player_with_controller.reset();
+            if(this->player_without_controller.get() != nullptr)
+                this->player_without_controller.reset();
+        }
     }
     // ==================================================
 
@@ -47,9 +50,6 @@ public:
                 this->player_with_controller->setBounds(getLocalBounds());
             if(this->player_without_controller.get() != nullptr)
                 this->player_without_controller->setBounds(getLocalBounds());
-            
-           // std::cout << "videoComponent size = " << player_without_controller->getWidth() << " : " << player_without_controller->getHeight() << " x = " << player_without_controller->getX() << std::endl;
-            
 
             auto p = this->player_without_controller;
             int w = p->getHeight() * this->aspectRatio;
@@ -72,8 +72,8 @@ public:
                 this->videoBounds = Rectangle<int> (x, 0,
                                                     w, p->getHeight());
             }
+            
         }
-        
 
     }
     
@@ -203,7 +203,7 @@ public:
         if(result.wasOk()){
             
             this->isVideoLoaded = true;
-            
+                        
             this->videoSize = this->player_with_controller->getVideoNativeSize();
             this->aspectRatio = (float)this->videoSize.getWidth() / (float)this->videoSize.getHeight();
            
@@ -227,6 +227,8 @@ public:
                     videoLoadCompleted();
                 }
             }
+            // here we need to call resized() of this class. This resized() does not probagate to its parent resized()
+            resized();
                 
         }else{
             this->isVideoLoaded = false;
@@ -287,7 +289,7 @@ private:
     
     bool isCallback = true;
     
-    bool enableController;
+    bool enableController = false;;
     
     URL url;
     

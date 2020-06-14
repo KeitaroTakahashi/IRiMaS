@@ -27,6 +27,14 @@ public:
     
     // ==================================================
     
+    virtual void prepareToPlay (int samplesPerBlockExpected,
+                                double sampleRate) override {};
+    virtual void releaseResources() override {};
+
+    virtual void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override {};
+
+    // ==================================================
+
     // define the minimum size of the window
     int minWidth = 800;
     int minHeight = 700;

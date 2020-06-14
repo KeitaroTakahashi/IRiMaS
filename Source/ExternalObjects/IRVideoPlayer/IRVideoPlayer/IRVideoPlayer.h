@@ -48,14 +48,22 @@ public:
     
     void resized() override
     {
+        
+        //std::cout << "---- IRVideoPlayer : resized ---- \n";
         if(this->player != nullptr)
+        {
             this->player->setBounds(getLocalBounds());
+            //std::cout << "player setBounds " << getLocalBounds().getWidth() << ", " << getLocalBounds().getHeight() << " : " << getLocalBounds().getX() << " , " << getLocalBounds().getY() << " : isVisible? = " << this->player->isVisible() << std::endl;
+        }
       
-        this->openButton.setBounds(getLocalBounds());
+        if(this->openButton.isVisible())
+            this->openButton.setBounds(getLocalBounds());
     }
     
     void paint(Graphics &g) override
     {
+        g.fillAll(Colours::transparentBlack);
+        //g.drawText("IRVideoPlayer", 0, 0, getWidth(), getHeight()/2, Justification::centred);
         g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     }
 
@@ -93,19 +101,24 @@ public:
     
     void videoLoadCompleteAction()
     {
+        std::cout << "IRVideoPlayer : videoLoadCompleteAction\n";
         removeChildComponent(&this->openButton);
         addAndMakeVisible(this->player.get());
+        
+        //resized();
+        
+        this->player->bringViewToFront();
                 
         if(this->videoLoadCompleted != nullptr)
             this->videoLoadCompleted();
-        
+
         startAnimation();
 
     }
 
     // --------------------------------------------------
     
-    bool hsaVideo() const { return this->player->hasVideo(); }
+    bool hasVideo() const { return this->player->hasVideo(); }
   
     // --------------------------------------------------
     // switch navi on off
@@ -130,7 +143,17 @@ public:
     std::function<void(double)> updateAnimationFrameCallback;
     // --------------------------------------------------
 
-    void bringViewToFront() { this->player->bringViewToFront(); }
+    void bringViewToFront()
+    {
+        
+        toFront(true);
+        if(this->player != nullptr && hasVideo())
+        {
+            this->player->bringViewToFront();
+            //resized();
+        }
+        
+    }
     
     // --------------------------------------------------
     void play() { this->player->play(); }

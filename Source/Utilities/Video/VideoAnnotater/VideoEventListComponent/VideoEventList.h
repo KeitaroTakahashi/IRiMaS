@@ -84,6 +84,12 @@ public:
 
     //==================================================
     // EVENTCOMPONENT
+    
+    void addEventComponent(VideoAnnotationEventComponent* event)
+    {
+        this->videoListComponent->addEventComponent(event);
+    }
+    /*
     AnnotationTextEventComponent* createTextEventComponent()
     {
         return this->videoListComponent->createTextEventComponent();
@@ -138,6 +144,7 @@ public:
                                                                   endTime);
 
     }
+     */
     //==================================================
     
     std::vector<VideoAnnotationEventComponent*> getSelectedEventComponents()
@@ -155,7 +162,7 @@ public:
 
     void createEventComponent(VideoAnnotationEventComponent* comp)
     {
-        this->videoListComponent->createEventComponent(comp);
+        //this->videoListComponent->createEventComponent(comp);
     }
     
     void deleteSelectedEventComponent()

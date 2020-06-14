@@ -30,7 +30,6 @@ public:
     void createLogComponent(Component* comp)
     {
         
-        std::cout << "createLogComponent\n";
         this->logComponent.reset( new EventLogListComponent(getStr()));
         this->logComponent->newComponentAddedCallback = [this]{ newComponentAddedAction(); };
         

@@ -30,6 +30,8 @@ public:
                                   int videoLengthInSecond = 0) :
     VideoAnnotationEventComponent(str, base, videoLengthInSecond)
     {
+        
+        std::cout << "AnnotationShapeEventComponent\n";
         setType(VideoAnnotationEventComponent::SHAPE);
         
         addAndMakeVisible(&this->timeCodeUI);
@@ -37,6 +39,7 @@ public:
         this->timeCodeUI.setEndTime(endTime);
         
         timeCodeChanged();
+        std::cout << "end\n";
 
     }
     
@@ -55,7 +58,7 @@ public:
         VideoAnnotationEventComponent::resized();
         
         int h = 40;
-        int margin = 5;
+        //int margin = 5;
         
         this->timeCodeUI.setBounds(0, 0, 226, h);
     }
@@ -65,7 +68,16 @@ public:
         return srtWriter::SRT_STRUCT();
     }
     // ==================================================
-    
+    AnnotationShapeEventComponent* copyThis() override
+    {
+        auto event = new AnnotationShapeEventComponent(getStr(),
+                                                       getBase(),
+                                                       getBeginTimeCode(),
+                                                       getEndTimeCode());
+        
+        return event;
+    }
+
     // ==================================================
     /*
     srtWriter::SRT_STRUCT getSRT() override

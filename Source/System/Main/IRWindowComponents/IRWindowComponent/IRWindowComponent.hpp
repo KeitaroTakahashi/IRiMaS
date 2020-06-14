@@ -46,6 +46,7 @@ public:
     void closeProject(DocumentWindow* closingWindow);
     void createNewProject();
     void loadProjectFromSavedData(t_json saveData);
+    void loadArrangeControllerSaveData(IRNodeObject* obj, t_json arrangeCtl);
     // ----- save action
     void saveProject();
     void saveAsProject();
@@ -158,6 +159,9 @@ private:
     void CommandAPressed();
     void CommandSPressed(); // save
     
+    // when reorder OpenGL component, then you need to call it to give keyboad focus on the appropriate listener
+    void giveKeyFocusOnTopWorkspace();
+    
     // ==================================================
 
 
@@ -167,6 +171,8 @@ private:
     Rectangle<int> frameRect;
     
     std::shared_ptr<IRStr> ir_str;
+    
+    std::shared_ptr<IRIconBank> iconBank;
 
     std::shared_ptr<IRMainSpace> mainSpace;
     std::shared_ptr<IRTitleBar> bar;

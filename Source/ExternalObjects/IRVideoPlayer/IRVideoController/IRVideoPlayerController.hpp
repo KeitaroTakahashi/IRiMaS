@@ -24,6 +24,7 @@ public:
         OpenMovieFile,
         OpenVideoAnnotater,
         CloseVideoAnnotater,
+        ApplyAnnotation,
         WidthChange,
         HeightChange,
         W_H_Sync,

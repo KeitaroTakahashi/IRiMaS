@@ -24,6 +24,9 @@ IRNodeObject(parent, "IRVideoAnnotater2", str, NodeObjectType(ordinaryIRComponen
     
     setObjectSize(300, 200);
     
+    setMinimumWidth(100);
+    setMinimumHeight(100);
+    
     setWantsKeyboardFocus(true);
     
     
@@ -38,11 +41,7 @@ IRVideoAnnotaterObject2::~IRVideoAnnotaterObject2()
 
 void IRVideoAnnotaterObject2::resized()
 {
-    std::cout << "videoANnoter2 resized\n";
     this->workspace->setBounds(getLocalBounds());
-    
-
-    
 
 }
 
@@ -51,7 +50,7 @@ void IRVideoAnnotaterObject2::resizeThisComponentEvent(const MouseEvent& e)
 {
     // turn off controller otherwise mouse event will be stolen by the controller,
     // and resize event can not be acomplished properly.
-    
+    std::cout << "resizeThisComponentEvent\n";
     auto videoPlayer = this->workspace->getVideoPlayerObject()->getVideoPlayer();
     
     
@@ -85,7 +84,7 @@ void IRVideoAnnotaterObject2::resizeAndCentredThisComponent(Rectangle<int> rect)
 {
     double ratio = this->workspace->getVideoPlayerObject()->getVideoPlayer()->getAspectRatio();
     
-    std::cout << "IRVideoPlayerObject2 resizeThisComponent : ratio = " << ratio << std::endl;
+    std::cout << "IRVideoPlayerObject2 resizeAndCentredThisComponent : ratio = " << ratio << std::endl;
 
     if(ratio >= 0)
     {
@@ -137,6 +136,7 @@ void IRVideoAnnotaterObject2::resizeAndCentredThisComponent(Rectangle<int> rect)
 
     }
     
+    //resized();
 }
 
 
@@ -175,16 +175,16 @@ void IRVideoAnnotaterObject2::resizeThisComponent(Rectangle<int> rect)
         // if w is larger, then follow w
         if(ratio_w >= ratio_h)
         {
-            
+            std::cout << "resizeThisComponent ok\n";
             //float fixed_h = new_w / ratio;
-            float y = (rect.getHeight() - fixed_h) / 2.0;
+           // float y = (rect.getHeight() - fixed_h) / 2.0;
             setObjectBounds(rect.getX(), rect.getY(), new_w, fixed_h);
             //this->workspace->setBounds(rect.getX(), rect.getY(), new_w, fixed_h);
             //this->workspace->setBounds(0, 0, new_w, fixed_h);
 
         }else{
             //float fixed_w = new_h * ratio;
-            float x = (rect.getWidth() - fixed_w) / 2.0;
+            //float x = (rect.getWidth() - fixed_w) / 2.0;
 
             setObjectBounds(rect.getX(), rect.getY(), fixed_w, new_h);
             //this->workspace->setBounds(rect.getX(), rect.getY(), fixed_w, new_h);
@@ -198,6 +198,8 @@ void IRVideoAnnotaterObject2::resizeThisComponent(Rectangle<int> rect)
 
     }
     
+    std::cout << "IRVideoPlayerObject2 resizeThisComponent : END" << std::endl;
+   // resized();
 }
 
 
@@ -209,7 +211,7 @@ void IRVideoAnnotaterObject2::setFixObjectSizeRatioWithOriginalSize(bool flag, R
 
 void IRVideoAnnotaterObject2::paint(Graphics& g) 
 {
-    g.fillAll(Colours::pink);
+    g.fillAll(Colours::yellow);
 }
 
 // --------------------------------------------------
@@ -221,7 +223,7 @@ IRNodeObject* IRVideoAnnotaterObject2::copyThis()
     
     // copy all workspace data to the newly created workspace
     this->workspace->copyAllDataToWorkspace(newObj->getWorkspace());
-    newObj->resized();
+    //newObj->resized();
     //newObj->moveToFrontAction();
     
     return newObj;
@@ -333,19 +335,28 @@ IRVideoPlayerObject2* IRVideoAnnotaterObject2::getVideoPlayerObject()
 
 void IRVideoAnnotaterObject2::videoLoadCompletedAction()
 {
-    std::cout << "IRVideoAnnotaterObject2::videoLoadCompletedAction\n";
     resizeThisComponent(getBounds());
     
     //this->workspace->bringThisToFront();
     //this->workspace->getVideoPlayerObject()->bringToFront();
-    
+
     if(this->videoLoadCompletedCallbackFunc != nullptr)
+    {
         this->videoLoadCompletedCallbackFunc();
+    }
+    
+    videoLoadCompletedCallback();
+    
+    //this->workspace->onResized();
+    //this->workspace->getVideoPlayerObject()->getVideoPlayer()->bringViewToFront();
+
 }
 
 void IRVideoAnnotaterObject2::videoPlayingUpdateAction(double pos)
 {
     //std::cout << "IRVideoAnnotaterObject2::videoPlayingUpdateAction : " << pos << std::endl;
+    
+    
     
     if(this->videoPlayingUpdateCallbackFunc != nullptr)
         this->videoPlayingUpdateCallbackFunc(pos);
@@ -354,19 +365,19 @@ void IRVideoAnnotaterObject2::videoPlayingUpdateAction(double pos)
 
 // --------------------------------------------------
 
-void IRVideoAnnotaterObject2::createTextObject(Component* event)
+IRNodeObject* IRVideoAnnotaterObject2::createTextObject(Component* event)
 {
-    this->workspace->createTextObject(event);
+    return this->workspace->createTextObject(event);
 }
 
-void IRVideoAnnotaterObject2::createShapeObject(Component* event)
+IRNodeObject* IRVideoAnnotaterObject2::createShapeObject(Component* event)
 {
-    this->workspace->createShapeObject(event);
+    return this->workspace->createShapeObject(event);
 
 }
-void IRVideoAnnotaterObject2::createImageObject(Component* event)
+IRNodeObject* IRVideoAnnotaterObject2::createImageObject(Component* event)
 {
-    this->workspace->createImageObject(event);
+    return this->workspace->createImageObject(event);
 
 }
 // --------------------------------------------------
@@ -374,6 +385,7 @@ void IRVideoAnnotaterObject2::createImageObject(Component* event)
 void IRVideoAnnotaterObject2::moveToFrontAction()
 {
     std::cout << "IRVideoAnnotaterObject2::moveToFrontAction\n";
+    this->workspace->bringThisToFront();
     this->workspace->getVideoPlayerObject()->bringToFront(false, false);
     this->workspace->manageHeavyWeightComponents(true);
 }
@@ -383,3 +395,38 @@ void IRVideoAnnotaterObject2::moveToBackAction()
     
 }
 // --------------------------------------------------
+void IRVideoAnnotaterObject2::eidtModeChangedAction()
+{
+    if(isEditMode())
+    {
+        this->workspace->getVideoPlayerObject()->enableController(false);
+    }else{
+        this->workspace->getVideoPlayerObject()->enableController(true);
+
+    }
+}
+
+void IRVideoAnnotaterObject2::statusChangedCallback(IRNodeComponentStatus status)
+{
+   switch (status)
+    {
+        case EditModeStatus:
+            eidtModeChangedAction();
+            break;
+        case SelectableStatus:
+            break;
+        case HasResizedStatus:
+            break;
+        default:
+            break;
+    }
+}
+// --------------------------------------------------
+
+
+bool IRVideoAnnotaterObject2::hasVideo() const
+{
+    
+    std::cout << "IRVideoAnnotaterObject2::hasVideo = " << this->workspace->getVideoPlayerObject()->getVideoPlayer()->hasVideo() << std::endl;
+    return this->workspace->getVideoPlayerObject()->getVideoPlayer()->hasVideo();
+}

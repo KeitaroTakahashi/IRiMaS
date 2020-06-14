@@ -18,6 +18,8 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
     addAndMakeVisible(this->videoPlayer.get());
     this->videoPlayer->updateAnimationFrameCallback = [this](double pos) { videoPlayingUpdateAction(pos); };
     
+    setMinimumWidth(100);
+    setMinimumHeight(100);
     
 }
 
@@ -32,7 +34,7 @@ IRNodeObject* IRVideoPlayerObject2::copyThis()
     
     std::cout << "IRVideoPlayerObject2::copyThis\n";
     auto v = new IRVideoPlayerObject2(this->parent, getStr(), true);
-    v->setObjectSize(getWidth(), getHeight());
+    //v->setObjectSize(getWidth(), getHeight());
     
     File movieFile = getVideoPlayer()->getMovieFile();
     if(movieFile.exists())
@@ -111,8 +113,8 @@ void IRVideoPlayerObject2::resizeThisComponentEvent(const MouseEvent& e)
     // and resize event can not be acomplished properly.
     if(this->enableControllerFlag)
     {
-        if(this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
-            this->videoPlayer->setNeedController(false);
+        //if(this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
+            //this->videoPlayer->setNeedController(false);
     }
     
     double ratio = this->videoPlayer->getAspectRatio();
@@ -208,11 +210,9 @@ void IRVideoPlayerObject2::mouseUpEvent(const MouseEvent& e)
     //recover event
     if(this->enableControllerFlag)
     {
-        if(!this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
+        if(!this->videoPlayer->isNeedController() && this->videoPlayer->hasVideo())
         {
-            this->videoPlayer->setNeedController(true);
-        
-            refreshZIndex();
+
         }
     }
     
@@ -230,8 +230,8 @@ void IRVideoPlayerObject2::paint(Graphics& g)
     
     auto area = getLocalBounds();
     
-    g.fillAll(Colours::red);
-    //g.fillAll(getStr()->SYSTEMCOLOUR.background);
+    //g.fillAll(Colours::red);
+    g.fillAll(getStr()->SYSTEMCOLOUR.background);
     
     if(isEditMode())
         g.drawRoundedRectangle(area.toFloat(), 0, 2.0);
@@ -243,7 +243,6 @@ void IRVideoPlayerObject2::videoLoadCompletedAction()
     std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction\n";
     // call reset Heavy-weight components
     refreshZIndex();
-    //refreshZIndex();
     // called only when isCallback is true. isCallback is defined in this class.
     if(this->videoLoadCompletedCallbackFunc != nullptr)
     {
@@ -253,14 +252,14 @@ void IRVideoPlayerObject2::videoLoadCompletedAction()
 
 
     // virtual
-    videoLoadCompletedCallback();
+    videoLoadCompletedVirtualFunc();
         
 }
 // --------------------------------------------------
 
 void IRVideoPlayerObject2::videoPlayingUpdateAction(double pos)
 {
-    videoPlayingUpdateCallback(pos);
+    videoPlayingUpdateVirtualFunc(pos);
     
     if(this->videoPlayingUpdateCallbackFunc != nullptr)
         this->videoPlayingUpdateCallbackFunc(pos);
@@ -270,8 +269,7 @@ void IRVideoPlayerObject2::videoPlayingUpdateAction(double pos)
 
 void IRVideoPlayerObject2::moveToFrontAction()
 {
-    if(this->videoPlayer->hsaVideo())
-        this->videoPlayer->bringViewToFront();
+    this->videoPlayer->bringViewToFront();
     
 
     
@@ -330,6 +328,8 @@ void IRVideoPlayerObject2::setPlayPosition(double newPositionInSec)
 }
 // --------------------------------------------------
 
+// --------------------------------------------------
+
 void IRVideoPlayerObject2::statusChangedCallback(IRNodeComponentStatus status)
 {
     switch (status)
@@ -374,7 +374,7 @@ void IRVideoPlayerObject2::resizingSquareClickedAction(IRResizeSquare2::MovableD
 }
 void IRVideoPlayerObject2::resizingSquareReleasedAction(IRResizeSquare2::MovableDirection direction)
 {
-    if(this->videoPlayer->hsaVideo())
+    if(this->videoPlayer->hasVideo())
         refreshZIndex();
 }
 void IRVideoPlayerObject2::resizingSquareDraggedAction(MouseEvent e)

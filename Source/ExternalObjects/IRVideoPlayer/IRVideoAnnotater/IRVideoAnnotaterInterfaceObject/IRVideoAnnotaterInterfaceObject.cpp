@@ -11,13 +11,13 @@ IRVideoAnnotaterInterfaceObject::IRVideoAnnotaterInterfaceObject(Component* pare
 IRVideoAnnotaterObject2 (parent, str)
 {
 
-    
+    std::cout << " ========== IRVideoAnnotaterInterfaceObject creating.... ==========\n";
     this->controller.reset( new IRVideoPlayerController(str, this) );
     this->controller->addChangeListener(this);
     this->controller->getArrangeController()->addChangeListener(this);
     setObjController(this->controller.get());
    
-    setObjectSize(300, 200);
+    //setObjectSize(300, 200);
     
 }
 
@@ -28,11 +28,16 @@ IRVideoAnnotaterInterfaceObject::~IRVideoAnnotaterInterfaceObject()
 
 void IRVideoAnnotaterInterfaceObject::resized()
 {
+    
+    //std::cout << "IRVideoAnnotaterInterfaceObject::resized\n";
     IRVideoAnnotaterObject2::resized();
+    resizeAndCentredThisComponent(getBounds());
     
     this->controller->getArrangeController()->setRectangle(getBounds());
 
 }
+
+
 // --------------------------------------------------
 
 IRNodeObject* IRVideoAnnotaterInterfaceObject::copyThis()
@@ -40,8 +45,9 @@ IRNodeObject* IRVideoAnnotaterInterfaceObject::copyThis()
     
     std::cout << "IRVideoAnnotaterInterfaceObject::copyThis\n";
     auto v = new IRVideoAnnotaterInterfaceObject(this->parent, getStr());
+    
     //v->setObjectBounds(getBounds());
-    getWorkspace()->copyAllDataToWorkspace(v->getWorkspace());
+    //getWorkspace()->copyAllDataToWorkspace(v->getWorkspace());
     
     
         
@@ -118,7 +124,13 @@ void IRVideoAnnotaterInterfaceObject::videoLoadCompletedCallback()
     // call this
     //IRVideoAnnotaterObject::videoLoadCompletedCallback();
     
+    std::cout << "IRVideoAnnotaterInterfaceObject::videoLoadCompletedCallback\n";
     this->controller->updateAnnotater();
+    
+    // set initial bounds of the video player to fix the annotation
+    auto v = getVideoPlayerObject()->getVideoPlayer();
+    setFixObjectSizeRatioWithOriginalSize(false, v->getCurrentVideoBounds().toFloat());
+
 }
 // --------------------------------------------------
 
@@ -156,6 +168,9 @@ void IRVideoAnnotaterInterfaceObject::IRChangeListenerCallback (ChangeBroadcaste
             case uiStatus::CloseVideoAnnotater:
                 annotaterClosedAction();
                 break;
+            case uiStatus::ApplyAnnotation:
+                applyAnnotation();
+                break;
             default:
                 break;
         }
@@ -188,9 +203,25 @@ void IRVideoAnnotaterInterfaceObject::IRChangeListenerCallback (ChangeBroadcaste
 
 void IRVideoAnnotaterInterfaceObject::ObjectPositionChanged(int x, int y)
 {
+    
+    //std::cout << "IRVideoAnnotaterInterfaceObject::ObjectPositionChanged : " << x << ", " << y << std::endl;
     this->controller->getArrangeController()->setLabelX(x);
     this->controller->getArrangeController()->setLabelY(y);
 
 }
 // --------------------------------------------------
+
+void IRVideoAnnotaterInterfaceObject::ObjectBoundsChanged(Rectangle<int> bounds)
+{
+    
+    //std::cout << "IRVideoAnnotaterInterfaceObject::ObjectBoundsChanged\n";
+}
+
+
+
 // --------------------------------------------------
+void IRVideoAnnotaterInterfaceObject::applyAnnotation()
+{
+    std::cout << "applyAnnotation\n";
+    this->controller->updateAnnotater();
+}

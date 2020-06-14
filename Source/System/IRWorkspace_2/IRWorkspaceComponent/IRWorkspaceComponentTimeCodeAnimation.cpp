@@ -11,7 +11,7 @@ void IRWorkspaceComponent::resetAnimatedObjectList()
 {
     for(auto obj : this->currentlyAnimatedObjects)
     {
-        obj->setAnimated(false);
+       // obj->setAnimated(false);
     }
     
     this->currentlyAnimatedObjects.clear();
@@ -33,8 +33,8 @@ void IRWorkspaceComponent::startAnimated(IRNodeObject* obj)
     std::cout << obj << " animation starts!\n";
     // Triggered!
     addCurrentlyAnimatedObjectList(obj);
-    obj->actionStart();
-    obj->setAnimated(true);
+    //obj->actionStart();
+    //obj->setAnimated(true);
 }
 
 void IRWorkspaceComponent::endAnimated(IRNodeObject* obj)
@@ -42,8 +42,8 @@ void IRWorkspaceComponent::endAnimated(IRNodeObject* obj)
     std::cout << obj << " animation ends!\n";
 
     removeFromCurrentlyAnmatedObjectList(obj);
-    obj->actionEnd();
-    obj->setAnimated(false);
+   // obj->actionEnd();
+   // obj->setAnimated(false);
 }
 
 void IRWorkspaceComponent::updateCurrentAnimation()
@@ -53,7 +53,7 @@ void IRWorkspaceComponent::updateCurrentAnimation()
 
 void IRWorkspaceComponent::updateCurrentAnimation(float currentTime)
 {
-    
+    /*
     if(!this->timeCodeAnimationEnable) return;
 
     for(auto obj : this->objects)
@@ -89,7 +89,7 @@ void IRWorkspaceComponent::updateCurrentAnimation(float currentTime)
     for(auto obj : this->currentlyAnimatedObjects)
     {
         obj->setCurrentTimeCode(currentTime);
-    }
+    }*/
     
 }
 

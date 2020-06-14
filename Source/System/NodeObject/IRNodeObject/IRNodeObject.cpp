@@ -5,8 +5,8 @@ IRNodeObject::IRNodeObject(Component* parent,
                            String name,
                            IRStr* str,
                            NodeObjectType objectType) :
-IRNodeComponent(parent, name, str, objectType),
-IRNodeObjectAnimation(this)
+IRNodeComponent(parent, name, str, objectType)
+//IRNodeObjectAnimation(this)
 {
     this->parent = parent;
 }
@@ -73,6 +73,49 @@ void IRNodeObject::setArrangeController(ArrangeController* controller)
     this->arrangeController->addChangeListener(this);
 }
 
+t_json IRNodeObject::getArrangeControllerSaveData()
+{
+    
+    auto s = getStatusStr();
+    
+    std::string contents = "";
+
+    // ----------
+    contents += "{";
+    
+    contents += "\"bounds\": [" + std::to_string(s->bounds.getX()) +
+    ", " + std::to_string(s->bounds.getY()) +
+    ", " + std::to_string(s->bounds.getWidth()) +
+    ", " + std::to_string(s->bounds.getHeight()) + "], ";
+
+    contents += "\"relativeBounds\": [" + std::to_string(s->relativeBounds.getX()) +
+    ", " + std::to_string(s->relativeBounds.getY()) +
+    ", " + std::to_string(s->relativeBounds.getWidth()) +
+    ", " + std::to_string(s->relativeBounds.getHeight()) + "], ";
+    
+    contents += "\"ordinaryBounds\": [" + std::to_string(s->ordinaryBounds.getX()) +
+    ", " + std::to_string(s->ordinaryBounds.getY()) +
+    ", " + std::to_string(s->ordinaryBounds.getWidth()) +
+    ", " + std::to_string(s->ordinaryBounds.getHeight()) + "], ";
+    
+    contents += "\"encloseBounds\": [" + std::to_string(s->encloseBounds.getX()) +
+    ", " + std::to_string(s->encloseBounds.getY()) +
+    ", " + std::to_string(s->encloseBounds.getWidth()) +
+    ", " + std::to_string(s->encloseBounds.getHeight()) + "], ";
+    
+    contents += "\"wrap\": " + std::to_string(s->wrap) + ", ";
+
+    contents += "\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
+    ", " + std::to_string(s->wrapColour.getGreen()) +
+    ", " + std::to_string(s->wrapColour.getBlue()) +
+    ", " + std::to_string(s->wrapColour.getAlpha()) + "]";
+    
+    contents += "}";
+    // ----------
+    std::string err;
+    return t_json::parse(contents,err);
+    
+}
 
 void IRNodeObject::arrangeControllerChangedCallback(ChangeBroadcaster* source)
 {
@@ -611,22 +654,6 @@ void IRNodeObject::IRChangeListenerCallback(ChangeBroadcaster* source)
 }
 // ==================================================
 
-
-void IRNodeObject::initialBoundsUpdated()
-{
-    callInitialBoundsUpdated();
-}
-
-void IRNodeObject::callInitialBoundsUpdated()
-{
-    Component::BailOutChecker checker(this);
-    // check if the objects are not deleted, if deleted, return
-    if(checker.shouldBailOut()) return;
-    this->listeners.callChecked(checker, [this](Listener& l){ l.initialBoundsUpdated(this); });
-    //check again
-    if(checker.shouldBailOut()) return;
-}
-
 // ==================================================
 // move to Front
 
@@ -678,6 +705,16 @@ void IRNodeObject::moveToBackEvent()
 // ==================================================
 // STATUS //
 
+void IRNodeObject::setOrdinaryBounds(Rectangle<int> bounds)
+{
+    this->ordinaryBounds = bounds;
+}
+
+void IRNodeObject::setEncloseBounds(Rectangle<int> bounds)
+{
+    this->encloseBounds = bounds;
+}
+
 void IRNodeObject::setStatus(IRNodeObjectStatus newStatus)
 {
     this->status = newStatus;
@@ -697,6 +734,7 @@ void IRNodeObject::setStatus(IRNodeObjectStatus newStatus)
 
 void IRNodeObject::transformStatusToOrdinary()
 {
+
     std::cout << "transformStatusToOrdinary\n";
     this->resizingSquare.applyMouseListenerToIRNodeObject();
     this->resizingSquare.removeMouseListener(this->enclosedObject.get());
@@ -708,6 +746,8 @@ void IRNodeObject::transformStatusToOrdinary()
 void IRNodeObject::transformStatusEnclose()
 {
     // first store data
+    auto str = getStatusStr();
+    str->ordinaryBounds = getBounds();
     this->ordinaryBounds = getBounds();
     
     createEnclosedObject();
@@ -721,6 +761,7 @@ void IRNodeObject::transformStatusEnclose()
     }else{
         this->enclosedObject->setBounds(getLocalBounds());
         this->encloseBounds = getBounds();
+        str->encloseBounds = getBounds();
         this->isEncloseObjectAlreadyDefined = true;
     }
 }
@@ -738,6 +779,9 @@ void IRNodeObject::createEnclosedObject()
 void IRNodeObject::setEncloseColour(Colour colour)
 {
     std::cout<< "setEncloseColour\n";
+    auto statusStr = getStatusStr();
+    statusStr->wrapColour = colour;
+    
     if(this->enclosedObject.get() != nullptr)
         this->enclosedObject->setColour(colour);
 }
@@ -749,6 +793,11 @@ void IRNodeObject::enclosedObjectClickedAction()
 
 void IRNodeObject::setEncloseMode(bool flag)
 {
+    // data
+    auto statusStr = getStatusStr();
+    statusStr->wrap = flag;
+    
+    
     if(flag) setStatus(IRNodeObjectStatus::ENCLOSE);
     else setStatus(IRNodeObjectStatus::ORDINARY);
 }
@@ -811,8 +860,9 @@ void IRNodeObject::arrangeControllerBoundsChangedAction(Rectangle<int> bounds)
 // ==================================================
 //##### Animation #####
 // ==================================================
-
+/*
 void IRNodeObject::StatusUpdated()
 {
     
 }
+*/

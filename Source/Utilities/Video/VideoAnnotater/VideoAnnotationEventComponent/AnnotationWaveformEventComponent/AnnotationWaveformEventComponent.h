@@ -41,7 +41,7 @@ public:
 
         createTextEditor();
         
-        timeCodeChanged();
+        //timeCodeChanged();
     }
 
     
@@ -62,7 +62,7 @@ public:
 
         createTextEditor();
       
-        timeCodeChanged();
+        //timeCodeChanged();
     }
     
     ~AnnotationWaveformEventComponent()
@@ -94,6 +94,19 @@ public:
         int buttonSize = h - margin*2;
         this->TextSettingButton.setBounds(getWidth() - margin*3 - buttonSize * 2, margin, buttonSize, buttonSize);
     }
+    // ==================================================
+
+    VideoAnnotationEventComponent* copyThis() override
+    {
+        auto event = new AnnotationWaveformEventComponent(getStr(),
+                                                          getBase(),
+                                                          getBeginTimeCode(),
+                                                          getEndTimeCode());
+        
+        return event;
+    }
+
+    
     // ==================================================
 
     void createTextEditor()

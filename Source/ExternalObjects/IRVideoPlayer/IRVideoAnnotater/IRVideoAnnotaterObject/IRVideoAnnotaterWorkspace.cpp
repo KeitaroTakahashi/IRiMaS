@@ -10,7 +10,7 @@
 IRVideoAnnotaterWorkspace::IRVideoAnnotaterWorkspace(String title, Rectangle<int> draggableMargin, IRStr* str, bool withOpenButton) :
 IRNodeObjectWorkspace(title, draggableMargin, str)
 {
-    enableDrawGrids(true);
+    enableDrawGrids(false);
     // initially create videoplayer and add
     this->videoPlayerObj.reset( new IRVideoPlayerObject2(this, str, withOpenButton) );
     //createParentObject(this->videoPlayerObj.get(), false);
@@ -33,19 +33,18 @@ IRVideoAnnotaterWorkspace::~IRVideoAnnotaterWorkspace()
 void IRVideoAnnotaterWorkspace::onResized()
 {
     
-    std::cout << "IRVideoAnnotaterWorkspace onResized\n";
     this->videoPlayerObj->setObjectBounds(getLocalBounds());
     
-    auto vs = this->videoPlayerObj->getVideoSize();
-    std::cout << "getVideoSize = " << vs.getX() << ", " << vs.getY() << std::endl;
-    std::cout << "getVideoObjectSize = " << this->videoPlayerObj->getWidth() << " , " << this->videoPlayerObj->getHeight() << std::endl;
+    //auto vs = this->videoPlayerObj->getVideoSize();
+    //std::cout << "getVideoSize = " << vs.getX() << ", " << vs.getY() << std::endl;
+    //std::cout << "getVideoObjectSize = " << this->videoPlayerObj->getWidth() << " , " << this->videoPlayerObj->getHeight() << std::endl;
 
 }
 
 void IRVideoAnnotaterWorkspace::onPaint(Graphics& g)
 {
     g.drawText("IRVideoAnnotaterWorkspace", 0, 0, getWidth(), getHeight()/2, Justification::centred);
-    g.fillAll(Colours::blue);
+    g.fillAll(getStr()->SYSTEMCOLOUR.background);
 }
 
 void IRVideoAnnotaterWorkspace::setFixObjectSizeRatioWithOriginalSize(bool flag, Rectangle<float> originalSize)
@@ -70,14 +69,34 @@ void IRVideoAnnotaterWorkspace::copyAllDataToWorkspace(IRVideoAnnotaterWorkspace
     std::cout << "IRVideoAnnotaterWorkspace copy VideoPlayerObj url = " << p->getVideoPlayer()->getMovieFile().getFullPathName() << std::endl;
     
     // replace videoPlayerObject
-    w->replaceVideoPlayerObject(p);
+    //w->replaceVideoPlayerObject(p);
     
-    /*
-    for(auto obj : getObjects())
+    double ratioW =  (double)getWidth() / (double)newWorkspace->getWidth();
+    double ratioH = (double)getHeight() / (double)newWorkspace->getHeight();
+    
+    
+    std::cout << "workspace ratio = " << ratioW << ", " << ratioH << std::endl;
+    for(auto obj : newWorkspace->getObjects())
     {
         auto o = obj->copyThis();
-        w->createObject(o);
-    }*/
+        auto ob = obj->getBounds().toFloat();
+        /*
+        o->setObjectBounds(ob.getX() * ratioW,
+                           ob.getY() * ratioH,
+                           ob.getWidth() * ratioW,
+                           ob.getHeight() * ratioH);*/
+        
+        o->setObjectBoundsRelative(obj->getObjectBoundsRelative());
+        o->setBoundType(IRNodeComponentBoundsType::RELATIVE);
+        o->setObjectBounds(obj->getBounds());
+        o->setEventComponent(obj->getEventComponent());
+        
+        createObject(o);
+        
+        std::cout << "copy object on the workspace " << obj << " to " << o << " at " << o->getX() << ", " << o->getY() << " : " << o->getWidth() << ", " << o->getHeight() << std::endl;
+    }
+    
+    
 }
 
 void IRVideoAnnotaterWorkspace::replaceVideoPlayerObject(IRVideoPlayerObject2* newVideoPlayer)
@@ -129,9 +148,11 @@ IRVideoPlayerObject2* IRVideoAnnotaterWorkspace::getVideoPlayerObject()
 void IRVideoAnnotaterWorkspace::createNodeObjectOnWorkspace(IRNodeObject* obj)
 {
     obj->setObjectBounds(getWidth()/2,
-                             getHeight()/2,
-                             getWidth()/4,
-                             60);
+                         getHeight()/2,
+                         getWidth()/4,
+                         60);
+    
+    obj->setObjectBoundsRelative(0.5f, 0.5f, 0.25f, 0.25f);
     createObject(obj);
     obj->bringToFront();
     deselectAllObjects();
@@ -139,77 +160,83 @@ void IRVideoAnnotaterWorkspace::createNodeObjectOnWorkspace(IRNodeObject* obj)
     //event->setNodeObject(obj);
     obj->setSelected(true);
     // initially the object is shown
-    obj->setAnimated(true);
+    //obj->setAnimated(true);
     //obj->setCurrentTimeCode(this->videoTransport.getPlayPosition());
 }
-// ------------------------------------------------------------------------------------------
 
-void IRVideoAnnotaterWorkspace::createTextObject(Component* event)
+void IRVideoAnnotaterWorkspace::createNodeObjectOnworkspaceAsSubtitle(IRNodeObject* obj)
 {
-    // automatically fill begin and end time Code
-    // end time code in default is begin + 3.0 sec
-    //float beginTimeInSec = this->videoTransport.getPlayPosition();
-    //float endTimeInSec = beginTimeInSec + 3.0;
-/*
-    auto event = this->eventListComponent->createTextEventComponent(beginTimeInSec,
-                                                                    endTimeInSec);*/
-    //this->annotationMenu->closeAction();
-    //createEventOnTheLoadedVideo(event);
-
+    obj->setObjectBounds(0,
+                         getHeight()-60,
+                         getWidth(),
+                         60);
     
+    obj->setObjectBoundsRelative(0.0f, 0.8f, 1.0f, 0.2f);
+    createObject(obj);
+    obj->bringToFront();
+    deselectAllObjects();
+    obj->setSelected(true);
+}
+
+// ------------------------------------------------------------------------------------------
+void IRVideoAnnotaterWorkspace::createAnnotationObject(IRNodeObject* obj, Component* event)
+{
+    // here, bounds coordination is set in relative to the parent component bounds
+    obj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
+    
+    obj->setEventComponent(event);
+    createNodeObjectOnWorkspace(obj);
+}
+
+IRNodeObject* IRVideoAnnotaterWorkspace::createTextObject(Component* event)
+{
     IRVATextEditorObject* nodeObj = static_cast<IRVATextEditorObject*>(IRObjectCreater<IRVATextEditorObject>().create(this,
                                                                 getStr()));
     
+    // here, bounds coordination is set in relative to the parent component bounds
+    nodeObj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
     nodeObj->setEventComponent(event);
     createNodeObjectOnWorkspace(nodeObj);
 
+    return nodeObj;
 }
 
-void IRVideoAnnotaterWorkspace::createShapeObject(Component* event)
+IRNodeObject* IRVideoAnnotaterWorkspace::createShapeObject(Component* event)
 {
-    // automatically fill begin and end time Code
-    // end time code in default is begin + 3.0 sec
-    //float beginTimeInSec = this->videoTransport.getPlayPosition();
-    //float endTimeInSec = beginTimeInSec + 3.0;
-/*
-    auto event = this->eventListComponent->createTextEventComponent(beginTimeInSec,
-                                                                    endTimeInSec);*/
-    //this->annotationMenu->closeAction();
-    //createEventOnTheLoadedVideo(event);
-
-    
     IRVAShapeObject* nodeObj = static_cast<IRVAShapeObject*>(IRObjectCreater<IRVAShapeObject>().create(this,
                                                                 getStr()));
-    
+    nodeObj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
+
     nodeObj->setEventComponent(event);
     createNodeObjectOnWorkspace(nodeObj);
 
+    return nodeObj;
 }
 
-void IRVideoAnnotaterWorkspace::createImageObject(Component* event)
+IRNodeObject* IRVideoAnnotaterWorkspace::createImageObject(Component* event)
 {
-    // automatically fill begin and end time Code
-    // end time code in default is begin + 3.0 sec
-    //float beginTimeInSec = this->videoTransport.getPlayPosition();
-    //float endTimeInSec = beginTimeInSec + 3.0;
-/*
-    auto event = this->eventListComponent->createTextEventComponent(beginTimeInSec,
-                                                                    endTimeInSec);*/
-    //this->annotationMenu->closeAction();
-    //createEventOnTheLoadedVideo(event);
 
-    
     IRVAImageViewerObject* nodeObj = static_cast<IRVAImageViewerObject*>(IRObjectCreater<IRVAImageViewerObject>().create(this,
                                                                 getStr()));
-    
+    nodeObj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
     nodeObj->setEventComponent(event);
     createNodeObjectOnWorkspace(nodeObj);
+    
+    return nodeObj;
 
 }
 // --------------------------------------------------
+
+void IRVideoAnnotaterWorkspace::updateVideoPlayingPos(double pos)
+{
+    videoPlayingUpdateAction(pos);
+}
+
+
+
 void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
 {
-    //  std::cout << "pos = " << pos << std::endl;
+      //std::cout << "pos = " << pos << std::endl;
     // first reset the list of the visible annotation components
 
     bool shouldUpdateZOrder = false;
@@ -219,11 +246,17 @@ void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
     {
         auto event = static_cast<VideoAnnotationEventComponent*>(obj->getEventComponent());
         
-        //std::cout << "event component begin = " << event->getBeginTimeCode() << " : " << event->getEndTimeCode() << std::endl;
+        if(event == nullptr)
+        {
+            std:: cout << "ERROR : object " << obj->name << " does not have event!!\n";
+            return;
+        }
+        
+        std::cout << "event component begin = " << event->getBeginTimeCode() << " : " << event->getEndTimeCode() << std::endl;
         
         if(pos >= event->getBeginTimeCode() && event->getEndTimeCode() > pos)
         {
-            //std::cout << "in event activate? " << obj << " : " << obj->isActive() << std::endl;
+            std::cout << "in event activate? " << obj << " : " << obj->isActive() << std::endl;
             if(event->isActive())
             {
                 if(!obj->isActive())
@@ -237,6 +270,10 @@ void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
                     shouldUpdateZOrder = true;
                     
                 }
+            }else{
+                obj->setActive(false);
+                shouldUpdateZOrder = true;
+
             }
         }else{
             //std::cout << "out event activate? " << obj << " : " << obj->isActive() << std::endl;
@@ -252,6 +289,10 @@ void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
                     
                     shouldUpdateZOrder = true;
                 }
+            }else{
+                obj->setActive(false);
+                shouldUpdateZOrder = true;
+
             }
             
         }
@@ -263,7 +304,6 @@ void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
         manageHeavyWeightComponents(true);
     }
             
-    //resized();
       
     if(this->videoPlayingUpdateCallback != nullptr)
         this->videoPlayingUpdateCallback(pos);

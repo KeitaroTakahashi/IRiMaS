@@ -27,14 +27,14 @@ public:
         
         setOpaque(false);
         
-        createButton(&this->closeButton, getStr()->ICONBANK.icon_close);
+        createButton(&this->closeButton, getStr()->ICONBANK->icon_close);
         this->closeButton.onClick = [this] { closeButtonAction(); };
         this->closeButton.setDrawCircle(false);
         this->closeButton.setDrawRoundedSquare(false);
         addAndMakeVisible(&this->closeButton);
         
         this->newProjectButton.reset ( new IRImageButton() );
-        createButton(this->newProjectButton.get(), getStr()->ICONBANK.icon_newProject);
+        createButton(this->newProjectButton.get(), getStr()->ICONBANK->icon_newProject);
         this->newProjectButton->onClick = [this]{ newProjectButtonAction(); };
         this->newProjectButton->setDrawRoundedSquare(true);
         addAndMakeVisible(this->newProjectButton.get());
@@ -46,7 +46,7 @@ public:
         this->newProjectLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
 
         this->newSlideButton.reset(new IRImageButton("newSlide"));
-        createButton(this->newSlideButton.get(), getStr()->ICONBANK.icon_newSlide);
+        createButton(this->newSlideButton.get(), getStr()->ICONBANK->icon_newSlide);
         this->newSlideButton->onClick = [this]{ newSlideButtonAction(); };
         this->newSlideButton->setDrawRoundedSquare(true);
         addAndMakeVisible(this->newSlideButton.get());
@@ -58,7 +58,7 @@ public:
         this->newSlideLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
 
         this->saveProjectButton.reset( new IRImageButton() );
-        createButton(this->saveProjectButton.get(), getStr()->ICONBANK.icon_saveProject_arrow);
+        createButton(this->saveProjectButton.get(), getStr()->ICONBANK->icon_saveProject_arrow);
         this->saveProjectButton->onClick = [this]{ saveProjectButtonAction(); };
         this->saveProjectButton->setDrawRoundedSquare(true);
         addAndMakeVisible(this->saveProjectButton.get());
@@ -70,7 +70,7 @@ public:
         this->saveProjectLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
 
         this->saveasProjectButton.reset( new IRImageButton() );
-        createButton(this->saveasProjectButton.get(), getStr()->ICONBANK.icon_saveasProject_arrow);
+        createButton(this->saveasProjectButton.get(), getStr()->ICONBANK->icon_saveasProject_arrow);
         this->saveasProjectButton->onClick = [this]{ saveasProjectButtonAction(); };
         addAndMakeVisible(this->saveasProjectButton.get());
         this->saveasProjectButton->setDrawCircle(false);
@@ -82,7 +82,7 @@ public:
         this->saveasProjectLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
 
         this->openProjectButton.reset( new IRImageButton() );
-        createButton(this->openProjectButton.get(), getStr()->ICONBANK.icon_openProject_arrow);
+        createButton(this->openProjectButton.get(), getStr()->ICONBANK->icon_openProject_arrow);
         this->openProjectButton->onClick = [this]{ openProjectButtonAction(); };
         addAndMakeVisible(this->openProjectButton.get());
         this->openProjectButton->setDrawCircle(false);
@@ -93,7 +93,6 @@ public:
         this->openProjectLabel.setJustificationType(Justification::centred);
         this->openProjectLabel.setFont(getStr()->SYSTEMCOLOUR.h5);
 
-        std::cout << "IRTitleBarProjectButtonArea init\n";
     }
     
     ~IRTitleBarProjectButtonArea()
@@ -156,7 +155,7 @@ public:
         this->openProjectLabel.setBounds(x, labelY, bs.getX(), labelHeight);
        
         //heavyWeightRepaint();
-        std::cout << " ========== IRTitleBarComponent resized\n";
+        std::cout << " ========== IRTitleBarProjectButtonArea resized\n";
     }
     
     //==================================================

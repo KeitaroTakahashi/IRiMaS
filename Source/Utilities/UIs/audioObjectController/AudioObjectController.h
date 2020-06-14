@@ -40,11 +40,11 @@ public:
         addAndMakeVisible(&this->playerLabel);
         this->playerLabel.setText("Player", dontSendNotification);
         
-        createButton(&this->playButton, getStr()->ICONBANK.icon_play);
+        createButton(&this->playButton, getStr()->ICONBANK->icon_play);
         this->playButton.onClick = [this]{ playButtonClickedAction(); };
-        createButton(&this->stopButton, getStr()->ICONBANK.icon_stop);
+        createButton(&this->stopButton, getStr()->ICONBANK->icon_stop);
         this->stopButton.onClick = [this]{ stopButtonClickedAction(); };
-        createButton(&this->pauseButton, getStr()->ICONBANK.icon_pause);
+        createButton(&this->pauseButton, getStr()->ICONBANK->icon_pause);
         this->pauseButton.onClick = [this]{ pauseButtonClickedAction(); };
         
         addAndMakeVisible(&this->modeLabel);

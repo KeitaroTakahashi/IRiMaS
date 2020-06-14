@@ -25,7 +25,7 @@ draggableMargin(draggableMargin)
     {
         
         // needs to be controlled from outside of this class!
-        //addKeyListener(this->ir_str->key);
+        //addKeyListener(this->irt_str->key);
         //addMouseListener(this->ir_str->mouse, false);
     }
     
@@ -63,8 +63,11 @@ IRWorkspaceComponent::~IRWorkspaceComponent()
 void IRWorkspaceComponent::paint (Graphics& g)
 {
     g.fillAll(this->backgroundColour);
+    //g.fillAll(Colours::purple);
     //if(isDrawGrids() && this->editModeFlag) shaderTask(g);
     
+    //g.setColour(Colours::white);
+    //g.drawRect(getLocalBounds());
     
     // virtual method
     onPaint(g);
@@ -130,8 +133,9 @@ void IRWorkspaceComponent::setBackgroundColour(Colour colour)
 
 void IRWorkspaceComponent::resized()
 {
-
-    onResized();
+    // update initial
+    this->initialBounds = getBounds().toFloat();
+    
     
     resizeNodeObjectsRelativeToWorkspaceSizeChange();
     
@@ -144,13 +148,22 @@ void IRWorkspaceComponent::resized()
     this->selector->setDraggableArea(area);
     
     if(this->cover.get() != nullptr)
+    {
+        std::cout << "cover resized : " << getLocalBounds().getWidth() << std::endl;
         this->cover->setBounds(getLocalBounds());
+        
+    }
+    
+    onResized();
+
 }
 
 void IRWorkspaceComponent::resizeNodeObjectsRelativeToWorkspaceSizeChange()
 {
     if(!this->isFixObjectSizeRatio && this->parentNodeObject != nullptr)
     {
+        
+        std::cout << "resizeNodeObjectsRelativeToWorkspaceSizeChange\n";
         if(this->previousBounds.getWidth() != 0 &&
            this->previousBounds.getHeight() != 0)
         {
@@ -163,7 +176,7 @@ void IRWorkspaceComponent::resizeNodeObjectsRelativeToWorkspaceSizeChange()
             float ratioH = this->initialBounds.getHeight() / wb.getHeight();
 
             
-            //std::cout <<"w = " << ratioW << " : " << ratioH << " : initial(w, h) = " << this->initialBounds.getWidth() << ", " <<  this->initialBounds.getHeight() << " : current = " << wb.getWidth() << ", " << wb.getHeight() << std::endl;
+            std::cout <<"w = " << ratioW << " : " << ratioH << " : initial(w, h) = " << this->initialBounds.getWidth() << ", " <<  this->initialBounds.getHeight() << " : current = " << wb.getWidth() << ", " << wb.getHeight() << std::endl;
 
             for(auto obj : this->objects)
             {
@@ -172,7 +185,11 @@ void IRWorkspaceComponent::resizeNodeObjectsRelativeToWorkspaceSizeChange()
                                     (float)obj->getInitialBounds().getY() * ratioH,
                                     (float)obj->getInitialBounds().getWidth() * ratioW,
                                     (float)obj->getInitialBounds().getHeight() * ratioH);
+                
+                obj->setBoundType(IRNodeComponentBoundsType::RELATIVE);
                 obj->setObjectBounds(rb.toNearestInt());
+                obj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
+
                 
             }
         }
@@ -205,12 +222,6 @@ void IRWorkspaceComponent::setFixObjectSizeRatio(bool flag, Rectangle<float> ini
     std::cout << "setFixObjectSizeRatio IRWorkspace updated\n";
 }
 
-void IRWorkspaceComponent::initialBoundsUpdated(IRNodeObject* obj)
-{
-    setInitialBounds(getBounds().toFloat());
-    
-
-}
 
 // ==================================================
 
@@ -307,7 +318,6 @@ void IRWorkspaceComponent::mouseDoubleClick(const MouseEvent& e)
     
     if(isEditMode())
     {
-        std::cout << "Open menu window\n";
         
         // we need the screen position
         //openObjectListMenu(e.getScreenPosition());
@@ -406,6 +416,8 @@ json11::Json IRWorkspaceComponent::makeSaveDataOfThis()
     for(auto item : reversedZorder)
     {
         std::string s = k.GetNextNumber("object-", index, 5);
+        
+        /*
         json11::Json::object ob = json11::Json::object({
             {s, json11::Json::object({
 
@@ -413,6 +425,17 @@ json11::Json IRWorkspaceComponent::makeSaveDataOfThis()
                 {"objectUniqueID",      item->getUniqueID().toStdString()},
                 {"bounds",              json11::Json::array({item->getX(), item->getY(), item->getWidth(), item->getHeight()})},
                 {"status",              "Normal"},
+                {"ObjectDefined",       item->saveThisToSaveData()}
+                
+            })},
+        });*/
+        
+        json11::Json::object ob = json11::Json::object({
+            {s, json11::Json::object({
+
+                {"objectType",          item->name.toStdString()},
+                {"objectUniqueID",      item->getUniqueID().toStdString()},
+                {"ArrangeController",   item->getArrangeControllerSaveData()},
                 {"ObjectDefined",       item->saveThisToSaveData()}
                 
             })},
@@ -618,3 +641,25 @@ void IRWorkspaceComponent::createTexture()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, this->sp_w, this->sp_h, 0, GL_DEPTH_COMPONENT, GL_FLOAT, this->buffer);
     
 }
+// ==================================================
+
+
+void IRWorkspaceComponent::bringToFrontCompleted()
+{
+    if(this->cover.get() != nullptr)
+    {
+        bringCoverToFront();
+    }
+}
+
+// ==================================================
+
+void IRWorkspaceComponent::enableDrawGrids(bool flag)
+{
+    this->isdrawGridsFlag = flag;
+    
+    this->cover->enableDrawGrids(flag);
+}
+
+
+// ==================================================

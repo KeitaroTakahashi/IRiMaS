@@ -71,29 +71,27 @@ void IRMainSpace::createNewWorkspace()
     space->registerMouseListener(this->ir_str->mouse);
     addKeyListener(space);
     
-    
     this->workspaces.push_back(space);
     this->mixer.addAudioSource(&space->getMixer());
     
-    
     addAndMakeVisible(space);
-    
-    if(this->topWorkspace != nullptr)
-    {
-        // hide heavy components first
-        //this->topWorkspace->manageHeavyWeightComponents(false);
-    }
+
     // update a top workspace
     this->topWorkspace = space;
     // store a pointer of the current top workspace
     this->ir_str->TopWorkspace = this->topWorkspace;
-
+    // --------------------------------------------------
+    // resize before bring OopenGLContext to front
+    resized();
+    // --------------------------------------------------
     space->toFront(true);
-    
+    space->bringThisToFront("IRWorkspace");
+    space->manageHeavyWeightComponents(true);
+    // --------------------------------------------------
+
     // call listener's function
     callnewWorkspaceCreated(space);
     
-    resized();
 }
 
 void IRMainSpace::deleteWorkspace(IRWorkspace* space)
@@ -144,7 +142,7 @@ void IRMainSpace::nodeObjectSelectionChange(IRNodeObject* obj)
 void IRMainSpace::nodeObjectGetFocused(IRNodeObject* obj)
 {
     
-    //std::cout << "IRMainSpace::nodeObjectGetFocused\n";
+    std::cout << "IRMainSpace::nodeObjectGetFocused\n";
     callNodeObjectGetFocused(obj);
 }
 

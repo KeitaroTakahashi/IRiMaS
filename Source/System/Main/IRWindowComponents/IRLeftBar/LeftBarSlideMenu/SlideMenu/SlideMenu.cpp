@@ -68,8 +68,6 @@ void SlideMenu::slideSelectedAction(IRWorkspaceSlide* slide)
     slide->setSelectedFlag(true);
     this->selectedSlide = slide;
 
-    
-    
 }
 
 void SlideMenu::slideSwitchedAction(IRWorkspaceSlide* slide)

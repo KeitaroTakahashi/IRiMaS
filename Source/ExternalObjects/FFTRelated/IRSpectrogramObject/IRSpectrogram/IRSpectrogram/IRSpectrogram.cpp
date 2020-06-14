@@ -9,7 +9,7 @@
 
 IRSpectrogram::IRSpectrogram(IRNodeObject* nodeObject, IRStr* str) :
 IRUIAudioFoundation(nodeObject, str),
-IRHeavyWeightComponent(this),
+IRHeavyWeightComponent(this, "IRSpectrogram"),
 parent(nodeObject),
 zoomInfo(juce::Point<float>(1.0,1.0))
 {

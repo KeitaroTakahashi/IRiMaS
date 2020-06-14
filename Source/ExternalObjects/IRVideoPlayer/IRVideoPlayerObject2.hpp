@@ -65,8 +65,8 @@ public:
     void openFile(bool isCallbback = true);
 
     std::function<void()> videoLoadCompletedCallbackFunc;
-    virtual void videoLoadCompletedCallback() {}
-    virtual void videoPlayingUpdateCallback(double pos) {}
+    virtual void videoLoadCompletedVirtualFunc() {}
+    virtual void videoPlayingUpdateVirtualFunc(double pos) {}
     std::function<void(double)> videoPlayingUpdateCallbackFunc;
     // --------------------------------------------------
     void play();
@@ -127,7 +127,8 @@ private:
 
     // called when this object is brought to the most Front of all other objects
     void moveToFrontAction() override;
-    
+    // --------------------------------------------------
+
     // --------------------------------------------------
     // call videoLoadCompletedCallbackFunc if true
     bool isCallback = true;

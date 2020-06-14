@@ -116,10 +116,13 @@ public:
     // ==================================================
     float getBeginTimeCode() const
     {
+ 
         int h = std::stoi(this->hourLabelBegin.getText().toStdString());
         int m = std::stoi(this->minLabelBegin.getText().toStdString());
-        float s = (float)std::stof(this->secLabelBegin.getText().toStdString()) +
-                  (float)(std::stoi(this->msecLabelBegin.getText().toStdString()))/1000.0;
+        int sec = std::stoi(this->secLabelBegin.getText().toStdString());
+        int msec = std::stoi(this->msecLabelBegin.getText().toStdString());
+        
+        float s = (float)sec + (float)msec /1000.0;
 
         
         float t = (float)(h * 3600 + m * 60) + s;
@@ -145,21 +148,41 @@ public:
         std::string s = buf[2];
 
         std::vector<std::string> buf2 = KLib().StringSplit(s, ',');
-        s = buf2[0];
+        std::string s2 = buf2[0];
         std::string ms = buf2[1];
 
         this->hourLabelBegin.setText    (h, dontSendNotification);
         this->minLabelBegin.setText     (m, dontSendNotification);
-        this->secLabelBegin.setText     (s, dontSendNotification);
+        this->secLabelBegin.setText     (s2, dontSendNotification);
         this->msecLabelBegin.setText    (ms, dontSendNotification);
     }
     
     void setBeginTime(float beginTime)
     {
-        float duration = getEndTimeCode() - getBeginTimeCode();
-       
-        setEndTime(beginTime + duration);
-        setBeginTime(getTimeCodeInString(beginTime));
+
+        //setBeginTime(getTimeCodeInString(beginTime));
+        
+        int h,m,s,ms;
+        std::string h_s, m_s, s_s, ms_s;
+        s2hms(beginTime, h, m, s, ms);
+        
+        if(h < 10) h_s = "0" + std::to_string(h);
+        else h_s = std::to_string(h);
+        if(m < 10) m_s = "0" + std::to_string(m);
+        else m_s = std::to_string(m);
+        if(s < 10) s_s = "0" + std::to_string(s);
+        else s_s = std::to_string(s);
+        
+        if(ms < 100)
+        {
+            if(ms < 10) ms_s = "00" + std::to_string(ms);
+            else ms_s = "0" + std::to_string(ms);
+        }else ms_s = std::to_string(ms);
+        
+        this->hourLabelBegin.setText    (h_s, dontSendNotification);
+        this->minLabelBegin.setText     (m_s, dontSendNotification);
+        this->secLabelBegin.setText     (s_s, dontSendNotification);
+        this->msecLabelBegin.setText    (ms_s, dontSendNotification);
     }
     
     float getEndTimeCode() const
@@ -193,18 +216,41 @@ public:
         std::string s = buf[2];
 
         std::vector<std::string> buf2 = KLib().StringSplit(s, ',');
-        s = buf2[0];
+                
+        std::string s2 = buf2[0];
         std::string ms = buf2[1];
 
         this->hourLabelEnd.setText    (h, dontSendNotification);
         this->minLabelEnd.setText     (m, dontSendNotification);
-        this->secLabelEnd.setText     (s, dontSendNotification);
+        this->secLabelEnd.setText     (s2, dontSendNotification);
         this->msecLabelEnd.setText    (ms, dontSendNotification);
     }
     
     void setEndTime(float endTime)
     {
-        setEndTime(getTimeCodeInString(endTime));
+        //setEndTime(getTimeCodeInString(endTime));
+        
+        int h,m,s,ms;
+        std::string h_s, m_s, s_s, ms_s;
+        s2hms(endTime, h, m, s, ms);
+        
+        if(h < 10) h_s = "0" + std::to_string(h);
+        else h_s = std::to_string(h);
+        if(m < 10) m_s = "0" + std::to_string(m);
+        else m_s = std::to_string(m);
+        if(s < 10) s_s = "0" + std::to_string(s);
+        else s_s = std::to_string(s);
+        
+        if(ms < 100)
+        {
+            if(ms < 10) ms_s = "00" + std::to_string(ms);
+            else ms_s = "0" + std::to_string(ms);
+        }else ms_s = std::to_string(ms);
+        
+        this->hourLabelEnd.setText    (h_s, dontSendNotification);
+        this->minLabelEnd.setText     (m_s, dontSendNotification);
+        this->secLabelEnd.setText     (s_s, dontSendNotification);
+        this->msecLabelEnd.setText    (ms_s, dontSendNotification);
     }
     
     std::string getTimeCodeInString(float timeCodeInSec)

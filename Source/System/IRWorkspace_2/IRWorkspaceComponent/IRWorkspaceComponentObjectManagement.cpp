@@ -97,84 +97,26 @@ void IRWorkspaceComponent::createObject(IRNodeObject *obj, bool shouldSort)
     {
         this->mixer.addAudioSource(obj->getAudioSource());
     }
-    
-    // setup openGL Context if it has. This should be called adter addAndMakeVisible
-    //obj->initOpenGLContext();
-   
-    // check if the created object is Heavy-weight Component
-    if(shouldSort)
-    {
-        if(obj->getObjectType().componentType == IRNodeComponentType::heavyWeightComponent ||
-           obj->getObjectType().componentType == IRNodeComponentType::ordinaryIRComponent)
-        {
-            
-            std::cout << "IRWorkspaceComponent::createObject callHeavyObjectCreated\n";
-            callHeavyObjectCreated(obj);
-        }
-    }
+
     //request updating the workspaceList
     if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
     
     // register this object to the first place of ZOrder list
-    insertObjectAtTopZOrder(obj);
+
+    /*
+    if(!shouldSort)
+    {
+        insertObjectAtTopZOrder(obj);
+    }else{
+        obj->bringToFront();
+        getStr()->projectOwner->rebindOpenGLContents();
+    }*/
+    obj->bringToFront();
+    getStr()->projectOwner->rebindOpenGLContents();
     repaint();
+    
 }
 
-void IRWorkspaceComponent::createParentObject(IRNodeObject* obj, bool shouldSort)
-{
-    std::cout << "createParentObject ==================================================\n ";
-    
-    obj->setEditMode(isEditMode());
-    
-    obj->setResizableMargin(this->draggableMargin);
-    //obj->setEnableResizingSquare(false);
-    //obj->setMovable(false, false, false);
-    // make uniqueID
-    //KeRandomStringGenerator a;
-    //std::string id = a.createStrings(10);
-    // generate uniqueID
-    //obj->setUniqueID("id-aa");
-    addAndMakeVisible(obj);
-    obj->toFront(true);
-    obj->addChangeListener(this);
-    obj->addListener(this); // IRNodeObjectListener
-    obj->addKeyListener(this); // key listener
-    //this->objects.add(obj);
-    
-    // add as a Parent node object
-    setParentNodeObject(obj);
-    
-    // use this function in order to also update file manger of all related UIs etc.
-    obj->updateFileManager(this->ir_str->FILEMANAGER);
-    obj->callUpdateIRFileManager(&this->ir_str->FILEMANAGER);
-    
-    //audiosource
-    if (obj->isContainAudioSource())
-    {
-        this->mixer.addAudioSource(obj->getAudioSource());
-    }
-    
-    // setup openGL Context if it has. This should be called adter addAndMakeVisible
-    //obj->initOpenGLContext();
-   
-    // check if the created object is Heavy-weight Component
-    if(shouldSort)
-    {
-        if(obj->getObjectType().componentType == IRNodeComponentType::heavyWeightComponent ||
-           obj->getObjectType().componentType == IRNodeComponentType::ordinaryIRComponent)
-        {
-            
-            std::cout << "IRWorkspaceComponent::createObject callHeavyObjectCreated\n";
-            callHeavyObjectCreated(obj);
-        }
-    }
-    //request updating the workspaceList
-    if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
-    
-    // register this object to the first place of ZOrder list
-    //insertObjectAtTopZOrder(obj);
-    repaint();
-}
 
 void IRWorkspaceComponent::resortHeavyObject()
 {
@@ -195,17 +137,15 @@ void IRWorkspaceComponent::pasteObject(IRNodeObject *obj, bool addToSelected)
     
     bench.start();
     IRNodeObject* newObj = obj->copyThis();
-    
-    
-    newObj->setObjectBounds(Rectangle<int>(obj->getPosition().x-20, obj->getPosition().y-20,
-                            obj->getWidth(), obj->getHeight()));
-   
+
     bench.result("copy object");
     // do not initialize heavy weight component here but later
-    bench.start();
-    createObject(newObj, false);
-    bench.result("createObject");
+    
+    newObj->setObjectBounds(Rectangle<int>(obj->getPosition().x-20, obj->getPosition().y-20,
+                                           obj->getWidth(), obj->getHeight()));
+    createObject(newObj);
 
+    /*
     obj->setSelected(false);
     this->selector->removeSelectedObject(obj);
     newObj->setSelected(true);
@@ -215,8 +155,10 @@ void IRWorkspaceComponent::pasteObject(IRNodeObject *obj, bool addToSelected)
         this->selector->addSelectedObjects();
         copySelectedObjects();
     }
-    
-    callNodeObjectPasted(newObj);
+    */
+   
+
+    //callNodeObjectPasted(newObj);
 }
 void IRWorkspaceComponent::duplicateObject(IRNodeObject *obj)
 {
@@ -239,9 +181,9 @@ void IRWorkspaceComponent::deleteObject(IRNodeObject *obj)
         if(index >= 0){
             
             callNodeObjectWillDeleted(obj);
-            
             this->objects.remove(index);
             delete obj;
+            
         }
     }
     
@@ -260,7 +202,7 @@ void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
     std::reverse(std::begin(reversedZorder), std::end(reversedZorder));
     
     bringParentNodeObjectToFront();
-    //bringCoverToFront();
+    bringCoverToFront();
 
     // First modify the z-indeces of all objects in the right order.
     for(auto obj: reversedZorder)
@@ -280,7 +222,7 @@ void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
         }
     }
     
-    std::cout << "obj front done\n";
+    //std::cout << "obj front done\n";
     //bringCoverToBack();
     // bring parent object to the bihind of all other objects.
     //bringParentNodeObjectToBack();
@@ -298,6 +240,8 @@ void IRWorkspaceComponent::createCover()
     this->cover->addMouseListener(this, true);
     this->cover->addMouseListener(getStr()->projectOwner, false);
     this->cover->addKeyListener(this);
+    // add top key lis
+    this->cover->addKeyListener(getStr()->key);
     
     
 }
@@ -305,7 +249,10 @@ void IRWorkspaceComponent::createCover()
 void IRWorkspaceComponent::bringCoverToFront()
 {
     if(this->cover.get() != nullptr)
-           this->cover->bringThisToFront();
+    {
+        this->cover->bringThisToFront("IRWorkspaceCover");
+        this->cover->repaint();
+    }
 }
 
 void IRWorkspaceComponent::bringCoverToBack()
@@ -335,7 +282,7 @@ void IRWorkspaceComponent::bringParentNodeObjectToFront()
     {
         
         std::cout << "bringParentNodeObjectToFront " << this->parentNodeObject << std::endl ;
-        this->parentNodeObject->bringThisToFront();
+        this->parentNodeObject->bringThisToFront("parentNodeObject");
         // in case parentNodeObje
         this->parentNodeObject->moveToFrontAction();
         
@@ -361,6 +308,11 @@ void IRWorkspaceComponent::setParentNodeObject(IRNodeObject* newParentNodeObject
     std::cout << "IRWorkspaceComponent::setParentNodeObject " << this->parentNodeObject << std::endl;
     this->hasParentNodeObjectFlag = true;
     this->parentNodeObject->setEnableResizingSquare(false);
+    
+    if(this->cover != nullptr)
+    {
+        this->cover->addMouseListener(this->parentNodeObject, true);
+    }
 }
 
 void IRWorkspaceComponent::removeParentNodeObject()

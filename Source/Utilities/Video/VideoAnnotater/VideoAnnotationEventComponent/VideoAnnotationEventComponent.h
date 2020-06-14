@@ -38,14 +38,14 @@ public:
     {
         
         std::cout << "VideoAnnotationEventComponent\n";
-        this->activeButton.setImage(getStr()->ICONBANK.icon_active.white);
+        this->activeButton.setImage(getStr()->ICONBANK->icon_active.white);
         this->activeButton.setDrawCircle(true);
         this->activeButton.setDrawRoundedSquare(false);
         addAndMakeVisible(&this->activeButton);
         this->activeButton.onClick = [this]{ changeActive(); };
         this->activeButton.addMouseListener(this, true);
         
-        this->searchButton.setImage(getStr()->ICONBANK.icon_search.white);
+        this->searchButton.setImage(getStr()->ICONBANK->icon_search.white);
         this->searchButton.setDrawCircle(true);
         this->searchButton.setDrawRoundedSquare(false);
         addAndMakeVisible(&this->searchButton);
@@ -86,6 +86,12 @@ public:
                                      buttonSize, buttonSize);
     }
     // ==================================================
+    // copy this event component
+    virtual VideoAnnotationEventComponent* copyThis() {};
+    
+    
+    // ==================================================
+
     
     void mouseDown(const MouseEvent& e) override
     {
@@ -119,21 +125,21 @@ public:
         if(isActive())
         {
             setActive(false);
-            this->activeButton.setImage(getStr()->ICONBANK.icon_active.gray);
+            this->activeButton.setImage(getStr()->ICONBANK->icon_active.gray);
             this->activeButton.setDrawColour(Colour(100, 100, 100));
             
             // deactivate animation
-            auto obj = getNodeObject();
-            if(obj != nullptr) obj->setAnimationActive(false);
+            //auto obj = getNodeObject();
+            //if(obj != nullptr) obj->setAnimationActive(false);
             
         }else{
             setActive(true);
-            this->activeButton.setImage(getStr()->ICONBANK.icon_active.white);
+            this->activeButton.setImage(getStr()->ICONBANK->icon_active.white);
             this->activeButton.setDrawColour(Colour(255, 255, 255));
             
             // activate animation 
-            auto obj = getNodeObject();
-            if(obj != nullptr) obj->setAnimationActive(true);
+            //auto obj = getNodeObject();
+            //if(obj != nullptr) obj->setAnimationActive(true);
 
         }
         callEventActiveChanged();
@@ -161,7 +167,8 @@ public:
     VideoAnnotationType getType() const { return this->type; }
     
     // get VideoAnnotation in SRT format (only text is relevant to the usual SRT and others are TIAALS original formats)
-    virtual srtWriter::SRT_STRUCT getSRT() = 0;
+    virtual srtWriter::SRT_STRUCT getSRT() { return srtWriter::SRT_STRUCT(); };
+    virtual srtWriter::IRSRT_STRUCT getIRSRT(){ return srtWriter::IRSRT_STRUCT(); };
     
     void setNodeObject(IRNodeObject* obj)
     {
@@ -187,8 +194,8 @@ public:
         if(this->nodeObj != nullptr)
         {
             // set animation time code
-            this->nodeObj->setBeginTimeCode (getBeginTimeCode());
-            this->nodeObj->setEndTimeCode   (getEndTimeCode());
+            //this->nodeObj->setBeginTimeCode (getBeginTimeCode());
+           // this->nodeObj->setEndTimeCode   (getEndTimeCode());
         }
     }
     

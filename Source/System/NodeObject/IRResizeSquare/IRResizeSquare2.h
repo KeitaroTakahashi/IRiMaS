@@ -31,7 +31,7 @@ public:
     };
     
     IRResizeSquare2(Component* resizedComponent, Component* componentBindedOn) :
-    IRHeavyWeightComponent(this),
+    IRHeavyWeightComponent(this, "IRResizeSquare2"),
     resizedComponent(resizedComponent),
     componentBindedOn(componentBindedOn)
     {

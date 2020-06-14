@@ -40,6 +40,7 @@ IRWindowComponent::~IRWindowComponent()
     this->leftBar.reset();
     this->rightBar.reset();
     
+    this->iconBank.reset();
     this->ir_str.reset();
     
 }
@@ -97,7 +98,9 @@ void IRWindowComponent::initialize()
     this->ir_str->setMouseListener(this);
     this->ir_str->projectName = this->projectName;
     this->ir_str->SYSTEMCOLOUR = IR::darkGraySet();
-    this->ir_str->ICONBANK = IRIconBank();
+    
+    this->iconBank.reset( new IRIconBank() );
+    this->ir_str->ICONBANK = this->iconBank.get();
     
     Font f;
     this->ir_str->fontFamilyList = f.findAllTypefaceNames();
@@ -543,7 +546,8 @@ void IRWindowComponent::workspaceSelected(IRWorkspace* space)
 {
     std::cout << "workpsaceSelected " << space << std::endl;
     this->mainSpace->setTopWorkspace(space);
-    heavyObjectCreated(nullptr);
+    //heavyObjectCreated(nullptr);
+    rebindOpenGLContents();
     
 }
 
@@ -564,17 +568,13 @@ void IRWindowComponent::rebindOpenGLContents()
     if(this->bar->getWidth() > 0 && this->bar->getHeight() > 0)
         this->bar->bringThisToFront("IRTitleBar bringThisToFront : from IRWindowComponent");
     
-    std::cout << "rebindOpenGLContents\n";
     if(this->leftBar->getWidth() > 0 && this->leftBar->getHeight() > 0)
            this->leftBar->bringThisToFront("LeftBar bringThisToFront : from IRWindowComponent");
     
-    
-       else std::cout << "bar not yet\n";
-    
+    giveKeyFocusOnTopWorkspace();
     // make sure to update
     resized();
 
-    std::cout << "=========================\n";
 }
 
 void IRWindowComponent::updateAppearance()
@@ -796,13 +796,20 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
                 std::string objectTypeId = it->second["objectType"].string_value();
                 auto* obj = factory.createObject(objectTypeId, currentSpace, this->ir_str.get());
                 
+                obj->setUniqueID(it->second["objectUniqueID"].string_value());
+
+                json11::Json arrangeCtl = it->second["ArrangeController"];
+                
+                loadArrangeControllerSaveData(obj, arrangeCtl);
+                
+                
+                /*
                 json11::Json::array b = it->second["bounds"].array_items();
                 obj->setObjectBounds(b[0].int_value(), b[1].int_value(),
                                      b[2].int_value(), b[3].int_value());
                 
                 std::cout << "object bounds = " << obj->getWidth() << ", " << obj->getHeight() << std::endl;
-                
-                obj->setUniqueID(it->second["objectUniqueID"].string_value());
+                */
                 //
                 
                 // currently no status implemented!
@@ -814,19 +821,55 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
                 
                 // ===== END =====
             }
-            
         }
+        
+        currentSpace->manageHeavyWeightComponents(true);
         
         //as default, a workspace is in control mode
         //currentSpace->setEditMode(false);
         
     }
     
+    rebindOpenGLContents();
+    
     // initialize this Project
     initProjectAfterLoading();
     // set project save path
     //projectWindow->getProjectComponent()->setProjectPath(directoryPath);
 }
+
+void IRWindowComponent::loadArrangeControllerSaveData(IRNodeObject* obj, t_json arrangeCtl)
+{
+    auto b = arrangeCtl["bounds"].array_items();
+    auto rb = arrangeCtl["relativeBounds"].array_items();
+    
+    // relative first
+    obj->setObjectBoundsRelative(rb[0].number_value(), rb[1].number_value(),
+                                 rb[2].number_value(), rb[3].number_value());
+    
+    // absolute second
+    obj->setObjectBounds(b[0].int_value(), b[1].int_value(),
+                         b[2].int_value(), b[3].int_value());
+    
+    std::cout << "arrangeCTL bounds = " << b[0].int_value() << ", " << b[1].int_value() << ", " << b[2].int_value() << ", " << b[3].int_value() << std::endl;
+
+    
+    //obj->setOrdinaryBounds
+    
+    auto wrap = arrangeCtl["wrap"].int_value();
+    // give wrap only when wrap is TRUE because the oridinary bounds of the enclosed mode does not have the initial bounds. It gets the bounds only when it transfers to enclose mode.
+    if(wrap == 1) obj->setEncloseMode(true);
+    
+    //std::cout << "wrap = " << wrap << std::endl;
+    
+    
+    auto wrapColour = arrangeCtl["wrapColour"].array_items();
+    obj->setEncloseColour(Colour((uint8)wrapColour[0].int_value(),
+                                 (uint8)wrapColour[1].int_value(),
+                                 (uint8)wrapColour[2].int_value(),
+                                 (uint8)wrapColour[3].int_value()));
+}
+
 
 void IRWindowComponent::initProjectAfterLoading()
 {

@@ -175,7 +175,6 @@ public:
         if(this->videoPlayingUpdate != nullptr)
             this->videoPlayingUpdate(pos);
         
-        resized();
     }
     std::function<void(double pos)> videoPlayingUpdate;
     

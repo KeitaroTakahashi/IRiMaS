@@ -41,6 +41,7 @@ public:
     
     void annotaterClosedAction();
     void annotaterOpenedAction();
+    void applyAnnotation();
     // --------------------------------------------------
     
     
@@ -57,6 +58,8 @@ private:
 
     std::shared_ptr<IRVideoPlayerController> controller;
     // --------------------------------------------------
+    
+    void ObjectBoundsChanged(Rectangle<int> bounds) override;
     // --------------------------------------------------
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRVideoAnnotaterInterfaceObject)

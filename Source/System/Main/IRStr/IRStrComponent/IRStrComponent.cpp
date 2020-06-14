@@ -7,8 +7,9 @@
 
 #include "IRStrComponent.hpp"
 
-IRStrComponent::IRStrComponent(IRStr* str) :
-ir_str(str)
+IRStrComponent::IRStrComponent(IRStr* str, IRStr* parentStr) :
+ir_str(str),
+ir_parentStr(parentStr)
 {
 
 }

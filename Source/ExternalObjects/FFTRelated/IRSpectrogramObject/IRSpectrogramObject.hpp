@@ -11,7 +11,6 @@
 #include "IRSpectrogramWithPreference.hpp"
 #include "IRSpectrogramController2.h"
 class IRSpectrogramObject : public IRNodeObject,
-public IRHeavyWeightComponent,
 IRNodeObject::Listener
 {
 public:

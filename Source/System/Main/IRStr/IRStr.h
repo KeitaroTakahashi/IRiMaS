@@ -19,6 +19,14 @@
 struct IRStr
 {
     
+    IRStr()
+    {
+        
+    }
+    ~IRStr()
+    {
+        
+    }
     // KeyListener from IRWIndowComponent
     KeyListener* key;
     void setKeyListener(KeyListener* key) { this->key = key; }
@@ -56,11 +64,17 @@ struct IRStr
             this->fileManagerUpdatedCallbackList[i](FILEMANAGER);
         }
     }
-    
+    // ==================================================
+
+    void setIconBank(IRIconBank* bank) { this->ICONBANK = bank; }
+    IRIconBank* getIconBank() const { return this->ICONBANK; }
     // ==================================================
     UserSettingStr USERSETTING;
     IR::IRColours SYSTEMCOLOUR;
-    IRIconBank    ICONBANK;
+    
+    // IconBank has large size, and we need only one set in a project, so IRStr holds a pointer of it.
+    IRIconBank* ICONBANK;
+
     IRFileManager FILEMANAGER;
 
     // ==================================================

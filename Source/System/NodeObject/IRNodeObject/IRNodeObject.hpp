@@ -10,12 +10,10 @@
 #include "IRPreferenceObject.hpp"
 #include "IRObjectController.hpp"
 #include "IREnclosedObject.hpp"
-#include "IRNodeObjectAnimation.hpp"
 
 #include "ObjectArranger.hpp"
 
 class IRNodeObject : public IRNodeComponent,
-public IRNodeObjectAnimation,
 public ChangeListener
 {
     
@@ -57,6 +55,8 @@ public:
     // to controll position of this project etc.
     void setArrangeController(ArrangeController* controller);
     virtual void arrangeControllerChangedNotify() {};
+    
+    t_json getArrangeControllerSaveData();
     // ==================================================
 
     virtual void IRChangeListenerCallback(ChangeBroadcaster* source);
@@ -112,7 +112,7 @@ public:
     
     // ###### Time Code Anomation ######
     
-    void StatusUpdated() override;
+    //void StatusUpdated() override;
     
     // ==================================================
 
@@ -193,9 +193,7 @@ public:
         virtual void addHeavyCopmonentToTopZOrder(IRNodeObject* obj) {};
         // simply reorganize z-order of objects
         virtual void reorderZIndex() {};
-        
-        // INITIAL BOUNDS
-        virtual void initialBoundsUpdated(IRNodeObject* obj) {};
+
     };
     
     virtual void addListener(Listener* newListener) { this->listeners.add(newListener); }
@@ -232,9 +230,6 @@ public:
     
     // ask IRWorkspace to Recorder objects according to the new ZIndex
     void callReorderZIndex();
-    
-    //INITIAL BOUNDS
-    void callInitialBoundsUpdated();
 
     
     // from IRNodeComponent to call callHeavyComponentCreated
@@ -345,6 +340,13 @@ private:
     
     Rectangle<int> ordinaryBounds;
     Rectangle<int> encloseBounds;
+public:
+    void setOrdinaryBounds(Rectangle<int> bounds);
+    void setEncloseBounds(Rectangle<int> bounds);
+    
+    Rectangle<int> getOrdinaryBounds() const { return this->ordinaryBounds; }
+    Rectangle<int> getEncloseBounds() const { return this->encloseBounds; }
+private:
     
     // flag to inform if the encloseObject is already created and has encloseBounds.
     bool isEncloseObjectAlreadyDefined = false;
@@ -352,9 +354,6 @@ private:
     void encloseObjectPositionChangedAction(int x, int y);
     void encloseObjectBoundsChangedAction(Rectangle<int> bounds);
 
-    // ==================================================
-    // INITIAL BOUNDS
-    void initialBoundsUpdated() override;
     // ==================================================
 
     // ObjectController

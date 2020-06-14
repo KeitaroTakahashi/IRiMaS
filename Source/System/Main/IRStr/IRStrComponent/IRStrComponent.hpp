@@ -16,7 +16,7 @@ class IRStrComponent
 {
  
 public:
-    IRStrComponent(IRStr* str);
+    IRStrComponent(IRStr* str, IRStr* parentStr = nullptr);
     ~IRStrComponent();
     // ==================================================
 
@@ -24,6 +24,9 @@ public:
     void setStr(IRStr* str) { this->ir_str = str; }
     KeyListener* getMasterKey() const { return this->masterKey; }
     
+    // keep its parent IRStr
+    IRStr* getParentStr() const { return this->ir_parentStr; }
+    void setParentStr(IRStr* str) { this->ir_parentStr = str; }
     
     // ==================================================
 
@@ -46,6 +49,8 @@ public:
 private:
     IRStr* ir_str;
     KeyListener* masterKey;
+    
+    IRStr* ir_parentStr;
     
 };
 

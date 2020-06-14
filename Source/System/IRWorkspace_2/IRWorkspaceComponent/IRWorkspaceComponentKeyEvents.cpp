@@ -10,7 +10,7 @@
 //bool IRWorkspaceComponent::keyPressed (const KeyPress& key)
 bool IRWorkspaceComponent::keyPressed (const KeyPress& key, Component* originatingComponent)
 {
-    std::cout << "IRWorkspaceComponent keyPressed() : " << key.getKeyCode() << " : " << key.getTextDescription() << ", " << key.getTextCharacter() <<   std::endl;
+    std::cout << "IRWorkspaceComponent keyPressed() of " << this->name << " : " << key.getKeyCode() << " : " << key.getTextDescription() << ", " << key.getTextCharacter() <<   std::endl;
     
   // delete key
     if(key.getKeyCode() == key.deleteKey || key.getKeyCode() == key.backspaceKey)

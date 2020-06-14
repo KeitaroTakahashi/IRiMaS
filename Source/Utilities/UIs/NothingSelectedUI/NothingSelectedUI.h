@@ -22,7 +22,7 @@ public:
         this->title.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->title.setJustificationType(Justification::centred);
         
-        createButton(&this->objectIcon, getStr()->ICONBANK.icon_object_type1);
+        createButton(&this->objectIcon, getStr()->ICONBANK->icon_object_type1);
         addAndMakeVisible(&this->objectIcon);
 
     }

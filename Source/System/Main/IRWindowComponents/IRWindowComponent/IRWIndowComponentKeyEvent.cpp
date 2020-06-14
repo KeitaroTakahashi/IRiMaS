@@ -25,4 +25,17 @@ void IRWindowComponent::CommandSPressed()
     
 }
 
+void IRWindowComponent::giveKeyFocusOnTopWorkspace()
+{
+    if(this->mainSpace.get() != nullptr)
+    {
+        auto w = this->mainSpace->getTopWorkspace();
+        if(w != nullptr)
+        {
+            this->leftBar->setWantsKeyboardFocus(false);
+            w->setWantsKeyboardFocus(true);
+        }
+    }
+}
+
 

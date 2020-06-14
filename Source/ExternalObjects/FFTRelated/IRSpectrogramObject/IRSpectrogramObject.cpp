@@ -8,8 +8,7 @@
 #include "IRSpectrogramObject.hpp"
 
 IRSpectrogramObject::IRSpectrogramObject(Component* parent, IRStr* str) :
-IRNodeObject(parent, "IRSpectrogram", str, NodeObjectType(ordinaryIRComponent)),
-IRHeavyWeightComponent(this)
+IRNodeObject(parent, "IRSpectrogram", str, NodeObjectType(ordinaryIRComponent))
 {
     
     setOpaque(false);

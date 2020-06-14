@@ -26,7 +26,7 @@ title(title), editModeButton("to Control")
     addAndMakeVisible(&this->closeButton);
      */
     
-    createButton(&this->rightBarButton, getStr()->ICONBANK.icon_rightBar);
+    createButton(&this->rightBarButton, getStr()->ICONBANK->icon_rightBar);
     this->rightBarButton.onClick = [this]{ rightBarButtonAction(); };
     this->rightBarButton.setDrawCircle(false);
     this->rightBarButton.setDrawRoundedSquare(true);
@@ -145,6 +145,7 @@ void IRTitleBarComponent::paint (Graphics& g)
 
 void IRTitleBarComponent::resized()
 {
+    
     this->titleLabel.setBounds(0, 0, getWidth(), 30);
     this->titleLabel.setCentrePosition(getWidth()/2, 15);
     
@@ -190,26 +191,7 @@ void IRTitleBarComponent::resized()
     
     this->projectButtonComponent->setBounds(0, 0, 600, getHeight());
     
-    /*
-    this->newSlideButton->setBounds(x, marginY, bs.getX(), bs.getY());
-    this->newSlideLabel.setBounds(x, labelY, bs.getX(), labelHeight);
-    x += bs.getX() + 10;
-    this->saveProjectButton.setBounds(x, marginY, bs.getX(), bs.getY());
-    this->saveProjectLabel.setBounds(x, labelY, bs.getX(), labelHeight);
 
-    x += bs.getX() + 10;
-    this->saveasProjectButton.setBounds(x, marginY, bs.getX(), bs.getY());
-    this->saveasProjectLabel.setBounds(x, labelY, bs.getX(), labelHeight);
-
-    x += bs.getX() + 20;
-    
-    this->newProjectButton.setBounds(x, marginY, bs.getX(), bs.getY());
-    this->newProjectLabel.setBounds(x, labelY, bs.getX(), labelHeight);
-
-    x += bs.getX() + 10;
-    this->openProjectButton.setBounds(x, marginY, bs.getX(), bs.getY());
-    this->openProjectLabel.setBounds(x, labelY, bs.getX(), labelHeight);
-    */
     std::cout << " ========== IRTitleBarComponent resized\n";
 
 }

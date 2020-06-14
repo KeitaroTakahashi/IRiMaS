@@ -18,8 +18,8 @@ public:
     IRStrComponent(str),
     IRHeavyWeightComponent(this, "ObjectSlideSwitchSpace"),
     buttonSize(buttonSize),
-    toNavigatorButton(str, str->ICONBANK.icon_toNavigator, "to Slides", buttonSize),
-    toObjectMenuButton(str, str->ICONBANK.icon_toObjectMenu, "to Objects", buttonSize)
+    toNavigatorButton(str, str->ICONBANK->icon_toNavigator, "to Slides", buttonSize),
+    toObjectMenuButton(str, str->ICONBANK->icon_toObjectMenu, "to Objects", buttonSize)
     {
         this->toNavigatorButton.onClick = [this] { toNavigatorButtonAction(); };
         this->toObjectMenuButton.onClick = [this] { toObjectMenuButtonAction(); };
@@ -44,8 +44,9 @@ public:
     
     void paint(Graphics& g) override
     {
-        std::cout << "ObjectSlideSwitchSpace paint\n";
         g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
+        std::cout << "ObjectSlideSwitchSpace paint\n";
+
     }
     // ==================================================
 

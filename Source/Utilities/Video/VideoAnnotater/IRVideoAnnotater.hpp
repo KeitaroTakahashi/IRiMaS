@@ -13,12 +13,15 @@
 #include "IRVideoAnnotaterObject.h"
 #include "IRVideoAnnotaterObject2.hpp"
 
+#include "IRVideoAnnotaterSRTFile.hpp"
+
 #include "VideoAnnotationMenuWindow.h"
 #include "VideoEventList.h"
 #include "EventLogList.h"
 #include "IRVideoAnnotaterBase.h"
 #include "IRVideoAnnotaterDelegate.h"
 #include "VideoAnnotaterWorkspace.hpp"
+#include "IRProjectOwnerBase.h"
 
 // VideoAnontater object
 #include "IRVATextEditorObject.h"
@@ -28,8 +31,7 @@
 
 #include "IRObjectCreater.hpp"
 
-class IRVideoAnnotater : public Component,
-public IRStrComponent,
+class IRVideoAnnotater : public IRProjectOwnerBase,
 public IRVideoAnnotaterBase,
 public KeyListener,
 public ChangeListener,
@@ -48,15 +50,26 @@ public:
     void openAnnotaterWindowAction();
     // ==================================================
     
+    void initialize();
+    
+    // ==================================================
+
     void openFile();
     void openFile(File file);
     
-    // SRTs file is the original file format by Keitaro
+    // SRTs file is the original file format
     // this covers shape, image, and other IRNodeObjects besides text subtitles.
     void openSRTs();
     void openSRTs(File file);
     void saveSRTs();
     void saveSRTs(File file);
+    
+private:
+    void openDialogtoSaveSRTs();
+    String savePath;
+public:
+    
+    String getSRTFilePath() const { return this->srtFileLoader.getPath(); }
     
     bool hsaVideo() const;
 
@@ -76,6 +89,11 @@ public:
     // update video player and share the status.
     void updateVideoPlayerOfThis();
     void updateVideoPlayerOfWorkspace();
+    
+    void updateThisAnnotationWorkspace();
+    void updateThisVideoFile();
+    void updateAnnotationWorkspace();
+    void updateVideoFileWorkspace();
     
     void updateWorkspaceWithCurrentPlayingPosition(float pos);
     // ==================================================
@@ -121,14 +139,15 @@ private:
     bool isVideoLoaded = false;
     Rectangle<int> videoArea;
     float aspectRatio = 1.0;
+    
+    bool wantUpdateThisVideo = true;
+    bool wantUpdateVideoWorkspace = true;
 
     // ==================================================
 
     Rectangle<int> workArea;
     // ==================================================
 
-    TextButton openVideoButton;
-    void openVideoButtonClicked();
     // ==================================================
 
     IRVideoAnnotaterObject2* videoPlayerObject = nullptr;
@@ -136,7 +155,7 @@ private:
     
     
     // ==================================================
-    IRVideoTransport videoTransport;
+    std::unique_ptr<IRVideoTransport> videoTransport;
     std::unique_ptr<VideoAnnotationMenuWindow> annotationMenu;
     
     void createVideoTransport();
@@ -152,6 +171,7 @@ private:
     void deleteEventComponent(VideoAnnotationEventComponent* event);
     
     void createTextEventComponent();
+    void createTextEventComponentFromSRT(SubtitleItem* item);
     void createTextEventComponentFromIRNodeObject(IRNodeObject* obj);
     void createShapeEventComponent();
     void createShapeEventComponentFromNodeObject(IRNodeObject* obj);
@@ -162,7 +182,7 @@ private:
 
     void eventComponentResized();
     
-    void createNodeObjectOnEvent(IRNodeObject* obj, VideoAnnotationEventComponent* event);
+    void setupEventComponent(IRNodeObject* obj, VideoAnnotationEventComponent* event);
     void copyNodeObject(IRNodeObject* obj);
     // ==================================================
     //IRWorkspace
@@ -204,8 +224,9 @@ private:
     void eventModifiedAction(Component* modifiedEvent) override;
     void eventSelectedAction(Component* selectedEvent) override;
     
-    void updateAnimation() override;
+    void updateAnnotation() override;
     void showEventPosition(Component* event) override;
+    void eventActivationChanged(Component* changedEvent) override;
     // ==================================================
 
     std::function<void(VideoAnnotationEventComponent*)> eventModifiedCallback;
@@ -215,6 +236,16 @@ private:
     void shapeEventComponentSelected(VideoAnnotationEventComponent* event);
     
     // ==================================================
+    //SRTs
+    
+    void loadAndApplySRTs(std::vector<SubtitleItem*> data);
+    
+    srtWriter srt;
+    srtLoader srtL;
+    IRVideoAnnotaterSRTFile srtFileLoader;
+    
+    // ==================================================
+
 
     bool keyPressed(const KeyPress& key, Component* originatingComponent) override;
     
@@ -225,6 +256,10 @@ private:
     void CommandSPressed();
     // ==================================================
     
+    std::shared_ptr<IRStr> ir_str;
+    IRStr* ir_parentStr = nullptr;
+    // ==================================================
+
     std::shared_ptr<VideoAnnotaterWorkspace> workspace;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRVideoAnnotater)

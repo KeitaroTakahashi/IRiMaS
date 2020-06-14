@@ -28,22 +28,22 @@ public:
     
     VideoAnnotationMenuComponent(IRStr* str) : IRStrComponent(str)
     {
-        createButton(&this->TextEventButton, getStr()->ICONBANK.icon_TextEvent);
+        createButton(&this->TextEventButton, getStr()->ICONBANK->icon_TextEvent);
         this->TextEventButton.setDrawCircle(false);
         this->TextEventButton.setDrawRoundedSquare(true);
         this->TextEventButton.onClick = [this]{ textEventButtonClicked(); };
         
-        createButton(&this->ImageEventButton, getStr()->ICONBANK.icon_ImageEvent);
+        createButton(&this->ImageEventButton, getStr()->ICONBANK->icon_ImageEvent);
         this->ImageEventButton.setDrawCircle(false);
         this->ImageEventButton.setDrawRoundedSquare(true);
         this->ImageEventButton.onClick = [this]{ imageEventButtonClicked(); };
         
-        createButton(&this->ShapeEventButton, getStr()->ICONBANK.icon_ShapeEvent);
+        createButton(&this->ShapeEventButton, getStr()->ICONBANK->icon_ShapeEvent);
         this->ShapeEventButton.setDrawCircle(false);
         this->ShapeEventButton.setDrawRoundedSquare(true);
         this->ShapeEventButton.onClick = [this]{ ShapeEventButtonClicked(); };
         
-        createButton(&this->AudioEventButton, getStr()->ICONBANK.icon_AudioEvent);
+        createButton(&this->AudioEventButton, getStr()->ICONBANK->icon_AudioEvent);
         this->AudioEventButton.setDrawCircle(false);
         this->AudioEventButton.setDrawRoundedSquare(true);
         this->AudioEventButton.onClick = [this]{ AudioEventButtonClicked(); };

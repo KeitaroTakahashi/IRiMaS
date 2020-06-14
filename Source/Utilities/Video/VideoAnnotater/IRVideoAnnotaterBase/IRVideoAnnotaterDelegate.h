@@ -43,14 +43,19 @@ public:
         this->base->eventTimeCodeChangedAction(changedEvent);
     }
     
-    void updateAnimation()
+    void updateAnnotation()
     {
-        this->base->updateAnimation();
+        this->base->updateAnnotation();
     }
     
     void showEventPosition(Component* event)
     {
         this->base->showEventPosition(event);
+    }
+    
+    void eventActivationChanged(Component* changedEvent)
+    {
+        this->base->eventActivationChanged(changedEvent);
     }
     // ==================================================
     

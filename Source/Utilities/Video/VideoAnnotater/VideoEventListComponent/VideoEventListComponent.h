@@ -30,7 +30,7 @@ public:
     
     ~VideoEventListComponent()
     {
-        clearAllEventComponent();
+        //clearAllEventComponent();
     }
     // ==================================================
 
@@ -106,13 +106,13 @@ public:
 
     std::string getFilePath() const { return this->filePath; }
     // ==================================================
-    
+    /*
     AnnotationTextEventComponent* createTextEventComponent()
     {
         std::cout << "createTextEventComponent\n";
         AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
-                                                                              this->getBase());
-        createEventComponent(comp);
+                                                                              getBase());
+        addEventComponent(comp);
         return comp;
     }
     
@@ -120,10 +120,10 @@ public:
                                   float endTime)
     {
         AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
-                                                                              this->getBase(),
+                                                                              getBase(),
                                                                               beginTime,
                                                                               endTime);
-        createEventComponent(comp);
+        addEventComponent(comp);
         return comp;
 
     }
@@ -133,11 +133,11 @@ public:
                                                            std::string contents)
     {
         AnnotationTextEventComponent* comp = new AnnotationTextEventComponent(getStr(),
-                                                                              this->getBase(),
+                                                                              getBase(),
                                                                               beginTime,
                                                                               endTime,
                                                                               contents);
-        createEventComponent(comp);
+        addEventComponent(comp);
         return comp;
     }
     
@@ -145,26 +145,28 @@ public:
     {
         AnnotationShapeEventComponent* comp = new AnnotationShapeEventComponent(getStr(),
                                                                                 this->getBase());
-        createEventComponent(comp);
+        addEventComponent(comp);
         return comp;
     }
     
     AnnotationShapeEventComponent* createShapeEventComponent(float beginTime,
                                                              float endTime)
     {
+        
         AnnotationShapeEventComponent* comp = new AnnotationShapeEventComponent(getStr(),
-                                                                                this->getBase(),
+                                                                                getBase(),
                                                                                 beginTime,
                                                                                 endTime);
-        createEventComponent(comp);
+        
+        addEventComponent(comp);
         return comp;
     }
     
     AnnotationImageEventComponent* createImageEventComponent()
     {
        AnnotationImageEventComponent* comp = new AnnotationImageEventComponent(getStr(),
-                                                                               this->getBase());
-       createEventComponent(comp);
+                                                                               getBase());
+       addEventComponent(comp);
        return comp;
     }
     
@@ -172,10 +174,10 @@ public:
                                                              float endTime)
     {
         AnnotationImageEventComponent* comp = new AnnotationImageEventComponent(getStr(),
-                                                                                this->getBase(),
+                                                                                getBase(),
                                                                                 beginTime,
                                                                                 endTime);
-        createEventComponent(comp);
+        addEventComponent(comp);
         return comp;
     }
     
@@ -183,8 +185,8 @@ public:
     AnnotationWaveformEventComponent* createWaveformEventComponent()
     {
        AnnotationWaveformEventComponent* comp = new AnnotationWaveformEventComponent(getStr(),
-                                                                                     this->getBase());
-       createEventComponent(comp);
+                                                                                     getBase());
+       addEventComponent(comp);
        return comp;
     }
     
@@ -192,16 +194,19 @@ public:
                                                                    float endTime)
     {
         AnnotationWaveformEventComponent* comp = new AnnotationWaveformEventComponent(getStr(),
-                                                                                      this->getBase(),
+                                                                                      getBase(),
                                                                                       beginTime,
                                                                                       endTime);
-        createEventComponent(comp);
+        addEventComponent(comp);
         return comp;
     }
     
-    void createEventComponent(VideoAnnotationEventComponent* comp)
+    */
+    
+    void addEventComponent(VideoAnnotationEventComponent* comp)
     {
-        addEventComponent(comp);
+  
+        registerEventComponent(comp);
         comp->addListener(this);
         addAndMakeVisible(comp);
         
@@ -290,7 +295,8 @@ public:
     void eventActiveChanged(VideoAnnotationEventComponent* comp) override
     {
         // call updateAnimation method in IRVideoAnnotater
-        updateAnimation();
+        getBase()->eventActivationChanged(comp);
+        //updateAnnotation();
     }
     
     void eventShownOnVideoPlayer(VideoAnnotationEventComponent* comp) override
@@ -339,10 +345,11 @@ public:
 
     void clearAllEventComponent()
     {
+        /*
         for(auto event : this->eventComponents)
         {
             delete event;
-        }
+        }*/
         this->eventComponents.clear();
         this->selectedEventComponents.clear();
     }
@@ -350,20 +357,24 @@ public:
     void clearEventComponent(VideoAnnotationEventComponent* eventComponent)
     {
         
-        deSelectAllEventComponents();
+        removeChildComponent(eventComponent);
         
         auto it = std::find(this->eventComponents.begin(), this->eventComponents.end(), eventComponent);
         if(it != this->eventComponents.end())
         {
             this->eventComponents.erase(it);
-            delete eventComponent;
+            //delete eventComponent;
         }
+        
+         deSelectAllEventComponents();
+
     }
     
-    void addEventComponent(VideoAnnotationEventComponent* eventComponent)
+    void registerEventComponent(VideoAnnotationEventComponent* eventComponent)
     {
+
         this->eventComponents.push_back(eventComponent);
-        
+
         if(this->newEventAddedCallback != nullptr)
             this->newEventAddedCallback();
         
@@ -422,9 +433,9 @@ public:
         
         for(auto item : eventList)
         {
-                createTextEventComponent(item->getStartTimeString(),
-                                         item->getEndTimeString(),
-                                         item->getText());
+                //createTextEventComponent(item->getStartTimeString(),
+                  //                       item->getEndTimeString(),
+                   //                      item->getText());
         }
         
         // update events

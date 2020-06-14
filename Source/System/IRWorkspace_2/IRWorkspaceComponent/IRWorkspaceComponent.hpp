@@ -22,6 +22,7 @@
 #include "IRWorkspaceCover.hpp"
 
 
+
 class IRWorkspaceComponent : public AudioAppComponent,
 public IRComponents,
 public IRStrComponent,
@@ -50,7 +51,7 @@ public:
     // ==================================================
 
     bool isDrawGrids() const { return this->isdrawGridsFlag; }
-    void enableDrawGrids(bool flag) { this->isdrawGridsFlag = flag; }
+    void enableDrawGrids(bool flag);
     void setGridsBackgroundAlpha(float alpha) { this->gridsBackgroundAlpha = alpha; };
     
     // ==================================================
@@ -155,10 +156,7 @@ public:
     void pasteObject(IRNodeObject *obj, bool addToSelected);
     void duplicateObject(IRNodeObject *obj);
     void deleteObject(IRNodeObject *obj);
-    
-    // for parent node object, use this instead of createObject()
-    void createParentObject(IRNodeObject* obj, bool shouldSort = true);
-    
+
     // call this after complete creting the heavy objects
     void resortHeavyObject();
 
@@ -296,9 +294,9 @@ private:
     //store the original bound size
     Rectangle<float> initialBounds;
     
-    void initialBoundsUpdated(IRNodeObject* obj) override;
-public:
     void setInitialBounds(Rectangle<float> initialBounds) { this->initialBounds = initialBounds; }
+    
+public:
     Rectangle<float> getInitialBounds() const { return this->initialBounds; }
     // ==================================================
 private:
@@ -360,7 +358,7 @@ private:
     bool isAltPressed = false;
     bool isOptionPressed = false;
     
-    bool isdrawGridsFlag = true;
+    bool isdrawGridsFlag = false;
 
     // ==================================================
 
@@ -379,6 +377,8 @@ private:
     // snapshot
     Image snap;
     // ==================================================
+    
+    void bringToFrontCompleted() override;
 
     // Window for the preference
     //PreferenceWindow* preferenceWindow;

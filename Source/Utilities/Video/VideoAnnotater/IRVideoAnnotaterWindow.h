@@ -10,8 +10,8 @@
 
 #include "IRVideoAnnotater.hpp"
 
+
 class IRVideoAnnotaterWindow : public DocumentWindow,
-public IRStrComponent,
 public ChangeListener,
 public ChangeBroadcaster
 {
@@ -21,7 +21,6 @@ public:
                            Rectangle<int>frameRect,
                            IRVideoAnnotaterObject2* videoPlayerObject) :
     DocumentWindow(name, Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId), DocumentWindow::allButtons),
-    IRStrComponent(str),
     videoPlayerObject(videoPlayerObject),
     videoAnnotater(str, videoPlayerObject)
     {
@@ -39,6 +38,7 @@ public:
         
         this->videoAnnotater.closeAnnotationWindowCallback = [this] { close(); };
         
+
         this->videoAnnotater.bindVideoPlayerObject();
 
     }
@@ -79,6 +79,11 @@ public:
         this->videoAnnotater.updateVideoPlayerOfThis();
     }
     
+    void updateAnnotationOfWorkspace()
+    {
+        this->videoAnnotater.updateAnnotationWorkspace();
+    }
+    
     void updateParentVideoPlayerObject()
     {
         this->videoAnnotater.updateVideoPlayerOfWorkspace();
@@ -96,6 +101,8 @@ public:
     IRVideoAnnotater* getVideoAnnotaterComponent() { return &this->videoAnnotater; }
     
     // ==================================================
+    
+    
     // ==================================================
 
 private:
@@ -108,6 +115,7 @@ private:
     
     IRVideoAnnotaterObject2* videoPlayerObject = nullptr;
     // ==================================================
+
     // ==================================================
     
     IRVideoAnnotater videoAnnotater;

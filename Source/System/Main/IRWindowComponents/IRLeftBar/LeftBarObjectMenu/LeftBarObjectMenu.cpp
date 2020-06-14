@@ -160,9 +160,9 @@ void LeftBarObjectMenu::createButton(IRImageButton* button, IRIconBank::IRIconIm
 
 void LeftBarObjectMenu::addButtons()
 {
-    createButton(&this->inspectorButton, getStr()->ICONBANK.icon_inspector);
+    createButton(&this->inspectorButton, getStr()->ICONBANK->icon_inspector);
     this->inspectorButton.onClick = [this] { inspectorAction(); };
-    createButton(&this->preferenceButton, getStr()->ICONBANK.icon_preference);
+    createButton(&this->preferenceButton, getStr()->ICONBANK->icon_preference);
     this->preferenceButton.onClick = [this] { preferenceAction(); };
 }
 // ==================================================
@@ -382,10 +382,12 @@ IRImageButton& LeftBarObjectMenu::getButtonFromType()
 
 void LeftBarObjectMenu::bringToFrontCompleted()
 {
+    
+    resized();
     if(this->objectMenuIconArea != nullptr)
-        this->objectMenuIconArea->bringThisToFront();
+        this->objectMenuIconArea->bringThisToFront("objectMenuIconArea");
     
     if(this->objectMenuSpaceArea != nullptr)
-        this->objectMenuSpaceArea->bringThisToFront();
+        this->objectMenuSpaceArea->bringThisToFront("objectMenuSpaceArea");
    
 }

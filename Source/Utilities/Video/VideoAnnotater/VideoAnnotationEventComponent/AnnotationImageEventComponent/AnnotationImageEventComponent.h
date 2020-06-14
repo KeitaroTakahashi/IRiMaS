@@ -95,7 +95,16 @@ public:
         this->TextSettingButton.setBounds(getWidth() - margin*3 - buttonSize * 2, margin, buttonSize, buttonSize);
     }
     // ==================================================
-
+    AnnotationImageEventComponent* copyThis() override
+    {
+        auto event = new AnnotationImageEventComponent(getStr(),
+                                                       getBase(),
+                                                       getBeginTimeCode(),
+                                                       getEndTimeCode());
+        
+        return event;
+    }
+    // ==================================================
     void createTextEditor()
     {
         //set default bounds adjusted to the video size in pixel

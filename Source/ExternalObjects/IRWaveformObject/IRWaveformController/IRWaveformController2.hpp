@@ -12,7 +12,6 @@
 #include "AudioObjectController.h"
 
 class IRWaveformController2 : public IRObjectController,
-public ChangeListener,
 public ChangeBroadcaster
 {
 public:
@@ -48,7 +47,7 @@ private:
     
     
     // ==================================================
-    void changeListenerCallback(ChangeBroadcaster* source) override;
+    void controllerChangeListenerCallback(ChangeBroadcaster* source) override {};
 
     
     // ==================================================

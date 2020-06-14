@@ -28,11 +28,7 @@ lightingColour(0.71f, 1.0f, 0.77f, 1.0f)
     this->isRenderingFlag = true;
     
     stopRendering();
-    /*
-    this->test.setButtonText("test");
-    this->test.setColour(TextButton::buttonColourId, Colours::transparentWhite);
-    addAndMakeVisible(&this->test);
-    */
+
     setSize(500, 500);
 }
 

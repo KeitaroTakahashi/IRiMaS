@@ -45,27 +45,27 @@ public:
         
         addAndMakeVisible(&this->openAnnotationButton);
         this->openAnnotationButton.onClick = [this]{ openAnnotationButtonClicked(); };
-        this->openAnnotationButton.setButtonText("Open SRTs");
+        this->openAnnotationButton.setButtonText("Open IRSRT");
         
         addAndMakeVisible(&this->saveAnnotationButton);
         this->saveAnnotationButton.onClick = [this]{ saveAnnotationButtonClicked(); };
-        this->saveAnnotationButton.setButtonText("Save SRTs");
+        this->saveAnnotationButton.setButtonText("Save IRSRT");
         
-        createButton(&this->addEventButton, getStr()->ICONBANK.icon_newSlide);
+        createButton(&this->addEventButton, getStr()->ICONBANK->icon_newSlide);
         this->addEventButton.setDrawCircle(false);
         this->addEventButton.setDrawRoundedSquare(true);
         this->addEventButton.onClick = [this]{ addEventButtonClickedAction(); };
         
-        createButton(&this->deleteEventButton, getStr()->ICONBANK.icon_deleteSlide);
+        createButton(&this->deleteEventButton, getStr()->ICONBANK->icon_deleteSlide);
         this->deleteEventButton.setDrawCircle(false);
         this->deleteEventButton.setDrawRoundedSquare(true);
         this->deleteEventButton.onClick = [this]{ deleteEventButtonClickedAction(); };
 
 
         //controller
-        createButton(&this->playButton, getStr()->ICONBANK.icon_play);
+        createButton(&this->playButton, getStr()->ICONBANK->icon_play);
         this->playButton.onClick = [this]{ playButtonClickedAction(); };
-        createButton(&this->stopButton, getStr()->ICONBANK.icon_stop);
+        createButton(&this->stopButton, getStr()->ICONBANK->icon_stop);
         this->stopButton.onClick = [this]{ stopButtonClickedAction(); };
         
         addAndMakeVisible(this->timeCode);
@@ -85,7 +85,7 @@ public:
         
     }
     
-    void paint(Graphics& g) override
+    virtual void paint(Graphics& g) override
     {
         g.fillAll(getStr()->SYSTEMCOLOUR.contents);
         
@@ -103,7 +103,7 @@ public:
                    2);
     }
     
-    void resized() override
+    virtual void resized() override
     {
         int h = 30;
         

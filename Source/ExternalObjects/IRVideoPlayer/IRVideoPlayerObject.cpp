@@ -114,7 +114,7 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
     // and resize event can not be acomplished properly.
     if(this->enableControllerFlag)
     {
-        if(this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
+        if(this->videoPlayer->isNeedController() && this->videoPlayer->hasVideo())
             this->videoPlayer->setNeedController(false);
     }
     
@@ -135,6 +135,8 @@ void IRVideoPlayerObject::resizeThisComponentEvent(const MouseEvent& e)
             newHeight += deltaY;
             newWidth = (double) newHeight * this->videoPlayer->getAspectRatio();
         }
+        
+        
         setObjectSize(newWidth, newHeight);
 
     }else{
@@ -190,7 +192,7 @@ void IRVideoPlayerObject::mouseUpEvent(const MouseEvent& e)
     //recover event
     if(this->enableControllerFlag)
     {
-        if(!this->videoPlayer->isNeedController() && this->videoPlayer->hsaVideo())
+        if(!this->videoPlayer->isNeedController() && this->videoPlayer->hasVideo())
         {
             this->videoPlayer->setNeedController(true);
         
@@ -251,7 +253,7 @@ void IRVideoPlayerObject::videoPlayingUpdateAction(double pos)
 void IRVideoPlayerObject::moveToFrontAction()
 {
     std::cout << "IRVideoPlayerObject::moveToFrontAction\n";
-    if(this->videoPlayer->hsaVideo())
+    if(this->videoPlayer->hasVideo())
         this->videoPlayer->bringViewToFront();
     
     this->workspace->bringThisToFront("Workspace bringToThisFront");
@@ -370,7 +372,7 @@ void IRVideoPlayerObject::resizingSquareClickedAction(IRResizeSquare2::MovableDi
 }
 void IRVideoPlayerObject::resizingSquareReleasedAction(IRResizeSquare2::MovableDirection direction)
 {
-    if(this->videoPlayer->hsaVideo())
+    if(this->videoPlayer->hasVideo())
         refreshZIndex();
 }
 void IRVideoPlayerObject::resizingSquareDraggedAction(MouseEvent e)

@@ -128,10 +128,37 @@ void IRNodeComponent::setObjectCentredPosition(int x, int y)
     
 }
 
+
 void IRNodeComponent::setObjectBounds(Rectangle<int> bounds)
 {
-    //std::cout << "IRNodeComponent::setObjectBounds\n";
-    setBounds(bounds);
+    //std::cout << "IRNodeComponent::setObjectBounds : " << this->name << std::endl;
+    // update initial bounds
+
+    auto statusStr = getStatusStr();
+    statusStr->bounds = bounds;
+    
+    this->setInitialBounds(bounds.toFloat());
+
+    if(this->boundType == ORDINARY)
+    {
+        setBounds(bounds);
+        
+        if(this->parent != nullptr)
+        {
+            //update relative bounds to parent
+            Rectangle<int> pb = this->parent->getBounds();
+            Rectangle<float> b ((float)bounds.getX() / (float)pb.getWidth(),
+                                (float)bounds.getY() / (float)pb.getHeight(),
+                                (float)bounds.getWidth() / (float)pb.getWidth(),
+                                (float)bounds.getHeight() / (float)pb.getHeight());
+            setObjectBoundsRelative(b);
+        }
+        
+    }else if(this->boundType == RELATIVE)
+    {
+        
+        setBoundsRelative(this->relativeBoundsToParent);
+    }
     
     updateResizingSquare();
     
@@ -143,9 +170,6 @@ void IRNodeComponent::setObjectBounds(Rectangle<int> bounds)
         ObjectBoundsChanged(b);
         ObjectBoundsChanged4IRNodeObject(b);
     }
-    
-    // update initial bounds
-    this->setInitialBounds(getBounds().toFloat());
 }
 
 void IRNodeComponent::setObjectBounds(int x, int y, int w, int h)
@@ -156,11 +180,14 @@ void IRNodeComponent::setObjectBounds(int x, int y, int w, int h)
 
 void IRNodeComponent::setObjectBoundsRelative(Rectangle<float> ratioBounds)
 {
-    setBoundsRelative(ratioBounds);
+    this->relativeBoundsToParent = ratioBounds;
+    
+    auto statusStr = getStatusStr();
+    statusStr->relativeBounds = ratioBounds;
 }
 void IRNodeComponent::setObjectBoundsRelative(float x, float y, float w, float h)
 {
-    setBoundsRelative(x, y, w, h);
+    setObjectBoundsRelative(Rectangle<float> (x, y, w, h));
 }
 
 void IRNodeComponent::setBounds(int x, int y, int w, int h)
@@ -184,12 +211,10 @@ void IRNodeComponent::setDraggableArea(Rectangle<int> area)
     this->draggableArea = area;
 }
 
-
 // ==================================================
 
 void IRNodeComponent::updateResizingSquare()
 {
-    //std::cout << "updateResizingSquare\n";
     int s = this->resizingSquare.getSquareSize() / 2;
     this->resizingSquare.setBounds(getBounds().expanded(s));
 }

@@ -10,9 +10,6 @@
 IRUIFoundation::IRUIFoundation(IRNodeObject* nodeObject, IRStr* str) :
 IRStrComponent(str)
 {
-    // to make it efficient to redrawn...
-
-    StopWatch t; t.start();
     setOpaque(false);
     
     this->nodeObject = nodeObject;

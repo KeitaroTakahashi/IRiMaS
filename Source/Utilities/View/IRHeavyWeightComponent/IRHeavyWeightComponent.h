@@ -20,7 +20,7 @@
 class IRHeavyWeightComponent : OpenGLRenderer
 {
 public:
-    IRHeavyWeightComponent(juce::Component* component, String name = "") :
+    IRHeavyWeightComponent(juce::Component* component, String name) :
     component ( component ),
     name(name)
     {
