@@ -18,6 +18,9 @@ struct IRNodeObjectStatusStr
     bool wrap = false;
     Colour wrapColour;
     
+    float startTimeCode = 0;
+    float endTimeCode = 0;
+    
     IRNodeObjectStatusStr()
     {
         

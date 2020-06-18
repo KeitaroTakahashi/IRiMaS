@@ -294,7 +294,7 @@ void IRVideoAnnotater::openSRTs()
     //if(this->eventListComponent.get() != nullptr)
        // this->eventListComponent->openAnnotationFile();
     
-    /*
+  
     FileChooser chooser("Select a SRT file to load...",
                         {},
                         "*.srt", "*.srts");
@@ -303,14 +303,14 @@ void IRVideoAnnotater::openSRTs()
     if(chooser.browseForFileToOpen())
     {
         auto file = chooser.getResult();
-        this->SrtPath = file.getFullPathName();
+        //this->SrtPath = file.getFullPathName();
+        this->jsonManager.readSaveData(file.getFullPathName().toStdString());
+        loadAndApplySRTs();
         
-        loadAndApplySRTs(this->SrtPath);
-        
-    }*/
+    }
     
-    this->srtFileLoader.openFile();
-    loadAndApplySRTs(this->srtFileLoader.getSrtData());
+    //this->srtFileLoader.openFile();
+    //loadAndApplySRTs(this->srtFileLoader.getSrtData());
 }
 
 void IRVideoAnnotater::openSRTs(File file)
@@ -321,9 +321,11 @@ void IRVideoAnnotater::openSRTs(File file)
     
     //this->SrtPath = file.getFullPathName();
     //loadAndApplySRTs(this->SrtPath);
-    this->srtFileLoader.openFile(file.getFullPathName());
-    loadAndApplySRTs(this->srtFileLoader.getSrtData());
+    //this->srtFileLoader.openFile(file.getFullPathName());
+    //loadAndApplySRTs(this->srtFileLoader.getSrtData());
+    this->jsonManager.readSaveData(file.getFullPathName().toStdString());
 
+    loadAndApplySRTs();
 }
 
 void IRVideoAnnotater::saveSRTs()
@@ -357,8 +359,26 @@ void IRVideoAnnotater::saveSRTs(File file)
         //this->eventListComponent->saveAnnotationFile(file);
     //if(!file.exists()) return;
     
-    this->srt.open(file.getFullPathName().toStdString());
+    //this->srt.open(file.getFullPathName().toStdString());
 
+    
+    //json11::json saveData = this->myVideoPlayerObject->getWorkspace()->makeSaveDataOfThis();
+    
+    
+    
+    
+    
+    json11::Json wsData;
+    auto workspaces = this->myVideoPlayerObject->getWorkspace();
+    wsData = workspaces->makeSaveDataOfThis();
+    
+    json11::Json saveData = json11::Json::object({
+        {"IRVideoAnnotaterSaveData", wsData}
+    });
+    this->jsonManager.setData(saveData);
+    this->jsonManager.writeSaveData(file.getFullPathName().toStdString());
+    
+    /*
     using t = VideoAnnotationEventComponent::VideoAnnotationType;
     
     for(auto obj : this->myVideoPlayerObject->getWorkspace()->getObjectList())
@@ -375,7 +395,7 @@ void IRVideoAnnotater::saveSRTs(File file)
         
         auto s = obj->getStatusStr();
           
-        std::string contents = "{ \"" + obj->name.toStdString() + "\": ";
+        std::string contents = "{\"" + obj->name.toStdString() + "\": ";
 
         contents += "{\"ArrangeController\": ";
         contents += "{\"bounds\": [" + std::to_string(s->bounds.getX()) +
@@ -383,22 +403,23 @@ void IRVideoAnnotater::saveSRTs(File file)
         ", " + std::to_string(s->bounds.getWidth()) +
         ", " + std::to_string(s->bounds.getHeight()) + "], ";
 
-        contents += "{\"relativeBounds\": [" + std::to_string(s->relativeBounds.getX()) +
+        contents += "\"relativeBounds\": [" + std::to_string(s->relativeBounds.getX()) +
         ", " + std::to_string(s->relativeBounds.getY()) +
         ", " + std::to_string(s->relativeBounds.getWidth()) +
         ", " + std::to_string(s->relativeBounds.getHeight()) + "], ";
 
         contents += "\"wrap\": " + std::to_string(s->wrap) + ", ";
 
-        contents += "{\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
+        contents += "\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
         ", " + std::to_string(s->wrapColour.getGreen()) +
         ", " + std::to_string(s->wrapColour.getBlue()) +
-        ", " + std::to_string(s->wrapColour.getAlpha()) + "]}, ";
+        ", " + std::to_string(s->wrapColour.getAlpha()) + "]}"; // ,
 
-        auto objSaveData = obj->saveThisToSaveData().dump();
-        contents += "\"contents\": \"" + objSaveData + "\"}";
+        //auto objSaveData = obj->saveThisToSaveData().dump();
+        //contents += "{\"contents\": " + objSaveData + "}";
 
-        contents += "}"; // close textAnnotation
+        contents += "}"; // close ArrangeController
+        contents += "}"; // close Object
 
         srtWriter::SRT_STRUCT saveItem(id.beginTime,
                                        id.endTime,
@@ -409,60 +430,9 @@ void IRVideoAnnotater::saveSRTs(File file)
         this->srt.addItem(saveItem);
     }
     
-    /*
-    for(auto item : getEventComponents())
-    {
-        
-        
-        auto id = item->getSRT();
-        
-        auto nodeObj = item->getNodeObject();
-        
-        if(nodeObj == nullptr)
-        {
-            std::cout << "Error : saveSTRs() nodeObj NULL!\n";
-            KLib().showErrorMessage("Error : saveSTRs() : nodeObj is NULL!");
-            break;
-        }
-        
-        auto objSaveData = nodeObj->saveThisToSaveData();
-        
-        auto s = nodeObj->getStatusStr();
-        
-        std::string contents = "{ \"TEXT\": ";
-        
-        contents += "{\"ArrangeController\": ";
-        contents += "{\"bounds\": [" + std::to_string(s->bounds.getX()) +
-        ", " + std::to_string(s->bounds.getY()) +
-        ", " + std::to_string(s->bounds.getWidth()) +
-        ", " + std::to_string(s->bounds.getHeight()) + "], ";
-        
-        contents += "{\"relativeBounds\": [" + std::to_string(s->relativeBounds.getX()) +
-        ", " + std::to_string(s->relativeBounds.getY()) +
-        ", " + std::to_string(s->relativeBounds.getWidth()) +
-        ", " + std::to_string(s->relativeBounds.getHeight()) + "], ";
-        
-        contents += "\"wrap\": " + std::to_string(s->wrap) + ", ";
-        
-        contents += "{\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
-        ", " + std::to_string(s->wrapColour.getGreen()) +
-        ", " + std::to_string(s->wrapColour.getBlue()) +
-        ", " + std::to_string(s->wrapColour.getAlpha()) + "]}, ";
-
-        contents += "\"contents\": \"" + id.Contents + "\"}";
-        
-        contents += "}"; // close textAnnotation
-        
-        srtWriter::SRT_STRUCT saveItem(id.beginTime,
-                                       id.endTime,
-                                       contents);
-        
-        
-      
-        this->srt.addItem(saveItem);
-    }*/
-
-    this->srt.close();
+    this->srt.close();*/
+    
+    
 }
 
 void IRVideoAnnotater::openDialogtoSaveSRTs()
@@ -1003,23 +973,33 @@ void IRVideoAnnotater::deselectAllObjectsOnWorkspace()
 
 // ==================================================
 
-void IRVideoAnnotater::loadAndApplySRTs(std::vector<SubtitleItem*> data)
+void IRVideoAnnotater::loadAndApplySRTs()
 {
+    
+    
+    
+    
+    /*
     for(auto item : data)
     {
         
-        
+        std::cout << "begin " << item->getStartTimeString() << " : end " << item->getEndTimeString() << std::endl;
         std::string text = item->getText();
         std::cout << "text  = " << item->getText() << std::endl;
         
         std::string err;
         json11::Json saveData = json11::Json::parse(text, err);
         
-        std::cout << "get data as json : " << saveData["text"].string_value() << std::endl;
+        std::cout <<"error = " << err << std::endl;
+        
+        auto j1 = saveData["IRTextEditor"];
+        auto j2 = j1["ArrangeController"];
+        
+        std::cout << "get data as json : " << j2["bounds"][0].int_value() << std::endl;
         
         
         // if text
-        std::string annotationData = saveData["text"].string_value();
+        std::string annotationData = saveData["IRTextEditor"].string_value();
         if(annotationData.size() > 0)
         {
             createTextEventComponentFromSRT(item);
@@ -1039,7 +1019,8 @@ void IRVideoAnnotater::loadAndApplySRTs(std::vector<SubtitleItem*> data)
             
         }
         
-    }
+    }*/
+    
 }
 
 

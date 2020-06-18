@@ -364,13 +364,31 @@ private:
     void arrangeControllerPositionChangedAction(int x, int y);
     void arrangeControllerBoundsChangedAction(Rectangle<int> bounds);
     void arrangeControllerChangedCallback(ChangeBroadcaster* source);
+public:
+    void loadArrangeControllerSaveData(t_json arrangeCtl);
+private:
     // ==================================================
     // EVENT COMPONENT //
     // for videoAnnotater or Any other objects
     Component* eventComponent = nullptr;
 public:
-    void setEventComponent(Component* event) { this->eventComponent = event; }
+    void setEventComponent(Component* event) { this->eventComponent = event; this->hasEventComponentFlag = true; }
+    void removeEventComponent() { this->eventComponent = nullptr; this->hasEventComponentFlag = false;}
+    bool hasEventComponent() const { return this->hasEventComponentFlag; }
     Component* getEventComponent() { return this->eventComponent; }
+    
+private:
+    bool hasEventComponentFlag = false;
+    
+    // in sec. Annoation time code
+    float StartTimeSec = 0.0;
+    float EndTimeSec = 0.0;
+    // ==================================================
+public:
+    void setStartTimeSec(float sec) { this->StartTimeSec = sec; getStatusStr()->startTimeCode = sec; }
+    void setEndTimeSec(float sec) { this->EndTimeSec = sec; getStatusStr()->endTimeCode = sec; }
+    float getStartTimeSec() const { return this->StartTimeSec; }
+    float getEndTimeSec() const { return this->EndTimeSec; }
     
 private:
 

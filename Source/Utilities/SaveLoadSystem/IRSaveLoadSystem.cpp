@@ -111,11 +111,7 @@ void IRSaveLoadSystem::loadWorkspaces()
             }
 
         }
-
-        
-        
-        
-        
+ 
     }
     std::cout << "========== end ==========" << std::endl;
 }
@@ -185,5 +181,74 @@ bool IRSaveLoadSystem::createDirectoryWithPath(std::string path, std::string tex
     auto result = d.createDirectory();
     if(!result.wasOk()) { return false; }
     return true;
+}
+// ----------------------------------------
+
+void IRSaveLoadSystem::writeSaveData(std::string filePath)
+{
+    std::ofstream myFile;
+    // trunc mode : discard previous data and write new save data
+    myFile.open(filePath, std::ofstream::trunc);
+    myFile << this->saveData.dump();
+    myFile.close();
+    
+    std::cout << "========== save data ========== \n" << std::endl;
+    std::cout << this->saveData.dump() << std::endl;
+    std::cout << "========== end ========== \n" << std::endl;
+}
+
+// read save data from a file
+void IRSaveLoadSystem::readSaveData(std::string filePath)
+{
+    
+    //init
+    this->readData.clear();
+    
+    std::ifstream myFile(filePath);
+    
+    if(!myFile){
+        std::cout << "Error : Could not open file " << filePath << std::endl;
+        return;
+    }
+    
+    std::string buf;
+    while (!myFile.eof())
+    {
+        std::getline(myFile, buf);
+        this->readData += buf;
+    }
+    
+    myFile.close();
+    
+    std::string err;
+    this->saveData = json11::Json::parse(this->readData,err);
+
+    std::cout << "Header" << "\n";
+    
+    loadHeader();
+
+    std::cout << "Worksapce" << "\n";
+  
+    loadWorkspaces();
+ 
+    for(auto it = this->saveData["Workspaces"].object_items().cbegin(); it != this->saveData["Workspaces"].object_items().cend(); ++it)
+    {
+        std::cout << " - " << it->first << "\n";
+        
+        for (auto item2 : this->saveData["Workspaces"][it->first].object_items())
+        {
+            std::cout << " - - " << item2.first << std::endl;
+            
+        }
+    }
+    
+    for (auto item : this->saveData["Workspaces"].object_items())
+    {
+        std::cout << item.first << std::endl;
+
+    }
+    
+    std::cout << "workspace size = " << this->saveData["Workspaces"].object_items().size() << std::endl;
+
 }
 // ----------------------------------------

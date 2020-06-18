@@ -192,10 +192,9 @@ public:
     void updateNodeObjTimeCode()
     {
         if(this->nodeObj != nullptr)
-        {
-            // set animation time code
-            //this->nodeObj->setBeginTimeCode (getBeginTimeCode());
-           // this->nodeObj->setEndTimeCode   (getEndTimeCode());
+        {            
+            this->nodeObj->setStartTimeSec( getBeginTimeCode() );
+            this->nodeObj->setEndTimeSec( getEndTimeCode() );
         }
     }
     
@@ -327,9 +326,9 @@ public:
     }
     
     float getEndTimeCode()
-       {
-           return this->timeCodeUI.getEndTimeCode();
-       }
+    {
+       return this->timeCodeUI.getEndTimeCode();
+    }
     
     std::string getEndTimeInString()
     {

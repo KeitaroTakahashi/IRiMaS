@@ -33,6 +33,7 @@ public:
         BACKBUTTON,
         ENCLOSEBUTTON,
         ENCLOSECOLOUR,
+        ACTIVATEBUTTON,
         
         EncloseColourChanged
     };
@@ -59,6 +60,7 @@ public:
     int getLabelY();
     
     bool getEnclosedButtonStatus();
+    bool getActivateStatus();
     
     //setter
     void setRectangle(Rectangle<int> rect);
@@ -81,6 +83,10 @@ public:
     void encloseColourChanged();
     // =======================================================
 
+    void setStartTimeSec(float sec) { this->StartTimeSec = sec; }
+    void setEndTimeSec(float sec) { this->EndTimeSec = sec; }
+    float getStartTimeSec() const { return this->StartTimeSec; }
+    float getEndTimeSec() const { return this->EndTimeSec; }
     
 private:
     // =======================================================
@@ -137,8 +143,18 @@ private:
     
     Label statusLabel;
     ToggleButton encloseButton;
-    Label encloseColourLabel;
     IRColourSettingIcon encloseColour;
+    ToggleButton activateButton;
+    
+    
+    // Annotation Time
+    Label StartTimeLabel;
+    Label InputStartTime;
+    Label EndTimeLabel;
+    Label InputEndTime;
+    
+    float StartTimeSec = 0;
+    float EndTimeSec = 0;
 
     void createButton(TextButton& button, String text);
     void buttonClicked(Button* button) override;

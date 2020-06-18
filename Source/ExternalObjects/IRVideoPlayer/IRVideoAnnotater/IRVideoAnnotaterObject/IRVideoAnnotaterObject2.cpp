@@ -9,7 +9,7 @@
 
 
 IRVideoAnnotaterObject2::IRVideoAnnotaterObject2(Component* parent, IRStr* str, bool withOpenButton) :
-IRNodeObject(parent, "IRVideoAnnotater2", str, NodeObjectType(ordinaryIRComponent))
+IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 
 {
     

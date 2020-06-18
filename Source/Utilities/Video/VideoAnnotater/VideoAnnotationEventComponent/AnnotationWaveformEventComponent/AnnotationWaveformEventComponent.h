@@ -146,7 +146,7 @@ public:
     {
         srtWriter::SRT_STRUCT srt = srtWriter::SRT_STRUCT(getBeginTimeInString(),
                                                           getEndTimeInString(),
-                                                          getTextContents());
+                                                          "");
         
         return srt;
     }

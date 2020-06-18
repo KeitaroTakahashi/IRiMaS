@@ -57,6 +57,10 @@ public:
     // ==============================
     
     void updateVideoPlayingPos(double pos);
+    
+    // ==============================
+
+    void loadAndApplyIRSRT(t_json data);
 
 private:
     // ==============================
@@ -68,6 +72,8 @@ private:
     void videoLoadCompletedAction();
     void videoPlayingUpdateAction(double pos);
     std::shared_ptr<IRVideoPlayerObject2> videoPlayerObj;
+    
+    // ==============================
 
     
 };

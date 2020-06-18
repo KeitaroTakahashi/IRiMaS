@@ -417,19 +417,6 @@ json11::Json IRWorkspaceComponent::makeSaveDataOfThis()
     {
         std::string s = k.GetNextNumber("object-", index, 5);
         
-        /*
-        json11::Json::object ob = json11::Json::object({
-            {s, json11::Json::object({
-
-                {"objectType",          item->name.toStdString()},
-                {"objectUniqueID",      item->getUniqueID().toStdString()},
-                {"bounds",              json11::Json::array({item->getX(), item->getY(), item->getWidth(), item->getHeight()})},
-                {"status",              "Normal"},
-                {"ObjectDefined",       item->saveThisToSaveData()}
-                
-            })},
-        });*/
-        
         json11::Json::object ob = json11::Json::object({
             {s, json11::Json::object({
 

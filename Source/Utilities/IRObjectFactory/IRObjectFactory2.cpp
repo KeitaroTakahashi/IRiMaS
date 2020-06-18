@@ -98,7 +98,15 @@ IRObjectFactory2::IRObjectFactory2()
 IRNodeObject* IRObjectFactory2::createObject(std::string id, Component* parent, IRStr* str)
 {
     std::cout << "IRObjectFactory2::createObject : " << id << std::endl;
-    return this->list[id].obj->create(parent, str);
+    
+    if(this->list.find(id) == this->list.end())
+    {
+        KLib().showErrorMessage("Error : Could not find " + id + ".");
+        return nullptr;
+    }else
+    {
+        return this->list[id].obj->create(parent, str);
+    }
 }
 
 

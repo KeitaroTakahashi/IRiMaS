@@ -14,6 +14,7 @@
 #include "IRVideoAnnotaterObject2.hpp"
 
 #include "IRVideoAnnotaterSRTFile.hpp"
+#include "IRJson.hpp"
 
 #include "VideoAnnotationMenuWindow.h"
 #include "VideoEventList.h"
@@ -238,11 +239,15 @@ private:
     // ==================================================
     //SRTs
     
-    void loadAndApplySRTs(std::vector<SubtitleItem*> data);
+    void loadAndApplySRTs();
     
     srtWriter srt;
     srtLoader srtL;
     IRVideoAnnotaterSRTFile srtFileLoader;
+    
+    //Json
+    
+    IRJson jsonManager;
     
     // ==================================================
 

@@ -308,3 +308,59 @@ void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
     if(this->videoPlayingUpdateCallback != nullptr)
         this->videoPlayingUpdateCallback(pos);
 }
+
+// ==============================
+
+void IRVideoAnnotaterWorkspace::loadAndApplyIRSRT(t_json data)
+{
+    
+    std::cout << "laoding...\n";
+    auto va = data["IRVideoAnnotaterSaveData"];
+    if(va.dump().length() == 0){
+        std::cout << "Error : IRVideoAnnotater loadAndApplySRTs : save data empty!\n";
+        return;
+    }
+    
+    t_json objects = va["Objects"];
+    if(objects.dump().length() == 0){
+        std::cout << "Error : IRVideoAnnotater loadAndApplySRTs : There is no object.\n";
+        return;
+    }
+    
+    json11::Json::array objectArray = objects.array_items();
+    
+    std::cout << "objectArray num = " << objectArray.size() << std::endl;
+    for(int i = 0; i < objectArray.size(); i ++)
+    {
+        for (auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
+        {
+            
+            std::cout << " ===== " << it->first << " ===== " << std::endl;
+            std::cout << "object type= " << it->second["objectType"].string_value() << std::endl;
+            std::cout << "object uniqueID= " << it->second["objectUniqueID"].string_value() << std::endl;
+            std::cout << "object status= " << it->second["status"].string_value() << std::endl;
+            
+            
+            // ===== create object =====
+            std::string objectTypeId = it->second["objectType"].string_value();
+            //auto* obj = factory.createObject(objectTypeId, this, getStr());
+            std::cout << "object created\n";
+
+
+            json11::Json arrangeCtl = it->second["ArrangeController"];
+            
+            std::cout << "loadArrangeControllerSaveData\n";
+            //loadArrangeControllerSaveData(obj, arrangeCtl);
+            std::cout << "loadArrangeControllerSaveData done\n";
+
+            //createObject(obj);
+            
+            // load save dada
+            //obj->loadThisFromSaveData(it->second["ObjectDefined"]);
+            
+            // ===== END =====
+        }
+    }
+}
+
+// ==============================

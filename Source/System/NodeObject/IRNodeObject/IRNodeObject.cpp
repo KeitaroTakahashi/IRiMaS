@@ -108,7 +108,10 @@ t_json IRNodeObject::getArrangeControllerSaveData()
     contents += "\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
     ", " + std::to_string(s->wrapColour.getGreen()) +
     ", " + std::to_string(s->wrapColour.getBlue()) +
-    ", " + std::to_string(s->wrapColour.getAlpha()) + "]";
+    ", " + std::to_string(s->wrapColour.getAlpha()) + "], ";
+    
+    contents += "\"startTime\": " + std::to_string(s->startTimeCode) + ", ";
+    contents += "\"endTime\": " + std::to_string(s->endTimeCode);
     
     contents += "}";
     // ----------
@@ -148,6 +151,9 @@ void IRNodeObject::arrangeControllerChangedCallback(ChangeBroadcaster* source)
         case t::ENCLOSECOLOUR:
             setEncloseColour(this->arrangeController->getEncloseColour());
         default:
+        case t::ACTIVATEBUTTON:
+            setActive(this->arrangeController->getActivateStatus());
+            break;
             break;
     }
     
@@ -856,6 +862,30 @@ void IRNodeObject::arrangeControllerBoundsChangedAction(Rectangle<int> bounds)
     if(this->arrangeController != nullptr)
         this->arrangeController->setRectangle(getBounds());
  }
+
+void IRNodeObject::loadArrangeControllerSaveData(t_json arrangeCtl)
+{
+    auto b = arrangeCtl["bounds"].array_items();
+    auto rb = arrangeCtl["relativeBounds"].array_items();
+    
+    // relative first
+    setObjectBoundsRelative(rb[0].number_value(), rb[1].number_value(),
+                            rb[2].number_value(), rb[3].number_value());
+    
+    // absolute second
+    setObjectBounds(b[0].int_value(), b[1].int_value(),
+                    b[2].int_value(), b[3].int_value());
+        
+    auto wrap = arrangeCtl["wrap"].int_value();
+    // give wrap only when wrap is TRUE because the oridinary bounds of the enclosed mode does not have the initial bounds. It gets the bounds only when it transfers to enclose mode.
+    if(wrap == 1) setEncloseMode(true);
+    
+    auto wrapColour = arrangeCtl["wrapColour"].array_items();
+    setEncloseColour(Colour((uint8)wrapColour[0].int_value(),
+                            (uint8)wrapColour[1].int_value(),
+                            (uint8)wrapColour[2].int_value(),
+                            (uint8)wrapColour[3].int_value()));
+}
 
 // ==================================================
 //##### Animation #####

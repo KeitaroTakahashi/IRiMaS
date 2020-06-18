@@ -44,10 +44,11 @@ encloseColour(str->SYSTEMCOLOUR.fundamental.brighter(), 1.0, str)
     createLabel(this->statusLabel, "Status");
     createToggleButton(this->encloseButton, "Wrap");
     
-    createLabel(this->encloseColourLabel, "Wrap Colour");
     addAndMakeVisible(this->encloseColour);
     this->encloseColour.addChangeListener(this);
-
+    
+    createToggleButton(this->activateButton, "Activate");
+    this->activateButton.setToggleState(1, dontSendNotification);
     setSize (250, 400);
 
 }
@@ -72,38 +73,39 @@ void ArrangeController::setArrangeController(ArrangeController* controller)
 void ArrangeController::resized()
 {
     int margin = 5;
-    int ySmall = 30;
+    int ySmall = 25;
     int yIncrement = 40;
     int y = margin;
     int x = margin;
-    this->labelSize.setBounds(x, y, 60, 30);
-    this->InputWidth.setBounds(x + 80, y, 60, 30);
-    this->InputHeight.setBounds(x + 150, y, 60, 30);
+    this->labelSize.setBounds(x, y, 60, 20);
+    this->InputWidth.setBounds(x + 80, y, 60, 20);
+    this->InputHeight.setBounds(x + 150, y, 60, 20);
     y += ySmall;
     this->labelWidth.setBounds(x + 80, y, 60, 20);
     this->labelHeight.setBounds(x + 150, y, 60, 20);
     this->labelSizePixel.setBounds(x + 200, y - ySmall/2, 50, 20);
     
     y+= ySmall;
-    this->labelPosition.setBounds(margin, y, 100, 30);
-    this->InputX.setBounds(x + 80, y, 60, 30);
-    this->InputY.setBounds(x + 150, y, 60, 30);
+    this->labelPosition.setBounds(margin, y, 100, 20);
+    this->InputX.setBounds(x + 80, y, 60, 20);
+    this->InputY.setBounds(x + 150, y, 60, 20);
     y += ySmall;
     this->labelX.setBounds(x + 80, y, 60, 20);
     this->labelY.setBounds(x + 150, y, 60, 20);
     this->PositionLabelPixel.setBounds(x + 200, y - ySmall/2, 50, 20);
 
-    y += yIncrement;
-    this->layerLabel.setBounds(margin, y, 60, 30);
+    y += ySmall;
+    this->layerLabel.setBounds(margin, y + 5, 60, 20);
     this->frontButton.setBounds(x + 80, y + 5, 60, 20);
     this->backButton.setBounds(x + 150, y + 5, 60, 20);
     
     y += yIncrement;
-    this->statusLabel.setBounds(margin, y, 80, 30);
-    this->encloseButton.setBounds(x + 80, y, 100, 30);
-    y += yIncrement;
-    this->encloseColourLabel.setBounds(margin, y, 120, 30);
-    this->encloseColour.setBounds(getWidth() - 10 - 80, y+5, 80, 20);
+    this->statusLabel.setBounds(margin, y, 80, 20);
+    this->encloseButton.setBounds(x + 80, y, 100, 20);
+    this->encloseColour.setBounds(x + 180, y+3, 80, 20);
+    
+    y += ySmall;
+    this->activateButton.setBounds(x + 80, y, 100, 20);
 }
 
 void ArrangeController::paint(Graphics& g)
@@ -114,7 +116,7 @@ void ArrangeController::paint(Graphics& g)
     g.drawRect(this->InputX.getBounds());
     g.drawRect(this->InputY.getBounds());
     
-    g.drawLine(0, this->layerLabel.getY() - 10, getWidth(), this->layerLabel.getY() - 10);
+    g.drawLine(0, this->layerLabel.getY() - 5, getWidth(), this->layerLabel.getY() - 5);
     
     g.drawLine(0, this->statusLabel.getY() - 5, getWidth(), this->statusLabel.getY() - 5);
 
@@ -216,6 +218,10 @@ void ArrangeController::buttonClicked(Button* button)
     {
         this->status = ENCLOSEBUTTON;
         sendChangeMessage();
+    }else if(button == &this->activateButton)
+    {
+        this->status = ACTIVATEBUTTON;
+        sendChangeMessage();
     }
 }
 
@@ -242,6 +248,10 @@ bool ArrangeController::getEnclosedButtonStatus()
     return this->encloseButton.getToggleState();
 }
 
+bool ArrangeController::getActivateStatus()
+{
+    return this->activateButton.getToggleState();
+}
 // =======================================================
 
 void ArrangeController::setRectangle(Rectangle<int> rect)

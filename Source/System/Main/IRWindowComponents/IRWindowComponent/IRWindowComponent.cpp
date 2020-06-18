@@ -795,25 +795,17 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
                 // ===== create object =====
                 std::string objectTypeId = it->second["objectType"].string_value();
                 auto* obj = factory.createObject(objectTypeId, currentSpace, this->ir_str.get());
-                
-                obj->setUniqueID(it->second["objectUniqueID"].string_value());
+                std::cout << "object created\n";
+
+                //obj->setUniqueID(it->second["objectUniqueID"].string_value());
 
                 json11::Json arrangeCtl = it->second["ArrangeController"];
                 
-                loadArrangeControllerSaveData(obj, arrangeCtl);
-                
-                
-                /*
-                json11::Json::array b = it->second["bounds"].array_items();
-                obj->setObjectBounds(b[0].int_value(), b[1].int_value(),
-                                     b[2].int_value(), b[3].int_value());
-                
-                std::cout << "object bounds = " << obj->getWidth() << ", " << obj->getHeight() << std::endl;
-                */
-                //
-                
-                // currently no status implemented!
-                
+                std::cout << "loadArrangeControllerSaveData\n";
+                obj->loadArrangeControllerSaveData(arrangeCtl);
+                //loadArrangeControllerSaveData(obj, arrangeCtl);
+                std::cout << "loadArrangeControllerSaveData done\n";
+
                 currentSpace->createObject(obj);
                 
                 // load save dada

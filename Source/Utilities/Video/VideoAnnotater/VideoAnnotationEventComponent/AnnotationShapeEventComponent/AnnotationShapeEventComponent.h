@@ -65,7 +65,9 @@ public:
     // ==================================================
     srtWriter::SRT_STRUCT getSRT() override
     {
-        return srtWriter::SRT_STRUCT();
+        return srtWriter::SRT_STRUCT(getBeginTimeInString(),
+                                     getEndTimeInString(),
+                                     "");
     }
     // ==================================================
     AnnotationShapeEventComponent* copyThis() override
