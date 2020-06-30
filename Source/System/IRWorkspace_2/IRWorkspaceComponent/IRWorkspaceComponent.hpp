@@ -21,8 +21,6 @@
 #include "KTextLoader.h"
 #include "IRWorkspaceCover.hpp"
 
-
-
 class IRWorkspaceComponent : public AudioAppComponent,
 public IRComponents,
 public IRStrComponent,
@@ -45,6 +43,9 @@ public:
     // paint Graphics called by paint() private method
     virtual void onPaint(Graphics& g) {}
     virtual void onResized() {}
+    
+    
+    void callResize();
     // ==================================================
     
     virtual void copyAllDataToWorkspace(IRWorkspaceComponent* newWorkspace);
@@ -94,7 +95,6 @@ private:
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
     virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
     virtual void releaseResources() override;
-    
     
     // ==================================================
     // APPEARANCE

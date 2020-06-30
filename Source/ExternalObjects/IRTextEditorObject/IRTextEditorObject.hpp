@@ -25,7 +25,7 @@ public:
     ~IRTextEditorObject();
     // ------------------------------------------------------------
 
-    IRNodeObject* copyThis() override;
+    IRNodeObject* copyThisObject() override;
     
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json data) override;
@@ -34,7 +34,7 @@ public:
     // ------------------------------------------------------------
 
     virtual void paint(Graphics &g) override;
-    virtual void resized() override;
+    virtual void onResized() override;
     
     // called when this object position is changed
     void ObjectPositionChanged(int x, int y) override;
@@ -98,6 +98,8 @@ public:
     void statusInControlMode();
     
     // ------------------------------------------------------------
+    
+    void applyFontFromController();
 private:
     
     void selectedChangedAction(bool flag) override;

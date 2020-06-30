@@ -17,14 +17,14 @@ public:
     ~IRWaveformObject();
     
     
-    IRNodeObject* copyThis() override; // copy constructor
+    IRNodeObject* copyThisObject() override; // copy constructor
     IRNodeObject* copyContents(IRNodeObject* object) override;
     IRNodeObject* copyDragDropContents(IRNodeObject* object) override;
 
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json data) override;
     
-    void resized() override;
+    void onResized() override;
     void paint(Graphics& g) override;
     
     void statusChangedCallback(IRNodeComponentStatus status) override;

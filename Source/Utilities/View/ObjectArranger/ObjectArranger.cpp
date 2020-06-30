@@ -216,10 +216,13 @@ void ArrangeController::buttonClicked(Button* button)
         sendChangeMessage();
     }else if(button == &this->encloseButton)
     {
+        std::cout << "arrangeController ENCLOSEBUTTON clicked!\n";
+
         this->status = ENCLOSEBUTTON;
         sendChangeMessage();
     }else if(button == &this->activateButton)
     {
+        
         this->status = ACTIVATEBUTTON;
         sendChangeMessage();
     }
@@ -357,6 +360,11 @@ Colour ArrangeController::getEncloseColour() const {
 void ArrangeController::setEncloseColour(Colour newColour) {
     this->encloseColour.setCurrentColour(newColour);
     repaint();
+}
+
+void ArrangeController::setEncloseToggle(bool flag, NotificationType notification)
+{
+    this->encloseButton.setToggleState(flag, notification);
 }
 
 void ArrangeController::encloseColourChanged()

@@ -26,9 +26,9 @@ public:
         clearVisibleAnnotationComponents();
     }
     // --------------------------------------------------
-    virtual void resized() override
+    virtual void onResized() override
     {
-        IRVideoPlayerObject::resized();
+        IRVideoPlayerObject::onResized();
       
     }
     // --------------------------------------------------

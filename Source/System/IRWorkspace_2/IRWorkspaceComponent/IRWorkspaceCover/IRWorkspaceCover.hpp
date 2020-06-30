@@ -43,7 +43,6 @@ private:
 
     void paint(Graphics& g) override;
     
-    
     void resized() override;
     
     // ==================================================
@@ -91,12 +90,9 @@ private:
     // ==================================================
 
     void openGLInit();
-    
-
 
     void shaderTask(Graphics& g);
     
-
     void setUniform(OpenGLShaderProgram& program);
     
 

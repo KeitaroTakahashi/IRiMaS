@@ -26,7 +26,7 @@ IRNodeObject* IRMultiPurposeObject::copyContents(IRNodeObject *object)
 }
 
 
-void IRMultiPurposeObject::resized()
+void IRMultiPurposeObject::onResized()
 {
     if (isBoundsRatio()) renewBounds();
 }

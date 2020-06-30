@@ -43,5 +43,7 @@ void IREnclosedObject::setColour(Colour colour)
     repaint();
 }
 
+Colour IREnclosedObject::getColour() const { return this->bodyColour; }
+
 // ==================================================
 // ==================================================

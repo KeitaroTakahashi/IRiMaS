@@ -415,7 +415,6 @@ void IRAudio::linkAudioPlaywithSharedComponents(Component* comp)
 }
 void IRAudio::linkViewPortPositionWithSharedComponents(Component* comp)
 {
-    std::cout << "linkViewPort!\n";
     this->emittingComponent = comp;
     callViewPortPositionFromComponent();
 }

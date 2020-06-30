@@ -19,7 +19,7 @@ public:
     ~IRISVObject();
     
     // ------------------------------------------------------------
-    IRNodeObject* copyThis() override
+    IRNodeObject* copyThisObject() override
     {
         IRISVObject* newObj = new IRISVObject(this->parent, getStr());
         return newObj;

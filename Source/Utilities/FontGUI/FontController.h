@@ -220,16 +220,20 @@ public:
     }
     void fontSizeInputChanged()
     {
+        
         std::string val = this->fontSizeInput.getText().toStdString();
+        std::cout << "fontsizeinputchanged : " << val << std::endl;
+
         float valFloat = atof(val.c_str());
-        //std::cout << "fontSize value = " << valFloat << std::endl;
+        std::cout << "fontSize value = " << valFloat << std::endl;
         
         if (valFloat == 0.0f)
         {
             valFloat = 1.0f;
             this->fontSizeInput.setText("16", dontSendNotification);
         }
-        
+        std::cout << "fontSize value fixed = " << valFloat << std::endl;
+
         this->fontSize = valFloat;
         
         this->status = FontSizeChanged;
@@ -247,14 +251,15 @@ public:
     }
     void backgroundColourMenuChanged()
     {
-        std::cout << "backgroundColourMenuChanged\n";
         this->status = BackgroundColourChanged;
         sendChangeMessage();
     }
     
     FontControllerStatus getChangeStatus() const { return this->status; }
     
+    // ============================================================
     void setTypefaceNameIndex(int index) { this->fontMenu.setSelectedId(index); }
+    int getTypefaceNameIndex() const { return this->fontMenu.getSelectedId(); }
     String getTypefaceName() const { return this->fontFamilyList[this->fontMenu.getSelectedId() - 1]; }
     void setTypefaceName(const String newStyle) { this->fontMenu.setSelectedId(this->fontFamilyList.indexOf(newStyle) + 1); }
     
@@ -265,12 +270,18 @@ public:
     void setAlign(int newId) { this->alignMenu.setSelectedId(newId); }
     
     float getHeight() const { return this->fontSize; }
-    void setHeight(float newHeight) { this->fontSize = newHeight; }
+    void setHeight(float newHeight)
+    {
+        this->fontSizeInput.setText(String(newHeight), dontSendNotification);
+        // call this manually here! setText onTextChanged not called by above method
+        fontSizeInputChanged();
+    }
     
     Colour getTextColour() const { return this->textColourIcon.getCurrentColour(); }
     void setTextColour(Colour newColour) { this->textColourIcon.setCurrentColour(newColour); repaint(); }
     Colour getBackgroundColour() const { return this->backgroundColourIcon.getCurrentColour(); }
     void setBackgroundColour(Colour newColour) { this->backgroundColourIcon.setCurrentColour(newColour); repaint(); }
+    // ============================================================
 
     void changeListenerCallback(ChangeBroadcaster* source) override
     {
@@ -285,6 +296,20 @@ public:
     void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override
     {
 
+    }
+    
+    void setFontController(FontController* c)
+    {
+        
+        setTypefaceNameIndex(c->getTypefaceNameIndex());
+        setTypefaceName(c->getTypefaceName());
+        
+        setTypefaceStyle(c->getTypefaceStyle());
+        setAlign(c->getAlign());
+        std::cout << "c->getHeight() = " << c->getHeight() << std::endl;
+        setHeight(c->getHeight());
+        setTextColour(c->getTextColour());
+        setBackgroundColour(c->getBackgroundColour());
     }
     
     

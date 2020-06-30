@@ -54,7 +54,7 @@ IRLabelObject::~IRLabelObject()
 }
 
 
-IRNodeObject* IRLabelObject::copyThis()
+IRNodeObject* IRLabelObject::copyThisObject()
 {
     IRLabelObject* newObj = new IRLabelObject(this->parent, getStr());
     newObj->setFont(this->font);
@@ -145,7 +145,7 @@ void IRLabelObject::paintOnWorkspace(Graphics& g, Component* workspace)
 }
 
 
-void IRLabelObject::resized()
+void IRLabelObject::onResized()
 {
     this->label.setBounds(5,5, getWidth()-10, getHeight()-10);
 

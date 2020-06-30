@@ -31,7 +31,7 @@ void IRQuillTextEditorObject::resized()
 }
 // --------------------------------------------------
 
-IRNodeObject* IRQuillTextEditorObject::copyThis()
+IRNodeObject* IRQuillTextEditorObject::copyThisObject()
 {
     return new IRQuillTextEditorObject(this->parent, getStr());
 }

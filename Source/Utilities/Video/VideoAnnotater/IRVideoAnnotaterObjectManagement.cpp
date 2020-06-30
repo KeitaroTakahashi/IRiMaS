@@ -7,7 +7,7 @@
 
 #include "IRVideoAnnotater.hpp"
 
-void IRVideoAnnotater::copyNodeObject(IRNodeObject* obj)
+void IRVideoAnnotater::duplicateNodeObject(IRNodeObject* obj)
 {
     String name = obj->name;
     
@@ -29,16 +29,31 @@ void IRVideoAnnotater::setupEventComponent(IRNodeObject* obj, VideoAnnotationEve
 
     if(this->annotationMenu.get() != nullptr)
         this->annotationMenu->closeAction();
-    std::cout << "meu closed\n";
     event->setNodeObject(obj);
-    std::cout << "setNodeObject\n";
 
     // add event to eventList
     this->eventListComponent->addEventComponent(event);
-    std::cout << "addEventComponent\n";
 
 }
 
+
+void IRVideoAnnotater::createEventComponent(IRNodeObject* obj)
+{
+    auto n = obj->name;
+    
+    if(n == "IRTextEditor")
+    {
+        createTextEventComponentFromIRNodeObject(obj);
+    }else if(n == "IRShape")
+    {
+        createShapeEventComponentFromNodeObject(obj);
+    }else if(n == "IRImageViewer")
+    {
+        createImageEventComponentFromNodeObject(obj);
+    }else{
+        KLib().showErrorMessage("Error : IRVideoAnnotater::createEventComponent : unknown object name " + n);
+    }
+}
 
 void IRVideoAnnotater::createTextEventComponent()
 {
@@ -55,6 +70,9 @@ void IRVideoAnnotater::createTextEventComponent()
     
     // ask myVideoPlayerObject to create TextObject
     auto obj = this->myVideoPlayerObject->createTextObject(event);
+    
+    obj->setStartTimeSec(beginTimeInSec);
+    obj->setEndTimeSec(endTimeInSec);
 
     setupEventComponent(obj, event);
 
@@ -82,6 +100,8 @@ void IRVideoAnnotater::createTextEventComponentFromSRT(SubtitleItem* item)
     
     IRVATextEditorObject* obj = static_cast<IRVATextEditorObject*>(IRObjectCreater<IRVATextEditorObject>().create(this, this->ir_str.get()));
     
+    obj->setStartTimeSec(event->getBeginTimeCode());
+    obj->setEndTimeSec(event->getEndTimeCode());
     
     // ask myVideoPlayerObject to create TextObject
     //auto obj = this->myVideoPlayerObject->createTextObject(event);
@@ -102,9 +122,15 @@ void IRVideoAnnotater::createTextEventComponentFromIRNodeObject(IRNodeObject* ob
 {
     // automatically fill begin and end time Code
     // end time code in default is begin + 3.0 sec
-    float beginTimeInSec = this->videoTransport->getPlayPosition();
-    float endTimeInSec = beginTimeInSec + 3.0;
+    //float beginTimeInSec = this->videoTransport->getPlayPosition();
+    //float endTimeInSec = beginTimeInSec + 3.0;
 
+    float beginTimeInSec = obj->getStartTimeSec();
+    float endTimeInSec = obj->getEndTimeSec();
+    
+    std::cout << "createTextEventComponentFromIRNodeObject start " << beginTimeInSec << ", " << endTimeInSec << std::endl;
+    
+    
     auto event = new AnnotationTextEventComponent(this->ir_str.get(),
                                                   this,
                                                   beginTimeInSec,
@@ -123,7 +149,7 @@ void IRVideoAnnotater::createShapeEventComponent()
     
     float beginTimeInSec = this->videoTransport->getPlayPosition();
     float endTimeInSec = beginTimeInSec + 3.0;
-    std::cout << "begin = " << beginTimeInSec << " , " << endTimeInSec << std::endl;
+    std::cout << "createShapeEventComponent begin = " << beginTimeInSec << " , " << endTimeInSec << std::endl;
 
     auto event = new AnnotationShapeEventComponent(this->ir_str.get(),
                                                    this,
@@ -131,6 +157,9 @@ void IRVideoAnnotater::createShapeEventComponent()
                                                    endTimeInSec);
 
     auto obj = this->myVideoPlayerObject->createShapeObject(event);
+    obj->setStartTimeSec(beginTimeInSec);
+    obj->setEndTimeSec(endTimeInSec);
+    
     setupEventComponent(obj, event);
 
     updateAnnotation();
@@ -141,8 +170,8 @@ void IRVideoAnnotater::createShapeEventComponentFromNodeObject(IRNodeObject* obj
 {
     // automatically fill begin and end time Code
     // end time code in default is begin + 3.0 sec
-    float beginTimeInSec = this->videoTransport->getPlayPosition();
-    float endTimeInSec = beginTimeInSec + 3.0;
+    float beginTimeInSec = obj->getStartTimeSec();
+    float endTimeInSec = obj->getEndTimeSec();
     
 
     auto event = new AnnotationShapeEventComponent(this->ir_str.get(),
@@ -172,6 +201,8 @@ void IRVideoAnnotater::createImageEventComponent()
     
 
     auto obj = this->myVideoPlayerObject->createImageObject(event);
+    obj->setStartTimeSec(beginTimeInSec);
+    obj->setEndTimeSec(endTimeInSec);
     setupEventComponent(obj, event);
 
     updateAnnotation();
@@ -182,8 +213,8 @@ void IRVideoAnnotater::createImageEventComponentFromNodeObject(IRNodeObject* obj
 {
     // automatically fill begin and end time Code
     // end time code in default is begin + 3.0 sec
-    float beginTimeInSec = this->videoTransport->getPlayPosition();
-    float endTimeInSec = beginTimeInSec + 3.0;
+    float beginTimeInSec = obj->getStartTimeSec();
+    float endTimeInSec = obj->getEndTimeSec();
     
     auto event = new AnnotationImageEventComponent(this->ir_str.get(),
                                                    this,
@@ -209,12 +240,14 @@ void IRVideoAnnotater::createAudioEventComponent()
 
 void IRVideoAnnotater::createAudioEventComponentFromNodeObject(IRNodeObject* obj)
 {
-    float beginTimeInSec = this->videoTransport->getPlayPosition();
-    float endTimeInSec = beginTimeInSec + 3.0;
+    float beginTimeInSec = obj->getStartTimeSec();
+    float endTimeInSec = obj->getEndTimeSec();
 
     this->annotationMenu->closeAction();
 
 }
+
+
 
 // ================================================================================
 

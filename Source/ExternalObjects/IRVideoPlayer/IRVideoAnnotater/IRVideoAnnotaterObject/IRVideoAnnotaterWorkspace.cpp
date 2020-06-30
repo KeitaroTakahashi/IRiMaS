@@ -11,6 +11,10 @@ IRVideoAnnotaterWorkspace::IRVideoAnnotaterWorkspace(String title, Rectangle<int
 IRNodeObjectWorkspace(title, draggableMargin, str)
 {
     enableDrawGrids(false);
+    
+    // make the background transparent
+    setBackgroundColour(Colours::transparentWhite);
+    
     // initially create videoplayer and add
     this->videoPlayerObj.reset( new IRVideoPlayerObject2(this, str, withOpenButton) );
     //createParentObject(this->videoPlayerObj.get(), false);
@@ -32,7 +36,7 @@ IRVideoAnnotaterWorkspace::~IRVideoAnnotaterWorkspace()
 
 void IRVideoAnnotaterWorkspace::onResized()
 {
-    
+    std::cout <<"getLocalBounds() " << getWidth() << ", " << getHeight() << std::endl;
     this->videoPlayerObj->setObjectBounds(getLocalBounds());
     
     //auto vs = this->videoPlayerObj->getVideoSize();
@@ -181,11 +185,12 @@ void IRVideoAnnotaterWorkspace::createNodeObjectOnworkspaceAsSubtitle(IRNodeObje
 // ------------------------------------------------------------------------------------------
 void IRVideoAnnotaterWorkspace::createAnnotationObject(IRNodeObject* obj, Component* event)
 {
-    // here, bounds coordination is set in relative to the parent component bounds
+    // when creating object, the boundType should be set ORDINARY initially
     obj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
     
     obj->setEventComponent(event);
     createNodeObjectOnWorkspace(obj);
+
 }
 
 IRNodeObject* IRVideoAnnotaterWorkspace::createTextObject(Component* event)
@@ -193,10 +198,11 @@ IRNodeObject* IRVideoAnnotaterWorkspace::createTextObject(Component* event)
     IRVATextEditorObject* nodeObj = static_cast<IRVATextEditorObject*>(IRObjectCreater<IRVATextEditorObject>().create(this,
                                                                 getStr()));
     
-    // here, bounds coordination is set in relative to the parent component bounds
+    // when creating object, the boundType should be set ORDINARY initially
     nodeObj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
     nodeObj->setEventComponent(event);
     createNodeObjectOnWorkspace(nodeObj);
+
 
     return nodeObj;
 }
@@ -221,7 +227,7 @@ IRNodeObject* IRVideoAnnotaterWorkspace::createImageObject(Component* event)
     nodeObj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
     nodeObj->setEventComponent(event);
     createNodeObjectOnWorkspace(nodeObj);
-    
+
     return nodeObj;
 
 }
@@ -252,11 +258,11 @@ void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
             return;
         }
         
-        std::cout << "event component begin = " << event->getBeginTimeCode() << " : " << event->getEndTimeCode() << std::endl;
+        //std::cout << "event component begin = " << event->getBeginTimeCode() << " : " << event->getEndTimeCode() << std::endl;
         
         if(pos >= event->getBeginTimeCode() && event->getEndTimeCode() > pos)
         {
-            std::cout << "in event activate? " << obj << " : " << obj->isActive() << std::endl;
+            //std::cout << "in event activate? " << obj << " : " << obj->isActive() << std::endl;
             if(event->isActive())
             {
                 if(!obj->isActive())
@@ -313,8 +319,6 @@ void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
 
 void IRVideoAnnotaterWorkspace::loadAndApplyIRSRT(t_json data)
 {
-    
-    std::cout << "laoding...\n";
     auto va = data["IRVideoAnnotaterSaveData"];
     if(va.dump().length() == 0){
         std::cout << "Error : IRVideoAnnotater loadAndApplySRTs : save data empty!\n";
@@ -329,7 +333,6 @@ void IRVideoAnnotaterWorkspace::loadAndApplyIRSRT(t_json data)
     
     json11::Json::array objectArray = objects.array_items();
     
-    std::cout << "objectArray num = " << objectArray.size() << std::endl;
     for(int i = 0; i < objectArray.size(); i ++)
     {
         for (auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
@@ -344,23 +347,35 @@ void IRVideoAnnotaterWorkspace::loadAndApplyIRSRT(t_json data)
             // ===== create object =====
             std::string objectTypeId = it->second["objectType"].string_value();
             //auto* obj = factory.createObject(objectTypeId, this, getStr());
-            std::cout << "object created\n";
-
+            
+            if(getStr()->parentStr == nullptr)
+            {
+                KLib().showErrorMessage("Error : loadAndApplyIRSRT : parentStr nullptr\n");
+                return;
+            }
+            
+            auto* obj = static_cast<IRNodeObject*>(getStr()->parentStr->createNewObject(objectTypeId, this, getStr()));
 
             json11::Json arrangeCtl = it->second["ArrangeController"];
             
-            std::cout << "loadArrangeControllerSaveData\n";
-            //loadArrangeControllerSaveData(obj, arrangeCtl);
-            std::cout << "loadArrangeControllerSaveData done\n";
+            obj->loadArrangeControllerSaveData(arrangeCtl, IRNodeComponentBoundsType::RELATIVE);
 
-            //createObject(obj);
+            createObject(obj);
             
             // load save dada
-            //obj->loadThisFromSaveData(it->second["ObjectDefined"]);
+            obj->loadThisFromSaveData(it->second["ObjectDefined"]);
+            
+            // reset boundType so that it accepts mouse drag event
+            obj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
+            
             
             // ===== END =====
         }
     }
+    
+    // call resized in IRWorkspaceComponent
+    callResize();
+    
 }
 
 // ==============================

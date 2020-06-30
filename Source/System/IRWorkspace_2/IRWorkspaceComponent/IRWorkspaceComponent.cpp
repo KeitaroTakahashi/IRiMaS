@@ -63,7 +63,7 @@ IRWorkspaceComponent::~IRWorkspaceComponent()
 void IRWorkspaceComponent::paint (Graphics& g)
 {
     g.fillAll(this->backgroundColour);
-    //g.fillAll(Colours::purple);
+    g.fillAll(Colours::grey);
     //if(isDrawGrids() && this->editModeFlag) shaderTask(g);
     
     //g.setColour(Colours::white);
@@ -73,6 +73,11 @@ void IRWorkspaceComponent::paint (Graphics& g)
     onPaint(g);
     std::cout << " ++++++ workspace repained! ++++++ " << this->bench.stop() << std::endl;
 
+}
+
+void IRWorkspaceComponent::callResize()
+{
+    resized();
 }
 
 void IRWorkspaceComponent::drawShadows(Graphics& g)
@@ -126,6 +131,10 @@ void IRWorkspaceComponent::copyAllDataToWorkspace(IRWorkspaceComponent* newWorks
 void IRWorkspaceComponent::setBackgroundColour(Colour colour)
 {
     this->backgroundColour = colour;
+    
+    if(this->cover.get() != nullptr)
+        this->cover->setBackgroundColour(this->backgroundColour);
+    
     repaint();
 }
 
@@ -174,13 +183,11 @@ void IRWorkspaceComponent::resizeNodeObjectsRelativeToWorkspaceSizeChange()
             float ratioY = this->initialBounds.getY() / wb.getY();
             float ratioW = this->initialBounds.getWidth() / wb.getWidth();
             float ratioH = this->initialBounds.getHeight() / wb.getHeight();
-
             
-            std::cout <<"w = " << ratioW << " : " << ratioH << " : initial(w, h) = " << this->initialBounds.getWidth() << ", " <<  this->initialBounds.getHeight() << " : current = " << wb.getWidth() << ", " << wb.getHeight() << std::endl;
+            //std::cout <<"w = " << ratioW << " : " << ratioH << " : initial(w, h) = " << this->initialBounds.getWidth() << ", " <<  this->initialBounds.getHeight() << " : current = " << wb.getWidth() << ", " << wb.getHeight() << std::endl;
 
             for(auto obj : this->objects)
             {
-                
                 Rectangle<float> rb((float)obj->getInitialBounds().getX() * ratioW,
                                     (float)obj->getInitialBounds().getY() * ratioH,
                                     (float)obj->getInitialBounds().getWidth() * ratioW,
@@ -189,8 +196,6 @@ void IRWorkspaceComponent::resizeNodeObjectsRelativeToWorkspaceSizeChange()
                 obj->setBoundType(IRNodeComponentBoundsType::RELATIVE);
                 obj->setObjectBounds(rb.toNearestInt());
                 obj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
-
-                
             }
         }
     }

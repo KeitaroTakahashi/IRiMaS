@@ -27,7 +27,7 @@ public:
     // --------------------------------------------------
     // copy related methods
     
-    virtual IRNodeObject* copyThis() override;
+    virtual IRNodeObject* copyThisObject() override;
     
     virtual IRNodeObject* copyContents(IRNodeObject* object) override;
     
@@ -46,7 +46,7 @@ public:
     
     // --------------------------------------------------
     // resize reated methods
-    virtual void resized() override;
+    virtual void onResized() override;
     
     
     void setBoundsInWorkspace(Rectangle<int> rect) { this->boundsInWorkspace = rect; }

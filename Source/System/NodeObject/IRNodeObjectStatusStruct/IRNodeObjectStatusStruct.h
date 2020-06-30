@@ -10,12 +10,18 @@
 
 struct IRNodeObjectStatusStr
 {
+    int boundType = 0;
     Rectangle<float> relativeBounds;
     Rectangle<int> bounds;
     Rectangle<int> ordinaryBounds;
     Rectangle<int> encloseBounds;
     
+    Rectangle<float> ordinaryBoundsRelative;
+    Rectangle<float> encloseBoundsRelative;
+
+    
     bool wrap = false;
+    bool hasEncloseObjectAlreadyDefined = false;
     Colour wrapColour;
     
     float startTimeCode = 0;

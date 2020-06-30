@@ -15,12 +15,12 @@ public:
     ~IRImageViewerObject();
     
     // copy constructor
-    IRNodeObject* copyThis() override;
+    IRNodeObject* copyThisObject() override;
     
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json saveData) override;
     
-    void resized() override;
+    void onResized() override;
     void paint(Graphics& g) override;
     
     void resizeThisComponentEvent(const MouseEvent& e) override;

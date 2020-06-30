@@ -363,10 +363,13 @@ public:
         if(it != this->eventComponents.end())
         {
             this->eventComponents.erase(it);
-            //delete eventComponent;
+            delete eventComponent;
         }
         
          deSelectAllEventComponents();
+        
+        //sort
+        sortEventComponentByTimeCode();
 
     }
     

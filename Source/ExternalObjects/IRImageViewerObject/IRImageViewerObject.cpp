@@ -37,7 +37,7 @@ IRImageViewerObject::~IRImageViewerObject()
 
 
 // copy constructor
-IRNodeObject* IRImageViewerObject::copyThis()
+IRNodeObject* IRImageViewerObject::copyThisObject()
 {
     return new IRImageViewerObject(this->parent, getStr());
 }
@@ -86,7 +86,7 @@ void IRImageViewerObject::loadThisFromSaveData(t_json saveData)
 }
 
 
-void IRImageViewerObject::resized()
+void IRImageViewerObject::onResized()
 {
     std::cout << "IRImageViewerObject resized " << getWidth() << ", " << getHeight() << std::endl;
     

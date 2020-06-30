@@ -71,6 +71,7 @@
 		821ED19A217DCD800019CF54 /* IRPreferenceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821ED198217DCD800019CF54 /* IRPreferenceObject.cpp */; };
 		821ED1A5217FA93D0019CF54 /* IRAutomationObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 821ED1A3217FA93D0019CF54 /* IRAutomationObject.cpp */; };
 		8222D497220858A500E7FE63 /* IRVideoThumbnailObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8222D495220858A500E7FE63 /* IRVideoThumbnailObject.cpp */; };
+		8228175A24AAEBA9001850AD /* IROnVideoPlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8228175824AAEBA9001850AD /* IROnVideoPlayerController.cpp */; };
 		823A436A23FD814F00C7F66E /* IRWorkspaceComponentKeyEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823A436923FD814F00C7F66E /* IRWorkspaceComponentKeyEvents.cpp */; };
 		823A436C23FD819100C7F66E /* IRWorkspaceComponentObjectManagement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823A436B23FD819100C7F66E /* IRWorkspaceComponentObjectManagement.cpp */; };
 		823A436E23FD910300C7F66E /* IRNodeComponentAnnotation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 823A436D23FD910300C7F66E /* IRNodeComponentAnnotation.cpp */; };
@@ -363,6 +364,12 @@
 		8222D495220858A500E7FE63 /* IRVideoThumbnailObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRVideoThumbnailObject.cpp; sourceTree = "<group>"; };
 		8222D496220858A500E7FE63 /* IRVideoThumbnailObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRVideoThumbnailObject.hpp; sourceTree = "<group>"; };
 		8222D6BE22087F5000E7FE63 /* IRVideoDataLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVideoDataLoader.h; sourceTree = "<group>"; };
+		8228175524A98701001850AD /* waveformController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waveformController.h; sourceTree = "<group>"; };
+		8228175624A9907E001850AD /* IRWaveformUIController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRWaveformUIController.h; sourceTree = "<group>"; };
+		8228175724AAEA96001850AD /* IROnVideoController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IROnVideoController.h; sourceTree = "<group>"; };
+		8228175824AAEBA9001850AD /* IROnVideoPlayerController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IROnVideoPlayerController.cpp; sourceTree = "<group>"; };
+		8228175924AAEBA9001850AD /* IROnVideoPlayerController.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IROnVideoPlayerController.hpp; sourceTree = "<group>"; };
+		8228175C24AB1ED8001850AD /* IRPlayPauseButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRPlayPauseButton.h; sourceTree = "<group>"; };
 		8234ED8224528A1B000B2846 /* AnnotationImageEventComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnnotationImageEventComponent.h; sourceTree = "<group>"; };
 		8234ED8424528B9D000B2846 /* IRVAImageViewerObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRVAImageViewerObject.h; sourceTree = "<group>"; };
 		8234ED862452A6E5000B2846 /* AnnotationWaveformEventComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnnotationWaveformEventComponent.h; sourceTree = "<group>"; };
@@ -505,6 +512,7 @@
 		8289A0C722E766920088E156 /* IRSpectrogramController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSpectrogramController.h; sourceTree = "<group>"; };
 		8289A0C922E76DB80088E156 /* IRSpectrogramViewPort.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramViewPort.cpp; sourceTree = "<group>"; };
 		8289A0CA22E76DB80088E156 /* IRSpectrogramViewPort.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSpectrogramViewPort.hpp; sourceTree = "<group>"; };
+		82913661249B2D9600AD56CD /* IRMasterStr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMasterStr.h; sourceTree = "<group>"; };
 		8293FBD0220C727700C09BD5 /* KPixelDataConvertor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KPixelDataConvertor.h; sourceTree = "<group>"; };
 		8293FBD1221451EA00C09BD5 /* KPixelDataConvertor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KPixelDataConvertor.cpp; sourceTree = "<group>"; };
 		829542B523609AFA0015CC17 /* IRNodeComponent.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = IRNodeComponent.mm; sourceTree = "<group>"; };
@@ -635,7 +643,6 @@
 		82D0D29322A5516F00C771B1 /* ISVParameterControlWindow.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ISVParameterControlWindow.hpp; sourceTree = "<group>"; };
 		82D4A7C7234F533D00F89347 /* IRWaveformController2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRWaveformController2.cpp; sourceTree = "<group>"; };
 		82D4A7C8234F533D00F89347 /* IRWaveformController2.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRWaveformController2.hpp; sourceTree = "<group>"; };
-		82D4A7CA234F551B00F89347 /* IRWaveformController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRWaveformController.h; sourceTree = "<group>"; };
 		82D4A7CF234F56F600F89347 /* AudioObjectController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioObjectController.h; sourceTree = "<group>"; };
 		82D8AE8D22C392300012D987 /* IRSpectrogramObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRSpectrogramObject.cpp; sourceTree = "<group>"; };
 		82D8AE8E22C392300012D987 /* IRSpectrogramObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRSpectrogramObject.hpp; sourceTree = "<group>"; };
@@ -1483,6 +1490,14 @@
 			path = AutomationUI;
 			sourceTree = "<group>";
 		};
+		8228175B24AB1ECC001850AD /* IRPlayPauseButton */ = {
+			isa = PBXGroup;
+			children = (
+				8228175C24AB1ED8001850AD /* IRPlayPauseButton.h */,
+			);
+			path = IRPlayPauseButton;
+			sourceTree = "<group>";
+		};
 		8234ED81245289F7000B2846 /* AnnotationImageEventComponent */ = {
 			isa = PBXGroup;
 			children = (
@@ -2182,9 +2197,9 @@
 		8289A0C422E758380088E156 /* IRWaveformController */ = {
 			isa = PBXGroup;
 			children = (
-				82D4A7CA234F551B00F89347 /* IRWaveformController.h */,
 				82D4A7C7234F533D00F89347 /* IRWaveformController2.cpp */,
 				82D4A7C8234F533D00F89347 /* IRWaveformController2.hpp */,
+				8228175524A98701001850AD /* waveformController.h */,
 			);
 			path = IRWaveformController;
 			sourceTree = "<group>";
@@ -2265,6 +2280,9 @@
 			isa = PBXGroup;
 			children = (
 				829542C52361C4400015CC17 /* VideoController.h */,
+				8228175724AAEA96001850AD /* IROnVideoController.h */,
+				8228175824AAEBA9001850AD /* IROnVideoPlayerController.cpp */,
+				8228175924AAEBA9001850AD /* IROnVideoPlayerController.hpp */,
 			);
 			path = VideoController;
 			sourceTree = "<group>";
@@ -2641,6 +2659,7 @@
 			isa = PBXGroup;
 			children = (
 				82A8B6452317FCA900FF05B8 /* IRStr.h */,
+				82913661249B2D9600AD56CD /* IRMasterStr.h */,
 				82A8B65023180FC600FF05B8 /* IRStrComponent */,
 			);
 			path = IRStr;
@@ -2899,6 +2918,7 @@
 			children = (
 				82D0D28B22A433CA00C771B1 /* IRWaveformObjectUI2.cpp */,
 				82D0D28C22A433CA00C771B1 /* IRWaveformObjectUI2.hpp */,
+				8228175624A9907E001850AD /* IRWaveformUIController.h */,
 			);
 			path = IRWaveformObjectUI2;
 			sourceTree = "<group>";
@@ -3083,6 +3103,7 @@
 		82DEA52C2292F976004D3D9F /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				8228175B24AB1ECC001850AD /* IRPlayPauseButton */,
 				827F863023E9CC2300653A76 /* IRSwitchButton */,
 				82E914E9235DE5CF00A38C58 /* IRColourButton */,
 				820F7EDC234B815D00679F56 /* EditModeButton */,
@@ -3414,6 +3435,7 @@
 				82D8B16922A017B000940CD1 /* IRMeasureGrid.cpp in Sources */,
 				820963DA22A7E6D100723C81 /* ISVParameterSliders.cpp in Sources */,
 				8293FBD2221451EA00C09BD5 /* KPixelDataConvertor.cpp in Sources */,
+				8228175A24AAEBA9001850AD /* IROnVideoPlayerController.cpp in Sources */,
 				824F5AD7234398A800875D09 /* IRTitleBarComponent.cpp in Sources */,
 				82DEA54C2292FD19004D3D9F /* IRAutomationUI.cpp in Sources */,
 				82A02919241C1D9D0083BC39 /* IRNodeObjectAnimation.cpp in Sources */,

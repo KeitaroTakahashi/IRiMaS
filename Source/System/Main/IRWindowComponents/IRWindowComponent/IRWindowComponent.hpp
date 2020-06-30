@@ -8,7 +8,7 @@
 #ifndef IRWindowComponent_hpp
 #define IRWindowComponent_hpp
 
-#include "IRStr.h"
+#include "IRMasterStr.h"
 #include "IRTitleBar.hpp"
 #include "IRLeftBar.hpp"
 #include "IRRightBar.hpp"
@@ -170,7 +170,7 @@ private:
     String projectName;
     Rectangle<int> frameRect;
     
-    std::shared_ptr<IRStr> ir_str;
+    std::shared_ptr<IRMasterStr> ir_str;
     
     std::shared_ptr<IRIconBank> iconBank;
 
@@ -209,7 +209,7 @@ private:
     // ==================================================
 
 
-    IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
+    //IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
 
     // ==================================================
    // LookAndFeel_V4 c;

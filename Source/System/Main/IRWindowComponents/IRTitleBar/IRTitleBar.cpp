@@ -29,7 +29,7 @@ IRTitleBar::~IRTitleBar()
 void IRTitleBar::paint (Graphics& g)
 {
     
-    std::cout << "IRTitleBar::paint\n";
+    //std::cout << "IRTitleBar::paint\n";
     /*
     g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     g.setColour(getStr()->SYSTEMCOLOUR.contents);

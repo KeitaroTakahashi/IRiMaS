@@ -145,7 +145,7 @@ void IRWorkspaceComponent::pasteObject(IRNodeObject *obj, bool addToSelected)
                                            obj->getWidth(), obj->getHeight()));
     createObject(newObj);
 
-    /*
+   
     obj->setSelected(false);
     this->selector->removeSelectedObject(obj);
     newObj->setSelected(true);
@@ -155,10 +155,10 @@ void IRWorkspaceComponent::pasteObject(IRNodeObject *obj, bool addToSelected)
         this->selector->addSelectedObjects();
         copySelectedObjects();
     }
-    */
+ 
    
 
-    //callNodeObjectPasted(newObj);
+    callNodeObjectPasted(newObj);
 }
 void IRWorkspaceComponent::duplicateObject(IRNodeObject *obj)
 {
@@ -242,6 +242,7 @@ void IRWorkspaceComponent::createCover()
     this->cover->addKeyListener(this);
     // add top key lis
     this->cover->addKeyListener(getStr()->key);
+    
     
     
 }

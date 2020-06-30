@@ -508,10 +508,10 @@ void IRWaveform::audioPlayOperatedFromComponent(IRAudio* obj)
     // the received component is MASTER and non-received object is SLAVE
     if(comp != nodeObject)
     {
-        std::cout << "audioPlayOperatedFromComponent from " << comp << " to " << nodeObject << std::endl;
+        //std::cout << "audioPlayOperatedFromComponent from " << comp << " to " << nodeObject << std::endl;
 
         // Only LINKED
-               this->segmentPlayerStatus = PLAYPOSITION_SLAVED;
+        this->segmentPlayerStatus = PLAYPOSITION_SLAVED;
         
         
         // stop pther playing process in this case to avoid unneccesary lisk
@@ -522,9 +522,7 @@ void IRWaveform::audioPlayOperatedFromComponent(IRAudio* obj)
         {
             stop();
         }
-        
-       
-        
+
         setCurrentPlayedFrame(obj->getCurrentPlayedFrame());
         createPlayingLine(obj->getCurrentPlayedFrame());
         this->status = currentPlayedFrameShared;

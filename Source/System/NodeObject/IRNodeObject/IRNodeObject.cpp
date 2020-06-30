@@ -6,25 +6,32 @@ IRNodeObject::IRNodeObject(Component* parent,
                            IRStr* str,
                            NodeObjectType objectType) :
 IRNodeComponent(parent, name, str, objectType)
-//IRNodeObjectAnimation(this)
 {
     this->parent = parent;
+    
+    createEnclosedObject();
+    
 }
 
 
 IRNodeObject::~IRNodeObject()
 {
-    this->enclosedObject.reset();
-    //std::cout << "IRNodeObject deconstrucing" << std::endl;
-
+    //this->enclosedObject.reset();
     //notify any modification
     notifyNodeObjectModification();
-   // std::cout << "IRNodeObject deoconstructing done" << std::endl;
 }
 // ==================================================
 
 //copy constructor
 IRNodeObject* IRNodeObject::copyThis()
+{
+    auto obj = copyThisObject();
+    obj->copyArrangeController(this);
+    
+    return obj;
+}
+
+IRNodeObject* IRNodeObject::copyThisObject()
 {
     return new IRNodeObject(this->parent, "IRNodeObject", getStr(), NodeObjectType());
 }
@@ -71,17 +78,52 @@ void IRNodeObject::setArrangeController(ArrangeController* controller)
 {
     this->arrangeController = controller;
     this->arrangeController->addChangeListener(this);
+    
+    
+    //if controlelr has arrangeController, then set wrap colour
+    if(getArrangeController() != nullptr)
+        getStatusStr()->wrapColour = getArrangeController()->getEncloseColour();
 }
+
+void IRNodeObject::copyArrangeController(IRNodeObject* copiedObject)
+{
+    auto c = copiedObject;
+    if(c == nullptr) return;
+    
+    if(c->getArrangeController() == nullptr) return;
+    
+    setBoundType(c->getBoundType());
+    
+    if(c->getBoundType() == IRNodeComponentBoundsType::RELATIVE)
+        setObjectBoundsRelative(c->getObjectBoundsRelative());
+    else if(c->getBoundType() == IRNodeComponentBoundsType::ORDINARY)
+        setObjectBounds(c->getBounds());
+    
+    if(c->getEncloseMode() == 1) setEncloseMode(c->getEncloseMode());
+    
+    setEncloseColour(c->getArrangeController()->getEncloseColour());
+    
+    setStartTimeSec(c->getStartTimeSec());
+    setEndTimeSec(c->getEndTimeSec());
+}
+
 
 t_json IRNodeObject::getArrangeControllerSaveData()
 {
     
     auto s = getStatusStr();
     
+    // update relative bounds
+    calcRelativeEncloseBounds();
+    calcRelativeOrdinaryBounds();
+    
     std::string contents = "";
 
     // ----------
     contents += "{";
+    
+    contents += "\"boundType\": " + std::to_string(s->boundType) + ", ";
+    
     
     contents += "\"bounds\": [" + std::to_string(s->bounds.getX()) +
     ", " + std::to_string(s->bounds.getY()) +
@@ -98,12 +140,28 @@ t_json IRNodeObject::getArrangeControllerSaveData()
     ", " + std::to_string(s->ordinaryBounds.getWidth()) +
     ", " + std::to_string(s->ordinaryBounds.getHeight()) + "], ";
     
+    std::cout << "save arrangeCtl bounds " << s->relativeBounds.getX() << " ; ordinary " << s->ordinaryBounds.getX() << std::endl;
+    
     contents += "\"encloseBounds\": [" + std::to_string(s->encloseBounds.getX()) +
     ", " + std::to_string(s->encloseBounds.getY()) +
     ", " + std::to_string(s->encloseBounds.getWidth()) +
     ", " + std::to_string(s->encloseBounds.getHeight()) + "], ";
     
+    contents += "\"ordinaryBoundsRelative\": [" + std::to_string(s->ordinaryBoundsRelative.getX()) +
+    ", " + std::to_string(s->ordinaryBoundsRelative.getY()) +
+    ", " + std::to_string(s->ordinaryBoundsRelative.getWidth()) +
+    ", " + std::to_string(s->ordinaryBoundsRelative.getHeight()) + "], ";
+    
+    std::cout <<" saving... " << s->ordinaryBoundsRelative.getWidth() << std::endl;
+    
+    contents += "\"encloseBoundsRelative\": [" + std::to_string(s->encloseBoundsRelative.getX()) +
+    ", " + std::to_string(s->encloseBoundsRelative.getY()) +
+    ", " + std::to_string(s->encloseBoundsRelative.getWidth()) +
+    ", " + std::to_string(s->encloseBoundsRelative.getHeight()) + "], ";
+    
     contents += "\"wrap\": " + std::to_string(s->wrap) + ", ";
+    
+    contents += "\"hasWrap\": " + std::to_string(s->hasEncloseObjectAlreadyDefined) + ", ";
 
     contents += "\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
     ", " + std::to_string(s->wrapColour.getGreen()) +
@@ -644,7 +702,7 @@ void IRNodeObject::callNodeObjectPositionChanged()
 
 void IRNodeObject::changeListenerCallback (ChangeBroadcaster* source)
 {
-    // first check arrange controller if it has
+    // first check arrange controller if it exists
     if(this->arrangeController != nullptr)
     {
         if(source == this->arrangeController)
@@ -713,12 +771,58 @@ void IRNodeObject::moveToBackEvent()
 
 void IRNodeObject::setOrdinaryBounds(Rectangle<int> bounds)
 {
+    
+    //std::cout << "setOrdinaryBounds\n";
+    auto str = getStatusStr();
+
+    str->ordinaryBounds = bounds;
     this->ordinaryBounds = bounds;
+    
+    calcRelativeOrdinaryBounds();
+    
 }
 
 void IRNodeObject::setEncloseBounds(Rectangle<int> bounds)
 {
+    auto str = getStatusStr();
+
     this->encloseBounds = bounds;
+    str->encloseBounds = bounds;
+    
+    calcRelativeEncloseBounds();
+}
+
+void IRNodeObject::adjustOrdinaryBoundsToRelative()
+{
+    float w = this->parent->getWidth();
+    float h = this->parent->getHeight();
+        
+    this->ordinaryBounds = Rectangle<int> (floor(w * this->ordinaryBoundsRelative.getX()),
+                                           floor(h * this->ordinaryBoundsRelative.getY()),
+                                           floor(w * this->ordinaryBoundsRelative.getWidth()),
+                                           floor(h * this->ordinaryBoundsRelative.getHeight())
+                                           );
+    //setObjectBounds(this->ordinaryBounds);
+}
+
+void IRNodeObject::adjustEncloseBoundsToRelative()
+{
+    float w = this->parent->getWidth();
+    float h = this->parent->getHeight();
+            
+    this->encloseBounds = Rectangle<int> (
+                                          floor(w * this->encloseBoundsRelative.getX()),
+                                          floor(h * this->encloseBoundsRelative.getY()),
+                                          floor(w * this->encloseBoundsRelative.getWidth()),
+                                          floor(h * this->encloseBoundsRelative.getHeight())
+                                          );
+    
+    
+    std::cout << "this->encloseBoundsRelative.getY() = " << this->encloseBoundsRelative.getY() << std::endl;
+    std::cout << "adjustEncloseBoundsToRelative : " << this->encloseBounds.getX() << ", " << this->encloseBounds.getY() << " : "<<this->encloseBounds.getWidth() << ", " << this->encloseBounds.getHeight() << std::endl;
+    
+    std::cout << "encloseObject : " << this->enclosedObject.getBounds().getX() << ", " << this->enclosedObject.getBounds().getY() << " : "<<this->enclosedObject.getBounds().getWidth() << ", " << this->enclosedObject.getBounds().getHeight() << std::endl;
+    //setObjectBounds(this->encloseBounds);
 }
 
 void IRNodeObject::setStatus(IRNodeObjectStatus newStatus)
@@ -743,53 +847,136 @@ void IRNodeObject::transformStatusToOrdinary()
 
     std::cout << "transformStatusToOrdinary\n";
     this->resizingSquare.applyMouseListenerToIRNodeObject();
-    this->resizingSquare.removeMouseListener(this->enclosedObject.get());
-    removeChildComponent(this->enclosedObject.get());
-    this->enclosedObject.reset();
+    this->resizingSquare.removeMouseListener(&this->enclosedObject);
+    
+    showEncloseObject(false);
+    
+    adjustOrdinaryBoundsToRelative();
     setObjectBounds(this->ordinaryBounds);
 }
 
 void IRNodeObject::transformStatusEnclose()
 {
-    // first store data
-    auto str = getStatusStr();
-    str->ordinaryBounds = getBounds();
-    this->ordinaryBounds = getBounds();
+    std::cout << "transformStatusEnclose : bounds " << getBounds().getWidth() << ", " << getBounds().getHeight() << " : ordinary = " << this->ordinaryBounds.getWidth() << ", " << this->ordinaryBounds.getHeight() << std::endl;
     
-    createEnclosedObject();
+    showEncloseObject(true);
+
+    // then move this object to the enclosed object if encloseBounds is not empty
+    if(hasEncloseAlreadyDefined())
+    {
+        std::cout << "hasEnclosedAlreadyDefined\n";
+        adjustEncloseBoundsToRelative();
+        setObjectBounds(this->encloseBounds);
+        
+        this->enclosedObject.setBounds(getLocalBounds());
+        auto b = this->enclosedObject.getBounds();
+        std::cout << "encloseObject bounds = " << b.getX() << " , " << b.getY() << " : " << b.getWidth() << ", " << b.getHeight() << std::endl;
+        
+        b = this->encloseBounds;
+        std::cout << "encloseBounds = " << b.getX() << " , " << b.getY() << " : " << b.getWidth() << ", " << b.getHeight() << std::endl;
+
+        
+    }else{
+        std::cout << "NOE YET enclose DEFINED\n";
+
+        // first time set
+        this->encloseBounds = getBounds();
+        calcRelativeEncloseBounds();
+        adjustEncloseBoundsToRelative();
+
+        setEncloseAlreadyDefined(true);
+        setObjectBounds(this->encloseBounds);
+        this->enclosedObject.setBounds(getLocalBounds());
+
+        
+    }
+    
     this->resizingSquare.bringThisToFront();
     
-    // then move this object to the enclosed object if encloseBounds is not empty
-    if(this->isEncloseObjectAlreadyDefined)
-    {
-        setObjectBounds(this->encloseBounds);
-
-    }else{
-        this->enclosedObject->setBounds(getLocalBounds());
-        this->encloseBounds = getBounds();
-        str->encloseBounds = getBounds();
-        this->isEncloseObjectAlreadyDefined = true;
-    }
 }
 
 void IRNodeObject::createEnclosedObject()
 {
-    this->enclosedObject.reset(new IREnclosedObject());
-    this->enclosedObject->onClick = [this]{ enclosedObjectClickedAction(); };
-    addAndMakeVisible(this->enclosedObject.get());
-    this->enclosedObject->setColour(this->arrangeController->getEncloseColour());
-    this->enclosedObject->addMouseListener(this, true);
+    this->enclosedObject.onClick = [this]{ enclosedObjectClickedAction(); };
+    addAndMakeVisible(this->enclosedObject);
+    this->enclosedObject.addMouseListener(this, true);
+}
+
+void IRNodeObject::showEncloseObject(bool flag)
+{
+    std::cout << "showEncloseObject " << flag << std::endl;
+    //update colour
+    this->enclosedObject.setColour(this->arrangeController->getEncloseColour());
+    getStatusStr()->wrapColour = this->arrangeController->getEncloseColour();
+    
+    
+    if(flag) addAndMakeVisible(this->enclosedObject);
+    else removeChildComponent(&this->enclosedObject);
+    
+    this->enclosedObject.setVisible(flag);
+    
+    if(flag) this->enclosedObject.toFront(true);
+    else this->enclosedObject.toBack();
+    
+    std::cout << "encloseObject visible = " << this->enclosedObject.isVisible() << std::endl;
+}
+
+void IRNodeObject::calcRelativeOrdinaryBounds()
+{
+    float w = (float) this->parent->getWidth();
+    float h = (float) this->parent->getHeight();
+    
+    auto b = this->ordinaryBounds;
+    this->ordinaryBoundsRelative = Rectangle<float> (
+                                                     (float)b.getX() / w,
+                                                     (float)b.getY() / h,
+                                                     (float)b.getWidth() / w,
+                                                     (float)b.getHeight() / h
+                                                     );
+    
+    
+    
+    
+    adjustRectangleFloatToAboveZero(this->ordinaryBoundsRelative);
+
+    auto s = getStatusStr();
+    s->ordinaryBoundsRelative = this->ordinaryBoundsRelative;
+    
+}
+
+void IRNodeObject::calcRelativeEncloseBounds()
+{
+    float w = (float) this->parent->getWidth();
+    float h = (float) this->parent->getHeight();
+    
+    auto b = this->encloseBounds;
+    this->encloseBoundsRelative = Rectangle<float> (
+                                                     (float)b.getX() / w,
+                                                     (float)b.getY() / h,
+                                                     (float)b.getWidth() / w,
+                                                     (float)b.getHeight() / h
+                                                     );
+    
+    adjustRectangleFloatToAboveZero(this->encloseBoundsRelative);
+    auto s = getStatusStr();
+    s->encloseBoundsRelative = this->encloseBoundsRelative;
+ 
+}
+
+void IRNodeObject::adjustRectangleFloatToAboveZero(Rectangle<float>& bounds)
+{
+    if(bounds.getX() < 0) bounds.setX(0);
+    if(bounds.getY() < 0) bounds.setY(0);
+    if(bounds.getWidth() < 0) bounds.setWidth(0);
+    if(bounds.getHeight() < 0) bounds.setHeight(0);
 }
 
 
 void IRNodeObject::setEncloseColour(Colour colour)
 {
-    std::cout<< "setEncloseColour\n";
     auto statusStr = getStatusStr();
     statusStr->wrapColour = colour;
-    
-    if(this->enclosedObject.get() != nullptr)
-        this->enclosedObject->setColour(colour);
+    this->enclosedObject.setColour(colour);
 }
 
 void IRNodeObject::enclosedObjectClickedAction()
@@ -799,6 +986,8 @@ void IRNodeObject::enclosedObjectClickedAction()
 
 void IRNodeObject::setEncloseMode(bool flag)
 {
+    
+    std::cout << "setEncloseMode " << flag << std::endl;
     // data
     auto statusStr = getStatusStr();
     statusStr->wrap = flag;
@@ -806,6 +995,12 @@ void IRNodeObject::setEncloseMode(bool flag)
     
     if(flag) setStatus(IRNodeObjectStatus::ENCLOSE);
     else setStatus(IRNodeObjectStatus::ORDINARY);
+}
+
+void IRNodeObject::setEncloseAlreadyDefined(bool flag)
+{
+    this->hasEncloseObjectAlreadyDefined = flag;
+    getStatusStr()->hasEncloseObjectAlreadyDefined = flag;
 }
 
 // ==================================================
@@ -822,26 +1017,27 @@ void IRNodeObject::ObjectBoundsChanged4IRNodeObject(Rectangle<int> bounds)
     arrangeControllerBoundsChangedAction(bounds);
     //IRNodeObject::Listener
     callNodeObjectPositionChanged();
-
 }
 
 void IRNodeObject::encloseObjectPositionChangedAction(int x, int y)
 {
-    if(this->enclosedObject.get() != nullptr)
+    if(this->status == IRNodeObjectStatus::ENCLOSE)
     {
-        this->enclosedObject->setBounds(getLocalBounds());
-        this->encloseBounds = getBounds();
+        this->enclosedObject.setBounds(getLocalBounds());
+        setEncloseBounds(getBounds());
+    }else if(this->status == IRNodeObjectStatus::ORDINARY){
+        setOrdinaryBounds(getBounds());
     }
 }
 
 void IRNodeObject::encloseObjectBoundsChangedAction(Rectangle<int> bounds)
 {
-    if(this->enclosedObject.get() != nullptr)
+    if(this->status == IRNodeObjectStatus::ENCLOSE)
     {
-        this->enclosedObject->setBounds(getLocalBounds());
-        this->encloseBounds = getBounds();
-        
-
+        this->enclosedObject.setBounds(getLocalBounds());
+        setEncloseBounds(getBounds());
+    }else if(this->status == IRNodeObjectStatus::ORDINARY){
+        setOrdinaryBounds(getBounds());
     }
 }
                                            
@@ -863,28 +1059,96 @@ void IRNodeObject::arrangeControllerBoundsChangedAction(Rectangle<int> bounds)
         this->arrangeController->setRectangle(getBounds());
  }
 
-void IRNodeObject::loadArrangeControllerSaveData(t_json arrangeCtl)
+void IRNodeObject::loadArrangeControllerSaveData(t_json arrangeCtl, IRNodeComponentBoundsType type)
 {
     auto b = arrangeCtl["bounds"].array_items();
     auto rb = arrangeCtl["relativeBounds"].array_items();
     
-    // relative first
+    auto ob = arrangeCtl["ordinaryBounds"].array_items();
+    auto obr = arrangeCtl["ordinaryBoundsRelative"].array_items();
+
+    auto eb = arrangeCtl["encloseBounds"].array_items();
+    auto ebr = arrangeCtl["encloseBoundsRelative"].array_items();
+    
+    // we need to determin boundtype each time of calling loadArrangeControllerSaveData.
+    setBoundType(type);
+
+    std::cout << "IRNodeObject arrangeController load , boundType = " << type << std::endl;
+
+    // ====== WRAP ======
+    //wrap colour
+    auto wrapColour = arrangeCtl["wrapColour"].array_items();
+    Colour wc = Colour((uint8)wrapColour[0].int_value(),
+                       (uint8)wrapColour[1].int_value(),
+                       (uint8)wrapColour[2].int_value(),
+                       (uint8)wrapColour[3].int_value()
+                       );
+    
+    std::cout << "wrapColour = " << wc.getRed() << ", " << wc.getFloatAlpha() << std::endl;
+    setEncloseColour(wc);
+    auto a = getArrangeController();
+    if(a != nullptr)
+    {
+        a->setEncloseColour(wc);
+    }
+
+
+    this->ordinaryBounds = Rectangle<int>(ob[0].int_value(), ob[1].int_value(),
+                                          ob[2].int_value(), ob[3].int_value());
+    this->encloseBounds = Rectangle<int>(eb[0].int_value(), eb[1].int_value(),
+                                         eb[2].int_value(), eb[3].int_value());
+    
+    std::cout << "load arrangeCtl bounds enclose " << this->encloseBounds.getX() << " ; ordinary " << this->ordinaryBounds.getX() << std::endl;
+    
+    this->ordinaryBoundsRelative = Rectangle<float>(obr[0].number_value(), obr[1].number_value(),
+                                                    obr[2].number_value(), obr[3].number_value());
+    
+    this->encloseBoundsRelative = Rectangle<float>(ebr[0].number_value(), ebr[1].number_value(),
+                                                   ebr[2].number_value(), ebr[3].number_value());
+    
+    std::cout << "load arrangeCtl bounds relative " << this->encloseBoundsRelative.getX() << " ; ordinary " << this->ordinaryBoundsRelative.getX() << std::endl;
+
+    int wrap = arrangeCtl["wrap"].int_value();
+    int hasWrap = arrangeCtl["hasWrap"].int_value();
+    setEncloseAlreadyDefined((bool)hasWrap);
+    
+    // give wrap only when wrap is TRUE because the oridinary bounds of the enclosed mode does not have the initial bounds. It gets the bounds only when it transfers to enclose mode.
+    
+    if(wrap == 1)
+    {
+        
+        // adjust bounds based in the relative ratio to the parent size
+        //adjustEncloseBoundsToRelative();
+        getArrangeController()->setEncloseToggle(true, sendNotification);
+        setEncloseMode((bool)wrap);
+            
+        // adjust ordinary bounds in accordance with the current parent component bounds
+        //adjustOrdinaryBoundsToRelative();
+
+    }else{
+        // adjust enclose bounds in accordance with the current parent component bounds
+        //adjustEncloseBoundsToRelative();
+    }
+    
+    // ========== BOUNDS ===========
+    // AFTER ALL SETUP, SET BOUNDS FINALLY!
+    // set bounds and give appripriate bounds from ordinary, enclose, relative etc...
     setObjectBoundsRelative(rb[0].number_value(), rb[1].number_value(),
                             rb[2].number_value(), rb[3].number_value());
-    
-    // absolute second
     setObjectBounds(b[0].int_value(), b[1].int_value(),
                     b[2].int_value(), b[3].int_value());
-        
-    auto wrap = arrangeCtl["wrap"].int_value();
-    // give wrap only when wrap is TRUE because the oridinary bounds of the enclosed mode does not have the initial bounds. It gets the bounds only when it transfers to enclose mode.
-    if(wrap == 1) setEncloseMode(true);
     
-    auto wrapColour = arrangeCtl["wrapColour"].array_items();
-    setEncloseColour(Colour((uint8)wrapColour[0].int_value(),
-                            (uint8)wrapColour[1].int_value(),
-                            (uint8)wrapColour[2].int_value(),
-                            (uint8)wrapColour[3].int_value()));
+    
+
+    // ====== TimeCode ======
+    float startTime = arrangeCtl["startTime"].number_value();
+    float endTime = arrangeCtl["endTime"].number_value();
+    
+    setStartTimeSec(startTime);
+    setEndTimeSec(endTime);
+    
+    std::cout << "loadArranceControllerSaveData completed\n";
+
 }
 
 // ==================================================

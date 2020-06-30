@@ -32,8 +32,8 @@ public:
     
     ~IRHeavyWeightComponent()
     {
-        
         this->ctx.detach();
+        std::cout << "OpenGL Context detached! : " << this->name << std::endl;
     }
    //==================================================
     virtual void componentCreated() {};

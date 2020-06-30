@@ -24,7 +24,7 @@ IRWorkspaceCover::~IRWorkspaceCover()
 
 void IRWorkspaceCover::paint(Graphics& g)
 {
-    g.fillAll(Colours::transparentWhite);
+    g.fillAll(this->backgroundColour);
     //g.fillAll(Colours::blue);
 
     if(isDrawGrids() && isEditMode()) shaderTask(g);
@@ -70,9 +70,7 @@ void IRWorkspaceCover::openGLInit()
             std::cout << "Error : " << url << " does not exist!!\n";
             AlertWindow::showOkCancelBox(AlertWindow::QuestionIcon, "Fatal Error", "IRSpectrogram : frag file " + url + "not found! Please contact a developer with this error message.");
         }
-        
-
-        
+ 
         this->fragURL = url;
         this->fragmentText.load (url.toStdString());
         this->fragmentCode = fragmentText.getStdString();
@@ -96,7 +94,7 @@ void IRWorkspaceCover::shaderTask(Graphics& g)
             glEnable (GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            
+            std::cout << "Shader Task\n";
             shader.reset (new OpenGLGraphicsContextCustomShader (fragmentCode));
 
             shader->onShaderActivated = [this](OpenGLShaderProgram& program){setUniform(program);};
@@ -127,6 +125,8 @@ void IRWorkspaceCover::setUniform(OpenGLShaderProgram& program)
     int scale = Desktop::getInstance().getDisplays().getMainDisplay().scale;
     int w = getWidth() * scale;
     int h = getHeight() * scale;
+    
+    //std::cout << "setUniform : " << w << ", " << h << " : cover size " << getWidth() << " : alpha = " << this->gridsBackgroundAlpha << std::endl;
     
     program.setUniform("resolution", w, h);
     program.setUniform("gridInterval", this->thin_grids_pixel * scale, this->thick_grids_interval * scale);

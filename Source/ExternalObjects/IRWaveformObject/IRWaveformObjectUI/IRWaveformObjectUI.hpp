@@ -12,7 +12,7 @@
 #include "IRNodeObjectSelector.hpp"
 #include "IRGraphSelector.hpp"
 #include "IRViewUI.hpp"
-#include "IRWaveformController.h"
+#include "IRWaveformUIController.h"
 
 class IRWaveformObjectUI : public IRWaveform
 {
@@ -84,7 +84,7 @@ private:
     // called when file import completed!
     void fileImportCompletedAction() override;
     // ==================================================
-    IRWaveformController controller;
+    IRWaveformUIController controller;
     int previousOffsetX = 0;
     Rectangle<int> visibleArea;
     

@@ -57,15 +57,23 @@ IRTextEditorObject::~IRTextEditorObject()
 }
 
 
-IRNodeObject* IRTextEditorObject::copyThis()
+IRNodeObject* IRTextEditorObject::copyThisObject()
 {
     IRTextEditorObject* newObj = new IRTextEditorObject(this->parent, getStr());
+    
+    newObj->controller->getFontController()->setFontController(this->controller->getFontController());
+    std::cout << "copyThisObject : fontSize = " << this->font.getHeight() << " : copied font " << newObj->getFont().getHeight() <<std::endl;
+
+    /*
     newObj->setFont(this->font);
     newObj->setTextColour(this->textColour);
     newObj->setBackgroundColour(this->backgroundColour);
     newObj->setAlign(this->alignId);
     newObj->textEditor.setText(this->textEditor.getText() ,dontSendNotification);
-    newObj->applyColourToAllText(this->textColour);
+     */
+    
+    applyFontFromController();
+    
     return newObj;
 }
 
@@ -165,7 +173,7 @@ void IRTextEditorObject::paint(Graphics &g)
 }
 
 
-void IRTextEditorObject::resized()
+void IRTextEditorObject::onResized()
 {
     this->textEditor.setBounds(getLocalBounds());
 }
@@ -189,8 +197,10 @@ void IRTextEditorObject::mouseDownEvent(const MouseEvent& e)
 
 void IRTextEditorObject::IRChangeListenerCallback (ChangeBroadcaster* source)
 {
+    std::cout << "IRTextEditorObject::IRChangeListenerCallback\n";
+    
     FontController* fontGUI = this->controller->getFontController();
-    ArrangeController* arrangeGUI = this->controller->getArrangeController();
+    //ArrangeController* arrangeGUI = this->controller->getArrangeController();
 
     if(source == fontGUI)
     {
@@ -201,6 +211,8 @@ void IRTextEditorObject::IRChangeListenerCallback (ChangeBroadcaster* source)
 
 void IRTextEditorObject::fontControllerChangedCallback(FontController* source)
 {
+    
+    std::cout << "IRTextEditorObject::fontControllerChangedCallback : " << source->getChangeStatus() << std::endl;
     switch (source->getChangeStatus()) {
         case FontChanged:
             this->font.setTypefaceName(source->getTypefaceName());
@@ -214,6 +226,7 @@ void IRTextEditorObject::fontControllerChangedCallback(FontController* source)
             break;
         case FontSizeChanged:
             this->font.setHeight(source->getHeight());
+            std::cout << "fontControllerChangedCallback fontHeight = " << source->getHeight() << std::endl;
             this->textEditor.applyFontToAllText(this->font);
             textArrangeChanged();
             break;
@@ -484,4 +497,24 @@ void IRTextEditorObject::arrangeControllerChangedNotify()
 {
     std::cout << "arrangeControllerChangedNotify\n";
     onTextChangeAction();
+}
+
+// ------------------------------------------------------------
+
+void IRTextEditorObject::applyFontFromController()
+{
+    
+    auto c = this->controller->getFontController();
+    
+    this->font.setTypefaceName(c->getTypefaceName());
+    this->font.setTypefaceStyle(c->getTypefaceStyle());
+    this->font.setHeight(c->getHeight());
+    setAlign(c->getAlign());
+    this->textColour = c->getTextColour();
+    this->backgroundColour = c->getBackgroundColour();
+    setBackgroundColour(this->backgroundColour);
+    
+    this->textEditor.applyFontToAllText(this->font);
+    repaint();
+
 }

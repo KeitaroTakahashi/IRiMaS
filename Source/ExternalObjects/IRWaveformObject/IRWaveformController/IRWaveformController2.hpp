@@ -9,7 +9,7 @@
 #define IRWaveformController2_hpp
 #include "IRObjectController.hpp"
 #include "IRColourSelector.h"
-#include "AudioObjectController.h"
+#include "waveformController.h"
 
 class IRWaveformController2 : public IRObjectController,
 public ChangeBroadcaster
@@ -36,12 +36,21 @@ public:
     void paint(Graphics& g) override;
     
     // ==================================================
+    
+    // called by IRObjectController
+    void mainControllerSelected() override;
+    void arrangeControllerSelected() override;
 
-        
+    // ==================================================
+
+    void setLoadedAudioFilePath(String path);
+    // ==================================================
+
     IRWaveformController2Status getStatus() const { return this->status; }
     
-    AudioObjectController audioController;
-
+    void addChangeListenerToAudioController(ChangeListener* listener);
+    
+    AudioObjectController* getAudioController() { return this->waveformCtl.getAudioController(); }
     
 private:
     
@@ -51,7 +60,9 @@ private:
 
     
     // ==================================================
-
+    waveformController waveformCtl;
+    void setWaveformControllerVisible(bool flag);
+    
     IRWaveformController2Status status;
     
     Label LabelTitle;

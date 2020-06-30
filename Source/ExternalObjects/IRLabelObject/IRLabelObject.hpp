@@ -13,14 +13,14 @@ public:
     IRLabelObject(Component* parent, IRStr* str);
     ~IRLabelObject();
     
-    IRNodeObject* copyThis() override;
+    IRNodeObject* copyThisObject() override;
 
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json data) override;
 
     void paint(Graphics &g) override;
     void paintOnWorkspace(Graphics& g, Component* workspace) override;
-    void resized() override;
+    void onResized() override;
     
     void mouseDownEvent(const MouseEvent& e) override;
     

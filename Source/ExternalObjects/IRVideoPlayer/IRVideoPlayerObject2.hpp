@@ -12,6 +12,7 @@
 #include "IRVideoPlayer.h"
 #include "IRNodeObjectWorkspace.hpp"
 #include "IRTextEditorObject.hpp"
+#include "IROnVideoPlayerController.hpp"
 
 class IRVideoPlayerObject2 : public IRNodeObject
 
@@ -26,7 +27,7 @@ public:
     // --------------------------------------------------
     // copy related methods
     
-    virtual IRNodeObject* copyThis() override;
+    virtual IRNodeObject* copyThisObject() override;
     
     virtual IRNodeObject* copyContents(IRNodeObject* object) override;
     
@@ -54,7 +55,8 @@ public:
     // --------------------------------------------------
     
     void mouseUpEvent(const MouseEvent& e) override;
-    
+    void mouseEnterEvent(const MouseEvent& e) override;
+    void mouseExitEvent(const MouseEvent& e) override;
     // --------------------------------------------------
 
     void paint(Graphics& g) override;
@@ -98,7 +100,8 @@ public:
     
 private:
     // --------------------------------------------------
-  
+    IROnVideoPlayerController playerController;
+    
     // --------------------------------------------------
     // ResizingSquare
 

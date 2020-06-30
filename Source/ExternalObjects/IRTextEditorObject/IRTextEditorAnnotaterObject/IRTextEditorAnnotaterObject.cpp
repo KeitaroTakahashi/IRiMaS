@@ -21,9 +21,9 @@ IRTextEditorAnnotaterObject::~IRTextEditorAnnotaterObject()
 }
 // ==================================================
 
-void IRTextEditorAnnotaterObject::resized()
+void IRTextEditorAnnotaterObject::onResized()
 {
-    IRTextEditorObject::resized();
+    IRTextEditorObject::onResized();
 }
 
 void IRTextEditorAnnotaterObject::paint(Graphics& g)

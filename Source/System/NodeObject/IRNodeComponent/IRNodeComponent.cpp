@@ -52,14 +52,7 @@ IRNodeComponent::~IRNodeComponent()
 {
 
     delete this->mixer;
-    
-    if(this->objectType.componentType == ordinaryIRComponent)
-    {
-        //this->openGLContext.detach();
-        std::cout << "openGL despatched!\n";
-
-    }
-
+  
     std::cout << "~IRNODECOMPONENT DESTRUCTOR CALLED" << std::endl;
     
 }
@@ -83,11 +76,29 @@ void IRNodeComponent::initOpenGLContext()
 // basics
 void IRNodeComponent::resized()
 {
+    
+    onResized();
     //this->constrainer.setMinimumOnscreenAmounts(getHeight(), getWidth(),
       //                                          getHeight(), getWidth());
 }
 
+void IRNodeComponent::moved()
+{
+    onResized();
+}
+
+
 // ==================================================
+
+void IRNodeComponent::setBoundType(IRNodeComponentBoundsType boundType)
+{
+    
+    std::cout << "IRNodeComponent::setBoundType : " << boundType << std::endl;
+    this->boundType = boundType;
+    auto statusStr = getStatusStr();
+    statusStr->boundType = (int)boundType;
+}
+
 
 void IRNodeComponent::setSize(float width, float height)
 {
@@ -114,7 +125,10 @@ void IRNodeComponent::setSize(float width, float height)
 void IRNodeComponent::setObjectCentredPosition(int x, int y)
 {
     std::cout << "IRNodeComponent::setObjectCentredPosition\n";
-    setCentrePosition(x, y);
+    
+    int fx = getWidth() / 2;
+    int fy = getHeight() / 2;
+    setObjectBounds(x - fx, y - fy, getWidth(), getHeight());
     
     updateResizingSquare();
     
@@ -152,23 +166,33 @@ void IRNodeComponent::setObjectBounds(Rectangle<int> bounds)
                                 (float)bounds.getWidth() / (float)pb.getWidth(),
                                 (float)bounds.getHeight() / (float)pb.getHeight());
             setObjectBoundsRelative(b);
+            
         }
+        //std::cout << "ORDINARY\n";
+
         
     }else if(this->boundType == RELATIVE)
     {
-        
         setBoundsRelative(this->relativeBoundsToParent);
+        
+        //std::cout << "RELATIVE\n";
+
     }
+    
+    //std::cout << "setObjectBounds relative ratio = " << this->relativeBoundsToParent.getWidth() << ", " << this->relativeBoundsToParent.getHeight() << " : this " << getWidth() << ", " << getHeight() << std::endl;
+    //if(this->parent != nullptr)
+     //   std::cout << "  : parent " << this->parent->getWidth() << ", " << this->parent->getHeight() << std::endl;
     
     updateResizingSquare();
     
+    //default setting is WORKSPACE
     if(this->objectType.componentMode == IRNodeComponentMode::WORKSPACE)
     {
+        
         ObjectPositionChanged(bounds.getX(), bounds.getY());
-        Rectangle<int> b (bounds.getX(), bounds.getY(),
-                          bounds.getWidth(), bounds.getHeight());
-        ObjectBoundsChanged(b);
-        ObjectBoundsChanged4IRNodeObject(b);
+        
+        ObjectBoundsChanged(bounds);
+        ObjectBoundsChanged4IRNodeObject(bounds);
     }
 }
 
@@ -176,6 +200,18 @@ void IRNodeComponent::setObjectBounds(int x, int y, int w, int h)
 {
     Rectangle<int> bounds(x,y,w,h);
     setObjectBounds(bounds);
+}
+
+void IRNodeComponent::setObjectTopLeftPosition(int x, int y)
+{
+    setObjectBounds(x, y, getWidth(), getHeight());
+}
+
+
+void IRNodeComponent::setObjectTopLeftPositionRelative(float x, float y)
+{
+    auto b = this->getObjectBoundsRelative();
+    setObjectBoundsRelative(x, y, b.getWidth(), b.getHeight());
 }
 
 void IRNodeComponent::setObjectBoundsRelative(Rectangle<float> ratioBounds)
@@ -384,6 +420,21 @@ void IRNodeComponent::mouseDrag(const MouseEvent& e)
     mouseDragEvent(e); // defined by an unique Node object
 }
 
+void IRNodeComponent::mouseEnter(const MouseEvent& e)
+{
+    mouseEnterEvent(e);
+}
+void IRNodeComponent::mouseExit(const MouseEvent& e)
+{
+    mouseExitEvent(e);
+
+}
+void IRNodeComponent::mouseMagnify(const MouseEvent& e, float scaleFactor)
+{
+    mouseMagnifyEvent(e, scaleFactor);
+}
+
+// ------------------------------------------------------------
 
 // resizing area
 juce::Point<float> IRNodeComponent::getResizingArea() const
@@ -453,6 +504,19 @@ void IRNodeComponent::mouseDragEvent(const MouseEvent& e)
     
 }
 
+void IRNodeComponent::mouseEnterEvent(const MouseEvent& e)
+{
+    
+}
+void IRNodeComponent::mouseExitEvent(const MouseEvent& e)
+{
+    
+}
+
+void IRNodeComponent::mouseMagnifyEvent(const MouseEvent& e, float scaleFactor)
+{
+    
+}
 
 // CALLBACK FUNCTIONS
 void IRNodeComponent::statusChangedCallback(IRNodeComponentStatus status)

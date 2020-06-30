@@ -11,7 +11,8 @@ IRNodeObject(parent, "IRWaveform", str, NodeObjectType(ordinaryIRComponent))
     setOpaque(false);
 
     this->controller.reset(new IRWaveformController2(str));
-    this->controller->audioController.addChangeListener(this);
+    //this->controller->audioController.addChangeListener(this);
+    this->controller->addChangeListenerToAudioController(this);
     setObjController(this->controller.get());
     
     createWaveform();
@@ -33,7 +34,7 @@ IRWaveformObject::~IRWaveformObject()
 }
 
 // copy constructor
-IRNodeObject* IRWaveformObject::copyThis()
+IRNodeObject* IRWaveformObject::copyThisObject()
 {
     std::cout << "IRWaveformObject copyThis " << this << std::endl;
     return new IRWaveformObject(this->parent, getStr());
@@ -152,7 +153,7 @@ void IRWaveformObject::loadThisFromSaveData(t_json data)
 }
 
 // ==================================================
-void IRWaveformObject::resized()
+void IRWaveformObject::onResized()
 {
     this->waveform->setSize(getWidth(), getHeight());
 }
@@ -247,13 +248,13 @@ void IRWaveformObject::audioFileOpenAction()
     String path = this->waveform->getWaveformUI()->getPath();
     std::cout << path << std::endl;
 
-    this->controller->audioController.setLoadedAudioFilePath(path);
+    this->controller->getAudioController()->setLoadedAudioFilePath(path);
 }
 
 // received from AudioController
 void IRWaveformObject::audioControllerChangeListener()
 {
-    auto status = this->controller->audioController.getStatus();
+    auto status = this->controller->getAudioController()->getStatus();
     std::cout << "status = " << status << std::endl;
     using s = AudioObjectController::AudioObjectControllerStatus;
 
@@ -299,12 +300,9 @@ void IRWaveformObject::IRChangeListenerCallback(ChangeBroadcaster* source)
             default:
                 break;
         }
-    }else if(source == &this->controller->audioController)
+    }else if(source == this->controller->getAudioController())
     {
-        
-        
         audioControllerChangeListener();
-        
     }
 }
 // ==================================================

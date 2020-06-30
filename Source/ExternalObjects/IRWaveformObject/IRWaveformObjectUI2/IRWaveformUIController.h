@@ -10,10 +10,10 @@
 
 #include "IRSimpleController.hpp"
 
-class IRWaveformController : public IRSimpleController
+class IRWaveformUIController : public IRSimpleController
 {
 public:
-    IRWaveformController() : IRSimpleController()
+    IRWaveformUIController() : IRSimpleController()
     {
         /*
         setup(true,
@@ -23,7 +23,7 @@ public:
               false);
          */
     }
-    ~IRWaveformController()
+    ~IRWaveformUIController()
     {
         
     }

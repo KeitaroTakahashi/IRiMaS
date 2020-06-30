@@ -19,10 +19,10 @@ public:
     ~IRVideoAnnotaterInterfaceObject();
     // --------------------------------------------------
     
-    void resized() override;
+    void onResized() override;
     // copy related methods
     
-    IRNodeObject* copyThis() override;
+    IRNodeObject* copyThisObject() override;
     
     IRNodeObject* copyContents(IRNodeObject* object) override;
     

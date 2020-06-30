@@ -19,14 +19,14 @@ public:
     IRShapeObject(Component* parent, IRStr* str);
     ~IRShapeObject();
     
-    IRNodeObject* copyThis() override;
+    IRNodeObject* copyThisObject() override;
     
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json data) override;
     
     // ------------------------------------------------------------
     void paint(Graphics &g) override;
-    void resized() override;
+    void onResized() override;
     // ------------------------------------------------------------
     
     void mouseDownEvent(const MouseEvent& e) override;

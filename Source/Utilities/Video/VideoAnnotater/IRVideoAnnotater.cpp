@@ -122,6 +122,7 @@ void IRVideoAnnotater::initialize()
     // create IRStr
     this->ir_str.reset(new IRStr());
     this->ir_str->projectOwner = this;
+    this->ir_str->parentStr = this->ir_parentStr;
     this->ir_str->setKeyListener(this);
     this->ir_str->setMouseListener(this);
     this->ir_str->projectName = "VideoAnnotator";
@@ -172,7 +173,7 @@ void IRVideoAnnotater::nodeObjectPasted(IRNodeObject* obj)
     String name = obj->name;
     std::cout << "nodeObjectPasted " << name << std::endl;
     
-    copyNodeObject(obj);
+    duplicateNodeObject(obj);
 }
 
 void IRVideoAnnotater::nodeObjectWillDeleted(IRNodeObject* obj)
@@ -191,7 +192,7 @@ void IRVideoAnnotater::eventComponentResized()
 
 // ==================================================
 
-void IRVideoAnnotater::bindVideoPlayerObject()
+void IRVideoAnnotater::createAndBindVideoPlayerObject()
 {
     if(this->videoPlayerObject != nullptr)
     {
@@ -363,11 +364,7 @@ void IRVideoAnnotater::saveSRTs(File file)
 
     
     //json11::json saveData = this->myVideoPlayerObject->getWorkspace()->makeSaveDataOfThis();
-    
-    
-    
-    
-    
+
     json11::Json wsData;
     auto workspaces = this->myVideoPlayerObject->getWorkspace();
     wsData = workspaces->makeSaveDataOfThis();
@@ -975,51 +972,21 @@ void IRVideoAnnotater::deselectAllObjectsOnWorkspace()
 
 void IRVideoAnnotater::loadAndApplySRTs()
 {
+    auto space = this->myVideoPlayerObject->getWorkspace();
+    space->loadAndApplyIRSRT(this->jsonManager.getData());
     
-    
-    
-    
-    /*
-    for(auto item : data)
+    for(auto obj : space->getObjectList())
     {
         
-        std::cout << "begin " << item->getStartTimeString() << " : end " << item->getEndTimeString() << std::endl;
-        std::string text = item->getText();
-        std::cout << "text  = " << item->getText() << std::endl;
+        createEventComponent(obj);
         
-        std::string err;
-        json11::Json saveData = json11::Json::parse(text, err);
-        
-        std::cout <<"error = " << err << std::endl;
-        
-        auto j1 = saveData["IRTextEditor"];
-        auto j2 = j1["ArrangeController"];
-        
-        std::cout << "get data as json : " << j2["bounds"][0].int_value() << std::endl;
-        
-        
-        // if text
-        std::string annotationData = saveData["IRTextEditor"].string_value();
-        if(annotationData.size() > 0)
-        {
-            createTextEventComponentFromSRT(item);
-        }
-        
-        // if shape
-        annotationData = saveData["shape"].string_value();
-        if(annotationData.size() > 0)
-        {
-            
-        }
-        
-        // if image
-        annotationData = saveData["image"].string_value();
-        if(annotationData.size() > 0)
-        {
-            
-        }
-        
-    }*/
+    }
+    
+    // reset video playing position
+    this->myVideoPlayerObject->setPlayPosition(0);
+
+    resized();
+
     
 }
 

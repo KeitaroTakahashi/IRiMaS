@@ -21,7 +21,7 @@ public:
     void resized() override;
     // copy related methods
     
-    IRNodeObject* copyThis() override;
+    IRNodeObject* copyThisObject() override;
     
     IRNodeObject* copyContents(IRNodeObject* object) override;
     

@@ -26,11 +26,11 @@ IRVideoAnnotaterInterfaceObject::~IRVideoAnnotaterInterfaceObject()
     this->controller.reset();
 }
 
-void IRVideoAnnotaterInterfaceObject::resized()
+void IRVideoAnnotaterInterfaceObject::onResized()
 {
     
     //std::cout << "IRVideoAnnotaterInterfaceObject::resized\n";
-    IRVideoAnnotaterObject2::resized();
+    IRVideoAnnotaterObject2::onResized();
     resizeAndCentredThisComponent(getBounds());
     
     this->controller->getArrangeController()->setRectangle(getBounds());
@@ -40,7 +40,7 @@ void IRVideoAnnotaterInterfaceObject::resized()
 
 // --------------------------------------------------
 
-IRNodeObject* IRVideoAnnotaterInterfaceObject::copyThis()
+IRNodeObject* IRVideoAnnotaterInterfaceObject::copyThisObject()
 {
     
     std::cout << "IRVideoAnnotaterInterfaceObject::copyThis\n";

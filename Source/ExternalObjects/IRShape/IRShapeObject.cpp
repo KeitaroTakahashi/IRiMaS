@@ -29,10 +29,10 @@ IRShapeObject::~IRShapeObject()
 {
     this->UI.reset();
 }
-IRNodeObject* IRShapeObject::copyThis()
+IRNodeObject* IRShapeObject::copyThisObject()
 {
     IRShapeObject* newObj = new IRShapeObject(this->parent, getStr());
-    
+        
     newObj->UI->setColour(this->UI->getColour());
     newObj->UI->setStatus(this->UI->getStatus());
     newObj->UI->setLineWidth( this->UI->getLineWidth() );
@@ -94,7 +94,7 @@ void IRShapeObject::paint(Graphics &g)
     g.fillAll(Colours::transparentBlack);
 }
 
-void IRShapeObject::resized()
+void IRShapeObject::onResized()
 {
     if(this->UI.get() != nullptr)
     {

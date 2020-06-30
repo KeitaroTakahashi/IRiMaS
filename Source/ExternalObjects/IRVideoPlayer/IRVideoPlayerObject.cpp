@@ -38,7 +38,7 @@ IRVideoPlayerObject::~IRVideoPlayerObject()
 
 }
 
-IRNodeObject* IRVideoPlayerObject::copyThis()
+IRNodeObject* IRVideoPlayerObject::copyThisObject()
 {
     return new IRVideoPlayerObject(this->parent, getStr());
 }
@@ -96,7 +96,7 @@ void IRVideoPlayerObject::loadThisFromSaveData(t_json data)
     this->videoPlayer->openFile(file);
 }
 // --------------------------------------------------
-void IRVideoPlayerObject::resized()
+void IRVideoPlayerObject::onResized()
 {
    this->videoPlayer->setBounds(getLocalBounds().reduced(0));
     

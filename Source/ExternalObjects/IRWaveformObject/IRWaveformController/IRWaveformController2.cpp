@@ -8,18 +8,15 @@
 #include "IRWaveformController2.hpp"
 
 
-IRWaveformController2::IRWaveformController2(IRStr* str) : IRObjectController("Waveform", str),
-audioController(str)
+IRWaveformController2::IRWaveformController2(IRStr* str) :
+IRObjectController("Waveform", str),
+waveformCtl(str)
 {
     
+    createAndAddArrangeController();
     
-    addAndMakeVisible(&this->LabelTitle);
-    this->LabelTitle.setText("Waveform", dontSendNotification);
-    this->LabelTitle.setFont(getStr()->SYSTEMCOLOUR.h3);
-    this->LabelTitle.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
-    this->LabelTitle.setJustificationType(Justification::left);
-    
-    addAndMakeVisible(&this->audioController);
+    setWaveformControllerVisible(true);
+    addAndMakeVisible(&this->waveformCtl);
 
 }
 
@@ -32,22 +29,49 @@ IRWaveformController2::~IRWaveformController2()
 void IRWaveformController2::ControllerResized()
 {
     int y = 10;
-    //int yIncrement = 30;
+    int yIncrement = 30;
     int yBigIncrement = 40;
-    
-    this->LabelTitle.       setBounds(10, y, 300, 30);
-    
     y += yBigIncrement;
+    y += yIncrement;
     
-    this->audioController.setBounds (0, y, getWidth(), 300);
+    
+    this->waveformCtl.setBounds (0, y, getWidth(), 300);
     
     
 }
 
 void IRWaveformController2::paint(Graphics& g)
 {
+    /*
     g.fillAll(getStr()->SYSTEMCOLOUR.contents);
     g.setColour(getStr()->SYSTEMCOLOUR.fundamental);
     g.drawLine(0,42.5,getWidth(),42.5, 2);
+     */
     
+}
+
+
+void IRWaveformController2::mainControllerSelected()
+{
+    setWaveformControllerVisible(true);
+    setArrangeControllerVisible(false);
+    
+}
+
+void IRWaveformController2::arrangeControllerSelected()
+{
+    setWaveformControllerVisible(false);
+    setArrangeControllerVisible(true);
+}
+
+
+void IRWaveformController2::addChangeListenerToAudioController(ChangeListener* listener)
+{
+    this->waveformCtl.addChangeListenerToAudioController(listener);
+}
+
+void IRWaveformController2::setWaveformControllerVisible(bool flag)
+{
+    this->waveformCtl.setVisible(flag);
+
 }

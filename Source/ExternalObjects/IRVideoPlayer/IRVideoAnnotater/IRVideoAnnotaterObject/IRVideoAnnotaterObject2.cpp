@@ -39,8 +39,10 @@ IRVideoAnnotaterObject2::~IRVideoAnnotaterObject2()
 }
 // --------------------------------------------------
 
-void IRVideoAnnotaterObject2::resized()
+void IRVideoAnnotaterObject2::onResized()
 {
+    
+    std::cout << "IRVideoAnnotaterObject2::resized\n";
     this->workspace->setBounds(getLocalBounds());
 
 }
@@ -109,34 +111,26 @@ void IRVideoAnnotaterObject2::resizeAndCentredThisComponent(Rectangle<int> rect)
             fixed_w = new_w;
             fixed_h = fixed_w / ratio;
         }
-        
-        
-                
+       
         // if w is larger, then follow w
         if(ratio_w >= ratio_h)
         {
-            
-            //float fixed_h = new_w / ratio;
+            std::cout << "1\n";            //float fixed_h = new_w / ratio;
             float y = (rect.getHeight() - fixed_h) / 2.0;
             setObjectBounds(rect.getX(), rect.getY() + y, new_w, fixed_h);
-            //this->workspace->setBounds(rect.getX(), rect.getY() + y, new_w, fixed_h);
 
         }else{
+            std::cout << "2\n";
             //float fixed_w = new_h * ratio;
             float x = (rect.getWidth() - fixed_w) / 2.0;
-
             setObjectBounds(rect.getX() + x, rect.getY(), fixed_w, new_h);
-            //this->workspace->setBounds(rect.getX() + x, rect.getY(), fixed_w, new_h);
-
         }
         
     }else{
+        std::cout << "3\n";
         setObjectBounds(rect);
-        //this->workspace->setBounds(rect);
-
     }
     
-    //resized();
 }
 
 
@@ -215,7 +209,7 @@ void IRVideoAnnotaterObject2::paint(Graphics& g)
 }
 
 // --------------------------------------------------
-IRNodeObject* IRVideoAnnotaterObject2::copyThis()
+IRNodeObject* IRVideoAnnotaterObject2::copyThisObject()
 {
     
     std::cout << "IRVideoAnnotaterObject2::copyThis\n";
@@ -399,9 +393,9 @@ void IRVideoAnnotaterObject2::eidtModeChangedAction()
 {
     if(isEditMode())
     {
-        this->workspace->getVideoPlayerObject()->enableController(false);
+        //this->workspace->getVideoPlayerObject()->enableController(false);
     }else{
-        this->workspace->getVideoPlayerObject()->enableController(true);
+        //this->workspace->getVideoPlayerObject()->enableController(true);
 
     }
 }

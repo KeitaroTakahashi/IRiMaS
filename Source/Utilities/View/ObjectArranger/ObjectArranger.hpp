@@ -80,6 +80,8 @@ public:
     
     void setEncloseColour(Colour newColour);
     
+    void setEncloseToggle(bool flag, NotificationType notification = dontSendNotification);
+
     void encloseColourChanged();
     // =======================================================
 
@@ -87,6 +89,10 @@ public:
     void setEndTimeSec(float sec) { this->EndTimeSec = sec; }
     float getStartTimeSec() const { return this->StartTimeSec; }
     float getEndTimeSec() const { return this->EndTimeSec; }
+    
+    void setBoundType(int boundType) { this->boundType = boundType;}
+    int getBoundType() const { return this->boundType; }
+    
     
 private:
     // =======================================================
@@ -155,6 +161,8 @@ private:
     
     float StartTimeSec = 0;
     float EndTimeSec = 0;
+    
+    int boundType = 0;
 
     void createButton(TextButton& button, String text);
     void buttonClicked(Button* button) override;

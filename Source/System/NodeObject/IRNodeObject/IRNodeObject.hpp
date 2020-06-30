@@ -13,8 +13,7 @@
 
 #include "ObjectArranger.hpp"
 
-class IRNodeObject : public IRNodeComponent,
-public ChangeListener
+class IRNodeObject : public IRNodeComponent
 {
     
 public:
@@ -42,7 +41,10 @@ public:
     void initialPaintOnWorkspace(Graphics& g, Component* workspace);
     // ==================================================
 
-    virtual IRNodeObject* copyThis(); //copy constructor
+    IRNodeObject* copyThis(); //copy constructor
+    virtual IRNodeObject* copyThisObject(); // called by copyThis() user defeined copy method
+    
+    
     virtual IRNodeObject* copyContents(IRNodeObject* object); // copy constructor with contents
     virtual IRNodeObject* copyDragDropContents(IRNodeObject* object); // copy draged and dropped contents
     
@@ -54,7 +56,9 @@ public:
     // Controller
     // to controll position of this project etc.
     void setArrangeController(ArrangeController* controller);
+    void copyArrangeController(IRNodeObject* copiedObject);
     virtual void arrangeControllerChangedNotify() {};
+    ArrangeController* getArrangeController() { return this->arrangeController; }
     
     t_json getArrangeControllerSaveData();
     // ==================================================
@@ -117,17 +121,25 @@ public:
     // ==================================================
 
     // STATUS
-    
     IRNodeObjectStatus getStatus() const { return this->status; }
     void setStatus(IRNodeObjectStatus newStatus);
     
     void transformStatusToOrdinary();
     void transformStatusEnclose();
     void setEncloseMode(bool flag);
+    void setEncloseAlreadyDefined(bool flag);
+    bool hasEncloseAlreadyDefined() const { return this->hasEncloseObjectAlreadyDefined; }
     IRNodeObjectStatus getEncloseMode() const { return this->getStatus(); }
     void createEnclosedObject();
     void setEncloseColour(Colour colour);
+    
+    void showEncloseObject(bool flag);
     // ==================================================
+
+    void calcRelativeOrdinaryBounds();
+    void calcRelativeEncloseBounds();
+    
+    void adjustRectangleFloatToAboveZero(Rectangle<float>& bounds);
 
     // ==================================================
 
@@ -327,6 +339,7 @@ protected:
     
     Component* parent;
     
+private:
     void ObjectPositionChanged4IRNodeObject(int x, int y) override;
     void ObjectBoundsChanged4IRNodeObject(Rectangle<int> bounds) override;
 
@@ -335,21 +348,27 @@ private:
     // STATUS //
 
     IRNodeObjectStatus status = ORDINARY;
-    std::shared_ptr<IREnclosedObject> enclosedObject;
+    IREnclosedObject enclosedObject;
     void enclosedObjectClickedAction();
     
     Rectangle<int> ordinaryBounds;
+    Rectangle<float> ordinaryBoundsRelative;
     Rectangle<int> encloseBounds;
+    Rectangle<float>encloseBoundsRelative;
 public:
     void setOrdinaryBounds(Rectangle<int> bounds);
     void setEncloseBounds(Rectangle<int> bounds);
+    
+    // use them when adjusting bounds to relative instead of using absolute bounds
+    void adjustOrdinaryBoundsToRelative();
+    void adjustEncloseBoundsToRelative();
     
     Rectangle<int> getOrdinaryBounds() const { return this->ordinaryBounds; }
     Rectangle<int> getEncloseBounds() const { return this->encloseBounds; }
 private:
     
     // flag to inform if the encloseObject is already created and has encloseBounds.
-    bool isEncloseObjectAlreadyDefined = false;
+    bool hasEncloseObjectAlreadyDefined = false;
     // called when the position of this object is changed
     void encloseObjectPositionChangedAction(int x, int y);
     void encloseObjectBoundsChangedAction(Rectangle<int> bounds);
@@ -365,7 +384,7 @@ private:
     void arrangeControllerBoundsChangedAction(Rectangle<int> bounds);
     void arrangeControllerChangedCallback(ChangeBroadcaster* source);
 public:
-    void loadArrangeControllerSaveData(t_json arrangeCtl);
+    void loadArrangeControllerSaveData(t_json arrangeCtl, IRNodeComponentBoundsType type = IRNodeComponentBoundsType::ORDINARY);
 private:
     // ==================================================
     // EVENT COMPONENT //

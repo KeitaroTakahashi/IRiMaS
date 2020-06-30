@@ -84,7 +84,7 @@ public:
     
     
     // as videoPlayerObject is shared with IRWorkspace, you need to remove it from this component when closed.
-    void bindVideoPlayerObject();
+    void createAndBindVideoPlayerObject();
     void removeVideoPlayerObject();
     
     // update video player and share the status.
@@ -164,16 +164,18 @@ private:
     
     std::shared_ptr<VideoEventList> eventListComponent;
     void createEventListComponent();
-    
+
     void clearAllEventComponent();
     void clearEventComponent(VideoAnnotationEventComponent* eventComponent);
     void addEventComponent(VideoAnnotationEventComponent* eventComponent);
     void deleteSelectedEvents();
     void deleteEventComponent(VideoAnnotationEventComponent* event);
     
+    void createEventComponent(IRNodeObject* obj);
     void createTextEventComponent();
     void createTextEventComponentFromSRT(SubtitleItem* item);
     void createTextEventComponentFromIRNodeObject(IRNodeObject* obj);
+    
     void createShapeEventComponent();
     void createShapeEventComponentFromNodeObject(IRNodeObject* obj);
     void createImageEventComponent();
@@ -184,7 +186,7 @@ private:
     void eventComponentResized();
     
     void setupEventComponent(IRNodeObject* obj, VideoAnnotationEventComponent* event);
-    void copyNodeObject(IRNodeObject* obj);
+    void duplicateNodeObject(IRNodeObject* obj);
     // ==================================================
     //IRWorkspace
     // getting to know when the selection status of a NodeObject has been changed.

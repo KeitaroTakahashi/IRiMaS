@@ -54,8 +54,8 @@ void TextMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
     
     auto nodeObj = factory.createObject(obj->id, topSpace, getStr());
 
-    nodeObj->setCentrePosition(topSpace->getWidth()/2,
-                               topSpace->getHeight()/2);
+    nodeObj->setObjectCentredPosition(topSpace->getWidth()/2,
+                                      topSpace->getHeight()/2);
     topSpace->createObject(nodeObj);
     
     bench.result("x x x x xx x x x x xx x item created");

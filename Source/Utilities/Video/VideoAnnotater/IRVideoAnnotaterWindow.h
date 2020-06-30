@@ -39,7 +39,7 @@ public:
         this->videoAnnotater.closeAnnotationWindowCallback = [this] { close(); };
         
 
-        this->videoAnnotater.bindVideoPlayerObject();
+        this->videoAnnotater.createAndBindVideoPlayerObject();
 
     }
     

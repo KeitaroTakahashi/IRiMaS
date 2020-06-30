@@ -51,7 +51,7 @@ public:
     // ------------------------------------------------------------
     // copy constructor
     
-    IRNodeObject* copyThis() override
+    IRNodeObject* copyThisObject() override
     {
         return new IRTestObject(this->parent, getStr());
     }
@@ -69,7 +69,7 @@ public:
     
     // ------------------------------------------------------------
 
-    void resized() override
+    void onResized() override
     {
        // this->playButton.setBounds(5,5, getWidth()-10, getHeight()-10);
         this->ui.setBounds(getLocalBounds());

@@ -51,7 +51,7 @@ void IRWindowComponent::paint(Graphics& g)
 {
     //g.fillAll(this->ir_str->SYSTEMCOLOUR.fundamental);
     g.fillAll(this->ir_str->SYSTEMCOLOUR.background);
-    //g.fillAll(Colours::white);
+    //g.fillAll(Colours::transparentWhite);
     
     
 }
@@ -91,8 +91,8 @@ void IRWindowComponent::initialize()
     //setWantsKeyboardFocus(true);
     //addKeyListener(this);
     
-    // create IRStr
-    this->ir_str.reset(new IRStr());
+    // create IRMasterStr
+    this->ir_str.reset(new IRMasterStr());
     this->ir_str->projectOwner = this;
     this->ir_str->setKeyListener(this);
     this->ir_str->setMouseListener(this);
@@ -794,7 +794,8 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
                 
                 // ===== create object =====
                 std::string objectTypeId = it->second["objectType"].string_value();
-                auto* obj = factory.createObject(objectTypeId, currentSpace, this->ir_str.get());
+                //auto* obj = factory.createObject(objectTypeId, currentSpace, this->ir_str.get());
+                IRNodeObject* obj = static_cast<IRNodeObject*>(this->ir_str->createNewObject(objectTypeId, currentSpace, this->ir_str.get()));
                 std::cout << "object created\n";
 
                 //obj->setUniqueID(it->second["objectUniqueID"].string_value());
@@ -845,9 +846,7 @@ void IRWindowComponent::loadArrangeControllerSaveData(IRNodeObject* obj, t_json 
     
     std::cout << "arrangeCTL bounds = " << b[0].int_value() << ", " << b[1].int_value() << ", " << b[2].int_value() << ", " << b[3].int_value() << std::endl;
 
-    
-    //obj->setOrdinaryBounds
-    
+        
     auto wrap = arrangeCtl["wrap"].int_value();
     // give wrap only when wrap is TRUE because the oridinary bounds of the enclosed mode does not have the initial bounds. It gets the bounds only when it transfers to enclose mode.
     if(wrap == 1) obj->setEncloseMode(true);

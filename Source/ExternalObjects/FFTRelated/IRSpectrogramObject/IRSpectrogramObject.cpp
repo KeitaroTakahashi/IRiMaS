@@ -34,7 +34,7 @@ IRSpectrogramObject::~IRSpectrogramObject()
 
 
 // copy constructor
-IRNodeObject* IRSpectrogramObject::copyThis()
+IRNodeObject* IRSpectrogramObject::copyThisObject()
 {
     std::cout << "IRSpectrogramObject copyThis " << this << std::endl;
     return new IRSpectrogramObject(this->parent, getStr());
@@ -85,7 +85,7 @@ void IRSpectrogramObject::loadThisFromSaveData(t_json data)
 
 // ==================================================
 
-void IRSpectrogramObject::resized()
+void IRSpectrogramObject::onResized()
 {
     this->UI->setBounds(0, 0, getWidth(), getHeight());
 }

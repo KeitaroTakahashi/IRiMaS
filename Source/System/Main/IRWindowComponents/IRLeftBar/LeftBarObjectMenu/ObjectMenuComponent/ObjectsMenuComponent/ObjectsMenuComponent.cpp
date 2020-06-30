@@ -48,8 +48,8 @@ void ObjectsMenuComponent::itemReleased(IRObjectFactory2::t_object* obj)
     auto topSpace = static_cast<IRWorkspace* >(getStr()->TopWorkspace);
     
     auto nodeObj = factory.createObject(obj->id, topSpace, getStr());
-    nodeObj->setCentrePosition(topSpace->getWidth()/2,
-                               topSpace->getHeight()/2);
+    nodeObj->setObjectCentredPosition(topSpace->getWidth()/2,
+                                      topSpace->getHeight()/2);
     topSpace->createObject(nodeObj);
 }
 

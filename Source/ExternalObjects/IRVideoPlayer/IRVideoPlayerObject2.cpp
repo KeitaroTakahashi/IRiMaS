@@ -8,7 +8,8 @@
 #include "IRVideoPlayerObject2.hpp"
 
 IRVideoPlayerObject2::IRVideoPlayerObject2(Component* parent, IRStr* str, bool withOpenButton) :
-IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
+IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent)),
+playerController(str)
 {
     setOpaque(false);
     // original function to give this ChangeListener to controller->UI
@@ -17,6 +18,9 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
     addAndMakeVisible(this->videoPlayer.get());
     this->videoPlayer->updateAnimationFrameCallback = [this](double pos) { videoPlayingUpdateAction(pos); };
+    
+    //playerController
+    addAndMakeVisible(&this->playerController);
     
     setMinimumWidth(100);
     setMinimumHeight(100);
@@ -29,7 +33,7 @@ IRVideoPlayerObject2::~IRVideoPlayerObject2()
 
 }
 
-IRNodeObject* IRVideoPlayerObject2::copyThis()
+IRNodeObject* IRVideoPlayerObject2::copyThisObject()
 {
     
     std::cout << "IRVideoPlayerObject2::copyThis\n";
@@ -103,7 +107,18 @@ void IRVideoPlayerObject2::loadThisFromSaveData(t_json data)
 void IRVideoPlayerObject2::resized()
 {
    this->videoPlayer->setBounds(getLocalBounds().reduced(0));
-   
+
+    
+    //this->playerController.setBounds(0, 0, getWidth(), getHeight()/2);
+    
+    int ctlH = 100;
+    if(getHeight() * 0.25 < ctlH) ctlH = getHeight() * 0.25;
+    this->playerController.setBounds(0, getHeight() - ctlH, getWidth(), ctlH);
+    
+    std::cout << "ctlh = " << ctlH << std::endl;
+
+ 
+
 }
 // --------------------------------------------------
 void IRVideoPlayerObject2::resizeThisComponentEvent(const MouseEvent& e)
@@ -223,6 +238,15 @@ void IRVideoPlayerObject2::mouseUpEvent(const MouseEvent& e)
     
 
 }
+
+void IRVideoPlayerObject2::mouseEnterEvent(const MouseEvent& e)
+{
+    std::cout << "mouse entered!\n";
+}
+void IRVideoPlayerObject2::mouseExitEvent(const MouseEvent& e)
+{
+    std::cout << "mouse exit!\n";
+}
 // --------------------------------------------------
 void IRVideoPlayerObject2::paint(Graphics& g)
 {
@@ -230,8 +254,8 @@ void IRVideoPlayerObject2::paint(Graphics& g)
     
     auto area = getLocalBounds();
     
-    //g.fillAll(Colours::red);
-    g.fillAll(getStr()->SYSTEMCOLOUR.background);
+    g.fillAll(Colours::red);
+    //g.fillAll(getStr()->SYSTEMCOLOUR.background);
     
     if(isEditMode())
         g.drawRoundedRectangle(area.toFloat(), 0, 2.0);
@@ -271,6 +295,7 @@ void IRVideoPlayerObject2::moveToFrontAction()
 {
     this->videoPlayer->bringViewToFront();
     
+    this->playerController.bringThisToFront();
 
     
 }

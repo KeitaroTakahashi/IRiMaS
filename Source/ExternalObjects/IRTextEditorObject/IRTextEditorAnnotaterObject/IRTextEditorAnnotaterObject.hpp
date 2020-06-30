@@ -17,7 +17,7 @@ public:
     ~IRTextEditorAnnotaterObject();
     
     // ==================================================
-    void resized() override;
+    void onResized() override;
     void paint(Graphics& g) override;
     
     // ==================================================

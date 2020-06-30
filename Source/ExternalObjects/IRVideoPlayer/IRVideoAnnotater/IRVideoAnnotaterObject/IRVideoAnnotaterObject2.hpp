@@ -18,7 +18,7 @@ public:
 
     ~IRVideoAnnotaterObject2();
     
-    void resized() override;
+    void onResized() override;
     void resizeThisComponentEvent(const MouseEvent& e) override;
     void resizeThisComponent(Rectangle<int> rect);
     void resizeAndCentredThisComponent(Rectangle<int> rect);
@@ -34,7 +34,7 @@ public:
     
     // --------------------------------------------------
     
-    virtual IRNodeObject* copyThis() override;
+    virtual IRNodeObject* copyThisObject() override;
     virtual t_json saveThisToSaveData() override;
     virtual void loadThisFromSaveData(t_json data) override;
     // --------------------------------------------------

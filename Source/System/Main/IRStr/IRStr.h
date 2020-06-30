@@ -9,6 +9,7 @@
 #define IRStr_h
 
 #include "JuceHeader.h"
+#include "KLib.h"
 #include "ColourLib.h"
 #include "IRIconBank.hpp"
 #include "IRFileManager.hpp"
@@ -23,7 +24,7 @@ struct IRStr
     {
         
     }
-    ~IRStr()
+    virtual ~IRStr()
     {
         
     }
@@ -48,6 +49,9 @@ struct IRStr
     
     // store the project owner
     IRProjectOwnerBase* projectOwner = nullptr;
+    
+    // in case there is a parent str
+    IRStr* parentStr = nullptr;
     // ==================================================
     // callBack
     std::vector<std::function<void(IRFileManager&)>> fileManagerUpdatedCallbackList;
@@ -65,6 +69,15 @@ struct IRStr
         }
     }
     // ==================================================
+    
+    virtual Component* createNewObject(std::string id, Component* parent, IRStr* str)
+    {
+        KLib().showErrorMessage("Error : createNewObject can not be called from IRStr object but from IRMasterStr!\n");
+        return nullptr;
+    }
+    
+    // ==================================================
+
 
     void setIconBank(IRIconBank* bank) { this->ICONBANK = bank; }
     IRIconBank* getIconBank() const { return this->ICONBANK; }

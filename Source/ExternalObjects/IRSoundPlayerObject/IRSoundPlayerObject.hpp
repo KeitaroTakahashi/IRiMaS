@@ -17,9 +17,9 @@ public:
     IRSoundPlayerObject(Component* parent, IRStr* str);
     ~IRSoundPlayerObject();
 
-    IRNodeObject* copyThis() override;
+    IRNodeObject* copyThisObject() override;
     
-    void resized() override;
+    void onResized() override;
     void paint(Graphics& g) override;
     
     AudioPlayer_threadSafe* getAudioSource();

@@ -18,14 +18,14 @@ public:
     ~IRSpectrogramObject();
     // ==================================================
 
-    IRNodeObject* copyThis() override; // copy constructor
+    IRNodeObject* copyThisObject() override; // copy constructor
     IRNodeObject* copyContents(IRNodeObject* object) override;
 
     t_json saveThisToSaveData() override;
     void loadThisFromSaveData(t_json data) override;
     // ==================================================
 
-    void resized() override;
+    void onResized() override;
     void paint(Graphics& g) override;
     // ==================================================
 

@@ -15,7 +15,7 @@ public:
     
     IRNodeObject* copyContents(IRNodeObject* object) override;
     
-    void resized() override;
+    void onResized() override;
     void paint(Graphics& g) override;
     
     void setBoundsInRatio(float x, float y, float w, float h);

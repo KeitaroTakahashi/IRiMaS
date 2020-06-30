@@ -192,9 +192,9 @@ void IRSaveLoadSystem::writeSaveData(std::string filePath)
     myFile << this->saveData.dump();
     myFile.close();
     
-    std::cout << "========== save data ========== \n" << std::endl;
-    std::cout << this->saveData.dump() << std::endl;
-    std::cout << "========== end ========== \n" << std::endl;
+    //std::cout << "========== save data ========== \n" << std::endl;
+    //std::cout << this->saveData.dump() << std::endl;
+    //std::cout << "========== end ========== \n" << std::endl;
 }
 
 // read save data from a file

@@ -25,9 +25,9 @@ void IRJson::writeSaveData(std::string filePath)
     myFile << this->data.dump();
     myFile.close();
     
-    std::cout << "========== save data for " << filePath << std::endl;
-    std::cout << this->data.dump() << std::endl;
-    std::cout << "========== end ========== \n" << std::endl;
+   // std::cout << "========== save data for " << filePath << std::endl;
+   // std::cout << this->data.dump() << std::endl;
+   // std::cout << "========== end ========== \n" << std::endl;
 }
 
 void IRJson::readSaveData(std::string filePath)

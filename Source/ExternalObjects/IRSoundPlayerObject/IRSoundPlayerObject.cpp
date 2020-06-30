@@ -21,12 +21,12 @@ IRSoundPlayerObject::~IRSoundPlayerObject()
      delete this->player;
 }
 
-IRNodeObject* IRSoundPlayerObject::copyThis()
+IRNodeObject* IRSoundPlayerObject::copyThisObject()
 {
     return new IRSoundPlayerObject(this->parent, getStr());
 }
 
-void IRSoundPlayerObject::resized()
+void IRSoundPlayerObject::onResized()
 {
     this->player->setBounds(0,0,getWidth(),getHeight());
 }

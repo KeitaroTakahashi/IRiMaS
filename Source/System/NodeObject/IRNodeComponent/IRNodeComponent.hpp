@@ -90,6 +90,7 @@ enum IRNodeComponentBoundsType
     RELATIVE
 };
 
+
 struct NodeObjectType
 {
     IRNodeComponentType componentType = IRNodeComponentType::lightWeightComponent;
@@ -124,7 +125,8 @@ struct NodeObjectType
 class IRNodeComponent : public Component,
                         public IRStrComponent,
                         public ChangeBroadcaster,
-                        public IRHeavyWeightComponent
+                        public IRHeavyWeightComponent,
+public ChangeListener
 {
 public:
     IRNodeComponent(Component *parent,
@@ -135,11 +137,18 @@ public:
     
     // ==================================================
     // basics
+private:
     void resized() override;
+    void moved() override;
+public:
+    virtual void onResized() {};
 public:
     void setObjectCentredPosition(int x, int y);
     void setObjectBounds(Rectangle<int> bounds);
     void setObjectBounds(int x, int y, int w, int h);
+    
+    void setObjectTopLeftPosition(int x, int y);
+    void setObjectTopLeftPositionRelative(float x, float y);
     
     void setObjectSize(int w, int h);
     
@@ -149,7 +158,7 @@ public:
     Rectangle<float> getObjectBoundsRelative() const { return this->relativeBoundsToParent; }
     
     IRNodeComponentBoundsType getBoundType() const { return this->boundType; }
-    void setBoundType(IRNodeComponentBoundsType boundType) { this->boundType = boundType; }
+    void setBoundType(IRNodeComponentBoundsType boundType);
     
 protected:
     // Notify any change of the position and size of this object,
@@ -204,7 +213,10 @@ private:
     void mouseUp(const MouseEvent& e)override; // JUCE oriented
     void mouseDoubleClick(const MouseEvent& e) override; // JUCE oriented
     void mouseDrag(const MouseEvent& e) override; // JUCE oriented
-    
+    void mouseEnter(const MouseEvent& e) override;
+    void mouseExit(const MouseEvent& e) override;
+    void mouseMagnify(const MouseEvent& e, float scaleFactor) override;
+
 public:
     
     virtual void mouseUpCompleted(const MouseEvent& e) {};
@@ -255,6 +267,10 @@ public:
     virtual void mouseDoubleClickEvent(const MouseEvent& e);
     virtual void mouseUpEvent(const MouseEvent& e);
     virtual void mouseDragEvent(const MouseEvent& e);
+    
+    virtual void mouseEnterEvent(const MouseEvent& e);
+    virtual void mouseExitEvent(const MouseEvent& e);
+    virtual void mouseMagnifyEvent(const MouseEvent& e, float scaleFactor);
 
     void moveThisComponentEvent(const MouseEvent& e); // process of moving this Component
     
@@ -473,7 +489,9 @@ private:
     ComponentBoundsConstrainer constrainer;
     bool draggingFlag = false;
     Rectangle<int> draggableArea;
+
 public:
+
     void setDraggableArea(Rectangle<int> area);
 
 private:
@@ -571,6 +589,10 @@ public:
     IRNodeObjectStatusStr* getStatusStr() { return &this->statusStr; }
 
     // ==================================================
+    
+protected:
+    virtual void changeListenerCallback (ChangeBroadcaster* source) override {}
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRNodeComponent)
 };

@@ -41,7 +41,7 @@ public:
     }
     
     // ------------------------------------------------------------
-    IRNodeObject* copyThis() override
+    IRNodeObject* copyThisObject() override
     {
         IRAutomationObject* newObj = new IRAutomationObject(this->parent, getStr());
         return newObj;
@@ -61,7 +61,7 @@ public:
        
     }
     // ------------------------------------------------------------
-    void resized() override
+    void onResized() override
     {
         this->UI->setSize(getWidth(), getHeight());
     }
