@@ -72,6 +72,10 @@ void IRImageButton::setImage(Image img)
 void IRImageButton::mouseDown(const MouseEvent& e)
 {
     this->mouseDownFlag = true;
+    
+    // for its child class
+    clicked();
+    
     if(this->onClick != nullptr) onClick();
     repaint();
     

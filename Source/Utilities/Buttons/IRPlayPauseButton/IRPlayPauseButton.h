@@ -16,9 +16,17 @@ class IRPlayPauseButton : public IRImageButton,
 public IRStrComponent
 {
 public:
+    
+    enum IRPlayPauseButtonStatus
+    {
+        PLAY,
+        PAUSE
+    };
+    
     IRPlayPauseButton(IRStr* str) : IRStrComponent(str)
     {
-        
+        setTwoImages(str->ICONBANK->icon_play, str->ICONBANK->icon_pause);
+        setStatus(PAUSE);
     }
     
     ~IRPlayPauseButton()
@@ -32,47 +40,69 @@ public:
         
     }
     
-    void paint(Graphics& g) override
-    {
-        
-    }
+   
     
     // --------------------------------------------------
 
-    
+    void clicked() override
+    {
+        if(getStatus() == PAUSE)
+            setStatus(PLAY);
+        else if(getStatus() == PLAY)
+            setStatus(PAUSE);
+    }
     // --------------------------------------------------
     
-    void setImage(IRIconBank::IRIconImage trueImage, IRIconBank::IRIconImage falseImage)
+    void setTwoImages(IRIconBank::IRIconImage playImage, IRIconBank::IRIconImage pauseImage)
     {
         if(getStr()->SYSTEMCOLOUR.isWhiteBased)
         {
-            this->trueImage = trueImage.black;
-            this->falseImage = falseImage.black;
+            this->playImage = playImage.black;
+            this->pauseImage = pauseImage.black;
         }else{
-            this->trueImage = trueImage.white;
-            this->falseImage = falseImage.white;
+            this->playImage = playImage.white;
+            this->pauseImage = pauseImage.white;
         }
         
         repaint();
     }
     
-    void setImage(Image trueImage, Image falseImage)
+    void setTwoImages(Image playImage, Image pauseImage)
     {
-        this->trueImage = trueImage;
-        this->falseImage = falseImage;
+        this->playImage = playImage;
+        this->pauseImage = pauseImage;
         
         repaint();
     }
     // --------------------------------------------------
+    
+    void setStatus(IRPlayPauseButtonStatus status, NotificationType notification = dontSendNotification)
+    {
+        this->status = status;
+        
+        if(this->status == PLAY) setImage(this->pauseImage);
+        else setImage(this->playImage);
+        
+        if(notification == sendNotification)
+            if(this->statusChanged != nullptr) this->statusChanged(getStatus());
+        
+        repaint();
 
+    }
+    
+    IRPlayPauseButtonStatus getStatus() const { return this->status; }
     
     // --------------------------------------------------
+    
+    std::function<void(IRPlayPauseButtonStatus)> statusChanged;
     // --------------------------------------------------
 
 private:
+    IRPlayPauseButtonStatus status = PAUSE;
     
-    IRImage trueImage;
-    IRImage falseImage;
+    
+    Image playImage;
+    Image pauseImage;
     
 };
 

@@ -25,7 +25,10 @@ public:
     virtual void mouseUp(const MouseEvent& e) override;
     
     std::function<void()> onClick = nullptr;
-    
+protected:
+    virtual void clicked() {}
+
+public:
     void setDrawCircle(bool flag) { this->drawCircle = flag; }
     void setDrawRoundedSquare(bool flag) { this->drawRoundedSquare = flag; }
     void setDrawColour(Colour colour) { this->drawColour = colour; }

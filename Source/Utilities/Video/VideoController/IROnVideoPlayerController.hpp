@@ -11,13 +11,21 @@
 #include "JuceHeader.h"
 #include "IRStrComponent.hpp"
 #include "IRHeavyWeightComponent.h"
-#include "IRImageButton.hpp"
+#include "IRPlayPauseButton.h"
 
 class IROnVideoPlayerController : public Component,
 public IRStrComponent,
 public IRHeavyWeightComponent
 {
 public:
+    
+    enum IROnVideoPlayerControllerStatus
+    {
+        NONE,
+        PLAY,
+        PAUSE
+    };
+    
     IROnVideoPlayerController(IRStr* str);
     ~IROnVideoPlayerController();
     // ==================================================
@@ -27,17 +35,34 @@ public:
     void paint(Graphics& g) override;
     
     // ==================================================
+        
+    void mouseDown(const MouseEvent& e) override
+    {
+        std::cout << "IROnVideoPlayerController : mouseDown\n";
+    }
+    // ==================================================
+
     void setCurrentPlayPosition(float sec);
     float getCurrentPlayPosition() const { return this->currentPlayPosition; }
     // ==================================================
+    
+    void playAction();
+    void pauseAction();
+    
+    IROnVideoPlayerControllerStatus getStatus() const { return this->status; }
+    void setStatus(IROnVideoPlayerControllerStatus status);
 
 private:
     
+    IROnVideoPlayerControllerStatus status = NONE;
+    // ==================================================
+
     float currentPlayPosition = 0;
     
     // ==================================================
     
-    IRImageButton playPauseButton;
+    IRPlayPauseButton playPauseButton;
+    void playPauseButtonClickedAction();
     // ==================================================
     // ==================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IROnVideoPlayerController)

@@ -10,8 +10,11 @@
 
 IROnVideoPlayerController::IROnVideoPlayerController(IRStr* str) :
 IRStrComponent(str),
-IRHeavyWeightComponent(this, "IROnVideoPlayerController")
+IRHeavyWeightComponent(this, "IROnVideoPlayerController"),
+playPauseButton(str)
 {
+    addAndMakeVisible(&this->playPauseButton);
+    this->playPauseButton.onClick = [this]{ playPauseButtonClickedAction(); };
     
 }
 
@@ -23,6 +26,17 @@ IROnVideoPlayerController::~IROnVideoPlayerController()
 // ==================================================
 void IROnVideoPlayerController::resized()
 {
+    int x = 10;
+    int y = 10;
+    
+    int yIncrement = 30;
+    
+    this->playPauseButton.setBounds(x, y, 30, 30);
+    this->playPauseButton.setCentrePosition(x + this->playPauseButton.getWidth()/2,
+                                            getHeight()/2);
+    
+    y += yIncrement;
+    
 }
 
 void IROnVideoPlayerController::paint(Graphics& g)
@@ -43,6 +57,38 @@ void IROnVideoPlayerController::setCurrentPlayPosition(float sec)
     
 }
 // ==================================================
+
+void IROnVideoPlayerController::playAction()
+{
+    
+}
+void IROnVideoPlayerController::pauseAction()
+{
+    
+}
 // ==================================================
+
+void IROnVideoPlayerController::playPauseButtonClickedAction()
+{
+    auto status = this->playPauseButton.getStatus();
+    
+    switch(status)
+    {
+        case IRPlayPauseButton::PLAY:
+            break;
+        case IRPlayPauseButton::PAUSE:
+            break;
+        default:
+            break;
+    }
+    
+}
+// ==================================================
+
+void IROnVideoPlayerController::setStatus(IROnVideoPlayerControllerStatus status)
+{
+    this->status = status;
+}
+
 // ==================================================
 // ==================================================

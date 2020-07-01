@@ -428,6 +428,7 @@ void IRWorkspaceComponent::nodeObjectSelectionChange(IRNodeObject* obj)
 void IRWorkspaceComponent::nodeObjectGetFocused(IRNodeObject* obj)
 {
     std::cout << "IRWorkspaceComponent nodeObjectGetFocused " << obj << std::endl;
+    this->cover->toBack();
     callNodeObjectGetFocused(obj);
     
 }

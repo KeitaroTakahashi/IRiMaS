@@ -380,7 +380,6 @@ void IRNodeComponent::recoverEventStatus()
         this->resizingSquare.bringThisToFront();
     }else{
         
-        std::cout << "hide square!\n";
         this->resizingSquare.toBack();
         this->resizingSquare.showSquare(false);
     }
@@ -410,7 +409,7 @@ void IRNodeComponent::deleteThisComponentEvent(const MouseEvent& e)
 
 void IRNodeComponent::setSelected(bool flag)
 {
-    std::cout << "setSelected " << flag << " of " << name << " : " << this << std::endl;
+    //std::cout << "setSelected " << flag << " of " << name << " : " << this << std::endl;
     // if this object is not visible, then do nothing.
     
     if(!isActive())
