@@ -29,7 +29,6 @@ public:
     virtual void eventSelectedAction(Component* selectedEvent) {};
     virtual void newEventCreatedAction(Component* selectedEvent) {};
     virtual void eventTimeCodeChangedAction(Component* changedEvent) {};
-    //virtual void updateAnimation() {};
     virtual void updateAnnotation() {};
     virtual void showEventPosition(Component* event) {};
     virtual void eventActivationChanged(Component* changedEvent) {};

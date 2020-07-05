@@ -8,8 +8,7 @@
 #include "IRVideoPlayerObject2.hpp"
 
 IRVideoPlayerObject2::IRVideoPlayerObject2(Component* parent, IRStr* str, bool withOpenButton) :
-IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent)),
-playerController(str)
+IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 {
     setOpaque(false);
     // original function to give this ChangeListener to controller->UI
@@ -18,9 +17,7 @@ playerController(str)
     this->videoPlayer->videoLoadCompleted = [this]{ videoLoadCompletedAction(); };
     addAndMakeVisible(this->videoPlayer.get());
     this->videoPlayer->updateAnimationFrameCallback = [this](double pos) { videoPlayingUpdateAction(pos); };
-    
-    //playerController
-    addAndMakeVisible(&this->playerController);
+
     
     setMinimumWidth(100);
     setMinimumHeight(100);
@@ -107,18 +104,6 @@ void IRVideoPlayerObject2::loadThisFromSaveData(t_json data)
 void IRVideoPlayerObject2::resized()
 {
    this->videoPlayer->setBounds(getLocalBounds().reduced(0));
-
-    
-    //this->playerController.setBounds(0, 0, getWidth(), getHeight()/2);
-    
-    int ctlH = 100;
-    if(getHeight() * 0.25 < ctlH) ctlH = getHeight() * 0.25;
-    this->playerController.setBounds(0, getHeight() - ctlH, getWidth(), ctlH);
-    
-    std::cout << "ctlh = " << ctlH << std::endl;
-
- 
-
 }
 // --------------------------------------------------
 void IRVideoPlayerObject2::resizeThisComponentEvent(const MouseEvent& e)
@@ -239,14 +224,6 @@ void IRVideoPlayerObject2::mouseUpEvent(const MouseEvent& e)
 
 }
 
-void IRVideoPlayerObject2::mouseEnterEvent(const MouseEvent& e)
-{
-    std::cout << "mouse entered!\n";
-}
-void IRVideoPlayerObject2::mouseExitEvent(const MouseEvent& e)
-{
-    std::cout << "mouse exit!\n";
-}
 // --------------------------------------------------
 void IRVideoPlayerObject2::paint(Graphics& g)
 {
@@ -265,6 +242,10 @@ void IRVideoPlayerObject2::videoLoadCompletedAction()
 {
 
     std::cout << "IRVideoPlayerObject2::videoLoadCompletedAction\n";
+    
+    if(hasVideoPlayerController())
+        this->playerController->setVideoLengthInSec(this->videoPlayer->getVideoLength());
+    
     // call reset Heavy-weight components
     refreshZIndex();
     // called only when isCallback is true. isCallback is defined in this class.
@@ -293,11 +274,13 @@ void IRVideoPlayerObject2::videoPlayingUpdateAction(double pos)
 
 void IRVideoPlayerObject2::moveToFrontAction()
 {
+    
+    std::cout << "IRVideoPlayerObject2::moveToFrontAction\n";
     this->videoPlayer->bringViewToFront();
     
-    this->playerController.bringThisToFront();
+    if(hasVideoPlayerController())
+        this->playerController->bringThisToFront();
 
-    
 }
 
 // --------------------------------------------------
@@ -380,6 +363,12 @@ void IRVideoPlayerObject2::enableController(bool flag)
 
 // ---------------------------------------------------
 
+void IRVideoPlayerObject2::setVideoPlayerController(IROnVideoPlayerController* playerController)
+{
+    this->playerController = playerController;
+    this->playerController->addChangeListener(this);
+    this->hasVideoPlayerControllerFlag = true;
+}
 // ---------------------------------------------------
 
 
@@ -406,3 +395,49 @@ void IRVideoPlayerObject2::resizingSquareDraggedAction(MouseEvent e)
 {
     
 }
+// ---------------------------------------------------
+void IRVideoPlayerObject2::IRChangeListenerCallback(ChangeBroadcaster* source)
+{
+    if(hasVideoPlayerController())
+    {
+        if(this->playerController == source)
+            playControllerChangeListenerCallback();
+    }
+}
+
+void IRVideoPlayerObject2::playControllerChangeListenerCallback()
+{
+    auto s = this->playerController->getStatus();
+    switch(s)
+    {
+        case IROnVideoPlayerController::PLAY:
+            playAction();
+            break;
+        case IROnVideoPlayerController::PAUSE:
+            pauseAction();
+            break;
+        case IROnVideoPlayerController::playPositionChanged:
+            playPositionChangedAction();
+            break;
+        default:
+            break;
+    }
+}
+// ---------------------------------------------------
+
+void IRVideoPlayerObject2::playAction()
+{
+    this->videoPlayer->play();
+}
+
+void IRVideoPlayerObject2::pauseAction()
+{
+    this->videoPlayer->stop();
+}
+
+void IRVideoPlayerObject2::playPositionChangedAction()
+{
+    auto pos = this->playerController->getCurrentPlayPosition();
+    this->videoPlayer->setPlayPosition(pos);
+}
+// ---------------------------------------------------

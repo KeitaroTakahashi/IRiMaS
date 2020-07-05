@@ -9,7 +9,6 @@
 #define VideoAnotaterWorkspace_hpp
 
 #include "IRWorkspaceComponent.hpp"
-#include "IRVideoPlayerObject.hpp"
 
 class VideoAnnotaterWorkspace : public IRWorkspaceComponent
 {

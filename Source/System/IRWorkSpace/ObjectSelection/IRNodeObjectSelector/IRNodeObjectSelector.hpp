@@ -27,6 +27,7 @@ public:
     void mouseUpHandler(const MouseEvent& e) override;
     // ==================================================
 
+    void selectAllObjects();
     void deselectAllObjects();
     void deselectOtherObejcts(IRNodeObject* selectedObj);
     void addSelectedObjects();

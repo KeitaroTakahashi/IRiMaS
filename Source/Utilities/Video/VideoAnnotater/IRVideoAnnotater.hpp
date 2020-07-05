@@ -9,8 +9,13 @@
 #define IRVideoAnnotater_hpp
 
 #include "IRStrComponent.hpp"
+
+// DELEGATE METHODS
+#include "IRVideoAnnotaterBase.h"
+#include "IRVideoAnnotaterDelegate.h"
+
+// VIDEO ANNOTATOR UI
 #include "VideoTransport.h"
-#include "IRVideoAnnotaterObject.h"
 #include "IRVideoAnnotaterObject2.hpp"
 
 #include "IRVideoAnnotaterSRTFile.hpp"
@@ -19,10 +24,10 @@
 #include "VideoAnnotationMenuWindow.h"
 #include "VideoEventList.h"
 #include "EventLogList.h"
-#include "IRVideoAnnotaterBase.h"
-#include "IRVideoAnnotaterDelegate.h"
+
 #include "VideoAnnotaterWorkspace.hpp"
 #include "IRProjectOwnerBase.h"
+#include "AnnotationChart.h"
 
 // VideoAnontater object
 #include "IRVATextEditorObject.h"
@@ -65,6 +70,12 @@ public:
     void saveSRTs();
     void saveSRTs(File file);
     
+    // ==================================================
+
+    std::vector<AnnotationChart::annotationData> getAnnotationData() const { return this->annotationData; }
+
+    // ==================================================
+
 private:
     void openDialogtoSaveSRTs();
     String savePath;
@@ -171,22 +182,28 @@ private:
     void deleteSelectedEvents();
     void deleteEventComponent(VideoAnnotationEventComponent* event);
     
-    void createEventComponent(IRNodeObject* obj);
+    void createEventComponent(IRNodeObject* obj, bool addEventList = true);
     void createTextEventComponent();
     void createTextEventComponentFromSRT(SubtitleItem* item);
-    void createTextEventComponentFromIRNodeObject(IRNodeObject* obj);
-    
+    void createTextEventComponentFromIRNodeObject(IRNodeObject* obj, bool addEventList);
     void createShapeEventComponent();
-    void createShapeEventComponentFromNodeObject(IRNodeObject* obj);
+    void createShapeEventComponentFromNodeObject(IRNodeObject* obj, bool addEventList);
     void createImageEventComponent();
-    void createImageEventComponentFromNodeObject(IRNodeObject* obj);
+    void createImageEventComponentFromNodeObject(IRNodeObject* obj, bool addEventList);
     void createAudioEventComponent();
-    void createAudioEventComponentFromNodeObject(IRNodeObject* obj);
+    void createAudioEventComponentFromNodeObject(IRNodeObject* obj, bool addEventList);
 
     void eventComponentResized();
     
     void setupEventComponent(IRNodeObject* obj, VideoAnnotationEventComponent* event);
-    void duplicateNodeObject(IRNodeObject* obj);
+    void duplicateNodeObject(IRNodeObject* obj, bool addEventList = true);
+    
+    // chart
+    std::vector<AnnotationChart::annotationData> annotationData;
+    bool enableUpdateAnnotationData = true;
+    
+    
+    void updateAnnotationData();
     // ==================================================
     //IRWorkspace
     // getting to know when the selection status of a NodeObject has been changed.

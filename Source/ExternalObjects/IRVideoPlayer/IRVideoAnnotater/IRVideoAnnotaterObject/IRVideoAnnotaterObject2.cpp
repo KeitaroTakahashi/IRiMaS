@@ -14,15 +14,19 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 {
     
     this->workspace.reset(new IRVideoAnnotaterWorkspace("Video Annotater", Rectangle<int>(0, 0, 0, 0), str, withOpenButton));
+    this->workspace->addMouseListener(this, true);
     this->workspace->setDraggableMargin(Rectangle<int>(0, 0, 0, 0));
     this->workspace->videoLoadCompletedCallback = [this] { videoLoadCompletedAction(); };
     this->workspace->videoPlayingUpdateCallback = [this] (double pos) { videoPlayingUpdateAction(pos); };
     addAndMakeVisible(this->workspace.get());
-    //this->annotaterWorkspace->setBackgroundColour(Colours::transparentBlack);
-    //this->annotaterWorkspace->addListener(this);
-    //this->annotaterWorkspace->addKeyListener(this);
+
+    this->playerController.reset(new IROnVideoPlayerController(str));
+    this->playerController->addMouseListener(this, false);
+    addAndMakeVisible(this->playerController.get());
     
-    setObjectSize(300, 200);
+    this->workspace->getVideoPlayerObject()->setVideoPlayerController(this->playerController.get());
+    
+    setObjectSize(400, 300);
     
     setMinimumWidth(100);
     setMinimumHeight(100);
@@ -36,6 +40,7 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
 IRVideoAnnotaterObject2::~IRVideoAnnotaterObject2()
 {
     this->workspace.reset();
+    this->playerController.reset();
 }
 // --------------------------------------------------
 
@@ -44,6 +49,9 @@ void IRVideoAnnotaterObject2::onResized()
     
     std::cout << "IRVideoAnnotaterObject2::resized\n";
     this->workspace->setBounds(getLocalBounds());
+    
+    int ctlH = 100;
+    this->playerController->setBounds(2, getHeight() - ctlH, getWidth()-4, ctlH);
 
 }
 
@@ -54,7 +62,6 @@ void IRVideoAnnotaterObject2::resizeThisComponentEvent(const MouseEvent& e)
     // and resize event can not be acomplished properly.
     std::cout << "resizeThisComponentEvent\n";
     auto videoPlayer = this->workspace->getVideoPlayerObject()->getVideoPlayer();
-    
     
     double ratio = videoPlayer->getAspectRatio();
     if(ratio != 0){
@@ -350,7 +357,7 @@ void IRVideoAnnotaterObject2::videoPlayingUpdateAction(double pos)
 {
     //std::cout << "IRVideoAnnotaterObject2::videoPlayingUpdateAction : " << pos << std::endl;
     
-    
+    this->playerController->setSliderValue(pos, false);
     
     if(this->videoPlayingUpdateCallbackFunc != nullptr)
         this->videoPlayingUpdateCallbackFunc(pos);
@@ -424,3 +431,42 @@ bool IRVideoAnnotaterObject2::hasVideo() const
     std::cout << "IRVideoAnnotaterObject2::hasVideo = " << this->workspace->getVideoPlayerObject()->getVideoPlayer()->hasVideo() << std::endl;
     return this->workspace->getVideoPlayerObject()->getVideoPlayer()->hasVideo();
 }
+// --------------------------------------------------
+
+
+void IRVideoAnnotaterObject2::mouseEnterEvent(const MouseEvent& e)
+{
+    auto pos = e.getEventRelativeTo(this->parent).getPosition();
+
+    if(pos.getX() >= getX() && pos.getX() < getX() + getWidth() &&
+       pos.getY() >= getY() && pos.getY() < getY() + getHeight())
+    {
+        showPlayerController(true);
+    }else showPlayerController(false);
+}
+void IRVideoAnnotaterObject2::mouseExitEvent(const MouseEvent& e)
+{
+    auto pos = e.getEventRelativeTo(this->parent).getPosition();
+
+    if(pos.getX() >= getX() && pos.getX() < getX() + getWidth() &&
+       pos.getY() >= getY() && pos.getY() < getY() + getHeight())
+    {
+        showPlayerController(true);
+    }else showPlayerController(false);
+}
+
+void IRVideoAnnotaterObject2::mouseMove(const MouseEvent& e)
+{
+    
+    auto pos = e.getEventRelativeTo(this->parent).getPosition();
+
+}
+// --------------------------------------------------
+
+void IRVideoAnnotaterObject2::showPlayerController(bool flag)
+{
+    this->playerController->setVisible(flag);
+}
+
+
+

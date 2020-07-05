@@ -24,13 +24,13 @@ ir_parentStr(str)
     this->eventLogList.reset(new EventLogList(str));
     addAndMakeVisible(this->eventLogList.get());
     
-   
+
 }
 
 IRVideoAnnotater::~IRVideoAnnotater()
 {
     closeAnnotationMenu();
-        
+            
     this->myVideoPlayerObject.reset();
 
     this->eventListComponent.reset();
@@ -333,13 +333,6 @@ void IRVideoAnnotater::saveSRTs()
 {
     if(this->srtSavePath.length() == 0)
     {
-        /*
-        if(this->eventListComponent.get() != nullptr){
-            this->eventListComponent->saveAnnotationFile();
-            
-            this->srtSavePath = this->eventListComponent->getSrtSavePath();
-        }*/
-        
         openDialogtoSaveSRTs();
         
     }else{
@@ -356,14 +349,6 @@ void IRVideoAnnotater::saveSRTs()
 
 void IRVideoAnnotater::saveSRTs(File file)
 {
-    //if(this->eventListComponent.get() != nullptr)
-        //this->eventListComponent->saveAnnotationFile(file);
-    //if(!file.exists()) return;
-    
-    //this->srt.open(file.getFullPathName().toStdString());
-
-    
-    //json11::json saveData = this->myVideoPlayerObject->getWorkspace()->makeSaveDataOfThis();
 
     json11::Json wsData;
     auto workspaces = this->myVideoPlayerObject->getWorkspace();
@@ -374,61 +359,7 @@ void IRVideoAnnotater::saveSRTs(File file)
     });
     this->jsonManager.setData(saveData);
     this->jsonManager.writeSaveData(file.getFullPathName().toStdString());
-    
-    /*
-    using t = VideoAnnotationEventComponent::VideoAnnotationType;
-    
-    for(auto obj : this->myVideoPlayerObject->getWorkspace()->getObjectList())
-    {
-        
-        if(obj->getEventComponent() == nullptr)
-        {
-            std::cout << "Error : saveSTRs() eventComponent NULL!\n";
-            KLib().showErrorMessage("Error : saveSTRs() : eventComponent is NULL!");
-            break;
-        }
-        auto event = static_cast<VideoAnnotationEventComponent*>(obj->getEventComponent());
-        auto id = event->getSRT();
-        
-        auto s = obj->getStatusStr();
-          
-        std::string contents = "{\"" + obj->name.toStdString() + "\": ";
-
-        contents += "{\"ArrangeController\": ";
-        contents += "{\"bounds\": [" + std::to_string(s->bounds.getX()) +
-        ", " + std::to_string(s->bounds.getY()) +
-        ", " + std::to_string(s->bounds.getWidth()) +
-        ", " + std::to_string(s->bounds.getHeight()) + "], ";
-
-        contents += "\"relativeBounds\": [" + std::to_string(s->relativeBounds.getX()) +
-        ", " + std::to_string(s->relativeBounds.getY()) +
-        ", " + std::to_string(s->relativeBounds.getWidth()) +
-        ", " + std::to_string(s->relativeBounds.getHeight()) + "], ";
-
-        contents += "\"wrap\": " + std::to_string(s->wrap) + ", ";
-
-        contents += "\"wrapColour\": [" + std::to_string(s->wrapColour.getRed()) +
-        ", " + std::to_string(s->wrapColour.getGreen()) +
-        ", " + std::to_string(s->wrapColour.getBlue()) +
-        ", " + std::to_string(s->wrapColour.getAlpha()) + "]}"; // ,
-
-        //auto objSaveData = obj->saveThisToSaveData().dump();
-        //contents += "{\"contents\": " + objSaveData + "}";
-
-        contents += "}"; // close ArrangeController
-        contents += "}"; // close Object
-
-        srtWriter::SRT_STRUCT saveItem(id.beginTime,
-                                       id.endTime,
-                                       contents);
-
-
-
-        this->srt.addItem(saveItem);
-    }
-    
-    this->srt.close();*/
-    
+  
     
 }
 
@@ -658,12 +589,6 @@ void IRVideoAnnotater::eventSelectedAction(Component* selectedEvent)
     //this->videotransport->setCurrentPlayingPosition
 }
 
-void IRVideoAnnotater::updateAnnotation()
-{
-        //updateAnnotationWorkspace();
-    
-}
-
 void IRVideoAnnotater::showEventPosition(Component* event)
 {
     // first deselect all objects
@@ -835,6 +760,9 @@ void IRVideoAnnotater::closeAnnotationWindow()
 void IRVideoAnnotater::updateThisAnnotationWorkspace()
 {
     if(this->videoPlayerObject == nullptr || this->myVideoPlayerObject.get() == nullptr) return;
+    
+    
+    
 }
 void IRVideoAnnotater::updateThisVideoFile()
 {
@@ -877,17 +805,51 @@ void IRVideoAnnotater::updateVideoPlayerOfThis()
 }
 void IRVideoAnnotater::updateVideoPlayerOfWorkspace()
 {
+    
+    std::cout << "updateVideoPlayerOfWorkspace\n";
     if(this->videoPlayerObject != nullptr && this->myVideoPlayerObject.get() != nullptr)
     {
-        //this->myVideoPlayerObject->shareContentsWith(this->videoPlayerObject);
+        
+        std::cout << "...\n";
+        auto mySpace = this->myVideoPlayerObject->getWorkspace();
+        auto space = this->videoPlayerObject->getWorkspace();
+        std::cout << "initializeWorkspace\n";
+
+        space->initializeWorkspace();
+        
+        std::cout << "make saveData\n";
+        auto wsData = mySpace->makeSaveDataOfThis();
+        
+        json11::Json saveData = json11::Json::object({
+            {"IRVideoAnnotaterSaveData", wsData}
+        });
+        
+        std::cout << " saveData = " << saveData.dump() << std::endl;
+        
+        space->loadAndApplyIRSRT(saveData);
+        // for each nodeObject of space, create event component and copy the data
+        for(auto o : space->getObjectList())
+        {
+            
+            std::cout << "creating object of " << o->name << " at " << o->getStartTimeSec() << " to " << o->getEndTimeSec() << std::endl;
+            createEventComponent(o, false);
+        }
 
     }
 }
+
+void IRVideoAnnotater::updateAnnotation()
+{
+    //updateVideoPlayerOfWorkspace();
+}
+
 // ==================================================
 
 void IRVideoAnnotater::applyEventsOnTheLoadedVideo(VideoAnnotationEventComponent* event)
 {
     if(this->myVideoPlayerObject.get() == nullptr) return;
+    
+    
     
     //this->myVideoPlayerObject->updateEventComponent(event);
     //this->videoPlayerObject->updateEventComponent(event);
@@ -921,6 +883,25 @@ void IRVideoAnnotater::deleteEventOnTheLoadedVideo()
     
 }
 
+
+void IRVideoAnnotater::updateEventsOnTheLoadedVideo()
+{
+    updateAnnotationData();
+}
+
+void IRVideoAnnotater::updateAnnotationData()
+{
+    this->annotationData.clear();
+    
+    for(auto e : this->eventListComponent->getEventComponents())
+    {
+        float beginTime = e->getBeginTimeCode();
+        float endTime = e->getEndTimeCode();
+        
+        this->annotationData.push_back(AnnotationChart::annotationData(beginTime, endTime));
+        
+    }
+}
 
 // ==================================================
 
@@ -975,12 +956,18 @@ void IRVideoAnnotater::loadAndApplySRTs()
     auto space = this->myVideoPlayerObject->getWorkspace();
     space->loadAndApplyIRSRT(this->jsonManager.getData());
     
+    // disable update annotation data to avoid operating the task repeatedly
+    this->enableUpdateAnnotationData = false;
     for(auto obj : space->getObjectList())
     {
         
         createEventComponent(obj);
         
     }
+    // enable update annotation data
+    this->enableUpdateAnnotationData = true;
+    
+    updateAnnotationData();
     
     // reset video playing position
     this->myVideoPlayerObject->setPlayPosition(0);
@@ -992,7 +979,5 @@ void IRVideoAnnotater::loadAndApplySRTs()
 
 
 // ==================================================
-
-
 
 // ==================================================

@@ -124,6 +124,32 @@ void IRWorkspaceComponent::copyAllDataToWorkspace(IRWorkspaceComponent* newWorks
 
 // ==================================================
 
+void IRWorkspaceComponent::initializeWorkspace()
+{
+    deleteAllObjects();
+}
+
+void IRWorkspaceComponent::copyWorkspace(IRWorkspaceComponent* space)
+{
+    auto objectList = space->objects;
+    copyObjectListAndCreateObjects(objectList);
+}
+
+void IRWorkspaceComponent::copyObjectListAndCreateObjects(Array<IRNodeObject* > list)
+{
+    for(auto o : list)
+    {
+        auto saveData = o->saveThisToSaveData();
+        auto obj = o->copyThis();
+        auto arrangeCtl = o->getArrangeControllerSaveData();
+        obj->loadArrangeControllerSaveData(arrangeCtl);
+        
+        createObject(obj);
+        
+        obj->loadThisFromSaveData(saveData);
+
+    }
+}
 // ==================================================
 // APPEARANCE
 // ==================================================
@@ -238,9 +264,11 @@ void IRWorkspaceComponent::setDraggableMargin(Rectangle<int> newMargin)
 
 void IRWorkspaceComponent::mouseDown(const MouseEvent& e)
 {
-    std::cout << "IRWorkspaceComponent mouseDown " << e.getEventRelativeTo(this).getPosition().getX() << ", " << e.getEventRelativeTo(this).getPosition().getY() << std::endl;
+    std::cout << "IRWorkspaceComponent mouseDown on " << this->name << " : " << e.getEventRelativeTo(this).getPosition().getX() << ", " << e.getEventRelativeTo(this).getPosition().getY() << std::endl;
     
-    this->selector->mouseDownHandler(e.getEventRelativeTo(this));
+    // operate selector process if it is enabled
+    if(isSelectorEnabled())
+        this->selector->mouseDownHandler(e.getEventRelativeTo(this));
     
     if(isEditMode())
     {

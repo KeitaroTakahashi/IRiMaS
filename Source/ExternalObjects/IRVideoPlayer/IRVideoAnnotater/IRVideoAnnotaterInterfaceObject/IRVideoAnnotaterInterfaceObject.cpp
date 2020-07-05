@@ -16,9 +16,9 @@ IRVideoAnnotaterObject2 (parent, str)
     this->controller->addChangeListener(this);
     this->controller->getArrangeController()->addChangeListener(this);
     setObjController(this->controller.get());
-   
-    //setObjectSize(300, 200);
     
+    // disable selector on this VideoAnnotator BUT keep enabling selector for Annotator window.
+    getWorkspace()->enableSelector(false);
 }
 
 IRVideoAnnotaterInterfaceObject::~IRVideoAnnotaterInterfaceObject()
@@ -223,5 +223,5 @@ void IRVideoAnnotaterInterfaceObject::ObjectBoundsChanged(Rectangle<int> bounds)
 void IRVideoAnnotaterInterfaceObject::applyAnnotation()
 {
     std::cout << "applyAnnotation\n";
-    this->controller->updateAnnotater();
+    this->controller->updateParentVideoPlayerObject();
 }

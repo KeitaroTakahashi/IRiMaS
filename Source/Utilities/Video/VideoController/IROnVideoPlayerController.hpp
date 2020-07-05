@@ -12,10 +12,14 @@
 #include "IRStrComponent.hpp"
 #include "IRHeavyWeightComponent.h"
 #include "IRPlayPauseButton.h"
+#include "TimeCode.h"
+#include "AnnotationChart.h"
 
 class IROnVideoPlayerController : public Component,
 public IRStrComponent,
-public IRHeavyWeightComponent
+public IRHeavyWeightComponent,
+public ChangeBroadcaster,
+private Slider::Listener
 {
 public:
     
@@ -23,6 +27,7 @@ public:
     {
         NONE,
         PLAY,
+        playPositionChanged,
         PAUSE
     };
     
@@ -41,28 +46,44 @@ public:
         std::cout << "IROnVideoPlayerController : mouseDown\n";
     }
     // ==================================================
-
+    void setVideoLengthInSec(float length);
+    
     void setCurrentPlayPosition(float sec);
     float getCurrentPlayPosition() const { return this->currentPlayPosition; }
+    void setSliderValue(float val, bool emitChangeBroadcaster);
     // ==================================================
     
     void playAction();
     void pauseAction();
-    
+    // ==================================================
+
     IROnVideoPlayerControllerStatus getStatus() const { return this->status; }
     void setStatus(IROnVideoPlayerControllerStatus status);
+    // ==================================================
+    
+    void addMouseListenerToChildren(MouseListener* l);
 
 private:
+    // ==================================================
     
     IROnVideoPlayerControllerStatus status = NONE;
     // ==================================================
-
+    float videoLengthInSec = 0;
     float currentPlayPosition = 0;
-    
+    bool emitChangeBroadcaster4CurrentPlayPosition = true;
     // ==================================================
     
     IRPlayPauseButton playPauseButton;
     void playPauseButtonClickedAction();
+    
+    AnnotationChart chart;
+    
+    Slider timeCodeSlider;
+    void createTimeCodeSlider();
+    void sliderValueChanged (Slider *slider) override;
+    
+    TimeCode timeCode;
+
     // ==================================================
     // ==================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IROnVideoPlayerController)

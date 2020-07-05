@@ -191,6 +191,13 @@ void IRWorkspaceComponent::deleteObject(IRNodeObject *obj)
     if(requestWorkspaceListUpdate != nullptr) requestWorkspaceListUpdate();
 }
 
+void IRWorkspaceComponent::deleteAllObjects()
+{
+    this->selector->selectAllObjects();
+    deleteSelectedObjects();
+}
+
+
 void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
 {
     // check if any components contain HEAVY weight components
@@ -427,7 +434,14 @@ void IRWorkspaceComponent::nodeObjectSelectionChange(IRNodeObject* obj)
 
 void IRWorkspaceComponent::nodeObjectGetFocused(IRNodeObject* obj)
 {
-    std::cout << "IRWorkspaceComponent nodeObjectGetFocused " << obj << std::endl;
+    
+    if(obj != nullptr)
+    {
+        std::cout << "IRWorkspaceComponent nodeObjectGetFocused " << obj << " : " << obj->name << std::endl;
+    }else{
+        std::cout << "IRWorkspaceComponent nodeObjectGetFocused " << obj << std::endl;
+
+    }
     this->cover->toBack();
     callNodeObjectGetFocused(obj);
     

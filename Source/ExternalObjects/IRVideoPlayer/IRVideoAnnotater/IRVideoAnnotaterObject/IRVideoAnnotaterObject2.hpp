@@ -28,6 +28,12 @@ public:
     void paint(Graphics& g) override;
     // --------------------------------------------------
 
+    void mouseEnterEvent(const MouseEvent& e) override;
+    void mouseExitEvent(const MouseEvent& e) override;
+    
+    void mouseMove(const MouseEvent& e) override;
+    // --------------------------------------------------
+
     virtual void videoLoadCompletedCallback();
     
     bool hasVideo() const;
@@ -70,8 +76,11 @@ public:
     void moveToFrontAction() override;
     void moveToBackAction() override;
 
-
+    // --------------------------------------------------
 private:
+    
+    std::shared_ptr<IROnVideoPlayerController> playerController;
+    void showPlayerController(bool flag);
     // --------------------------------------------------
 
     void statusChangedCallback(IRNodeComponentStatus status) override;

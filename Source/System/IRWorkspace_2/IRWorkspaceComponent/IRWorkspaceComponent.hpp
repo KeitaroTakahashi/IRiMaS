@@ -59,6 +59,16 @@ public:
     void setFixObjectSizeRatio(bool flag, Rectangle<float> initialBounds);
     void setPreviousBounds(Rectangle<float> previousBounds);
     bool isPreviousBoundsAlreadyGiven() const;
+    
+    // ==================================================
+    // delete all objects and initialize all status of the workspace
+    void initializeWorkspace();
+    
+    void copyWorkspace(IRWorkspaceComponent* space);
+    
+    void copyObjectListAndCreateObjects(Array<IRNodeObject* > list);
+
+    
 private:
     void paint (Graphics& g) override;
     void drawShadows(Graphics& g);
@@ -156,6 +166,7 @@ public:
     void pasteObject(IRNodeObject *obj, bool addToSelected);
     void duplicateObject(IRNodeObject *obj);
     void deleteObject(IRNodeObject *obj);
+    void deleteAllObjects();
 
     // call this after complete creting the heavy objects
     void resortHeavyObject();
@@ -314,9 +325,15 @@ private:
 protected:
     Array<IRNodeObject* > getObjects() const { return this->objects; }
 private:
-
+    // ==================================================
+    // SELECTOR
     IRNodeObjectSelector *selector;
-    
+    bool selectorEnableFlag = true;
+public:
+    void enableSelector(bool flag) { this->selectorEnableFlag = flag; }
+    bool isSelectorEnabled() const { return this->selectorEnableFlag; }
+    // ==================================================
+private:
     Array<IRNodeObject* > copiedObjects;
     
     AudioEngine mixer;

@@ -55,8 +55,7 @@ public:
     // --------------------------------------------------
     
     void mouseUpEvent(const MouseEvent& e) override;
-    void mouseEnterEvent(const MouseEvent& e) override;
-    void mouseExitEvent(const MouseEvent& e) override;
+
     // --------------------------------------------------
 
     void paint(Graphics& g) override;
@@ -83,24 +82,34 @@ public:
     // --------------------------------------------------
     void enableController(bool flag);
     // --------------------------------------------------
+    
+    // --------------------------------------------------
+
 
     // refresh OpenGL when added
     void heavyComponentRefreshed() override;
     // --------------------------------------------------
 
-
+    void setVideoPlayerController(IROnVideoPlayerController* playerController);
+    bool hasVideoPlayerController() const { return this->hasVideoPlayerControllerFlag; }
     // --------------------------------------------------
 
     std::shared_ptr<IRVideoPlayer> videoPlayer;
-
+    void playAction();
+    void pauseAction();
+    void playPositionChangedAction();
     
     void resizeThisComponentEvent(const MouseEvent& e) override;
     void resizeThisComponent(Rectangle<int> rect);
     
     
 private:
+    
+    void IRChangeListenerCallback(ChangeBroadcaster* source) override;
+    void playControllerChangeListenerCallback();
     // --------------------------------------------------
-    IROnVideoPlayerController playerController;
+    IROnVideoPlayerController* playerController = nullptr;
+    bool hasVideoPlayerControllerFlag = false;
     
     // --------------------------------------------------
     // ResizingSquare

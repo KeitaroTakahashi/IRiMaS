@@ -18,10 +18,7 @@ public:
     IRVideoComponent(bool enableController = true) :
     enableController(enableController)
     {
-      
         
-
-
     }
     
     ~IRVideoComponent()
@@ -61,8 +58,6 @@ public:
                 int y = (getHeight() - h) / 2;
                 this->videoBounds = Rectangle<int> (0, y,
                                                     p->getWidth(), h);
-                
-
             }else{
                 // follow h
                 // follow width
@@ -149,8 +144,6 @@ public:
     
     Rectangle<int> getCurrentVideoBounds() { return getBounds(); }
     // ==================================================
-
-    
     void setNeedController(bool flag)
     {
         this->enableController = flag;
@@ -162,7 +155,6 @@ public:
             removeChildComponent(this->player_without_controller.get());
             addAndMakeVisible(this->player_with_controller.get());
             this->currentPlayer = this->player_with_controller.get();
-
         }else
         {
             removeChildComponent(this->player_with_controller.get());
@@ -264,6 +256,9 @@ public:
          */
         
     #if JUCE_MAC
+        
+        if(this->currentPlayer == nullptr) return;
+        
         NSViewComponent* view = static_cast<NSViewComponent*>(this->currentPlayer->getPimpl());
         if(view == nullptr) return;
         

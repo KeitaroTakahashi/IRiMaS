@@ -10,7 +10,6 @@
 
 #include "JuceHeader.h"
 #include "IRVideoAnnotaterWindow.h"
-#include "IRVideoPlayerObject.hpp"
 
 class VideoController : public Component,
 public IRStrComponent,
@@ -49,7 +48,6 @@ public:
         this->openVideoAnnotatorButton.onClick = [this]{ OpenVideoAnnotaterAction(); };
         
         this->videoAnnotater.closeButtonPressedCallback = [this]{ CloseVideoAnnotaterAction(); };
-
         
         addAndMakeVisible(&this->applyAnnotationButton);
         this->applyAnnotationButton.setButtonText("Apply Annotation");

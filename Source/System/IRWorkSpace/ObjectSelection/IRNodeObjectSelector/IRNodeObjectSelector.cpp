@@ -135,6 +135,18 @@ void IRNodeObjectSelector::mouseUpHandler(const MouseEvent& e)
     repaintAllSelectedObjects();
 }
 
+void IRNodeObjectSelector::selectAllObjects()
+{
+    this->selectedObjectList.clear();
+    for (auto obj : *this->objectList)
+    {
+        obj->setSelected(true);
+        obj->repaint();
+    }
+    
+    addSelectedObjects();
+}
+
 
 void IRNodeObjectSelector::deselectAllObjects()
 {

@@ -67,7 +67,6 @@ public:
         g.fillAll(getStr()->SYSTEMCOLOUR.fundamental);
     }
 
-    
     // --------------------------------------------------
     void openFile()
     {
@@ -124,7 +123,7 @@ public:
     // switch navi on off
     void setNeedController(bool flag)
     {
-        this->player->setNeedController(flag);
+        // nothing July 1 2020
     }
     
     bool isNeedController() const {return this->player->isController(); }
@@ -162,7 +161,10 @@ public:
     bool isPlaying() const { return this->player->isPlaying(); }
     void setPlayPosition(double newPlayPositionInSec)
     {
-        this->player->setPlayPosition(newPlayPositionInSec);
+        std::cout << "setPlayPosition = " << newPlayPositionInSec << std::endl;
+        
+        if(newPlayPositionInSec <= this->player->getVideoLength())
+            this->player->setPlayPosition(newPlayPositionInSec);
       
     }
     double getPlayPosition(){ return this->player->getPlayPosition(); }

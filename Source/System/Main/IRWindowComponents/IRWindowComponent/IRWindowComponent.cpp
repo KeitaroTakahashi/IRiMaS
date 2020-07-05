@@ -802,10 +802,7 @@ void IRWindowComponent::loadProjectFromSavedData(t_json saveData)
 
                 json11::Json arrangeCtl = it->second["ArrangeController"];
                 
-                std::cout << "loadArrangeControllerSaveData\n";
                 obj->loadArrangeControllerSaveData(arrangeCtl);
-                //loadArrangeControllerSaveData(obj, arrangeCtl);
-                std::cout << "loadArrangeControllerSaveData done\n";
 
                 currentSpace->createObject(obj);
                 

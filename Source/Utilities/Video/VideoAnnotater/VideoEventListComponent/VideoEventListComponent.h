@@ -296,7 +296,6 @@ public:
     {
         // call updateAnimation method in IRVideoAnnotater
         getBase()->eventActivationChanged(comp);
-        //updateAnnotation();
     }
     
     void eventShownOnVideoPlayer(VideoAnnotationEventComponent* comp) override

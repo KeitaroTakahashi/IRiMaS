@@ -348,13 +348,21 @@ void IRVideoAnnotaterWorkspace::loadAndApplyIRSRT(t_json data)
             std::string objectTypeId = it->second["objectType"].string_value();
             //auto* obj = factory.createObject(objectTypeId, this, getStr());
             
+            IRNodeObject* obj = nullptr;
+            //When parentStr is nullptr, this NodeObject is on the main workspace.
+            //On the other hand, when it is not nullptr means, this NodeObject is on the VideoAnnotator Controller or on any corresponding environment.
             if(getStr()->parentStr == nullptr)
             {
-                KLib().showErrorMessage("Error : loadAndApplyIRSRT : parentStr nullptr\n");
-                return;
+                //KLib().showErrorMessage("Error : loadAndApplyIRSRT : parentStr nullptr\n");
+                //return;
+                
+                obj = static_cast<IRNodeObject*>(getStr()->createNewObject(objectTypeId, this, getStr()));
+
+            }else{
+                obj = static_cast<IRNodeObject*>(getStr()->parentStr->createNewObject(objectTypeId, this, getStr()));
+
             }
             
-            auto* obj = static_cast<IRNodeObject*>(getStr()->parentStr->createNewObject(objectTypeId, this, getStr()));
 
             json11::Json arrangeCtl = it->second["ArrangeController"];
             
