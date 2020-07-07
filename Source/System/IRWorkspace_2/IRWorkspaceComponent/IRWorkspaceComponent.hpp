@@ -153,7 +153,7 @@ public:
     
     // manage the heavy weight components which are always drown on the top of all other components
     // the heavy weights components will be hidden or shown according to this workspace status
-    void manageHeavyWeightComponents(bool flag);
+    void manageHeavyWeightComponents(bool flag, bool rebindOpenGLComponent = true);
     // ==================================================
 
 

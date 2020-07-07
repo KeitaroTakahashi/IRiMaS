@@ -21,7 +21,7 @@ public:
     // ==================================================
 
     
-    virtual void rebindOpenGLContents() {}
+    virtual void rebindOpenGLContents() { std::cout << "rebindOpenGLContents empty\n";}
     
     virtual void updateAppearance() {}
     

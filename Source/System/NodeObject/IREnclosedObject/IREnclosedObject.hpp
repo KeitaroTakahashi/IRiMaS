@@ -8,7 +8,7 @@
 #ifndef IREnclosedObject_hpp
 #define IREnclosedObject_hpp
 
-#include "JuceHeader.h"
+#include "EncloseButton.h"
 
 class IREnclosedObject : public Component
 {

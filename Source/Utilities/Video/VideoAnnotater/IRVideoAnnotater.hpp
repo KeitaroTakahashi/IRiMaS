@@ -104,10 +104,8 @@ public:
     
     void updateThisAnnotationWorkspace();
     void updateThisVideoFile();
-    void updateAnnotationWorkspace();
     void updateVideoFileWorkspace();
     
-    void updateWorkspaceWithCurrentPlayingPosition(float pos);
     // ==================================================
     void openAnnotationMenu();
     void closeAnnotationMenu();
@@ -195,7 +193,7 @@ private:
 
     void eventComponentResized();
     
-    void setupEventComponent(IRNodeObject* obj, VideoAnnotationEventComponent* event);
+    void setupEventComponent(IRNodeObject* obj, VideoAnnotationEventComponent* event, bool addEventList = true);
     void duplicateNodeObject(IRNodeObject* obj, bool addEventList = true);
     
     // chart

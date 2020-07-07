@@ -198,7 +198,7 @@ void IRWorkspaceComponent::deleteAllObjects()
 }
 
 
-void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
+void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag, bool rebindOpenGLComponent)
 {
     // check if any components contain HEAVY weight components
     
@@ -228,14 +228,8 @@ void IRWorkspaceComponent::manageHeavyWeightComponents(bool flag)
             }
         }
     }
-    
-    //std::cout << "obj front done\n";
-    //bringCoverToBack();
-    // bring parent object to the bihind of all other objects.
-    //bringParentNodeObjectToBack();
-    // refresh heacy component z order
-    //callHeavyObjectCreated(nullptr);
-    getStr()->projectOwner->rebindOpenGLContents();
+    if(rebindOpenGLComponent)
+        getStr()->projectOwner->rebindOpenGLContents();
 }
 // ------------------------------------------------------------
 
@@ -363,7 +357,6 @@ void IRWorkspaceComponent::dragoutNodeObjectFromParent(IRNodeObject* obj)
     
     this->dummy.add(o);
     
-    //obj->addToDesktop(0);
 }
 // ------------------------------------------------------------
 void IRWorkspaceComponent::dropoutNodeObjectFromParent(IRNodeObject* obj)

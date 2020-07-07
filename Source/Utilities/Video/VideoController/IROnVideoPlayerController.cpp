@@ -61,7 +61,6 @@ void IROnVideoPlayerController::paint(Graphics& g)
 
     g.fillAll(Colours::transparentWhite);
     g.setColour(Colours::grey);
-    g.setOpacity(0.75);
     g.fillRoundedRectangle(getLocalBounds().reduced(6).toFloat(), 2);
 }
 
@@ -84,7 +83,7 @@ void IROnVideoPlayerController::setVideoLengthInSec(float length)
 
 void IROnVideoPlayerController::setCurrentPlayPosition(float sec)
 {
-    
+    this->timeCodeSlider.setValue(sec);
 }
 
 
@@ -149,7 +148,7 @@ void IROnVideoPlayerController::sliderValueChanged (Slider *slider)
     if(slider == &this->timeCodeSlider)
     {
         float val = slider->getValue();
-        std::cout << "val = " << val << std::endl;
+        std::cout << "val = " << val << " : emitflag = " << emitChangeBroadcaster4CurrentPlayPosition << std::endl;
         this->currentPlayPosition = val;
         this->timeCode.setLabelVal(val);
         

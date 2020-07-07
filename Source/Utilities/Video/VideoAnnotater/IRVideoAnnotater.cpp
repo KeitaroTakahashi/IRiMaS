@@ -424,21 +424,6 @@ void IRVideoAnnotater::myVideoPlayingUpdate(double pos)
 {
     this->videoTransport->setCurrentPlayingPosition(pos);
     
-    
-    //updateWorkspaceWithCurrentPlayingPosition(pos);
-}
-
-void IRVideoAnnotater::updateWorkspaceWithCurrentPlayingPosition(float pos)
-{
-    // test
-    std::cout << "updateWorkspaceWithCurrentPlayingPosition " << pos << std::endl;
-    this->myVideoPlayerObject->getWorkspace()->enableTimeCodeAnimation(true);
-    this->myVideoPlayerObject->getWorkspace()->setCurrentTimeCode(pos);
-    //this->myVideoPlayerObject->getWorkspace()->updateCurrentAnimation();
-    
-    //this->workspace->enableTimeCodeAnimation(true);
-   // this->workspace->setCurrentTimeCode(pos);
-   // this->workspace->updateCurrentAnimation();
 }
 
 
@@ -480,16 +465,12 @@ void IRVideoAnnotater::playPositionChangedBySliderAction()
     stopAction();
     
     float p = this->videoTransport->getPlayPosition();
-    //this->myVideoPlayerObject->getVideoPlayer()->setPlayPosition(p);
     this->myVideoPlayerObject->setPlayPosition(p);
-   // this->myVideoPlayerObject->getWorkspace()->resetAnimatedObjectList();
     
-    std::cout << "workspace\n";
-
-    // first reset animated Object
-    //this->workspace->resetAnimatedObjectList();
+    //test
+    this->videoPlayerObject->getWorkspace()->getVideoPlayerObject()->changePlayPosition(p);
     // and then, re-animate the corresponding objects
-    updateWorkspaceWithCurrentPlayingPosition(p);
+    //updateWorkspaceWithCurrentPlayingPosition(p);
     
     std::cout << "end\n";
 
@@ -546,12 +527,7 @@ void IRVideoAnnotater::eventModifiedAction(Component* modifiedEvent)
     auto currentPosition = this->eventListComponent->getViewPosition();
     this->eventListComponent->resized();
     this->eventListComponent->setViewPosition(currentPosition);
-    
-    // apply
-    //applyEventsOnTheLoadedVideo(event);
-    
-    updateAnnotationWorkspace();
-    
+
 }
 
 void IRVideoAnnotater::eventSelectedAction(Component* selectedEvent)
@@ -774,15 +750,7 @@ void IRVideoAnnotater::updateThisVideoFile()
     else std::cout << "IRVideoAnnotater::updateThisVideoFile file does not exist!" << std::endl;
 
 }
-void IRVideoAnnotater::updateAnnotationWorkspace()
-{
-    /*
-    if(this->videoPlayerObject == nullptr || this->myVideoPlayerObject.get() == nullptr) return;
-    
-    this->videoPlayerObject->getWorkspace()->copyAllDataToWorkspace(this->myVideoPlayerObject->getWorkspace());
-    this->videoPlayerObject->resized();*/
 
-}
 void IRVideoAnnotater::updateVideoFileWorkspace()
 {
     if(this->videoPlayerObject == nullptr || this->myVideoPlayerObject.get() == nullptr) return;
@@ -806,18 +774,14 @@ void IRVideoAnnotater::updateVideoPlayerOfThis()
 void IRVideoAnnotater::updateVideoPlayerOfWorkspace()
 {
     
-    std::cout << "updateVideoPlayerOfWorkspace\n";
     if(this->videoPlayerObject != nullptr && this->myVideoPlayerObject.get() != nullptr)
     {
         
-        std::cout << "...\n";
         auto mySpace = this->myVideoPlayerObject->getWorkspace();
         auto space = this->videoPlayerObject->getWorkspace();
-        std::cout << "initializeWorkspace\n";
 
         space->initializeWorkspace();
         
-        std::cout << "make saveData\n";
         auto wsData = mySpace->makeSaveDataOfThis();
         
         json11::Json saveData = json11::Json::object({
@@ -835,6 +799,7 @@ void IRVideoAnnotater::updateVideoPlayerOfWorkspace()
             createEventComponent(o, false);
         }
 
+        space->setEditMode(false);
     }
 }
 

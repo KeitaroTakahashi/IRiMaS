@@ -466,6 +466,8 @@
 		82657CFD21EFC8D8003FA700 /* IRListBoxObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRListBoxObject.hpp; sourceTree = "<group>"; };
 		82657D0121EFD1A4003FA700 /* MenusListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenusListBox.h; sourceTree = "<group>"; };
 		82657D0321F01367003FA700 /* KeAnimationComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeAnimationComponent.h; sourceTree = "<group>"; };
+		826BE15C24B22AD200BCE45C /* IROnVideoPlayerControllerWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IROnVideoPlayerControllerWindow.h; sourceTree = "<group>"; };
+		826BE15E24B442C600BCE45C /* EncloseButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EncloseButton.h; sourceTree = "<group>"; };
 		8274197A247680FF00FE9CFD /* IRQuillTextEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRQuillTextEditor.cpp; sourceTree = "<group>"; };
 		8274197B247680FF00FE9CFD /* IRQuillTextEditor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IRQuillTextEditor.hpp; sourceTree = "<group>"; };
 		8274197D2476810E00FE9CFD /* IRQuillTextEditorObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IRQuillTextEditorObject.cpp; sourceTree = "<group>"; };
@@ -1537,6 +1539,7 @@
 		823A436F24032B2B00C7F66E /* IREnclosedObject */ = {
 			isa = PBXGroup;
 			children = (
+				826BE15D24B442AA00BCE45C /* EncloseButton */,
 				823A437024032B3E00C7F66E /* IREnclosedObject.cpp */,
 				823A437124032B3E00C7F66E /* IREnclosedObject.hpp */,
 			);
@@ -2014,6 +2017,14 @@
 			path = ListBoxObject;
 			sourceTree = "<group>";
 		};
+		826BE15D24B442AA00BCE45C /* EncloseButton */ = {
+			isa = PBXGroup;
+			children = (
+				826BE15E24B442C600BCE45C /* EncloseButton.h */,
+			);
+			path = EncloseButton;
+			sourceTree = "<group>";
+		};
 		826DAFB223CEF06A007BA10D /* IRVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -2286,6 +2297,7 @@
 				8228175724AAEA96001850AD /* IROnVideoController.h */,
 				8228175824AAEBA9001850AD /* IROnVideoPlayerController.cpp */,
 				8228175924AAEBA9001850AD /* IROnVideoPlayerController.hpp */,
+				826BE15C24B22AD200BCE45C /* IROnVideoPlayerControllerWindow.h */,
 			);
 			path = VideoController;
 			sourceTree = "<group>";

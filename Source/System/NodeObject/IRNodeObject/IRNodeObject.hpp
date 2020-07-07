@@ -11,6 +11,7 @@
 #include "IRObjectController.hpp"
 #include "IREnclosedObject.hpp"
 
+
 #include "ObjectArranger.hpp"
 
 class IRNodeObject : public IRNodeComponent
@@ -81,6 +82,8 @@ public:
     // selected event from IRNodeComponent
 private:
     void selectedChangeEvent() override;
+    
+    void resizedOrMoved() override;
 public:
     virtual void selectedChangedAction(bool flag) {}
 
@@ -350,6 +353,13 @@ private:
     IRNodeObjectStatus status = ORDINARY;
     IREnclosedObject enclosedObject;
     void enclosedObjectClickedAction();
+    void enclosedObjectClickedInControlMode();
+    
+    // use this button to go back to WRAP mode.
+    std::shared_ptr<EncloseButton> goBackToEncloseButton;
+    void goBackToEncloseButtonClicked();
+    void createGoBackToEncloseButton(bool createOrDelete);
+    void setBoundsGoBackToEncloseButton();
     
     Rectangle<int> ordinaryBounds;
     Rectangle<float> ordinaryBoundsRelative;

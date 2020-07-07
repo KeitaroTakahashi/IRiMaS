@@ -263,6 +263,9 @@ void IRVideoAnnotaterWorkspace::videoPlayingUpdateAction(double pos)
         if(pos >= event->getBeginTimeCode() && event->getEndTimeCode() > pos)
         {
             //std::cout << "in event activate? " << obj << " : " << obj->isActive() << std::endl;
+            
+            //obj->setInterceptsMouseClicks(false, false);
+            
             if(event->isActive())
             {
                 if(!obj->isActive())
@@ -337,13 +340,12 @@ void IRVideoAnnotaterWorkspace::loadAndApplyIRSRT(t_json data)
     {
         for (auto it = objectArray[i].object_items().cbegin(); it != objectArray[i].object_items().cend(); ++it)
         {
-            
+            /*
             std::cout << " ===== " << it->first << " ===== " << std::endl;
             std::cout << "object type= " << it->second["objectType"].string_value() << std::endl;
             std::cout << "object uniqueID= " << it->second["objectUniqueID"].string_value() << std::endl;
             std::cout << "object status= " << it->second["status"].string_value() << std::endl;
-            
-            
+            */
             // ===== create object =====
             std::string objectTypeId = it->second["objectType"].string_value();
             //auto* obj = factory.createObject(objectTypeId, this, getStr());
@@ -353,17 +355,11 @@ void IRVideoAnnotaterWorkspace::loadAndApplyIRSRT(t_json data)
             //On the other hand, when it is not nullptr means, this NodeObject is on the VideoAnnotator Controller or on any corresponding environment.
             if(getStr()->parentStr == nullptr)
             {
-                //KLib().showErrorMessage("Error : loadAndApplyIRSRT : parentStr nullptr\n");
-                //return;
-                
                 obj = static_cast<IRNodeObject*>(getStr()->createNewObject(objectTypeId, this, getStr()));
-
             }else{
                 obj = static_cast<IRNodeObject*>(getStr()->parentStr->createNewObject(objectTypeId, this, getStr()));
-
             }
             
-
             json11::Json arrangeCtl = it->second["ArrangeController"];
             
             obj->loadArrangeControllerSaveData(arrangeCtl, IRNodeComponentBoundsType::RELATIVE);
@@ -375,7 +371,6 @@ void IRVideoAnnotaterWorkspace::loadAndApplyIRSRT(t_json data)
             
             // reset boundType so that it accepts mouse drag event
             obj->setBoundType(IRNodeComponentBoundsType::ORDINARY);
-            
             
             // ===== END =====
         }

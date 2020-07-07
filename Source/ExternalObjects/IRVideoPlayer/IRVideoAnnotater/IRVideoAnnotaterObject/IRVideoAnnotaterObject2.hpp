@@ -66,6 +66,7 @@ public:
     // --------------------------------------------------
     void enableController(bool flag);
 
+    bool enableControllerFlag = true;
     
     // --------------------------------------------------
     // Object
@@ -92,6 +93,7 @@ private:
     std::shared_ptr<IRVideoAnnotaterWorkspace> workspace;
     
     void videoLoadCompletedAction();
+public:
     void videoPlayingUpdateAction(double pos);
     
 };

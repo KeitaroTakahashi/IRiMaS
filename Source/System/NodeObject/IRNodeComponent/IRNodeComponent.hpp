@@ -140,6 +140,9 @@ public:
 private:
     void resized() override;
     void moved() override;
+    
+protected:
+    virtual void resizedOrMoved() {};
 public:
     virtual void onResized() {};
 public:

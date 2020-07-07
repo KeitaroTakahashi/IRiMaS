@@ -21,10 +21,13 @@ IRNodeObject(parent, "IRVideoPlayer", str, NodeObjectType(ordinaryIRComponent))
     addAndMakeVisible(this->workspace.get());
 
     this->playerController.reset(new IROnVideoPlayerController(str));
-    this->playerController->addMouseListener(this, false);
-    addAndMakeVisible(this->playerController.get());
-    
     this->workspace->getVideoPlayerObject()->setVideoPlayerController(this->playerController.get());
+
+    this->playerController->addMouseListener(this, false);
+
+    this->playerController->addChangeListener(this);
+    this->parent->addAndMakeVisible(this->playerController.get());
+    this->playerController->setVisible(false);
     
     setObjectSize(400, 300);
     
@@ -51,7 +54,24 @@ void IRVideoAnnotaterObject2::onResized()
     this->workspace->setBounds(getLocalBounds());
     
     int ctlH = 100;
-    this->playerController->setBounds(2, getHeight() - ctlH, getWidth()-4, ctlH);
+    
+    auto b = getBounds();
+    if(this->playerController.get() != nullptr)
+    {
+        if(b.getY() > getHeight() / 2)
+        {
+            this->playerController->setBounds(b.getX(),
+                                              b.getY() - ctlH,
+                                              b.getWidth(),
+                                              ctlH);
+        }else{
+            this->playerController->setBounds(b.getX(),
+                                              b.getY() + b.getHeight(),
+                                              b.getWidth(),
+                                              ctlH);
+        }
+
+    }
 
 }
 
@@ -323,6 +343,7 @@ void IRVideoAnnotaterObject2::enableController(bool flag)
 {
     this->workspace->getVideoPlayerObject()->enableController(flag);
 
+    this->enableControllerFlag = flag;
 }
 // --------------------------------------------------
 IRVideoPlayerObject2* IRVideoAnnotaterObject2::getVideoPlayerObject()
@@ -357,7 +378,8 @@ void IRVideoAnnotaterObject2::videoPlayingUpdateAction(double pos)
 {
     //std::cout << "IRVideoAnnotaterObject2::videoPlayingUpdateAction : " << pos << std::endl;
     
-    this->playerController->setSliderValue(pos, false);
+    if(this->playerController.get() != nullptr)
+        this->playerController->setSliderValue(pos, false);
     
     if(this->videoPlayingUpdateCallbackFunc != nullptr)
         this->videoPlayingUpdateCallbackFunc(pos);
@@ -437,22 +459,45 @@ bool IRVideoAnnotaterObject2::hasVideo() const
 void IRVideoAnnotaterObject2::mouseEnterEvent(const MouseEvent& e)
 {
     auto pos = e.getEventRelativeTo(this->parent).getPosition();
+    
+  
+    auto ctlBounds = this->playerController->getBounds();
 
     if(pos.getX() >= getX() && pos.getX() < getX() + getWidth() &&
        pos.getY() >= getY() && pos.getY() < getY() + getHeight())
     {
         showPlayerController(true);
-    }else showPlayerController(false);
+    }else{
+        
+        if(pos.getX() >= ctlBounds.getX() && pos.getX() < ctlBounds.getX() + ctlBounds.getWidth() &&
+           pos.getY() >= ctlBounds.getY() && pos.getY() < ctlBounds.getY() + ctlBounds.getHeight())
+        {
+            showPlayerController(true);
+        }else{
+            showPlayerController(false);
+        }
+    }
 }
 void IRVideoAnnotaterObject2::mouseExitEvent(const MouseEvent& e)
 {
     auto pos = e.getEventRelativeTo(this->parent).getPosition();
+    
+    auto ctlBounds = this->playerController->getBounds();
 
     if(pos.getX() >= getX() && pos.getX() < getX() + getWidth() &&
        pos.getY() >= getY() && pos.getY() < getY() + getHeight())
     {
         showPlayerController(true);
-    }else showPlayerController(false);
+    }else{
+        
+        if(pos.getX() >= ctlBounds.getX() && pos.getX() < ctlBounds.getX() + ctlBounds.getWidth() &&
+           pos.getY() >= ctlBounds.getY() && pos.getY() < ctlBounds.getY() + ctlBounds.getHeight())
+        {
+            showPlayerController(true);
+        }else{
+            showPlayerController(false);
+        }
+    }
 }
 
 void IRVideoAnnotaterObject2::mouseMove(const MouseEvent& e)
@@ -465,7 +510,42 @@ void IRVideoAnnotaterObject2::mouseMove(const MouseEvent& e)
 
 void IRVideoAnnotaterObject2::showPlayerController(bool flag)
 {
-    this->playerController->setVisible(flag);
+    
+    if(!this->enableControllerFlag) return;
+    
+    std::cout << "showPlayerController " << flag << std::endl;
+    if(flag)
+    {
+       
+        this->playerController->setVisible(true);
+        this->playerController->toFront(true);
+        
+        
+        auto b = getBounds();
+        int ctlH = 100;
+        Rectangle<int> playerBounds;
+
+        if(b.getY() > getHeight() / 2)
+        {
+            playerBounds = Rectangle<int>(b.getX(),
+                                              b.getY() - ctlH,
+                                              b.getWidth(),
+                                              ctlH);
+        }else{
+            playerBounds = Rectangle<int>(b.getX(),
+                                              b.getY() + b.getHeight(),
+                                              b.getWidth(),
+                                              ctlH);
+        }
+
+        
+        
+
+    }else{
+        this->playerController->setVisible(false);
+    }
+    
+    //this->playerController->setVisible(flag);
 }
 
 

@@ -12,7 +12,8 @@
 #include "IRVideoPlayer.h"
 #include "IRNodeObjectWorkspace.hpp"
 #include "IRTextEditorObject.hpp"
-#include "IROnVideoPlayerController.hpp"
+//#include "IROnVideoPlayerController.hpp"
+#include "IROnVideoPlayerControllerWindow.h"
 
 class IRVideoPlayerObject2 : public IRNodeObject
 
@@ -98,6 +99,8 @@ public:
     void playAction();
     void pauseAction();
     void playPositionChangedAction();
+    
+    void changePlayPosition(float pos);
     
     void resizeThisComponentEvent(const MouseEvent& e) override;
     void resizeThisComponent(Rectangle<int> rect);

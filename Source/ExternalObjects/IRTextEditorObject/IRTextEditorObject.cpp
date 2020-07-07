@@ -134,18 +134,20 @@ void IRTextEditorObject::loadThisFromSaveData(t_json data)
                                (uint8)colour[1].int_value(),
                                (uint8)colour[2].int_value(),
                                (uint8)colour[3].int_value());
+    
     t_json::array colour2 = data["backgroundColour"].array_items();
     Colour backgroundColour = Colour((uint8)colour2[0].int_value(),
                                      (uint8)colour2[1].int_value(),
                                      (uint8)colour2[2].int_value(),
                                      (uint8)colour2[3].int_value());
-    
-    this->textEditor.setColour(TextEditor::textColourId, textColour);
-    this->textEditor.setColour(TextEditor::outlineColourId, Colours::transparentWhite);
-    this->textEditor.setColour(TextEditor::backgroundColourId , backgroundColour);
 
     // set text contents
     this->textEditor.setText(String(data["textContents"].string_value()), dontSendNotification);
+    
+    this->textColour = textColour;
+    this->textEditor.applyColourToAllText(this->textColour, true);
+    this->textEditor.setColour(TextEditor::outlineColourId, Colours::transparentWhite);
+    this->textEditor.setColour(TextEditor::backgroundColourId , backgroundColour);
     
     // gui
     FontController* gui = this->controller->getFontController();
@@ -155,6 +157,8 @@ void IRTextEditorObject::loadThisFromSaveData(t_json data)
     gui->setAlign(data["textAlign"].int_value());
     gui->setTextColour(textColour);
     gui->setBackgroundColour(backgroundColour);
+    
+
     
 }
 

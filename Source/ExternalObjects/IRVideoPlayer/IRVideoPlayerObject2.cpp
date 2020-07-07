@@ -264,6 +264,8 @@ void IRVideoPlayerObject2::videoLoadCompletedAction()
 
 void IRVideoPlayerObject2::videoPlayingUpdateAction(double pos)
 {
+    
+    std::cout << "IRVideoPlayerObject2::videoPlayingUpdateAction : " << pos << std::endl;
     videoPlayingUpdateVirtualFunc(pos);
     
     if(this->videoPlayingUpdateCallbackFunc != nullptr)
@@ -274,12 +276,8 @@ void IRVideoPlayerObject2::videoPlayingUpdateAction(double pos)
 
 void IRVideoPlayerObject2::moveToFrontAction()
 {
-    
     std::cout << "IRVideoPlayerObject2::moveToFrontAction\n";
     this->videoPlayer->bringViewToFront();
-    
-    if(hasVideoPlayerController())
-        this->playerController->bringThisToFront();
 
 }
 
@@ -438,6 +436,15 @@ void IRVideoPlayerObject2::pauseAction()
 void IRVideoPlayerObject2::playPositionChangedAction()
 {
     auto pos = this->playerController->getCurrentPlayPosition();
+    std::cout << "playPositionChangedAction " << pos << std::endl;
     this->videoPlayer->setPlayPosition(pos);
+    videoPlayingUpdateAction(pos);
+    
 }
+
+void IRVideoPlayerObject2::changePlayPosition(float pos)
+{
+    this->playerController->setCurrentPlayPosition(pos);
+}
+
 // ---------------------------------------------------

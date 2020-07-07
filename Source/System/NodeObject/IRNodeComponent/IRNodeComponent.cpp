@@ -76,6 +76,7 @@ void IRNodeComponent::initOpenGLContext()
 // basics
 void IRNodeComponent::resized()
 {
+    resizedOrMoved();
     
     onResized();
     //this->constrainer.setMinimumOnscreenAmounts(getHeight(), getWidth(),
@@ -84,6 +85,8 @@ void IRNodeComponent::resized()
 
 void IRNodeComponent::moved()
 {
+    resizedOrMoved();
+    
     onResized();
 }
 

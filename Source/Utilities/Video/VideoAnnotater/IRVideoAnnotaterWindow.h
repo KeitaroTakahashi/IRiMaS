@@ -81,7 +81,7 @@ public:
     
     void updateAnnotationOfWorkspace()
     {
-        this->videoAnnotater.updateAnnotationWorkspace();
+        //this->videoAnnotater.updateAnnotationWorkspace();
     }
     
     void updateParentVideoPlayerObject()

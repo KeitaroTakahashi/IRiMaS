@@ -16,10 +16,19 @@ IRNodeComponent(parent, name, str, objectType)
 
 IRNodeObject::~IRNodeObject()
 {
+    
     //this->enclosedObject.reset();
     //notify any modification
     notifyNodeObjectModification();
 }
+// ==================================================
+
+
+void IRNodeObject::resizedOrMoved()
+{
+    setBoundsGoBackToEncloseButton();
+}
+
 // ==================================================
 
 //copy constructor
@@ -817,12 +826,12 @@ void IRNodeObject::adjustEncloseBoundsToRelative()
                                           floor(h * this->encloseBoundsRelative.getHeight())
                                           );
     
-    
+    /*
     std::cout << "this->encloseBoundsRelative.getY() = " << this->encloseBoundsRelative.getY() << std::endl;
     std::cout << "adjustEncloseBoundsToRelative : " << this->encloseBounds.getX() << ", " << this->encloseBounds.getY() << " : "<<this->encloseBounds.getWidth() << ", " << this->encloseBounds.getHeight() << std::endl;
     
     std::cout << "encloseObject : " << this->enclosedObject.getBounds().getX() << ", " << this->enclosedObject.getBounds().getY() << " : "<<this->enclosedObject.getBounds().getWidth() << ", " << this->enclosedObject.getBounds().getHeight() << std::endl;
-    //setObjectBounds(this->encloseBounds);
+     */
 }
 
 void IRNodeObject::setStatus(IRNodeObjectStatus newStatus)
@@ -845,7 +854,6 @@ void IRNodeObject::setStatus(IRNodeObjectStatus newStatus)
 void IRNodeObject::transformStatusToOrdinary()
 {
 
-    std::cout << "transformStatusToOrdinary\n";
     this->resizingSquare.applyMouseListenerToIRNodeObject();
     this->resizingSquare.removeMouseListener(&this->enclosedObject);
     
@@ -900,6 +908,14 @@ void IRNodeObject::createEnclosedObject()
     this->enclosedObject.onClick = [this]{ enclosedObjectClickedAction(); };
     addAndMakeVisible(this->enclosedObject);
     this->enclosedObject.addMouseListener(this, true);
+    
+    this->goBackToEncloseButton.reset( new EncloseButton(getStr()) );
+    this->goBackToEncloseButton->setButtonText("close");
+    this->goBackToEncloseButton->setColour(TextButton::ColourIds::buttonColourId, getStr()->SYSTEMCOLOUR.fundamental);
+    this->goBackToEncloseButton->onClick = [this] { goBackToEncloseButtonClicked(); };
+    this->parent->addAndMakeVisible(this->goBackToEncloseButton.get());
+    this->goBackToEncloseButton->setVisible(false);
+    
 }
 
 void IRNodeObject::showEncloseObject(bool flag)
@@ -982,7 +998,78 @@ void IRNodeObject::setEncloseColour(Colour colour)
 void IRNodeObject::enclosedObjectClickedAction()
 {
     std::cout << "enclosedObject clicked\n";
+    if(isEditMode())
+    {
+        
+    }else{
+        enclosedObjectClickedInControlMode();
+    }
 }
+
+void IRNodeObject::enclosedObjectClickedInControlMode()
+{
+    if(getStatus() == IRNodeObjectStatus::ENCLOSE)
+    {
+        createGoBackToEncloseButton(true);
+        setEncloseMode(false);
+        getArrangeController()->setEncloseToggle(false, dontSendNotification);
+        
+    }else if(getStatus() == IRNodeObjectStatus::ORDINARY)
+    {
+        createGoBackToEncloseButton(false);
+
+        setEncloseMode(true);
+        getArrangeController()->setEncloseToggle(true, dontSendNotification);
+    }
+}
+
+void IRNodeObject::goBackToEncloseButtonClicked()
+{
+    enclosedObjectClickedInControlMode();
+}
+
+void IRNodeObject::createGoBackToEncloseButton(bool createOrDelete)
+{
+    
+    std::cout <<"createGoBackToEncloseButton : " << createOrDelete << std::endl;
+    if(createOrDelete)
+    {
+        std::cout <<"createGoBackToEncloseButton visible \n";
+        this->goBackToEncloseButton->setVisible(true);
+        this->goBackToEncloseButton->bringThisToFront();
+        setBoundsGoBackToEncloseButton();
+    }else{
+        this->goBackToEncloseButton->setVisible(false);
+    }
+    
+}
+
+void IRNodeObject::setBoundsGoBackToEncloseButton()
+{
+    
+    if(!this->goBackToEncloseButton->isVisible()) return;
+    
+    std::cout << "setBoundsGoBackToEncloseButton\n";
+    auto b = getBounds();
+    auto p = this->parent->getBounds();
+    int w = 50;
+    int h = 20;
+    if(b.getX() < p.getWidth()/2)
+    {
+        this->goBackToEncloseButton->setBounds(b.getX() + b.getWidth(),
+                                               b.getY(),
+                                               w, h);
+    }else{
+        this->goBackToEncloseButton->setBounds(b.getX() - w,
+                                               b.getY(),
+                                               w, h);
+    }
+    
+    
+  
+}
+
+
 
 void IRNodeObject::setEncloseMode(bool flag)
 {

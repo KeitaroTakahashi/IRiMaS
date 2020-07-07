@@ -23,7 +23,7 @@ void IRVideoAnnotater::duplicateNodeObject(IRNodeObject* obj, bool addEventList)
     }
 }
 
-void IRVideoAnnotater::setupEventComponent(IRNodeObject* obj, VideoAnnotationEventComponent* event)
+void IRVideoAnnotater::setupEventComponent(IRNodeObject* obj, VideoAnnotationEventComponent* event, bool addEventList)
 {
     // close menu
 
@@ -31,8 +31,11 @@ void IRVideoAnnotater::setupEventComponent(IRNodeObject* obj, VideoAnnotationEve
         this->annotationMenu->closeAction();
     event->setNodeObject(obj);
 
-    // add event to eventList
-    this->eventListComponent->addEventComponent(event);
+    if(addEventList)
+    {
+        // add event to eventList
+        this->eventListComponent->addEventComponent(event);
+    }
     
 }
 
@@ -121,7 +124,7 @@ void IRVideoAnnotater::createTextEventComponentFromIRNodeObject(IRNodeObject* ob
                                                   beginTimeInSec,
                                                   endTimeInSec);
    
-    setupEventComponent(obj, event);
+    setupEventComponent(obj, event, addEventList);
     
     obj->setEventComponent(event);
 
@@ -162,7 +165,7 @@ void IRVideoAnnotater::createShapeEventComponentFromNodeObject(IRNodeObject* obj
                                                    beginTimeInSec,
                                                    endTimeInSec);
     
-    setupEventComponent(obj, event);
+    setupEventComponent(obj, event, addEventList);
     
     obj->setEventComponent(event);
 
@@ -202,7 +205,7 @@ void IRVideoAnnotater::createImageEventComponentFromNodeObject(IRNodeObject* obj
                                                    beginTimeInSec,
                                                    endTimeInSec);
    
-    setupEventComponent(obj, event);
+    setupEventComponent(obj, event, addEventList);
     
     obj->setEventComponent(event);
 
