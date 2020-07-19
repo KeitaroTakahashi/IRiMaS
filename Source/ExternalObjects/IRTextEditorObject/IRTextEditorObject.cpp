@@ -1,13 +1,9 @@
 
 #include "IRTextEditorObject.hpp"
 
-
-
-
 IRTextEditorObject::IRTextEditorObject(Component* parent, IRStr* str) :
 IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(ordinaryIRComponent))
 {
-    
     this->textColour = Colours::black;
     this->backgroundColour = getStr()->SYSTEMCOLOUR.background.withAlpha(0.0f);
     this->controller.reset(new IRTextEditorController(str));
@@ -16,22 +12,12 @@ IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(ordinaryIRComponent))
     this->controller->getArrangeController()->addChangeListener(this);
     setObjController(this->controller.get());
     
-    this->font.setTypefaceName("Arial");
-    this->font.setTypefaceStyle("Regular");
-    this->font.setHeight(16.0);
+    //this->font.setTypefaceName("Arial");
+    //this->font.setTypefaceStyle("Regular");
+    //this->font.setHeight(16.0);
     
     addAndMakeVisible(&this->textEditor);
     this->textEditor.setFont(this->font);
-    
-
-    this->textEditor.setText("text...", dontSendNotification);
-    this->textEditor.setColour(TextEditor::backgroundColourId, this->backgroundColour);
-    this->textEditor.setColour(TextEditor::outlineColourId,
-                               Colours::transparentBlack);
-    this->textEditor.setColour(TextEditor::focusedOutlineColourId,
-                               Colours::transparentBlack);
-
-    this->textEditor.applyColourToAllText(Colours::black, true);
     
     this->textEditor.onReturnKey = [this] { onReturnKeyAction(); };
     this->textEditor.onTextChange = [this] { onTextChangeAction(); };
@@ -41,12 +27,13 @@ IRNodeObject(parent, "IRTextEditor", str, NodeObjectType(ordinaryIRComponent))
     this->textEditor.setMultiLine(true);
     this->textEditor.setReturnKeyStartsNewLine(true);
     
-    this->textEditor.setJustification(Justification::left);
-    
     childComponentManager(&this->textEditor);
     
     // default size
     setObjectBounds(0, 0, 150, 150);
+    
+    applyFontFromController();
+
     
 }
 
@@ -72,7 +59,7 @@ IRNodeObject* IRTextEditorObject::copyThisObject()
     newObj->textEditor.setText(this->textEditor.getText() ,dontSendNotification);
      */
     
-    applyFontFromController();
+    newObj->applyFontFromController();
     
     return newObj;
 }
@@ -517,6 +504,20 @@ void IRTextEditorObject::applyFontFromController()
     this->textColour = c->getTextColour();
     this->backgroundColour = c->getBackgroundColour();
     setBackgroundColour(this->backgroundColour);
+    
+    
+    this->textEditor.setColour(TextEditor::backgroundColourId, this->backgroundColour);
+    this->textEditor.setColour(TextEditor::outlineColourId,
+                               Colours::transparentBlack);
+    this->textEditor.setColour(TextEditor::focusedOutlineColourId,
+                               Colours::transparentBlack);
+    
+
+    
+    this->textEditor.setText("text...", dontSendNotification);
+
+
+    this->textEditor.applyColourToAllText(this->textColour, true);
     
     this->textEditor.applyFontToAllText(this->font);
     repaint();

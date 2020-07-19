@@ -184,7 +184,7 @@ void IRWorkspaceComponent::resized()
     
     if(this->cover.get() != nullptr)
     {
-        std::cout << "cover resized : " << getLocalBounds().getWidth() << std::endl;
+        //std::cout << "cover resized : " << getLocalBounds().getWidth() << std::endl;
         this->cover->setBounds(getLocalBounds());
         
     }

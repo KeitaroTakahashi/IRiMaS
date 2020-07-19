@@ -45,34 +45,29 @@ public:
 
         addAndMakeVisible(this->labelStyle);
         this->labelStyle.setText("Style : ", dontSendNotification);
-        //this->labelStyle.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelStyle.setJustificationType(Justification::left);
         
         
         addAndMakeVisible(this->labelFontSize);
         this->labelFontSize.setText("Font size : ", dontSendNotification);
-        //this->labelFontSize.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelFontSize.setJustificationType(Justification::left);
         
         addAndMakeVisible(this->fontSizeInput);
         this->fontSizeInput.setEditable(true);
         this->fontSizeInput.setText("16", dontSendNotification);
-        //this->fontSizeInput.setColour(Label::textColourId, Colours::black);
-        //this->fontSizeInput.setColour(Label::textWhenEditingColourId, Colours::black);
-        
+        this->fontSize = 16;
+                
         this->fontSizeInput.setJustificationType(Justification::left);
         this->fontSizeInput.onTextChange = [this] { fontSizeInputChanged(); };
         
         addAndMakeVisible(this->labelAlign);
         this->labelAlign.setText("Align : ", dontSendNotification);
-        //this->labelAlign.setColour(Label::textColourId, Colours::black);
         this->labelAlign.setJustificationType(Justification::left);
         
         makeAlignMenu();
         
         addAndMakeVisible(this->labelTextColour);
         this->labelTextColour.setText("Text Colour : ", dontSendNotification);
-        //this->labelTextColour.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelTextColour.setJustificationType(Justification::left);
         
 
@@ -85,7 +80,6 @@ public:
 
         addAndMakeVisible(this->labelBackgroundColour);
         this->labelBackgroundColour.setText("BackGround Colour : ", dontSendNotification);
-        //this->labelBackgroundColour.setColour(Label::textColourId, getStr()->SYSTEMCOLOUR.text);
         this->labelBackgroundColour.setJustificationType(Justification::left);
         
        
@@ -163,14 +157,22 @@ public:
         this->fontMenu.setColour(ComboBox::outlineColourId, getStr()->SYSTEMCOLOUR.contents);
         this->fontMenu.setColour(ComboBox::focusedOutlineColourId, getStr()->SYSTEMCOLOUR.contents);
         int index = 1;
+        int defaultFontIndex = -1;
+
         for (auto family : this->fontFamilyList)
         {
             this->fontMenu.addItem(family, index);
+            
+            if(family == "Arial")
+            {
+                defaultFontIndex = index;
+            }
             index++;
         }
         this->fontMenu.onChange = [this] { fontMenuChanged(); };
         this->fontMenu.addListener(this);
-        int defaultFontIndex = 1;
+        
+        
         this->fontMenu.setSelectedId(defaultFontIndex);
         
         getSelectedFontStyles(this->fontFamilyList[defaultFontIndex-1]);
@@ -273,6 +275,7 @@ public:
     void setHeight(float newHeight)
     {
         this->fontSizeInput.setText(String(newHeight), dontSendNotification);
+        this->fontSize = newHeight;
         // call this manually here! setText onTextChanged not called by above method
         fontSizeInputChanged();
     }

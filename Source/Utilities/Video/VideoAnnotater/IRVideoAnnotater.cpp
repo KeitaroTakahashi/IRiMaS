@@ -92,7 +92,7 @@ void IRVideoAnnotater::videoResized()
     if(this->myVideoPlayerObject.get() != nullptr)
     {
         
-        std::cout << "IRVideoAnnotater::videoResized\n";
+        //std::cout << "IRVideoAnnotater::videoResized\n";
         this->myVideoPlayerObject->resizeAndCentredThisComponent(this->videoArea);
         
        
@@ -292,10 +292,7 @@ void IRVideoAnnotater::openFile(File file)
 
 void IRVideoAnnotater::openSRTs()
 {
-    //if(this->eventListComponent.get() != nullptr)
-       // this->eventListComponent->openAnnotationFile();
-    
-  
+
     FileChooser chooser("Select a SRT file to load...",
                         {},
                         "*.srt", "*.srts");
@@ -309,21 +306,16 @@ void IRVideoAnnotater::openSRTs()
         loadAndApplySRTs();
         
     }
-    
-    //this->srtFileLoader.openFile();
-    //loadAndApplySRTs(this->srtFileLoader.getSrtData());
+ 
 }
 
 void IRVideoAnnotater::openSRTs(File file)
 {
-    //if(this->eventListComponent.get() != nullptr)
-    //    this->eventListComponent->openAnnotationFile(file);
-    //else std::cout << "error eventListComponent null\n";
-    
-    //this->SrtPath = file.getFullPathName();
-    //loadAndApplySRTs(this->SrtPath);
-    //this->srtFileLoader.openFile(file.getFullPathName());
-    //loadAndApplySRTs(this->srtFileLoader.getSrtData());
+    if(!file.exists())
+    {
+        KLib().showErrorMessage("Error : IRVideoAnnotator openSRTs() : Could not find " + file.getFullPathName() + " : file not exists!");
+        return;
+    }
     this->jsonManager.readSaveData(file.getFullPathName().toStdString());
 
     loadAndApplySRTs();
@@ -800,6 +792,10 @@ void IRVideoAnnotater::updateVideoPlayerOfWorkspace()
         }
 
         space->setEditMode(false);
+        
+        updateAnnotationData();
+        
+        this->videoPlayerObject->getPlayerController()->setAnnotationData(this->annotationData);
     }
 }
 
@@ -851,7 +847,7 @@ void IRVideoAnnotater::deleteEventOnTheLoadedVideo()
 
 void IRVideoAnnotater::updateEventsOnTheLoadedVideo()
 {
-    updateAnnotationData();
+
 }
 
 void IRVideoAnnotater::updateAnnotationData()
@@ -864,8 +860,8 @@ void IRVideoAnnotater::updateAnnotationData()
         float endTime = e->getEndTimeCode();
         
         this->annotationData.push_back(AnnotationChart::annotationData(beginTime, endTime));
-        
     }
+    
 }
 
 // ==================================================

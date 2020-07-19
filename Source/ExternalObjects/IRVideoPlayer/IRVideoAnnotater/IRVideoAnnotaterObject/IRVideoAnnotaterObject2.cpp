@@ -50,10 +50,10 @@ IRVideoAnnotaterObject2::~IRVideoAnnotaterObject2()
 void IRVideoAnnotaterObject2::onResized()
 {
     
-    std::cout << "IRVideoAnnotaterObject2::resized\n";
+    //std::cout << "IRVideoAnnotaterObject2::resized\n";
     this->workspace->setBounds(getLocalBounds());
     
-    int ctlH = 100;
+    int ctlH = 80;
     
     auto b = getBounds();
     if(this->playerController.get() != nullptr)
@@ -80,7 +80,7 @@ void IRVideoAnnotaterObject2::resizeThisComponentEvent(const MouseEvent& e)
 {
     // turn off controller otherwise mouse event will be stolen by the controller,
     // and resize event can not be acomplished properly.
-    std::cout << "resizeThisComponentEvent\n";
+    //std::cout << "resizeThisComponentEvent\n";
     auto videoPlayer = this->workspace->getVideoPlayerObject()->getVideoPlayer();
     
     double ratio = videoPlayer->getAspectRatio();
@@ -113,7 +113,7 @@ void IRVideoAnnotaterObject2::resizeAndCentredThisComponent(Rectangle<int> rect)
 {
     double ratio = this->workspace->getVideoPlayerObject()->getVideoPlayer()->getAspectRatio();
     
-    std::cout << "IRVideoPlayerObject2 resizeAndCentredThisComponent : ratio = " << ratio << std::endl;
+    //std::cout << "IRVideoPlayerObject2 resizeAndCentredThisComponent : ratio = " << ratio << std::endl;
 
     if(ratio >= 0)
     {
@@ -125,7 +125,7 @@ void IRVideoAnnotaterObject2::resizeAndCentredThisComponent(Rectangle<int> rect)
         float ratio_w = curr_w / new_w;
         float ratio_h = curr_h / new_h;
         
-        std::cout << "ratio_w = " << ratio_w << " : ratio_h = " << ratio_h << std::endl;
+        //std::cout << "ratio_w = " << ratio_w << " : ratio_h = " << ratio_h << std::endl;
         
         float fixed_h = new_w / ratio;
         float fixed_w = new_h * ratio;
@@ -142,19 +142,16 @@ void IRVideoAnnotaterObject2::resizeAndCentredThisComponent(Rectangle<int> rect)
         // if w is larger, then follow w
         if(ratio_w >= ratio_h)
         {
-            std::cout << "1\n";            //float fixed_h = new_w / ratio;
             float y = (rect.getHeight() - fixed_h) / 2.0;
             setObjectBounds(rect.getX(), rect.getY() + y, new_w, fixed_h);
 
         }else{
-            std::cout << "2\n";
             //float fixed_w = new_h * ratio;
             float x = (rect.getWidth() - fixed_w) / 2.0;
             setObjectBounds(rect.getX() + x, rect.getY(), fixed_w, new_h);
         }
         
     }else{
-        std::cout << "3\n";
         setObjectBounds(rect);
     }
     
@@ -165,7 +162,7 @@ void IRVideoAnnotaterObject2::resizeThisComponent(Rectangle<int> rect)
 {
     double ratio = this->workspace->getVideoPlayerObject()->getVideoPlayer()->getAspectRatio();
     
-    std::cout << "IRVideoPlayerObject2 resizeThisComponent : ratio = " << ratio << std::endl;
+    //std::cout << "IRVideoPlayerObject2 resizeThisComponent : ratio = " << ratio << std::endl;
 
     if(ratio >= 0 && ratio != 1.0)
     {
@@ -177,7 +174,7 @@ void IRVideoAnnotaterObject2::resizeThisComponent(Rectangle<int> rect)
         float ratio_w = curr_w / new_w;
         float ratio_h = curr_h / new_h;
         
-        std::cout << "ratio_w = " << ratio_w << " : ratio_h = " << ratio_h << std::endl;
+        //std::cout << "ratio_w = " << ratio_w << " : ratio_h = " << ratio_h << std::endl;
         
         float fixed_h = new_w / ratio;
         float fixed_w = new_h * ratio;
@@ -196,7 +193,6 @@ void IRVideoAnnotaterObject2::resizeThisComponent(Rectangle<int> rect)
         // if w is larger, then follow w
         if(ratio_w >= ratio_h)
         {
-            std::cout << "resizeThisComponent ok\n";
             //float fixed_h = new_w / ratio;
            // float y = (rect.getHeight() - fixed_h) / 2.0;
             setObjectBounds(rect.getX(), rect.getY(), new_w, fixed_h);
@@ -219,7 +215,6 @@ void IRVideoAnnotaterObject2::resizeThisComponent(Rectangle<int> rect)
 
     }
     
-    std::cout << "IRVideoPlayerObject2 resizeThisComponent : END" << std::endl;
    // resized();
 }
 
@@ -510,10 +505,12 @@ void IRVideoAnnotaterObject2::mouseMove(const MouseEvent& e)
 
 void IRVideoAnnotaterObject2::showPlayerController(bool flag)
 {
-    
     if(!this->enableControllerFlag) return;
     
     std::cout << "showPlayerController " << flag << std::endl;
+    
+    if(isEditMode()) return;
+    
     if(flag)
     {
        

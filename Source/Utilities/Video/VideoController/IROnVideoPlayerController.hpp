@@ -62,6 +62,13 @@ public:
     // ==================================================
     
     void addMouseListenerToChildren(MouseListener* l);
+    
+    // ==================================================
+    // Annotation Chart
+    void setAnnotationData(std::vector<AnnotationChart::annotationData> data);
+    
+    // ==================================================
+
 
 private:
     // ==================================================
@@ -77,6 +84,7 @@ private:
     void playPauseButtonClickedAction();
     
     AnnotationChart chart;
+    void createChart();
     
     Slider timeCodeSlider;
     void createTimeCodeSlider();

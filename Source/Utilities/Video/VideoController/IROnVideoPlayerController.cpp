@@ -18,6 +18,7 @@ timeCode(str, 0)
     this->playPauseButton.onClick = [this]{ playPauseButtonClickedAction(); };
     
     createTimeCodeSlider();
+    createChart();
 }
 
 IROnVideoPlayerController::~IROnVideoPlayerController()
@@ -33,22 +34,25 @@ void IROnVideoPlayerController::resized()
     int yIncrement = 30;
     
     
-    int playCtlY = getHeight() - 40;
+    
+    int playCtlY = getHeight() - 50;
     
     this->playPauseButton.setBounds(x, y, 30, 30);
     this->playPauseButton.setCentrePosition(x + this->playPauseButton.getWidth()/2,
                                             playCtlY);
     
     
-    int marginX = x + this->playPauseButton.getWidth() + 10;
-    int hh = getHeight() / 2;
-    this->timeCodeSlider.setBounds(marginX,
-                                   y,
-                                   getWidth() - marginX, 30);
-    this->timeCodeSlider.setCentrePosition((getWidth() + marginX/2)/2, playCtlY);
+    int marginX = x + 35;
+    
+    //chart
+    this->chart.setBounds(marginX + 2, 10, getWidth() - marginX - 14, 30);
+    
+    this->timeCodeSlider.setBounds(marginX - 5,
+                                   37,
+                                   getWidth() - marginX, 20);
     
     this->timeCode.setBounds(0, 0, 110, 30);
-    this->timeCode.setCentrePosition(getWidth()/2, getHeight() - 25);
+    this->timeCode.setCentrePosition(getWidth()/2, getHeight() - 23);
     
     y += yIncrement;
     
@@ -142,6 +146,11 @@ void IROnVideoPlayerController::createTimeCodeSlider()
     
 }
 
+void IROnVideoPlayerController::createChart()
+{
+    addAndMakeVisible(&this->chart);
+}
+
 void IROnVideoPlayerController::sliderValueChanged (Slider *slider)
 {
     std::cout << "sliderValueChanged\n";
@@ -177,3 +186,19 @@ void IROnVideoPlayerController::addMouseListenerToChildren(MouseListener* l)
     this->timeCode.addMouseListener(l, true);
     this->playPauseButton.addMouseListener(l, true);
 }
+// ==================================================
+
+
+void IROnVideoPlayerController::setAnnotationData(std::vector<AnnotationChart::annotationData> data)
+{
+    
+    this->chart.init();
+    this->chart.setVideoLength(videoLengthInSec);
+    
+    for(auto d : data)
+    {
+        this->chart.addEvent(d.beginTime, d.endTime);
+    }
+    this->chart.reCalc();
+}
+// ==================================================

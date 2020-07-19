@@ -79,22 +79,21 @@ t_json IRVideoAnnotaterInterfaceObject::saveThisToSaveData()
 {
     using t = VideoAnnotationEventComponent::VideoAnnotationType;
     
-    /*
+   
     IRVideoAnnotater* videoAnnotator = this->controller->getVideoAnnotaterComponent();
     
     std::string srtFilePath = videoAnnotator->getSRTFilePath();
     
-    std::cout << "videoFilePath = " << this->videoPlayer->getPath() << std::endl;
+    auto videoFilePath = this->getVideoPlayerObject()->getVideoPlayer()->getPath();
+    
+    std::cout << "videoFilePath = " << videoFilePath << std::endl;
     std::cout << "srtFilePath = " << srtFilePath << std::endl;
     
     t_json saveData = t_json::object({
-        {"filePath", this->videoPlayer->getPath()},
-        {"srtPath",  srtFilePath}
+        {"filePath", videoFilePath },
+        {"srtPath",  srtFilePath }
     });
-    */
-    t_json saveData = t_json::object({
-        });
-
+   
     t_json save = t_json::object({
         {"videoPlayer", saveData}
     });
@@ -105,9 +104,9 @@ t_json IRVideoAnnotaterInterfaceObject::saveThisToSaveData()
 void IRVideoAnnotaterInterfaceObject::loadThisFromSaveData(t_json data)
 {
     t_json w = data["videoPlayer"];
-    /*
+  
     File file(w["filePath"].string_value());
-    this->videoPlayer->openFile(file);
+    this->getVideoPlayerObject()->getVideoPlayer()->openFile(file);
     std::string srtPath = w["srtPath"].string_value();
     if(srtPath.size() > 0)
     {
@@ -115,7 +114,7 @@ void IRVideoAnnotaterInterfaceObject::loadThisFromSaveData(t_json data)
         videoAnnotator->openSRTs(File(srtPath));
     
         std::cout << "srtPath = " << srtPath << std::endl;
-    }*/
+    }
 }
 // --------------------------------------------------
 

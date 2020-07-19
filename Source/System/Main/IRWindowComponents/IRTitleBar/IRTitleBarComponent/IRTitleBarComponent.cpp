@@ -191,9 +191,6 @@ void IRTitleBarComponent::resized()
     
     this->projectButtonComponent->setBounds(0, 0, 600, getHeight());
     
-
-    std::cout << " ========== IRTitleBarComponent resized\n";
-
 }
 
 

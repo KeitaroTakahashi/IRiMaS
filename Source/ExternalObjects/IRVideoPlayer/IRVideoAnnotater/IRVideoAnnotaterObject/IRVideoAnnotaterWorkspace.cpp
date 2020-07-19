@@ -36,7 +36,7 @@ IRVideoAnnotaterWorkspace::~IRVideoAnnotaterWorkspace()
 
 void IRVideoAnnotaterWorkspace::onResized()
 {
-    std::cout <<"getLocalBounds() " << getWidth() << ", " << getHeight() << std::endl;
+    //std::cout <<"getLocalBounds() " << getWidth() << ", " << getHeight() << std::endl;
     this->videoPlayerObj->setObjectBounds(getLocalBounds());
     
     //auto vs = this->videoPlayerObj->getVideoSize();
@@ -70,7 +70,7 @@ void IRVideoAnnotaterWorkspace::copyAllDataToWorkspace(IRVideoAnnotaterWorkspace
     auto w = newWorkspace;
         
     auto p = static_cast<IRVideoPlayerObject2*>(this->videoPlayerObj->copyThis());
-    std::cout << "IRVideoAnnotaterWorkspace copy VideoPlayerObj url = " << p->getVideoPlayer()->getMovieFile().getFullPathName() << std::endl;
+    //std::cout << "IRVideoAnnotaterWorkspace copy VideoPlayerObj url = " << p->getVideoPlayer()->getMovieFile().getFullPathName() << std::endl;
     
     // replace videoPlayerObject
     //w->replaceVideoPlayerObject(p);
@@ -79,7 +79,7 @@ void IRVideoAnnotaterWorkspace::copyAllDataToWorkspace(IRVideoAnnotaterWorkspace
     double ratioH = (double)getHeight() / (double)newWorkspace->getHeight();
     
     
-    std::cout << "workspace ratio = " << ratioW << ", " << ratioH << std::endl;
+    //std::cout << "workspace ratio = " << ratioW << ", " << ratioH << std::endl;
     for(auto obj : newWorkspace->getObjects())
     {
         auto o = obj->copyThis();
@@ -97,7 +97,7 @@ void IRVideoAnnotaterWorkspace::copyAllDataToWorkspace(IRVideoAnnotaterWorkspace
         
         createObject(o);
         
-        std::cout << "copy object on the workspace " << obj << " to " << o << " at " << o->getX() << ", " << o->getY() << " : " << o->getWidth() << ", " << o->getHeight() << std::endl;
+        //std::cout << "copy object on the workspace " << obj << " to " << o << " at " << o->getX() << ", " << o->getY() << " : " << o->getWidth() << ", " << o->getHeight() << std::endl;
     }
     
     

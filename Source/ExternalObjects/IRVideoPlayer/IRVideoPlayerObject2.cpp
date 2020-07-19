@@ -148,7 +148,7 @@ void IRVideoPlayerObject2::resizeThisComponent(Rectangle<int> rect)
 
     double ratio = this->videoPlayer->getAspectRatio();
     
-    std::cout << "IRVideoPlayerObject2 resizeThisComponent : ratio = " << ratio << std::endl;
+    //std::cout << "IRVideoPlayerObject2 resizeThisComponent : ratio = " << ratio << std::endl;
 
     if(ratio >= 0 && ratio != 1.0)
     {
@@ -160,7 +160,7 @@ void IRVideoPlayerObject2::resizeThisComponent(Rectangle<int> rect)
         float ratio_w = curr_w / new_w;
         float ratio_h = curr_h / new_h;
         
-        std::cout << "ratio_w = " << ratio_w << " : ratio_h = " << ratio_h << std::endl;
+        //std::cout << "ratio_w = " << ratio_w << " : ratio_h = " << ratio_h << std::endl;
         
         float fixed_h = new_w / ratio;
         float fixed_w = new_h * ratio;

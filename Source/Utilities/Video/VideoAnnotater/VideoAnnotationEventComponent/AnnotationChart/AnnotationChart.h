@@ -79,15 +79,20 @@ public:
     
     void paint(Graphics& g) override
     {
+        
+        g.fillAll(Colours::transparentBlack);
         int max = this->graph.maxCount;
         
-        g.setColour(Colour(255, 0, 0));
+        g.setColour(getStr()->SYSTEMCOLOUR.contents);
 
+        //std::cout << "this->graph.size = " << this->graph.size << std::endl;
         for(int i = 0; i < this->graph.size; i ++)
         {
             int norm = floor(((float)this->graph.count[i] / (float)max) * getHeight());
 
-            g.fillRect(i, norm, i, norm);
+            g.drawLine(i, getHeight(), i, getHeight() - norm, 1.0);
+            
+            //std::cout << "i " << i << " : norm " << norm << std::endl;
         }
     }
     
@@ -103,25 +108,6 @@ public:
     void addEvent(float beginTime, float endTime)
     {
         this->annotations.push_back(annotationData(beginTime, endTime));
-        
-        float w = (float) getWidth();
-        float h = (float) getHeight();
-        
-        // calc seconds per pixel
-        float SecPerPix = this->videoLength / w;
-        
-        int beginIndex = floor(beginTime / SecPerPix);
-        int duration = floor((endTime - beginTime) / SecPerPix);
-        
-        for(int i=beginIndex;i<=beginIndex+duration;i++)
-        {
-            this->graph.count[i] ++;
-            
-            if(this->graph.maxCount < this->graph.count[i])
-            {
-                this->graph.maxCount = this->graph.count[i];
-            }
-        }
     }
     
     void reCalc()

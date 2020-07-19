@@ -920,7 +920,7 @@ void IRNodeObject::createEnclosedObject()
 
 void IRNodeObject::showEncloseObject(bool flag)
 {
-    std::cout << "showEncloseObject " << flag << std::endl;
+    //std::cout << "showEncloseObject " << flag << std::endl;
     //update colour
     this->enclosedObject.setColour(this->arrangeController->getEncloseColour());
     getStatusStr()->wrapColour = this->arrangeController->getEncloseColour();
@@ -934,7 +934,7 @@ void IRNodeObject::showEncloseObject(bool flag)
     if(flag) this->enclosedObject.toFront(true);
     else this->enclosedObject.toBack();
     
-    std::cout << "encloseObject visible = " << this->enclosedObject.isVisible() << std::endl;
+    //std::cout << "encloseObject visible = " << this->enclosedObject.isVisible() << std::endl;
 }
 
 void IRNodeObject::calcRelativeOrdinaryBounds()

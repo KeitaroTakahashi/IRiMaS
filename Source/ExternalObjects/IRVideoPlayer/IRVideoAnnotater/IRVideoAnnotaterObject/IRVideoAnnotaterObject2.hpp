@@ -76,7 +76,10 @@ public:
     
     void moveToFrontAction() override;
     void moveToBackAction() override;
+    
+    // --------------------------------------------------
 
+    IROnVideoPlayerController* getPlayerController() { return this->playerController.get(); }
     // --------------------------------------------------
 private:
     
