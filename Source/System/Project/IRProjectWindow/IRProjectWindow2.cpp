@@ -18,7 +18,6 @@ IRProjectWindow2::IRProjectWindow2(String name, Rectangle<int> frameRect) : IRMa
     this->comp->closeProjectCallback = [this]{ closeButtonPressed(); };
     this->comp->openProjectCallback = [this] { openProjectCallbackAction(); };
     
-    
     std::cout << "projectTitle = " << name << std::endl;
     this->comp->projectTitle = name;
 
@@ -51,9 +50,9 @@ void IRProjectWindow2::createInitialWorkspace()
 void IRProjectWindow2::initializeUI()
 {
     if(this->comp.get() != nullptr)
-       {
-           this->comp->initializeUI();
-       }
+    {
+        this->comp->initializeUI();
+    }
 }
 // ==================================================
 

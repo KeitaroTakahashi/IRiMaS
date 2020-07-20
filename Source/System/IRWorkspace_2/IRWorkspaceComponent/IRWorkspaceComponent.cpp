@@ -396,19 +396,6 @@ void IRWorkspaceComponent::changeListenerCallback (ChangeBroadcaster* source)
     }else{ std::cout << "changeListenerCallback object nullptr\n"; }
 }
 
-
-void IRWorkspaceComponent::AudioSetup()
-{
-    setAudioChannels(0, 2);
-}
-
-
-void IRWorkspaceComponent::closeAudioSetup()
-{
-    shutdownAudio();
-}
-
-
 void IRWorkspaceComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
     this->mixer.getAudioSource().prepareToPlay(samplesPerBlockExpected, sampleRate);

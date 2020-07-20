@@ -26,7 +26,7 @@
                     |                       |                    |
                     IRWorkspace             IRTitleBarComponent
 
-IRMAIN class operates
+IRMAIN class operates;
     creating new project
     opening a saved project
 
@@ -51,12 +51,26 @@ public:
     void createNewProjectFromSaveData(std::string path);
     void openProject();
     void closeProject(DocumentWindow* closingWindow);
+    // =======================================================
 
     
 private:
+    // =======================================================
+/*
+    //AudioAppComponent
+    AudioEngine mixer;
+    void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
+    void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
+    void releaseResources() override;
     
+    // AudioAppComponent
+    void audioSetup();
+    void closeAudioSetup();*/
+    // =======================================================
+
     void changeListenerCallback(ChangeBroadcaster* source) override;
-    
+    // =======================================================
+
     // from IRProjectWindow2 Listener method
     void closeThisWindow(IRMainWindow* closeWindow) override;
     
@@ -71,15 +85,18 @@ private:
     
     // start window initially opened when launching this app
     std::unique_ptr<IRStartWindow> startWindow;
-    
+    // =======================================================
+
     // for save and load projects
     IRSaveLoadSystem saveLoadClass;
     json11::Json saveData;
-    
+    // =======================================================
+
     IRObjectFactory2& IRFactory2 = singleton<IRObjectFactory2>::get_instance();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IRiMaSMainComponent)
-    
+    // =======================================================
+
 };
 
 

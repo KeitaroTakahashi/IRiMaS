@@ -9,18 +9,14 @@ IRStartWindow::IRStartWindow(String name, Rectangle<int> frameRect) :
     // do not show a title bar
     setUsingNativeTitleBar(false);
     setTitleBarHeight(0);
-    
-    // setup system colour
-    //IR::IRColours& SYSTEMCOLOUR = singleton<IR::IRColours>::get_instance();
-    //SYSTEMCOLOUR.set(IR::IRBlue());
-    
+
+    // get display bounds
     Rectangle<int> r = Desktop::getInstance().getDisplays().getMainDisplay().userArea;
     int x = r.getWidth();
     int y = r.getHeight();
     setBounds(0, 0, frameRect.getWidth(), frameRect.getHeight());
     setCentrePosition(x / 2, y / 2);
     setResizable(false, false);
-    
     
     setVisible(true);
     
@@ -51,8 +47,6 @@ void IRStartWindow::closeButtonPressed()
 
 
 // **** **** PRIVATE METHODS **** **** //
-
-
 void IRStartWindow::changeListenerCallback (ChangeBroadcaster* source)
 {
     if (source == this->starter.get())

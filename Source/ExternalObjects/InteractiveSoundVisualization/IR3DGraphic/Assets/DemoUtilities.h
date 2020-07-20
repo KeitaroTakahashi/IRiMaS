@@ -95,8 +95,8 @@ inline InputStream* createAssetInputStream (const char* resourcePath)
     
     auto resourceFile = assetsDir.getChildFile (resourcePath);
     jassert (resourceFile.existsAsFile());
-    
-    return resourceFile.createInputStream();
+    // changed from JUCE 6.0.1 by Keitaro
+    return resourceFile.createInputStream().get();
 #endif
 }
 

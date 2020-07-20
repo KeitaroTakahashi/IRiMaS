@@ -62,7 +62,6 @@ public:
     // AudioApp Component
     AudioSource& getMixer() { return this->mixer.getAudioSource(); }
     
-    
     // ==================================================
     
     // ==================================================
@@ -88,12 +87,8 @@ public:
     std::function<void()> newProjectCallback;
     std::function<void()> openProjectCallback;
 
-
-    
     bool isResizable = false;
     int resizableMargin = 20;
-    
-    
     
 private:
     // ==================================================
@@ -112,6 +107,7 @@ private:
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
     void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
     void releaseResources() override;
+    
     
     // AudioAppComponent
     void audioSetup();
@@ -195,12 +191,9 @@ private:
     juce::Point<int> previousSize;
     // ==================================================
 
-    
     bool isEditModeFlag = true;
     
     // ==================================================
-    
-   
     
     // store window size before changing it.
     juce::Point<int> prevSize;
@@ -208,13 +201,9 @@ private:
    
     // ==================================================
 
-
     //IRObjectFactory2& factory = singleton<IRObjectFactory2>::get_instance();
 
     // ==================================================
-   // LookAndFeel_V4 c;
-    
-    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (IRWindowComponent)
     

@@ -439,6 +439,9 @@ void IRWindowComponent::heavyObjectCreated(IRNodeObject* obj)
 // Audio
 void IRWindowComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
+    
+    std::cout << "sampleRate = " << sampleRate << std::endl;
+
     this->mixer.getAudioSource().prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 

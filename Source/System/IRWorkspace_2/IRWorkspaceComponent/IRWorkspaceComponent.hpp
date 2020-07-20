@@ -100,8 +100,6 @@ private:
     void changeListenerCallback(ChangeBroadcaster* source) override; // JUCE oriented
     
     // AudioAppComponent
-    void AudioSetup();
-    void closeAudioSetup();
     virtual void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
     virtual void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override;
     virtual void releaseResources() override;

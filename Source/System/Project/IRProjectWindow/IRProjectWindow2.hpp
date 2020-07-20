@@ -32,6 +32,11 @@ public:
     void windowMoveToPos(juce::Point<int>pos);
     
     // ==================================================
+
+    // AudioApp Component
+    AudioSource& getMixer() { return this->comp->getMixer(); }
+
+    // ==================================================
     
     class Listener
     {

@@ -178,6 +178,7 @@ void IRMainSpace::mouseDown(const MouseEvent& e)
 // Audio
 void IRMainSpace::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
+    
     this->mixer.getAudioSource().prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 

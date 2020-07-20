@@ -1355,6 +1355,7 @@
 		821A5E6F212B006400BF593D /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				8278CB9124C5695600F1B748 /* AudioDeviceManager */,
 				8289A0B422DF4F520088E156 /* IRDescriptorStr */,
 				8289A0B222DF4F0E0088E156 /* IRDescriptorBank */,
 				82D8B1162298117F00940CD1 /* IRDescriptor */,
@@ -2069,6 +2070,13 @@
 				8274197E2476810E00FE9CFD /* IRQuillTextEditorObject.hpp */,
 			);
 			path = IRQuillTextEditorObject;
+			sourceTree = "<group>";
+		};
+		8278CB9124C5695600F1B748 /* AudioDeviceManager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AudioDeviceManager;
 			sourceTree = "<group>";
 		};
 		827F0D2923D855B300ECAE7A /* AnnotationTextEventComponent */ = {

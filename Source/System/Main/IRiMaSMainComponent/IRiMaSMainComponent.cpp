@@ -22,6 +22,7 @@ IRiMaSMainComponent::IRiMaSMainComponent(const String applicationName)
 
 IRiMaSMainComponent::~IRiMaSMainComponent()
 {
+    //closeAudioSetup();
 
     for (auto win : this->projectLib)
     {
@@ -43,6 +44,8 @@ void IRiMaSMainComponent::initialise()
     
     this->startWindow.reset(new IRStartWindow(applicationName, Rectangle<int>(640, 480)));
     this->startWindow->addChangeListener(this);
+    
+    //audioSetup();
 }
 
 
@@ -55,7 +58,7 @@ void IRiMaSMainComponent::createNewProject()
                               0,
                               1280,
                               800);
-    IRProjectWindow2* projectWindow2 = new IRProjectWindow2("test", frameRect);
+    IRProjectWindow2* projectWindow2 = new IRProjectWindow2("project", frameRect);
     projectWindow2->setTopLeftPosition(10 * size, 10 * size);
     projectWindow2->addListener(this);
     std::function<void()> callback = [this] { createNewProject(); };
@@ -66,6 +69,8 @@ void IRiMaSMainComponent::createNewProject()
     projectWindow2->initializeUI();
     projectWindow2->toFront(true);
     projectWindow2->createInitialWorkspace();
+    
+   // this->mixer.addAudioSource(&projectWindow2->getMixer());
 }
 
 
@@ -197,3 +202,38 @@ void IRiMaSMainComponent::closeThisWindow(IRMainWindow* closeWindow)
     
     std::cout << "closeThisWindow comp\n";
 }
+
+// ==================================================
+// SYSTEM
+// ==================================================
+// Audio
+/*
+void IRiMaSMainComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
+{
+    this->mixer.getAudioSource().prepareToPlay(samplesPerBlockExpected, sampleRate);
+}
+
+void IRiMaSMainComponent::getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill)
+{
+    this->mixer.getAudioSource().getNextAudioBlock(bufferToFill);
+}
+
+void IRiMaSMainComponent::releaseResources()
+{
+    this->mixer.getAudioSource().releaseResources();
+}
+
+// AudioAppComponent
+void IRiMaSMainComponent::audioSetup()
+{
+    setAudioChannels(0, 2);
+}
+
+
+void IRiMaSMainComponent::closeAudioSetup()
+{
+    shutdownAudio();
+}
+
+*/
+// ==================================================
